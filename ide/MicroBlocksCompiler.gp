@@ -546,7 +546,8 @@ method initPrimsets SmallCompiler {
 		tft
 		hid
 		camera
-		1wire'
+		1wire
+		encoder'
 
 	primsets = (dictionary)
 	primSetIndex = 0
