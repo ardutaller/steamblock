@@ -337,7 +337,13 @@ method processEvent Hand evt {
 		wheelScale = (60 * (global 'scale'))
 		if ('Browser' == (platform)) { wheelScale = (1 * (global 'scale')) }
 		if ('Mac' == (platform)) { wheelScale = (10 * (global 'scale')) }
-		processSwipe this (wheelScale * (at evt 'x')) (wheelScale * (at evt 'y'))
+		if (shiftKeyDown (keyboard page)) {
+			// allow shift+scrollwheel to scroll horizontally
+			processSwipe this (* wheelScale (at evt 'y') -1) 0
+		} else {
+			// still process horizontal swipe in case this is a two-axes scroll
+			processSwipe this (wheelScale * (at evt 'x')) (wheelScale * (at evt 'y'))
+		}
 		return
 	}
 	x = (at evt 'x')

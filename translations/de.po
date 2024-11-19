@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-16 15:00+0000\n"
+"PO-Revision-Date: 2024-11-19 10:40+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -267,7 +267,7 @@ msgstr "extrahiere Block"
 
 #. MicroBlocks IDE error message.
 msgid "Only recent Chrome and Edge browsers support WebSerial."
-msgstr "Nur neuste Chrome- and Edge-Browser unterstützen WebSerial."
+msgstr "Nur aktuelle Chrome- und Edge-Browser unterstützen WebSerial."
 
 #. Block part type, while making a new block
 msgid "label"
@@ -2083,7 +2083,7 @@ msgstr "los!"
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr "Es funktioniert so ..."
+msgstr "Das funktioniert so ..."
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
@@ -3680,7 +3680,7 @@ msgstr "Kommentar _"
 
 #. Block in Control category
 msgid "by _"
-msgstr "Schrittweite _"
+msgstr "mit Schrittweite _"
 
 #. Color library block
 msgid "random color"
@@ -4597,3 +4597,11 @@ msgid "Report the microseconds since the given start microseconds. Handles clock
 msgstr ""
 "Microsekunden seit den angegebenen Startmicrosekunden ausgeben. Handles "
 "Clock Wrap."
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "verlasse Schleife"
+
+#. WiFi library block
+msgid "allow WiFi while using BLE _"
+msgstr "erlaube WiFi während BLE _ verwendet wird"
