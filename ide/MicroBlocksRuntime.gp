@@ -485,7 +485,7 @@ method readCodeFromNextBoardConnected SmallRuntime {
 	disconnected = false
 	if ('Browser' == (platform)) {
 		// in browser, cannot add the spinner before user has clicked connect icon
-		inform 'Plug in the board and click the USB icon to connect.'
+		inform 'Connect board to proceed.'
 		return
 	}
 	decompilerStatus = (localized 'Plug in the board.')
