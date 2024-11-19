@@ -1,7 +1,7 @@
 // Block
 // Handlers for the GP blocks GUI
 
-defineClass Block morph blockSpec type expression labelParts corner color expansionLevel function isAlternative layoutNeeded pathCache cacheW cacheH originalColor
+defineClass Block morph blockSpec type expression labelParts explicitLineBreaks corner color expansionLevel function isAlternative layoutNeeded pathCache cacheW cacheH originalColor
 
 to block type color opName {
 	block = (new 'Block')
@@ -34,6 +34,7 @@ to block type color opName {
 	}
 	setField block 'type' type
 	setField block 'labelParts' labelParts
+	setField block 'explicitLineBreaks' false
 	setField block 'color' color
 	setField block 'corner' 3
 	setField block 'expansionLevel' 1
@@ -125,6 +126,8 @@ method fixLayout Block {
 	vSpace = 3
 
 	break = 450
+	if explicitLineBreaks { break = 100000 } // only break at explice breaks
+
 	lineHeights = (list)
 	lines = (list)
 	lineArgCount = 0
@@ -171,9 +174,7 @@ method fixLayout Block {
 					// forced break indicated by special label #BR#
 					isForcedBreak = (and (isClass each 'Text') (== (text each) '#BR#'))
 					if isForcedBreak {
-						isArgSlot = true
 						setColor each (transparent)
-						lineArgCount = 10
 					} else {
 						x = (+ left indentation w)
 						w += (width (fullBounds (morph each)))
@@ -189,7 +190,7 @@ method fixLayout Block {
 					if ('if' == op) { lineArgCount = 0 } // never break 'if' blocks
 					if (and
 						(notEmpty currentLine)
-						(or (w > (break * scale)) (and isArgSlot (lineArgCount >= maxArgsPerLine)))
+						(or isForcedBreak (w > (break * scale)) (and isArgSlot (not explicitLineBreaks) (lineArgCount >= maxArgsPerLine)))
 					) {
 						if (notEmpty currentLine) {
 							add lines currentLine
@@ -1667,6 +1668,7 @@ method rawInitialize Block commandOrReporter {
 	setGrabRule morph 'handle'
 	setTransparentTouch morph false
 	labelParts = (list (list (labelText this (primName expression))))
+	explicitLineBreaks = false
 	group = (at labelParts 1)
 	corner = 3
 	expansionLevel = 1
@@ -1846,6 +1848,14 @@ method initializeForSpec Block spec suppressExpansion {
 
 	corner = 3
 	expansionLevel = 1
+
+	// check for explicit line breaks
+	explicitLineBreaks = false
+	for s (specs blockSpec) {
+		if (notNil (findSubstring '#BR#' s)) {
+			explicitLineBreaks = true
+		}
+	}
 
 	// create the base label parts
 	group = (labelGroup this 1)
