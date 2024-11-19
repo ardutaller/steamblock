@@ -914,7 +914,7 @@ static void compactRAM(int printStats) {
 	//	6. update the compaction count
 	//	7. re-write the code file
 
-	uint32_t startT = millisecs();
+	uint32 startT = millisecs();
 
 	int *dst = ((0 == !current) ? start0 : start1) + 1;
 	int *src = compactionStartRecord();
