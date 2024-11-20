@@ -4413,6 +4413,38 @@ msgstr "Octo receive beam"
 msgid "Octo stop"
 msgstr "Octo stop"
 
+#. CallioGamer library block
+msgid "A pressed"
+msgstr "A pressed"
+
+#. CallioGamer library block
+msgid "B pressed"
+msgstr "B "
+
+#. CallioGamer library block
+msgid "LEFT pressed"
+msgstr "LEFT pressed"
+
+#. CallioGamer library block
+msgid "RIGHT pressed"
+msgstr "RIGHT pressed"
+
+#. CallioGamer library block
+msgid "UP pressed"
+msgstr "UP pressed"
+
+#. CallioGamer library block
+msgid "DOWN pressed"
+msgstr "UP pressed"
+
+#. CallioGamer library block
+msgid "X pressed"
+msgstr "X pressed"
+
+#. CallioGamer library block
+msgid "Y pressed"
+msgstr "Y pressed"
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr "New"
@@ -4438,8 +4470,8 @@ msgid "Plug in the board."
 msgstr "Plug in the board."
 
 #. MicroBlocks IDE message
-msgid "Plug in the board and click the USB icon to connect."
-msgstr "Plug in the board and click the USB icon to connect."
+msgid "Connect board to proceed."
+msgstr "Connect board to proceed."
 
 #. MicroBlocks IDE message
 msgid "Reading project from board..."

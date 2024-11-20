@@ -4413,6 +4413,38 @@ msgstr ""
 msgid "Octo stop"
 msgstr ""
 
+#. CallioGamer library block
+msgid "A pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "B pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "LEFT pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "RIGHT pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "UP pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "DOWN pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "X pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "Y pressed"
+msgstr ""
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr ""
