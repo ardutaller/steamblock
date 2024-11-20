@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-20 19:24+0000\n"
+"PO-Revision-Date: 2024-11-20 22:51+0000\n"
 "Last-Translator: Michael Klein <kleinswelt@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2915,7 +2915,7 @@ msgstr "Bild hoch"
 
 #. Servo motor library label
 msgid "Servo"
-msgstr "Servo"
+msgstr "Servomotor"
 
 #. Image name for the "display image" block
 msgid "fabulous"
@@ -4778,3 +4778,313 @@ msgstr "Verbinde das Board, um fortzufahren."
 #. Joystick:bit library block
 msgid "button _ is pressed"
 msgstr "Knopf _ ist gedrückt"
+
+#. Musical note name
+msgid "nt;d"
+msgstr "d"
+
+#. Musical note name
+msgid "nt;e"
+msgstr "e"
+
+#. Musical note name
+msgid "nt;f"
+msgstr "f"
+
+#. Musical note name
+msgid "nt;b"
+msgstr "h"
+
+#. Musical note name
+msgid "nt;a#"
+msgstr "a#"
+
+#. NeZha robot library block
+msgid "NeZha stop motor _"
+msgstr "NeZha stoppe Motor _"
+
+#. Joystick:bit library block
+msgid "rocker value of _"
+msgstr "Wippenwert von _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw line from x _ y _ to x _ y _"
+msgstr "Octopus OLED zeichne Linie von x _ y _ nach x _ y _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus LED pin _ toggle to _"
+msgstr "Octopus LED Pin _ umschalten auf _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of noise (dB) at pin _"
+msgstr "Octopus Lautstärkewert (dB) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED fill circle x _ y _ radius _"
+msgstr "Octopus OLED fülle Kreis x _ y _ Radius _"
+
+#. Lists library block
+msgid "map _ over _"
+msgstr "bilde _ ab in _"
+
+#. MQTT library block
+msgid "testTopic"
+msgstr "testThema"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus 180° servo pin _ angle to _ ° (0~180)"
+msgstr "Octopus 180° Servo Pin _ Winkel auf _ ° (0~180)"
+
+#. Octostudio communication library block
+msgid "Octo receive beam"
+msgstr "Octo empfange Übertragung"
+
+#. NeZha robot library label
+#, fuzzy
+msgid "NeZha"
+msgstr "NeZha"
+
+#. Octostudio communication library block
+msgid "Octo stop"
+msgstr "Octo stoppen"
+
+#. Wukong robot library block
+msgid "Wukong stop all"
+msgstr "Wukong stoppe alle"
+
+#. WuKong2040 robot library label
+#, fuzzy
+msgid "WuKong2040"
+msgstr "WuKong2040"
+
+#. Sphero-RVR robot library block
+msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
+msgstr ""
+"setze rohe Motoren auf linken Modus _ linke Geschwindigkeit _ rechter Modus "
+"_ rechte Geschwindigkeit _"
+
+#. Wukong robot library block
+msgid "Wukong set servo _ to speed _ (-100 to 100)"
+msgstr "Wukong setze Servo _ auf Geschwindigkeit _ (-100 bis 100)"
+
+#. NeZha robot library block
+msgid "NeZha set motor _ speed to _ %"
+msgstr "NeZha setze Motor_ auf Geschwindigkeit _ %"
+
+#. Wukong robot library block
+msgid "Wukong stop motor _"
+msgstr "Wukong stoppe Motor _"
+
+#. MQTT library block
+msgid "MQTT sub _"
+msgstr "MQTT abonnieren _"
+
+#. Sphero-RVR robot library block
+msgid "stop with heading _"
+msgstr "stoppe mit Richtung _"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 rainbowLED _ color to _"
+msgstr "WuKong2040 RegenbogenLED _ Farbe auf _"
+
+#. Wukong robot library label
+#, fuzzy
+msgid "Wukong"
+msgstr "Wukong"
+
+#. Octostudio communication library block
+msgid "Octo beam received?"
+msgstr "Octo Übertragung empfangen?"
+
+#. Joystick:bit library block
+msgid "motor vibrate for _ ms"
+msgstr "Motorvibration für _ ms"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw pixel x _ y _"
+msgstr "Octopus OLED zeichne Pixel x _ y _"
+
+#. Wukong robot library block
+msgid "Wukong set LED brightness to _"
+msgstr "Wukong setze LEDhelligkeit auf _"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 motor _ speed to _ (-100~100)"
+msgstr "WuKong2040 Motor _ Geschwindigkeit auf _ (-100~100)"
+
+#. Wukong robot library block
+msgid "Wukong set servo _ to _ degrees (-90 to 90)"
+msgstr "Wukong setze Servo _ auf _ Grad (-90 to 90)"
+
+#. Wukong robot library block
+msgid "Wukong set NeoPixels _ _ _ _"
+msgstr "Wukong setze NeoPixels _ _ _ _"
+
+#. Sphero-RVR robot library block
+msgid "wake"
+msgstr "aufwachen"
+
+#. Sphero-RVR robot library block
+msgid "reset the yaw"
+msgstr "Kurs zurücksetzen"
+
+#. NeZha robot library block
+msgid "NeZha set _ servo _ angle to _"
+msgstr "NeZha setze _ Servo _ Winkel auf _"
+
+#. NeZha robot library block
+msgid "NeZha set continuous rotation servo _ speed to _ %"
+msgstr "NeZha setze 360 Grad Servo _ Geschwindigkeit auf _ %"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus sonar trig _ echo _ distance (cm)"
+msgstr "Octopus Ultraschall trig _ echo _ Entfernung(cm)"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus motor fan pin _ speed to _ %"
+msgstr "Octopus Motorlüfter Pin _ Geschwindigkeit auf _ %"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of light intensity (Lux) at pin _"
+msgstr "Octopus Helligkeitswert (Lux) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of DHT11 temperature (°C) at pin _"
+msgstr "Octopus DHT11 Temperatur (°C) an Pin _"
+
+#. MQTT library block
+msgid "MQTT pub topic _ payload _"
+msgstr "MQTT publiziere Thema _ payload _"
+
+#. MQTT library block
+#, fuzzy
+msgid "retain _ QoS _"
+msgstr "retain _ QoS _"
+
+#. Sphero-RVR robot library block
+msgid "set RGB LED _ to red _ green _ blue _"
+msgstr "setze RGB LED _ auf Rot _ Grün_ Blau_"
+
+#. Sphero-RVR robot library block
+msgid "set all LEDs to red _ green _ blue _"
+msgstr "setze alle LEDs auf Rot _ Grün_ Blau_"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 stop motor _"
+msgstr "WuKong2040 stoppe Motor _"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 clear all rainbowLED"
+msgstr "WuKong2040 lösche alle RegenbogenLED"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of DHT11 humidity (0~100) at pin _"
+msgstr "Octopus DHT11 Feuchtigkeitswert (0~100) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus LED pin _ brightness _ %"
+msgstr "Octopus LED Pin _ Helligkeit _ %"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of water level (0~40mm) at pin _"
+msgstr "Octopus Wasserstandswert (0~40mm) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of trimpot (0~1023) at pin _"
+msgstr "Octopus Wert von Trimmpoti (0~1023) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED show _ at x _ y _"
+msgstr "Octopus OLED zeige _ an x _ y _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED clear"
+msgstr "Octopus lösche OLED"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw rectangle x _ y _ w _ h _ rounding _ (3~15)"
+msgstr "Octopus OLED zeichne Rechteck x _ y _ w _ h _ abrunden_ (3~15)"
+
+#. Octostudio communication library block
+msgid "Octo last beam"
+msgstr "Octo letzte Übertragung"
+
+#. Octostudio communication library block
+msgid "Octo set group _ (0-99)"
+msgstr "Octo setze Gruppe _ (0-99)"
+
+#. Musical note name
+msgid "nt;c"
+msgstr "c"
+
+#. Musical note name
+msgid "nt;c#"
+msgstr "c#"
+
+#. Elecfreaks Octopus sensor library label
+msgid "Octopus"
+msgstr "Octopus"
+
+#. Octostudio communication library block
+msgid "Octo beam to phones _"
+msgstr "Octo auf Telefone übertragen _"
+
+#. MQTT library block
+msgid "MQTT unsub _"
+msgstr "MQTT abbestellen _"
+
+#. Musical note name
+msgid "nt;d#"
+msgstr "d#"
+
+#. Musical note name
+msgid "nt;f#"
+msgstr "f#"
+
+#. Musical note name
+msgid "nt;g"
+msgstr "g"
+
+#. Musical note name
+msgid "nt;g#"
+msgstr "g#"
+
+#. Wukong robot library block
+msgid "Wukong set motor _ to _ (-100 to 100)"
+msgstr "Wukong stelle Motor _ auf _ (-100 to 100)"
+
+#. Sphero-RVR robot library block
+msgid "sleep"
+msgstr "schlafen"
+
+#. NeZha robot library block
+msgid "NeZha stop all motors"
+msgstr "NeZha stoppe alle Motoren"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 stop all motors"
+msgstr "WuKong2040 alle Motoren stoppen"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 buzzer beep _ ms"
+msgstr "WuKong2040 Summer piepsen_ ms"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
+msgstr "WuKong2040 RegenbogenLED _ R _ G _ B _ (0~255)"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED fill rectangle x _ y _ w _ h _"
+msgstr "Octopus OLED fülle Rechteck x _ y _ w _ h _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw circle x _ y _ radius _"
+msgstr "Octopus OLED zeichne Kreis x _ y _ Radius _"
+
+#. Sphero-RVR robot library block
+msgid "drive with speed _ and heading _"
+msgstr "mit Geschwindigkeit _ und Richtung _ fahren"
+
+#. Musical note name
+msgid "nt;a"
+msgstr "a"
