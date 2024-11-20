@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
 "PO-Revision-Date: 2024-11-20 13:59+0000\n"
-"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
+"Last-Translator: Michael Klein <kleinswelt@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -4604,3 +4604,11 @@ msgstr "verlasse Schleife"
 #. WiFi library block
 msgid "allow WiFi while using BLE _"
 msgstr "erlaube WiFi während BLE _ verwendet wird"
+
+#. NeoPixel library block
+msgid "shift all NeoPixel colors by _"
+msgstr "verschiebe alle NeoPixelfarben um _"
+
+#. NeoPixel library block
+msgid "shift NeoPixel _ color by _"
+msgstr "verschiebe Farbe von NeoPixel _ um _"
