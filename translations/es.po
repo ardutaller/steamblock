@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2024-11-18 11:51+0000\n"
+"PO-Revision-Date: 2024-11-20 11:35+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -6117,3 +6117,7 @@ msgstr "dirección"
 #. Examples folder
 msgid "folder;Examples"
 msgstr "Ejemplos"
+
+#. MicroBlocks IDE message
+msgid "Connect board to proceed."
+msgstr "Conecta la placa para continuar."
