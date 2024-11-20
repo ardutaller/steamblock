@@ -4419,7 +4419,7 @@ msgstr "A pressed"
 
 #. CallioGamer library block
 msgid "B pressed"
-msgstr "B "
+msgstr "B pressed"
 
 #. CallioGamer library block
 msgid "LEFT pressed"
