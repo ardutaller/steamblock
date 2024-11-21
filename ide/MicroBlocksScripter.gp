@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient bottomGradient
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -67,8 +67,10 @@ method initialize MicroBlocksScripter aProjectEditor {
 	bottomGradient = (newMorph)
 	setExtent topGradient (140 * scale) (30 * scale)
 	setExtent bottomGradient (140 * scale) (30 * scale)
-	setCostume topGradient (flipped (scaleAndRotate (gradientBitmap this) (140 * scale) 1))
-	setCostume bottomGradient (scaleAndRotate (gradientBitmap this) (140 * scale) 1)
+	topGradientBitmap = (flipped (scaleAndRotate (gradientBitmap this) (140 * scale) 1))
+	setCostume topGradient topGradientBitmap
+	bottomGradientBitmap = (scaleAndRotate (gradientBitmap this) (140 * scale) 1)
+	setCostume bottomGradient bottomGradientBitmap
 	addPart morph topGradient
 	addPart morph bottomGradient
 
@@ -364,8 +366,8 @@ method fixLayout MicroBlocksScripter {
 	setExtent (morph blocksFrame) blocksWidth totalHeight
 	setExtent topGradient catWidth (30 * scale)
 	setExtent bottomGradient catWidth (30 * scale)
-	setCostume topGradient (flipped (scaleAndRotate (gradientBitmap this) catWidth 1))
-	setCostume bottomGradient (scaleAndRotate (gradientBitmap this) catWidth 1)
+	setCostume topGradient (scaleAndRotate topGradientBitmap catWidth 1)
+	setCostume bottomGradient (scaleAndRotate bottomGradientBitmap catWidth 1)
 	setExtent (morph scriptsFrame) (totalWidth - (catWidth + blocksWidth)) totalHeight
 
 	// position parts
