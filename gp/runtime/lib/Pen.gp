@@ -16,7 +16,7 @@ method lineWidth Pen {return size}
 
 method setAlpha Pen a {setAlpha color a}
 method setColor Pen aColor {color = aColor}
-method setLineWidth Pen aNumber {size = (max2 1 (round aNumber))}
+method setLineWidth Pen aNumber {size = (max 1 (round aNumber))}
 
 // pen up/down
 
@@ -72,11 +72,11 @@ method drawLine Pen x0 y0 x1 y1 {
 
 	// check for vertical and horizontal layout
 	if (and (size == 1) (or (x0 == x1) (y0 == y1))) {
-		lx = (min2 x0 x1)
-		rx = (max2 x0 x1)
-		ty = (min2 y0 y1)
-		by = (max2 y0 y1)
-		fillRect this lx ty (max2 1 (rx - lx)) (max2 1 (by - ty))
+		lx = (min x0 x1)
+		rx = (max x0 x1)
+		ty = (min y0 y1)
+		by = (max y0 y1)
+		fillRect this lx ty (max 1 (rx - lx)) (max 1 (by - ty))
 		return
 	}
 
@@ -206,7 +206,7 @@ method drawCircle Pen centerX centerY radius fillColor border borderColor {
 	if (notNil borderColor) {
 		oldSize = size
 		oldColor = color
-		size = (max2 1 (round border))
+		size = (max 1 (round border))
 		color = borderColor
 		strokeCircle this centerX centerY radius
 		size = oldSize

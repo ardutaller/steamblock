@@ -35,10 +35,10 @@ method setImage ScaledImage bm {
 }
 
 method setScale ScaledImage newScale {
-	imgW = (max2 1 (width image))
-	imgH = (max2 1 (height image))
-	minScale = (min2 1 (5 / (min2 imgW imgH)))
-	maxScale = (max2 1 (4000 / (max2 imgW imgH)))
+	imgW = (max 1 (width image))
+	imgH = (max 1 (height image))
+	minScale = (min 1 (5 / (min imgW imgH)))
+	maxScale = (max 1 (4000 / (max imgW imgH)))
 	centerP = (rotationCenter morph)
 	imgScale = (clamp newScale minScale maxScale)
 	redraw this
@@ -124,9 +124,9 @@ method handDownOn ScaledImage hand {
 }
 
 method handMoveFocus ScaledImage hand {
-	imgH = (max2 1 (height image))
-	minScale = (min2 1 (5 / imgH))
-	maxScale = (max2 1 (4000 / imgH))
+	imgH = (max 1 (height image))
+	minScale = (min 1 (5 / imgH))
+	maxScale = (max 1 (4000 / imgH))
 	newScale = ((originalHeight + (resizeStartY - (y hand))) / imgH)
 	newScale = (clamp newScale minScale maxScale)
 	setScale this newScale

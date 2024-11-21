@@ -353,7 +353,7 @@ method inset ShapeMaker { return (8 * (blockScale)) }
 method cIndent ShapeMaker { return (8 * (blockScale)) }
 
 // Block border width, inset, and color.
-method blockBorder ShapeMaker { return (max2 1 (round (global 'scale'))) }
+method blockBorder ShapeMaker { return (max 1 (round (global 'scale'))) }
 method blockBorderInset ShapeMaker { return ((blockBorder this) / 2) }
 method blockBorderColor ShapeMaker blockColor {
 	hsv = (hsv blockColor)

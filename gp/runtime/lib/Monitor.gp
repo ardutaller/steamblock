@@ -95,7 +95,7 @@ method step Monitor {
 		if (and (isClass newValue 'Float') ((abs newValue) >= 0.01)) {
 			decimalIndex = (indexOf (letters s) '.')
 			if (decimalIndex > 0) {
-				s = (substring s 1 (min2 (decimalIndex + digitsAfterDecimal) (count s)))
+				s = (substring s 1 (min (decimalIndex + digitsAfterDecimal) (count s)))
 			}
 		}
 	}

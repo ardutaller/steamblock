@@ -957,7 +957,7 @@ method doOneCycle Page {
 
 	// sleep for any extra time, but always sleep a little to ensure that
 	// we get events (and to return control to the browser)
-	sleepTime = (max2 1 (15 - (msecs t)))
+	sleepTime = (max 1 (15 - (msecs t)))
 	waitMSecs sleepTime
 }
 
@@ -1120,8 +1120,8 @@ method processWindowEvent Page evt {
 		scale = (global 'scale')
 
 		// note: things can break if w or h is less than 1
-		w = (scale * (max2 1 (at evt 'data1')))
-		h = (scale * (max2 1 (at evt 'data2')))
+		w = (scale * (max 1 (at evt 'data1')))
+		h = (scale * (max 1 (at evt 'data2')))
 
 		clearBuffer color
 		flipBuffer
@@ -1680,7 +1680,7 @@ method drawLinks Page {
 				lb = (getField (handler other) 'listBox')
 				bds = (bounds (owner (morph lb)))
 				cpx = (hCenter bds)
-				cpy = (min2 (max2 (top bds) (vCenter (bounds (selectedMorph lb)))) (bottom bds))
+				cpy = (min (max (top bds) (vCenter (bounds (selectedMorph lb)))) (bottom bds))
 				coll = (intersectionsWithLineSegment (bounds each) (hCenter (bounds each)) (vCenter (bounds each)) cpx cpy)
 				if (notEmpty coll) {
 					pt = (first coll)
@@ -1693,7 +1693,7 @@ method drawLinks Page {
 				lb = (getField (handler other) 'listBox')
 				bds = (bounds (owner (morph lb)))
 				cpx = (hCenter bds)
-				cpy = (min2 (max2 (top bds) (vCenter (bounds (morph (highlighted lb))))) (bottom bds))
+				cpy = (min (max (top bds) (vCenter (bounds (morph (highlighted lb))))) (bottom bds))
 				setLineWidth pen (* scale 10)
 				setColor pen (color 152 190 230 100)
 				drawLine pen (hCenter (bounds each)) (vCenter (bounds each)) cpx cpy

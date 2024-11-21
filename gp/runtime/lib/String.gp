@@ -93,7 +93,7 @@ method caseInsensitiveSort String aString {
 	// Return true if this string would come before aString in a case-insensitive ASCII sort.
 	// NOTE: Does not sort Unicode characters correctly!
 
-	count = (min2 (count this) (count aString))
+	count = (min (count this) (count aString))
 	for i count {
 		ch1 = (at this i)
 		ch2 = (at aString i)

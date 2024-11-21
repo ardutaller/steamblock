@@ -680,8 +680,8 @@ method fullCostume Morph maxW maxH {
 	if (isNil maxW) { maxW = 2000 }
 	if (isNil maxH) { maxH = 4000 }
 	if (or (w > maxW) (h > maxH)) {
-		w = (min2 w maxW)
-		h = (min2 h maxH)
+		w = (min w maxW)
+		h = (min h maxH)
 	}
 	if (or (w == 0) (h == 0)) {return (newBitmap 1 1)}
 	result = (newBitmap w h (gray 0 0))
@@ -1042,8 +1042,8 @@ method stayRightBelow Morph x y srcRect {
 	if (isNil srcRect) {srcRect = (fullBounds this)}
 	if (isNil x) {x = (left srcRect)}
 	if (isNil y) {y = (top srcRect)}
-	leftOff = (min2 0 ((left srcRect) - x))
-	topOff = (min2 0 ((top srcRect) - y))
+	leftOff = (min 0 ((left srcRect) - x))
+	topOff = (min 0 ((top srcRect) - y))
 	if (or (leftOff < 0) (topOff < 0)) {
 		moveBy this (abs leftOff) (abs topOff)
 	}
@@ -1053,8 +1053,8 @@ method stayLeftAbove Morph x y srcRect {
 	if (isNil srcRect) {srcRect = (fullBounds this)}
 	if (isNil x) {x = (right srcRect)}
 	if (isNil y) {y = (bottom srcRect)}
-	rightOff = (max2 0 ((right srcRect) - x))
-	bottomOff = (max2 0 ((bottom srcRect) - y))
+	rightOff = (max 0 ((right srcRect) - x))
+	bottomOff = (max 0 ((bottom srcRect) - y))
 	if (or (rightOff > 0) (bottomOff > 0)) {
 		moveBy this (0 - rightOff) (0 - bottomOff)
 	}
@@ -1088,8 +1088,8 @@ method setInsetInOwner Morph dx dy {
 // resizing
 
 method setExtent Morph width height {
-	if (isNil width) {width = (max2 0 (width bounds))}
-	if (isNil height) {height = (max2 0 (height bounds))}
+	if (isNil width) {width = (max 0 (width bounds))}
+	if (isNil height) {height = (max 0 (height bounds))}
 
 	// only redraw if the dimensions have changed
 	if (and (width == (width bounds)) (height == (height bounds))) {return}
@@ -1290,14 +1290,14 @@ method takeThumbnail Morph thumbWidth thumbHeight {
 	}
 
 	orig = (takeSnapshot this)
-	mag = (min2 (thumbWidth / w) (thumbHeight / h))
+	mag = (min (thumbWidth / w) (thumbHeight / h))
 	fitW = ((thumbHeight / h) >= (thumbWidth / w))
 
 	areaFilled = (((w * mag) * (h * mag)) / (thumbWidth * thumbHeight))
 
 	if (areaFilled < 0.2) {
 		// too big of a mismatch in aspect ratio
-		mag = (max2 (thumbHeight / h) (thumbWidth / w))
+		mag = (max (thumbHeight / h) (thumbWidth / w))
 		thumb = (thumbnail orig (w * mag) (h * mag))
 
 		if fitW {
@@ -1726,7 +1726,7 @@ method changeHeight Morph {
 }
 
 method changeRadius Morph {
-	current = (half (min2 (normalWidth this) (normalHeight this)))
+	current = (half (min (normalWidth this) (normalHeight this)))
 	promptForNumber 'Radius?' (action 'setRadius' handler) 1 500 current
 }
 

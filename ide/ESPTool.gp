@@ -553,7 +553,7 @@ method uploadCompressed ESPTool startAddr data {
 	sent = 0
 	seqNum = 0
 	while (sent < compressedBytecount) {
-		bytesToSend = (min2 packetSize (compressedBytecount - sent))
+		bytesToSend = (min packetSize (compressedBytecount - sent))
 		args = (list)
 		add32Int this args bytesToSend
 		add32Int this args seqNum
@@ -596,7 +596,7 @@ method uploadUncompressed ESPTool startAddr flashData {
 	sent = 0
 	seqNum = 0
 	while (sent < totalBytes) {
-		bytesToSend = (min2 packetSize (totalBytes - sent))
+		bytesToSend = (min packetSize (totalBytes - sent))
 		args = (list)
 		add32Int this args bytesToSend
 		add32Int this args seqNum
@@ -679,7 +679,7 @@ method uploadToRAM ESPTool hexStartAddr ramData {
 	sent = 0
 	seqNum = 0
 	while (sent < totalBytes) {
-		bytesToSend = (min2 packetSize (totalBytes - sent))
+		bytesToSend = (min packetSize (totalBytes - sent))
 		args = (list)
 		add32Int this args bytesToSend
 		add32Int this args seqNum

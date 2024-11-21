@@ -17,13 +17,13 @@ method setLeft Rectangle aNumber {left = aNumber}
 method top Rectangle {return top}
 method setTop Rectangle aNumber {top = aNumber}
 method width Rectangle {return width}
-method setWidth Rectangle aNumber {width = (max2 0 aNumber)}
+method setWidth Rectangle aNumber {width = (max 0 aNumber)}
 method right Rectangle {return (left + width)}
-method setRight Rectangle aNumber {width = (max2 0 (aNumber - left))}
+method setRight Rectangle aNumber {width = (max 0 (aNumber - left))}
 method height Rectangle {return height}
-method setHeight Rectangle aNumber {height = (max2 0 aNumber)}
+method setHeight Rectangle aNumber {height = (max 0 aNumber)}
 method bottom Rectangle {return (top + height)}
-method setBottom Rectangle aNumber {height = (max2 0 (aNumber - top))}
+method setBottom Rectangle aNumber {height = (max 0 (aNumber - top))}
 method hCenter Rectangle {return (+ left (width / 2))}
 method vCenter Rectangle {return (+ top (height / 2))}
 method copy Rectangle {return (rect left top width height)}
@@ -67,37 +67,37 @@ method expandBy Rectangle x y {
 
 method intersect Rectangle another {
 	// (command version) - mutates the receiver
-	newR = (min2 (right this) (right another))
-	newB = (min2 (bottom this) (bottom another))
-	left = (max2 left (left another))
-	top = (max2 top (top another))
+	newR = (min (right this) (right another))
+	newB = (min (bottom this) (bottom another))
+	left = (max left (left another))
+	top = (max top (top another))
 	setRight this newR
 	setBottom this newB
 }
 
 method intersection Rectangle another {
 	// (reporter version) - answer a new rectangle
-	result = (rect (max2 left (left another)) (max2 top (top another)))
-	setRight result (min2 (right this) (right another))
-	setBottom result (min2 (bottom this) (bottom another))
+	result = (rect (max left (left another)) (max top (top another)))
+	setRight result (min (right this) (right another))
+	setBottom result (min (bottom this) (bottom another))
 	return result
 }
 
 method merge Rectangle another {
 	// (command version) - mutates the receiver
-	newR = (max2 (right this) (right another))
-	newB = (max2 (bottom this) (bottom another))
-	left = (min2 left (left another))
-	top = (min2 top (top another))
+	newR = (max (right this) (right another))
+	newB = (max (bottom this) (bottom another))
+	left = (min left (left another))
+	top = (min top (top another))
 	setRight this newR
 	setBottom this newB
 }
 
 method mergedWith Rectangle another {
 	// (reporter version) - answer a new rectangle
-	result = (rect (min2 left (left another)) (min2 top (top another)))
-	setRight result (max2 (right this) (right another))
-	setBottom result (max2 (bottom this) (bottom another))
+	result = (rect (min left (left another)) (min top (top another)))
+	setRight result (max (right this) (right another))
+	setBottom result (max (bottom this) (bottom another))
 	return result
 }
 

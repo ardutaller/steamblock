@@ -57,7 +57,7 @@ method fixLayout Inspector {
 	border = (border window)
 
 	setPosition (morph listFrame) (left clientArea) (top clientArea)
-	setExtent (morph listFrame) (min2 ((width clientArea) / 3) (+ 12 (itemWidth listBox))) (height clientArea)
+	setExtent (morph listFrame) (min ((width clientArea) / 3) (+ 12 (itemWidth listBox))) (height clientArea)
 
 	tp = (top clientArea)
 	w = (- (- (width clientArea) (width (morph listFrame))) border)
@@ -135,7 +135,7 @@ method fieldNames Inspector {
 		return (array)
 	}
 	fieldNames = (fieldNames (classOf contents))
-	n = (min2 1000 (objWords contents))
+	n = (min 1000 (objWords contents))
 	slotNames = (newArray n)
 	for i n {
 		if (i <= (count fieldNames)) {
@@ -261,7 +261,7 @@ to fieldInfo fieldName {return nil}
 
 method switchReadout Inspector {
 	scale = (global 'scale')
-	toggle = (toggleButton (action 'toggleField' this) (action 'getField' contents (selection listBox)) (scale * 20) (scale * 13) (scale * 5) (max2 1 (scale / 2)) false)
+	toggle = (toggleButton (action 'toggleField' this) (action 'getField' contents (selection listBox)) (scale * 20) (scale * 13) (scale * 5) (max 1 (scale / 2)) false)
 	return (readout 'switch' contents (selection listBox) toggle 'refresh')
 }
 
@@ -301,7 +301,7 @@ method connectors Inspector {
 	for item (parts (morph listBox)) {
 		fieldName = (data (handler item))
 		dta = (getField contents fieldName)
-		y = (min2 bt (max2 tp (vCenter (bounds item))))
+		y = (min bt (max tp (vCenter (bounds item))))
 		add result (array dta (array x y))
 	}
 	return result

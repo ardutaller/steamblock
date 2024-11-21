@@ -85,13 +85,13 @@ to stringImage aString fontName fontSize color alignment shadowColor shadowOffse
 		lw = (+ (stringWidth (at lines i)) (borderX * 2))
 		if (lw > 4000) { lw = 4000 } // truncate really wide strings
 		atPut widths i lw
-		w = (max2 w lw)
+		w = (max w lw)
 	}
 
 	// determine height
 	lineHeight = (fontHeight)
 	h = (+ (borderY * 2) ((count lines) * lineHeight))
-	if (notNil minHeight) { h = (max2 h minHeight) }
+	if (notNil minHeight) { h = (max h minHeight) }
 
 	// create bitmap
 	bm = (newBitmap (+ w (abs shadowOffsetX)) (+ h (abs shadowOffsetY)) bgColor)
@@ -286,8 +286,8 @@ method setEditRule Text string {
 
 method codeContext Text {return codeContext}
 method setCodeContext Text anObjectOrNil {codeContext = anObjectOrNil}
-method setMinWidth Text w {minWidth = (max2 0 (truncate w))}
-method setMinHeight Text h {minHeight = (max2 0 (truncate h))}
+method setMinWidth Text w {minWidth = (max 0 (truncate w))}
+method setMinHeight Text h {minHeight = (max 0 (truncate h))}
 
 method drawOn Text ctx {
 // 	h = (handler (owner morph))
@@ -329,8 +329,8 @@ method drawOn Text ctx {
 method drawSelectionOn Text ctx {
 		if ((count text) == 0) { return }
 		if (or (isNil startMark) (isNil endMark)) { return }
-		begin = (min2 startMark endMark)
-		end = ((max2 startMark endMark) - 1)
+		begin = (min startMark endMark)
+		end = ((max startMark endMark) - 1)
 		marked = (substring text begin end)
 		lines = (lines marked)
 		setFont ctx fontName fontSize
@@ -364,14 +364,14 @@ method computeBounds Text {
 	for s lines {
 		lw = ((stringWidth s) + (2 * borderX))
 		if (lw > 4000) { lw = 4000 } // truncate really wide strings
-		w = (max2 w lw)
+		w = (max w lw)
 	}
 	setWidth (bounds morph) w
 
 	// determine height
 	lineHeight = (fontHeight)
 	h = (((count lines) * lineHeight) + (2 * borderY))
-	if (notNil minHeight) { h = (max2 h minHeight) }
+	if (notNil minHeight) { h = (max h minHeight) }
 	setHeight (bounds morph) h
 }
 
@@ -379,8 +379,8 @@ method adjustSizeToScrollFrame Text aScrollFrame {
 	ca = (clientArea aScrollFrame)
 	computeBounds this
 	bnds = (bounds morph)
-	setWidth bnds (max2 (width bnds) (width ca))
-	setHeight bnds (max2 (height bnds) (height ca))
+	setWidth bnds (max (width bnds) (width ca))
+	setHeight bnds (max (height bnds) (height ca))
 }
 
 // events
@@ -407,7 +407,7 @@ method handDownOn Text hand {
 			if (isNil startMark) {startMark =  (slot caret)}
 			gotoSlot caret (slotAt this (x hand) (y hand))
 		} else {
-			pos = (max2 1 (slotAt this (x hand) (y hand)))
+			pos = (max 1 (slotAt this (x hand) (y hand)))
 			unmark this
 			gotoSlot caret pos
 			startMark = (slot caret)
@@ -422,7 +422,7 @@ method handMoveOver Text hand {
 	if (isNil caret) {return}
 	closeUnclickedMenu (page hand) this
 	if (isNil startMark) {startMark = (slot caret)}
-	gotoSlot caret (max2 1 (slotAt this (x hand) (y hand)))
+	gotoSlot caret (max 1 (slotAt this (x hand) (y hand)))
 }
 
 method touchHold Text hand {
@@ -528,7 +528,7 @@ method extent Text aFontSize xBorder yBorder {
 	setFont fontName aFontSize
 	lineHeight = (fontHeight)
 	for line lines {
-		w = (max2 w (stringWidth line))
+		w = (max w (stringWidth line))
 	}
 	return (rect (left morph) (top morph) (w + (xBorder * 2)) (((count lines) * lineHeight) + (yBorder * 2)))
 }
@@ -598,7 +598,7 @@ method slotAt Text x y {
 		row += 1
 		lineY = (+ (top morph) borderY (row * lineHeight))
 	}
-	row = (max2 1 (min2 row (count lines)))
+	row = (max 1 (min row (count lines)))
 	line = (at lines row)
 	col = 0
 	indent = 0
@@ -611,10 +611,10 @@ method slotAt Text x y {
 	while (lineX < x) {
 		slot += 1
 		col += 1
-		if (col > (count line)) {return (min2 slot ((count text) + 1))}
+		if (col > (count line)) {return (min slot ((count text) + 1))}
 		lineX = (+ (left morph) borderX indent (stringWidth (substring line 1 col)))
 	}
-	return (min2 slot ((count text) + 1))
+	return (min slot ((count text) + 1))
 }
 
 // marking
@@ -628,8 +628,8 @@ method setCaret Text caretOrNil {caret = caretOrNil}
 
 method selected Text {
 	if (or (isNil startMark) (isNil endMark)) {return ''}
-	begin = (min2 startMark endMark)
-	end = ((max2 startMark endMark) - 1)
+	begin = (min startMark endMark)
+	end = ((max startMark endMark) - 1)
 	return (substring text begin end)
 }
 
@@ -649,11 +649,11 @@ method selectAll Text {
 
 method selectWordAt Text slot {
 	letters = (letters text)
-	while (and (slot > 1) (not (isWhiteSpace (at letters (min2 (slot - 1) (count letters)))))) {slot += -1}
+	while (and (slot > 1) (not (isWhiteSpace (at letters (min (slot - 1) (count letters)))))) {slot += -1}
 	startMark = slot
 	slot += 1
 	while (and (slot <= (count text)) (not (isWhiteSpace (at letters slot)))) {slot += 1}
-	slot = (min2 slot ((count text) + 1))
+	slot = (min slot ((count text) + 1))
 	endMark = slot
 	changed morph
 }
@@ -689,7 +689,7 @@ method printResult Text result {
 		edit (keyboard page) this 1
 		selectAll this
 	}
-	gotoSlot caret (max2 startMark endMark)
+	gotoSlot caret (max startMark endMark)
 	startMark = nil
 	start = (slot caret)
 	insertRight caret (join ' ' (printString result))
@@ -848,7 +848,7 @@ method findLineBreak Text s wrapWidth {
 	if (w < wrapWidth) { return len }
 
 	avgLetterWidth = (w / len)
-	initializeGuess = (max2 (truncate (wrapWidth / avgLetterWidth)) 1)
+	initializeGuess = (max (truncate (wrapWidth / avgLetterWidth)) 1)
 	i = (wordEndAfter this s initializeGuess)
 
 	// find the end of the first word beyond wrapWidth

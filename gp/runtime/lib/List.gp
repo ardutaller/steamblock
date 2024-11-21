@@ -210,7 +210,7 @@ method '==' List other {
 // comparison
 
 method '<' List other {
-	n = (min2 (count this) (count other))
+	n = (min (count this) (count other))
 	for i n {
 		if ((at this i) < (at other i)) {
 			return true

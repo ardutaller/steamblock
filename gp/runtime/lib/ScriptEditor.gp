@@ -648,8 +648,8 @@ method croppedScriptsCostume ScriptEditor doNotCrop {
 		bnds = (bounds (owner morph))
 		if (or (w > (width bnds)) (h > (height bnds))) {
 			print 'Cropping scripts image to avoid running out of memory'
-			w = (min2 w (width bnds))
-			h = (min2 h (height bnds))
+			w = (min w (width bnds))
+			h = (min h (height bnds))
 		}
 	}
 	if ('Browser' == (platform)) { // in browser, draw on Texture for speed

@@ -1448,7 +1448,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 	totalScripts = (
 		(count (allFunctions (project scripter))) +
 		(count (sortedScripts (scriptEditor scripter))))
-	progressInterval = (max2 1 (floor (totalScripts / 20)))
+	progressInterval = (max 1 (floor (totalScripts / 20)))
 	processedScripts = 0
 	skipHiddenFunctions = true
 	if (saveVariableNames this) { recompileAll = true }
@@ -1875,7 +1875,7 @@ method saveVariableNames SmallRuntime {
 
 	editor = (findMicroBlocksEditor)
 	varCount = (count newVarNames)
-	progressInterval = (max2 1 (floor (varCount / 20)))
+	progressInterval = (max 1 (floor (varCount / 20)))
 
 	clearVariableNames this
 	varID = 0
@@ -2120,7 +2120,7 @@ method sendMsg SmallRuntime msgName chunkID byteList {
 		// written in one call to writeSerialPort, so send smaller chunks
 		// Note: Maximum serial write in Chrome browser is only 64 bytes!
 		// Note: Receive buffer on micro:bit is only 63 bytes.
-		byteCount = (min2 63 (byteCount dataToSend))
+		byteCount = (min 63 (byteCount dataToSend))
 		chunk = (copyFromTo dataToSend 1 byteCount)
 		bytesSent = (writeSerialPort port chunk)
 		if (not (isOpenSerialPort port)) {
@@ -2538,7 +2538,7 @@ method sendFileData SmallRuntime fileName fileData {
 		msg = (list)
 		appendInt32 this msg id
 		appendInt32 this msg bytesSent
-		chunkByteCount = (min2 960 (totalBytes - bytesSent))
+		chunkByteCount = (min 960 (totalBytes - bytesSent))
 		repeat chunkByteCount {
 			bytesSent += 1
 			add msg (byteAt fileData bytesSent)
@@ -2704,7 +2704,7 @@ method returnedValue SmallRuntime msg {
 		total = (((byteAt msg 8) << 8) | (byteAt msg 7))
 		if (total == 0) { return '(empty byte array)' }
 		sentCount = (byteAt msg 9)
-		sentCount = (min2 sentCount (byteCount - 9))
+		sentCount = (min sentCount (byteCount - 9))
 		out = (list '(')
 		for i sentCount {
 			add out (toString (byteAt msg (9 + i)))
@@ -3121,7 +3121,7 @@ method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boa
 	if (endsWith vmFileName '.hex') {
 		// for micro:bit & calliope, filename must be less than 9 letter before the extension
 		filePart = (filePart vmFileName)
-		vmFileName = (join (substring filePart 1 (min2 9 (count filePart))) '.hex')
+		vmFileName = (join (substring filePart 1 (min 9 (count filePart))) '.hex')
 	}
 
 	browserWriteFile vmData vmFileName 'vmInstall'

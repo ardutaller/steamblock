@@ -131,8 +131,8 @@ method initialize MicroBlocksFilePicker anAction defaultPath extensionList saveF
 	cancelButton = (textButton this 0 0 'Cancel' (action 'destroy' morph))
 
 	page = (global 'page')
-	minW = (min2 (520 * scale) (round (0.9 * (width page))))
-	minH = (min2 (465 * scale) (round (0.8 * (height page))))
+	minW = (min (520 * scale) (round (0.9 * (width page))))
+	minH = (min (465 * scale) (round (0.8 * (height page))))
 	setMinExtent morph minW minH
 	setExtent morph minW minH
 
@@ -629,7 +629,7 @@ method fixLayout MicroBlocksFilePicker {
 	bottomInset = (48 * scale)
 	leftInset = (113 * scale)
 	if (notNil nameLabel) {
-		leftInset = (max2 leftInset ((width (morph nameLabel)) + (23 * scale)))
+		leftInset = (max leftInset ((width (morph nameLabel)) + (23 * scale)))
 	}
 	rightInset = (20 * scale)
 	setPosition (morph listPane) ((left morph) + leftInset) ((top morph) + topInset)

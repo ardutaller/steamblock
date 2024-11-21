@@ -127,7 +127,7 @@ method drawData MicroBlocksDataGraph ctx {
 	drawGrid this ctx
 	colors = (list (color 200 0 0) (color 0 110 0) (color 0 0 200) (gray 30) (color 0 170 170) (color 180 0 180))
 	sequences = (extractSequences this)
-	for i (min2 (count sequences) (count colors)) {
+	for i (min (count sequences) (count colors)) {
 		graphSequence this ctx (at sequences i) (at colors i)
 	}
 }
@@ -185,7 +185,7 @@ method graphSequence MicroBlocksDataGraph ctx seq aColor {
 	pen = (pen (getShapeMaker ctx))
 	x = ((left graphBnds) + (leftInset this))
 	pointCount = (pointCount this)
-	i = (max2 1 ((count seq) - pointCount))
+	i = (max 1 ((count seq) - pointCount))
 	isFirstPoint = true
 	while (and (i < (count seq)) (x <= right)) {
 		n = (at seq i)

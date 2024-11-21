@@ -33,6 +33,11 @@ to max args... {
 	// Return the maximum argument. Must have at least one argument.
 	// If the first argument is an array or list, return its maximum element.
 
+	if ((argCount) == 2) {
+		if (a > b) { return a }
+		return b
+	}
+
 	if (and ((argCount) == 1) (isAnyClass (arg 1) 'Array' 'List')) {
 		return (callWith 'max' (toArray (arg 1)))
 	}
@@ -50,6 +55,11 @@ to min args... {
 	// Return the minimum argument. Must have at least one argument.
 	// If the first argument is an array or list, return its minimum element.
 
+	if ((argCount) == 2) {
+		if (a < b) { return a }
+		return b
+	}
+
 	if (and ((argCount) == 1) (isAnyClass (arg 1) 'Array' 'List')) {
 		return (callWith 'min' (toArray (arg 1)))
 	}
@@ -61,18 +71,6 @@ to min args... {
 		if (n < result) { result = n }
 	}
 	return result
-}
-
-// super fast versions for just two element comparisons
-
-to max2 arg1 arg2 {
-	if (arg1 > arg2) { return arg1 }
-	return arg2
-}
-
-to min2 arg1 arg2 {
-	if (arg1 < arg2) { return arg1 }
-	return arg2
 }
 
 to sum list {

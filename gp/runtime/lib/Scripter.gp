@@ -188,8 +188,8 @@ method redraw Scripter {
 method fixLayout Scripter {
 	innerBorder = 2
 	outerBorder = 2
-	catWidth = (max2 (toInteger ((width (morph categoriesFrame)) / (global 'scale'))) 20)
-	blocksHeight = (max2 (toInteger ((height (morph blocksFrame)) / (global 'scale'))) 5)
+	catWidth = (max (toInteger ((width (morph categoriesFrame)) / (global 'scale'))) 20)
+	blocksHeight = (max (toInteger ((height (morph blocksFrame)) / (global 'scale'))) 5)
 	packer = (newPanePacker (bounds morph) innerBorder outerBorder)
 	packPanesH packer classPane '100%'
 	packPanesH packer categoriesFrame catWidth blocksFrame '100%'
@@ -1221,8 +1221,8 @@ method addToBottom Scripter aBlock noScroll {
 	bottom = (top (morph (contents scriptsFrame)))
 	left = ((left (morph (contents scriptsFrame))) + (50 * (global 'scale')))
 	for script (parts (morph (contents scriptsFrame))) {
-		left = (min2 left (left (fullBounds script)))
-		bottom = (max2 bottom (bottom (fullBounds script)))
+		left = (min left (left (fullBounds script)))
+		bottom = (max bottom (bottom (fullBounds script)))
 	}
 	setPosition (morph aBlock) left (bottom + space)
 	addPart (morph (contents scriptsFrame)) (morph aBlock)

@@ -204,8 +204,8 @@ to self_setScale newScale {
 	if (isInHand m) { return } // don't move when picked up
 	maxDimension = 4000
 	minDimension = 1
-	minScale = (max2 (minDimension / (normalWidth m)) (minDimension / (normalHeight m)))
-	maxScale = (max2 (maxDimension / (normalWidth m)) (maxDimension / (normalHeight m)))
+	minScale = (max (minDimension / (normalWidth m)) (minDimension / (normalHeight m)))
+	maxScale = (max (maxDimension / (normalWidth m)) (maxDimension / (normalHeight m)))
 	stage = (self_stageMorph)
 	if (notNil stage) { normalizedScale = ((scale stage) * newScale) }
 	normalizedScale = (clamp normalizedScale minScale maxScale)
@@ -434,8 +434,8 @@ to self_setTextCostume s c fontName fontSize {
 	if (isNil fontName) { fontName = 'Arial Bold' }
 	if (isNil fontSize) { fontSize = 24 }
 	setFont fontName fontSize
-	w = (min2 ((stringWidth s) + (round (fontSize / 10))) 1000) // increase width by 10% of font size for italic
-	h = (min2 (fontHeight) 1000)
+	w = (min ((stringWidth s) + (round (fontSize / 10))) 1000) // increase width by 10% of font size for italic
+	h = (min (fontHeight) 1000)
 	bm = (newBitmap w h (withAlpha c 1)) // alpha = 1 allow transparent areas to be touched
 	setFont fontName fontSize
 	drawString bm s c 0 0
@@ -719,7 +719,7 @@ to self_touching other {
 
 to self_penDown {penDown (morph (implicitReceiver))}
 to self_penUp {penUp (morph (implicitReceiver))}
-to self_setPenSize num {setPenLineWidth (morph (implicitReceiver)) (max2 0 num)}
+to self_setPenSize num {setPenLineWidth (morph (implicitReceiver)) (max 0 num)}
 to self_setPenColor clr {setPenColor (morph (implicitReceiver)) clr}
 to self_stampCostume transparency {stampCostume (morph (implicitReceiver)) transparency}
 to self_clear {penClear (morph (implicitReceiver))}
