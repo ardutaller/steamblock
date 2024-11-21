@@ -29,7 +29,7 @@ to '!=' a b { return (not (a == b)) }
 
 // min, max, and sum
 
-to max args... {
+to max a b args... {
 	// Return the maximum argument. Must have at least one argument.
 	// If the first argument is an array or list, return its maximum element.
 
@@ -51,7 +51,7 @@ to max args... {
 	return result
 }
 
-to min args... {
+to min a b args... {
 	// Return the minimum argument. Must have at least one argument.
 	// If the first argument is an array or list, return its minimum element.
 
