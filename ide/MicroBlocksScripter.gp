@@ -67,9 +67,9 @@ method initialize MicroBlocksScripter aProjectEditor {
 	bottomGradient = (newMorph)
 	setExtent topGradient (140 * scale) (30 * scale)
 	setExtent bottomGradient (140 * scale) (30 * scale)
-	topGradientBitmap = (flipped (scaleAndRotate (gradientBitmap this) (140 * scale) 1))
+	topGradientBitmap = (flipped (scaleAndRotate (gradientBitmap this) (300 * scale) 1)) // max width is 300
 	setCostume topGradient topGradientBitmap
-	bottomGradientBitmap = (scaleAndRotate (gradientBitmap this) (140 * scale) 1)
+	bottomGradientBitmap = (scaleAndRotate (gradientBitmap this) (300 * scale) 1) // max width is 300
 	setCostume bottomGradient bottomGradientBitmap
 	addPart morph topGradient
 	addPart morph bottomGradient
@@ -366,8 +366,6 @@ method fixLayout MicroBlocksScripter {
 	setExtent (morph blocksFrame) blocksWidth totalHeight
 	setExtent topGradient catWidth (30 * scale)
 	setExtent bottomGradient catWidth (30 * scale)
-	setCostume topGradient (scaleAndRotate topGradientBitmap catWidth 1)
-	setCostume bottomGradient (scaleAndRotate bottomGradientBitmap catWidth 1)
 	setExtent (morph scriptsFrame) (totalWidth - (catWidth + blocksWidth)) totalHeight
 
 	// position parts
