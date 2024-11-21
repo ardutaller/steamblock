@@ -308,7 +308,7 @@ method animateBackToOldOwner Hand aMorph finalAction {
 
 method step Hand {
 	// generate touch-hold events
-	holdMSecs = 200
+	holdMSecs = 350
 	if (notNil lastTouchTime) {
 		if (and ((msecs lastTouchTime) > holdMSecs) (isNil (grabbedObject this))) {
 			lastTouchTime = nil
@@ -1109,7 +1109,7 @@ method updateScale Page {
 		setGlobal 'scale' 1 // non-retina display
 	}
 	// Increase scale on mobile devices to make the UI controls easier to use with finger tip.
-//	if (isMobile) { setGlobal 'scale' ((global 'scale') + 1) }
+	// if (isMobile) { setGlobal 'scale' ((global 'scale') + 1) }
 }
 
 method processWindowEvent Page evt {
