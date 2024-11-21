@@ -153,7 +153,7 @@ method categoryUnderHand CategorySelector {
 // context menu
 
 method rightClicked CategorySelector {
-	handDownOn this (hand (global 'page'))
+	clicked this
 	item = (selection this)
 	if (notNil item) {
 		raise morph 'handleListContextRequest' (array this item)
