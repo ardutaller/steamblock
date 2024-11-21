@@ -379,8 +379,7 @@ OBJ primBrowserPostMessage(int nargs, OBJ args[]) {
 static OBJ primBrowserIsMobile(int nargs, OBJ args[]) {
 	int isMobile = EM_ASM_INT({
 		return ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ||
-				(navigator.userAgent.includes("Mac") && ("ontouchend" in document))) // detects iOS after v13
-				return true;
+				((navigator.userAgent.includes("Mac") && (navigator.maxTouchPoints > 1)))); // detects iOS after v13
 	}, NULL);
 	return isMobile ? trueObj : falseObj;
 }
