@@ -182,7 +182,7 @@ method updateSliderPositions ScrollFrame {
 			ratio = (shift / overlap)
 			val = (ratio * (height contentBnds))
 		}
-		update vSlider 0 (height contentBnds) val (height frameBnds)
+		update vSlider 0 (height contentBnds) val (height frameBnds) true
 	}
 
 	if (isVisible (morph hSlider)) {
@@ -195,7 +195,7 @@ method updateSliderPositions ScrollFrame {
 			ratio = (shift / overlap)
 			val = (ratio * totalW)
 		}
-		update hSlider 0 totalW val (width frameBnds)
+		update hSlider 0 totalW val (width frameBnds) true
 	}
 }
 
@@ -362,6 +362,7 @@ method changeScrollOffset ScrollFrame dx dy {
 
 	fastSetPosition contentsM ((left morph) - xOffset) ((top morph) - yOffset)
 	changed morph
+
 	updateSliderPositions this
 }
 

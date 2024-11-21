@@ -50,7 +50,7 @@ method setAction Slider anAction {action = anAction}
 method setSize Slider num {update this nil nil nil num}
 method setValue Slider num {update this nil nil num}
 
-method update Slider floorNum ceilNum valNum sizeNum {
+method update Slider floorNum ceilNum valNum sizeNum silently {
 	if (isNil floorNum) {floorNum = floor}
 	if (isNil ceilNum) {ceilNum = ceiling}
 	if (isNil valNum) {valNum = value}
@@ -59,7 +59,7 @@ method update Slider floorNum ceilNum valNum sizeNum {
 	ceiling = ceilNum
 	value = valNum
 	size = sizeNum
-	call action value
+	if (silently != true)  { call action value }
 	changed morph
 }
 
