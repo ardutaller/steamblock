@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -201,9 +201,15 @@ method makeLibraryHeader MicroBlocksScripter {
 method updateLibraryHeader MicroBlocksScripter {
 	labelM = (first (parts (morph libHeader)))
 	if ((width (morph categorySelector)) > 75) {
-		setText (handler labelM) (localized 'LIBRARIES')
+		if (lastLibraryHeaderStyle != 'long') {
+			lastLibraryHeaderStyle == 'long'
+			setText (handler labelM) (localized 'LIBRARIES')
+		}
 	} else {
-		setText (handler labelM) (localized 'LIBS')
+		if (lastLibraryHeaderStyle != 'short') {
+			lastLibraryHeaderStyle == 'short'
+			setText (handler labelM) (localized 'LIBS')
+		}
 	}
 }
 
@@ -438,7 +444,7 @@ method fixResizerLayout MicroBlocksScripter {
 
 method fixScrollbars MicroBlocksScripter {
 	fixSliderLayout blocksFrame
-	updateSliders scriptsFrame // shows sliders but also adjust contents extent
+	updateSliders scriptsFrame false true // shows sliders but also adjust contents extent
 	updateTrashcanPosition this
 }
 
