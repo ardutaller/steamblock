@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-21 08:09+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2024-11-22 10:01+0000\n"
+"Last-Translator: Michael Klein <kleinswelt@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -517,7 +517,7 @@ msgstr "Fisch"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr "initialisiere lokale _ mit _"
+msgstr "initialisiere lokale Variable _ mit _"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
@@ -687,7 +687,7 @@ msgstr "setze NeoPixel _ Farbe _"
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr "smiles"
+msgstr "lächeln"
 
 #. Block in Data category
 msgid "item _ of _"
@@ -1005,7 +1005,7 @@ msgstr "verbinde Textliste _ Trennzeichen _"
 
 #. Strings library block
 msgid "string from unicodes _"
-msgstr "Text aus Unicode _"
+msgstr "Text aus Unicodes _"
 
 #. Lists library block
 msgid "circular item _ of _"
@@ -1340,7 +1340,7 @@ msgstr "wütend"
 
 #. Example string. Tells the user this input accepts a list
 msgid "aList"
-msgstr "Liste"
+msgstr "eineListe"
 
 #. Web Things library label
 msgid "Web Thing"
@@ -1956,7 +1956,7 @@ msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Stop this task."
-msgstr "Beendet das Skript"
+msgstr "Beendet das Skript."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Stop all tasks except this one."
@@ -3197,7 +3197,7 @@ msgstr "[l] Wert auswählen, oder zum Hineinziehen eines Rückgabeblocks."
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] change the color, or drop a reporter into it."
-msgstr "[l] Farbe auswählen oder einen Rückgabeblock hineinziehen"
+msgstr "[l] Farbe auswählen oder einen Rückgabeblock hineinziehen."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3411,7 +3411,7 @@ msgstr "Gibt die zuletzt empfangene Nachricht zurück."
 msgid "Report the numerical value of a hexadecimal string (range: -0x1FFFFFFF to 0x1FFFFFFF)"
 msgstr ""
 "Gibt den numerischen Wert einer hexadezimalen Zeichenfolge zurück (Bereich: -"
-"0x1FFFFFFF bis 0x1FFFFFFF)."
+"0x1FFFFFFF bis 0x1FFFFFFF)"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Split the given string with the given delimiter and report the result (a list of strings)."
@@ -4219,7 +4219,7 @@ msgstr "initialisiere i2c _ Adresse(hex) _ reset pin# _ flip _"
 
 #. General MIDI control change
 msgid "hold"
-msgstr ""
+msgstr "halten"
 
 #. OLED Graphics library block
 msgid "draw line from x _ y _ to x _ y _ erase _"
@@ -4379,7 +4379,7 @@ msgstr "warte bis nächste _ Dauer"
 
 #. General MIDI control change
 msgid "expression"
-msgstr ""
+msgstr "Ausdruck"
 
 #. Keyestudio Smart Farm library block
 msgid "power (mW)"
@@ -4711,7 +4711,6 @@ msgid "ble last string"
 msgstr "BLE letzter Text"
 
 #. BLE Scanner library block
-#, fuzzy
 msgid "RSSI"
 msgstr "RSSI"
 
@@ -4764,9 +4763,8 @@ msgid "device name"
 msgstr "Gerätename"
 
 #. CallioGamer library block
-#, fuzzy
 msgid "B pressed"
-msgstr "B gedrückt "
+msgstr "B gedrückt"
 
 #. CallioGamer library block
 msgid "Y pressed"
@@ -4841,7 +4839,6 @@ msgid "Octo receive beam"
 msgstr "Octo empfange Übertragung"
 
 #. NeZha robot library label
-#, fuzzy
 msgid "NeZha"
 msgstr "NeZha"
 
@@ -4854,7 +4851,6 @@ msgid "Wukong stop all"
 msgstr "Wukong stoppe alle"
 
 #. WuKong2040 robot library label
-#, fuzzy
 msgid "WuKong2040"
 msgstr "WuKong2040"
 
@@ -4889,7 +4885,6 @@ msgid "WuKong2040 rainbowLED _ color to _"
 msgstr "WuKong2040 RegenbogenLED _ Farbe auf _"
 
 #. Wukong robot library label
-#, fuzzy
 msgid "Wukong"
 msgstr "Wukong"
 
@@ -4958,7 +4953,6 @@ msgid "MQTT pub topic _ payload _"
 msgstr "MQTT publiziere Thema _ payload _"
 
 #. MQTT library block
-#, fuzzy
 msgid "retain _ QoS _"
 msgstr "retain _ QoS _"
 
@@ -5089,3 +5083,619 @@ msgstr "mit Geschwindigkeit _ und Richtung _ fahren"
 #. Musical note name
 msgid "nt;a"
 msgstr "a"
+
+#. MiKe Robot library block
+msgid "MiKe turn _ motor _"
+msgstr "MiKe drehe _ Motor _"
+
+#. MiKe Robot library block
+msgid "MiKe digital D8 to _"
+msgstr "MiKe digital D8 auf _"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina play _ octave _ for _ ms"
+msgstr "Imagina spiele _ Oktave _ für _ ms"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR set RGB LED _"
+msgstr "TdR setze RGB LED _"
+
+#. Keyestudio Smart Farm library block
+msgid "open"
+msgstr "öffne"
+
+#. Keyestudio Smart Farm library block
+msgid "close"
+msgstr "schließe"
+
+#. MiKe Robot library block
+msgid "MiKe Robot direction _"
+msgstr "MiKe Robot Richtung _"
+
+#. Shield:bit library motor type
+msgid "sb;all_motors"
+msgstr "alle Motoren"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR rotation"
+msgstr "TdR Drehung"
+
+#. Keyestudio Smart Farm library block
+msgid "start"
+msgstr "Start"
+
+#. Keyestudio Smart Home library block
+msgid "Home read RFID card"
+msgstr "Home lese RFID Karte"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR DHT11 temperature ºC"
+msgstr "TdR DHT11 Temperature ºC"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina analog reading A1"
+msgstr "Imagina A1 analog lesen"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm movement detected?"
+msgstr "Farm Bewegung erkannt?"
+
+#. MiKe Robot library block
+msgid "MiKe _ obstacle ?"
+msgstr "MiKe _ Hindernis?"
+
+#. MiKe Robot library block
+msgid "MiKe back light"
+msgstr "MiKe Hintergrundbeleuchtung"
+
+#. General MIDI instrument category
+msgid "guitar"
+msgstr "Gitarre"
+
+#. micro:STEAMakers library block
+msgid "ms;start"
+msgstr "starten"
+
+#. General MIDI drum set
+msgid "jazz"
+msgstr "Jazz"
+
+#. General MIDI instrument category
+msgid "bass"
+msgstr "Bass"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR DHT11 humidity"
+msgstr "TdR DHT11 Feuchtigkeit"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR LM35 temperature ºC"
+msgstr "TdR LM35 Temperatur in ºC"
+
+#. General MIDI control change
+msgid "release time"
+msgstr "Freigabezeit"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR set red LED _"
+msgstr "TdR setze rote LED _"
+
+#. MiKe Robot library block
+msgid "MiKe stop motors"
+msgstr "MiKe stoppe Motoren"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina temperature (°C)"
+msgstr "Imagina Temperatur (°C)"
+
+#. InnovaDidàctic 3DBot library block
+msgid "at _ % speed"
+msgstr "mit _ % Geschwindigkeit"
+
+#. micro:STEAMakers library block
+msgid "start micro꞉STEAMakers audio"
+msgstr "starte micro꞉STEAMakers Audio"
+
+#. InnovaDidàctic 3DBot library block
+msgid "3dBot obstacle < _ cm?"
+msgstr "3dBot Hindernis< _ cm?"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm water pump _"
+msgstr "Farm Wasserpumpe _"
+
+#. General MIDI instrument category
+msgid "gm;SFX"
+msgstr "SFX"
+
+#. General MIDI drum set
+msgid "brush"
+msgstr "Bürste"
+
+#. MiKe Robot library block
+msgid "MiKe circle light _ (1-18) to _"
+msgstr "MiKe Kreislicht _ (1-18) auf _"
+
+#. General MIDI control change
+msgid "resonance"
+msgstr "Resonanz"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR light level"
+msgstr "TdR Helligkeit"
+
+#. Musical scale name
+msgid "dorian"
+msgstr "dorisch"
+
+#. Musical scale name
+msgid "ionian"
+msgstr "ionisch"
+
+#. MiKe Robot library block
+msgid "MiKe Robot speed _ %"
+msgstr "MiKe Robot Geschwindigkeit_ %"
+
+#. micro:STEAMakers library block
+msgid "ms;reset"
+msgstr "zurücksetzen"
+
+#. General MIDI drum set
+msgid "room"
+msgstr "Raum"
+
+#. General MIDI instrument category
+msgid "organ"
+msgstr "Orgel"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina set _ speed to _ %"
+msgstr "Imagina setze _ Geschwindigkeit auf _ %"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm water level"
+msgstr "Farm Wasserstand"
+
+#. General MIDI drum set
+msgid "standard"
+msgstr "standard"
+
+#. Shield:bit library motor movement type selection
+msgid "turns"
+msgstr "Drehungen"
+
+#. Shield:bit library motor type
+msgid "sb;servomotors"
+msgstr "Servomotoren"
+
+#. General MIDI instrument category
+msgid "strings"
+msgstr "Streicher"
+
+#. General MIDI control change
+msgid "soft"
+msgstr "weich"
+
+#. Musical scale name
+msgid "phrygian"
+msgstr "phrygisch"
+
+#. Keyestudio Smart Home library block
+msgid "Home steam level"
+msgstr "Home Dampfniveau"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina digital reading _"
+msgstr "Imagina digital lesen _"
+
+#. General MIDI instrument category
+msgid "piano"
+msgstr "Klavier"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina set servo _ to speed _ (-100 to 100)"
+msgstr "Imagina setze Geschwindigkeit von Servo _ auf _ (-100 to 100)"
+
+#. Keyestudio Smart Home library block
+msgid "Home clear leds"
+msgstr "Home lösche LEDs"
+
+#. InnovaDidàctic 3DBot library block
+msgid "3dBot set speed at _ %"
+msgstr "3dBot setze Geschwindigkeit auf _ %"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm _ the trapdoor"
+msgstr "Farm _ die Falltür"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm humidity"
+msgstr "Farm Luftfeuchtigkeit"
+
+#. Keyestudio Smart Home library block
+msgid "Home fan _"
+msgstr "Home Lüfter_"
+
+#. General MIDI drum set
+msgid "electronic"
+msgstr "elektronisch"
+
+#. General MIDI drum set
+msgid "orchestra"
+msgstr "Orchester"
+
+#. General MIDI control change
+msgid "modulation"
+msgstr "Modulation"
+
+#. General MIDI control change
+msgid "volume"
+msgstr "Lautstärke"
+
+#. Musical scale name
+msgid "lydian"
+msgstr "lydisch"
+
+#. Musical scale name
+msgid "mixolydian"
+msgstr "mixolydisch"
+
+#. Musical scale name
+msgid "aeolian"
+msgstr "aeolisch"
+
+#. MiKe Robot library block
+msgid "MiKe black line on _ ?"
+msgstr "MiKe schwarze Linie an _ ?"
+
+#. MiKe Robot library block
+msgid "MiKe IR"
+msgstr "MiKe IR"
+
+#. MiKe Robot library block
+msgid "MiKe digital D8 sensor"
+msgstr "MiKe digitaler Sensor D8"
+
+#. MiKe Robot library block
+msgid "MiKe Robot go _ at _ %"
+msgstr "MiKe Robot gehe _ mit _ %"
+
+#. MiKe Robot library block
+msgid "MiKe speed _ motor at _ %"
+msgstr "MiKe Geschwindigkeit _ Motor mit _ %"
+
+#. MiKe Robot library block
+msgid "MiKe front lights to _"
+msgstr "MiKe Vorderlichter auf _"
+
+#. MiKe Robot library block
+msgid "MiKe circle lights off"
+msgstr "MiKe Kreislichter aus"
+
+#. MiKe Robot library block
+msgid "MiKe rotate lights by _"
+msgstr "MiKe rotiere Lichter um _"
+
+#. Shield:bit library motor movement type selection
+msgid "degrees"
+msgstr "Grad"
+
+#. Shield:bit library motor type
+msgid "sb;DC/Stepper_motors"
+msgstr "DC/Stepper Motoren"
+
+#. micro:STEAMakers library block
+msgid "ms;down"
+msgstr "runter"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR test buzzer"
+msgstr "TdR teste Summer"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR set blue LED _"
+msgstr "TdR setze blaue LED _"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR button 1"
+msgstr "TdR Knopf 1"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina set _ led to _"
+msgstr "Imagina setze _ LED auf _"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina stop servo _"
+msgstr "Imagina stoppe Servo _"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina set digital pin _ to _"
+msgstr "Imagina setze digitalen Pin _ auf _"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina set _ to _"
+msgstr "Imagina setze _ auf _"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm set light _"
+msgstr "Farm schalte Licht _"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm temperature ºC"
+msgstr "Farm Temperatur ºC"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm distance (cm)"
+msgstr "Farm Entfernung (cm)"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm light level"
+msgstr "Farm Helligkeit"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm steam level"
+msgstr "Farm Dampfniveau"
+
+#. Keyestudio Smart Home library block
+msgid "Home _ the window"
+msgstr "Home _ das Fenster"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm electric consumption _"
+msgstr "Farm Stromverbrauch _"
+
+#. Keyestudio Smart Home library block
+msgid "Home movement detected?"
+msgstr "Home Bewegung erkannt?"
+
+#. Keyestudio Smart Home library block
+msgid "Home set light _"
+msgstr "Home schalte Licht _"
+
+#. Keyestudio Smart Home library block
+msgid "Home humidity"
+msgstr "Home Luftfeuchtigkeit"
+
+#. Keyestudio Smart Home library block
+msgid "Home _ button pressed?"
+msgstr "Home _ Knopf gedrückt?"
+
+#. Keyestudio Smart Home library block
+msgid "Home gas detected?"
+msgstr "Home Gas erkannt?"
+
+#. Keyestudio Smart Home library block
+msgid "Home set NeoPixels _ _ _ _"
+msgstr "Home setze NeoPixels auf _ _ _ _"
+
+#. Keyestudio Smart Home library block
+msgid "Home electric consumption _"
+msgstr "Home Stromverbrauch _"
+
+#. MQTT library block
+msgid "testWill"
+msgstr "testWill"
+
+#. MQTT library block
+msgid "Last will!"
+msgstr "Last will!"
+
+#. MiKe Robot library block
+msgid "MiKe front obstacle (cm)"
+msgstr "MiKe Hindernis vorne (cm)"
+
+#. micro:STEAMakers library block
+msgid "ms display image _ with color _"
+msgstr "ms zeige Bild _ mit Farbe _"
+
+#. micro:STEAMakers library block
+msgid "ms clear display"
+msgstr "ms lösche Anzeige"
+
+#. micro:STEAMakers library block
+msgid "ms scale brightness to _ %"
+msgstr "ms skaliere Helligkeit auf _ %"
+
+#. micro:STEAMakers library block
+msgid "ms plot x _ y _ with _"
+msgstr "ms zeichne x _ y _ mit _"
+
+#. micro:STEAMakers library block
+msgid "ms unplot x _ y _"
+msgstr "ms lösche x _ y _"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm fan _"
+msgstr "Farm Lüfter_"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm display _ in line _"
+msgstr "Farm zeige _ in Zeile _ an"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm play _ octave _ for _ ms"
+msgstr "Farm spiele _ Oktave _ für _ ms"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm button pressed?"
+msgstr "Farm Knopf gedrückt?"
+
+#. Shield:bit library block
+msgid "sb turn 180 servo S- _ (1-8) to angle _"
+msgstr "sb drehe 180 servo S- _ (1-8) auf Winkel _"
+
+#. Shield:bit library block
+msgid "sb turn 360 servo S- _ (1-8) _ at _ %"
+msgstr "sb drehe 360 Grad Servo S- _ (1-8) _ mit _ %"
+
+#. Shield:bit library block
+msgid "sb turn DC M- _ (1-4) motor _ at _ %"
+msgstr "sb drehe DC M- _ (1-4) Motor _ mit _ %"
+
+#. Shield:bit library block
+msgid "sb stop _"
+msgstr "sb stoppe _"
+
+#. MiKe Robot library block
+msgid "MiKe circle ligths to _"
+msgstr "MiKe Kreislichter auf _"
+
+#. Shield:bit library block
+msgid "sb LEDs off"
+msgstr "sb LEDs aus"
+
+#. Shield:bit library block
+msgid "sb set all LEDs to _"
+msgstr "sb setze alle LEDs auf _"
+
+#. Shield:bit library block
+msgid "sb set LED _ (1-4) to _"
+msgstr "sb setze LED _ (1-4) auf _"
+
+#. Shield:bit library block
+msgid "sb send audio to shield _"
+msgstr "sb sende audio an shield _"
+
+#. Shield:bit library block
+msgid "sb turn Stepper- _ (1-2) motor _ for _ _"
+msgstr "sb drehe Stepper- _ (1-2) Motor _ für _ _"
+
+#. Shield:bit library block
+msgid "sb set pin S- _ (1-8) to _ %"
+msgstr "sb setze Pin S- _ (1-8) auf _ %"
+
+#. micro:STEAMakers library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "ms display #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"ms anzeigen #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# "
+"_ _ _ _ _"
+
+#. micro:STEAMakers library block
+msgid "ms display character _ with _"
+msgstr "ms zeige Buchstaben _ mit _"
+
+#. micro:STEAMakers library block
+msgid "ms scroll text _ with color _ "
+msgstr "ms scrolle Text _ mit Farbe _ "
+
+#. micro:STEAMakers library block
+msgid "ms stop scrolling"
+msgstr "ms stoppe scrollen"
+
+#. micro:STEAMakers library block
+msgid "ms button _ ?"
+msgstr "ms Knopf _ ?"
+
+#. micro:STEAMakers library block
+msgid "ms touching ?"
+msgstr "ms Berührung?"
+
+#. micro:STEAMakers library block
+msgid "ms light"
+msgstr "ms Licht"
+
+#. micro:STEAMakers library block
+msgid "ms sound"
+msgstr "ms Töne"
+
+#. micro:STEAMakers library block
+msgid "ms temperature ºC"
+msgstr "ms Temperatur ºC"
+
+#. micro:STEAMakers library block
+msgid "ms humidity %"
+msgstr "ms Luftfeuchtigkeit %"
+
+#. micro:STEAMakers library block
+msgid "ms inclination towards _ º"
+msgstr "ms neigen auf _ º"
+
+#. micro:STEAMakers library block
+msgid "ms energy _"
+msgstr "ms Energie _"
+
+#. micro:STEAMakers library block
+msgid "ms _ energy meter"
+msgstr "ms _ Energiemesser"
+
+#. micro:STEAMakers library block
+msgid "ms;stop"
+msgstr "anhalten"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR clear RGB LED"
+msgstr "TdR lösche RGB LED"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR button 2"
+msgstr "TdR Knopf 2"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR receive IR code"
+msgstr "TdR empfange IR Code"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina light"
+msgstr "Imagina Licht"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina set servo _ to _ degrees (-90 to 90)"
+msgstr "Imagina setze Servo _ auf _ Grad (-90 bis 90)"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm soil moisture"
+msgstr "Farm Bodenfeuchte"
+
+#. Keyestudio Smart Home library block
+msgid "Home display _ in line _"
+msgstr "Home zeige _ in Zeile _"
+
+#. Keyestudio Smart Home library block
+msgid "Home activate the door"
+msgstr "Home aktiviere die Tür"
+
+#. Keyestudio Smart Home library block
+msgid "Home play _ octave _ for _ ms"
+msgstr "Home spiele _ Oktave _ für _ ms"
+
+#. Keyestudio Smart Home library block
+msgid "Home temperature ºC"
+msgstr "Home Temperatur ºC"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina distance (cm)"
+msgstr "Imagina Entfernung (cm)"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina button (D2) pressed?"
+msgstr "Imagina Knopf (D2) gedrückt?"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina IR reading"
+msgstr "Imagina IR lesen"
+
+#. InnovaDidàctic Imagina shield library block
+msgid "Imagina IR transmit device _ command _"
+msgstr "Imagina IR übertrage Gerät _ Befehl _"
+
+#. InnovaDidàctic 3DBot library block
+msgid "_ steps"
+msgstr "_ Schritte"
+
+#. InnovaDidàctic 3DBot library block
+msgid "3dBot line on _ ?"
+msgstr "3dBot Linie auf _ ?"
+
+#. MiKe Robot library block
+msgid "MiKe front lights off"
+msgstr "MiKe Vorderlichter aus"
+
+#. micro:STEAMakers library block
+msgid "ms energy consumption (µWh)"
+msgstr "ms Energieverbrauch (µWh)"
+
+#. micro:STEAMakers library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "ms display #BR# _ #BR# with color _"
+msgstr "ms anzeigen #BR# _ #BR# mit Farbe _"
