@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-19 10:40+0000\n"
-"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
+"PO-Revision-Date: 2024-11-21 08:09+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -30,7 +30,7 @@ msgstr "alle"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr "Rückgabeblock hinzufügen"
+msgstr "füge Rückgabeblock hinzu"
 
 #. Block in Comm category
 msgid "no op"
@@ -138,7 +138,7 @@ msgstr "bewege fantàstic _ mm"
 
 #. WiFi Radio library block
 msgid "wifi last string"
-msgstr "WiFi letzte Zeichenfolge"
+msgstr "WiFi letzter Text"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Palette"
@@ -146,7 +146,9 @@ msgstr "Palette"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set an I2C device and register to given value (0-255)."
-msgstr "Legt den Wert eines Registers (0-255) auf einem I2C-Gerät fest."
+msgstr ""
+"Setze für ein I2C-Gerät (0-127) ein Register (0-255) auf den angegebenen "
+"Wert (0-255)."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Close the serial port."
@@ -162,7 +164,7 @@ msgstr "Lösche das angegebene Element (oder alle Elemente) aus der Liste."
 
 #. Block input right-click context menu option
 msgid "number/string"
-msgstr "Zahl/Zeichenfolge"
+msgstr "Zahl/Text"
 
 #. Graph button tooltip
 msgid "Graph"
@@ -170,7 +172,7 @@ msgstr "Graph"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "Bibliothek hinzufügen"
+msgstr "füge Modul hinzu"
 
 #. Block right-click context menu tooltip
 msgid "duplicate these blocks"
@@ -178,7 +180,7 @@ msgstr "dupliziere diese Blöcke"
 
 #. In MicroBlocks IDE project menu
 msgid "Open"
-msgstr "Öffnen"
+msgstr "öffnen"
 
 #. Window title
 msgid "About MicroBlocks"
@@ -207,11 +209,11 @@ msgstr "Abhängig von:"
 
 #. Block right-click context menu tooltip
 msgid "delete this block"
-msgstr "diesen Block löschen"
+msgstr "lösche diesen Block"
 
 #. Block right-click context menu tooltip
 msgid "delete the definition of this block"
-msgstr "Blockdefinition für diesen Block löschen"
+msgstr "lösche Definition für diesen Block"
 
 #. Block selection right-click context menu
 msgid "duplicate selection"
@@ -219,7 +221,7 @@ msgstr "dupliziere Auswahl"
 
 #. Settings menu option
 msgid "firmware version"
-msgstr "Firmware-Version anzeigen"
+msgstr "Firmware-Version"
 
 #. Graph window title
 msgid "Data Graph"
@@ -231,7 +233,7 @@ msgstr "Module"
 
 #. Firmware installation process information
 msgid "Installing firmware..."
-msgstr "Installiere Firmware..."
+msgstr "Firmware wird installiert..."
 
 #. String in file picker and library dialogs
 msgid "library information"
@@ -255,7 +257,7 @@ msgstr "Gibt den Typ des Boards zurück."
 
 #. MicroBlocks IDE message
 msgid "Plug in the board."
-msgstr "Schließe das Board an."
+msgstr "Stecke das Board an."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Reporter Block"
@@ -287,7 +289,7 @@ msgstr "akzeptiere"
 
 #. Settings menu option
 msgid "hide implementation blocks"
-msgstr "Implementationsblöcke verbergen"
+msgstr "verstecke Implementationsblöcke"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the product of the given numbers."
@@ -320,11 +322,11 @@ msgstr "vorwärts"
 
 #. Block input right-click context menu option
 msgid "string or number"
-msgstr "Zeichenfolge oder Zahl"
+msgstr "Text oder Zahl"
 
 #. MicroBlocks IDE information
 msgid "Drag the firmware file you just saved to the %1 drive."
-msgstr "Die gerade gespeicherte Firmware Datei auf das %1 Laufwerk ziehen."
+msgstr "Ziehe die gerade gespeicherte Firmware-Datei auf das Laufwerk %1."
 
 #. Block right-click context menu
 msgid "collapse"
@@ -380,7 +382,7 @@ msgstr "i2c Gerät _ schreibe Liste _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last string"
-msgstr "Radio letzte Zeichenfolge"
+msgstr "Radio letzter Text"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set power (0-7) _"
@@ -412,7 +414,7 @@ msgstr "meine IP-Adresse"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr "ByteArray"
+msgstr "ein ByteArray"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
@@ -428,7 +430,7 @@ msgstr "Radio sende Wertepaar _ = _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
-msgstr "Ganzzahl_ZeichenfolgeListe_oder_ByteArray"
+msgstr "Ganzzahl_Textliste_oder_ByteArray"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
@@ -440,7 +442,7 @@ msgstr "Katze"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 msgid "aStringListOrByteArray"
-msgstr "ZeichenfolgeListe_oder_ByteArray"
+msgstr "Textliste_oder_ByteArray"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
@@ -499,7 +501,7 @@ msgstr "neues ByteArray _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send string _"
-msgstr "Radio sende Zeichenfolge _"
+msgstr "Radio sende Text _"
 
 #. Block in Data category
 msgid "copy _ from _"
@@ -519,7 +521,7 @@ msgstr "initialisiere lokale _ mit _"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr "Variable hinzufügen"
+msgstr "füge eine Variable hinzu"
 
 #. Make a block dialog
 msgid "Enter function name:"
@@ -555,7 +557,7 @@ msgstr "Licht"
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr "Zeichenfolge aus Unicode _"
+msgstr "Text aus Unicode _"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
@@ -717,11 +719,11 @@ msgstr "helle NeoPixel _ um _ auf"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr "Befehlsblock hinzufügen"
+msgstr "füge Befehlsblock hinzu"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr "ByteListe_oder_Zeichenfolge"
+msgstr "ByteListe_oder_Text"
 
 #. Block in Data category
 msgid "delete item _ of list _"
@@ -795,7 +797,7 @@ msgstr "Board auswählen:"
 
 #. File System library block
 msgid "read into _ from file _"
-msgstr "lies in _ aus der Datei _"
+msgstr "lies nach _ aus der Datei _"
 
 #. Lists library block
 msgid "sorted _"
@@ -823,7 +825,7 @@ msgstr "kleines Herz"
 
 #. File System library block
 msgid "append line _ to file _"
-msgstr "füge Zeile _ in Datei _ an"
+msgstr "füge Zeile _ zur Datei _ hinzu"
 
 #. HTTP Client library block
 msgid "port _"
@@ -851,7 +853,7 @@ msgstr "Nein"
 
 #. Button
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr "abbrechen"
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
@@ -871,7 +873,7 @@ msgstr "Entfernung (cm) Auslöser _ Echo _"
 
 #. Turtle Geometry library block
 msgid "trtl;home"
-msgstr "gehe zum Ursprung"
+msgstr "zum Ursprung"
 
 #. Generic stop block
 msgid "stop"
@@ -939,7 +941,7 @@ msgstr "Hallo Welt!"
 
 #. File System library block
 msgid "file names"
-msgstr "Dateiname"
+msgstr "Dateinamen"
 
 #. Button Events library block
 msgid "button _ pressed"
@@ -999,11 +1001,11 @@ msgstr "_ ist in Kleinbuchstaben"
 
 #. Strings library block
 msgid "join string list _ separator _"
-msgstr "Listenelemente von _ mit Seperator _"
+msgstr "verbinde Textliste _ Trennzeichen _"
 
 #. Strings library block
 msgid "string from unicodes _"
-msgstr "Zeichenfolge aus Unicode _"
+msgstr "Text aus Unicode _"
 
 #. Lists library block
 msgid "circular item _ of _"
@@ -1112,7 +1114,7 @@ msgstr "_ ohne Leerzeichen"
 
 #. Example string. Tells the user this input accepts a list or a string
 msgid "aListOrString"
-msgstr "ListeOderZeichenfolge"
+msgstr "Liste_oder_Text"
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
@@ -1210,7 +1212,7 @@ msgstr "Bruch _ - _"
 
 #. Motion library block
 msgid "start step counter"
-msgstr "Starte Schrittzähler"
+msgstr "starte Schrittzähler"
 
 #. Ringtone library block
 msgid "current song name"
@@ -1330,7 +1332,7 @@ msgstr "Dateien"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
-msgstr "verbinde NeoPanel Breite _ Höhe _ an Pin _"
+msgstr "verbinde Neopixelpanel Breite _ Höhe _ an Pin _"
 
 #. Image name for the "display image" block
 msgid "angry"
@@ -1478,7 +1480,7 @@ msgstr "BMX280 Höhe (Fuß)"
 
 #. Block right-click context menu
 msgid "delete block definition..."
-msgstr "Blockdefinition löschen..."
+msgstr "lösche Blockdefinition…"
 
 #. Scrolling library block
 msgid "scroll number _"
@@ -1486,7 +1488,7 @@ msgstr "scrolle Zahl _"
 
 #. Example WiFi network password
 msgid "Network_Password"
-msgstr "Netzwerk_Kennwort"
+msgstr "12345678"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Battery (mV)"
@@ -1647,7 +1649,7 @@ msgstr "Plotter drehe _ Grad"
 
 #. Example string. Tells the user this input accepts a string
 msgid "aString"
-msgstr "Zeichenfolge"
+msgstr "einText"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 pressure"
@@ -1655,7 +1657,7 @@ msgstr "BMX280 Luftdruck"
 
 #. PN532 RFID reader library block
 msgid "get PN532 firmware version"
-msgstr "PN532 firmware version"
+msgstr "PN532 Firmware-Version"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;ScrollLock"
@@ -1716,11 +1718,11 @@ msgstr "Zeichenfolgen"
 
 #. Example string for ( (prefix) begins with (pre) )
 msgid "pre"
-msgstr "Pre"
+msgstr "pre"
 
 #. Example WiFi network name
 msgid "Network_Name"
-msgstr "Netzwerk_Name"
+msgstr "Netzwerk"
 
 #. Citilab Fantàstic Robot library block
 msgid "turn fantàstic _ degrees"
@@ -1809,7 +1811,7 @@ msgstr "schalte Mikrofon ein"
 
 #. MicroBlocks IDE error message.
 msgid "No boards found; is your board plugged in?"
-msgstr "Kein Board gefunden; ist dein Board eingesteckt?"
+msgstr "Kein Board gefunden! Ist dein Board eingesteckt?"
 
 #. In MicroBlocks IDE connection menu. Select "other..." serial port
 msgid "other..."
@@ -1821,11 +1823,11 @@ msgstr "setze Blockgröße auf ..."
 
 #. Board wiping process information
 msgid "Wiping board..."
-msgstr "Board löschen..."
+msgstr "Board wird gelöscht..."
 
 #. In MicroBlocks IDE project menu
 msgid "New"
-msgstr "Neu"
+msgstr "neu"
 
 #. Button
 msgid "Yes"
@@ -1837,11 +1839,11 @@ msgstr "%1 Sekunden verbleiben"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
-msgstr "Verbinden (BLE)"
+msgstr "verbinde (BLE)"
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr "Board anschließen und nochmals versuchen"
+msgstr "verbinde Board und versuche es nochmal"
 
 #. Block size option
 msgid "normal (65%)"
@@ -1877,11 +1879,11 @@ msgstr "obsolet"
 
 #. In MicroBlocks IDE project menu
 msgid "Save"
-msgstr "Speichern"
+msgstr "speichern"
 
 #. Settings menu option
 msgid "download and install latest VM"
-msgstr "aktuelle VM herunterladen und installieren"
+msgstr "lade und installiere aktuelle VM"
 
 #. Variable right-click context menu tooltip
 msgid "find scripts or block definitions where this variable is being set or changed"
@@ -2103,7 +2105,7 @@ msgstr "Wahrheitswert"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr "Zeichenfolge"
+msgstr "Text"
 
 #. Block in Data category
 msgid "starting at _"
@@ -2269,7 +2271,7 @@ msgstr "spiele Klingelton _"
 
 #. File System library block
 msgid "append bytes _ to file _"
-msgstr "füge Bytes _ in Datei _ an"
+msgstr "füge Bytes _ zu Datei _ hinzu"
 
 #. File System library block
 msgid "end of file _"
@@ -2277,7 +2279,7 @@ msgstr "Ende der Datei _"
 
 #. File System library block
 msgid "file system info"
-msgstr "Dateisystem-Information"
+msgstr "Dateisystem-Info"
 
 #. Strings library block
 msgid "_ is a digit"
@@ -2293,7 +2295,7 @@ msgstr "Calliope Lautstärke"
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
-msgstr "setze alle DotStar LEDs auf r _ g _ b _"
+msgstr "setze alle DotStar LEDs auf R _ G _ B _"
 
 #. DotStar LED library block
 msgid "set DotStar LED _ to r _ g _ b _"
@@ -2413,7 +2415,7 @@ msgstr "speichere ein Bild aller sichtbaren Skripts"
 
 #. Scripting area right-click context menu
 msgid "set exported script scale"
-msgstr "setze Größenmaßstab für Export auf ..."
+msgstr "setze Größenmaßstab für Export"
 
 #. Settings menu option
 msgid "enable or disable BLE"
@@ -2434,14 +2436,14 @@ msgstr "Implementationsblöcke anzeigen"
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
 msgstr ""
-"zeige Blöcke und Variablen aus internen Bibliotheken an (d. h. solche, deren "
-"Name mit einem Unterstrich beginnt)"
+"zeige Blöcke und Variablen an, die nur intern in Modulen verwendet werden ("
+"d.h. solche, deren Name mit einem Unterstrich beginnt)"
 
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
 msgstr ""
-"Wenn das aktuelle Projekt leer ist den Inhalt des Boards nach Anschließen "
-"automatisch in die IDE einlesen."
+"Wenn ein Board verbunden wird und das aktuelle Projekt leer ist, wird der "
+"Inhalt des Boards automatisch in die IDE eingelesen."
 
 #. Successful firmware installation confirmation window title
 msgid "Firmware Install"
@@ -2453,7 +2455,7 @@ msgstr "Firmware installiert"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
-msgstr "Verbinde das Board durch Klicken auf \"Verbinden\" (USB-Icon) neu."
+msgstr "Verbinde das Board durch Klicken auf \"Verbinden\" (Stecker-Icon) neu."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
@@ -2469,12 +2471,12 @@ msgstr "Du wirst aufgefordert, die Firmware-Datei zu speichern."
 msgid "If your micro:bit shows a sad face, save the firmware.hex file to your disk then drop it onto the MICROBIT drive."
 msgstr ""
 "Wenn dein Micro:bit ein trauriges Gesicht zeigt, speichere die Datei "
-"Firmware.hex auf deine Festplatte und lege sie dann auf dem MICROBIT-"
-"Laufwerk ab."
+"Firmware.hex auf deine Festplatte und lege sie dann auf dem Laufwerk "
+"MICROBIT ab."
 
 #. MicroBlocks IDE information
 msgid "Save the firmware file when prompted."
-msgstr "Die Firmware Datei lokal speichern."
+msgstr "Speichere die Firmware-Datei lokal ab."
 
 #. MicroBlocks IDE information
 msgid "Board not connected"
@@ -2502,11 +2504,11 @@ msgstr "verstecke fortgeschrittene Blöcke"
 
 #. Script right-click context menu
 msgid "show instructions"
-msgstr "zeige Op-Code"
+msgstr "zeige OpCode"
 
 #. Script right-click context menu
 msgid "show compiled bytes"
-msgstr "zeige Byte-Code"
+msgstr "zeige ByteCode"
 
 #. Block right-click context menu
 msgid "duplicate"
@@ -2562,7 +2564,7 @@ msgstr "System"
 
 #. String in file picker and library dialogs
 msgid "New library name?"
-msgstr "Name der neuen Bibliothek?"
+msgstr "Neuer Modul-Name?"
 
 #. Scripting area right-click context menu
 msgid "show all block definitions"
@@ -2656,11 +2658,11 @@ msgstr "Verbinden"
 
 #. In MicroBlocks IDE connection window. Serial port name to connect to.
 msgid "Port name?"
-msgstr "Anschluss-Name?"
+msgstr "Anschluss?"
 
 #. Settings menu option
 msgid "update firmware on board"
-msgstr "Board-Firmware aktualisieren"
+msgstr "aktualisiere Firmware auf dem Board"
 
 #. Settings menu option
 msgid "HTTP Server"
@@ -2685,8 +2687,8 @@ msgstr "Abhängigkeit Pfad, Name oder URL?"
 #. String in file picker and library dialogs
 msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
 msgstr ""
-"Wenn du eine Bibliothek hinzufügst, die in MicroBlocks integriert ist, "
-"kannst Du ihren Namen eingeben."
+"Wenn du ein Modul hinzufügst, das in MicroBlocks integriert ist, kannst Du "
+"den Namen eingeben."
 
 #. String in file picker and library dialogs
 msgid "Tag name?"
@@ -2694,7 +2696,7 @@ msgstr "Schlagwort?"
 
 #. String in file picker and library dialogs
 msgid "user library"
-msgstr "Benutzerbibliothek"
+msgstr "Nutzerbibliothek"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Color Input"
@@ -2713,7 +2715,7 @@ msgstr "[l] zur Werteanzeige oder zum Ziehen in einen Eingabebereich. [r] Menü.
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
 msgstr ""
-"Ziehe Blöcke von hier in den Skriptbereich. Schiebe Skripte hierher um sie "
+"Ziehe Blöcke von hier in den Skriptbereich. Schiebe Skripte hierher, um sie "
 "zu löschen."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
@@ -2813,7 +2815,7 @@ msgstr "warte _ Mikrosekunden"
 
 #. Block in Control category
 msgid "return _"
-msgstr "Rückgabe _"
+msgstr "berichte _"
 
 #. Block in Control category
 msgid "for _ in _ _"
@@ -2913,7 +2915,7 @@ msgstr "Bild hoch"
 
 #. Servo motor library label
 msgid "Servo"
-msgstr "Servo"
+msgstr "Servomotor"
 
 #. Image name for the "display image" block
 msgid "fabulous"
@@ -2931,7 +2933,7 @@ msgstr "zeichne Dreieck auf TFT bei x _ y_ , x _ y, x _ y _ Farbe _"
 
 #. Color library block
 msgid "color r _ g _ b _ (0-255)"
-msgstr "Farbe r _ g _ b _ (0-255)"
+msgstr "Farbe R _ G _ B _ (0-255)"
 
 #. Rhythm library block
 msgid "wait until bar _"
@@ -2959,7 +2961,7 @@ msgstr "lösche Datei _"
 
 #. Strings library block
 msgid "_ begins with _"
-msgstr "_ begint mit _"
+msgstr "_ beginnt mit _"
 
 #. Strings library block
 msgid "unicodes _"
@@ -3023,7 +3025,7 @@ msgstr "setze Thing Fähigkeit auf _"
 
 #. Web Things library block
 msgid "set string property _ title _ @Type _"
-msgstr "setze Zeichenfolgeneigenschaft _ Name _ @Typ _"
+msgstr "setze Texteigenschaft _ Name _ @Typ _"
 
 #. Web Things library block
 msgid "set number property _ title _ @Type _"
@@ -3035,7 +3037,7 @@ msgstr "schreibgeschützt _"
 
 #. WiFi Radio library block
 msgid "wifi send string _"
-msgstr "WiFi sende Zeichenfolge _"
+msgstr "WiFi sende Text _"
 
 #. WiFi Radio library block
 msgid "wifi send pair _ = _"
@@ -3047,7 +3049,7 @@ msgstr "WiFi letzte Zahl"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect"
-msgstr "Verbinden"
+msgstr "verbinde (USB)"
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
@@ -3073,7 +3075,7 @@ msgstr "von %1, %2 und %3."
 #. Firmware file read error.
 #. %1 holds the firmware file name
 msgid "Could not read %1."
-msgstr "Lesen nicht möglich %1."
+msgstr "Lesen von %1 nicht möglich."
 
 #. MicroBlocks IDE information
 msgid "The MicroBlocks in your board is not current"
@@ -3102,8 +3104,8 @@ msgstr "Virtual Machine Version"
 #. Settings menu tooltip
 msgid "do not show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
 msgstr ""
-"zeige keine Blöcke und Variablen aus internen Bibliotheken an (d. h. solche, "
-"deren Name mit einem Unterstrich beginnt)"
+"zeige keine Blöcke und Variablen an, die nur intern in Modulen verwendet "
+"werden (d.h. solche, deren Name mit einem Unterstrich beginnt)"
 
 #. Project menu option
 msgid "put file on board"
@@ -3143,7 +3145,7 @@ msgstr "suche Variablenzugriff"
 
 #. Block right-click context menu tooltip
 msgid "show the definition of this block"
-msgstr "Blockdefinition für diesen Block anzeigen"
+msgstr "zeige die Definition für diesen Block an"
 
 #. Block right-click context menu tooltip
 msgid "just this one block"
@@ -3184,9 +3186,8 @@ msgstr "Okay"
 #. String in file picker and library dialogs
 msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
 msgstr ""
-"Wenn sich deine Bibliothek im Ordner \"Bibliotheken\" im lokalen MicroBlocks-"
-"Projektordner befindet, dann muss du ihr einen Schrägstrich (/) "
-"vorangestellen."
+"Wenn sich dein Modul im Ordner \"Libraries\" im lokalen MicroBlocks-"
+"Projektordner befindet, dann muss du ihm einen Schrägstrich (/) voranstellen."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3196,7 +3197,7 @@ msgstr "[l] Wert auswählen, oder zum Hineinziehen eines Rückgabeblocks."
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] change the color, or drop a reporter into it."
-msgstr "[l] Farbe auswählen, oder zum Hineinziehen eines Rückgabeblocks"
+msgstr "[l] Farbe auswählen oder einen Rückgabeblock hineinziehen"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3243,8 +3244,7 @@ msgstr "Wiederholt die umschlossenen Blöcke bis die Bedingung (-o) wird."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the value of a register (0-255) of an I2C device (0-127)."
-msgstr ""
-"Gibt den Wert eines Registers (0-255) auf einem I2C-Gerät (0-127) zurück."
+msgstr "Gib für ein I2C-Gerät (0-127) den Wert eines Registers (0-255) zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
@@ -3357,7 +3357,7 @@ msgstr "suche Blockverwendung"
 
 #. Block right-click context menu
 msgid "show block definition..."
-msgstr "Blockdefinition anzeigen..."
+msgstr "zeige Blockdefinition..."
 
 #. Block right-click context menu tooltip
 msgid "copy these blocks to the clipboard"
@@ -3389,7 +3389,7 @@ msgstr "verkleinere Blockgröße"
 
 #. Block size button tooltip
 msgid "Restore block size to 100%"
-msgstr "setze Blockgröße auf 100% zurück"
+msgstr "setze Blockgröße auf 100%"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Library"
@@ -3433,19 +3433,19 @@ msgstr "zeige in Richtung _"
 
 #. HTTP Client library example data to send to a server
 msgid "MicroBlocks is fun"
-msgstr "MicroBlocks macht Spaß"
+msgstr "MicroBlocks macht Spaß!"
 
 #. In MicroBlocks IDE connection menu
 msgid "disconnect"
-msgstr "Trennen"
+msgstr "trennen"
 
 #. Block size button tooltip
 msgid "Increase block size"
-msgstr "vergößere Blockgröße"
+msgstr "vergrößere Blockgröße"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte (0-255) to an SPI device."
-msgstr "Sendet ein Byte (0-255) an ein SPI-Gerät."
+msgstr "Sende ein Byte (0-255) an ein SPI-Gerät."
 
 #. Block in Pins category
 msgid "pullup _"
@@ -3530,7 +3530,7 @@ msgstr "rückwärts"
 
 #. In MicroBlocks IDE project menu
 msgid "Copy project URL to clipboard"
-msgstr "Projekt-URL in die Zwischenablage kopieren"
+msgstr "kopiere Projekt-URL in die Zwischenablage"
 
 #. About window info
 msgid "More info at http://microblocks.fun"
@@ -3562,7 +3562,7 @@ msgstr "löschen"
 
 #. Block input right-click context menu option
 msgid "string only"
-msgstr "nur Zeichenfolgen"
+msgstr "nur Text"
 
 #. Block input right-click context menu option
 msgid "number only"
@@ -3570,7 +3570,7 @@ msgstr "nur Zahlen"
 
 #. Library label right click context menu option
 msgid "delete library"
-msgstr "lösche Bibliothek"
+msgstr "lösche Modul"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Button"
@@ -3713,11 +3713,11 @@ msgstr "Möchtest du, dass ich das im Projekt aktualisiere?"
 
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
-msgstr "Für AdaFruit-Boards den Reset-Knopf drücken und erneut versuchen"
+msgstr "Bei AdaFruit-Boards den Reset-Knopf drücken und erneut versuchen."
 
 #. Scripting area right-click context menu
 msgid "make blocks bigger or smaller"
-msgstr "stellt Blöcke größer oder kleiner dar"
+msgstr "Blöcke vergrößern oder verkleinern"
 
 #. Scripting area right-click context menu
 msgid "clean up"
@@ -3741,11 +3741,11 @@ msgstr "lösche Auswahl"
 
 #. Settings menu option
 msgid "erase flash and update firmware on ESP board"
-msgstr "Flash löschen und Firmware auf ESP-Board aktualisieren"
+msgstr "lösche Flash und aktualisiere Firmware auf ESP-Board"
 
 #. Settings menu option
 msgid "install ESP firmware from URL"
-msgstr "ESP-Firmware von URL installieren"
+msgstr "installiere ESP-Firmware von URL"
 
 #. Firmware install board type confirmation. As in "Use board type micro:bit?"
 msgid "Use board type"
@@ -3757,7 +3757,7 @@ msgstr "suche Variablenänderung"
 
 #. Block right-click context menu
 msgid "delete block"
-msgstr "Block löschen"
+msgstr "lösche Block"
 
 #. Block right-click context menu
 msgid "copy to clipboard"
@@ -3830,7 +3830,7 @@ msgstr "definiere"
 
 #. Block input right-click context menu option
 msgid "editable number or string"
-msgstr "editierbare Zahl oder Zeichenfolge"
+msgstr "editierbare Zahl oder Text"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -3838,7 +3838,7 @@ msgstr "Eingabe"
 
 #. Library label right click context menu option
 msgid "export this library"
-msgstr "exportiere diese Bibliothek"
+msgstr "exportiere dieses Modul"
 
 #. Project source folder
 msgid "Examples"
@@ -3860,20 +3860,20 @@ msgstr ""
 #. String in file picker and library dialogs
 msgid "If the library is hosted online, please input its full URL."
 msgstr ""
-"Wenn die Bibliothek online gehostet wird, ist die vollständige URL "
-"einzugeben."
+"Wenn das Modul online bereitgestellt wird, must du die vollständige URL "
+"eingeben."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] right arrow to show optional inputs, left arrow to hide."
 msgstr ""
-"[l] Rechtspfeil zur Anzeige optionaler Eingaben, Linkspfeil zum Verstecken."
+"[l] Rechtspfeil zum Anzeigen optionaler Eingaben, Linkspfeil zum Verstecken."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to show the blocks in this library. [r] menu."
-msgstr "[l] zum Zeigen der Blöcke in dieser Bibliothek. [r] Menü."
+msgstr "[l] zeige die Blöcke in diesem Modul. [r] Menü."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Block Category"
@@ -4021,7 +4021,7 @@ msgstr "zeichne Bild _ bei x _ y _"
 
 #. Settings menu option
 msgid "autoload board libraries"
-msgstr "Board-Bibliotheken automatisch laden"
+msgstr "lade Board-Module automatisch"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degrees"
@@ -4085,7 +4085,7 @@ msgstr "Firmware-Version ausgeben, die auf das Board geladen ist."
 
 #. Settings menu option
 msgid "compact code store"
-msgstr "Codespeicher optimieren"
+msgstr "optimiere Codespeicher"
 
 #. Cutebot Pro library block dropdown option
 #. as in "both" lights
@@ -4346,8 +4346,8 @@ msgstr "Cutebot setze Vorderlicht _ auf _"
 #. MicroBlocks IDE information
 msgid "The firmware on the board is not compatible with this version of MicroBlocks."
 msgstr ""
-"Die Firmware auf dem Board ist nicht kompatibel mit dieser MicroBlocks-"
-"Version."
+"Die Firmware auf dem Board ist nicht kompatibel mit dieser Version von "
+"MicroBlocks."
 
 #. Settings menu option
 msgid "PlugShare when project empty"
@@ -4459,7 +4459,7 @@ msgstr "BLE-ID (3 Zeichen) des Boards ausgeben, wenn BLE unterstützt wird."
 
 #. Settings menu option
 msgid "install ESP firmware from microblocks.fun"
-msgstr "ESP-Firmware von microblocks.fun installieren"
+msgstr "installiere ESP-Firmware von microblocks.fun"
 
 #. Examples folder
 msgid "folder; by board"
@@ -4467,7 +4467,7 @@ msgstr " nach Board"
 
 #. Examples folder
 msgid "folder;Web of Things"
-msgstr "Internet der Dinge"
+msgstr "Internet of Things"
 
 #. Examples folder
 msgid "folder;Music"
@@ -4584,7 +4584,7 @@ msgstr "Erweiterter Modus"
 
 #. Settings menu tooltip
 msgid "show advanced blocks, menu items and editor functionalities"
-msgstr "Erweiterte Blöcke, Menüpunkte und Editorfunktionen anzeigen"
+msgstr "zeige erweiterte Blöcke, Menüpunkte und Editorfunktionen an"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the given start milliseconds. Handles clock wrap."
@@ -4605,3 +4605,487 @@ msgstr "verlasse Schleife"
 #. WiFi library block
 msgid "allow WiFi while using BLE _"
 msgstr "erlaube WiFi während BLE _ verwendet wird"
+
+#. NeoPixel library block
+msgid "shift all NeoPixel colors by _"
+msgstr "verschiebe alle NeoPixelfarben um _"
+
+#. NeoPixel library block
+msgid "shift NeoPixel _ color by _"
+msgstr "verschiebe Farbe von NeoPixel _ um _"
+
+#. MIDI library block
+msgid "variation _"
+msgstr "Variation _"
+
+#. MIDI library block
+msgid "select MIDI instrument _ number _ for channel _"
+msgstr "wähle MIDI Instrument _ Nummer _ für Kanal _"
+
+#. MIDI library block
+msgid "select MIDI drum kit _"
+msgstr "wähle MIDI DrumKit _"
+
+#. MIDI library block
+msgid "select MIDI instrument _ for channel _"
+msgstr "wähle MIDI Instrument _ für Kanal _"
+
+#. MIDI library block
+msgid "play MIDI drum _ for _ ms volume _"
+msgstr "spiele MIDI Drum _ für _ ms Lautstärke _"
+
+#. MIDI library block
+msgid "send MIDI start playing"
+msgstr "sende MIDI Start Playing"
+
+#. MIDI library block
+msgid "send MIDI reset"
+msgstr "sende MIDI Reset"
+
+#. MIDI library block
+msgid "note _ octave _ to MIDI key"
+msgstr "Note _ Oktave _ zu MIDI Key"
+
+#. MIDI library block
+msgid "instrument _ number _"
+msgstr "Instrument _ Nummer _"
+
+#. MIDI library block
+msgid "send MIDI continue playing"
+msgstr "sende MIDI Continue Playing"
+
+#. MIDI library block
+msgid "drum _"
+msgstr "Drum _"
+
+#. MIDI library block
+msgid "send MIDI stop playing"
+msgstr "sende MIDI Stop Playing"
+
+#. MIDI library block
+msgid "change MIDI control _ on channel _ to _"
+msgstr "ändere MIDI Control _ für Kanal _ auf _"
+
+#. MIDI library block
+msgid "set MIDI signal to pin _"
+msgstr "setze MIDI Signal auf Pin _"
+
+#. Cutebot Pro library block
+msgid "CBPro tracking state is (L - - R) _ _ _ _"
+msgstr "CBPro Tracking Status ist (L - - R) _ _ _ _"
+
+#. Cutebot Pro library block
+msgid "CBPro tracking state"
+msgstr "CBPro Tracking Status"
+
+#. Cutebot Pro library block
+msgid "CBPro tracking offset"
+msgstr "CBPro Tracking Offset"
+
+#. BLE Radio library block
+msgid "ble send number _"
+msgstr "BLE sende Zahl _"
+
+#. BLE Radio library block
+msgid "ble send string _"
+msgstr "BLE sende Text _"
+
+#. BLE Radio library block
+msgid "ble set group _ (0-255)"
+msgstr "BLE setze Gruppe _ (0-255)"
+
+#. BLE Radio library block
+msgid "ble send pair _ = _"
+msgstr "BLE send Wertepaar _ = _"
+
+#. BLE Radio library block
+msgid "ble message received?"
+msgstr "BLE Nachricht empfangen?"
+
+#. BLE Radio library block
+msgid "ble last number"
+msgstr "BLE letzte Zahl"
+
+#. BLE Radio library block
+msgid "ble last string"
+msgstr "BLE letzter Text"
+
+#. BLE Scanner library block
+#, fuzzy
+msgid "RSSI"
+msgstr "RSSI"
+
+#. BLE Scanner library block
+msgid "address"
+msgstr "Adresse"
+
+#. BLE Scanner library block
+msgid "hasType _"
+msgstr "hat Typ _"
+
+#. CallioGamer library block
+msgid "A pressed"
+msgstr "A gedrückt"
+
+#. CallioGamer library block
+msgid "LEFT pressed"
+msgstr "LINKS gedrückt"
+
+#. CallioGamer library block
+msgid "RIGHT pressed"
+msgstr "RECHTS gedrückt"
+
+#. Examples folder
+msgid "folder;Examples"
+msgstr "Beispiele"
+
+#. CallioGamer library block
+msgid "UP pressed"
+msgstr "HOCH gedrückt"
+
+#. CallioGamer library block
+msgid "X pressed"
+msgstr "X gedrückt"
+
+#. CallioGamer library block
+msgid "DOWN pressed"
+msgstr "RUNTER gedrückt"
+
+#. BLE Scanner library block
+msgid "scan received"
+msgstr "Scan empfangen"
+
+#. BLE Scanner library block
+msgid "address type"
+msgstr "Adresstyp"
+
+#. BLE Scanner library block
+msgid "device name"
+msgstr "Gerätename"
+
+#. CallioGamer library block
+#, fuzzy
+msgid "B pressed"
+msgstr "B gedrückt "
+
+#. CallioGamer library block
+msgid "Y pressed"
+msgstr "Y gedrückt"
+
+#. MicroBlocks IDE message
+msgid "Connect board to proceed."
+msgstr "Verbinde das Board, um fortzufahren."
+
+#. Joystick:bit library block
+msgid "button _ is pressed"
+msgstr "Knopf _ ist gedrückt"
+
+#. Musical note name
+msgid "nt;d"
+msgstr "d"
+
+#. Musical note name
+msgid "nt;e"
+msgstr "e"
+
+#. Musical note name
+msgid "nt;f"
+msgstr "f"
+
+#. Musical note name
+msgid "nt;b"
+msgstr "h"
+
+#. Musical note name
+msgid "nt;a#"
+msgstr "a#"
+
+#. NeZha robot library block
+msgid "NeZha stop motor _"
+msgstr "NeZha stoppe Motor _"
+
+#. Joystick:bit library block
+msgid "rocker value of _"
+msgstr "Wippenwert von _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw line from x _ y _ to x _ y _"
+msgstr "Octopus OLED zeichne Linie von x _ y _ nach x _ y _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus LED pin _ toggle to _"
+msgstr "Octopus LED Pin _ umschalten auf _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of noise (dB) at pin _"
+msgstr "Octopus Lautstärkewert (dB) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED fill circle x _ y _ radius _"
+msgstr "Octopus OLED fülle Kreis x _ y _ Radius _"
+
+#. Lists library block
+msgid "map _ over _"
+msgstr "bilde _ ab in _"
+
+#. MQTT library block
+msgid "testTopic"
+msgstr "testThema"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus 180° servo pin _ angle to _ ° (0~180)"
+msgstr "Octopus 180° Servo Pin _ Winkel auf _ ° (0~180)"
+
+#. Octostudio communication library block
+msgid "Octo receive beam"
+msgstr "Octo empfange Übertragung"
+
+#. NeZha robot library label
+#, fuzzy
+msgid "NeZha"
+msgstr "NeZha"
+
+#. Octostudio communication library block
+msgid "Octo stop"
+msgstr "Octo stoppen"
+
+#. Wukong robot library block
+msgid "Wukong stop all"
+msgstr "Wukong stoppe alle"
+
+#. WuKong2040 robot library label
+#, fuzzy
+msgid "WuKong2040"
+msgstr "WuKong2040"
+
+#. Sphero-RVR robot library block
+msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
+msgstr ""
+"setze rohe Motoren auf linken Modus _ linke Geschwindigkeit _ rechter Modus "
+"_ rechte Geschwindigkeit _"
+
+#. Wukong robot library block
+msgid "Wukong set servo _ to speed _ (-100 to 100)"
+msgstr "Wukong setze Servo _ auf Geschwindigkeit _ (-100 bis 100)"
+
+#. NeZha robot library block
+msgid "NeZha set motor _ speed to _ %"
+msgstr "NeZha setze Motor_ auf Geschwindigkeit _ %"
+
+#. Wukong robot library block
+msgid "Wukong stop motor _"
+msgstr "Wukong stoppe Motor _"
+
+#. MQTT library block
+msgid "MQTT sub _"
+msgstr "MQTT abonnieren _"
+
+#. Sphero-RVR robot library block
+msgid "stop with heading _"
+msgstr "stoppe mit Richtung _"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 rainbowLED _ color to _"
+msgstr "WuKong2040 RegenbogenLED _ Farbe auf _"
+
+#. Wukong robot library label
+#, fuzzy
+msgid "Wukong"
+msgstr "Wukong"
+
+#. Octostudio communication library block
+msgid "Octo beam received?"
+msgstr "Octo Übertragung empfangen?"
+
+#. Joystick:bit library block
+msgid "motor vibrate for _ ms"
+msgstr "Motorvibration für _ ms"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw pixel x _ y _"
+msgstr "Octopus OLED zeichne Pixel x _ y _"
+
+#. Wukong robot library block
+msgid "Wukong set LED brightness to _"
+msgstr "Wukong setze LEDhelligkeit auf _"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 motor _ speed to _ (-100~100)"
+msgstr "WuKong2040 Motor _ Geschwindigkeit auf _ (-100~100)"
+
+#. Wukong robot library block
+msgid "Wukong set servo _ to _ degrees (-90 to 90)"
+msgstr "Wukong setze Servo _ auf _ Grad (-90 to 90)"
+
+#. Wukong robot library block
+msgid "Wukong set NeoPixels _ _ _ _"
+msgstr "Wukong setze NeoPixels _ _ _ _"
+
+#. Sphero-RVR robot library block
+msgid "wake"
+msgstr "aufwachen"
+
+#. Sphero-RVR robot library block
+msgid "reset the yaw"
+msgstr "Kurs zurücksetzen"
+
+#. NeZha robot library block
+msgid "NeZha set _ servo _ angle to _"
+msgstr "NeZha setze _ Servo _ Winkel auf _"
+
+#. NeZha robot library block
+msgid "NeZha set continuous rotation servo _ speed to _ %"
+msgstr "NeZha setze 360 Grad Servo _ Geschwindigkeit auf _ %"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus sonar trig _ echo _ distance (cm)"
+msgstr "Octopus Ultraschall trig _ echo _ Entfernung(cm)"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus motor fan pin _ speed to _ %"
+msgstr "Octopus Motorlüfter Pin _ Geschwindigkeit auf _ %"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of light intensity (Lux) at pin _"
+msgstr "Octopus Helligkeitswert (Lux) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of DHT11 temperature (°C) at pin _"
+msgstr "Octopus DHT11 Temperatur (°C) an Pin _"
+
+#. MQTT library block
+msgid "MQTT pub topic _ payload _"
+msgstr "MQTT publiziere Thema _ payload _"
+
+#. MQTT library block
+#, fuzzy
+msgid "retain _ QoS _"
+msgstr "retain _ QoS _"
+
+#. Sphero-RVR robot library block
+msgid "set RGB LED _ to red _ green _ blue _"
+msgstr "setze RGB LED _ auf Rot _ Grün_ Blau_"
+
+#. Sphero-RVR robot library block
+msgid "set all LEDs to red _ green _ blue _"
+msgstr "setze alle LEDs auf Rot _ Grün_ Blau_"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 stop motor _"
+msgstr "WuKong2040 stoppe Motor _"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 clear all rainbowLED"
+msgstr "WuKong2040 lösche alle RegenbogenLED"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of DHT11 humidity (0~100) at pin _"
+msgstr "Octopus DHT11 Feuchtigkeitswert (0~100) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus LED pin _ brightness _ %"
+msgstr "Octopus LED Pin _ Helligkeit _ %"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of water level (0~40mm) at pin _"
+msgstr "Octopus Wasserstandswert (0~40mm) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of trimpot (0~1023) at pin _"
+msgstr "Octopus Wert von Trimmpoti (0~1023) an Pin _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED show _ at x _ y _"
+msgstr "Octopus OLED zeige _ an x _ y _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED clear"
+msgstr "Octopus lösche OLED"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw rectangle x _ y _ w _ h _ rounding _ (3~15)"
+msgstr "Octopus OLED zeichne Rechteck x _ y _ w _ h _ abrunden_ (3~15)"
+
+#. Octostudio communication library block
+msgid "Octo last beam"
+msgstr "Octo letzte Übertragung"
+
+#. Octostudio communication library block
+msgid "Octo set group _ (0-99)"
+msgstr "Octo setze Gruppe _ (0-99)"
+
+#. Musical note name
+msgid "nt;c"
+msgstr "c"
+
+#. Musical note name
+msgid "nt;c#"
+msgstr "c#"
+
+#. Elecfreaks Octopus sensor library label
+msgid "Octopus"
+msgstr "Octopus"
+
+#. Octostudio communication library block
+msgid "Octo beam to phones _"
+msgstr "Octo auf Telefone übertragen _"
+
+#. MQTT library block
+msgid "MQTT unsub _"
+msgstr "MQTT abbestellen _"
+
+#. Musical note name
+msgid "nt;d#"
+msgstr "d#"
+
+#. Musical note name
+msgid "nt;f#"
+msgstr "f#"
+
+#. Musical note name
+msgid "nt;g"
+msgstr "g"
+
+#. Musical note name
+msgid "nt;g#"
+msgstr "g#"
+
+#. Wukong robot library block
+msgid "Wukong set motor _ to _ (-100 to 100)"
+msgstr "Wukong stelle Motor _ auf _ (-100 to 100)"
+
+#. Sphero-RVR robot library block
+msgid "sleep"
+msgstr "schlafen"
+
+#. NeZha robot library block
+msgid "NeZha stop all motors"
+msgstr "NeZha stoppe alle Motoren"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 stop all motors"
+msgstr "WuKong2040 alle Motoren stoppen"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 buzzer beep _ ms"
+msgstr "WuKong2040 Summer piepsen_ ms"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
+msgstr "WuKong2040 RegenbogenLED _ R _ G _ B _ (0~255)"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED fill rectangle x _ y _ w _ h _"
+msgstr "Octopus OLED fülle Rechteck x _ y _ w _ h _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw circle x _ y _ radius _"
+msgstr "Octopus OLED zeichne Kreis x _ y _ Radius _"
+
+#. Sphero-RVR robot library block
+msgid "drive with speed _ and heading _"
+msgstr "mit Geschwindigkeit _ und Richtung _ fahren"
+
+#. Musical note name
+msgid "nt;a"
+msgstr "a"
