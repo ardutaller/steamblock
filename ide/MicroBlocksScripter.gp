@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -222,9 +222,15 @@ method updateLibraryButton MicroBlocksScripter {
 		libAddIcons = (array bm1 bm2)
 	}
 	if ((width (morph categorySelector)) > (+ (data libAddButton) (24 * scale))) {
-		drawLabelCostumes libAddButton (localized 'Add Library') nil (25 * scale) false true
+		if (lastLibraryButtonStyle != 'text') {
+			lastLibraryButtonStyle = 'text'
+			drawLabelCostumes libAddButton (localized 'Add Library') nil (25 * scale) false true
+		}
 	} else {
-		replaceCostumes libAddButton (at libAddIcons 1) (at libAddIcons 2) (at libAddIcons 2)
+		if (lastLibraryButtonStyle != 'icon') {
+			lastLibraryButtonStyle = 'icon'
+			replaceCostumes libAddButton (at libAddIcons 1) (at libAddIcons 2) (at libAddIcons 2)
+		}
 	}
 }
 
