@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient bottomGradient
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -67,8 +67,10 @@ method initialize MicroBlocksScripter aProjectEditor {
 	bottomGradient = (newMorph)
 	setExtent topGradient (140 * scale) (30 * scale)
 	setExtent bottomGradient (140 * scale) (30 * scale)
-	setCostume topGradient (flipped (scaleAndRotate (gradientBitmap this) (140 * scale) 1))
-	setCostume bottomGradient (scaleAndRotate (gradientBitmap this) (140 * scale) 1)
+	topGradientBitmap = (flipped (scaleAndRotate (gradientBitmap this) (300 * scale) 1)) // max width is 300
+	setCostume topGradient topGradientBitmap
+	bottomGradientBitmap = (scaleAndRotate (gradientBitmap this) (300 * scale) 1) // max width is 300
+	setCostume bottomGradient bottomGradientBitmap
 	addPart morph topGradient
 	addPart morph bottomGradient
 
@@ -199,9 +201,15 @@ method makeLibraryHeader MicroBlocksScripter {
 method updateLibraryHeader MicroBlocksScripter {
 	labelM = (first (parts (morph libHeader)))
 	if ((width (morph categorySelector)) > 75) {
-		setText (handler labelM) (localized 'LIBRARIES')
+		if (lastLibraryHeaderStyle != 'long') {
+			lastLibraryHeaderStyle == 'long'
+			setText (handler labelM) (localized 'LIBRARIES')
+		}
 	} else {
-		setText (handler labelM) (localized 'LIBS')
+		if (lastLibraryHeaderStyle != 'short') {
+			lastLibraryHeaderStyle == 'short'
+			setText (handler labelM) (localized 'LIBS')
+		}
 	}
 }
 
@@ -220,9 +228,15 @@ method updateLibraryButton MicroBlocksScripter {
 		libAddIcons = (array bm1 bm2)
 	}
 	if ((width (morph categorySelector)) > (+ (data libAddButton) (24 * scale))) {
-		drawLabelCostumes libAddButton (localized 'Add Library') nil (25 * scale) false true
+		if (lastLibraryButtonStyle != 'text') {
+			lastLibraryButtonStyle = 'text'
+			drawLabelCostumes libAddButton (localized 'Add Library') nil (25 * scale) false true
+		}
 	} else {
-		replaceCostumes libAddButton (at libAddIcons 1) (at libAddIcons 2) (at libAddIcons 2)
+		if (lastLibraryButtonStyle != 'icon') {
+			lastLibraryButtonStyle = 'icon'
+			replaceCostumes libAddButton (at libAddIcons 1) (at libAddIcons 2) (at libAddIcons 2)
+		}
 	}
 }
 
@@ -364,8 +378,6 @@ method fixLayout MicroBlocksScripter {
 	setExtent (morph blocksFrame) blocksWidth totalHeight
 	setExtent topGradient catWidth (30 * scale)
 	setExtent bottomGradient catWidth (30 * scale)
-	setCostume topGradient (flipped (scaleAndRotate (gradientBitmap this) catWidth 1))
-	setCostume bottomGradient (scaleAndRotate (gradientBitmap this) catWidth 1)
 	setExtent (morph scriptsFrame) (totalWidth - (catWidth + blocksWidth)) totalHeight
 
 	// position parts
@@ -432,7 +444,7 @@ method fixResizerLayout MicroBlocksScripter {
 
 method fixScrollbars MicroBlocksScripter {
 	fixSliderLayout blocksFrame
-	updateSliders scriptsFrame // shows sliders but also adjust contents extent
+	updateSliders scriptsFrame false true // shows sliders but also adjust contents extent
 	updateTrashcanPosition this
 }
 

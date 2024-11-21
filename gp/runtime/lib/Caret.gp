@@ -94,9 +94,9 @@ method keyDown Caret evt keyboard {
 	} (27 == code) { // escape
 		cancel this
 		raise (morph target) 'cancelled' target
-	} (37 == code) { moveLeft this shiftDown // left arrow
+	} (37 == code) { moveLeft this shiftDown cmdOrControl // left arrow
 	} (38 == code) { moveUp this shiftDown // up arrow
-	} (39 == code) { moveRight this shiftDown // right arrow
+	} (39 == code) { moveRight this shiftDown cmdOrControl // right arrow
 	} (40 == code) { moveDown this shiftDown // down arrow'
 	} (46 == code) { deleteRight this // Window's Delete key
 	} (76 == code) { deleteRight this // incorrect Window's Delete key code before v250
@@ -145,26 +145,64 @@ method textinput Caret evt keyboard {
 	}
 }
 
-method moveRight Caret shiftDown {
+method moveRight Caret shiftDown cmdOrControl {
 	if (and (not shiftDown) (notNil (endMark target))) {
 		slot = ((endMark target) - 1)
 	}
 	updateMarkingMode this shiftDown
-	slot += 1
+	if cmdOrControl {
+		slot = (nextWordSlot this)
+	} else {
+		slot += 1
+	}
 	slot = (min slot (+ 1 (count (text target))))
 	gotoSlot this
 }
 
-method moveLeft Caret shiftDown {
+method nextWordSlot Caret {
+	text = (text target)
+	length = (count text)
+	if (slot >= length) { return (length + 1) }
+	for i length {
+		pos = (i + slot)
+		if (pos <= length) {
+			char = (at text pos)
+			if (or (char == ' ') (char == (newline))) {
+				return pos
+			}
+		}
+	}
+	return (length + 1)
+}
+
+method moveLeft Caret shiftDown cmdOrControl {
 	if (and (not shiftDown) (notNil (startMark target))) {
 		slot = ((startMark target) + 1)
 	}
 	updateMarkingMode this shiftDown
-	slot += -1
+	if cmdOrControl {
+		slot = (previousWordSlot this)
+	} else {
+		slot += -1
+	}
 	slot = (max slot 1)
 	gotoSlot this
 }
 
+method previousWordSlot Caret {
+	text = (text target)
+	if (slot <= 0) { return 0 }
+	for i slot {
+		pos = ((slot - i) - 1)
+		if (pos > 0) {
+			char = (at text pos)
+			if (or (char == ' ') (char == (newline))) {
+				return (pos + 1)
+			}
+		}
+	}
+	return 0
+}
 method moveDown Caret shiftDown {
 	if ((editRule target) == 'line') {
 		raise (morph target) 'downArrow' target

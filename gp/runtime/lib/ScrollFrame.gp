@@ -1,6 +1,6 @@
 defineClass ScrollFrame morph contents hSlider vSlider noSliders enableAutoScroll verticalScrollOnly hideWhenNotScrolling lastScrollMSecs dragOriginX dragOriginY baseX baseY
 
-to area aHandler {return (fullBounds (morph aHandler))}
+to area aHandler {return (bounds (morph aHandler))}
 
 to scrollFrame contents aColor noSliderFlag thickness padding {
 	return (initialize (new 'ScrollFrame') contents aColor noSliderFlag thickness padding)
@@ -86,7 +86,7 @@ method fixSliderLayout ScrollFrame {
 	setWidth (bounds (morph hSlider)) ((width b) - vw)
 }
 
-method updateSliders ScrollFrame doNotAdjustContents {
+method updateSliders ScrollFrame doNotAdjustContents silently {
 	if (true != doNotAdjustContents) { adjustContents this }
 	if noSliders {
 		hide (morph hSlider)
@@ -96,7 +96,7 @@ method updateSliders ScrollFrame doNotAdjustContents {
 	hw = (height (morph hSlider))
 	vw = (width (morph vSlider))
 	b = (bounds morph)
-	bc = (fullBounds (morph contents))
+	bc = (bounds (morph contents))
 	if (isClass contents 'TreeBox') {bc = (area contents)}
 	w = (width b)
 	wc = (width bc)
@@ -117,7 +117,7 @@ method updateSliders ScrollFrame doNotAdjustContents {
 			ratio = (shift / overlap)
 			val = (ratio * (hc + hw))
 		}
-		update vSlider 0 (+ hc hw) val h
+		update vSlider 0 (+ hc hw) val h silently
 
 	} else {
 		hide (morph vSlider)
@@ -138,7 +138,7 @@ method updateSliders ScrollFrame doNotAdjustContents {
 			ratio = (shift / overlap)
 			val = (ratio * (wc + vw))
 		}
-		update hSlider 0 (+ wc vw) val w
+		update hSlider 0 (+ wc vw) val w silently
 
 	} else {
 		hide (morph hSlider)
@@ -158,7 +158,7 @@ method updateSliders ScrollFrame doNotAdjustContents {
 			ratio = (shift / overlap)
 			val = (ratio * hc)
 		}
-		update vSlider 0 hc val h
+		update vSlider 0 hc val h silently
 	}
 	changed morph
 }
@@ -170,7 +170,7 @@ method updateSliderPositions ScrollFrame {
 	}
 
 	frameBnds = (bounds morph)
-	contentBnds = (fullBounds (morph contents))
+	contentBnds = (bounds (morph contents))
 	if (isClass contents 'TreeBox') { contentBnds = (area contents) }
 
 	if (isVisible (morph vSlider)) {
@@ -182,7 +182,7 @@ method updateSliderPositions ScrollFrame {
 			ratio = (shift / overlap)
 			val = (ratio * (height contentBnds))
 		}
-		update vSlider 0 (height contentBnds) val (height frameBnds)
+		update vSlider 0 (height contentBnds) val (height frameBnds) true
 	}
 
 	if (isVisible (morph hSlider)) {
@@ -195,7 +195,7 @@ method updateSliderPositions ScrollFrame {
 			ratio = (shift / overlap)
 			val = (ratio * totalW)
 		}
-		update hSlider 0 totalW val (width frameBnds)
+		update hSlider 0 totalW val (width frameBnds) true
 	}
 }
 
@@ -362,6 +362,7 @@ method changeScrollOffset ScrollFrame dx dy {
 
 	fastSetPosition contentsM ((left morph) - xOffset) ((top morph) - yOffset)
 	changed morph
+
 	updateSliderPositions this
 }
 

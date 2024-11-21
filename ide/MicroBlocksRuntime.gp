@@ -14,7 +14,7 @@ to smallRuntime aScripter {
 	return (global 'smallRuntime')
 }
 
-defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll
+defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler
 
 method scripter SmallRuntime { return scripter }
 method serialPortOpen SmallRuntime { return (notNil port) }
@@ -90,7 +90,7 @@ method compiledBytesFor SmallRuntime aBlockOrFunction {
 		aBlockOrFunction = (functionNamed (project scripter) aBlockOrFunction)
 		if (isNil aBlockOrFunction) { return (list) } // unknown function
 	}
-	compiler = (initialize (new 'SmallCompiler'))
+	if (isNil compiler) { compiler = (initialize (new 'SmallCompiler')) }
 	code = (instructionsFor compiler aBlockOrFunction)
 	bytes = (list)
 	for item code {
@@ -120,7 +120,7 @@ method chunkBytesFor SmallRuntime aBlockOrFunction {
 method showInstructions SmallRuntime aBlock {
 	// Display the instructions for the given stack.
 
-	compiler = (initialize (new 'SmallCompiler'))
+	if (isNil compiler) { compiler = (initialize (new 'SmallCompiler')) }
 	code = (instructionsFor compiler (topBlock aBlock))
 	result = (list)
 	firstString = true

@@ -29,9 +29,14 @@ to '!=' a b { return (not (a == b)) }
 
 // min, max, and sum
 
-to max args... {
+to max a b args... {
 	// Return the maximum argument. Must have at least one argument.
 	// If the first argument is an array or list, return its maximum element.
+
+	if ((argCount) == 2) {
+		if (a > b) { return a }
+		return b
+	}
 
 	if (and ((argCount) == 1) (isAnyClass (arg 1) 'Array' 'List')) {
 		return (callWith 'max' (toArray (arg 1)))
@@ -46,9 +51,14 @@ to max args... {
 	return result
 }
 
-to min args... {
+to min a b args... {
 	// Return the minimum argument. Must have at least one argument.
 	// If the first argument is an array or list, return its minimum element.
+
+	if ((argCount) == 2) {
+		if (a < b) { return a }
+		return b
+	}
 
 	if (and ((argCount) == 1) (isAnyClass (arg 1) 'Array' 'List')) {
 		return (callWith 'min' (toArray (arg 1)))
