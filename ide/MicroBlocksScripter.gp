@@ -345,14 +345,14 @@ method exportLibrary MicroBlocksScripter libName {
 method fixLayout MicroBlocksScripter {
 	scale = (global 'scale')
 
-	catWidth = (max (width (morph categorySelector)) (40 * scale))
+	catWidth = (max2 (width (morph categorySelector)) (40 * scale))
 	catHeight = (heightForItems categorySelector)
 	libSelectorHeight = (heightForItems libSelector)
-	blocksWidth = (max (width (morph blocksFrame)) (40 * scale))
+	blocksWidth = (max2 (width (morph blocksFrame)) (40 * scale))
 
 	// prevent pane dividers from going off right side
-	catWidth = (min catWidth ((width morph) - (20 * scale)))
-	blocksWidth = (min blocksWidth ((width morph) - (catWidth + (20 * scale))))
+	catWidth = (min2 catWidth ((width morph) - (20 * scale)))
+	blocksWidth = (min2 blocksWidth ((width morph) - (catWidth + (20 * scale))))
 
 	// resize parts
 	totalHeight = (height morph)
@@ -1089,8 +1089,8 @@ method addToBottom MicroBlocksScripter aBlock noScroll {
 	bottom = (top (morph (contents scriptsFrame)))
 	left = ((left (morph (contents scriptsFrame))) + (50 * (global 'scale')))
 	for script (parts (morph (contents scriptsFrame))) {
-		left = (min left (left (fullBounds script)))
-		bottom = (max bottom (bottom (fullBounds script)))
+		left = (min2 left (left (fullBounds script)))
+		bottom = (max2 bottom (bottom (fullBounds script)))
 	}
 	setPosition (morph aBlock) left (bottom + space)
 	addPart (morph (contents scriptsFrame)) (morph aBlock)

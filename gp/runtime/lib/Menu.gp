@@ -79,8 +79,8 @@ method itemLabel Menu labelPic thumbPic bgColor itemWidth itemPaddingH itemPaddi
 		thHeight = (height thumbPic)
 	}
 	result = (newBitmap
-		(max itemWidth (+ padding (width labelPic) thWidth))
-		(+ (max (height labelPic) thHeight) (* 2 itemPaddingV))
+		(max2 itemWidth (+ padding (width labelPic) thWidth))
+		(+ (max2 (height labelPic) thHeight) (* 2 itemPaddingV))
 	)
 	if (notNil bgColor) {fill result bgColor}
 	if (notNil thumbPic) {
@@ -126,7 +126,7 @@ method buildMorph Menu page yPos {
 	itemBackgroundColorHighlighted = (microBlocksColor 'yellow')
 	itemBackgroundColorPressed = itemBackgroundColorHighlighted
 
-	minHeight = (min (scale * 100) (height (morph page)))
+	minHeight = (min2 (scale * 100) (height (morph page)))
 	maxHeight = ((height (morph page)) - 100)
 
 	menuWidth = 50
@@ -150,11 +150,11 @@ method buildMorph Menu page yPos {
 				itemLbl = (menuStringImage itemLbl fontName fontSize itemTextColorNormal color)
 			}
 			itemLbl = (itemLabel this itemLbl itemThm)
-			menuWidth = (max menuWidth (+ (width itemLbl) (* itemPaddingH 2)))
+			menuWidth = (max2 menuWidth (+ (width itemLbl) (* itemPaddingH 2)))
 			menuHeight += (+ (height itemLbl) (* itemPaddingV 2))
 		} (isClass itemLbl 'Bitmap') {
 			itemLbl = (itemLabel this itemLbl itemThm)
-			menuWidth = (max menuWidth (+ (width itemLbl) (* itemPaddingH 2)))
+			menuWidth = (max2 menuWidth (+ (width itemLbl) (* itemPaddingH 2)))
 			menuHeight += (+ (height itemLbl) (* itemPaddingV 2))
 		} (isClass itemLbl 'Array') {
 			if ((at itemLbl 1) == 0) { // line
@@ -164,7 +164,7 @@ method buildMorph Menu page yPos {
 		atPut itemLbls i itemLbl
 	}
 
-	widgetHeight = (min menuHeight maxHeight)
+	widgetHeight = (min2 menuHeight maxHeight)
 	widgetWidth = menuWidth
 	if (widgetHeight < menuHeight) {
 		widgetWidth += (scale * 10) // slider thickness

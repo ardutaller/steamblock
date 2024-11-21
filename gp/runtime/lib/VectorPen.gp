@@ -242,7 +242,7 @@ method stroke VectorPen borderColor width joint cap {
 	} else {
 		// Simulate vector primitives. Cap and joint are ignored.
 		color = borderColor
-		drawPath this (max 1 (round width))
+		drawPath this (max2 1 (round width))
 	}
 	if (notNil owner) { costumeChanged owner }
 }
@@ -490,7 +490,7 @@ method drawLine VectorPen x0 y0 x1 y1 {
 	return
 
 	if (x0 == x1) { // vertical line
-		top = (min y0 y1)
+		top = (min2 y0 y1)
 		h = (abs (y1 - y0))
 		if (pathWidth <= 1) {
 			fillRect bitmap color x0 top 1 (h + 1)
@@ -499,7 +499,7 @@ method drawLine VectorPen x0 y0 x1 y1 {
 		}
 		return
 	} (y0 == y1) { // horizontal line
-		left = (min x0 x1)
+		left = (min2 x0 x1)
 		w = (abs (x1 - x0))
 		if (pathWidth <= 1) {
 			fillRect bitmap color left y0 (w + 1) 1

@@ -27,7 +27,7 @@ method addRow Table data {
 	if (colCount < 1) { return }
 	if (isAnyClass data 'Array' 'List') {
 		newRow = (newArray colCount '')
-		for i (min colCount (count data)) {
+		for i (min2 colCount (count data)) {
 			atPut newRow i (at data i)
 		}
 	} else {
@@ -347,7 +347,7 @@ method toString Table limit {
 		add result (join tab '(empty table)')
 	} else {
 		colCount = (count columnNames)
-		for r (min (count rows) limit) {
+		for r (min2 (count rows) limit) {
 			add result (toString r)
 			add result tab
 			for c colCount {

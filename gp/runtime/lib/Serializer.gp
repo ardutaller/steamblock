@@ -430,7 +430,7 @@ method deserializeObjects Serializer {
 			fields = (cellAt objectTable r 'fields')
 			fieldCount = (count fields)
 			d = (dictionary)
-			for i (min fieldNameCount fieldCount) {
+			for i (min2 fieldNameCount fieldCount) {
 				atPut d (at fieldNames i) (at fields i)
 			}
 			extraCount = (fieldCount - fieldNameCount)

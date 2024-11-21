@@ -19,12 +19,12 @@ method fields ExplorerNode {
 			add ans (exploreNode k (at value k) this)
 		}
 	} (isClass value 'List') {
-		for i (min 1000 (count value)) {
+		for i (min2 1000 (count value)) {
 			add ans (exploreNode i (at value i) this)
 		}
 	} else {
 		fieldNames = (fieldNames (classOf value))
-		for i (min 1000 (objWords value)) {
+		for i (min2 1000 (objWords value)) {
 			if (i <= (count fieldNames)) {
 			slot = (at fieldNames i)
 			} else {
@@ -153,7 +153,7 @@ method windowConstraint Explorer {
 	c = (resizingConstraint morph)
 	l =  (+ (border window) (right (morph listBox)))
 	t = (top (clientArea window))
-	return (array (max l (first c)) (max t (last c)))
+	return (array (max2 l (first c)) (max2 t (last c)))
 }
 
 method selectField Explorer aNode {
@@ -342,7 +342,7 @@ method selectedValue Explorer {
 
 method switchReadout Explorer {
 	scale = (global 'scale')
-	toggle = (toggleButton (action 'toggleField' this) (action 'selectedValue' this) (scale * 20) (scale * 13) (scale * 5) (max 1 (scale / 2)) false)
+	toggle = (toggleButton (action 'toggleField' this) (action 'selectedValue' this) (scale * 20) (scale * 13) (scale * 5) (max2 1 (scale / 2)) false)
 	return (readout 'switch' (value (parent (data (selection listBox)))) (name (data (selection listBox))) toggle 'refresh')
 }
 
@@ -384,7 +384,7 @@ method connectors Explorer {
 	result = (list)
 	for node (allVisibleNodes listBox) {
 		dta = (value (data node))
-		y = (min bt (max tp (vCenter (bounds (morph node)))))
+		y = (min2 bt (max2 tp (vCenter (bounds (morph node)))))
 		add result (array dta (array x y))
 	}
 	return result

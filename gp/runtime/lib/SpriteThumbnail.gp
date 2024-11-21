@@ -27,7 +27,7 @@ method step SpriteThumbnail {
 	targetM = (morph target)
 	if (lastTargetCostume === (costumeData targetM)) { return }
 
-	side = (min (width morph) (height morph))
+	side = (min2 (width morph) (height morph))
 	setCostume morph (thumbnail (costumeData targetM) side side)
 	lastTargetCostume = (costumeData targetM)
 }

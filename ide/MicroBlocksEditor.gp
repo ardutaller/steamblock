@@ -1159,7 +1159,7 @@ method fixScripterLayout MicroBlocksEditor {
 	m = (morph scripter)
 	setPosition m 0 (topBarHeight this)
 	w = (width (morph (global 'page')))
-	h = (max 1 (((height (morph (global 'page'))) - (top m)) - (height (morph tipBar))))
+	h = (max2 1 (((height (morph (global 'page'))) - (top m)) - (height (morph tipBar))))
 	setExtent m w h
 	fixLayout scripter
 }
@@ -1263,7 +1263,7 @@ method showMismatches MicroBlocksEditor fn s1 s2 {
 		print '  Line counts do not match' (count lines1) (count lines2)
 	}
 	mismatchCount = 0
-	for i (min (count lines1) (count lines2)) {
+	for i (min2 (count lines1) (count lines2)) {
 		l1 = (at lines1 i)
 		l2 = (at lines2 i)
 		if (l1 != l2) {

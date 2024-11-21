@@ -123,7 +123,7 @@ method arrangeMultiColumn Alignment {
 		}
 		setPosition item x y
 		y += ((height area) + vPadding)
-		w = (max w (width area))
+		w = (max2 w (width area))
 	}
 	ia = (itemsArea this)
 	if (notNil ia) {
@@ -150,7 +150,7 @@ method arrangeMultiLine Alignment {
 		}
 		setPosition item x y
 		x += ((width area) + padding)
-		h = (max h (height area))
+		h = (max2 h (height area))
 	}
 	ia = (itemsArea this)
 	if (notNil ia) {
@@ -167,7 +167,7 @@ method arrangeSingleColumn Alignment {
 		setPosition item x y
 		area = (call itemAreaSelector item)
 		y = ((bottom area) + vPadding)
-		w = (max w (width area))
+		w = (max2 w (width area))
 	}
 	setWidth (bounds morph) (w + (framePaddingX * 2))
 	setHeight (bounds morph) (((y - vPadding) - (top morph)) + framePaddingY)
@@ -181,7 +181,7 @@ method arrangeSingleLine Alignment {
 		setPosition item x y
 		area = (call itemAreaSelector item)
 		x = ((right area) + padding)
-		h = (max h (height area))
+		h = (max2 h (height area))
 	}
 	setHeight (bounds morph) (h + (framePaddingY * 2))
 	setWidth (bounds morph) (((x - padding) - (left morph)) + framePaddingX)
@@ -191,7 +191,7 @@ method arrangeCenteredLine Alignment {
 	// additionally vertically center the elements
 	h = 0
 	for each (items this) {
-		h = (max h (height each))
+		h = (max2 h (height each))
 	}
 	setHeight (bounds morph) (h + (framePaddingY * 2))
 	x = ((left morph) + framePaddingX)
@@ -210,8 +210,8 @@ method adjustSizeToScrollFrame Alignment aScrollFrame {
 	if (or (isNil aScrollFrame) (isEmpty (parts morph))) {return}
 	ca = (clientArea aScrollFrame)
 	ia = (expandBy (itemsArea this) padding)
-	setWidth (bounds morph) (max (width ia) (width ca))
-	setHeight (bounds morph) (max (height ia) (height ca))
+	setWidth (bounds morph) (max2 (width ia) (width ca))
+	setHeight (bounds morph) (max2 (height ia) (height ca))
 }
 
 method itemsArea Alignment {

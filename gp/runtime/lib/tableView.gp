@@ -43,9 +43,9 @@ method redrawData TableCell {
 	w = (stringWidth txt)
 	h = (fontHeight)
 	wd = ((width bm) - w)
-	x = (max 0 (wd / 2))
+	x = (max2 0 (wd / 2))
 	hd = ((height bm) - h)
-	y = (max 0 (hd / 2))
+	y = (max2 0 (hd / 2))
 	drawString bm txt nil (truncate x) (truncate y) // avoid creating a Color object
 	// note: don't propagate the "changed" flag, let the tabe view handle this for all
 }
@@ -136,16 +136,16 @@ method redraw TableView anyway {
 	if (isNil anyway) {anyway = false}
 	allCols = ((columnCount data) + 1)
 	allRows = ((rowCount data) + 1)
-	c = (min allCols (ceiling ((+ (width morph) padding (cellWidth - rowLabelWidth)) / (padding + cellWidth))))
-	r = (min allRows (ceiling ((height morph) / (padding + cellHeight))))
+	c = (min2 allCols (ceiling ((+ (width morph) padding (cellWidth - rowLabelWidth)) / (padding + cellWidth))))
+	r = (min2 allRows (ceiling ((height morph) / (padding + cellHeight))))
 	if (and (not anyway) (c == cols) (r == rows)) {
 		updateSliders this
 		return
 	}
 	cols = c
 	rows = r
-	startCol = (max 1 (min startCol (allCols - (cols - 2))))
-	startRow = (max 1 (min startRow (allRows - (rows - 2))))
+	startCol = (max2 1 (min2 startCol (allCols - (cols - 2))))
+	startRow = (max2 1 (min2 startRow (allRows - (rows - 2))))
 	buildMorphs this
 }
 
@@ -153,7 +153,7 @@ method redrawData TableView {
 	allCols = (columnCount data)
 	allRows = (rowCount data)
 	if (startCol >= allCols) { startCol = 1 }
-	if (startRow >= allRows) { startRow = (max 1 (allRows - 50)) }
+	if (startRow >= allRows) { startRow = (max2 1 (allRows - 50)) }
 
 	if ((width morph) > (+ rowLabelWidth (allCols * cellWidth))) {startCol = 1}
 	if ((height morph) > ((allRows + 1) * cellHeight)) {startRow = 1}
@@ -269,7 +269,7 @@ method updateSliders TableView {
 			setHeight (bounds (morph vSlider)) (- (height morph) (height (morph hSlider)))
 			redraw vSlider
 			ceil = ((rowCount data) - (rows - 3))
-			size = (min rows ((ceil - 1) / 2))
+			size = (min2 rows ((ceil - 1) / 2))
 			update vSlider 1 ceil startRow size
 		}
 	}
@@ -283,7 +283,7 @@ method updateSliders TableView {
 			setWidth (bounds (morph hSlider)) (- (width morph) (width (morph vSlider)))
 			redraw hSlider
 			ceil = ((columnCount data) - (cols - 3))
-			size = (min cols ((ceil - 1) / 2))
+			size = (min2 cols ((ceil - 1) / 2))
 			update hSlider 1 ceil startCol size
 		}
 	}
@@ -306,7 +306,7 @@ method step TableView {
 // events
 
 method swipe TableView x y {
-	show this (min ((columnCount data) - (cols - 3)) (max 1 (startCol - x))) (min ((rowCount data) - (rows - 3)) (max 1 (startRow - y)))
+	show this (min ((columnCount data) - (cols - 3)) (max2 1 (startCol - x))) (min2 ((rowCount data) - (rows - 3)) (max2 1 (startRow - y)))
 	updateSliders this
 	return true
 }

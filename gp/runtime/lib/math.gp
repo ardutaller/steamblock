@@ -63,6 +63,18 @@ to min args... {
 	return result
 }
 
+// super fast versions for just two element comparisons
+
+to max2 arg1 arg2 {
+	if (arg1 > arg2) { return arg1 }
+	return arg2
+}
+
+to min2 arg1 arg2 {
+	if (arg1 < arg2) { return arg1 }
+	return arg2
+}
+
 to sum list {
 	result = 0.0
 	for n list { result += n }

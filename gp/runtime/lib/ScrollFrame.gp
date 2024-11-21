@@ -277,8 +277,8 @@ method scrollIntoView ScrollFrame aRect favorTopLeft {
 	trgt = aRect
 	if (true == favorTopLeft) {
 		trgt = (copy aRect)
-		setWidth trgt (min (width trgt) (width ca))
-		setHeight trgt (min (height trgt) (height ca))
+		setWidth trgt (min2 (width trgt) (width ca))
+		setHeight trgt (min2 (height trgt) (height ca))
 	}
 	currentlyClipping = (isClipping morph)
 	setClipping morph false
@@ -346,8 +346,8 @@ method scrollPage ScrollFrame dir {
 method changeScrollOffset ScrollFrame dx dy {
 	contentsM = (morph contents)
 
-	maxXOffset = (max 0 ((width contentsM) - (width morph)))
-	maxYOffset = (max 0 ((height contentsM) - (height morph)))
+	maxXOffset = (max2 0 ((width contentsM) - (width morph)))
+	maxYOffset = (max2 0 ((height contentsM) - (height morph)))
 
 	if (isVisible (morph vSlider)) { maxXOffset += (width (morph vSlider)) }
 	if (isVisible (morph hSlider)) { maxYOffset += (height (morph hSlider)) }
@@ -369,8 +369,8 @@ method changeScrollOffset ScrollFrame dx dy {
 method setScrollOffset ScrollFrame newX newY {
 	contentsM = (morph contents)
 
-	maxXOffset = (max 0 ((width contentsM) - (width morph)))
-	maxYOffset = (max 0 ((height contentsM) - (height morph)))
+	maxXOffset = (max2 0 ((width contentsM) - (width morph)))
+	maxYOffset = (max2 0 ((height contentsM) - (height morph)))
 
 	if (isVisible (morph vSlider)) { maxXOffset += (width (morph vSlider)) }
 	if (isVisible (morph hSlider)) { maxYOffset += (height (morph hSlider)) }

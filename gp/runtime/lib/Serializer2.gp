@@ -494,7 +494,7 @@ method deserializeObjects Serializer2 {
 				fields = (at objFields ind)
 				fieldCount = (count fields)
 				d = (dictionary)
-				for i (min fieldNameCount fieldCount) {
+				for i (min2 fieldNameCount fieldCount) {
 					atPut d (at fieldNames i) (at fields i)
 				}
 				extraCount = (fieldCount - fieldNameCount)

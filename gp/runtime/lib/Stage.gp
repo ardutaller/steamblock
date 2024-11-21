@@ -73,9 +73,9 @@ method setAspectRatio Stage w h {
 method scaleToFit Stage w h {
 	bm = (costumeData morph)
 	if (isClass bm 'Bitmap') {
-		newScale = (min (w / (width bm)) (h / (height bm)))
+		newScale = (min2 (w / (width bm)) (h / (height bm)))
 	} else {
-		newScale = (min (w / 800) (h / 500))
+		newScale = (min2 (w / 800) (h / 500))
 	}
 	if (or (newScale != (scaleX morph)) (newScale != (scaleY morph))) {
 		setScale morph newScale

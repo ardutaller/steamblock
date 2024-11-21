@@ -151,7 +151,7 @@ method moveRight Caret shiftDown {
 	}
 	updateMarkingMode this shiftDown
 	slot += 1
-	slot = (min slot (+ 1 (count (text target))))
+	slot = (min2 slot (+ 1 (count (text target))))
 	gotoSlot this
 }
 
@@ -161,7 +161,7 @@ method moveLeft Caret shiftDown {
 	}
 	updateMarkingMode this shiftDown
 	slot += -1
-	slot = (max slot 1)
+	slot = (max2 slot 1)
 	gotoSlot this
 }
 
@@ -190,8 +190,8 @@ method insertRight Caret string {
 	if (notNil (startMark target)) {
 		em = (endMark target)
 		if (isNil em) {em = (startMark target)}
-		begin = (min (startMark target) em)
-		end = (max (startMark target) em)
+		begin = (min2 (startMark target) em)
+		end = (max2 (startMark target) em)
 		before = (substring (text target) 1 (begin - 1))
 		after = (substring (text target) end)
 		setText target (join before string after)
@@ -202,16 +202,16 @@ method insertRight Caret string {
 		setText target (join before string after)
 		slot += (count string)
 	}
-	slot = (min slot ((count (text target)) + 1))
+	slot = (min2 slot ((count (text target)) + 1))
 	gotoSlot this
 }
 
 method deleteLeft Caret {
 	if (and (notNil (startMark target)) (notNil (endMark target))) {
-		begin = (min (startMark target) (endMark target))
-		end = (max (startMark target) (endMark target))
+		begin = (min2 (startMark target) (endMark target))
+		end = (max2 (startMark target) (endMark target))
 		before = (substring (text target) 1 (begin - 1))
-		after = (substring (text target) (max 1 end))
+		after = (substring (text target) (max2 1 end))
 		setText target (join before after)
 		slot = begin
 	} else {

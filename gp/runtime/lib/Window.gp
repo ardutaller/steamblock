@@ -99,7 +99,7 @@ method spaceBoundedBy Window max percent total {
 	} else {
 		ceil = (call max)
 	}
-	return (min ceil ((percent * total) / 100))
+	return (min2 ceil ((percent * total) / 100))
 }
 
 method titleBarWidth Window {

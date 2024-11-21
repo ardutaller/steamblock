@@ -11,7 +11,7 @@ to newAnimation startValue endValue duration setter doneAction useFloats {
 	result = (new 'Animation')
 	setField result 'startValue' startValue
 	setField result 'endValue' endValue
-	setField result 'duration' (max duration 1)
+	setField result 'duration' (max2 duration 1)
 	setField result 'setter' setter
 	setField result 'doneAction' doneAction
 	setField result 'isDone' false

@@ -23,7 +23,7 @@ to inspect obj {
 		print className (join '(' (byteCount obj) ' bytes)')
 		printBytes obj
 	} else {
-		n = (min 100 (objWords obj))
+		n = (min2 100 (objWords obj))
 		fieldNames = (getField class 'fieldNames')
 		print className '{'
 		for i n {

@@ -207,7 +207,7 @@ method fixLayout Block {
 						lineArgCount = 0
 					}
 					add currentLine each
-					h = (max h (height (morph each)))
+					h = (max2 h (height (morph each)))
 					fastSetLeft (morph each) x
 					if isArgSlot { lineArgCount += 1 }
 				}
@@ -232,7 +232,7 @@ method fixLayout Block {
 			w = ((width (fullBounds (morph drawer))) + (space * scale))
 		}
 		add currentLine drawer
-		h = (max h (height (morph drawer)))
+		h = (max2 h (height (morph drawer)))
 		fastSetLeft (morph drawer) x
 	}
 
@@ -245,7 +245,7 @@ method fixLayout Block {
 	// adjust minimum block height for one-line blocks
 	if (notEmpty lineHeights) {
 		minHeight = (21 * scale)
-		atPut lineHeights 1 (max (at lineHeights 1) minHeight)
+		atPut lineHeights 1 (max2 (at lineHeights 1) minHeight)
 	}
 
 	// determine blockWidth from line data
@@ -254,9 +254,9 @@ method fixLayout Block {
 		if (notEmpty each) {
 			elem = (last each)
 			if (isClass elem 'CommandSlot') {
-				blockWidth = (max blockWidth (56 * scale)) // min size for "forever" and "if"
+				blockWidth = (max2 blockWidth (56 * scale)) // min size for "forever" and "if"
 			} else {
-				blockWidth = ((max blockWidth ((right (fullBounds (morph elem))) - left)))
+				blockWidth = ((max2 blockWidth ((right (fullBounds (morph elem))) - left)))
 			}
 		}
 	}
@@ -305,13 +305,13 @@ method fixLayout Block {
 	}
 
 	if (type == 'command') {
-		setWidth (bounds morph) (max (scale * 50) (+ blockWidth indentation (3 * scale)))
+		setWidth (bounds morph) (max2 (scale * 50) (+ blockWidth indentation (3 * scale)))
 		setHeight (bounds morph) (+ blockHeight (* scale corner) (* scale border 4) extraSpace)
 	} (type == 'hat') {
-		setWidth (bounds morph) (max (scale * 100) (+ blockWidth indentation (3 * scale)))
+		setWidth (bounds morph) (max2 (scale * 100) (+ blockWidth indentation (3 * scale)))
 		setHeight (bounds morph) (+ blockHeight (* scale corner 2) (* scale border) (hatHeight this) extraSpace)
 	} (type == 'reporter') {
-		setWidth (bounds morph) (max (scale * 20) (+ blockWidth indentation (11 * scale)))
+		setWidth (bounds morph) (max2 (scale * 20) (+ blockWidth indentation (11 * scale)))
 		setHeight (bounds morph) (+ blockHeight (* scale border 4) extraSpace)
 	}
 
@@ -861,7 +861,7 @@ method setNext Block another {
 	if (isNil another) {
 		setField expression 'nextBlock' nil
 	} else {
-		setPosition (morph another) (left morph) ((((top morph) + (height morph)) - (scale * corner)) - (max 1 (blockScale)))
+		setPosition (morph another) (left morph) ((((top morph) + (height morph)) - (scale * corner)) - (max2 1 (blockScale)))
 		addPart morph (morph another)
 		setField expression 'nextBlock' (expression another)
 		if (notNil n) {setNext (bottomBlock another) n}

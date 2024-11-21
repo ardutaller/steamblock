@@ -265,8 +265,8 @@ method characterIndexForXY TextEditor1 x y {
 
 method setSelection TextEditor1 start end {
 	if (isNil end) { end = start }
-	selStart = (min start end)
-	selEnd = (max start end)
+	selStart = (min2 start end)
+	selEnd = (max2 start end)
 }
 
 // Line wrapping

@@ -48,7 +48,7 @@ method next JSONReader n {
 		index += 1
 		return result
 	}
-	last = (min ((index + n) - 1) srcCount)
+	last = (min2 ((index + n) - 1) srcCount)
 	result = (joinStrings (copyFromTo src index last))
 	index += n
 	return result

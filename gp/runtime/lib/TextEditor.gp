@@ -204,7 +204,7 @@ return // xxx
 		scrollPercent = 0
 		percentVisible = 100
 	} else {
-		srollableLines = (max 1 ((count lines) - 5))
+		srollableLines = (max2 1 ((count lines) - 5))
 		scrollPercent = (clamp ((100 * firstLine) / srollableLines) 0 100)
 		percentVisible = (clamp ((100 * linesInView) / (count lines)) 0 100)
 	}
@@ -216,12 +216,12 @@ return // xxx
 
 method setScroll TextEditor n {
 	lineCount = (count lines)
-	firstLine = (clamp ((n * lineCount) / 100) 1 (max 1 (lineCount - 5)))
+	firstLine = (clamp ((n * lineCount) / 100) 1 (max2 1 (lineCount - 5)))
 	redraw this
 }
 
 method swipe TextEditor x y {
-	firstLine = (max 1 (firstLine - (y / 3)))
+	firstLine = (max2 1 (firstLine - (y / 3)))
 	redraw this
 	return true
 }
@@ -270,8 +270,8 @@ method characterIndexForXY TextEditor x y {
 
 method setSelection TextEditor start end {
 	if (isNil end) { end = start }
-	selStart = (min start end)
-	selEnd = (max start end)
+	selStart = (min2 start end)
+	selEnd = (max2 start end)
 }
 
 // Line wrapping
@@ -344,7 +344,7 @@ method findBreakIndex TextEditor s guess {
 
 	letters = (letters s)
 	end = (count letters)
-	i = (min guess end)
+	i = (min2 guess end)
 	w = -1
 
 	while (w < desiredWidth) {

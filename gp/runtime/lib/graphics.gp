@@ -8,8 +8,8 @@ method setName Bitmap s { name = s }
 
 to newBitmap width height color {
 	gcIfNeededFor (width * height)
-	width = (max 0 (ceiling width))
-	height = (max 0 (ceiling height))
+	width = (max2 0 (ceiling width))
+	height = (max2 0 (ceiling height))
 	pixelData = (newBinaryData (4 * (width * height)))
 	bm = (new 'Bitmap' width height pixelData)
 	if (notNil color) { fill bm color }
@@ -102,12 +102,12 @@ method setRGBA Bitmap x y r g b a {
 
 method thumbnail Bitmap w h {
 	// Create a thumbnail of this bitmap with given width and height.
-	w = (max 0 (floor w))
-	h = (max 0 (floor h))
+	w = (max2 0 (floor w))
+	h = (max2 0 (floor h))
 	result = (newBitmap w h)
 	if (or (width == 0) (height == 0)) { return result }
 
-	scale = (min ((toFloat w) / width) ((toFloat h) / height))
+	scale = (min2 ((toFloat w) / width) ((toFloat h) / height))
 	warpBitmap result this (w / 2) (h / 2) scale scale
 	return result
 }
@@ -139,13 +139,13 @@ method scaleAndRotate Bitmap xScale yScale rotationDegrees dstBitmap {
 	newW = (xScale * width)
 	newH = (yScale * height)
 	if (rotationDegrees != 0) {
-		diagonal = (max 1 (sqrt ((newW * newW) + (newH * newH))))
+		diagonal = (max2 1 (sqrt ((newW * newW) + (newH * newH))))
 		xOffset = (half (diagonal - newW))
 		yOffset = (half (diagonal - newH))
 		newW = diagonal
 		newH = diagonal
 	}
-	result = (newBitmap (max 1 newW) (max 1 newH))
+	result = (newBitmap (max2 1 newW) (max2 1 newH))
 	warpBitmap result this (half newW) (half newH) xScale yScale rotationDegrees
 	return result
 }
@@ -306,7 +306,7 @@ method applyAlphaChannel Bitmap alphaChannel color {
 	g = (green color)
 	b = (blue color)
 	fillPixelsRGBA pixelData 0 0 0 0
-	count = (min (byteCount alphaChannel) (width * height))
+	count = (min2 (byteCount alphaChannel) (width * height))
 	for i count {
 		a = (byteAt alphaChannel i)
 		if (a > 0) {

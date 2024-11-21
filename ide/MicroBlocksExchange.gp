@@ -204,8 +204,8 @@ method importScripts MicroBlocksExchange aMicroBlocksScripter scriptString dstX 
 	for entry scriptCmds {
 		args = (argList entry)
 		if (and ('script' == (primName entry)) (3 == (count args))) {
-			scriptsX = (min scriptsX (at args 1))
-			scriptsY = (min scriptsY (at args 2))
+			scriptsX = (min2 scriptsX (at args 1))
+			scriptsY = (min2 scriptsY (at args 2))
 		}
 	}
 

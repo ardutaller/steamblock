@@ -71,8 +71,8 @@ method handMoveOver MicroBlocksSelection aHand {
 
 method updateSelection MicroBlocksSelection aHand {
 	if selecting {
-		setLeft rectangle (min (oldX aHand) (x aHand))
-		setTop rectangle (min (oldY aHand) (y aHand))
+		setLeft rectangle (min2 (oldX aHand) (x aHand))
+		setTop rectangle (min2 (oldY aHand) (y aHand))
 		setWidth rectangle (abs ((x aHand) - (oldX aHand)))
 		setHeight rectangle (abs ((y aHand) - (oldY aHand)))
 		intersect rectangle (bounds (morph (scriptsFrame scripter)))
