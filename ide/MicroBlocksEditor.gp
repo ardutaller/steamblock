@@ -327,6 +327,7 @@ method newProject MicroBlocksEditor {
 	updateLibraryList scripter
 	fileName = ''
 	updateTitle this
+	selectCategory scripter 'cat;Output'
 }
 
 method clearProject MicroBlocksEditor {
