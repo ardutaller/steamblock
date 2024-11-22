@@ -2962,6 +2962,7 @@ method copyVMToBoard SmallRuntime driveName boardPath {
 	}
 	writeFile (join boardPath vmFileName) vmData
 	vmVersion = nil
+	boardType = nil
 	print 'Installed' (join boardPath vmFileName) (join '(' (byteCount vmData) ' bytes)')
 	waitMSecs 2000
 	if (isOneOf driveName 'MICROBIT' 'MINI') { waitMSecs 8000 }
@@ -3244,6 +3245,8 @@ method flashVM SmallRuntime boardName eraseFlashFlag downloadLatestFlag {
 		setPort this 'disconnect'
 		flasherPort = nil
 	}
+	vmVersion = nil
+	boardType = nil
 	flasher = (newFlasher boardName portName eraseFlashFlag downloadLatestFlag)
 	addPart (global 'page') (spinner flasher)
 	startFlasher flasher flasherPort
@@ -3303,6 +3306,8 @@ method flashESPFirmwareFromURL SmallRuntime boardName url {
 		setPort this 'disconnect'
 		flasherPort = nil
 	}
+	vmVersion = nil
+	boardType = nil
 	flasher = (newFlasher boardName portName false false)
 	installFromURL flasher flasherPort url
 }
@@ -3341,6 +3346,8 @@ method installESPFirmwareFromFile SmallRuntime fileName data {
 		setPort this 'disconnect'
 		flasherPort = nil
 	}
+	vmVersion = nil
+	boardType = nil
 	flasher = (newFlasher fileName portName false false)
 	installFromData flasher flasherPort fileName data
 }
