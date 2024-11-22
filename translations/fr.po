@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2024-11-18 07:54+0000\n"
-"Last-Translator: Daniel DA <dj.danyboy@wp.eu>\n"
+"PO-Revision-Date: 2024-11-22 13:15+0000\n"
+"Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/microblocks/ide/"
 "fr/>\n"
 "Language: fr\n"
@@ -48,7 +48,7 @@ msgstr "minuteur"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr "réinitialisation du minuteur"
+msgstr "réinitialiser le minuteur"
 
 #. Block in Input category
 msgid "microseconds"
@@ -68,7 +68,7 @@ msgstr "millisecondes depuis _"
 
 #. Block in Input category
 msgid "end time _"
-msgstr ""
+msgstr "heure de fin _"
 
 #. Block in Input category
 msgid "microseconds since _"
@@ -112,11 +112,11 @@ msgstr "broches numériques"
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr ""
+msgstr "Contrôle"
 
 #. Block in Control category
 msgid "when started"
-msgstr "au début"
+msgstr "au démarrage"
 
 #. Block in Control category
 msgid "when button _ pressed"
@@ -172,7 +172,7 @@ msgstr "quand _ est reçu"
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr ""
+msgstr "c'est parti !"
 
 #. Block in Control category
 msgid "broadcast _"
@@ -192,7 +192,7 @@ msgstr "nombre de _ à _"
 
 #. Block in Control category
 msgid "by _"
-msgstr ""
+msgstr "par _"
 
 #. Block in Control category
 msgid "for _ in _ _"
@@ -212,7 +212,7 @@ msgstr "arrêter les autres taches"
 
 #. Block in Control category
 msgid "stop all"
-msgstr "stopper tout"
+msgstr "arrêter tout"
 
 #. Block in Control category
 msgid "last message"
@@ -224,11 +224,11 @@ msgstr "arguments _, valeur par défaut _"
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr "défaut"
+msgstr "par défaut"
 
 #. Block in Control category
 msgid "call _"
-msgstr "appel _"
+msgstr "appeller _"
 
 #. Example value for ( call _ ) block
 msgid "function name"
@@ -256,11 +256,11 @@ msgstr "valeur absolue de _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr ""
+msgstr "min _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr ""
+msgstr "max _ _"
 
 #. Block in Operators category
 msgid "random _ to _"
@@ -292,7 +292,7 @@ msgstr "_ est un _"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr "convertis _ à _"
+msgstr "convertir _ en _"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
@@ -341,11 +341,11 @@ msgstr "Variables"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr "Ajout une variable"
+msgstr "Ajouter une variable"
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr "Supprime une variable"
+msgstr "Supprimer une variable"
 
 #. New variable dialog
 msgid "New variable name?"
@@ -357,7 +357,7 @@ msgstr "mettre _ à _"
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr "changer _ de _"
+msgstr "changer _ par _"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
@@ -450,11 +450,11 @@ msgstr ""
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr ""
+msgstr "nouveau tableau d'octets _"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr ""
+msgstr "comme tableau d'octets _"
 
 #. Example string. Tells the user this input accepts a byte list or a string
 msgid "aByteListOrString"
@@ -466,25 +466,25 @@ msgstr ""
 
 #. Block in Data category
 msgid "free memory"
-msgstr ""
+msgstr "mémoire disponible"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr ""
+msgstr "tout"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr ""
+msgstr "dernier"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
 msgid "random"
-msgstr ""
+msgstr "aléatoire"
 
 #. Block in Data category
 msgid "split _ by _"
@@ -492,15 +492,15 @@ msgstr ""
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr ""
+msgstr "Mes blocs"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr ""
+msgstr "Générique"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr ""
+msgstr "Ajouter un bloc de commande"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
@@ -508,7 +508,7 @@ msgstr ""
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr ""
+msgstr "Entrez le nom de la fonction :"
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
@@ -712,7 +712,7 @@ msgstr ""
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr ""
+msgstr "Capteurs simples"
 
 #. Block in Basic Sensors library
 msgid "tilt x"
@@ -728,11 +728,11 @@ msgstr "inclinaison z"
 
 #. Block in Basic Sensors library
 msgid "acceleration"
-msgstr ""
+msgstr "accélération"
 
 #. Block in Basic Sensors library
 msgid "light level"
-msgstr ""
+msgstr "luminosité"
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
@@ -740,7 +740,7 @@ msgstr "température (°C)"
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
-msgstr ""
+msgstr "champ magnétique"
 
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
@@ -837,7 +837,7 @@ msgstr ""
 
 #. Microphone library label
 msgid "Microphone"
-msgstr ""
+msgstr "Micro"
 
 #. Microphone library block
 msgid "microphone"
@@ -1005,7 +1005,7 @@ msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "All"
-msgstr ""
+msgstr "Tout"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Forward"
@@ -4456,7 +4456,7 @@ msgstr ""
 #. About window info. As in "By Mary, Johanna and Tracy".
 #. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
 msgid "about;by %1, %2 & %3."
-msgstr ""
+msgstr "par %1, %2 & %3."
 
 #. About window info
 msgid "Created with GP"
@@ -4464,7 +4464,7 @@ msgstr ""
 
 #. About window info
 msgid "More info at http://microblocks.fun"
-msgstr ""
+msgstr "Plus d'informations sur http://microblocks.fun"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
@@ -4608,11 +4608,11 @@ msgstr ""
 
 #. Settings menu option
 msgid "about..."
-msgstr ""
+msgstr "À propos…"
 
 #. Window title
 msgid "About MicroBlocks"
-msgstr ""
+msgstr "À propos de MicroBlocks"
 
 #. Settings menu option
 msgid "virtual machine version"
@@ -5057,7 +5057,7 @@ msgstr ""
 
 #. Language menu tooltip
 msgid "Language"
-msgstr ""
+msgstr "Langue"
 
 #. As in load a "Custom" language file
 msgid "Custom..."
@@ -5885,4 +5885,16 @@ msgstr "id Bluetooth"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr "Buetooth connecté"
+msgstr "Bluetooth connecté"
+
+#. Block in Input category
+msgid "version"
+msgstr "version"
+
+#. Language menu item. Takes the user to documentation about adding a missing language
+msgid "Missing language?"
+msgstr "Langue manquante ?"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "boucle de sortie"
