@@ -219,11 +219,13 @@ method microBlocksSpecs SmallCompiler {
 		(array ' ' '[display:neoPixelSetMaxBrightness]' 'set NeoPixel max brightness _ (10-255)' 'num' 40)
 	'Prims-Sensing (not in palette)'
 		(array 'r' '[sensors:acceleration]'	'acceleration')
+		(array ' ' '[sensors:setAccelerometerRange]' 'set accelerometer range _' 'num' 1)
 		(array 'r' '[display:lightLevel]'	'light level')
 		(array 'r' '[sensors:temperature]'	'temperature (°C)')
 		(array 'r' '[sensors:tiltX]'		'tilt x')
 		(array 'r' '[sensors:tiltY]'		'tilt y')
 		(array 'r' '[sensors:tiltZ]'		'tilt z')
+		(array 'r' '[sensors:magneticField]' 'magnetic field')
 		(array 'r' '[sensors:microphone]'	'microphone')
 		(array ' ' '[sensors:i2cSetClockSpeed]'	'set i2c clock speed _' 'num' 400000)
 		(array ' ' '[sensors:i2cSetPins]'	'set i2c pins SDA _ SCL _' 'num num' 4 5)
@@ -258,8 +260,11 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' '[misc:pressureToAltitude]' 'altitude diff for pressure change from _ to _' 'num num' 30 29)
 		(array 'r' '[misc:bme680GasResistance]' 'bme680 gas resistance adc _ range _ calibration range error _' 'num num num' 500 0 0)
 
-		(array 'r' '[sensors:touchRead]' 'capacitive sensor _' 'num' 1)
-		(array 'r' '[sensors:readDHT]'	'read DHT data pin _' 'num' 1)
+		(array 'r' '[sensors:touchRead]'	'capacitive sensor _' 'num' 1)
+		(array 'r' '[sensors:readDHT]'		'read DHT data pin _' 'num' 1)
+		(array ' ' '[sensors:captureStart]'	'start pulse capture pin _' 'num' 0)
+		(array 'r' '[sensors:captureCount]'	'pulse capture count')
+		(array 'r' '[sensors:captureEnd]'	'end pulse capture')
 
 		(array 'r' '[io:hasTone]'		'has tone support')
 		(array ' ' '[io:playTone]'		'play tone pin _ frequency _' 'num num' 0 440)
