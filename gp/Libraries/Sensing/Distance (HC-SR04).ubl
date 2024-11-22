@@ -1,6 +1,6 @@
 module 'Distance (HC-SR04)' Input
 author 'Joan Guillén & Josep Ferràndiz'
-version 1 2 
+version 1 3 
 tags sensor 'hc-sr04' distance ultrasound 
 description 'Support for the HC-SR04 ultrasound distance sensor.'
 variables _sr04_last 
@@ -10,27 +10,35 @@ variables _sr04_last
 
 to 'distance (cm)' trig ech {
   comment 'Contributed by Joan Guillén and Josep Ferràndiz'
+  comment 'Reset pulse capture system.'
+  local 'ignore' ('[sensors:captureEnd]')
   digitalWriteOp trig false
   waitMicros 2
   digitalWriteOp trig true
   waitMicros 50
   digitalWriteOp trig false
-  local 'start' (microsOp)
-  waitUntil (or (not (digitalReadOp ech)) (((microsOp) - start) > 23320))
-  waitUntil (or (digitalReadOp ech) (((microsOp) - start) > 23320))
-  if (((microsOp) - start) > 23320) {
+  comment 'Wait for a low-to-high edge on the echo pin.
+Timeout if an edge is not detected. '
+  local 'start' (millisOp)
+  waitUntil (or (not (digitalReadOp ech)) ((millisSince start) > 2))
+  waitUntil (or (digitalReadOp ech) ((millisSince start) > 2))
+  if ((millisSince start) > 2) {
     comment 'Distance sensor not ready; return the last distance reading'
     return _sr04_last
   }
-  comment 'Pulse sent. Measure time until echo is detected.'
-  start = (microsOp)
-  waitUntil (or (not (digitalReadOp ech)) (((microsOp) - start) > 23320))
-  _sr04_last = ((10 * ((microsOp) - start)) / 583)
+  comment 'Starting pulse was sent. Measure time until echo is detected.'
+  '[sensors:captureStart]' ech
+  start = (millisOp)
+  waitUntil (or (('[sensors:captureCount]') > 0) ((millisSince start) > 25))
+  comment 'Default value of 23320 usecs reports 400 cm
+when no echo is detected..'
+  local 'echoMicrosecs' 23320
+  if (('[sensors:captureCount]') > 0) {
+    echoMicrosecs = (absoluteValue (at 1 ('[sensors:captureEnd]')))
+  }
+  _sr04_last = ((10 * echoMicrosecs) / 583)
   comment 'Leave some time for reverberations to die away.'
   waitMillis 10
-  if (_sr04_last == 0) {
-    zeroCount += 1
-  }
   return _sr04_last
 }
 
