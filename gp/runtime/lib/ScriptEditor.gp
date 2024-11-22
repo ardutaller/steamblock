@@ -43,7 +43,7 @@ method handDownOn ScriptEditor aHand {
 			}
 		}
 		if (isClass (objectAt aHand) 'ScriptEditor') {
-			if (not (isMobile)) {
+			if (not (or (isMobile) (and (isDown aHand) ((button aHand) == 2)))) {
 				startSelecting scripter aHand
 			}
 		}

@@ -96,7 +96,7 @@ to postSerialize aHandler {}
 
 // Hand
 
-defineClass Hand morph page x y isDown downX downY currentMorphs lastTouched lastClicked lastClickTime lastTouchTime oldOwner oldX oldY focus morphicMenuDisabled
+defineClass Hand morph page x y isDown downX downY currentMorphs lastTouched lastClicked lastClickTime lastTouchTime oldOwner oldX oldY focus morphicMenuDisabled mouseButton
 
 to newHand {
 	hand = (new 'Hand' nil nil 0 0 false 0 0 (list) nil nil (newTimer) nil nil nil)
@@ -114,6 +114,7 @@ method downX Hand {return downX}
 method downY Hand {return downY}
 method focus Hand {return focus}
 method focusOn Hand aHandler {focus = aHandler}
+method button Hand {return mouseButton}
 
 method objectAt Hand pixelPerfect {
 	// Answer the topmost morph under the hand.
@@ -353,6 +354,7 @@ method processEvent Hand evt {
 		processMove this
 	} (type == 'mouseDown') {
 		isDown = true
+		mouseButton = (at evt 'button')
 		if (notNil (at evt 'modifierKeys')) { updateModifiedKeys (keyboard page) (at evt 'modifierKeys') }
 		processDown this (at evt 'button')
 	} (type == 'mouseUp') {
@@ -408,7 +410,7 @@ method processMove Hand {
 	}
 	for oldM oldMorphs {if (and (acceptsEvents oldM) (not (contains currentMorphs oldM))) {handLeave (handler oldM) this}}
 
-	allowDragScroll = (isMobile this)
+	allowDragScroll = (or (isMobile this) (mouseButton == 2))
 	if (and allowDragScroll isDown hasMoved (isNil (grabbedObject this)) (notNil lastTouchTime)) {
 		// on mobile devices drag-scroll the enclosing ScrollFrame, if any
 		scrollFrameM = (ownerThatIsA (morph (currentObject this)) 'ScrollFrame')
@@ -463,6 +465,7 @@ method processDown Hand button {
 }
 
 method processUp Hand {
+	setCursor 'default'
 	lastTouchTime = nil
 	if (notNil focus) {
 		handUpOn focus this
