@@ -76,8 +76,24 @@ method updateSelection MicroBlocksSelection aHand {
 		setWidth rectangle (abs ((x aHand) - (oldX aHand)))
 		setHeight rectangle (abs ((y aHand) - (oldY aHand)))
 		intersect rectangle (bounds (morph (scriptsFrame scripter)))
+		highlightBlocksInside this
 	}
 	fixLayout this
+}
+
+method highlightBlocksInside MicroBlocksSelection {
+	if ((area rectangle) > 1) {
+		for p (allMorphs (morph (scriptEditor scripter))) {
+			if (isClass (handler p) 'Block') {
+				tb = (topBlock (handler p))
+				if (intersects rectangle (bounds p)) {
+					select tb
+				} else {
+					unselect tb
+				}
+			}
+		}
+	}
 }
 
 method endSelection MicroBlocksSelection {
