@@ -780,10 +780,10 @@ static void initRMT(int pinNum) {
 
 static void initNeoPixelPin(int pinNum) { // ESP32
 	if ((pinNum < 0) || (pinNum >= pinCount())) {
-		#if defined(ARDUINO_M5Atom_Matrix_ESP32)
+		#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_M5Atom_Lite_ESP32)
 			pinNum = 27; // internal NeoPixel pin
-		#elif defined(ARDUINO_M5Atom_Lite_ESP32)
-			pinNum = 27;
+		#elif defined(ARDUINO_M5Atom_Lite_S3)
+			pinNum = 35;
 		#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
 			pinNum = 13; // internal NeoPixel pin
 		#elif defined(DATABOT)
