@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-25 08:03+0000\n"
+"PO-Revision-Date: 2024-11-25 15:53+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -30,7 +30,7 @@ msgstr "alle"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr "neuer Rückgabeblock"
+msgstr "erstelle einen Rückgabeblock"
 
 #. Block in Comm category
 msgid "no op"
@@ -414,7 +414,7 @@ msgstr "meine IP-Adresse"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr "ein ByteArray"
+msgstr "ein_ByteArray"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
@@ -521,7 +521,7 @@ msgstr "initialisiere lokale Variable _ mit _"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr "füge eine Variable hinzu"
+msgstr "neue Variable"
 
 #. Make a block dialog
 msgid "Enter function name:"
@@ -719,7 +719,7 @@ msgstr "helle NeoPixel _ um _ auf"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr "neuer Befehlsblock"
+msgstr "erstelle einen Befehlsblock"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
@@ -1665,7 +1665,7 @@ msgstr "ScrollLock"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "a ByteArray"
-msgstr "ein ByteArray"
+msgstr "ein_ByteArray"
 
 #. TCS34725 color sensor library block
 msgid "TCS34725 rgb"
@@ -2431,7 +2431,7 @@ msgstr "MicroBlocks HTTP-Server wartet an Port 6473"
 
 #. Settings menu option
 msgid "show implementation blocks"
-msgstr "Implementationsblöcke anzeigen"
+msgstr "zeige Implementationsblöcke"
 
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
@@ -2887,7 +2887,7 @@ msgstr "_ ist _"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr "wandle _ in _ um"
+msgstr "wandle _ in _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has WiFi support"
@@ -3546,7 +3546,7 @@ msgstr "setze serielle Verzögerung"
 
 #. Settings menu option
 msgid "disable autoloading board libraries"
-msgstr "deaktiviere automatisches Laden von Board-Modulen"
+msgstr "lade Board-Module nicht automatisch"
 
 #. Script right-click context menu
 msgid "copy script"
@@ -3741,7 +3741,7 @@ msgstr "lösche Auswahl"
 
 #. Settings menu option
 msgid "erase flash and update firmware on ESP board"
-msgstr "lösche Flash und aktualisiere Firmware auf ESP-Board"
+msgstr "lösche Flash und aktualisiere ESP-Firmware"
 
 #. Settings menu option
 msgid "install ESP firmware from URL"
