@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-22 10:01+0000\n"
-"Last-Translator: Michael Klein <kleinswelt@web.de>\n"
+"PO-Revision-Date: 2024-11-25 08:03+0000\n"
+"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -30,7 +30,7 @@ msgstr "alle"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr "füge Rückgabeblock hinzu"
+msgstr "neuer Rückgabeblock"
 
 #. Block in Comm category
 msgid "no op"
@@ -172,7 +172,7 @@ msgstr "Graph"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "füge Modul hinzu"
+msgstr "lade Modul"
 
 #. Block right-click context menu tooltip
 msgid "duplicate these blocks"
@@ -719,7 +719,7 @@ msgstr "helle NeoPixel _ um _ auf"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr "füge Befehlsblock hinzu"
+msgstr "neuer Befehlsblock"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
@@ -1637,7 +1637,7 @@ msgstr "halte _ Maustaste"
 
 #. 5x5 LED Display library block
 msgid "display _"
-msgstr "zeige _"
+msgstr "Anzeige _"
 
 #. Tone library block
 msgid "stop tone"
@@ -2411,7 +2411,7 @@ msgstr "füge Skript aus Zwischenablage ein"
 
 #. Scripting area right-click context menu
 msgid "save a picture of all visible scripts"
-msgstr "speichere ein Bild aller sichtbaren Skripts"
+msgstr "speichere ein Bild aller sichtbaren Skripte"
 
 #. Scripting area right-click context menu
 msgid "set exported script scale"
@@ -2442,8 +2442,8 @@ msgstr ""
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
 msgstr ""
-"Wenn ein Board verbunden wird und das aktuelle Projekt leer ist, wird der "
-"Inhalt des Boards automatisch in die IDE eingelesen."
+"lade automatisch den Inhalt des Board, wenn ein Board verbunden wird und das "
+"aktuelle Projekt leer ist"
 
 #. Successful firmware installation confirmation window title
 msgid "Firmware Install"
@@ -2455,7 +2455,7 @@ msgstr "Firmware installiert"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
-msgstr "Verbinde das Board durch Klicken auf \"Verbinden\" (Stecker-Icon) neu."
+msgstr "Verbinde das Board durch Klicken auf \"Verbinden\" neu."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
@@ -2564,7 +2564,7 @@ msgstr "System"
 
 #. String in file picker and library dialogs
 msgid "New library name?"
-msgstr "Neuer Modul-Name?"
+msgstr "Name des neuen Moduls?"
 
 #. Scripting area right-click context menu
 msgid "show all block definitions"
@@ -3051,7 +3051,7 @@ msgstr "verbinde (USB)"
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
-msgstr "Boardie öffnen"
+msgstr "öffne Boardie"
 
 #. In MicroBlocks IDE connection menu
 msgid "Serial port:"
@@ -3190,7 +3190,7 @@ msgstr ""
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] toggle value, or drop a reporter into it."
-msgstr "[l] Wert auswählen, oder zum Hineinziehen eines Rückgabeblocks."
+msgstr "[l] Wert auswählen oder einen Rückgabeblock hineinziehen."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3200,7 +3200,7 @@ msgstr "[l] Farbe auswählen oder einen Rückgabeblock hineinziehen."
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] edit its value, or drop a reporter into it."
-msgstr "[l] zum Ändern des Wertes oder zum Hineinziehen eines Rückgabeblocks."
+msgstr "[l] Wert ändern oder einen Rückgabeblock hineinziehen."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3532,7 +3532,7 @@ msgstr "kopiere Projekt-URL in die Zwischenablage"
 
 #. About window info
 msgid "More info at http://microblocks.fun"
-msgstr "Weitere Infos unter http://microblocks.fun"
+msgstr "Weitere Infos unter https://microblocks.fun"
 
 #. Scripting area right-click context menu
 msgid "copy all scripts to clipboard"
@@ -3581,7 +3581,7 @@ msgstr "Blockerweiterung"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] to show the blocks in this category."
-msgstr "[l] zum Zeigen der Blöcke in dieser Kategorie."
+msgstr "[l] Anzeigen der Blöcke in dieser Kategorie."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Scripts Pane"
@@ -3880,7 +3880,7 @@ msgstr "Blockkategorie"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "Drag blocks here to build scripts. [r] menu."
-msgstr "Ziehe Blöcke hierher um Skripts zu bauen. [r] Menü."
+msgstr "Ziehe Blöcke hierher, um Skripte zu bauen. [r] Menü."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Graph the value."
@@ -4032,7 +4032,7 @@ msgstr "links"
 
 #. Settings menu tooltip
 msgid "make the IDE darker"
-msgstr "IDE dunkler einstellen"
+msgstr "stelle MicroBlocks IDE dunkler ein"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "right" on your axis
@@ -4349,7 +4349,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "PlugShare when project empty"
-msgstr "PlugShare wenn Projekt leer ist"
+msgstr "lade Board-Inhalt, wenn Projekt leer ist"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;AltGr"
@@ -4968,7 +4968,7 @@ msgstr "WuKong2040 stoppe Motor _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 clear all rainbowLED"
-msgstr "WuKong2040 lösche alle RegenbogenLED"
+msgstr "WuKong2040 lösche alle RegenbogenLEDs"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of DHT11 humidity (0~100) at pin _"
@@ -5208,7 +5208,7 @@ msgstr "SFX"
 
 #. General MIDI drum set
 msgid "brush"
-msgstr "Bürste"
+msgstr "Besen"
 
 #. MiKe Robot library block
 msgid "MiKe circle light _ (1-18) to _"
@@ -5697,3 +5697,20 @@ msgstr "ms Energieverbrauch (µWh)"
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "ms display #BR# _ #BR# with color _"
 msgstr "ms anzeigen #BR# _ #BR# mit Farbe _"
+
+#. Pluck library label
+#. Generate music with plucked-string resembling sounds
+msgid "Pluck"
+msgstr "Pluck"
+
+#. Pluck library block
+msgid "set pluck pin _"
+msgstr "Set Pluck Pin _"
+
+#. Pluck library block
+msgid "pluck note _ octave _ for _ ms"
+msgstr "Pluck Note _ Oktave _ für _ms"
+
+#. Pluck library block
+msgid "pluck MIDI key _ for _ msecs"
+msgstr "Pluck MIDI Key _ für _ ms"
