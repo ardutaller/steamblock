@@ -50,7 +50,7 @@ public:
 	 * Return:
 	 * • 0 on success
 	 * • 1 if no interrupt handler
-	 * • 2 if the pins are invalid (they must be different and must both must support interrupts)
+	 * • 2 if either pin is invalid or does not support interrupts
 	 */
 	int startCounting(int encoderIndex, uint8_t pinA, uint8_t pinB, bool fullRes) {
 		stopCounting();
@@ -75,7 +75,7 @@ public:
 	}
 
 	/*
-	 * Start a simple pulse counter (rising edges).
+	 * Start a simple pulse counter.
 	 *
 	 * This is safe to call if already counting; it stops counting
 	 * with the previously configured pin(s), then starts counting with the new one.
@@ -83,16 +83,22 @@ public:
 	 * Return:
 	 * • 0 on success
 	 * • 1 if no interrupt handler
-	 * • 2 if the pins are invalid (they must be different and must both must support interrupts)
+	 * • 2 if pin is invalid or does not support interrupts
 	 */
-	int startPulseCounter(int encoderIndex, uint8_t pinA) {
+	int startPulseCounter(int encoderIndex, uint8_t pinA, int edgeType) {
 		stopCounting();
 
 		int interruptA = digitalPinToInterrupt(pinA);
 		if (interruptA == -1) return -2; // a pin does not support interrupts
 
+		// edgeType: 0 - rising edge (default), 1 - falling edge, 2 - pin change
+		int interruptMode = RISING; // default
+		if (1 == edgeType) interruptMode = FALLING;
+		if (2 == edgeType) interruptMode = CHANGE;
+
+ 		setPinMode(pinA, INPUT);
 		interruptHandler handler = pulseInterruptHandlerFor(encoderIndex);
-		attachInterrupt(interruptA, handler, RISING);
+		attachInterrupt(interruptA, handler, interruptMode);
 
 		this->count = 0;
 		this->pinA = pinA;
@@ -227,10 +233,12 @@ static OBJ primStartPulseCounter(int argCount, OBJ *args) {
 	}
 	int encoderIndex = obj2int(args[0]) - 1;
 	int pin = obj2int(args[1]);
+	// edgeType: 0 - rising edge (default), 1 - falling edge, 2 - pin change
+	int edgeType = ((argCount > 2) && isInt(args[2])) ? obj2int(args[2]) : 0;
 
 	int err = 1;
 	if ((encoderIndex >= 0) && (encoderIndex < NUM_ENCODERS)) {
-		err = encoders[encoderIndex].startPulseCounter(encoderIndex, pin);
+		err = encoders[encoderIndex].startPulseCounter(encoderIndex, pin, edgeType);
 	}
 	if (err != 0) return fail(encoderNotStarted);
 

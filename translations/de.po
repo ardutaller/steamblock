@@ -2923,9 +2923,7 @@ msgstr "fabelhaft"
 
 #. TFT Display library block
 msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
-msgstr ""
-"zeichne abgerundetes Rechteck auf TFT bei x _ y _ Breite _ Höhe _ Radius _ "
-"Farbe _"
+msgstr "zeichne abgerundetes Rechteck auf TFT bei x _ y _ Breite _ Höhe _ Radius _ Farbe _"
 
 #. TFT Display library block
 msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
