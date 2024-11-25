@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-25 15:53+0000\n"
+"PO-Revision-Date: 2024-11-25 21:06+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -342,7 +342,7 @@ msgstr "Gibt die Zeit in µs seit dem Einschalten zurück."
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr "Variable löschen"
+msgstr "lösche eine Variable"
 
 #. Block in Data category
 msgid "free memory"
@@ -414,7 +414,7 @@ msgstr "meine IP-Adresse"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr "ein_ByteArray"
+msgstr "ein ByteArray"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
@@ -521,7 +521,7 @@ msgstr "initialisiere lokale Variable _ mit _"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr "neue Variable"
+msgstr "erstelle eine Variable"
 
 #. Make a block dialog
 msgid "Enter function name:"
@@ -703,7 +703,7 @@ msgstr "Radio Typ der letzten Nachricht"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr "Neuer Variablenname?"
+msgstr "Name für neue Variable?"
 
 #. NeoPixel library label
 msgid "NeoPixel"
@@ -1332,7 +1332,7 @@ msgstr "Dateien"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
-msgstr "verbinde Neopixelpanel Breite _ Höhe _ an Pin _"
+msgstr "verbinde NeoPanel Breite _ Höhe _ an Pin _"
 
 #. Image name for the "display image" block
 msgid "angry"
@@ -1665,7 +1665,7 @@ msgstr "ScrollLock"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "a ByteArray"
-msgstr "ein_ByteArray"
+msgstr "ein ByteArray"
 
 #. TCS34725 color sensor library block
 msgid "TCS34725 rgb"
@@ -2564,7 +2564,7 @@ msgstr "System"
 
 #. String in file picker and library dialogs
 msgid "New library name?"
-msgstr "Name des neuen Moduls?"
+msgstr "Name für neues Modul?"
 
 #. Scripting area right-click context menu
 msgid "show all block definitions"
@@ -4930,7 +4930,7 @@ msgstr "NeZha setze _ Servo _ Winkel auf _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "NeZha setze 360 Grad Servo _ Geschwindigkeit auf _ %"
+msgstr "NeZha setze 360 ° Servo _ Geschwindigkeit auf _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
@@ -5198,7 +5198,7 @@ msgstr "starte micro꞉STEAMakers Audio"
 
 #. InnovaDidàctic 3DBot library block
 msgid "3dBot obstacle < _ cm?"
-msgstr "3dBot Hindernis< _ cm?"
+msgstr "3dBot Hindernis < _ cm?"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm water pump _"
@@ -5522,11 +5522,11 @@ msgstr "Farm Knopf gedrückt?"
 
 #. Shield:bit library block
 msgid "sb turn 180 servo S- _ (1-8) to angle _"
-msgstr "sb drehe 180 servo S- _ (1-8) auf Winkel _"
+msgstr "sb drehe 180° servo S- _ (1-8) auf Winkel _"
 
 #. Shield:bit library block
 msgid "sb turn 360 servo S- _ (1-8) _ at _ %"
-msgstr "sb drehe 360 Grad Servo S- _ (1-8) _ mit _ %"
+msgstr "sb drehe 360° Servo S- _ (1-8) _ mit _ %"
 
 #. Shield:bit library block
 msgid "sb turn DC M- _ (1-4) motor _ at _ %"
