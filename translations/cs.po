@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2024-11-12 09:00+0000\n"
+"PO-Revision-Date: 2024-11-25 21:06+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.9-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -5948,3 +5948,75 @@ msgstr "zobrazit pokročilé bloky, položky menu a funkce editoru"
 #. Language menu item. Takes the user to documentation about adding a missing language
 msgid "Missing language?"
 msgstr "Chybí jazyk?"
+
+#. BLE Radio library block
+msgid "ble last number"
+msgstr "BLE poslední číslo"
+
+#. Examples folder
+msgid "folder;microbit and Calliope"
+msgstr "Micro:bit a Calliope"
+
+#. Examples folder
+msgid "folder; by board"
+msgstr " podle desky/mikropočítače"
+
+#. Examples folder
+msgid "folder;Art"
+msgstr "Umění"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "opusť smyčku"
+
+#. BLE Radio library block
+msgid "ble send number _"
+msgstr "BLE odešli číslo _"
+
+#. BLE Radio library block
+msgid "ble send string _"
+msgstr "BLE odešli řetězec _"
+
+#. BLE Radio library block
+msgid "ble send pair _ = _"
+msgstr "BLE odešli dvojici _ = _"
+
+#. BLE Radio library block
+msgid "ble message received?"
+msgstr "přijata BLE zpráva?"
+
+#. BLE Radio library block
+msgid "ble last string"
+msgstr "BLE poslední řetězec"
+
+#. BLE Radio library block
+msgid "ble set group _ (0-255)"
+msgstr "nastav skupinu BLE _ (0-255)"
+
+#. BLE Scanner library block
+msgid "scan received"
+msgstr "BLE skenování přijato"
+
+#. BLE Scanner library block
+msgid "address"
+msgstr "adresa"
+
+#. BLE Scanner library block
+msgid "address type"
+msgstr "typ adresy"
+
+#. BLE Scanner library block
+msgid "device name"
+msgstr "název zařízení"
+
+#. Examples folder
+msgid "folder;Games"
+msgstr "Hry"
+
+#. Examples folder
+msgid "folder;Examples"
+msgstr "Příklady"
+
+#. Examples folder
+msgid "folder;Music"
+msgstr "Hudba"
