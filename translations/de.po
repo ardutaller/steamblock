@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-25 21:06+0000\n"
-"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
+"PO-Revision-Date: 2024-11-27 08:25+0000\n"
+"Last-Translator: Michael Klein <kleinswelt@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -1216,7 +1216,7 @@ msgstr "starte Schrittzähler"
 
 #. Ringtone library block
 msgid "current song name"
-msgstr "aktueller Klingelton"
+msgstr "aktueller Liedname"
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "_ ends with _"
@@ -5705,7 +5705,7 @@ msgstr "Pluck"
 
 #. Pluck library block
 msgid "set pluck pin _"
-msgstr "Set Pluck Pin _"
+msgstr "lege Pluck Pin _ fest"
 
 #. Pluck library block
 msgid "pluck note _ octave _ for _ ms"
@@ -5714,3 +5714,35 @@ msgstr "Pluck Note _ Oktave _ für _ms"
 #. Pluck library block
 msgid "pluck MIDI key _ for _ msecs"
 msgstr "Pluck MIDI Key _ für _ ms"
+
+#. General MIDI instrument category
+msgid "brass"
+msgstr "Bläser"
+
+#. General MIDI instrument category
+msgid "ensemble"
+msgstr "Ensemble"
+
+#. General MIDI control change
+msgid "effect 2"
+msgstr "Effekt 2"
+
+#. General MIDI drum instrument name
+msgid "Mute Triangle"
+msgstr "Triangel stumm schalten"
+
+#. General MIDI drum set
+msgid "TR-808"
+msgstr "TR-808"
+
+#. General MIDI control change
+msgid "effect 1"
+msgstr "Effekt 1"
+
+#. General MIDI drum instrument name
+msgid "Open Triangle"
+msgstr "Triangel öffnen"
+
+#. General MIDI instrument category
+msgid "chromatic percussion"
+msgstr "chromatisches Schlagzeug"
