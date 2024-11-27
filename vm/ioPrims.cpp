@@ -873,6 +873,20 @@ void hardwareInit() {
 		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 1, 1, 0};
 
+#elif defined(TTGO_RP2350)
+
+	#define BOARD_TYPE "TTGO RP2350"
+	#define DIGITAL_PINS 30
+	#define ANALOG_PINS 4
+	#define TOTAL_PINS DIGITAL_PINS
+	static const int analogPin[] = {A0, A1, A2, A3};
+	#define PIN_BUTTON_A 6
+	#define PIN_BUTTON_B 7
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 1, 1, 0, 0, 0, 0};
+
 #elif defined(TTGO_RP2040) // must come before ARDUINO_ARCH_RP2040
 
 	#define BOARD_TYPE "TTGO RP2040"

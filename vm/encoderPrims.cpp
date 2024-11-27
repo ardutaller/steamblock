@@ -98,7 +98,7 @@ public:
 
  		setPinMode(pinA, INPUT);
 		interruptHandler handler = pulseInterruptHandlerFor(encoderIndex);
-		attachInterrupt(interruptA, handler, interruptMode);
+		attachInterrupt(interruptA, handler, (PinStatus)interruptMode);
 
 		this->count = 0;
 		this->pinA = pinA;
