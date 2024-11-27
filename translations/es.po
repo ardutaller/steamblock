@@ -2264,7 +2264,7 @@ msgstr "Selecciona tu placa:"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks the given number of times."
 msgstr ""
-"Repite la ejecución de los bloques que contiene, el número de vece "
+"Repite la ejecución de los bloques que contiene, el número de veces "
 "especificado."
 
 #. Block right-click context menu tooltip
