@@ -332,30 +332,44 @@ method updateTranslation AuthoringSpecs translationData {
 	// Translation data is string consisting of three-line entries:
 	//	msgid "original string"
 	//	msgstr "translated string"
-	//	[optional extra msgstr lines to be concatenated]
+	//	[optional extra quoted lines to be concatenated to last msgstr]
 	//	<blank line>
 	//	...
 	// Lines starting with # are treated as comments
 
 	lines = (toList (lines translationData))
 	while ((count lines) >= 2) {
-		from = (removeFirst lines)
-		// ignore comments and blank lines
+		nextLine = (removeFirst lines)
+
+		// find origin string
 		while (and
 				((count lines) >= 2)
-				(or (beginsWith from '#') (isEmpty from))
+				(not (beginsWith nextLine 'msgid'))
 		) {
-			from = (parseGetText this (removeFirst lines) true)
-		}
-		if ((count lines) >= 1) {
 			nextLine = (removeFirst lines)
-			to = ''
-			while (not (or (beginsWith nextLine '#') (isEmpty nextLine))) {
-				to = (join to (parseGetText this nextLine false))
-				nextLine = (removeFirst lines)
-			}
-			atPut translationDictionary from to
 		}
+		from = (parseGetText this nextLine true)
+
+		// next destination string
+		while (and
+				((count lines) >= 1)
+				(not (beginsWith nextLine 'msgstr'))
+		) {
+			nextLine = (removeFirst lines)
+		}
+		to = (parseGetText this nextLine false)
+
+		// destination string may be split, let's find out
+		if ((count lines) > 1) {
+			nextLine = (removeFirst lines)
+			while (beginsWith nextLine '"') { // " happy highlighter
+				nextLine = (quoteUnescaped this nextLine)
+				length = (count nextLine)
+				to = (join to (substring nextLine 2 (length - 1)))
+				nextLine = (quoteUnescaped this (removeFirst lines))
+			}
+		}
+		atPut translationDictionary from to
 	}
 }
 
