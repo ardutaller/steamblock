@@ -96,9 +96,13 @@ public:
 		if (1 == edgeType) interruptMode = FALLING;
 		if (2 == edgeType) interruptMode = CHANGE;
 
- 		setPinMode(pinA, INPUT);
+		setPinMode(pinA, INPUT);
 		interruptHandler handler = pulseInterruptHandlerFor(encoderIndex);
+		#if defined(TTGO_RP2350) || defined(TTGO_RP2040)
 		attachInterrupt(interruptA, handler, (PinStatus)interruptMode);
+		#else
+		attachInterrupt(interruptA, handler, interruptMode);
+		#endif
 
 		this->count = 0;
 		this->pinA = pinA;
