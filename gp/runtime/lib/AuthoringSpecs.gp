@@ -332,6 +332,7 @@ method updateTranslation AuthoringSpecs translationData {
 	// Translation data is string consisting of three-line entries:
 	//	msgid "original string"
 	//	msgstr "translated string"
+	//	[optional extra msgstr lines to be concatenated]
 	//	<blank line>
 	//	...
 	// Lines starting with # are treated as comments
@@ -344,11 +345,16 @@ method updateTranslation AuthoringSpecs translationData {
 				((count lines) >= 2)
 				(or (beginsWith from '#') (isEmpty from))
 		) {
-			from = (removeFirst lines)
+			from = (parseGetText this (removeFirst lines) true)
 		}
 		if ((count lines) >= 1) {
-			to = (removeFirst lines)
-			atPut translationDictionary (parseGetText this from true) (parseGetText this to false)
+			nextLine = (removeFirst lines)
+			to = ''
+			while (not (or (beginsWith nextLine '#') (isEmpty nextLine))) {
+				to = (join to (parseGetText this nextLine false))
+				nextLine = (removeFirst lines)
+			}
+			atPut translationDictionary from to
 		}
 	}
 }
