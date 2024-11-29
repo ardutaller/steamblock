@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2024-11-28 14:12+0000\n"
+"PO-Revision-Date: 2024-11-29 14:20+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -6121,3 +6121,35 @@ msgstr "Ejemplos"
 #. MicroBlocks IDE message
 msgid "Connect board to proceed."
 msgstr "Conecta la placa para continuar."
+
+#. CallioGamer library block
+msgid "Y pressed"
+msgstr "botón Y pulsado"
+
+#. CallioGamer library block
+msgid "A pressed"
+msgstr "botón A pulsado"
+
+#. CallioGamer library block
+msgid "LEFT pressed"
+msgstr "botón IZQUIERDA pulsado"
+
+#. CallioGamer library block
+msgid "RIGHT pressed"
+msgstr "botón DERECHA pulsado"
+
+#. CallioGamer library block
+msgid "UP pressed"
+msgstr "botón ARRIBA pulsado"
+
+#. CallioGamer library block
+msgid "DOWN pressed"
+msgstr "botón ABAJO pulsado"
+
+#. CallioGamer library block
+msgid "X pressed"
+msgstr "botón X pulsado"
+
+#. CallioGamer library block
+msgid "B pressed"
+msgstr "botón B pulsado"
