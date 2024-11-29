@@ -260,10 +260,13 @@ defineClass MicroBlocksSelectionContents morph
 method initialize MicroBlocksSelectionContents someBlocks duplicating aScripter {
 	morph = (newMorph this)
 	for block someBlocks {
-		if duplicating {
-			addPart morph (morph (duplicate block))
-		} else {
-			addPart morph (morph block)
+		// prevent block definition header parameters from being duplicated as rogue variables
+		if (not (isClass (handler (owner (morph block))) 'BlockSectionDefinition')) {
+			if duplicating {
+				addPart morph (morph (duplicate block))
+			} else {
+				addPart morph (morph block)
+			}
 		}
 	}
 	addPart (morph (scriptEditor aScripter)) morph // just so it can be animated back to its owner
