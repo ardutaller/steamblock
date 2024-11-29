@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2024-11-29 14:22+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2024-11-30 15:00+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -6143,7 +6143,6 @@ msgid "UP pressed"
 msgstr "botón ARRIBA pulsado"
 
 #. CallioGamer library block
-#, fuzzy
 msgid "DOWN pressed"
 msgstr "botón ABAJO pulsado"
 
