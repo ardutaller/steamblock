@@ -4435,7 +4435,7 @@ msgstr "UP pressed"
 
 #. CallioGamer library block
 msgid "DOWN pressed"
-msgstr "UP pressed"
+msgstr "DOWN pressed"
 
 #. CallioGamer library block
 msgid "X pressed"
