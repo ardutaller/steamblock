@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-11-30 15:00+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2024-12-02 11:00+0000\n"
+"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -4397,7 +4397,7 @@ msgstr "Puffergrößen _ Client-ID _"
 
 #. MQTT library block
 msgid "topic for MQTT event _"
-msgstr "Thema für MQTT-Ereignis"
+msgstr "MQTT Thema für Ereignis _"
 
 #. MQTT library block
 msgid "binary _"
@@ -4490,7 +4490,7 @@ msgstr "ein"
 
 #. MQTT library block
 msgid "payload for MQTT event _"
-msgstr "Payload für MQTT-Ereignis"
+msgstr "MQTT Payload für Ereignis _"
 
 #. MQTT library block
 msgid "MQTT event"
@@ -5746,3 +5746,7 @@ msgstr "Triangel öffnen"
 #. General MIDI instrument category
 msgid "chromatic percussion"
 msgstr "chromatisches Schlagzeug"
+
+#. MQTT library block
+msgid "MQTT set will topic _ payload _"
+msgstr "MQTT setze Will Abschnitt _ Payload _"
