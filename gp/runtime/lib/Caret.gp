@@ -141,7 +141,7 @@ method textinput Caret evt keyboard {
 	insertRight this (at evt 'text')
 	if (and ('numerical' == (editRule target)) (not (representsANumber (text target)))) {
 		setText target old
-		moveLeft this
+		moveLeft this false false
 	}
 }
 
