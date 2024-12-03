@@ -1124,6 +1124,28 @@ OBJ primConvertType(int argCount, OBJ *args) {
 	return result;
 }
 
+OBJ primToString(int argCount, OBJ *args) {
+	if (argCount < 1) return fail(notEnoughArguments);
+	OBJ srcObj = args[0];
+	char s[32]; // buffer for number-to-string conversion
+	const char *s2 = NULL;
+
+	switch (objType(srcObj)) {
+	case BooleanType:
+		return newStringFromBytes(((srcObj == trueObj) ? "1" : "0"), 1);
+	case IntegerType:
+		sprintf(s, "%d", obj2int(srcObj));
+		return newStringFromBytes(s, strlen(s));
+	case StringType:
+		return srcObj;
+	case ListType:
+	case ByteArrayType:
+		s2 = obj2str(srcObj);
+		return newStringFromBytes(s2, strlen(s2));
+	}
+	return newString(0);
+}
+
 // Primitives
 
 static PrimEntry entries[] = {
@@ -1142,6 +1164,7 @@ static PrimEntry entries[] = {
 	{"asByteArray", primAsByteArray},
 	{"freeMemory", primFreeMemory},
 	{"convertType", primConvertType},
+	{"toString", primToString},
 };
 
 void addDataPrims() {

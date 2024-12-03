@@ -151,6 +151,7 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' 'and'				'_ and _' 'bool bool' true false)
 		(array 'r' 'or'					'_ or _ ' 'bool bool' true false)
 		'-'
+		(array 'r' '[data:toString]'	'“ _ ”' 'auto' '123')
 		(array 'r' 'isType'				'_ is a _' 'auto menu.typesMenu' 123 'number')
 		(array 'r' '[data:convertType]'	'convert _ to _' 'auto menu.typesMenu' 123 'number')
 	'cat;Operators-Advanced'
