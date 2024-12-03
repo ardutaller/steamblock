@@ -493,7 +493,7 @@ method contextMenu Text {
 		addItem menu 'stop editing' 'stopEditing'
 	}
 	addItem menu 'select all' 'selectAll'
-	if (isClass (handler (owner morph)) 'InputSlot') {
+	if (and (isClass (handler (owner morph)) 'InputSlot') (not (isMicroBlocks)))  {
 		addLine menu
 		addSlotSwitchItems (handler (owner morph)) menu
 	}

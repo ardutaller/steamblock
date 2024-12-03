@@ -652,6 +652,7 @@ method broadcastMenu InputSlot {
 // context menu - type switching
 
 method rightClicked InputSlot aHand {
+	if (isMicroBlocks) { return true } // MicroBlocks no longer supports slot type switching
 	popUpAtHand (contextMenu this) (page aHand)
 	return true
 }
