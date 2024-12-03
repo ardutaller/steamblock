@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-02 11:00+0000\n"
+"PO-Revision-Date: 2024-12-04 07:13+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1541,12 +1541,12 @@ msgstr "BMX280 Höhe (cm)"
 #. Variable right-click context menu tooltip
 msgid "find scripts or block definitions where this variable is being read"
 msgstr ""
-"sucht Skript- oder Blockdefinitionen, in denen diese Variable lesen wird"
+"suche Skript- oder Blockdefinitionen, in denen diese Variable gelesen wird"
 
 #. Block right-click context menu tooltip
 msgid "find scripts or block definitions using this block"
 msgstr ""
-"sucht Skript- oder Blockdefinitionen, in denen dieser Block verwendet wird"
+"suche Skript- oder Blockdefinitionen, in denen dieser Block verwendet wird"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Call the function with the given name and optional parameter list."
@@ -1888,7 +1888,7 @@ msgstr "lade und installiere aktuelle VM"
 #. Variable right-click context menu tooltip
 msgid "find scripts or block definitions where this variable is being set or changed"
 msgstr ""
-"sucht Skript- oder Blockdefinitionen, in denen diese Variable gesetzt oder "
+"suche Skript- oder Blockdefinitionen, in denen diese Variable gesetzt oder "
 "geändert wird"
 
 #. Block in Output category
@@ -3276,7 +3276,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Create a variable local to the containing script with the given initial value."
 msgstr ""
-"Erzeugt eine lokale Variable im enthaltenen Skript mit dem angegebenen "
+"Erzeuge eine lokale Variable im enthaltenen Skript und setze den angegebenen "
 "Anfangswert."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
@@ -3906,7 +3906,7 @@ msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks indefinitely."
-msgstr "Wiederholt die umschlossenen Blöcke dauerhaft."
+msgstr "Wiederhole die umschlossenen Blöcke dauerhaft."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Wait the given number of microseconds."
