@@ -7,7 +7,7 @@ Includes abstractions for note durations, bars and beats.
 '
 variables _rhy_tempo _rhy_bars _rhy_beat_duration _rhy_measures _rhy_reference_note 
 
-  spec ' ' 'rhy_set tempo' 'set tempo to _ bpm at _ / _ signature' 'num num num' 250 4 4
+  spec ' ' 'rhy_set tempo' 'set tempo to _ bpm at _ / _ signature' 'num num num' 120 4 4
   spec ' ' 'rhy_set bars' 'set pattern to _ bars' 'num' 16
   space
   spec 'r' 'rhy_current bar' 'current bar'
@@ -43,12 +43,12 @@ to '_rhy between' foo a b {
 }
 
 to '_rhy duration of note value' 'note value' {
-  if (_rhy_beat_duration == 0) {'rhy_set tempo' 250 4 4}
+  if (_rhy_beat_duration == 0) {'rhy_set tempo' 120 4 4}
   return ((_rhy_beat_duration * _rhy_reference_note) / (v 'note value'))
 }
 
 to 'rhy wait until bar' 'bar number' {
-  if (_rhy_beat_duration == 0) {'rhy_set tempo' 250 4 4}
+  if (_rhy_beat_duration == 0) {'rhy_set tempo' 120 4 4}
   if (_rhy_bars == 0) {'rhy_set bars' 16}
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
   local 'round duration' ((v 'bar duration') * _rhy_bars)
@@ -57,7 +57,7 @@ to 'rhy wait until bar' 'bar number' {
 }
 
 to 'rhy wait until beat' 'beat number' {
-  if (_rhy_beat_duration == 0) {'rhy_set tempo' 250 4 4}
+  if (_rhy_beat_duration == 0) {'rhy_set tempo' 120 4 4}
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
   local 'wakeTime' (((v 'bar duration') * (((millisOp) / (v 'bar duration')) + 1)) + (((v 'beat number') - 1) * _rhy_beat_duration))
   waitMillis ((wakeTime - (millisOp)) % (v 'bar duration'))
