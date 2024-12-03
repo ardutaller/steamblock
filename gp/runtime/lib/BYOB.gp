@@ -820,15 +820,15 @@ method element InputDeclaration typeStr blockColor {
 	slotContent = typeStr
 	if ('num' == typeStr) {
 		editRule = 'numerical'
-		slotContent = 42
+		slotContent = 123
 	}
 	if ('str' == typeStr) {
 		editRule = 'editable'
-		slotContent = 'text'
+		slotContent = 'ABC'
 	}
 	if ('auto' == typeStr) {
 		editRule = 'auto'
-		slotContent = 'auto'
+		slotContent = ''
 	}
 	if ('bool' == typeStr) {
 		slotContent = true
@@ -854,13 +854,13 @@ method element InputDeclaration typeStr blockColor {
 method typesMenu InputDeclaration {
 	// slot types: 'auto' 'num' 'str' 'bool' 'color' 'cmd' 'var' 'menu'
 	menu = (menu nil (action 'setType' this) true)
-	addItem menu 'number/string' 'auto' 'editable number or string'
+	addItem menu '' 'auto' 'number or string' (fullCostume (morph (element this 'auto')))
+	if (devMode) {
+		addItem menu '' 'num' 'number only' (fullCostume (morph (element this 'num')))
+		addItem menu '' 'str' 'string only' (fullCostume (morph (element this 'str')))
+		addLine menu
+	}
 	addItem menu '' 'bool' 'boolean switch' (fullCostume (morph (element this 'bool')))
 	addItem menu '' 'color' 'color patch' (fullCostume (morph (element this 'color')))
-	if (devMode) {
-		addLine menu
-		addItem menu 'number only' 'num'
-		addItem menu 'string only' 'str'
-	}
 	popUp menu (global 'page') (left morph) (bottom morph)
 }
