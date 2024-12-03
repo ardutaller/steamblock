@@ -91,18 +91,17 @@ public:
 		int interruptA = digitalPinToInterrupt(pinA);
 		if (interruptA == -1) return -2; // a pin does not support interrupts
 
-		// edgeType: 0 - rising edge (default), 1 - falling edge, 2 - pin change
-		int interruptMode = RISING; // default
-		if (1 == edgeType) interruptMode = FALLING;
-		if (2 == edgeType) interruptMode = CHANGE;
-
 		setPinMode(pinA, INPUT);
 		interruptHandler handler = pulseInterruptHandlerFor(encoderIndex);
-		#if defined(TTGO_RP2350) || defined(TTGO_RP2040)
-		attachInterrupt(interruptA, handler, (PinStatus)interruptMode);
-		#else
-		attachInterrupt(interruptA, handler, interruptMode);
-		#endif
+
+		// edgeType: 1 - falling edge, 2 - pin change, default - rising edge
+		if (1 == edgeType) {
+			attachInterrupt(interruptA, handler, FALLING);
+		} else if (2 == edgeType) {
+			attachInterrupt(interruptA, handler, CHANGE);
+		} else { // default
+			attachInterrupt(interruptA, handler, RISING);
+		}
 
 		this->count = 0;
 		this->pinA = pinA;
@@ -237,7 +236,6 @@ static OBJ primStartPulseCounter(int argCount, OBJ *args) {
 	}
 	int encoderIndex = obj2int(args[0]) - 1;
 	int pin = obj2int(args[1]);
-	// edgeType: 0 - rising edge (default), 1 - falling edge, 2 - pin change
 	int edgeType = ((argCount > 2) && isInt(args[2])) ? obj2int(args[2]) : 0;
 
 	int err = 1;
@@ -248,7 +246,6 @@ static OBJ primStartPulseCounter(int argCount, OBJ *args) {
 
 	return falseObj;
 }
-
 
 // Primitives
 
