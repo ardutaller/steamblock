@@ -189,7 +189,7 @@ to 'scales_circle rotation' n majors minors dims {
 }
 
 to scales_improv scale 'bar count' 'possible durations' destination channel/pin volume {
-  if (_rhy_beat_duration == 0) {'rhy_set tempo' 250 4 4}
+  if (_rhy_beat_duration == 0) {'rhy_set tempo' 120 4 4}
   local 'next note' (at 'random' scale)
   local 'max jump' 4
   if (isType (v 'possible durations') 'string') {
@@ -228,7 +228,7 @@ to scales_improv scale 'bar count' 'possible durations' destination channel/pin 
 to scales_improvisation scale 'bar count' 'possible durations' {
   local 'impro' ('[data:makeList]' ('[data:makeList]') ('[data:makeList]'))
   if (_rhy_beat_duration == 0) {
-    'rhy_set tempo' 250 4 4
+    'rhy_set tempo' 120 4 4
   }
   local 'next note' (at 'random' scale)
   local 'max jump' 4
