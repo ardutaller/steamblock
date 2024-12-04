@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-29 09:24+0200\n"
-"PO-Revision-Date: 2024-11-13 06:00+0000\n"
+"PO-Revision-Date: 2024-12-05 08:00+0000\n"
 "Last-Translator: Peter Mathijssen <pmathijssen@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/microblocks/ide/nl/"
 ">\n"
@@ -1241,7 +1241,7 @@ msgstr "lijst _ bevat _"
 
 #. Lists library block
 msgid "circular item _ of _"
-msgstr ""
+msgstr "circulair item _ van _"
 
 #. Example string. Tells the user this input accepts a list or a string
 msgid "aListOrString"
@@ -1571,11 +1571,11 @@ msgstr "schaar"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr ""
+msgstr "initialiseer i2c _ adres(hex) _ reset pin# _ flip _"
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr ""
+msgstr "initialiseer spi _ d/c pin# _ reset pin# _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -1615,7 +1615,7 @@ msgstr "vul rechthoek x _ y _ b _ h _ wissen _"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr ""
+msgstr "_ draai display boven _"
 
 #. OLED Graphics library block
 msgid "make image _"
@@ -3367,7 +3367,7 @@ msgstr "m:s vochtigheid %"
 
 #. micro:STEAMakers library block
 msgid "ms inclination towards _ º"
-msgstr ""
+msgstr "ms helling richting _ º"
 
 #. micro:STEAMakers library block
 msgid "ms energy _"
@@ -3527,91 +3527,91 @@ msgstr "TdR ontvang IR code"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set _ led to _"
-msgstr ""
+msgstr "Imagina zet _ led op _"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina play _ octave _ for _ ms"
-msgstr ""
+msgstr "Imagina speel _ octaaf _ voor _ ms"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina temperature (°C)"
-msgstr ""
+msgstr "Imagina temperatuur (°C)"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina light"
-msgstr ""
+msgstr "Imagina licht"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina distance (cm)"
-msgstr ""
+msgstr "Imagina afstand (cm)"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina button (D2) pressed?"
-msgstr ""
+msgstr "Imagina knop (D2) ingedrukt?"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina digital reading _"
-msgstr ""
+msgstr "Imagina digitaal lezen _"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina analog reading A1"
-msgstr ""
+msgstr "Imagina analoog lezen A1"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set digital pin _ to _"
-msgstr ""
+msgstr "Imagina zet digitale pin _ op _"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina stop servo _"
-msgstr ""
+msgstr "Imagina stop servo _"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set servo _ to _ degrees (-90 to 90)"
-msgstr ""
+msgstr "Imagina zet servo _ naar _ graden (-90-90)"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set servo _ to speed _ (-100 to 100)"
-msgstr ""
+msgstr "Imagina zet servo _ naar snelheid _ (-100 tot 100)"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set _ speed to _ %"
-msgstr ""
+msgstr "Imagina zet _ snelheid naar _ %"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set _ to _"
-msgstr ""
+msgstr "Imagina zet _ naar _"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina IR reading"
-msgstr ""
+msgstr "Imagina IR lezen"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina IR transmit device _ command _"
-msgstr ""
+msgstr "Imagina IR verstuur apparaat _ opdracht _"
 
 #. InnovaDidàctic 3DBot library block
 msgid "_ steps"
-msgstr ""
+msgstr "_ stappen"
 
 #. InnovaDidàctic 3DBot library block
 msgid "at _ % speed"
-msgstr ""
+msgstr "met _ % snelheid"
 
 #. InnovaDidàctic 3DBot library block
 msgid "3dBot set speed at _ %"
-msgstr ""
+msgstr "3dBot stel snelheid in op _ %"
 
 #. InnovaDidàctic 3DBot library block
 msgid "3dBot obstacle < _ cm?"
-msgstr ""
+msgstr "3dBot obstakel < _ cm?"
 
 #. InnovaDidàctic 3DBot library block
 msgid "3dBot line on _ ?"
-msgstr ""
+msgstr "3dBot lijn op _ ?"
 
 #. Keyestudio Smart Farm library block
 msgid "voltage (V)"
-msgstr ""
+msgstr "voltage (V)"
 
 #. Keyestudio Smart Farm library block
 msgid "current (mA)"
@@ -4325,31 +4325,31 @@ msgstr ""
 
 #. Octostudio communication library block
 msgid "Octo beam to phones _"
-msgstr ""
+msgstr "Octo stuur naar telefoons _"
 
 #. Octostudio communication library block
 msgid "duration _ ms"
-msgstr ""
+msgstr "duur _ ms"
 
 #. Octostudio communication library block
 msgid "Octo beam received?"
-msgstr ""
+msgstr "Octo bericht ontvangen?"
 
 #. Octostudio communication library block
 msgid "Octo last beam"
-msgstr ""
+msgstr "Octo laatste bericht"
 
 #. Octostudio communication library block
 msgid "Octo set group _ (0-99)"
-msgstr ""
+msgstr "Octo zet groep _ (0-99)"
 
 #. Octostudio communication library block
 msgid "Octo receive beam"
-msgstr ""
+msgstr "Octo ontvang bericht"
 
 #. Octostudio communication library block
 msgid "Octo stop"
-msgstr ""
+msgstr "Octo stop"
 
 #. In MicroBlocks IDE project menu
 msgid "New"
@@ -4598,7 +4598,7 @@ msgstr "afdrukbaar (200%)"
 
 #. Block selection right-click context menu
 msgid "duplicate selection"
-msgstr ""
+msgstr "dupliceer selectie"
 
 #. Block selection right-click context menu
 msgid "drag selection"
@@ -4670,19 +4670,23 @@ msgstr ""
 
 #. Settings menu option
 msgid "hide implementation blocks"
-msgstr ""
+msgstr "verberg implementatie blokken"
 
 #. Settings menu tooltip
 msgid "do not show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
 msgstr ""
+"laat geen interne blokken en variabelen zien die bij bibliotheken horen ("
+"bijv. de blokken die beginnen met een underscore)"
 
 #. Settings menu option
 msgid "show implementation blocks"
-msgstr ""
+msgstr "laat implementatie blokken zien"
 
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
 msgstr ""
+"laat blokken en variabelen zien die in bibliotheken zitten (bijv. de blokken "
+"waarvan de namen beginnen met een underscore)"
 
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
@@ -5920,3 +5924,139 @@ msgstr "BLE verbonden"
 #, fuzzy
 msgid "install ESP firmware from microblocks.fun"
 msgstr "Installeer ESP firmware van microblocks.fun"
+
+#. Examples folder
+msgid "folder;Music"
+msgstr "Muziek"
+
+#. Examples folder
+msgid "folder;Web of Things"
+msgstr "Web of Things"
+
+#. Examples folder
+msgid "folder;CPX"
+msgstr "CPX"
+
+#. Examples folder
+msgid "folder;Citilab ED1 and M5Stack"
+msgstr "Citilab ED1 en M5Stack"
+
+#. Examples folder
+msgid "folder;Art"
+msgstr "Kunst"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "verlaat lus"
+
+#. CallioGamer library block
+msgid "B pressed"
+msgstr "B ingedrukt"
+
+#. micro:STEAMakers library block
+msgid "ms;stop"
+msgstr "stop"
+
+#. Examples folder
+msgid "folder; by board"
+msgstr " per board"
+
+#. Examples folder
+msgid "folder;Games"
+msgstr "Spellen"
+
+#. Examples folder
+msgid "folder;microbit and Calliope"
+msgstr "microbit en Calliope"
+
+#. WiFi library block
+msgid "allow WiFi while using BLE _"
+msgstr "sta WIFI toe terwijl je BLE gebruikt _"
+
+#. BLE Radio library block
+msgid "ble send number _"
+msgstr "ble zend nummer _"
+
+#. BLE Radio library block
+msgid "ble send string _"
+msgstr "ble zend tekenreeks _"
+
+#. BLE Radio library block
+msgid "ble send pair _ = _"
+msgstr "ble zend paar _ = _"
+
+#. BLE Radio library block
+msgid "ble message received?"
+msgstr "ble bericht ontvangen?"
+
+#. BLE Radio library block
+msgid "ble last number"
+msgstr "ble laatste nummer"
+
+#. BLE Radio library block
+msgid "ble last string"
+msgstr "ble laatste tekenreeks"
+
+#. BLE Radio library block
+msgid "ble set group _ (0-255)"
+msgstr "ble zet groep _ (0-255)"
+
+#. BLE Scanner library block
+msgid "scan received"
+msgstr "scan ontvangen"
+
+#. BLE Scanner library block
+msgid "address"
+msgstr "adres"
+
+#. BLE Scanner library block
+msgid "RSSI"
+msgstr "RSSI"
+
+#. BLE Scanner library block
+msgid "address type"
+msgstr "adres type"
+
+#. BLE Scanner library block
+msgid "device name"
+msgstr "apparaatnaam"
+
+#. BLE Scanner library block
+msgid "hasType _"
+msgstr "heeftType _"
+
+#. CallioGamer library block
+msgid "A pressed"
+msgstr "A ingedrukt"
+
+#. CallioGamer library block
+msgid "LEFT pressed"
+msgstr "LINKS ingedrukt"
+
+#. CallioGamer library block
+msgid "RIGHT pressed"
+msgstr "RECHTS ingedrukt"
+
+#. CallioGamer library block
+msgid "UP pressed"
+msgstr "OMHOOG ingedrukt"
+
+#. CallioGamer library block
+msgid "DOWN pressed"
+msgstr "OMLAAG ingedrukt"
+
+#. CallioGamer library block
+msgid "X pressed"
+msgstr "X ingedrukt"
+
+#. CallioGamer library block
+msgid "Y pressed"
+msgstr "Y ingedrukt"
+
+#. MicroBlocks IDE message
+msgid "Connect board to proceed."
+msgstr "Verbind board om verder te gaan."
+
+#. Examples folder
+msgid "folder;Examples"
+msgstr "Voorbeelden"
