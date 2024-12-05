@@ -239,7 +239,7 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate);
 		delayMicroseconds(5); // wait for garbage byte when first opening the serial port after a reset (seen at 115200 baud)
 		SERIAL_PORT.begin(baudRate); // reset to discard garbage byte
-	#elif defined(ESP32)
+	#elif defined(ESP32_ORIGINAL)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
 	#else
 		SERIAL_PORT.begin(baudRate);
