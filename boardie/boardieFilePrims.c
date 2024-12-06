@@ -50,7 +50,7 @@ int openFile(char *fileName, int createIfNotExists) {
 		}
 
 		// some file ops take a _long_ time to run so we yield after max_cycles
-		window.max_cycles = 512;
+		window.max_cycles = 50000;
 
 		if (!window.fileCharPositions) { window.fileCharPositions = {}; }
 		if (!window.fileCharPositions[fileName] || $1) {
