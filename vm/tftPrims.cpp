@@ -768,6 +768,8 @@ static int hasTFT() {
 	return useTFT;
 }
 
+uint16_t bufferPixels[TFT_WIDTH * 8]; // used by primPixelRow and primDrawBuffer
+
 static int color24to16b(int color24b) {
 	// Convert 24-bit RGB888 format to the TFT's target pixel format.
 	// Return [0..1] for 1-bit display, [0-255] for grayscale, and RGB565 for 16-bit color.
@@ -929,6 +931,33 @@ static OBJ primSetPixel(int argCount, OBJ *args) {
 	int y = obj2int(args[1]);
 	int color16b = color24to16b(obj2int(args[2]));
 	tft.drawPixel(x, y, color16b);
+	UPDATE_DISPLAY();
+	return falseObj;
+}
+
+static OBJ primPixelRow(int argCount, OBJ *args) {
+	// Draw a single row of pixels (a list) at the given y.
+	// Used to accelerate BMP file display and other bitmap operations.
+
+	if (!hasTFT()) return falseObj;
+
+	OBJ pixelListObj = args[0];
+	if (!IS_TYPE(pixelListObj, ListType)) return fail(needsListError);
+	int pixelCount = obj2int(FIELD(pixelListObj, 0));
+
+	int x = obj2int(args[1]);
+	if ((x < 0) || (x >= TFT_WIDTH)) return falseObj;
+
+	int y = obj2int(args[2]);
+	if ((y < 0) || (y >= TFT_HEIGHT)) return falseObj;
+
+	if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
+
+	for (int i = 0; i < pixelCount; i++) {
+		OBJ pixelObj = FIELD(pixelListObj, (i + 1));
+		bufferPixels[i] = (isInt(pixelObj)) ? color24to16b(obj2int(pixelObj)) : 0;
+	}
+	tft.drawRGBBitmap(x, y, bufferPixels, pixelCount, 1);
 	UPDATE_DISPLAY();
 	return falseObj;
 }
@@ -1112,8 +1141,6 @@ static OBJ primMergeBitmap(int argCount, OBJ *args) {
 	}
 	return falseObj;
 }
-
-uint16_t bufferPixels[TFT_WIDTH * 8];
 
 static OBJ primDrawBuffer(int argCount, OBJ *args) {
 	if (!hasTFT()) return falseObj;
@@ -1314,6 +1341,7 @@ static PrimEntry entries[] = {
 	{"getWidth", primGetWidth},
 	{"getHeight", primGetHeight},
 	{"setPixel", primSetPixel},
+	{"pixelRow", primPixelRow},
 	{"line", primLine},
 	{"rect", primRect},
 	{"roundedRect", primRoundedRect},

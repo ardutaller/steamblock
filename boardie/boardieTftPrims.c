@@ -102,6 +102,38 @@ static OBJ primSetPixel(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+static OBJ primPixelRow(int argCount, OBJ *args) {
+	// Draw a single row of pixels (a list) at the given y.
+	// Used to accelerate BMP file display and other bitmap operations.
+
+	tftInit();
+
+	OBJ pixelListObj = args[0];
+	if (!IS_TYPE(pixelListObj, ListType)) return fail(needsListError);
+	int pixelCount = obj2int(FIELD(pixelListObj, 0));
+
+	int x = obj2int(args[1]);
+	if ((x < 0) || (x >= DEFAULT_WIDTH)) return falseObj;
+
+	int y = obj2int(args[2]);
+	if ((y < 0) || (y >= DEFAULT_HEIGHT)) return falseObj;
+
+	if (pixelCount > (DEFAULT_WIDTH - x)) pixelCount = DEFAULT_WIDTH - x;
+
+	for (int i = 0; i < pixelCount; i++) {
+		OBJ pixelObj = FIELD(pixelListObj, (i + 1));
+		int rgb = (isInt(pixelObj)) ? obj2int(pixelObj) : 0;
+		EM_ASM_({
+				window.ctx.fillStyle = window.rgbFrom24b($2);
+				window.ctx.fillRect($0, $1, 1, 1);
+			},
+			x + i, y, rgb
+		);
+	}
+	tftChanged();
+	return falseObj;
+}
+
 static OBJ primLine(int argCount, OBJ *args) {
 	tftInit();
 	EM_ASM_({
@@ -570,6 +602,7 @@ static PrimEntry entries[] = {
 	{"getWidth", primGetWidth},
 	{"getHeight", primGetHeight},
 	{"setPixel", primSetPixel},
+	{"pixelRow", primPixelRow},
 	{"line", primLine},
 	{"rect", primRect},
 	{"roundedRect", primRoundedRect},
