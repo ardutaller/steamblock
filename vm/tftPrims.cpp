@@ -938,7 +938,9 @@ static OBJ primSetPixel(int argCount, OBJ *args) {
 static OBJ primPixelRow(int argCount, OBJ *args) {
 	// Draw a single row of pixels (a list or byte array) at the given y.
 	// If a byte array is provided the optional argument bytesPerPixel
-	// determines the pixel size: 3 or 4 bytes. Assumes GBRA order.
+	// determines the pixel size: 2, 3 or 4 bytes.
+	// 2 means 16-bit RGB565 pixels; -2 means 16-bit RGB555 pixels.
+	// 32 and 24 bit pixels are RGB(A) byte order. (Alpha of 32-bit pixels is ignored).
 	// Used to accelerate BMP file display and other bitmap operations.
 
 	if (!hasTFT()) return falseObj;
@@ -949,7 +951,13 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 	int y = obj2int(args[2]);
 	if ((y < 0) || (y >= TFT_HEIGHT)) return falseObj;
 	int bytesPerPixel = ((argCount > 3) && isInt(args[3])) ? obj2int(args[3]) : 4;
-	if ((bytesPerPixel < 3) || (bytesPerPixel > 4)) return falseObj;
+
+	int isRGB565 = true;
+	if (bytesPerPixel < 0) {
+		isRGB565 = false; // -2 means 16-bit RGB555 (vs. RGB565)
+		bytesPerPixel = -bytesPerPixel;
+	}
+	if ((bytesPerPixel < 2) || (bytesPerPixel > 4)) return falseObj;
 
 	if (IS_TYPE(pixelDataObj, ListType)) {
 		int pixelCount = obj2int(FIELD(pixelDataObj, 0));
@@ -963,10 +971,20 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 		int pixelCount = BYTES(pixelDataObj) / bytesPerPixel;
 		if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
 		uint8 *byte = (uint8 *) &FIELD(pixelDataObj, 0);
-		// 24-bit or 32-bit pixels
-		for (int i = 0; i < pixelCount; i++) {
-			bufferPixels[i] = color24to16b((byte[2] << 16) | (byte[1] << 8) | byte[0]);
-			byte += bytesPerPixel;
+		if (2 == bytesPerPixel) {
+			for (int i = 0; i < pixelCount; i++) {
+				int pixel = (byte[1] << 8) | byte[0];
+				int r = isRGB565 ? ((pixel >> 8) & 248) : ((pixel >> 7) & 248);
+				int g = isRGB565 ? ((pixel >> 3) & 248) : ((pixel >> 2) & 248);
+				int b = (pixel << 3) & 248;
+				bufferPixels[i] = color24to16b((r << 16) | (g << 8) | b);
+				byte += bytesPerPixel;
+			}
+		} else { // 24-bit or 32-bit pixels
+			for (int i = 0; i < pixelCount; i++) {
+				bufferPixels[i] = color24to16b((byte[2] << 16) | (byte[1] << 8) | byte[0]);
+				byte += bytesPerPixel;
+			}
 		}
 		tft.drawRGBBitmap(x, y, bufferPixels, pixelCount, 1);
 	}

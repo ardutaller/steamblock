@@ -103,32 +103,73 @@ static OBJ primSetPixel(int argCount, OBJ *args) {
 }
 
 static OBJ primPixelRow(int argCount, OBJ *args) {
-	// Draw a single row of pixels (a list) at the given y.
+	// Draw a single row of pixels (a list or byte array) at the given y.
+	// If a byte array is provided the optional argument bytesPerPixel
+	// determines the pixel size: 2, 3 or 4 bytes.
+	// 2 means 16-bit RGB565 pixels; -2 means 16-bit RGB555 pixels.
+	// 32 and 24 bit pixels are RGB(A) byte order. (Alpha of 32-bit pixels is ignored).
 	// Used to accelerate BMP file display and other bitmap operations.
 
 	tftInit();
 
-	OBJ pixelListObj = args[0];
-	if (!IS_TYPE(pixelListObj, ListType)) return fail(needsListError);
-	int pixelCount = obj2int(FIELD(pixelListObj, 0));
-
+	OBJ pixelDataObj = args[0];
 	int x = obj2int(args[1]);
 	if ((x < 0) || (x >= DEFAULT_WIDTH)) return falseObj;
-
 	int y = obj2int(args[2]);
 	if ((y < 0) || (y >= DEFAULT_HEIGHT)) return falseObj;
+	int bytesPerPixel = ((argCount > 3) && isInt(args[3])) ? obj2int(args[3]) : 4;
 
-	if (pixelCount > (DEFAULT_WIDTH - x)) pixelCount = DEFAULT_WIDTH - x;
+	int isRGB565 = true;
+	if (bytesPerPixel < 0) {
+		isRGB565 = false; // -2 means 16-bit RGB555 (vs. RGB565)
+		bytesPerPixel = -bytesPerPixel;
+	}
+	if ((bytesPerPixel < 2) || (bytesPerPixel > 4)) return falseObj;
 
-	for (int i = 0; i < pixelCount; i++) {
-		OBJ pixelObj = FIELD(pixelListObj, (i + 1));
-		int rgb = (isInt(pixelObj)) ? obj2int(pixelObj) : 0;
-		EM_ASM_({
-				window.ctx.fillStyle = window.rgbFrom24b($2);
-				window.ctx.fillRect($0, $1, 1, 1);
-			},
-			x + i, y, rgb
-		);
+	if (IS_TYPE(pixelDataObj, ListType)) {
+		int pixelCount = obj2int(FIELD(pixelDataObj, 0));
+		if (pixelCount > (DEFAULT_WIDTH - x)) pixelCount = DEFAULT_WIDTH - x;
+		for (int i = 0; i < pixelCount; i++) {
+			OBJ pixelObj = FIELD(pixelDataObj, (i + 1));
+			int rgb = (isInt(pixelObj)) ? obj2int(pixelObj) : 0;
+			EM_ASM_({
+					window.ctx.fillStyle = window.rgbFrom24b($2);
+					window.ctx.fillRect($0, $1, 1, 1);
+				},
+				x + i, y, rgb
+			);
+		}
+	} else if (IS_TYPE(pixelDataObj, ByteArrayType)) {
+		int pixelCount = BYTES(pixelDataObj) / bytesPerPixel;
+		if (pixelCount > (DEFAULT_WIDTH - x)) pixelCount = DEFAULT_WIDTH - x;
+		uint8 *byte = (uint8 *) &FIELD(pixelDataObj, 0);
+		if (2 == bytesPerPixel) {
+			for (int i = 0; i < pixelCount; i++) {
+				int pixel = (byte[1] << 8) | byte[0];
+				int r = isRGB565 ? ((pixel >> 8) & 248) : ((pixel >> 7) & 248);
+				int g = isRGB565 ? ((pixel >> 3) & 248) : ((pixel >> 2) & 248);
+				int b = (pixel << 3) & 248;
+				int rgb = (r << 16) | (g << 8) | b;
+				EM_ASM_({
+						window.ctx.fillStyle = window.rgbFrom24b($2);
+						window.ctx.fillRect($0, $1, 1, 1);
+					},
+					x + i, y, rgb
+				);
+				byte += bytesPerPixel;
+			}
+		} else { // 24-bit or 32-bit pixels
+			for (int i = 0; i < pixelCount; i++) {
+				int rgb = ((byte[2] << 16) | (byte[1] << 8) | byte[0]);
+				EM_ASM_({
+						window.ctx.fillStyle = window.rgbFrom24b($2);
+						window.ctx.fillRect($0, $1, 1, 1);
+					},
+					x + i, y, rgb
+				);
+				byte += bytesPerPixel;
+			}
+		}
 	}
 	tftChanged();
 	return falseObj;
