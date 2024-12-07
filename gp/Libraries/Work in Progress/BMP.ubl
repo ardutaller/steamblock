@@ -1,6 +1,6 @@
 module BMP Output
 author 'José García Yeste'
-version 2 2
+version 2 4
 depends TFT Files
 description 'Display BMP files on a TFT screen.
 
@@ -86,9 +86,10 @@ to '_bmp_drawBMP' filename originX originY {
     local 'y' originY
     local 'yIncrement' 1
   }
+  local 'bytesPerPixel' (_bmpBPP / 8)
   repeat (absoluteValue _bmpHeight) {
     local 'line' ('_bmp_readPixelLine' filename)
-    '[tft:pixelRow]' line originX y
+    '[tft:pixelRow]' line originX y bytesPerPixel
     y += yIncrement
   }
 }
@@ -193,7 +194,7 @@ to '_bmp_readLine' filename {
     _bmpLine = ('_bmp_RLEline' filename)
   } else {
     local 'byteCount' (((_bmpWidth * _bmpBPP) + 7) / 8)
-    _bmpLine = ('[data:newByteArray]' 0)
+    _bmpLine = ('[file:readBytes]' byteCount filename)
     repeatUntil ((size _bmpLine) >= byteCount) {
       _bmpLine = ('[data:join]' _bmpLine ('[file:readBytes]' (byteCount - (size _bmpLine)) filename))
     }
@@ -218,17 +219,14 @@ to '_bmp_readPixelLine' filename {
     for i (size _bmpLine) {
       atPut i _bmpPixelLine (at ((at _bmpLine i) + 1) _bmpPalette)
     }
-  } else {
-    local 'increment' (maximum (_bmpBPP / 8) 1)
-    local 'startIndex' 1
-    for i (size _bmpPixelLine) {
-      if (_bmpBPP == 16) {
+  } (_bmpBPP == 16) {
+      local 'startIndex' 1
+      for i (size _bmpPixelLine) {
         atPut i _bmpPixelLine ('_bmp_16BitPixel' _bmpLine startIndex)
-      } else {
-        atPut i _bmpPixelLine ('_bmp_24BitPixel' _bmpLine startIndex)
       }
-      startIndex += increment
-    }
+      startIndex += 2
+  } else { // 24-bit or 32-bit: use the byte array read from file
+    _bmpPixelLine = _bmpLine
   }
   '_bmp_alignLineData' filename
   return _bmpPixelLine
