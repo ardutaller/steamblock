@@ -219,12 +219,6 @@ to '_bmp_readPixelLine' filename {
     for i (size _bmpLine) {
       atPut i _bmpPixelLine (at ((at _bmpLine i) + 1) _bmpPalette)
     }
-  } (_bmpBPP == 16) {
-      local 'startIndex' 1
-      for i (size _bmpPixelLine) {
-        atPut i _bmpPixelLine ('_bmp_16BitPixel' _bmpLine startIndex)
-      }
-      startIndex += 2
   } else { // 24-bit or 32-bit: use the byte array read from file
     _bmpPixelLine = _bmpLine
   }
