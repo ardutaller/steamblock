@@ -936,28 +936,40 @@ static OBJ primSetPixel(int argCount, OBJ *args) {
 }
 
 static OBJ primPixelRow(int argCount, OBJ *args) {
-	// Draw a single row of pixels (a list) at the given y.
+	// Draw a single row of pixels (a list or byte array) at the given y.
+	// If a byte array is provided the optional argument bytesPerPixel
+	// determines the pixel size: 3 or 4 bytes. Assumes GBRA order.
 	// Used to accelerate BMP file display and other bitmap operations.
 
 	if (!hasTFT()) return falseObj;
 
-	OBJ pixelListObj = args[0];
-	if (!IS_TYPE(pixelListObj, ListType)) return fail(needsListError);
-	int pixelCount = obj2int(FIELD(pixelListObj, 0));
-
+	OBJ pixelDataObj = args[0];
 	int x = obj2int(args[1]);
 	if ((x < 0) || (x >= TFT_WIDTH)) return falseObj;
-
 	int y = obj2int(args[2]);
 	if ((y < 0) || (y >= TFT_HEIGHT)) return falseObj;
+	int bytesPerPixel = ((argCount > 3) && isInt(args[3])) ? obj2int(args[3]) : 4;
+	if ((bytesPerPixel < 3) || (bytesPerPixel > 4)) return falseObj;
 
-	if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
-
-	for (int i = 0; i < pixelCount; i++) {
-		OBJ pixelObj = FIELD(pixelListObj, (i + 1));
-		bufferPixels[i] = (isInt(pixelObj)) ? color24to16b(obj2int(pixelObj)) : 0;
+	if (IS_TYPE(pixelDataObj, ListType)) {
+		int pixelCount = obj2int(FIELD(pixelDataObj, 0));
+		if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
+		for (int i = 0; i < pixelCount; i++) {
+			OBJ pixelObj = FIELD(pixelDataObj, (i + 1));
+			bufferPixels[i] = (isInt(pixelObj)) ? color24to16b(obj2int(pixelObj)) : 0;
+		}
+		tft.drawRGBBitmap(x, y, bufferPixels, pixelCount, 1);
+	} else if (IS_TYPE(pixelDataObj, ByteArrayType)) {
+		int pixelCount = BYTES(pixelDataObj) / bytesPerPixel;
+		if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
+		uint8 *byte = (uint8 *) &FIELD(pixelDataObj, 0);
+		// 24-bit or 32-bit pixels
+		for (int i = 0; i < pixelCount; i++) {
+			bufferPixels[i] = color24to16b((byte[2] << 16) | (byte[1] << 8) | byte[0]);
+			byte += bytesPerPixel;
+		}
+		tft.drawRGBBitmap(x, y, bufferPixels, pixelCount, 1);
 	}
-	tft.drawRGBBitmap(x, y, bufferPixels, pixelCount, 1);
 	UPDATE_DISPLAY();
 	return falseObj;
 }
@@ -1312,6 +1324,7 @@ static OBJ primSetBacklight(int argCount, OBJ *args) { return falseObj; }
 static OBJ primGetWidth(int argCount, OBJ *args) { return int2obj(0); }
 static OBJ primGetHeight(int argCount, OBJ *args) { return int2obj(0); }
 static OBJ primSetPixel(int argCount, OBJ *args) { return falseObj; }
+static OBJ primPixelRow(int argCount, OBJ *args) { return falseObj; }
 static OBJ primLine(int argCount, OBJ *args) { return falseObj; }
 static OBJ primRect(int argCount, OBJ *args) { return falseObj; }
 static OBJ primRoundedRect(int argCount, OBJ *args) { return falseObj; }
