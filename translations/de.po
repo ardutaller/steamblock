@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-04 07:13+0000\n"
+"PO-Revision-Date: 2024-12-09 08:22+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1142,7 +1142,7 @@ msgstr "Schmetterling"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Reset Encoders"
-msgstr "Finch setze Kodierer zurück"
+msgstr "Finch setze Drehgeber zurück"
 
 #. Keyboard and Mouse library label
 msgid "Keyboard and Mouse"
@@ -1304,7 +1304,7 @@ msgstr "mische _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Turn _ _ ° at _ %"
-msgstr "Finch Drehe _ _ ° mit _ %"
+msgstr "Finch drehe _ _ ° mit _ %"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Distance (cm)"
@@ -2161,7 +2161,7 @@ msgstr "Drehknopf"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Move _ _ cm at _ %"
-msgstr "Finch Gehe _ _ cm mit _ %"
+msgstr "Finch gehe _ _ cm mit _ %"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Wheels L _ % R _ %"
@@ -2455,7 +2455,8 @@ msgstr "Firmware installiert"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
-msgstr "Verbinde das Board durch Klicken auf \"Verbinden\" neu."
+msgstr ""
+"Klicke auf \"Verbinden\", um dein MicroBlocks-Gerät erneut zu verbinden."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
@@ -2654,7 +2655,7 @@ msgstr "Eine neuere Version von %1 wurde gefunden."
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
-msgstr "Verbinden"
+msgstr "verbinden"
 
 #. In MicroBlocks IDE connection window. Serial port name to connect to.
 msgid "Port name?"
@@ -2895,7 +2896,7 @@ msgstr "unterstützt WiFi"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch _ Encoder"
-msgstr "Finch _ Kodierer"
+msgstr "Finch _ Drehgeber"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Backward"
@@ -3011,7 +3012,7 @@ msgstr "Willkommen auf dem MicroBlocks HTTP-Server"
 
 #. HTTP Server library block
 msgid "headers of request _"
-msgstr "Kopf der Anfrage _"
+msgstr "Header der Anfrage _"
 
 #. WebSocket server library label
 msgid "WebSocket server"
@@ -4618,19 +4619,19 @@ msgstr "Variation _"
 
 #. MIDI library block
 msgid "select MIDI instrument _ number _ for channel _"
-msgstr "wähle MIDI Instrument _ Nummer _ für Kanal _"
+msgstr "wähle MIDI-Instrument _ Nummer _ für Kanal _"
 
 #. MIDI library block
 msgid "select MIDI drum kit _"
-msgstr "wähle MIDI DrumKit _"
+msgstr "wähle MIDI-DrumKit _"
 
 #. MIDI library block
 msgid "select MIDI instrument _ for channel _"
-msgstr "wähle MIDI Instrument _ für Kanal _"
+msgstr "wähle MIDI-Instrument _ für Kanal _"
 
 #. MIDI library block
 msgid "play MIDI drum _ for _ ms volume _"
-msgstr "spiele MIDI Drum _ für _ ms Lautstärke _"
+msgstr "spiele MIDI-Drum _ für _ ms mit Lautstärke _"
 
 #. MIDI library block
 msgid "send MIDI start playing"
@@ -4662,7 +4663,7 @@ msgstr "sende MIDI Stop Playing"
 
 #. MIDI library block
 msgid "change MIDI control _ on channel _ to _"
-msgstr "ändere MIDI Control _ für Kanal _ auf _"
+msgstr "ändere MIDI-Control _ für Kanal _ auf _"
 
 #. MIDI library block
 msgid "set MIDI signal to pin _"
@@ -4860,7 +4861,7 @@ msgstr ""
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong setze Servo _ auf Geschwindigkeit _ (-100 bis 100)"
+msgstr "Wukong setze Servo _ auf Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
@@ -4880,7 +4881,7 @@ msgstr "stoppe mit Richtung _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ color to _"
-msgstr "WuKong2040 RegenbogenLED _ Farbe auf _"
+msgstr "WuKong2040 LED _ Farbe auf _"
 
 #. Wukong robot library label
 msgid "Wukong"
@@ -4900,7 +4901,7 @@ msgstr "Octopus OLED zeichne Pixel x _ y _"
 
 #. Wukong robot library block
 msgid "Wukong set LED brightness to _"
-msgstr "Wukong setze LEDhelligkeit auf _"
+msgstr "Wukong setze LED-Helligkeit auf _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
@@ -4908,7 +4909,7 @@ msgstr "WuKong2040 Motor _ Geschwindigkeit auf _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
-msgstr "Wukong setze Servo _ auf _ Grad (-90 to 90)"
+msgstr "Wukong setze Servo _ auf _ Grad (-90~90)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
@@ -4928,7 +4929,7 @@ msgstr "NeZha setze _ Servo _ Winkel auf _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "NeZha setze 360 ° Servo _ Geschwindigkeit auf _ %"
+msgstr "NeZha setze 360° Servo _ Geschwindigkeit auf _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
@@ -4956,11 +4957,11 @@ msgstr "retain _ QoS _"
 
 #. Sphero-RVR robot library block
 msgid "set RGB LED _ to red _ green _ blue _"
-msgstr "setze RGB LED _ auf Rot _ Grün_ Blau_"
+msgstr "setze LED _ auf Rot _ Grün_ Blau_"
 
 #. Sphero-RVR robot library block
 msgid "set all LEDs to red _ green _ blue _"
-msgstr "setze alle LEDs auf Rot _ Grün_ Blau_"
+msgstr "setze alle LEDs auf Rot _ Grün _ Blau _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop motor _"
@@ -4968,7 +4969,7 @@ msgstr "WuKong2040 stoppe Motor _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 clear all rainbowLED"
-msgstr "WuKong2040 lösche alle RegenbogenLEDs"
+msgstr "WuKong2040 lösche alle LEDs"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of DHT11 humidity (0~100) at pin _"
@@ -5044,7 +5045,7 @@ msgstr "g#"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong stelle Motor _ auf _ (-100 to 100)"
+msgstr "Wukong stelle Motor _ auf _ (-100~100)"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
@@ -5060,11 +5061,11 @@ msgstr "WuKong2040 alle Motoren stoppen"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 buzzer beep _ ms"
-msgstr "WuKong2040 Summer piepsen_ ms"
+msgstr "WuKong2040 Pieps _ ms"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
-msgstr "WuKong2040 RegenbogenLED _ R _ G _ B _ (0~255)"
+msgstr "WuKong2040 LED _ R _ G _ B _ (0~255)"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus OLED fill rectangle x _ y _ w _ h _"
@@ -5750,3 +5751,20 @@ msgstr "chromatisches Schlagzeug"
 #. MQTT library block
 msgid "MQTT set will topic _ payload _"
 msgstr "MQTT setze Will Abschnitt _ Payload _"
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "MIDI channel"
+msgstr "MIDI-Kanal"
+
+#. Musical scale name
+msgid "locrian"
+msgstr "lokrisch"
+
+#. Scales & Chords library label
+#. Abstractions for musical theory
+msgid "Scales & Chords"
+msgstr "Tonleitern & Akkorde"
+
+#. MIDI library block
+msgid "pitch bend MIDI channel _ to _ %"
+msgstr "pitch bend Midi-Kanal _ auf _ %"

@@ -2438,6 +2438,14 @@ msgid "send MIDI continue playing"
 msgstr "send MIDI continue playing"
 
 #. MIDI library block
+msgid "start MIDI clock"
+msgstr "start MIDI clock"
+
+#. MIDI library block
+msgid "stop MIDI clock"
+msgstr "stop MIDI clock"
+
+#. MIDI library block
 msgid "set MIDI signal to pin _"
 msgstr "set MIDI signal to pin _"
 
