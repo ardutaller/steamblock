@@ -27,6 +27,19 @@ vmData = (readFile '../blink_c3.bin' true)
 	closeSerialPort port
 }
 
+to espConnectTest portName {
+	espTool = (newESPTool)
+	openPort espTool (join '/dev/' portName) 'ESP32-C3'
+	print 'port opened; trying to connect'
+	connect espTool
+	waitMSecs 1000
+	exitBootMode espTool
+	print 'exited boot mode'
+	waitMSecs 1000
+	closePort espTool
+	print 'port closed'
+}
+
 method initialize ESPTool {
 	status = ''
 	port = nil
@@ -110,8 +123,12 @@ method connect ESPTool {
 	// Enter boot mode and connect to the ROM boot loader.
 
 	status = 'Connecting...'
-	repeat 30 {
-		enterBootMode this
+	for i 30 {
+		if (0 == (i & 1)) {
+			enterBootMode this
+		} else {
+			enterBootModeUSB this
+		}
 		waitMSecs 30
 		recvBuf = (newBinaryData)
 		repeat 10 {
@@ -152,6 +169,26 @@ method enterBootMode ESPTool {
 	setSerialPortRTS port false		// EN = high (exit reset)
 	waitMSecs 500					// might need to increase to 450 msecs on some chips
 	setSerialPortDTR port false		// IO0 = high
+}
+
+method enterBootModeUSB ESPTool {
+	// Use the RTS/DTR lines to force the chip into bootloader mode on newer ESP chips
+	// with a built-in USB-JTAG controller (ESP32-S3, ESP32-C3, ESP32-C6).
+	// Note: RTS and DTR are inverted by transistors on the board.
+
+	if (isNil port) { return }
+	setSerialPortRTS port false
+	setSerialPortDTR port false
+	waitMSecs 100
+	setSerialPortDTR port true
+	setSerialPortRTS port false
+	waitMSecs 100
+	setSerialPortRTS port true
+	setSerialPortDTR port false
+	setSerialPortRTS port true
+	waitMSecs 100
+	setSerialPortRTS port false
+	setSerialPortDTR port false
 }
 
 method exitBootMode ESPTool {
