@@ -341,6 +341,10 @@ method clearProject MicroBlocksEditor {
 		clearVars httpServer
 	}
 	clearLoggedData (smallRuntime)
+
+    // close graph window
+    graph = (findMorph 'MicroBlocksDataGraph')
+    if (notNil graph) { destroy graph }
 }
 
 method closeAllDialogs MicroBlocksEditor {
@@ -369,6 +373,7 @@ method openProjectFromFile MicroBlocksEditor location {
 	}
 
 	if (not (canReplaceCurrentProject this)) { return }
+	clearProject this
 
 	if (beginsWith location '//') {
 		data = (readEmbeddedFile (substring location 3) true)
