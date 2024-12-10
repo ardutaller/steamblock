@@ -232,7 +232,7 @@ method addShortcutButtons MicroBlocksFilePicker {
 	)
 	showComputer = (not (contains hidden 'Computer'))
 
-	buttonX = ((left morph) + (17 * scale))
+	buttonX = ((left morph) + (32 * scale))
 	buttonY = ((top morph) + (60 * scale))
 
 	dy = (66 * scale)
@@ -275,6 +275,7 @@ method addShortcutButtons MicroBlocksFilePicker {
 		buttonY += dy
 	}
 
+	buttonX = ((left morph) + (15 * scale))
 	buttonY += (5 * scale)
 	newFolderButton = (textButton this buttonX buttonY 'New Folder' 'newFolder')
 }
@@ -627,7 +628,7 @@ method fixLayout MicroBlocksFilePicker {
 	// file list
 	topInset = (60 * scale)
 	bottomInset = (48 * scale)
-	leftInset = (113 * scale)
+	leftInset = (140 * scale)
 	if (notNil nameLabel) {
 		leftInset = (max leftInset ((width (morph nameLabel)) + (23 * scale)))
 	}
@@ -659,6 +660,10 @@ method fixLayout MicroBlocksFilePicker {
 	setPosition (morph okayButton) x y
 	x = (x - ((width (morph cancelButton)) + space))
 	setPosition (morph cancelButton) x y
+
+	// new folder button
+	w = (width (morph newFolderButton))
+	setLeft (morph newFolderButton) (+ (left morph) (half (leftInset - w)) (3 * scale))
 }
 
 method listPane MicroBlocksFilePicker { return listPane }
