@@ -232,7 +232,10 @@ method addShortcutButtons MicroBlocksFilePicker {
 	)
 	showComputer = (not (contains hidden 'Computer'))
 
-	buttonX = ((left morph) + (32 * scale))
+	buttonX = ((left morph) + (17 * scale))
+	if forSaving {
+		buttonX = ((left morph) + (32 * scale))
+	}
 	buttonY = ((top morph) + (60 * scale))
 
 	dy = (66 * scale)
@@ -628,7 +631,10 @@ method fixLayout MicroBlocksFilePicker {
 	// file list
 	topInset = (60 * scale)
 	bottomInset = (48 * scale)
-	leftInset = (140 * scale)
+	leftInset = (113 * scale)
+	if forSaving {
+		leftInset = (140 * scale)
+	}
 	if (notNil nameLabel) {
 		leftInset = (max leftInset ((width (morph nameLabel)) + (23 * scale)))
 	}
