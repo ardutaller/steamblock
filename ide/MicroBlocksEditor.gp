@@ -1364,7 +1364,8 @@ method languageMenu MicroBlocksEditor {
 	} else {
 		for fn (sorted (listEmbeddedFiles)) {
 			fn = (withoutExtension fn)
-			if (beginsWith fn 'translations/') {
+			if (and (beginsWith fn 'translations/')
+			        (isNil (findSubstring 'template' fn))) {
 				langCode = (withoutExtension (substring fn 14))
 				language = (languageNameForCode (authoringSpecs) langCode)
 				if (language == (language (authoringSpecs))) {
