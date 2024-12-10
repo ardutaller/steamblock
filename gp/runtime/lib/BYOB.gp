@@ -768,12 +768,31 @@ method downArrowButton InputDeclaration action {
 }
 
 method setType InputDeclaration typeStr defaultValue {
-	if (isNil defaultValue) {
-		if (isOneOf typeStr 'auto' 'num') {
+	if (isNil defaultValue) { defaultValue = default } // use current default
+
+	if ('auto' == typeStr) {
+		if (not (isOneOf (className (classOf defaultValue)) 'Integer' 'String')) {
 			defaultValue = 10
-		} ('str' == typeStr) {
+		}
+	} ('num' == typeStr) {
+		if (and
+			(isClass defaultValue  'String')
+			(representsAnInteger defaultValue)) {
+				defaultValue = (toInteger defaultValue)
+		}
+		if (not (isClass defaultValue  'Integer')) {
+			defaultValue = 10
+		}
+
+	} ('str' == typeStr) {
+		if (isClass defaultValue 'Integer') {
+			defaultValue = (join '' defaultValue)
+		}
+		if (not (isClass defaultValue  'String')) {
 			defaultValue = 'text'
-		} ('bool' == typeStr) {
+		}
+	} ('bool' == typeStr) {
+		if (not (isClass defaultValue  'Boolean')) {
 			defaultValue = true
 		}
 	}
