@@ -873,13 +873,21 @@ method element InputDeclaration typeStr blockColor {
 method typesMenu InputDeclaration {
 	// slot types: 'auto' 'num' 'str' 'bool' 'color' 'cmd' 'var' 'menu'
 	menu = (menu nil (action 'setType' this) true)
-	addItem menu '' 'auto' 'number or string' (fullCostume (morph (element this 'auto')))
+	addItem menu (selectedString this 'auto') 'auto' 'number or string' (fullCostume (morph (element this 'auto')))
 	if (devMode) {
-		addItem menu '' 'num' 'number only' (fullCostume (morph (element this 'num')))
-		addItem menu '' 'str' 'string only' (fullCostume (morph (element this 'str')))
+		addItem menu (selectedString this 'num') 'num' 'number only' (fullCostume (morph (element this 'num')))
+		addItem menu (selectedString this 'str') 'str' 'string only' (fullCostume (morph (element this 'str')))
 		addLine menu
 	}
-	addItem menu '' 'bool' 'boolean switch' (fullCostume (morph (element this 'bool')))
-	addItem menu '' 'color' 'color patch' (fullCostume (morph (element this 'color')))
+	addItem menu (selectedString this 'bool') 'bool' 'boolean switch' (fullCostume (morph (element this 'bool')))
+	addItem menu (selectedString this 'color') 'color' 'color patch' (fullCostume (morph (element this 'color')))
 	popUp menu (global 'page') (left morph) (bottom morph)
+}
+
+method selectedString InputDeclaration slotType {
+	if (slotType == typeString) {
+		return '      ✔'
+	} else {
+		return ''
+	}
 }
