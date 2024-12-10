@@ -1,7 +1,7 @@
 module BMP Output
 author 'José García Yeste'
-version 2 4
-depends TFT Files
+version 2 5 
+depends TFT Files 
 description 'Display BMP files on a TFT screen.
 
 BMP files can be transferred to and from boards with a file systems using the put/get commands in the IDE file menu (available in "show advanced blocks" mode).
@@ -13,7 +13,7 @@ This library works with uncompressed BMP files with 1, 4, 8, 16, 24 and 32 bits 
 Tested with GIMP, online-convert.com and convert.io generated files.
 
 '
-variables _bmpPalette _bmpIsRGB565 _bmpPixelsOffset _bmpWidth _bmpHeight _bmpBPP _bmpCompression _bmpLine _bmpPixelLine
+variables _bmpPalette _bmpIsRGB565 _bmpPixelsOffset _bmpWidth _bmpHeight _bmpBPP _bmpCompression _bmpLine _bmpPixelLine 
 
   spec ' ' 'drawBMPfile' 'display BMP file _ at x _ y _' 'str num num' 'image.bmp' 0 0
   space
@@ -87,6 +87,9 @@ to '_bmp_drawBMP' filename originX originY {
     local 'yIncrement' 1
   }
   local 'bytesPerPixel' (_bmpBPP / 8)
+  if (not _bmpIsRGB565) {
+    bytesPerPixel = (0 - bytesPerPixel)
+  }
   repeat (absoluteValue _bmpHeight) {
     local 'line' ('_bmp_readPixelLine' filename)
     '[tft:pixelRow]' line originX y bytesPerPixel
@@ -217,9 +220,9 @@ to '_bmp_readPixelLine' filename {
   '_bmp_readLine' filename
   if (_bmpBPP <= 8) {
     for i (size _bmpLine) {
-      atPut i _bmpPixelLine (at ((at _bmpLine i) + 1) _bmpPalette)
+      atPut i _bmpPixelLine (at ((at i _bmpLine) + 1) _bmpPalette)
     }
-  } else { // 24-bit or 32-bit: use the byte array read from file
+  } else {
     _bmpPixelLine = _bmpLine
   }
   '_bmp_alignLineData' filename
@@ -232,3 +235,4 @@ to drawBMPfile filename originX originY {
     '[file:close]' filename
   }
 }
+
