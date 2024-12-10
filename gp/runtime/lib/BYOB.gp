@@ -754,8 +754,8 @@ method initialize InputDeclaration typeStr defaultValue {
 method downArrowButton InputDeclaration action {
 	// draw down arrow
 	w = (12 * (blockScale))
-	h = (7 * (blockScale))
-	inset = (2 * (blockScale))
+	h = (9 * (blockScale))
+	inset = (4 * (blockScale))
 	bm = (newBitmap (w + (2 * inset)) (h + (2 * inset)))
 	fillArrow (newShapeMaker bm) (rect inset inset w h) 'down' (gray 0)
 
