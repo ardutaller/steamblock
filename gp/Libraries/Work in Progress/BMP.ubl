@@ -1,6 +1,6 @@
 module BMP Output
 author 'José García Yeste'
-version 2 5 
+version 2 6 
 depends TFT Files 
 description 'Display BMP files on a TFT screen.
 
@@ -26,7 +26,7 @@ variables _bmpPalette _bmpIsRGB565 _bmpPixelsOffset _bmpWidth _bmpHeight _bmpBPP
   spec 'r' '_bmp_24BitPixel' '_bmp_24BitPixel from _ starting at _' 'str num' '' 1
   spec ' ' '_bmp_readPalette' '_bmp_readPalette file _' 'auto' ''
   spec ' ' '_bmp_readLine' '_bmp_readLine file _' 'auto' ''
-  spec 'r' '_bmp_line2indexes' '_bmp_line2indexes'
+  spec ' ' '_bmp_mapIndexedPixels' '_bmp_mapIndexedPixels'
   spec 'r' '_bmp_RLEline' '_bmp_readRLELine file _' 'auto' ''
   space
   spec 'r' '_bmp_readInt16' '_bmp read int16 file _' 'str' ''
@@ -90,6 +90,10 @@ to '_bmp_drawBMP' filename originX originY {
   if (not _bmpIsRGB565) {
     bytesPerPixel = (0 - bytesPerPixel)
   }
+  if (_bmpBPP < 16) {
+    comment 'temporary workaround for pixelRow primitive bug'
+    bytesPerPixel = 4
+  }
   repeat (absoluteValue _bmpHeight) {
     local 'line' ('_bmp_readPixelLine' filename)
     '[tft:pixelRow]' line originX y bytesPerPixel
@@ -122,20 +126,19 @@ file onto other devices such as a NeoPixel panel.'
   }
 }
 
-to '_bmp_line2indexes' {
+to '_bmp_mapIndexedPixels' {
   local 'mask' ((1 << _bmpBPP) - 1)
-  local 'result' ('[data:newByteArray]' 0)
+  local 'pixelsPerByte' (8 / _bmpBPP)
   local 'i' 1
-  repeatUntil ((size result) == _bmpWidth) {
-    local 'byte' (at i _bmpLine)
-    local 'b' (8 / _bmpBPP)
-    repeatUntil (or (b < 1) ((size result) == _bmpWidth)) {
-      b += -1
-      result = ('[data:join]' result ('[data:asByteArray]' ((byte >> (_bmpBPP * b)) & mask)))
+  for byte _bmpLine {
+    local 'shift' 0
+    repeat pixelsPerByte {
+      local 'pixelIndex' (((byte >> shift) & mask) + 1)
+      atPut i _bmpPixelLine (at pixelIndex _bmpPalette)
+      i += 1
+      shift += _bmpBPP
     }
-    i += 1
   }
-  return result
 }
 
 to '_bmp_readHeader' filename {
@@ -202,10 +205,6 @@ to '_bmp_readLine' filename {
       _bmpLine = ('[data:join]' _bmpLine ('[file:readBytes]' (byteCount - (size _bmpLine)) filename))
     }
   }
-  if (_bmpBPP < 8) {
-    local 'indexes' ('_bmp_line2indexes')
-    _bmpLine = indexes
-  }
 }
 
 to '_bmp_readPalette' filename {
@@ -219,9 +218,7 @@ to '_bmp_readPalette' filename {
 to '_bmp_readPixelLine' filename {
   '_bmp_readLine' filename
   if (_bmpBPP <= 8) {
-    for i (size _bmpLine) {
-      atPut i _bmpPixelLine (at ((at i _bmpLine) + 1) _bmpPalette)
-    }
+    '_bmp_mapIndexedPixels'
   } else {
     _bmpPixelLine = _bmpLine
   }
