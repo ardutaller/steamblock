@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2024-11-30 15:00+0000\n"
+"PO-Revision-Date: 2024-12-09 19:14+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -6047,3 +6047,11 @@ msgstr "botó Y premut"
 #. CallioGamer library block
 msgid "B pressed"
 msgstr "botó B premut"
+
+#. MIDI library block
+msgid "start MIDI clock"
+msgstr "inicia rellotge MIDI"
+
+#. MIDI library block
+msgid "stop MIDI clock"
+msgstr "atura rellotge MIDI"
