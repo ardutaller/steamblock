@@ -168,7 +168,7 @@ method languageChanged MicroBlocksScripter {
 	changed categorySelector
 	updateLibraryHeader this
 	computeLibraryButtonSize this
-	updateLibraryButton this
+	updateLibraryButton this true // force recreate button
 
 	// update the scripts
 	saveScripts this
@@ -220,7 +220,7 @@ method fixLibraryHeaderLayout MicroBlocksScripter {
 	setRight hLine (right (owner hLine))
 }
 
-method updateLibraryButton MicroBlocksScripter {
+method updateLibraryButton MicroBlocksScripter forceRecreate {
 	scale = (global 'scale')
 	if (isNil libAddIcons) {
 		bm1 = (readSVGIcon 'plus1')
@@ -228,7 +228,7 @@ method updateLibraryButton MicroBlocksScripter {
 		libAddIcons = (array bm1 bm2)
 	}
 	if ((width (morph categorySelector)) > (+ (data libAddButton) (24 * scale))) {
-		if (lastLibraryButtonStyle != 'text') {
+		if (or (lastLibraryButtonStyle != 'text') (forceRecreate == true)) {
 			lastLibraryButtonStyle = 'text'
 			drawLabelCostumes libAddButton (localized 'Add Library') nil (25 * scale) false true
 		}
