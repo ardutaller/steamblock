@@ -1,6 +1,6 @@
 module 'UV (AS7331)' Input
 author MicroBlocks
-version 1 0 
+version 1 1 
 description 'Support for AS7331 UV A/B/C sensor.
 Reports UV A, B, and C levels. Wide sensitivity range.
 The sensitivity parameter controls exposure time. Larger numbers are more sensive but require longer exposure times (up to ~16 seconds for a sensitity of 14).
@@ -27,11 +27,6 @@ to '_as7331_init' {
   comment 'Power up and reset'
   i2cSet _as7331_addr 0 8
   waitMillis 100
-  if ((i2cGet _as7331_addr 2) != 33) {
-    _as7331_addr = 0
-    sayIt 'Did not find AS7331 at I2C address 0x74'
-    stopTask
-  }
 }
 
 to '_as7331_read16BitReg' reg {
