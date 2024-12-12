@@ -509,6 +509,8 @@ method processTouchHold Hand currentObj {
 	lastTouchTime = nil
 	if (isMobile) {
 		processRightClicked this currentObj
+	} else {
+		grab this currentObj
 	}
 }
 
