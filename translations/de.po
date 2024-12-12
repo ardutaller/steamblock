@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-09 08:22+0000\n"
+"PO-Revision-Date: 2024-12-13 09:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -430,7 +430,7 @@ msgstr "Radio sende Wertepaar _ = _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
-msgstr "Ganzzahl_Textliste_oder_ByteArray"
+msgstr "Ganzzahl Textliste oder ByteArray"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
@@ -442,7 +442,7 @@ msgstr "Katze"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 msgid "aStringListOrByteArray"
-msgstr "Textliste_oder_ByteArray"
+msgstr "Textliste oder ByteArray"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
@@ -723,7 +723,7 @@ msgstr "erstelle einen Befehlsblock"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr "ByteListe_oder_Text"
+msgstr "ByteListe oder Text"
 
 #. Block in Data category
 msgid "delete item _ of list _"
@@ -4847,7 +4847,7 @@ msgstr "Octo stoppen"
 
 #. Wukong robot library block
 msgid "Wukong stop all"
-msgstr "Wukong stoppe alle"
+msgstr "Wukong stoppe alles"
 
 #. WuKong2040 robot library label
 msgid "WuKong2040"
@@ -4881,7 +4881,7 @@ msgstr "stoppe mit Richtung _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ color to _"
-msgstr "WuKong2040 LED _ Farbe auf _"
+msgstr "WuKong2040 setze NeoPixel _ auf _"
 
 #. Wukong robot library label
 msgid "Wukong"
@@ -4901,11 +4901,11 @@ msgstr "Octopus OLED zeichne Pixel x _ y _"
 
 #. Wukong robot library block
 msgid "Wukong set LED brightness to _"
-msgstr "Wukong setze LED-Helligkeit auf _"
+msgstr "Wukong setze blaue LEDs auf Helligkeit _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
-msgstr "WuKong2040 Motor _ Geschwindigkeit auf _ (-100~100)"
+msgstr "WuKong2040 setze Motor _ auf Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
@@ -4969,7 +4969,7 @@ msgstr "WuKong2040 stoppe Motor _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 clear all rainbowLED"
-msgstr "WuKong2040 lösche alle LEDs"
+msgstr "WuKong2040 lösche alle NeoPixel"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of DHT11 humidity (0~100) at pin _"
@@ -5045,7 +5045,7 @@ msgstr "g#"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong stelle Motor _ auf _ (-100~100)"
+msgstr "Wukong starte Motor _ mit _ (-100~100)"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
@@ -5057,7 +5057,7 @@ msgstr "NeZha stoppe alle Motoren"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop all motors"
-msgstr "WuKong2040 alle Motoren stoppen"
+msgstr "WuKong2040 stoppe alle Motoren"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 buzzer beep _ ms"
@@ -5065,7 +5065,7 @@ msgstr "WuKong2040 Pieps _ ms"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
-msgstr "WuKong2040 LED _ R _ G _ B _ (0~255)"
+msgstr "WuKong2040 setze NeoPixel _ auf R _ G _ B _ (0~255)"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus OLED fill rectangle x _ y _ w _ h _"
@@ -5768,3 +5768,11 @@ msgstr "Tonleitern & Akkorde"
 #. MIDI library block
 msgid "pitch bend MIDI channel _ to _ %"
 msgstr "pitch bend Midi-Kanal _ auf _ %"
+
+#. MIDI library block
+msgid "start MIDI clock"
+msgstr "starte MIDI Clock"
+
+#. MIDI library block
+msgid "stop MIDI clock"
+msgstr "stoppe MIDI Clock"
