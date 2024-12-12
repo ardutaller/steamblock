@@ -952,6 +952,20 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 	if ((y < 0) || (y >= TFT_HEIGHT)) return falseObj;
 	int bytesPerPixel = ((argCount > 3) && isInt(args[3])) ? obj2int(args[3]) : 4;
 
+	uint32 palette[256];
+	if ((argCount > 4) && IS_TYPE(args[4], ListType)) {
+		// paletteObj is a list of Integers representingRGB colors
+		// palette is a C array of TFT display pixel values (e.g. 16-bit colors)
+		OBJ paletteObj = args[4];
+		int colorCount = obj2int(FIELD(paletteObj, 0)); // list size
+		if (colorCount > 256) colorCount = 256;
+		memset(palette, 0, sizeof(palette));
+		for (int i = 0; i < colorCount; i++) {
+			int rgb = obj2int(FIELD(paletteObj, i + 1));
+			palette[i] = color24to16b(rgb & 0xFFFFFF);
+		}
+	}
+
 	if (IS_TYPE(pixelDataObj, ListType)) {
 		int pixelCount = obj2int(FIELD(pixelDataObj, 0));
 		if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
@@ -966,12 +980,16 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 			isRGB565 = false; // -2 means 16-bit RGB555 (vs. RGB565)
 			bytesPerPixel = -bytesPerPixel;
 		}
-		if ((bytesPerPixel < 2) || (bytesPerPixel > 4)) return falseObj;
+		if ((bytesPerPixel < 1) || (bytesPerPixel > 4)) return falseObj;
 
 		int pixelCount = BYTES(pixelDataObj) / bytesPerPixel;
 		if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
 		uint8 *byte = (uint8 *) &FIELD(pixelDataObj, 0);
-		if (2 == bytesPerPixel) {
+		if (1 == bytesPerPixel) {
+			for (int i = 0; i < pixelCount; i++) {
+				bufferPixels[i] = palette[*byte++];
+			}
+		} else if (2 == bytesPerPixel) {
 			for (int i = 0; i < pixelCount; i++) {
 				int pixel = (byte[1] << 8) | byte[0];
 				int r = isRGB565 ? ((pixel >> 8) & 248) : ((pixel >> 7) & 248);
