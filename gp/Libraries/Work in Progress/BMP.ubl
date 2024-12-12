@@ -1,6 +1,6 @@
 module BMP Output
 author 'José García Yeste'
-version 2 6 
+version 2 7 
 depends TFT Files 
 description 'Display BMP files on a TFT screen.
 
@@ -27,6 +27,7 @@ variables _bmpPalette _bmpIsRGB565 _bmpPixelsOffset _bmpWidth _bmpHeight _bmpBPP
   spec ' ' '_bmp_readPalette' '_bmp_readPalette file _' 'auto' ''
   spec ' ' '_bmp_readLine' '_bmp_readLine file _' 'auto' ''
   spec ' ' '_bmp_mapIndexedPixels' '_bmp_mapIndexedPixels'
+  spec ' ' '_bmp_mapIndexedPixels8bit' '_bmp_mapIndexedPixels8bit'
   spec 'r' '_bmp_RLEline' '_bmp_readRLELine file _' 'auto' ''
   space
   spec 'r' '_bmp_readInt16' '_bmp read int16 file _' 'str' ''
@@ -131,23 +132,35 @@ to '_bmp_mapIndexedPixels' {
   local 'pixelsPerByte' (8 / _bmpBPP)
   local 'i' 1
   for byte _bmpLine {
-    local 'shift' 0
+    local 'shift' (8 - _bmpBPP)
     repeat pixelsPerByte {
-      local 'pixelIndex' (((byte >> shift) & mask) + 1)
-      atPut i _bmpPixelLine (at pixelIndex _bmpPalette)
-      i += 1
-      shift += _bmpBPP
+      if (i <= _bmpWidth) {
+        local 'pixelIndex' (((byte >> shift) & mask) + 1)
+        atPut i _bmpPixelLine (at pixelIndex _bmpPalette)
+        shift = (shift - _bmpBPP)
+        i += 1
+      }
     }
   }
 }
 
+to '_bmp_mapIndexedPixels8bit' {
+  local 'i' 1
+  for byte _bmpLine {
+    if (i > _bmpWidth) {break}
+    atPut i _bmpPixelLine (at (byte + 1) _bmpPalette)
+    i += 1
+  }
+}
+
 to '_bmp_readHeader' filename {
-  if (('[file:fileSize]' filename) < 0) {
+  local 'fileSize' ('[file:fileSize]' filename)
+  if (fileSize < 0) {
     sayIt 'File not found: ' filename
     return 'false'
   }
   '[file:open]' filename
-  if (or (('[file:fileSize]' filename) < 54) ('BM' != ('[data:join]' '' ('[file:readBytes]' 2 filename)))) {
+  if (or (fileSize < 54) ('BM' != ('[data:join]' '' ('[file:readBytes]' 2 filename)))) {
     sayIt 'Not a BMP file: ' filename
     return false
   }
@@ -217,7 +230,9 @@ to '_bmp_readPalette' filename {
 
 to '_bmp_readPixelLine' filename {
   '_bmp_readLine' filename
-  if (_bmpBPP <= 8) {
+  if (_bmpBPP == 8) {
+    '_bmp_mapIndexedPixels8bit'
+  } (_bmpBPP < 8) {
     '_bmp_mapIndexedPixels'
   } else {
     _bmpPixelLine = _bmpLine
