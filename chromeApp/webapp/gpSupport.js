@@ -654,17 +654,17 @@ function GP_stopAudioOutput() {
 }
 
 function GP_toggleFullscreen() {
-  var doc = window.document;
-  var docEl = doc.documentElement;
+	var doc = window.document;
+	var docEl = doc.documentElement;
 
-  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-	requestFullScreen.call(docEl);
-  } else {
-	cancelFullScreen.call(doc);
-  }
+	if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+		requestFullScreen.call(docEl);
+	} else {
+		cancelFullScreen.call(doc);
+	}
 }
 
 // Boardie Support
@@ -677,149 +677,149 @@ GP.boardie = {
 	element: null,
 	iframe: null,
 	isOpen: false,
-        position: null,
-        reset: function () {
-            var win = this.iframe.contentWindow;
-            win.postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ])); // system reset w/ Boardie option
-            var ctx = win.document.querySelector('canvas').getContext('2d');
-			ctx.fillStyle = "#000";
-			ctx.fillRect(0, 0, 240, 240); // clear screen
-            win.postMessage(new Uint8Array([ 0xFA, 0x05, 0 ])); // start all
-        },
+	position: null,
+	reset: function () {
+		win = this.iframe.contentWindow;
+		postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ])); // system reset w/ Boardie option
+		ctx = win.document.querySelector('canvas').getContext('2d');
+		ctx.fillStyle = "#000";
+		ctx.fillRect(0, 0, 240, 240); // clear screen
+		win.postMessage(new Uint8Array([ 0xFA, 0x05, 0 ])); // start all
+	},
 	press: function (keyCode) { this.iframe.contentWindow.press(keyCode); },
 	unpress: function (keyCode) { this.iframe.contentWindow.unpress(keyCode); }
 };
 
 function GP_openBoardie() {
-    var req = new XMLHttpRequest();
-        boardie = GP.boardie;
+	var req = new XMLHttpRequest();
+		boardie = GP.boardie;
 
-    GP_closeSerialPort(); // close serial port if open
+	GP_closeSerialPort(); // close serial port if open
 
-    req.open('GET', 'boardie/boardie.html');
-    req.onreadystatechange = function () {
-        if (req.readyState == 4 && req.status == 200) {
-            boardie.element = document.createElement('div');
-            boardie.element.classList.add('boardie');
-            boardie.element.style.position = 'absolute';
-            boardie.element.style.zIndex = 999;
-            if (boardie.position) {
-                boardie.element.style.left = boardie.position.left;
-                boardie.element.style.top = boardie.position.top;
-            } else {
-                boardie.element.style.top = '70px';
-                boardie.element.style.right = '34px';
-            }
-            boardie.element.style.cursor = 'grab';
-            boardie.element.innerHTML = req.responseText;
+	req.open('GET', 'boardie/boardie.html');
+	req.onreadystatechange = function () {
+		if (req.readyState == 4 && req.status == 200) {
+			boardie.element = document.createElement('div');
+			boardie.element.classList.add('boardie');
+			boardie.element.style.position = 'absolute';
+			boardie.element.style.zIndex = 999;
+			if (boardie.position) {
+				boardie.element.style.left = boardie.position.left;
+				boardie.element.style.top = boardie.position.top;
+			} else {
+				boardie.element.style.top = '70px';
+				boardie.element.style.right = '34px';
+			}
+			boardie.element.style.cursor = 'grab';
+			boardie.element.innerHTML = req.responseText;
 
-            boardie.iframe = boardie.element.querySelector('iframe');
+			boardie.iframe = boardie.element.querySelector('iframe');
 
-            boardie.element.onclick = function (evt) {
+			boardie.element.onclick = function (evt) {
 				if (!evt.target.closest('[data-button]')) {
 					boardie.iframe.focus();
 				}
 			}
 
-            document.body.append(boardie.element);
+			document.body.append(boardie.element);
 
-            makeDraggable(boardie.element);
+			makeDraggable(boardie.element);
 
-            boardie.element.querySelectorAll('[data-button]').forEach(
-                button => {
-                    button.addEventListener('keydown', (evt) => {
-                        boardie.press(evt.keyCode);
-                        boardie.iframe.focus();
-                    });
-                }
-            );
+			boardie.element.querySelectorAll('[data-button]').forEach(
+				button => {
+					button.addEventListener('keydown', (evt) => {
+						boardie.press(evt.keyCode);
+						boardie.iframe.focus();
+					});
+				}
+			);
 
-            boardie.iframe.contentWindow.addEventListener(
-                'soundstart',
-                function () {
-                    boardie.element.querySelector('.audio').classList.add('--is-active');
-                }
-            );
-            boardie.iframe.contentWindow.addEventListener(
-                'soundstop',
-                function () {
-                    boardie.element.querySelector('.audio').classList.remove('--is-active');
-                }
-            );
+			boardie.iframe.contentWindow.addEventListener(
+				'soundstart',
+				function () {
+					boardie.element.querySelector('.audio').classList.add('--is-active');
+				}
+			);
+			boardie.iframe.contentWindow.addEventListener(
+				'soundstop',
+				function () {
+					boardie.element.querySelector('.audio').classList.remove('--is-active');
+				}
+			);
 
-            boardie.iframe.contentWindow.addEventListener('click', (event) => {
-                boardie.element.classList.add('--is-active');
-            });
+			boardie.iframe.contentWindow.addEventListener('click', (event) => {
+				boardie.element.classList.add('--is-active');
+			});
 
-            boardie.isOpen = true;
-        }
-    };
+			boardie.isOpen = true;
+		}
+	};
 
-    req.send();
+	req.send();
 };
 
 function makeDraggable (element) {
-    // taken from w3schools (https://www.w3schools.com/howto/howto_js_draggable.asp)
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+	// taken from w3schools (https://www.w3schools.com/howto/howto_js_draggable.asp)
+	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-    element.onpointerdown = dragMouseDown;
+	element.onpointerdown = dragMouseDown;
 
-    function dragMouseDown(e) {
-        e = e || window.event;
-        if (!e.target.closest('[data-undraggable]')) {
-            element.style.cursor = 'grabbing';
-            e.preventDefault();
-            // get the mouse cursor position at startup:
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onpointerup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onpointermove = elementDrag;
-        }
-    };
+	function dragMouseDown(e) {
+		e = e || window.event;
+		if (!e.target.closest('[data-undraggable]')) {
+			element.style.cursor = 'grabbing';
+			e.preventDefault();
+			// get the mouse cursor position at startup:
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+			document.onpointerup = closeDragElement;
+			// call a function whenever the cursor moves:
+			document.onpointermove = elementDrag;
+		}
+	};
 
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        element.style.top = (element.offsetTop - pos2) + "px";
-        element.style.left = (element.offsetLeft - pos1) + "px";
-        if (!element.classList.contains('--is-dragged')) {
-            element.classList.add('--is-dragged');
-        }
-    };
+	function elementDrag(e) {
+		e = e || window.event;
+		e.preventDefault();
+		// calculate the new cursor position:
+		pos1 = pos3 - e.clientX;
+		pos2 = pos4 - e.clientY;
+		pos3 = e.clientX;
+		pos4 = e.clientY;
+		// set the element's new position:
+		element.style.top = (element.offsetTop - pos2) + "px";
+		element.style.left = (element.offsetLeft - pos1) + "px";
+		if (!element.classList.contains('--is-dragged')) {
+			element.classList.add('--is-dragged');
+		}
+	};
 
-    function closeDragElement() {
-        // stop moving when mouse button is released:
-        document.onpointerup = null;
-        document.onpointermove = null;
-        GP.boardie.position = {
-            left: element.style.left,
-            top: element.style.top
-        };
-        element.classList.remove('--is-dragged');
-        element.style.cursor = 'grab';
-    };
+	function closeDragElement() {
+		// stop moving when mouse button is released:
+		document.onpointerup = null;
+		document.onpointermove = null;
+		GP.boardie.position = {
+			left: element.style.left,
+			top: element.style.top
+		};
+		element.classList.remove('--is-dragged');
+		element.style.cursor = 'grab';
+	};
 };
 
 function focusDetection (elementSelector) {
-    document.addEventListener('click', (event) => {
-        var element = document.querySelector(elementSelector);
-        if (element) {
-            if (event.target.closest('.boardie')) {
-                if (!element.classList.contains('--is-active')) {
-                    element.classList.add('--is-active');
-                }
-            } else {
-                element.classList.remove('--is-active');
-            }
-        }
-    });
+	document.addEventListener('click', (event) => {
+		var element = document.querySelector(elementSelector);
+		if (element) {
+			if (event.target.closest('.boardie')) {
+				if (!element.classList.contains('--is-active')) {
+					element.classList.add('--is-active');
+				}
+			} else {
+				element.classList.remove('--is-active');
+			}
+		}
+	});
 };
 focusDetection('.boardie');
 
