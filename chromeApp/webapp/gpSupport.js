@@ -703,9 +703,13 @@ function GP_openBoardie() {
 			boardie.element.classList.add('boardie');
 			boardie.element.style.position = 'absolute';
 			boardie.element.style.zIndex = 999;
-			if (boardie.position) {
-				boardie.element.style.left = boardie.position.left;
-				boardie.element.style.top = boardie.position.top;
+
+			var ideCnv = document.getElementById('canvas');
+			if (boardie.position &&
+				(boardie.position.x <= ideCnv.clientWidth - 45) &&
+				(boardie.position.y <= ideCnv.clientHeight - 45)) {
+					boardie.element.style.left = boardie.position.x + 'px';
+					boardie.element.style.top = boardie.position.y + 'px';
 			} else {
 				boardie.element.style.top = '70px';
 				boardie.element.style.right = '34px';
@@ -760,7 +764,7 @@ function GP_openBoardie() {
 
 function makeDraggable (element) {
 	// taken from w3schools (https://www.w3schools.com/howto/howto_js_draggable.asp)
-	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+	var lastX = 0, lastY = 0;
 
 	element.onpointerdown = dragMouseDown;
 
@@ -770,9 +774,9 @@ function makeDraggable (element) {
 			element.style.cursor = 'grabbing';
 			e.preventDefault();
 			// get the mouse cursor position at startup:
-			pos3 = e.clientX;
-			pos4 = e.clientY;
-			document.onpointerup = closeDragElement;
+			lastX = e.clientX;
+			lastY = e.clientY;
+			document.onpointerup = endElementDrag;
 			// call a function whenever the cursor moves:
 			document.onpointermove = elementDrag;
 		}
@@ -781,27 +785,34 @@ function makeDraggable (element) {
 	function elementDrag(e) {
 		e = e || window.event;
 		e.preventDefault();
+
+		// compute max position
+		var maxX = document.getElementById('canvas').clientWidth - 45;
+		var maxY = document.getElementById('canvas').clientHeight - 45;
+
 		// calculate the new cursor position:
-		pos1 = pos3 - e.clientX;
-		pos2 = pos4 - e.clientY;
-		pos3 = e.clientX;
-		pos4 = e.clientY;
+		var newX = Math.round(element.offsetLeft + (e.clientX - lastX));
+		var newY = Math.round(element.offsetTop + (e.clientY - lastY));
+
+		// constrain top left corner to be at least partially on screen
+		newX = (newX < 0) ? 0 : ((newX < maxX) ? newX : maxX);
+		newY = (newY < 0) ? 0 : ((newY < maxY) ? newY : maxY);
+		lastX = e.clientX;
+		lastY = e.clientY;
 		// set the element's new position:
-		element.style.top = (element.offsetTop - pos2) + "px";
-		element.style.left = (element.offsetLeft - pos1) + "px";
+		element.style.left = newX + "px";
+		element.style.top = newY + "px";
 		if (!element.classList.contains('--is-dragged')) {
 			element.classList.add('--is-dragged');
 		}
 	};
 
-	function closeDragElement() {
+	function endElementDrag() {
 		// stop moving when mouse button is released:
 		document.onpointerup = null;
 		document.onpointermove = null;
-		GP.boardie.position = {
-			left: element.style.left,
-			top: element.style.top
-		};
+		var r = element.getBoundingClientRect();
+		GP.boardie.position = { x: r.x, y: r.y }; // record final position
 		element.classList.remove('--is-dragged');
 		element.style.cursor = 'grab';
 	};
