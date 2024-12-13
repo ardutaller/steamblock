@@ -510,7 +510,14 @@ method processTouchHold Hand currentObj {
 	if (isMobile) {
 		processRightClicked this currentObj
 	} else {
-		grab this currentObj
+		// try to grab object
+		toBeGrabbed = (rootForGrab this lastTouched)
+		if (notNil toBeGrabbed) {
+			closeUnclickedMenu page toBeGrabbed
+			grab this toBeGrabbed
+			lastTouched = nil
+			lastTouchTime = nil
+		}
 	}
 }
 
