@@ -109,7 +109,7 @@ method initialize MicroBlocksScripter aProjectEditor {
 	restoreScripts this
 
 	smallRuntime this // create a SmallRuntime instance
-	if (isNil projectEditor) { select categorySelector 'Control' }
+	if (isNil projectEditor) { select categorySelector 'cat;Control' }
 	return this
 }
 
@@ -305,6 +305,7 @@ method hideAllMyBlocks MicroBlocksScripter {
 
 method removeLibraryNamed MicroBlocksScripter libName {
 	removeLibraryNamed mbProject libName
+	closeAllDialogs projectEditor
 	variablesChanged (smallRuntime)
 	updateLibraryList this
 	languageChanged this
@@ -1434,7 +1435,7 @@ method updateLibraryList MicroBlocksScripter {
 	setCollection libSelector libNames
 	oldSelection = (selection libSelector)
 	if (not (contains libNames oldSelection)) {
-		selectCategory this 'Control'
+		selectCategory this 'cat;Control'
 	}
 	scale = (global 'scale')
 	fastSetPosition (morph libAddButton) (24 * scale) ((bottom (morph libHeader)) + (8 * scale))
