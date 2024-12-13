@@ -408,11 +408,13 @@ method handMoveFocus ScrollFrame aHand {
 
 method step ScrollFrame {
 	hand = (hand (global 'page'))
+	handX = (x hand)
+	handY = (y hand)
 	dragged = (grabbedObject hand)
 	if (and
 		enableAutoScroll
 		(notNil dragged)
-		(containsPoint (bounds morph) (x hand) (y hand))
+		(containsPoint (bounds morph) handX handY)
 		(wantsDropOf (contents this) dragged)
 	) {
 		autoScroll this hand dragged
@@ -421,9 +423,14 @@ method step ScrollFrame {
 	if (and hideWhenNotScrolling (isNil dragged)) {
 		now = (msecsSinceStart)
 		if (now < lastScrollMSecs) { lastScrollMSecs = 0 } // clock wrap
-		if ((now - lastScrollMSecs) > 400) {
+		if ((now - lastScrollMSecs) > 200) {
 			hide (morph hSlider)
 			hide (morph vSlider)
+		}
+		if (or
+			(containsPoint (bounds (morph hSlider)) handX handY)
+			(containsPoint (bounds (morph vSlider)) handX handY)) {
+				isScrolling this
 		}
 	}
 }
