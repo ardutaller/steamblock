@@ -1,6 +1,6 @@
-module MakerPort 'Output'
+module MakerPort Output
 author MicroBlocks
-version 2 2 
+version 2 3 
 depends 'LCD Display' 'MP3 Player' Tone Touch 'IR Remote' 
 choices makerport_audioSource MP3 Tone 
 choices makerport_loudnessPin 'mp3 player' 'analog pin (13)' 'extra pin (17)' 
@@ -35,11 +35,7 @@ to makerport_beep freq msecs optionalVolume {
 to makerport_initialize {
   makerport_setAllLEDs false
   mp3_initialize 'MakerPort' 20 21
-  if ((boardType) == 'MakerPort V3') {
-    attachIR 22
-  } else {
-    attachIR 18
-  }
+  attachIR 22
 }
 
 to makerport_loudness soundPin {
