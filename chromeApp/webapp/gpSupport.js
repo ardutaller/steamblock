@@ -700,7 +700,7 @@ function GP_openBoardie() {
 	req.onreadystatechange = function () {
 		if (req.readyState == 4 && req.status == 200) {
 			boardie.element = document.createElement('div');
-			boardie.element.classList.add('boardie');
+			boardie.element.innerHTML = req.responseText;
 			boardie.element.style.position = 'absolute';
 			boardie.element.style.zIndex = 999;
 
@@ -715,7 +715,6 @@ function GP_openBoardie() {
 				boardie.element.style.right = '34px';
 			}
 			boardie.element.style.cursor = 'grab';
-			boardie.element.innerHTML = req.responseText;
 
 			boardie.iframe = boardie.element.querySelector('iframe');
 
