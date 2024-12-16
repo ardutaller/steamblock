@@ -1,6 +1,6 @@
 module BMP Output
 author 'José García Yeste'
-version 2 8 
+version 2 9 
 depends TFT Files 
 description 'Display BMP files on a TFT screen.
 
@@ -197,9 +197,12 @@ to '_bmp_readLine' filename {
 }
 
 to '_bmp_readPalette' filename {
+  local 'pal' ('[file:readBytes]' (4 * (size _bmpPalette)) filename)
+  repeatUntil ((size pal) >= (4 * (size _bmpPalette))) {
+    pal = ('[data:join]' pal ('[file:readBytes]' ((4 * (size _bmpPalette)) - (size pal)) filename))
+  }
   for i (size _bmpPalette) {
-    local 'data' ('[file:readBytes]' 4 filename)
-    atPut i _bmpPalette (((at 3 data) << 16) | (((at 2 data) << 8) | (at 1 data)))
+    atPut i _bmpPalette (((at ((i * 4) - 1) pal) << 16) | (((at ((i * 4) - 2) pal) << 8) | (at ((i * 4) - 3) pal)))
   }
 }
 
@@ -236,6 +239,9 @@ to '_bmp_readRLEline' filename {
   forever {
     if ((('[file:readPosition]' filename) & 1) == 1) {file_SkipBytes 1 filename}
     local 'rle' ('[file:readBytes]' 2 filename)
+    if ((size rle) == 0) {
+      return result
+    }
     if ((at 1 rle) == 0) {
       if ((at 2 rle) > 2) {
         comment 'odd numbers for RL4?'
