@@ -56,7 +56,15 @@ void initMessageService() {
 	EM_ASM_({
 		window.recvBuffer = [];
 		window.addEventListener('message', function (event) {
-			window.recvBuffer.push(...event.data);
+			if (event.data.constructor === Uint8Array) {
+				window.recvBuffer.push(...event.data);
+			} else {
+				if (event.data.startsWith('keyDown ')) {
+					window.keys.set(parseInt(event.data.substring(8), 10), true);
+				} else if (event.data.startsWith('keyUp ')) {
+					window.keys.set(parseInt(event.data.substring(6), 10), false);
+				}
+			}
 		}, false);
 	});
 }
@@ -100,28 +108,12 @@ int sendBytes(uint8 *buf, int start, int end) {
 void initKeyboardHandler() {
 	EM_ASM_({
 		window.keys = new Map();
-
-		window.buttons = [];
-		window.buttons[37] = // left cursor
-			window.parent.document.querySelector('[data-button="a"]');
-		window.buttons[65] = window.buttons[37]; // "a" key
-		window.buttons[39] =
-			window.parent.document.querySelector('[data-button="b"]');
-		window.buttons[66] = window.buttons[39]; // "b" key
-
-		window.buttons[84] =
-			window.parent.document.querySelector('[data-button="ab"]'); // "a+b" button
-
 		window.addEventListener('keydown', function (event) {
-			if (window.buttons[event.keyCode]) {
-				window.buttons[event.keyCode].classList.add('--is-active');
-			}
+			window.parent.postMessage('boardieKeyDown ' + event.keyCode);
 			window.keys.set(event.keyCode, true);
 		}, false);
 		window.addEventListener('keyup', function (event) {
-			if (window.buttons[event.keyCode]) {
-				window.buttons[event.keyCode].classList.remove('--is-active');
-			}
+			window.parent.postMessage('boardieKeyUp ' + event.keyCode);
 			window.keys.set(event.keyCode, false);
 		}, false);
 	});

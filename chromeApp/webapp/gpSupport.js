@@ -272,19 +272,19 @@ function initGPEventHandlers() {
 		GP.events.push([TEXTINPUT, charCode]);
 	}
 
-    // IME composition events
-    document.addEventListener('compositionstart', function(evt) {
-        GP.compositionText = '';
-    });
-    document.addEventListener('compositionupdate', function(evt) {
-        GP.compositionText = evt.data;
-    });
-    document.addEventListener('compositionend', function(evt) {
-        for (let ch of GP.compositionText) {
-            GP.events.push([TEXTINPUT, ch.codePointAt(0)]);
-        }
-        GP.compositionText = '';
-    });
+	// IME composition events
+	document.addEventListener('compositionstart', function(evt) {
+		GP.compositionText = '';
+	});
+	document.addEventListener('compositionupdate', function(evt) {
+		GP.compositionText = evt.data;
+	});
+	document.addEventListener('compositionend', function(evt) {
+		for (let ch of GP.compositionText) {
+			GP.events.push([TEXTINPUT, ch.codePointAt(0)]);
+		}
+		GP.compositionText = '';
+	});
 
 	canvas.onwheel = function(evt) {
 		if (evt.shiftKey || evt.ctrlKey) { return; } // default behavior (browser zoom)
@@ -324,7 +324,7 @@ function initGPEventHandlers() {
 		GP.events.push([TOUCH_UP, 200, 200, 0]); // push a dummy touch_up event
 	}
 	window.onfocus = function(evt) {
-	  GP.events.push([WINDOW_SHOWN]);
+		GP.events.push([WINDOW_SHOWN]);
 	}
 }
 initGPEventHandlers();
@@ -392,6 +392,14 @@ function handleMessage(evt) {
 		} else if (msg.startsWith('hideButton ')){
 			var btn = document.getElementById(msg.substring(11));
 			if (btn) btn.style.display = 'none';
+		} else if (msg.startsWith('boardieKeyDown ')){
+			GP.boardie.press(msg.substring(15));
+		} else if (msg.startsWith('boardieKeyUp ')){
+			GP.boardie.unpress(msg.substring(13));
+		} else if (msg == 'boardieSoundStart'){
+			boardie.element.querySelector('.audio').classList.add('--is-active');
+		} else if (msg == 'boardieSoundStop'){
+			boardie.element.querySelector('.audio').classList.remove('--is-active');
 		} else {
 			queueGPMessage(msg);
 		}
@@ -424,7 +432,7 @@ function uploadFiles(files) {
 	var todo = [];
 	if (files && files.length) {
 		for (var i = 0; i < files.length; i++) todo.push(files[i]);
-	    recordFile(todo.shift());
+		recordFile(todo.shift());
 	}
 }
 
@@ -686,8 +694,36 @@ GP.boardie = {
 		ctx.fillRect(0, 0, 240, 240); // clear screen
 		win.postMessage(new Uint8Array([ 0xFA, 0x05, 0 ])); // start all
 	},
-	press: function (keyCode) { this.iframe.contentWindow.press(keyCode); },
-	unpress: function (keyCode) { this.iframe.contentWindow.unpress(keyCode); }
+	buttonForCode: function (keyCode) {
+		switch (parseInt(keyCode)) {
+			case 37:
+			case 65:
+				return 'a';
+			case 39:
+			case 66:
+				return 'b';
+			case 84:
+				return 'ab';
+			default:
+				return '';
+		}
+	},
+	press: function (keyCode, andSendToBoard) {
+		var button = this.buttonForCode(keyCode),
+				element = this.element.querySelector(`[data-button="${button}"]`);
+		if (element) { element.classList.add('--is-active'); }
+		if (andSendToBoard) {
+			this.iframe.contentWindow.postMessage('keyDown ' + keyCode);
+		}
+	},
+	unpress: function (keyCode, andSendToBoard) {
+		var button = this.buttonForCode(keyCode);
+				element = this.element.querySelector(`[data-button="${button}"]`);
+		if (element) { element.classList.remove('--is-active'); }
+		if (andSendToBoard) {
+			this.iframe.contentWindow.postMessage('keyUp ' + keyCode);
+		}
+	}
 };
 
 function GP_openBoardie() {
@@ -731,22 +767,9 @@ function GP_openBoardie() {
 			boardie.element.querySelectorAll('[data-button]').forEach(
 				button => {
 					button.addEventListener('keydown', (evt) => {
-						boardie.press(evt.keyCode);
+						boardie.press(evt.keyCode, true);
 						boardie.iframe.focus();
 					});
-				}
-			);
-
-			boardie.iframe.contentWindow.addEventListener(
-				'soundstart',
-				function () {
-					boardie.element.querySelector('.audio').classList.add('--is-active');
-				}
-			);
-			boardie.iframe.contentWindow.addEventListener(
-				'soundstop',
-				function () {
-					boardie.element.querySelector('.audio').classList.remove('--is-active');
 				}
 			);
 
@@ -968,10 +991,10 @@ function GP_openSerialPort(id, path, baud) {
 		if (!connectionInfo || chrome.runtime.lastError) {
 			var reason = '';
 			if (chrome.runtime.lastError) reason = chrome.runtime.lastError.message
-        	console.log('Port open failed ' + reason);
-        	GP_serialPortID = -1;
-        	return; // failed to open port
-    	}
+			console.log('Port open failed ' + reason);
+			GP_serialPortID = -1;
+			return; // failed to open port
+		}
 		GP_serialPortID = connectionInfo.connectionId;
 		GP_serialInputBuffers = [];
 		if (!GP_serialPortListenersAdded) {
@@ -1144,7 +1167,7 @@ class NimBLESerial {
  		this.connected = true;
 		this.sendInProgress = false;
 		console.log("BLE connected");
-   }
+	}
 
 	disconnect() {
 		if (this.device != undefined) {
@@ -1240,17 +1263,17 @@ async function GP_ReadFile(ext) {
 function download(filename, text) {
 	// from https://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
 
-    var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    pom.setAttribute('download', filename);
+	var pom = document.createElement('a');
+	pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+	pom.setAttribute('download', filename);
 
-    if (document.createEvent) {
-        var event = document.createEvent('MouseEvents');
-        event.initEvent('click', true, true);
-        pom.dispatchEvent(event);
-    } else {
-        pom.click();
-    }
+	if (document.createEvent) {
+		var event = document.createEvent('MouseEvents');
+		event.initEvent('click', true, true);
+		pom.dispatchEvent(event);
+	} else {
+		pom.click();
+	}
 }
 
 async function GP_writeFile(data, fName, id) {
@@ -1333,13 +1356,13 @@ if ((typeof chrome != 'undefined') &&
 // warn before leaving page
 
 window.onbeforeunload = function() {
-   return "Leave this page? (changes will be lost)";
+	return "Leave this page? (changes will be lost)";
 };
 
 // progressive web app service worker
 
 window.onload = function() {
-  if (('serviceWorker' in navigator) && !hasChromeFilesystem()) {
-    navigator.serviceWorker.register('sw.js');
-  }
+	if (('serviceWorker' in navigator) && !hasChromeFilesystem()) {
+		navigator.serviceWorker.register('sw.js');
+	}
 }
