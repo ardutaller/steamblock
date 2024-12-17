@@ -260,6 +260,7 @@ method initMicroBlocksUIColors Color {
 	atPut palette 'blueGray-500' (colorHex '60678B')
 	atPut palette 'blueGray-600' (colorHex '545A7A')
 	atPut palette 'blueGray-700' (colorHex '454A64')
+	atPut palette 'blueGray-750' (colorHex '3E4259')
 	atPut palette 'blueGray-800' (colorHex '373B4F')
 	atPut palette 'blueGray-850' (colorHex '2D3143')
 	atPut palette 'blueGray-900' (colorHex '262938')
