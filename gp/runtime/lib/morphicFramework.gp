@@ -512,9 +512,8 @@ method processTouchHold Hand currentObj {
 	} else {
 		// try to grab object
 		toBeGrabbed = (rootForGrab this lastTouched)
-		if (notNil toBeGrabbed) {
-			closeUnclickedMenu page toBeGrabbed
-			grab this toBeGrabbed
+		if (isClass toBeGrabbed 'Block') {
+			grab this (topBlock toBeGrabbed)
 			lastTouched = nil
 			lastTouchTime = nil
 		}
