@@ -55,6 +55,13 @@ method drawOn CategorySelector ctx {
 	insetY = (4 * scale)
 	if ('Linux' == (platform)) { insetY = (3 * scale) }
 
+	if ('Browser' == (platform)) {
+		// surprisingly, the width of this morph differs between browser and desktop
+		threshold = 145
+	} else {
+		threshold = 75
+	}
+
 	itemH = (itemHeight this)
 
 	x = ((left morph) + (12 * scale))
@@ -66,12 +73,12 @@ method drawOn CategorySelector ctx {
 		setFont ctx fontName fontSize
 		if (or (i == hoverIndex) (i == selectedIndex)) {
 			fillRoundedRect (getShapeMaker ctx) (rect x (y + scale) w (itemH - scale)) (itemH / 2) catColor
-			if (w > 75) {
+			if (w > threshold) {
 				drawString ctx label white ((x + insetX) - (12 * scale)) (y + insetY)
 			}
 		} else {
 			fillRoundedRect (getShapeMaker ctx) (rect (x + (12 * scale)) (y + scale) (w - (12 * scale)) (itemH - scale)) (itemH / 2) catColor
-			if (w > 75) {
+			if (w > threshold) {
 				drawString ctx label white (x + insetX) (y + insetY)
 			}
 		}

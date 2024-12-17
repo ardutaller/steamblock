@@ -201,7 +201,15 @@ method makeLibraryHeader MicroBlocksScripter {
 
 method updateLibraryHeader MicroBlocksScripter {
 	labelM = (first (parts (morph libHeader)))
-	if ((width (morph categorySelector)) > 75) {
+
+	if ('Browser' == (platform)) {
+		// surprisingly, the width of this morph differs between browser and desktop
+		threshold = 145
+	} else {
+		threshold = 75
+	}
+
+	if ((width (morph categorySelector)) > threshold) {
 		if (lastLibraryHeaderStyle != 'long') {
 			lastLibraryHeaderStyle == 'long'
 			setText (handler labelM) (localized 'LIBRARIES')
