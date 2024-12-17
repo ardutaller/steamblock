@@ -26,7 +26,7 @@ to uload fileName {
 	return (load fileName (topLevelModule))
 }
 
-defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer indicator nextIndicatorUpdateMSecs connectionName progressIndicator lastStatus httpServer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode
+defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer connectionWidget progressIndicator httpServer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode
 
 method scriptingActionsContainer MicroBlocksEditor { return scriptingActionsContainer }
 method fileName MicroBlocksEditor { return fileName }
@@ -85,7 +85,6 @@ method initialize MicroBlocksEditor {
 	addZoomButtons this
 	clearProject this
 	fixLayout this
-	nextIndicatorUpdateMSecs = 0
 	setFPS morph 200
 	newerVersion = 'unknown'
 	putNextDroppedFileOnBoard = false
@@ -124,7 +123,6 @@ method scaleChanged MicroBlocksEditor {
 	addZoomButtons this
 
 	fixLayout scripter
-	lastStatus = nil // force update
 	fixLayout this
 }
 
@@ -149,35 +147,28 @@ method addTopBarParts MicroBlocksEditor {
 
 	rightItems = (list)
 
-	addFrameRate = (contains (commandLine) '--allowMorphMenu')
-	if addFrameRate {
-		frameRate = (newText '0 fps' 'Arial' (14 * scale) (microBlocksColor 'blueGray' 50))
-		addPart morph (morph frameRate)
-		add rightItems frameRate
-		add rightItems (18 * scale)
-	}
-
 	progressW = (36 * scale)
 	progressIndicator = (newImageBox (newBitmap progressW progressW))
 	addPart morph (morph progressIndicator)
 	add rightItems progressIndicator
 	add rightItems (12 * scale)
 
-	indicator = (addTwoStateSVGIconButton this 'icon-usb' 'connectToBoard' 'Connect')
-	if (isNil connectionName) {
-		connectionName = (newText (localized 'Connect') 'Arial' (14 * scale) (microBlocksColor 'blueGray' 50))
-		addPart morph (morph connectionName)
+	addFrameRate = (contains (commandLine) '--allowMorphMenu')
+	if addFrameRate {
+		frameRate = (newText '00 fps' 'Arial' (14 * scale) (microBlocksColor 'blueGray' 200))
+		addPart morph (morph frameRate)
+		add rightItems frameRate
+	    add rightItems (12 * scale)
 	}
+
+    connectionWidget = (newMicroBlocksConnectWidget this)
+    addPart morph (morph connectionWidget)
 
 	add rightItems (addTwoStateSVGIconButton this 'icon-graph' 'showGraph' 'Graph')
 	add rightItems (12 * scale)
 	add rightItems (vSeparator this)
 	add rightItems (12 * scale)
-	add rightItems indicator
-	add rightItems (6 * scale)
-	add rightItems connectionName
-	add rightItems (6 * scale)
-	add rightItems (addSVGIconButton this 'dropdown-arrow' 'connectToBoard' 'Connect')
+	add rightItems connectionWidget
 	add rightItems (12 * scale)
 	add rightItems (vSeparator this)
 	add rightItems (12 * scale)
@@ -550,11 +541,6 @@ method step MicroBlocksEditor {
 	}
 	processDroppedFiles this
 
-	if (((msecsSinceStart) > nextIndicatorUpdateMSecs)) {
-		updateIndicator this
-		nextIndicatorUpdateMSecs = ((msecsSinceStart) + 200)
-	}
-
 	if (not (busy (smallRuntime))) { processMessages (smallRuntime) }
 	if (isRunning httpServer) {
 		step httpServer
@@ -638,42 +624,11 @@ method drawProgressIndicator MicroBlocksEditor bm phase downloadProgress {
 // Connection indicator
 
 method updateIndicator MicroBlocksEditor forcefully {
-	if (busy (smallRuntime)) { return } // do nothing during file transfer
-
-	status = (updateConnection (smallRuntime))
-	if (and (lastStatus == status) (forcefully != true)) { return } // no change
-	isConnected = ('connected' == status)
-
-	offBM = (readSVGIcon 'icon-usb')
-	hlBM = (readSVGIcon 'icon-usb2')
-	onBM = (readSVGIcon 'icon-usb3')
-
-	if isConnected {
-		setCostumes indicator onBM hlBM
-		updateConnectionName this (checkBoardType (smallRuntime scripter))
-	} else {
-		setCostumes indicator offBM hlBM
-		updateConnectionName this (localized 'Connect')
-	}
-
-	costumeChanged (morph indicator)
-	lastStatus = status
+    updateIndicator connectionWidget forcefully
 }
 
 method updateConnectionName MicroBlocksEditor aString {
-	if (isNil aString) { aString = '' }
-	setText connectionName aString
-	fixTopBarLayout this
-}
-
-method clicked MicroBlocksEditor aHand {
-	// Clicking on connection name shows connection menu.
-	// xxx Workaround -- The connection name should really be should in
-	// a widget that highlights itself on mouse-over.
-
-	if (containsPoint (bounds (morph connectionName)) (x aHand) (y aHand)) {
-		connectToBoard this
-	}
+    updateConnectionName connectionWidget aString
 }
 
 // browser support
