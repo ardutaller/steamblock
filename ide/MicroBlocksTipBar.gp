@@ -9,7 +9,7 @@
 
 defineClass MicroBlocksTipBar morph title tipMorph tip contentDict iconsDict help tipColor titleColor bgColor lastContents
 
-method initialize MicroBlocksTipBar editor {
+method initialize MicroBlocksTipBar {
 	titleColor = (microBlocksColor 'blueGray' 50)
 	tipColor = (microBlocksColor 'blueGray' 300)
 	bgColor = (microBlocksColor 'blueGray' 850)
@@ -106,10 +106,8 @@ method fixLayout MicroBlocksTipBar {
 	scale = (global 'scale')
 	page = (global 'page')
 	setExtent morph (width page) (22 * scale)
-	editor = (findMicroBlocksEditor)
-	if (isNil editor) { return } // happens during initialization
 
-	setLeft (morph title) (left (morph (blocksFrame (scripter editor))))
+	setLeft (morph title) ((left morph) + (4 * scale))
 	setLeft tipMorph ((right (morph title)) + (2 * scale))
 
 	top = (top morph)
