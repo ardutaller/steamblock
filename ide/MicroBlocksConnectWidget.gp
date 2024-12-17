@@ -24,7 +24,7 @@ method initialize MicroBlocksConnectWidget aMicroBlocksEditor {
 	indicatorM = (newMorph)
 	addPart morph indicatorM
 
-	connectionName = (newText (localized 'Connect') 'Arial' (14 * (global 'scale')) (microBlocksColor 'blueGray' 50))
+	connectionName = (newText (localized 'Connect') 'Arial' (14 * (global 'scale')) (microBlocksColor 'blueGray' 200))
 	addPart morph (morph connectionName)
 
 	dropDownArrowM = (newMorph)
@@ -82,6 +82,7 @@ method fixLayout MicroBlocksConnectWidget {
 	m = dropDownArrowM
 	setPosition m x (centerY - ((height m) / 2))
 	x += ((width m) + space)
+
 	setExtent morph (x - (left morph)) (topBarHeight editor)
 }
 
@@ -112,7 +113,7 @@ method updateConnectionName MicroBlocksConnectWidget aString {
 	if (isNil aString) { aString = '' }
 	setText connectionName aString
 	fixLayout this
-//	if (notNil editor) { fixTopBarLayout editor }
+	if (notNil editor) { fixTopBarLayout editor }
 }
 
 // connect to board
