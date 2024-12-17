@@ -11,6 +11,7 @@ defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categor
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
 method scriptsFrame MicroBlocksScripter { return scriptsFrame }
+method blocksFrame MicroBlocksScripter { return blocksFrame }
 method project MicroBlocksScripter { return mbProject }
 method httpServer MicroBlocksScripter { return (httpServer projectEditor) }
 

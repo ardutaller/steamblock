@@ -7,7 +7,7 @@
 // MicroBlocksTipBar.gp - A bar that displays useful information about the item under the mouse
 // Bernat Romagosa, November 2021
 
-defineClass MicroBlocksTipBar morph title tipMorph tip contentDict iconsDict help tipColor titleColor bgColor
+defineClass MicroBlocksTipBar morph title tipMorph tip contentDict iconsDict help tipColor titleColor bgColor lastContents
 
 method initialize MicroBlocksTipBar editor {
 	titleColor = (microBlocksColor 'blueGray' 50)
@@ -94,6 +94,9 @@ method step MicroBlocksTipBar {
 
 method updateTip MicroBlocksTipBar anElement {
 	contents = (contentsFor this anElement)
+	if (lastContents == contents) { return }
+	lastContents = contents
+
 	setTitle this (at contents 1)
 	setTip this (at contents 2)
 	fixLayout this
@@ -103,9 +106,11 @@ method fixLayout MicroBlocksTipBar {
 	scale = (global 'scale')
 	page = (global 'page')
 	setExtent morph (width page) (22 * scale)
+	editor = (findMicroBlocksEditor)
+	if (isNil editor) { return } // happens during initialization
 
-	setRight tipMorph ((right (morph page)) - (2 * scale))
-	setRight (morph title) ((left tipMorph) + (2 * scale))
+	setLeft (morph title) (left (morph (blocksFrame (scripter editor))))
+	setLeft tipMorph ((right (morph title)) + (2 * scale))
 
 	top = (top morph)
 	if ('Linux' != (platform)) { top += (2 * scale) }
