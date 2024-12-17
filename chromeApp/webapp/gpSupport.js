@@ -810,8 +810,8 @@ function makeDraggable (element) {
 		e.preventDefault();
 
 		// compute max position
-		var maxX = document.getElementById('canvas').clientWidth - 45;
-		var maxY = document.getElementById('canvas').clientHeight - 45;
+		var maxX = document.getElementById('canvas').clientWidth - 272;
+		var maxY = document.getElementById('canvas').clientHeight - 380;
 
 		// calculate the new cursor position:
 		var newX = Math.round(element.offsetLeft + (e.clientX - lastX));
