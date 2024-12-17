@@ -242,7 +242,7 @@ OBJ getEvent() {
 			dictAtPut(dict, key(_type), key((evtType == MOUSE_DOWN) ? type_mousedown : type_mouseup));
 			dictAtPut(dict, key(_x), int2obj(evt[1]));
 			dictAtPut(dict, key(_y), int2obj(evt[2]));
-			dictAtPut(dict, key(_button), int2obj(evt[3] ? 3 : 0)); // non-zero is right button
+			dictAtPut(dict, key(_button), int2obj(evt[3] + 1)); // buttons in browser are 0-based
 			dictAtPut(dict, key(_keymodifiers), int2obj(evt[4]));
 			break;
 		case MOUSE_MOVE:

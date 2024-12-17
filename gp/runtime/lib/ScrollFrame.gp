@@ -260,8 +260,8 @@ method scrollToY ScrollFrame y {
 			overlap = (toFloat (- h (height morph)))
 	} else {
 			overlap = (toFloat (-
-			  (+ h (height (morph hSlider)))
-			  (height morph)
+				(+ h (height (morph hSlider)))
+				(height morph)
 			))
 	}
 	fastSetTop (morph contents) (-

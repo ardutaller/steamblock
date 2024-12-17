@@ -215,6 +215,7 @@ function initGPEventHandlers() {
 	var canvas = document.getElementById('canvas');
 
 	canvas.onmousedown = function(evt) {
+		evt.preventDefault();
 		var p = localPoint(evt.clientX, evt.clientY, 0);
 		GP.events.push([MOUSE_DOWN, p[0], p[1], evt.button, modifierBits(evt)]);
 	}
