@@ -98,7 +98,7 @@ int sendBytes(uint8 *buf, int start, int end) {
 		for (var i = $1; i < $2; i++) {
 			bytes[i - $1] = getValue($0 + i, 'i8');
 		}
-		window.parent.postMessage(bytes);
+		window.parent.postMessage(bytes, '*');
 	}, buf, start, end);
 	return end - start;
 }
@@ -109,11 +109,11 @@ void initKeyboardHandler() {
 	EM_ASM_({
 		window.keys = new Map();
 		window.addEventListener('keydown', function (event) {
-			window.parent.postMessage('boardieKeyDown ' + event.keyCode);
+			window.parent.postMessage('boardieKeyDown ' + event.keyCode, '*');
 			window.keys.set(event.keyCode, true);
 		}, false);
 		window.addEventListener('keyup', function (event) {
-			window.parent.postMessage('boardieKeyUp ' + event.keyCode);
+			window.parent.postMessage('boardieKeyUp ' + event.keyCode, '*');
 			window.keys.set(event.keyCode, false);
 		}, false);
 	});

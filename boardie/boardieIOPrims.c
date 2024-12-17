@@ -58,7 +58,7 @@ void stopTone() {
 		if (window.oscillator.playing) {
 			window.oscillator.disconnect();
 			window.oscillator.playing = false;
-			window.parent.postMessage('boardieSoundStop');
+			window.parent.postMessage('boardieSoundStop', '*');
 		}
 	});
 }
@@ -72,7 +72,7 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 		EM_ASM_({
 			window.oscillator.frequency.value = $0;
 			window.oscillator.playing = true;
-			window.parent.postMessage('boardieSoundStart');
+			window.parent.postMessage('boardieSoundStart', '*');
 			window.oscillator.connect(window.gainNode);
 		}, frequency);
 	} else {

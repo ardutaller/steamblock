@@ -688,11 +688,11 @@ GP.boardie = {
 	position: null,
 	reset: function () {
 		win = this.iframe.contentWindow;
-		postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ])); // system reset w/ Boardie option
+		postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ]), '*'); // system reset w/ Boardie option
 		ctx = win.document.querySelector('canvas').getContext('2d');
 		ctx.fillStyle = "#000";
 		ctx.fillRect(0, 0, 240, 240); // clear screen
-		win.postMessage(new Uint8Array([ 0xFA, 0x05, 0 ])); // start all
+		win.postMessage(new Uint8Array([ 0xFA, 0x05, 0 ]), '*'); // start all
 	},
 	buttonForCode: function (keyCode) {
 		switch (parseInt(keyCode)) {
@@ -713,7 +713,7 @@ GP.boardie = {
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.add('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyDown ' + keyCode);
+			this.iframe.contentWindow.postMessage('keyDown ' + keyCode, '*');
 		}
 	},
 	unpress: function (keyCode, andSendToBoard) {
@@ -721,7 +721,7 @@ GP.boardie = {
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.remove('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyUp ' + keyCode);
+			this.iframe.contentWindow.postMessage('keyUp ' + keyCode, '*');
 		}
 	}
 };
@@ -738,6 +738,7 @@ function GP_openBoardie() {
 			boardie.element = document.createElement('div');
 			boardie.element.innerHTML = req.responseText;
 			boardie.element.style.position = 'absolute';
+			boardie.element.style.width = '272px';
 			boardie.element.style.zIndex = 999;
 
 			var ideCnv = document.getElementById('canvas');
@@ -1065,7 +1066,7 @@ function GP_readSerialPort(maxBytes) {
 
 function GP_writeSerialPort(data) {
 	if (GP.boardie.isOpen) {
-		GP.boardie.iframe.contentWindow.postMessage(data);
+		GP.boardie.iframe.contentWindow.postMessage(data, '*');
 		return data.buffer.byteLength;
 	} else if (webBluetoothConnected()) {
 		return bleSerial.write_data(data);
