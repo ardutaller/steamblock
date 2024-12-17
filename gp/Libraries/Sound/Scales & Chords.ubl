@@ -119,10 +119,10 @@ to scales_arpeggiate 'note list' order duration volume destination channel/pin {
       local 'dur' duration
     }
     if (('[data:convertType]' (at i order) 'number') == 0) {
-      waitMillis ((dur - ((millisOp) - start)) - 8)
+      waitMillis ((dur - ((millisOp) - start)) - 12)
     } else {
       if (destination == 'MIDI channel') {
-        'MIDI_play MIDI note' ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - 8) channel/pin volume
+        'MIDI_play MIDI note' ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - 12) channel/pin volume
       } else {
         if (channel/pin != '') {_tonePin = channel/pin}
         playMIDIKey ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - 1)
