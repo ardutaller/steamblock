@@ -55,13 +55,7 @@ method drawOn CategorySelector ctx {
 	insetY = (4 * scale)
 	if ('Linux' == (platform)) { insetY = (3 * scale) }
 
-	if ('Browser' == (platform)) {
-		// surprisingly, the width of this morph differs between browser and desktop
-		threshold = 145
-	} else {
-		threshold = 75
-	}
-
+	threshold = (75 * scale)
 	itemH = (itemHeight this)
 
 	x = ((left morph) + (12 * scale))
