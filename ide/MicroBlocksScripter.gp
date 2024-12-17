@@ -138,10 +138,10 @@ method darkModeChanged MicroBlocksScripter {
 	changed morph // report damage
 	sliderBGColor = (transparent)
 	if (darkModeEnabled projectEditor) {
-		scriptsFrameColor = (microBlocksColor 'blueGray' 750)
-		blocksFrameColor = (microBlocksColor 'blueGray' 800)
+		scriptsFrameColor = (microBlocksColor 'blueGray' 800)
+		blocksFrameColor = (microBlocksColor 'blueGray' 750)
 		sliderFGColor = (microBlocksColor 'blueGray' 300)
-		scriptingActionsContainerColor = (copy (microBlocksColor 'blueGray' 700))
+		scriptingActionsContainerColor = (copy (microBlocksColor 'blueGray' 800))
 		scriptingActionsContainerBorderColor = (copy (microBlocksColor 'blueGray' 600))
 	} else {
 		scriptsFrameColor = (microBlocksColor 'white')
