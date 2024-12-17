@@ -40,32 +40,32 @@
 #if defined(NRF51)
 	#define OBJSTORE_BYTES 1200
 #elif defined(ARDUINO_BBC_MICROBIT_V2) || defined(ARDUINO_CALLIOPE_MINI_V3)
-	#define OBJSTORE_BYTES 48000
+	#define OBJSTORE_BYTES 46000
 #elif defined(ARDUINO_NRF52_PRIMO)
-	#define OBJSTORE_BYTES 16000
+	#define OBJSTORE_BYTES 14000
 #elif defined(NRF52)
 	#define OBJSTORE_BYTES 160000 // max is 219000
 #elif defined(ARDUINO_ARCH_SAMD)
-	#define OBJSTORE_BYTES 14000
+	#define OBJSTORE_BYTES 12000
 #elif defined(HAS_CAMERA)
 	#define OBJSTORE_BYTES 240000 // will be allocated from PSRAM
 #elif defined(ESP32_S3) || defined(ESP32_C3)
-	#define OBJSTORE_BYTES 80000
+	#define OBJSTORE_BYTES 78000
 #elif defined(ARDUINO_ARCH_ESP32)
 	// object store is allocated from heap on ESP32
 	#if defined(USE_NIMBLE)
-		#define OBJSTORE_BYTES 48000 // max that allows both BLE and WiFi is 59000
+		#define OBJSTORE_BYTES 46000 // max that allows both BLE and WiFi is 59000
 	#else
-		#define OBJSTORE_BYTES 80000
+		#define OBJSTORE_BYTES 78000
 	#endif
 #elif defined(GNUBLOCKS)
 	#define OBJSTORE_BYTES 262100 // max number of bytes that we can allocate for now
 #elif defined(ARDUINO_ARCH_RP2040)
-	#define OBJSTORE_BYTES 60000
+	#define OBJSTORE_BYTES 58000
 #elif defined(ARDUINO_SAM_DUE)
-	#define OBJSTORE_BYTES 80000
+	#define OBJSTORE_BYTES 78000
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
-	#define OBJSTORE_BYTES 40000
+	#define OBJSTORE_BYTES 38000
 #else
 	#define OBJSTORE_BYTES 4000
 	// max that works on Wemos D1 mini (ESP8266) is 11000
