@@ -2984,9 +2984,8 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Bluefruit'
 	} ('Clue' == boardType) {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Clue'
-// disable until MakerPort v3 is out
-// 	} ('MakerPort' == boardType) {
-// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'MakerPort'
+	} ('MakerPort' == boardType) {
+		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'MakerPort'
 	} (isOneOf boardType 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040') {
 		rp2040ResetMessage this
 	} (and
@@ -3014,9 +3013,8 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addItem menu 'ELECFREAKS Wukong2040'
 			addItem menu 'RP2040 (Pico or Pico W)'
 			addLine menu
-// disable until MakerPort v3 is out
-// 			addItem menu 'MakerPort'
-// 			addLine menu
+			addItem menu 'MakerPort'
+			addLine menu
 			addItem menu 'Circuit Playground Express'
 			addItem menu 'Circuit Playground Bluefruit'
 			addItem menu 'Clue'
