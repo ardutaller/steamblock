@@ -34,6 +34,8 @@ pio run -e databot
 cp .pio/build/databot/firmware.bin precompiled/vm_databot.bin
 pio run -e steam-maker
 cp .pio/build/steam-maker/firmware.bin precompiled/vm_micro_steamakers.bin
+pio run -e makerportV3
+python precompiled/uf2conv.py -c .pio/build/makerportV3/firmware.bin -o precompiled/vm_makerport.uf2
 
 # Copy Linux VMs
 cp linux+pi/vm_* precompiled/
