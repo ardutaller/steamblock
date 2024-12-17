@@ -47,10 +47,6 @@ method setHighlight MicroBlocksConnectWidget isOn {
 		setCostume dropDownArrowM (readSVGIcon 'dropdown-arrow' (microBlocksColor 'blueGray' 200))
 	}
 
-// todo: check with Bernat: John prefers to NEVER highlight the connection icon
-// comment out this return to see the alternative behavior:
-	return
-
 	// change indicator highlight only if not connected
 	if (not isConnected) {
 		if isOn {
