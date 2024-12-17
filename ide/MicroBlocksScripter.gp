@@ -138,11 +138,11 @@ method darkModeChanged MicroBlocksScripter {
 	changed morph // report damage
 	sliderBGColor = (transparent)
 	if (darkModeEnabled projectEditor) {
-		scriptsFrameColor = (microBlocksColor 'blueGray' 900)
+		scriptsFrameColor = (microBlocksColor 'blueGray' 700)
 		blocksFrameColor = (microBlocksColor 'blueGray' 800)
 		sliderFGColor = (microBlocksColor 'blueGray' 300)
-		scriptingActionsContainerColor = (copy (microBlocksColor 'blueGray' 850))
-		scriptingActionsContainerBorderColor = (copy (microBlocksColor 'blueGray' 700))
+		scriptingActionsContainerColor = (copy (microBlocksColor 'blueGray' 700))
+		scriptingActionsContainerBorderColor = (copy (microBlocksColor 'blueGray' 600))
 	} else {
 		scriptsFrameColor = (microBlocksColor 'white')
 		blocksFrameColor = (microBlocksColor 'blueGray' 50)
@@ -157,7 +157,7 @@ method darkModeChanged MicroBlocksScripter {
 	setSliderColors blocksFrame sliderBGColor sliderFGColor
 	scriptingActionsContainer = (scriptingActionsContainer projectEditor)
 	setColor scriptingActionsContainer scriptingActionsContainerColor
-	setAlpha (color scriptingActionsContainer) 220
+	setAlpha (color scriptingActionsContainer) 200
 	setBorderColor scriptingActionsContainer scriptingActionsContainerBorderColor
 	categorySelected this
 
