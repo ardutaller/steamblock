@@ -163,6 +163,7 @@ void readFilesFromURL() {
 				var fileName = decodeURIComponent(
 						descriptor.substring(0, fileStart)
 					);
+				console.log('Loading', fileName);
 				var contents = Module['base64Decode'](
 						descriptor.substring(fileStart + 1),
 						true // urlSafe
@@ -177,10 +178,12 @@ void readScriptsFromURL() {
 	EM_ASM_({
 		if (window.location.hash.startsWith('#code=')) {
 			// "#code=" is 6 chars
+			var andIndex = window.location.hash.indexOf('&');
 			var b64 = window.location.hash.substring(
-						6,
-						window.location.hash.indexOf('&')
-					);
+					6,
+					andIndex > -1 ? andIndex : window.location.hash.length
+				);
+			console.log('Loading code from URL');
 			if (b64) {
 				var bytes = Module['base64Decode'](b64, true);
 				for (var i = 0; i < bytes.length; i++) {
