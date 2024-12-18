@@ -755,6 +755,11 @@ function GP_openBoardie() {
 			boardie.element.style.cursor = 'grab';
 
 			boardie.iframe = boardie.element.querySelector('iframe');
+			if (window.location.hostname == 'localhost') {
+				boardie.iframe.src = 'boardie/vm.html';
+			} else {
+				boardie.iframe.src = 'https://boardie.microblocks.fun/vm.html';
+			}
 
 			boardie.element.onclick = function (evt) {
 				if (!evt.target.closest('[data-button]')) {
