@@ -212,17 +212,17 @@ to '_MIDI command' cmd channel arg1 arg2 {
   '_MIDI init'
   local 'cmdByte' ((cmd << 4) | ((channel - 1) & 15))
   local 'oneArgByte' ((pushArgCount) < 4)
-  if (_MIDI_pin == 0) {
-    if oneArgByte {
-      '[serial:write]' ('[data:makeList]' cmdByte arg1)
-    } else {
-      '[serial:write]' ('[data:makeList]' cmdByte arg1 arg2)
-    }
-  } (or (_MIDI_pin == 'USB') ((boardType) == 'Boardie')) {
+  if (or (_MIDI_pin == 'USB') ((boardType) == 'Boardie')) {
     if oneArgByte {
       '[serial:midiSend]' cmdByte arg1
     } else {
       '[serial:midiSend]' cmdByte arg1 arg2
+    }
+  } (_MIDI_pin == 0) {
+    if oneArgByte {
+      '[serial:write]' ('[data:makeList]' cmdByte arg1)
+    } else {
+      '[serial:write]' ('[data:makeList]' cmdByte arg1 arg2)
     }
   } else {
     for map _MIDI_pin {
@@ -245,10 +245,10 @@ to '_MIDI init' {
       } else {
         '[serial:close]'
       }
-      _MIDI_initialized = (booleanConstant true)
     } else {
       callCustomCommand '[serial:setPins]' ('[data:makeList]' _MIDI_pin)
     }
+    _MIDI_initialized = (booleanConstant true)
     for i 16 {
       'MIDI_change MIDI control' 'volume' i 100
     }
