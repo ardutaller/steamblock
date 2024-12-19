@@ -755,6 +755,14 @@ function GP_openBoardie() {
 			boardie.element.style.cursor = 'grab';
 
 			boardie.iframe = boardie.element.querySelector('iframe');
+			if (window.location.hostname == 'microblocks.fun') {
+				// Run Boardie from a separate domain to ensure it runs as an OOPIF
+				boardie.iframe.src = 'https://boardie.microblocks.fun/vm.html';
+			} else {
+				// Not the end of the world, but the UI will interfere with
+				// time-sensitive threads, such as when making music
+				boardie.iframe.src = 'boardie/vm.html';
+			}
 
 			boardie.element.onclick = function (evt) {
 				if (!evt.target.closest('[data-button]')) {
