@@ -1,6 +1,6 @@
 module MIDI Output
 author MicroBlocks
-version 1 16 
+version 1 17 
 choices druminst 'Acoustic Bass Drum' 'Bass Drum 1' 'Side Stick' 'Acoustic Snare' 'Hand Clap' 'Electric Snare' 'Low Floor Tom' 'Closed Hi-Hat' 'High Floor Tom' 'Pedal Hi-Hat' 'Low Tom' 'Open Hi-Hat' 'Low-Mid Tom' 'Hi-Mid Tom' 'Crash Cymbal 1' 'High Tom' 'Ride Cymbal 1' 'Chinese Cymbal' 'Ride Bell' Tambourine 'Splash Cymbal' Cowbell 'Crash Cymbal 2' Vibraslap 'Ride Cymbal 2' 'Hi Bongo' 'Low Bongo' 'Mute Hi Conga' 'Open Hi Conga' 'Low Conga' 'High Timbale' 'Low Timbale' 'High Agogo' 'Low Agogo' Cabasa Maracas 'Short Whistle' 'Long Whistle' 'Short Guiro' 'Long Guiro' Claves 'Hi Wood Block' 'Low Wood Block' 'Mute Cuica' 'Open Cuica' 'Mute Triangle' 'Open Triangle' 
 choices _midiPin USB 
 choices instrument piano 'chromatic percussion' organ guitar bass strings ensemble brass reed pipe 'synth lead' 'synth pad' 'synth SFX' ethnic percussive 'gm;SFX' 
@@ -166,7 +166,7 @@ to 'MIDI_set MIDI pin' pin {
   if ('USB' == pin) {
     _MIDI_pin = 'USB'
   } else {
-    if (isType pin 'list') {
+    if (or (isType pin 'list') ((boardType) == 'Boardie')) {
       _MIDI_pin = pin
     } else {
       _MIDI_pin = ('[data:makeList]' ('[data:makeList]' pin ('[data:range]' 1 16)))
@@ -218,7 +218,7 @@ to '_MIDI command' cmd channel arg1 arg2 {
     } else {
       '[serial:write]' ('[data:makeList]' cmdByte arg1 arg2)
     }
-  } (_MIDI_pin == 'USB') {
+  } (or (_MIDI_pin == 'USB') ((boardType) == 'Boardie')) {
     if oneArgByte {
       '[serial:midiSend]' cmdByte arg1
     } else {
@@ -239,12 +239,16 @@ to '_MIDI command' cmd channel arg1 arg2 {
 
 to '_MIDI init' {
   if (not _MIDI_initialized) {
-    if (_MIDI_pin == 0) {
-      '[serial:open]' 31250
+    if ((boardType) != 'Boardie') {
+      if (_MIDI_pin == 0) {
+        '[serial:open]' 31250
+      } else {
+        '[serial:close]'
+      }
+      _MIDI_initialized = (booleanConstant true)
     } else {
-      '[serial:close]'
+      callCustomCommand '[serial:setPins]' ('[data:makeList]' _MIDI_pin)
     }
-    _MIDI_initialized = (booleanConstant true)
     for i 16 {
       'MIDI_change MIDI control' 'volume' i 100
     }
