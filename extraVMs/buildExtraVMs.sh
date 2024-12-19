@@ -15,6 +15,8 @@ pio run -e makerportV1
 python precompiled/uf2conv.py -c .pio/build/makerportV1/firmware.bin -o extraVMs/vm_makerport_v1.uf2
 pio run -e gizmo-mechatronics
 cp .pio/build/gizmo-mechatronics/firmware.uf2 extraVMs/vm_gizmo_mechatronics.uf2
+pio run -e wukong2040-w
+cp .pio/build/wukong2040-w/firmware.uf2 extraVMs/vm_wukong2040-w.uf2
 
 pio run -e m5atom
 cp .pio/build/m5atom/firmware.bin extraVMs/vm_m5atom.bin
