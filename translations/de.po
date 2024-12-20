@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-20 12:00+0000\n"
+"PO-Revision-Date: 2024-12-21 13:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -188,7 +188,7 @@ msgstr "Über MicroBlocks"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
-msgstr "Skript ist zu groß, um an das Board gesendet zu werden."
+msgstr "Skript ist zu groß und kann nicht an das Board gesendet werden."
 
 #. Graph context menu option
 msgid "clear graph"
@@ -1843,7 +1843,7 @@ msgstr "verbinde (BLE)"
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr "verbinde Board und versuche es nochmal"
+msgstr "verbinde das Board und versuche es nochmal"
 
 #. Block size option
 msgid "normal (65%)"
@@ -2379,7 +2379,7 @@ msgstr "Projekt wird vom Board gelesen..."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Drücke \"Verbinden\", um dein MicroBlocks-Gerät zu verbinden."
+msgstr "Drücke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
@@ -2651,7 +2651,7 @@ msgstr "UDP Remote-Port"
 #. MicroBlocks IDE message
 #. %1 holds the name of a library
 msgid "Found a newer version of %1."
-msgstr "Eine neuere Version von %1 wurde gefunden."
+msgstr "Eine neuere Version von %1 ist verfügbar."
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
@@ -3708,7 +3708,7 @@ msgstr "Projekt wird geladen..."
 #. MicroBlocks IDE message.
 #. First part is "Found a newer version of [a library name]"
 msgid "Do you want me to update the one in the project?"
-msgstr "Möchtest du, dass ich das im Projekt aktualisiere?"
+msgstr "Soll dies im Projekt aktualisiert werden?"
 
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
@@ -4345,7 +4345,7 @@ msgstr "Cutebot setze Vorderlicht _ auf _"
 #. MicroBlocks IDE information
 msgid "The firmware on the board is not compatible with this version of MicroBlocks."
 msgstr ""
-"Die Firmware auf dem Board ist nicht kompatibel mit dieser Version von "
+"Die Firmware auf deinem Board ist nicht kompatibel mit dieser Version von "
 "MicroBlocks."
 
 #. Settings menu option
@@ -4856,12 +4856,12 @@ msgstr "WuKong2040"
 #. Sphero-RVR robot library block
 msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
 msgstr ""
-"setze rohe Motoren auf linken Modus _ linke Geschwindigkeit _ rechter Modus "
-"_ rechte Geschwindigkeit _"
+"setze Motor links auf Modus _ Geschwindigkeit _ und Motor rechts auf Modus _ "
+"Geschwindigkeit _"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong setze Servo _ auf Geschwindigkeit _ (-100~100)"
+msgstr "Wukong setze kontinuierlichen Servo _ auf Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
@@ -4881,7 +4881,7 @@ msgstr "stoppe mit Richtung _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ color to _"
-msgstr "WuKong2040 setze NeoPixel _ auf _"
+msgstr "WuKong2040 setze NeoPixel _ auf Farbe _"
 
 #. Wukong robot library label
 msgid "Wukong"
@@ -4929,7 +4929,7 @@ msgstr "NeZha setze _ Servo _ Winkel auf _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "NeZha setze 360° Servo _ Geschwindigkeit auf _ %"
+msgstr "NeZha setze kontinuierlichen Servo _ auf Geschwindigkeit _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
