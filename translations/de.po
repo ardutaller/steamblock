@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-21 13:00+0000\n"
+"PO-Revision-Date: 2024-12-23 10:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -172,7 +172,7 @@ msgstr "Graph"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "lade Modul"
+msgstr "füge Modul hinzu"
 
 #. Block right-click context menu tooltip
 msgid "duplicate these blocks"
@@ -642,7 +642,7 @@ msgstr "serial empfange"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
-msgstr "deaktiviere Radio"
+msgstr "Radio aus"
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
@@ -682,7 +682,7 @@ msgstr "neue Liste Länge _"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
-msgstr "setze NeoPixel _ Farbe _"
+msgstr "setze NeoPixel _ auf Farbe _"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
@@ -764,7 +764,7 @@ msgstr "verwirrt"
 
 #. NeoPixel library block
 msgid "attach _ LED NeoPixel strip to pin _"
-msgstr "mache _ LED zum NeoPixel-Streifen an Pin _"
+msgstr "verbinde NeoPixel-Streifen mit _ LEDs an Pin _"
 
 #. Citilab ED1 Buttons library block
 msgid "capacitive sensor _"
@@ -2173,7 +2173,7 @@ msgstr "Stärke"
 
 #. Infrared remote library label
 msgid "IR Remote"
-msgstr "IR-Fernzugriff"
+msgstr "IR-Fernbedienung"
 
 #. Infrared Remote library block
 msgid "receive IR code"
@@ -2455,8 +2455,7 @@ msgstr "Firmware installiert"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
-msgstr ""
-"Klicke auf \"Verbinden\", um dein MicroBlocks-Gerät erneut zu verbinden."
+msgstr "Klicke auf \"Verbinden\", um dein MicroBlocks-Gerät neu zu verbinden."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
@@ -2716,8 +2715,8 @@ msgstr "[l] zur Werteanzeige oder zum Ziehen in einen Eingabebereich. [r] Menü.
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
 msgstr ""
-"Ziehe Blöcke von hier in den Skriptbereich. Schiebe Skripte hierher, um sie "
-"zu löschen."
+"Ziehe Blöcke von hier in den Skriptbereich. Bewege Blöcke und Skripte "
+"hierher, um sie zu löschen."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Do nothing. Used to add notes and documentation."
@@ -3569,7 +3568,7 @@ msgstr "nur Zahlen"
 
 #. Library label right click context menu option
 msgid "delete library"
-msgstr "lösche Modul"
+msgstr "entferne Modul"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Button"
@@ -3712,7 +3711,9 @@ msgstr "Soll dies im Projekt aktualisiert werden?"
 
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
-msgstr "Bei AdaFruit-Boards den Reset-Knopf drücken und erneut versuchen."
+msgstr ""
+"Bei AdaFruit-Boards musst du die Reset-Taste zweimal drücken und es dann "
+"nochmal versuchen."
 
 #. Scripting area right-click context menu
 msgid "make blocks bigger or smaller"
@@ -4607,11 +4608,11 @@ msgstr "erlaube WiFi während BLE _ verwendet wird"
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
-msgstr "verschiebe alle NeoPixelfarben um _"
+msgstr "verschiebe Farbe für alle NeoPixel um _"
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
-msgstr "verschiebe Farbe von NeoPixel _ um _"
+msgstr "verschiebe Farbe für NeoPixel _ um _"
 
 #. MIDI library block
 msgid "variation _"
@@ -4851,7 +4852,7 @@ msgstr "Wukong stoppe alles"
 
 #. WuKong2040 robot library label
 msgid "WuKong2040"
-msgstr "WuKong2040"
+msgstr "Wukong2040"
 
 #. Sphero-RVR robot library block
 msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
@@ -4881,7 +4882,7 @@ msgstr "stoppe mit Richtung _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ color to _"
-msgstr "WuKong2040 setze NeoPixel _ auf Farbe _"
+msgstr "Wukong2040 setze NeoPixel _ auf Farbe _"
 
 #. Wukong robot library label
 msgid "Wukong"
@@ -4905,7 +4906,7 @@ msgstr "Wukong setze blaue LEDs auf Helligkeit _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
-msgstr "WuKong2040 setze Motor _ auf Geschwindigkeit _ (-100~100)"
+msgstr "Wukong2040 setze Motor _ auf Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
@@ -4913,7 +4914,7 @@ msgstr "Wukong setze Servo _ auf _ Grad (-90~90)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
-msgstr "Wukong setze NeoPixels _ _ _ _"
+msgstr "Wukong setze NeoPixel _ _ _ _"
 
 #. Sphero-RVR robot library block
 msgid "wake"
@@ -4965,11 +4966,11 @@ msgstr "setze alle LEDs auf Rot _ Grün _ Blau _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop motor _"
-msgstr "WuKong2040 stoppe Motor _"
+msgstr "Wukong2040 stoppe Motor _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 clear all rainbowLED"
-msgstr "WuKong2040 lösche alle NeoPixel"
+msgstr "Wukong2040 lösche alle NeoPixel"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of DHT11 humidity (0~100) at pin _"
@@ -5057,15 +5058,15 @@ msgstr "NeZha stoppe alle Motoren"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop all motors"
-msgstr "WuKong2040 stoppe alle Motoren"
+msgstr "Wukong2040 stoppe alle Motoren"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 buzzer beep _ ms"
-msgstr "WuKong2040 Pieps _ ms"
+msgstr "Wukong2040 spiele Ton _ ms"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
-msgstr "WuKong2040 setze NeoPixel _ auf R _ G _ B _ (0~255)"
+msgstr "Wukong2040 setze NeoPixel _ auf R _ G _ B _ (0~255)"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus OLED fill rectangle x _ y _ w _ h _"
