@@ -42,9 +42,9 @@ method drawOn ShadowEffect ctx {
 		}
 	}
 	for b blockBodies {
-		for x (array (- offset) 0 offset) {
-			for y (array (- offset) 0 offset) {
-				if (and (x != 0) (y != 0)) { // don't draw a shadow that can't be seen
+		for x (array (- offset) offset) {
+			for y (array (- offset) offset) {
+				if (and (x != 0) (y != 0)) {
 					browserSetShadow color x y 0
 					drawOn b ctx
 					browserClearShadow
