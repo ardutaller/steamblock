@@ -496,20 +496,22 @@ adjustButtonVisibility();
 function setContextShadow(ctx) {
 	if (!GP.shadowColor) return;
 	ctx.shadowColor = GP.shadowColor;
-	ctx.shadowOffsetX = GP.shadowOffset;
-	ctx.shadowOffsetY = GP.shadowOffset;
+	ctx.shadowOffsetX = GP.shadowOffsetX;
+	ctx.shadowOffsetY = GP.shadowOffsetY;
 	ctx.shadowBlur = GP.shadowBlur;
 }
 
-function setShadow(red, green, blue, alpha, offset, blur) {
+function setShadow(red, green, blue, alpha, offsetX, offsetY, blur) {
 	GP.shadowColor = 'rgba(' + red + ', ' + green + ', ' + blue + ', ' + alpha + ')';
-	GP.shadowOffset = offset;
+	GP.shadowOffsetX = offsetX;
+	GP.shadowOffsetY = offsetY;
 	GP.shadowBlur = blur;
 }
 
 function clearShadow() {
 	GP.shadowColor = null;
-	GP.shadowOffset = 0;
+	GP.shadowOffsetX = 0;
+	GP.shadowOffsetY = 0;
 	GP.shadowBlur = 0;
 }
 
