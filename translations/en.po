@@ -4281,6 +4281,70 @@ msgstr "NeZha set _ servo _ angle to _"
 msgid "NeZha set continuous rotation servo _ speed to _ %"
 msgstr "NeZha set continuous rotation servo _ speed to _ %"
 
+#. NeZha2 robot library label
+msgid "Nezha2"
+msgstr "Nezha2"
+
+#. NeZha2 robot library block
+msgid "Nezha beep _ Hz for _ msecs"
+msgstr "Nezha beep _ Hz for _ msecs"
+
+#. NeZha2 robot library block
+msgid "Nezha set motor _ speed to _ (-100-100)"
+msgstr "Nezha set motor _ speed to _ (-100-100)"
+
+#. NeZha2 robot library block
+msgid "Nezha stop motor _"
+msgstr "Nezha stop motor _"
+
+#. NeZha2 robot library block
+msgid "Nezha stop all motors"
+msgstr "Nezha stop all motors"
+
+#. NeZha2 robot library block
+msgid "Nezha set _ servo _ angle to _"
+msgstr "Nezha set _ servo _ angle to _"
+
+#. NeZha2 robot library block
+msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
+msgstr "Nezha set continuous servo _ speed to _ (-100 to 100)"
+
+#. NeZha2 robot library block
+msgid "Nezha set LED _ to _"
+msgstr "Nezha set LED _ to _"
+
+#. NeZha2 robot library block
+msgid "brightness _ %"
+msgstr "brightness _ %"
+
+#. NeZha2 robot library block
+msgid "Nezha set all LEDs to _"
+msgstr "Nezha set all LEDs to _"
+
+#. NeZha2 robot library block
+msgid "Nezha trim pot _"
+msgstr "Nezha trim pot _"
+
+#. NeZha2 robot library block
+msgid "Nezha soil moisture _"
+msgstr "Nezha soil moisture _"
+
+#. NeZha2 robot library block
+msgid "Nezha read analog _"
+msgstr "Nezha read analog _"
+
+#. NeZha2 robot library block
+msgid "Nezha crash sensor _"
+msgstr "Nezha crash sensor _"
+
+#. NeZha2 robot library block
+msgid "Nezha line sensor _ sees line on left _ right _"
+msgstr "Nezha line sensor _ sees line on left _ right _"
+
+#. NeZha2 robot library block
+msgid "Nezha distance _ (cm)"
+msgstr "Nezha distance _ (cm)"
+
 #. WuKong2040 robot library label
 msgid "WuKong2040"
 msgstr "WuKong2040"
