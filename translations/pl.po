@@ -3,480 +3,483 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-29 10:57+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-12-30 19:00+0000\n"
+"Last-Translator: Michal Slaski <michal.slaski@gmail.com>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/microblocks/ide/"
+"pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.14.5\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Wyjście"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "ustaw diodę LED _"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "powiedz _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "wykres _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "Wejście"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "przycisk A"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "przycisk B"
 
 #. Block in Input category
 msgid "timer"
-msgstr ""
+msgstr "stoper"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr ""
+msgstr "wyzeruj stoper"
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "sekundy"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "mikrosekundy"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "milisekundy"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "typ płytki"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "wersja"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr ""
+msgstr "milisekundy od _"
 
 #. Block in Input category
 msgid "end time _"
-msgstr ""
+msgstr "do _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr ""
+msgstr "mikrosekundy od _"
 
 #. Block in Input category
 msgid "BLE id"
-msgstr ""
+msgstr "identyfikator Bluetooth"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr ""
+msgstr "Bluetooth połączony"
 
 #. Block in Input category
 msgid "connected to IDE"
-msgstr ""
+msgstr "podłączony do IDE"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr ""
+msgstr "Piny"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr ""
+msgstr "odczyt pinu cyfrowego _"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr ""
+msgstr "odczyt pinu analogowego _"
 
 #. Block in Pins category
 msgid "pullup _"
-msgstr ""
+msgstr "pullup _"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr ""
+msgstr "ustaw pin cyfrowy _ na _"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr ""
+msgstr "ustaw pin _ na _"
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr ""
+msgstr "piny analogowe"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr ""
+msgstr "piny cyfrowe"
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr ""
+msgstr "Kontrola"
 
 #. Block in Control category
 msgid "when started"
-msgstr ""
+msgstr "kiedy uruchomiono"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr ""
+msgstr "kiedy przycisk _ naciśnięty"
 
 #. Block in Control category
 msgid "forever _"
-msgstr ""
+msgstr "zawsze _"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr ""
+msgstr "powtórz _ razy _"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr ""
+msgstr "czekaj _ milisekund"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr ""
+msgstr "jeżeli _ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr ""
+msgstr "jeżeli _ _ w przeciwnym razie _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr ""
+msgstr "w przeciwnym razie jeżeli _ _"
 
 #. Block in Control category
 msgid "else"
-msgstr ""
+msgstr "w przeciwnym razie"
 
 #. Block in Control category
 msgid "when _"
-msgstr ""
+msgstr "kiedy _"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr ""
+msgstr "czekaj aż _"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr ""
+msgstr "czekaj _ mikrosekund"
 
 #. Block in Control category
 msgid "return _"
-msgstr ""
+msgstr "zwróć _"
 
 #. Block in Control category
 msgid "when _ received"
-msgstr ""
+msgstr "kiedy otrzymano _"
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr ""
+msgstr "start!"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr ""
+msgstr "nadaj _"
 
 #. Block in Control category
 msgid "comment _"
-msgstr ""
+msgstr "komentarz _"
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr ""
+msgstr "Jak to działa..."
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr ""
+msgstr "liczby od _ do _"
 
 #. Block in Control category
 msgid "by _"
-msgstr ""
+msgstr "co _"
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr ""
+msgstr "dla każdego _ z _ _"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr ""
+msgstr "powtarzaj aż _ _"
 
 #. Block in Control category
 msgid "stop this task"
-msgstr ""
+msgstr "zatrzymaj to zadanie"
 
 #. Block in Control category
 msgid "stop other tasks"
-msgstr ""
+msgstr "zatrzymaj inne zadania"
 
 #. Block in Control category
 msgid "stop all"
-msgstr ""
+msgstr "zatrzymaj wszystko"
 
 #. Block in Control category
 msgid "last message"
-msgstr ""
+msgstr "ostatnia wiadomość"
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr ""
+msgstr "argument _ wartość domyślna _"
 
 #. Block in Control category
 msgid "exit loop"
-msgstr ""
+msgstr "wyjdź z pętli"
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr ""
+msgstr "wartość"
 
 #. Block in Control category
 msgid "call _"
-msgstr ""
+msgstr "wywołaj _"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr ""
+msgstr "nazwa funkcji"
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr ""
+msgstr "listą parametrów"
 
 #. Block in Control category
 msgid "with _"
-msgstr ""
+msgstr "z _"
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr ""
+msgstr "Wyrażenia"
 
 #. Block in Operators category
 msgid "_ mod _"
-msgstr ""
+msgstr "reszta z dzielenia _ przez _"
 
 #. Block in Operators category
 msgid "abs _"
-msgstr ""
+msgstr "wartość bezwzględna z _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr ""
+msgstr "minimum _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr ""
+msgstr "maksimum _ _"
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr ""
+msgstr "losuj od _ do _"
 
 #. Block in Operators category
 msgid "not _"
-msgstr ""
+msgstr "nie _"
 
 #. Block in Operators category
 msgid "_ and _"
-msgstr ""
+msgstr "_ i _"
 
 #. Block in Operators category
 msgid "and _"
-msgstr ""
+msgstr "i _"
 
 #. Block in Operators category
 msgid "_ or _"
-msgstr ""
+msgstr "_ lub _"
 
 #. Block in Operators category
 msgid "or _"
-msgstr ""
+msgstr "lub _"
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr ""
+msgstr "_ jest typu _"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr ""
+msgstr "konwertuj _ na _"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr ""
+msgstr "jeżeli _ to _ w przeciwnym razie _"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "boolean"
-msgstr ""
+msgstr "wartość logiczna"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
-msgstr ""
+msgstr "liczba"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr ""
+msgstr "tekst"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 #. Also label of ( list < > ) block in Data category
 msgid "list"
-msgstr ""
+msgstr "lista"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
-msgstr ""
+msgstr "tablica bajtów"
 
 #. "Advanced" label for advanced blocks in the palette
 msgid "cat;Advanced:"
-msgstr ""
+msgstr "Zaawansowane:"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr ""
+msgstr "przeskaluj _ z ( _ , _ ) na ( _ , _ )"
 
 #. Block in Operators category
 msgid "hex _"
-msgstr ""
+msgstr "hex _"
 
 #. Block in Operators category
 msgid "sqrt _"
-msgstr ""
+msgstr "pierwiastek kwadratowy _"
 
 #. "Variables" blocks category label
 msgid "cat;Variables"
-msgstr ""
+msgstr "Zmienne"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr ""
+msgstr "Utwórz zmienną"
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr ""
+msgstr "Usuń zmienną"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr ""
+msgstr "Nazwa nowej zmiennej"
 
 #. Block in Variables category
 msgid "set _ to _"
-msgstr ""
+msgstr "ustaw _ na _"
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr ""
+msgstr "zmień _ o _"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr ""
+msgstr "zainicjuj zmienną lokalną _ na _"
 
 #. "Data" blocks category label
 msgid "cat;Data"
-msgstr ""
+msgstr "Dane"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr ""
+msgstr "kot"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr ""
+msgstr "pies"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr ""
+msgstr "ptak"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr ""
+msgstr "ryba"
 
 #. Block in Data category
 msgid "length of _"
-msgstr ""
+msgstr "długość _"
 
 #. Block in Data category
 msgid "item _ of _"
-msgstr ""
+msgstr "element _ z _"
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr ""
+msgstr "zmień element _ z listy _ na _"
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr ""
+msgstr "usuń element _ z listy _"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr ""
+msgstr "dodaj _ do listy _"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr ""
+msgstr "połącz _ _"
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr ""
+msgstr "skopiuj z _ od _"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr ""
+msgstr "ptak"
 
 #. Block in Data category
 msgid "to _"
-msgstr ""
+msgstr "do _"
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr ""
+msgstr "znajdź _ w _"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr ""
+msgstr "zacznij od _"
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr ""
+msgstr "połącz elementy z listy _"
 
 #. Block in Data category
 msgid "separator _"
-msgstr ""
+msgstr "oddzielone _"
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr ""
+msgstr "unicode znaku _ z _"
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr ""
+msgstr "tekst z unicode _"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr ""
+msgstr "nowa lista o długości _"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr ""
+msgstr "nowa tablica bajtów _"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr ""
+msgstr "jako tablica bajtów _"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr ""
+msgstr "listaBajtówLubTekst"
 
 #. Block in Data category
 msgid "with all _"
