@@ -1,10 +1,10 @@
-module 'OLED Graphics' 'Output'
+module 'OLED Graphics' Output
 author 'Turgut Guneysu'
-version 1 15 
-choices DispTypeMenu 'OLED_0.96in' 'OLED_2.42in' 
+version 1 17 
+choices ModeMenu Horizontal Vertical 
 choices OnOffMenu On Off 
 choices VideoMenu Inverse Normal 
-choices ModeMenu Horizontal Vertical 
+choices DispTypeMenu 'OLED_0.96in' 'OLED_2.42in' 
 description 'Supports 0.96in and 2.42in OLED Displays with SD1306 and SD1309 chipsets. Comm mode is I2C or SPI.
 Changes:
 - always display buffer
@@ -23,6 +23,7 @@ Changes:
 - stack overflow fix
 - improve conversion ops, i2c io, rect fill, img processing, and buffer displays
 - reduce i2c buffer to 128 bytes
+- reduce i2c buffer to 64 bytes
 '
 variables OLEDReady OLEDi2cAddr _GDBuffer _begCol _begRow _cDecTBL _comma _cTABLE _comMode _dcPin _delayGDUpd _displayType _endCol _endRow _eol _resetPin _textX _textY _dataPrefix _byteCount _imgData _imgWidth _imgHeight 
 
@@ -54,7 +55,6 @@ variables OLEDReady OLEDi2cAddr _GDBuffer _begCol _begRow _cDecTBL _comma _cTABL
   spec ' ' '_T2' '_T2'
   spec ' ' '_T3' '_T3'
   spec 'r' '_cBMP' '_cBMP _ InvYN _' 'auto bool' '' false
-  spec ' ' '_clearDisplay' '_clearDisplay'
   spec ' ' '_corner' '_corner _ _ _ _ _' 'auto auto auto auto bool' 'TL' 32 1 0 true
   spec 'r' '_dec2hex' '_dec2hex _' 'auto' 0
   spec ' ' '_initChars' '_initChars'
@@ -432,11 +432,10 @@ spi:
   '_initCheck'
   if (_comMode == 'i2c') {
     local 'idx' 0
-    repeat 8 {
-      '[sensors:i2cWrite]' OLEDi2cAddr ('[data:join]' _dataPrefix ('[data:copyFromTo]' _GDBuffer idx (idx + 126)))
-      idx += 127
+    repeat 17 {
+      '[sensors:i2cWrite]' OLEDi2cAddr ('[data:join]' _dataPrefix ('[data:copyFromTo]' _GDBuffer idx (idx + 60)))
+      idx += 61
     }
-    '[sensors:i2cWrite]' OLEDi2cAddr ('[data:join]' _dataPrefix ('[data:copyFromTo]' _GDBuffer idx (idx + 16)))
   } else {
     '_SPIWriteData'
     '[sensors:spiExchange]' ('[data:copyFromTo]' _GDBuffer 1)
@@ -626,21 +625,6 @@ inv:    255,131,237,238,238,131,255'
   _imgWidth = 8
   _imgHeight = 8
   return charList
-}
-
-to '_clearDisplay' {
-  comment 'Clear Screen without initializing _GDBuffer'
-  '_initCheck'
-  '_OLEDcursorReset'
-  if ('i2c' == _comMode) {
-    repeat 8 {
-      '[sensors:i2cWrite]' OLEDi2cAddr ('[data:join]' _dataPrefix ('[data:newByteArray]' 126))
-    }
-    '[sensors:i2cWrite]' OLEDi2cAddr ('[data:join]' _dataPrefix ('[data:newByteArray]' 16))
-  } else {
-    '_SPIWriteData'
-    '[sensors:spiExchange]' ('[data:newByteArray]' 1024)
-  }
 }
 
 to '_corner' loc cx cy r erase {
