@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-29 10:57+0200\n"
-"PO-Revision-Date: 2025-01-01 01:02+0000\n"
+"PO-Revision-Date: 2025-01-01 15:53+0000\n"
 "Last-Translator: Michal Slaski <michal.slaski@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/microblocks/ide/"
 "pl/>\n"
@@ -483,7 +483,7 @@ msgstr "listaBajtówLubTekst"
 
 #. Block in Data category
 msgid "with all _"
-msgstr ""
+msgstr "ze wszystkimi _"
 
 #. Block in Data category
 msgid "free memory"
@@ -493,39 +493,39 @@ msgstr "wolna pamięć"
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr ""
+msgstr "wszystko"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr ""
+msgstr "ostatni"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
 msgid "random"
-msgstr ""
+msgstr "losowy"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr ""
+msgstr "podziel _ według _"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr ""
+msgstr "Moje Bloki"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr ""
+msgstr "Ogólny"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr ""
+msgstr "Dodaj blok poleceń"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr ""
+msgstr "Dodaj blok zwracający wartość"
 
 #. Make a block dialog
 msgid "Enter function name:"
@@ -533,47 +533,47 @@ msgstr "Wprowadź nazwę funkcji:"
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
-msgstr ""
+msgstr "Komunikacja"
 
 #. Block in Comm category
 msgid "i2c get device _ register _"
-msgstr ""
+msgstr "i2c czytaj z urządzenia _ rejestr _"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
-msgstr ""
+msgstr "i2c zapisz do urządzenia _ do rejestru _ wartość _"
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
-msgstr ""
+msgstr "i2c z urządzenia _ czytaj listę _"
 
 #. Block in Comm category
 msgid "i2c device _ write list _"
-msgstr ""
+msgstr "i2c do urządzenia _ zapisz listę _"
 
 #. Block in Comm category
 msgid "i2c device _ exists?"
-msgstr ""
+msgstr "i2c urządzenie _ istnieje?"
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr ""
+msgstr "spi wyślij _"
 
 #. Block in Comm category
 msgid "spi receive"
-msgstr ""
+msgstr "spi odbierz"
 
 #. Block in Comm category
 msgid "spi setup speed _"
-msgstr ""
+msgstr "spi ustaw prędkość _"
 
 #. Block in Comm category
 msgid "mode _"
-msgstr ""
+msgstr "tryb _"
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr ""
+msgstr "rpi kanał _"
 
 #. Block in Comm category
 msgid "spi exchange bytes _"
@@ -629,79 +629,79 @@ msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "draw shape _ at x _ y _"
-msgstr ""
+msgstr "narysuj kształt _ w punkcie x _ y _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
-msgstr ""
+msgstr "kształt litery _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "send NeoPixel rgb _"
-msgstr ""
+msgstr "wyślij do NeoPixel rgb _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has tone support"
-msgstr ""
+msgstr "posiada obsługę tonów"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "play tone pin _ frequency _"
-msgstr ""
+msgstr "odtwórz ton pin _ częstotliwość _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has WiFi support"
-msgstr ""
+msgstr "posiada obsługę WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "start WiFi _ password _"
-msgstr ""
+msgstr "start WiFi _ hasło _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "stop WiFi"
-msgstr ""
+msgstr "stop WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "WiFi status"
-msgstr ""
+msgstr "status WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "my IP address"
-msgstr ""
+msgstr "mój adres IP"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send number _"
-msgstr ""
+msgstr "radio wyślij liczbę _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send string _"
-msgstr ""
+msgstr "radio wyślij tekst _"
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "Hello!"
-msgstr ""
+msgstr "Cześć!"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send pair _ = _"
-msgstr ""
+msgstr "radio wyślij parę _ = _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "light"
-msgstr ""
+msgstr "światło"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio message received?"
-msgstr ""
+msgstr "otrzymano wiadomość radiową?"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last number"
-msgstr ""
+msgstr "radio ostatnio odebrana liczba"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last string"
-msgstr ""
+msgstr "radio ostatnio odebrany tekst"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last message type"
-msgstr ""
+msgstr "typ ostatniego komunikatu radiowego"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set group _ (0-255)"
@@ -733,79 +733,79 @@ msgstr ""
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr ""
+msgstr "Podstawowe Czujniki"
 
 #. Block in Basic Sensors library
 msgid "tilt x"
-msgstr ""
+msgstr "nachylenie x"
 
 #. Block in Basic Sensors library
 msgid "tilt y"
-msgstr ""
+msgstr "nachylenie y"
 
 #. Block in Basic Sensors library
 msgid "tilt z"
-msgstr ""
+msgstr "nachylenie z"
 
 #. Block in Basic Sensors library
 msgid "acceleration"
-msgstr ""
+msgstr "przyspieszenie"
 
 #. Block in Basic Sensors library
 msgid "light level"
-msgstr ""
+msgstr "natężenie światła"
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
-msgstr ""
+msgstr "temperatura (°C)"
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
-msgstr ""
+msgstr "pole magnetyczne"
 
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
-msgstr ""
+msgstr "ustaw zakres przyspieszenia _ g = 100"
 
 #. NeoPixel library label
 msgid "NeoPixel"
-msgstr ""
+msgstr "NeoPixel"
 
 #. NeoPixel library block
 msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
-msgstr ""
+msgstr "ustaw NeoPixels _ _ _ _ _ _ _ _ _ _"
 
 #. NeoPixel library block
 msgid "clear NeoPixels"
-msgstr ""
+msgstr "wyczyść NeoPixels"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
-msgstr ""
+msgstr "ustaw NeoPixel _ na kolor _"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
-msgstr ""
+msgstr "ustaw wszystkie NeoPixels na kolor _"
 
 #. NeoPixel library block
 msgid "rotate NeoPixels by _"
-msgstr ""
+msgstr "przekręć NeoPixels o _"
 
 #. NeoPixel library block
 msgid "brighten NeoPixel _ by _"
-msgstr ""
+msgstr "rozjaśnij NeoPixel _ o _"
 
 #. NeoPixel library block
 msgid "brighten all NeoPixels by _"
-msgstr ""
+msgstr "rozjaśnij wszystkie NeoPixel o _"
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
-msgstr ""
+msgstr "przesuń kolor NeoPixel _ o _"
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
-msgstr ""
+msgstr "przesuń kolory wszystkich NeoPixel o _"
 
 #. NeoPixel library block
 msgid "attach _ LED NeoPixel strip to pin _"
