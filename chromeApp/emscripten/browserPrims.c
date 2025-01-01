@@ -605,8 +605,9 @@ static OBJ primBoardieListFiles(int nargs, OBJ args[]) {
 static OBJ primBrowserSetShadow(int nargs, OBJ args[]) {
 	if ((nargs < 3) || !isInt(args[1]) || !isInt(args[2])) return nilObj;
 	OBJ color = args[0];
-	int offset = obj2int(args[1]);
-	int blur = obj2int(args[2]);
+	int offsetX = obj2int(args[1]);
+	int offsetY = obj2int(args[2]);
+	int blur = obj2int(args[3]);
 
 	int r = 0, g = 0, b = 0, a = 255;
 	int words = objWords(color);
@@ -619,7 +620,7 @@ static OBJ primBrowserSetShadow(int nargs, OBJ args[]) {
 
 	EM_ASM({
 		setShadow($0, $1, $2, $3, $4, $5);
-	}, r, g, b, a / 255.0, offset, blur);
+	}, r, g, b, a / 255.0, offsetX, offsetY, blur);
 	return nilObj;
 }
 

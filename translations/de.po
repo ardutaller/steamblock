@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-13 09:00+0000\n"
+"PO-Revision-Date: 2024-12-25 10:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -147,7 +147,7 @@ msgstr "Palette"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set an I2C device and register to given value (0-255)."
 msgstr ""
-"Setze für ein I2C-Gerät (0-127) ein Register (0-255) auf den angegebenen "
+"Setzt für ein I2C-Gerät (0-127) ein Register (0-255) auf den angegebenen "
 "Wert (0-255)."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
@@ -172,7 +172,7 @@ msgstr "Graph"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "lade Modul"
+msgstr "füge Modul hinzu"
 
 #. Block right-click context menu tooltip
 msgid "duplicate these blocks"
@@ -188,7 +188,7 @@ msgstr "Über MicroBlocks"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
-msgstr "Skript ist zu groß, um an das Board gesendet zu werden."
+msgstr "Das Skript ist zu groß und kann nicht an das Board gesendet werden."
 
 #. Graph context menu option
 msgid "clear graph"
@@ -200,7 +200,7 @@ msgstr "Setzt den Zeitgeber zurück."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Script"
-msgstr "Skipt"
+msgstr "Skript"
 
 #. String in file picker and library dialogs
 #. as in dependencies of this library
@@ -642,7 +642,7 @@ msgstr "serial empfange"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
-msgstr "deaktiviere Radio"
+msgstr "Radio aus"
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
@@ -682,7 +682,7 @@ msgstr "neue Liste Länge _"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
-msgstr "setze NeoPixel _ Farbe _"
+msgstr "setze NeoPixel _ auf Farbe _"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
@@ -764,7 +764,7 @@ msgstr "verwirrt"
 
 #. NeoPixel library block
 msgid "attach _ LED NeoPixel strip to pin _"
-msgstr "mache _ LED zum NeoPixel-Streifen an Pin _"
+msgstr "verbinde NeoPixel-Streifen mit _ LEDs an Pin _"
 
 #. Citilab ED1 Buttons library block
 msgid "capacitive sensor _"
@@ -817,7 +817,7 @@ msgstr "Thing Beschreibung JSON"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Display a bubble showing the value."
-msgstr "Zeigt in einer Sprechblase den Wert an."
+msgstr "Zeigt den Wert in einer Sprechblase an."
 
 #. Image name for the "display image" block
 msgid "small heart"
@@ -1512,7 +1512,7 @@ msgstr "spiele WAV-Datei _"
 
 #. Turtle Geometry library block
 msgid "turn _ degrees"
-msgstr "drehe _ Grad"
+msgstr "drehe _ °"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Tail _ Red _ Green _ Blue _"
@@ -1843,7 +1843,7 @@ msgstr "verbinde (BLE)"
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr "verbinde Board und versuche es nochmal"
+msgstr "verbinde das Board und versuche es nochmal"
 
 #. Block size option
 msgid "normal (65%)"
@@ -2173,7 +2173,7 @@ msgstr "Stärke"
 
 #. Infrared remote library label
 msgid "IR Remote"
-msgstr "IR-Fernzugriff"
+msgstr "IR-Fernbedienung"
 
 #. Infrared Remote library block
 msgid "receive IR code"
@@ -2379,7 +2379,7 @@ msgstr "Projekt wird vom Board gelesen..."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Drücke \"Verbinden\", um dein MicroBlocks-Gerät zu verbinden."
+msgstr "Drücke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
@@ -2455,14 +2455,13 @@ msgstr "Firmware installiert"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
-msgstr ""
-"Klicke auf \"Verbinden\", um dein MicroBlocks-Gerät erneut zu verbinden."
+msgstr "Klicke auf \"Verbinden\", um dein MicroBlocks-Gerät neu zu verbinden."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
 msgstr ""
-"Halte beim Anschließen des USB-Kabels die weiße Taste BOOTSEL gedrückt und "
-"fahre dann hier fort."
+"Halte beim Anschließen des USB-Kabels die weiße Taste BOOTSEL gedrückt, "
+"bevor du weiter machst."
 
 #. MicroBlocks IDE information
 msgid "You will be asked to save the firmware file."
@@ -2651,7 +2650,7 @@ msgstr "UDP Remote-Port"
 #. MicroBlocks IDE message
 #. %1 holds the name of a library
 msgid "Found a newer version of %1."
-msgstr "Eine neuere Version von %1 wurde gefunden."
+msgstr "Eine neuere Version von %1 ist verfügbar."
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
@@ -2716,8 +2715,8 @@ msgstr "[l] zur Werteanzeige oder zum Ziehen in einen Eingabebereich. [r] Menü.
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
 msgstr ""
-"Ziehe Blöcke von hier in den Skriptbereich. Schiebe Skripte hierher, um sie "
-"zu löschen."
+"Ziehe Blöcke von hier in den Skriptbereich. Bewege Blöcke und Skripte "
+"hierher, um sie zu löschen."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Do nothing. Used to add notes and documentation."
@@ -3078,7 +3077,7 @@ msgstr "Lesen von %1 nicht möglich."
 
 #. MicroBlocks IDE information
 msgid "The MicroBlocks in your board is not current"
-msgstr "Die MicroBlocks-Version auf deinem Board ist nicht aktuell"
+msgstr "MicroBlocks auf deinem Board ist nicht aktuell"
 
 #. Confirmation window
 msgid "Discard current project?"
@@ -3243,7 +3242,7 @@ msgstr "Wiederholt die umschlossenen Blöcke bis die Bedingung (-o) wird."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the value of a register (0-255) of an I2C device (0-127)."
-msgstr "Gib für ein I2C-Gerät (0-127) den Wert eines Registers (0-255) zurück."
+msgstr "Gibt für ein I2C-Gerät (0-127) den Wert eines Registers (0-255) zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
@@ -3452,7 +3451,7 @@ msgstr "pullup _"
 
 #. Servo motor library block
 msgid "set servo _ to _ degrees (-90 to 90)"
-msgstr "setze Servo _ auf _ Grad (-90 bis 90)"
+msgstr "setze Servo _ auf Winkel _ ° (-90 bis 90)"
 
 #. 5x5 LED display library label
 #. Supports the micro:bit display, but also simulated 5x5 displays on boards
@@ -3569,7 +3568,7 @@ msgstr "nur Zahlen"
 
 #. Library label right click context menu option
 msgid "delete library"
-msgstr "lösche Modul"
+msgstr "entferne Modul"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Button"
@@ -3708,11 +3707,13 @@ msgstr "Projekt wird geladen..."
 #. MicroBlocks IDE message.
 #. First part is "Found a newer version of [a library name]"
 msgid "Do you want me to update the one in the project?"
-msgstr "Möchtest du, dass ich das im Projekt aktualisiere?"
+msgstr "Soll dies im Projekt aktualisiert werden?"
 
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
-msgstr "Bei AdaFruit-Boards den Reset-Knopf drücken und erneut versuchen."
+msgstr ""
+"Bei AdaFruit-Boards musst du die Reset-Taste zweimal drücken und es dann "
+"nochmal versuchen."
 
 #. Scripting area right-click context menu
 msgid "make blocks bigger or smaller"
@@ -3925,7 +3926,7 @@ msgstr "CBPro IR Code"
 
 #. Cutebot Pro library block
 msgid "CBPro set _ servo _ angle to _ deg"
-msgstr "CBPro setze _ Servo _ Winkel auf _ Grad"
+msgstr "CBPro setze _ Servo _ auf Winkel _ °"
 
 #. Cutebot Pro library block
 msgid "CBPro stop all"
@@ -3953,7 +3954,7 @@ msgstr "CBPro Entfernung (cm)"
 
 #. Cutebot Pro library block
 msgid "CBPro turn _ degrees"
-msgstr "CBPro drehe _ Grad"
+msgstr "CBPro drehe _ °"
 
 #. Cutebot Pro library block
 msgid "CBPro set headlight _ to _"
@@ -3999,7 +4000,7 @@ msgstr "rechtes"
 
 #. Cutebot Pro library block dropdown option
 msgid "90 degrees"
-msgstr "90 Grad"
+msgstr "90°"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "right"
@@ -4024,7 +4025,7 @@ msgstr "lade Board-Module automatisch"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degrees"
-msgstr "180 Grad"
+msgstr "180°"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "left"
@@ -4042,7 +4043,7 @@ msgstr "rechts-auf-der-Stelle"
 
 #. Cutebot Pro library block dropdown option
 msgid "135 degrees"
-msgstr "135 Grad"
+msgstr "135°"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "left" on your axis
@@ -4345,7 +4346,7 @@ msgstr "Cutebot setze Vorderlicht _ auf _"
 #. MicroBlocks IDE information
 msgid "The firmware on the board is not compatible with this version of MicroBlocks."
 msgstr ""
-"Die Firmware auf dem Board ist nicht kompatibel mit dieser Version von "
+"Die Firmware auf deinem Board ist nicht kompatibel mit dieser Version von "
 "MicroBlocks."
 
 #. Settings menu option
@@ -4418,23 +4419,23 @@ msgstr "Cutebot setze NeoPixel _ auf _"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to _ degrees (-90 to 90)"
-msgstr "Cutebot setze Servo _ auf Winkel _ (-90 bis 90)"
+msgstr "Cutebot setze Servo _ auf Winkel _ ° (-90~90)"
 
 #. Cutebot Pro library block dropdown option
 msgid "270 degree"
-msgstr "270 Grad"
+msgstr "270°"
 
 #. Cutebot Pro library block dropdown option
 msgid "360 degree"
-msgstr "360 Grad"
+msgstr "360°"
 
 #. Cutebot Pro library block dropdown option
 msgid "45 degrees"
-msgstr "45 Grad"
+msgstr "45°"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degree"
-msgstr "180 Grad"
+msgstr "180°"
 
 #. Cutebot Pro library block
 msgid "CBPro set wheel speed left _ right _ (-60 to 60 cm/s)"
@@ -4515,7 +4516,7 @@ msgstr "CPX"
 
 #. Library folder
 msgid "folder;WorkInProgress"
-msgstr "In Arbeit"
+msgstr "In Bearbeitung"
 
 #. Examples folder
 msgid "folder;Art"
@@ -4607,11 +4608,11 @@ msgstr "erlaube WiFi während BLE _ verwendet wird"
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
-msgstr "verschiebe alle NeoPixelfarben um _"
+msgstr "verschiebe Farbe für alle NeoPixel um _"
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
-msgstr "verschiebe Farbe von NeoPixel _ um _"
+msgstr "verschiebe Farbe für NeoPixel _ um _"
 
 #. MIDI library block
 msgid "variation _"
@@ -4799,7 +4800,7 @@ msgstr "a#"
 
 #. NeZha robot library block
 msgid "NeZha stop motor _"
-msgstr "NeZha stoppe Motor _"
+msgstr "Nezha stoppe Motor _"
 
 #. Joystick:bit library block
 msgid "rocker value of _"
@@ -4815,7 +4816,7 @@ msgstr "Octopus LED Pin _ umschalten auf _"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of noise (dB) at pin _"
-msgstr "Octopus Lautstärkewert (dB) an Pin _"
+msgstr "Octopus Lautstärke (dB) an Pin _"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus OLED fill circle x _ y _ radius _"
@@ -4831,7 +4832,7 @@ msgstr "testThema"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus 180° servo pin _ angle to _ ° (0~180)"
-msgstr "Octopus 180° Servo Pin _ Winkel auf _ ° (0~180)"
+msgstr "Octopus 180° Servo Pin _ auf Winkel _ ° (0~180)"
 
 #. Octostudio communication library block
 msgid "Octo receive beam"
@@ -4839,7 +4840,7 @@ msgstr "Octo empfange Übertragung"
 
 #. NeZha robot library label
 msgid "NeZha"
-msgstr "NeZha"
+msgstr "Nezha"
 
 #. Octostudio communication library block
 msgid "Octo stop"
@@ -4851,21 +4852,21 @@ msgstr "Wukong stoppe alles"
 
 #. WuKong2040 robot library label
 msgid "WuKong2040"
-msgstr "WuKong2040"
+msgstr "Wukong2040"
 
 #. Sphero-RVR robot library block
 msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
 msgstr ""
-"setze rohe Motoren auf linken Modus _ linke Geschwindigkeit _ rechter Modus "
-"_ rechte Geschwindigkeit _"
+"setze Motoren mit Linksmodus _ Geschwindigkeit _ und mit Rechtsmodus _ "
+"Geschwindigkeit _"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong setze Servo _ auf Geschwindigkeit _ (-100~100)"
+msgstr "Wukong starte kontinuierlichen Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
-msgstr "NeZha setze Motor_ auf Geschwindigkeit _ %"
+msgstr "Nezha starte Motor_ mit Geschwindigkeit _ %"
 
 #. Wukong robot library block
 msgid "Wukong stop motor _"
@@ -4881,7 +4882,7 @@ msgstr "stoppe mit Richtung _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ color to _"
-msgstr "WuKong2040 setze NeoPixel _ auf _"
+msgstr "Wukong2040 setze LED _ auf Farbe _"
 
 #. Wukong robot library label
 msgid "Wukong"
@@ -4905,15 +4906,15 @@ msgstr "Wukong setze blaue LEDs auf Helligkeit _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
-msgstr "WuKong2040 setze Motor _ auf Geschwindigkeit _ (-100~100)"
+msgstr "Wukong2040 setze Motor _ auf Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
-msgstr "Wukong setze Servo _ auf _ Grad (-90~90)"
+msgstr "Wukong setze Servo _ auf Winkel _ ° (-90~90)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
-msgstr "Wukong setze NeoPixels _ _ _ _"
+msgstr "Wukong setze NeoPixel _ _ _ _"
 
 #. Sphero-RVR robot library block
 msgid "wake"
@@ -4925,23 +4926,23 @@ msgstr "Kurs zurücksetzen"
 
 #. NeZha robot library block
 msgid "NeZha set _ servo _ angle to _"
-msgstr "NeZha setze _ Servo _ Winkel auf _"
+msgstr "Nezha setze _ Servo _ auf Winkel _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "NeZha setze 360° Servo _ Geschwindigkeit auf _ %"
+msgstr "Nezha starte kontinuierlichen Servo _ mit Geschwindigkeit _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
-msgstr "Octopus Ultraschall trig _ echo _ Entfernung(cm)"
+msgstr "Octopus Sonartrigger _ Echo _ Entfernung (cm)"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus motor fan pin _ speed to _ %"
-msgstr "Octopus Motorlüfter Pin _ Geschwindigkeit auf _ %"
+msgstr "Octopus Motorlüfter Pin _ auf Geschwindigkeit _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of light intensity (Lux) at pin _"
-msgstr "Octopus Helligkeitswert (Lux) an Pin _"
+msgstr "Octopus Helligkeit (Lux) an Pin _"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of DHT11 temperature (°C) at pin _"
@@ -4965,15 +4966,15 @@ msgstr "setze alle LEDs auf Rot _ Grün _ Blau _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop motor _"
-msgstr "WuKong2040 stoppe Motor _"
+msgstr "Wukong2040 stoppe Motor _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 clear all rainbowLED"
-msgstr "WuKong2040 lösche alle NeoPixel"
+msgstr "Wukong2040 lösche beide LEDs"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of DHT11 humidity (0~100) at pin _"
-msgstr "Octopus DHT11 Feuchtigkeitswert (0~100) an Pin _"
+msgstr "Octopus DHT11 Feuchtigkeit (0~100) an Pin _"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus LED pin _ brightness _ %"
@@ -4981,11 +4982,11 @@ msgstr "Octopus LED Pin _ Helligkeit _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of water level (0~40mm) at pin _"
-msgstr "Octopus Wasserstandswert (0~40mm) an Pin _"
+msgstr "Octopus Wasserstand (0~40mm) an Pin _"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus value of trimpot (0~1023) at pin _"
-msgstr "Octopus Wert von Trimmpoti (0~1023) an Pin _"
+msgstr "Octopus Trimmpoti (0~1023) an Pin _"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus OLED show _ at x _ y _"
@@ -5021,7 +5022,7 @@ msgstr "Octopus"
 
 #. Octostudio communication library block
 msgid "Octo beam to phones _"
-msgstr "Octo auf Telefone übertragen _"
+msgstr "Octo Übertragung auf Smartphones _"
 
 #. MQTT library block
 msgid "MQTT unsub _"
@@ -5045,7 +5046,7 @@ msgstr "g#"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong starte Motor _ mit _ (-100~100)"
+msgstr "Wukong starte Motor _ mit Geschwindigkeit _ (-100~100)"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
@@ -5053,19 +5054,19 @@ msgstr "schlafen"
 
 #. NeZha robot library block
 msgid "NeZha stop all motors"
-msgstr "NeZha stoppe alle Motoren"
+msgstr "Nezha stoppe alle Motoren"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop all motors"
-msgstr "WuKong2040 stoppe alle Motoren"
+msgstr "Wukong2040 stoppe alle Motoren"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 buzzer beep _ ms"
-msgstr "WuKong2040 Pieps _ ms"
+msgstr "Wukong2040 spiele Ton _ ms"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
-msgstr "WuKong2040 setze NeoPixel _ auf R _ G _ B _ (0~255)"
+msgstr "Wukong2040 setze LED _ auf R _ G _ B _ (0~255)"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus OLED fill rectangle x _ y _ w _ h _"
@@ -5521,15 +5522,15 @@ msgstr "Farm Knopf gedrückt?"
 
 #. Shield:bit library block
 msgid "sb turn 180 servo S- _ (1-8) to angle _"
-msgstr "sb drehe 180° servo S- _ (1-8) auf Winkel _"
+msgstr "sb drehe 180° servo _ (1~8) auf Winkel _ °"
 
 #. Shield:bit library block
 msgid "sb turn 360 servo S- _ (1-8) _ at _ %"
-msgstr "sb drehe 360° Servo S- _ (1-8) _ mit _ %"
+msgstr "sb drehe kontinuierlichen Servo _ (1~8) _ mit _ %"
 
 #. Shield:bit library block
 msgid "sb turn DC M- _ (1-4) motor _ at _ %"
-msgstr "sb drehe DC M- _ (1-4) Motor _ mit _ %"
+msgstr "sb drehe DC-Motor _ (1-4) _ mit _ %"
 
 #. Shield:bit library block
 msgid "sb stop _"
@@ -5557,7 +5558,7 @@ msgstr "sb sende audio an shield _"
 
 #. Shield:bit library block
 msgid "sb turn Stepper- _ (1-2) motor _ for _ _"
-msgstr "sb drehe Stepper- _ (1-2) Motor _ für _ _"
+msgstr "sb drehe Schrittmotor _ (1-2) _ für _ _"
 
 #. Shield:bit library block
 msgid "sb set pin S- _ (1-8) to _ %"
@@ -5640,7 +5641,7 @@ msgstr "Imagina Licht"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set servo _ to _ degrees (-90 to 90)"
-msgstr "Imagina setze Servo _ auf _ Grad (-90 bis 90)"
+msgstr "Imagina setze Servo _ auf Winkel _ ° (-90 bis 90)"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm soil moisture"
@@ -5776,3 +5777,67 @@ msgstr "starte MIDI Clock"
 #. MIDI library block
 msgid "stop MIDI clock"
 msgstr "stoppe MIDI Clock"
+
+#. NeZha2 robot library block
+msgid "Nezha beep _ Hz for _ msecs"
+msgstr "Nezha spiele Ton _ Hz für _ ms"
+
+#. NeZha2 robot library block
+msgid "Nezha set motor _ speed to _ (-100-100)"
+msgstr "Nezha starte Motor _ mit Geschwindigkeit _ (-100~100)"
+
+#. NeZha2 robot library block
+msgid "Nezha stop motor _"
+msgstr "Nezha stoppe Motor _"
+
+#. NeZha2 robot library block
+msgid "Nezha stop all motors"
+msgstr "Nezha stoppe alle Motoren"
+
+#. NeZha2 robot library block
+msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
+msgstr "Nezha starte kontinuierlichen Servo _ mit Geschwindigkeit _ (-100~100)"
+
+#. NeZha2 robot library block
+msgid "Nezha set LED _ to _"
+msgstr "Nezha setze LED _ auf _"
+
+#. NeZha2 robot library block
+msgid "brightness _ %"
+msgstr "Helligkeit _ %"
+
+#. NeZha2 robot library block
+msgid "Nezha soil moisture _"
+msgstr "Nezha Feuchtigkeit _"
+
+#. NeZha2 robot library block
+msgid "Nezha read analog _"
+msgstr "Nezha lies Analog _"
+
+#. NeZha2 robot library block
+msgid "Nezha set all LEDs to _"
+msgstr "Nezha setze beide LEDs auf _"
+
+#. NeZha2 robot library block
+msgid "Nezha trim pot _"
+msgstr "Nezha Trimmpoti _"
+
+#. NeZha2 robot library block
+msgid "Nezha crash sensor _"
+msgstr "Nezha Unfallsensor _"
+
+#. NeZha2 robot library block
+msgid "Nezha line sensor _ sees line on left _ right _"
+msgstr "Nezha Liniensensor _ sieht Linie auf links _ rechts _"
+
+#. NeZha2 robot library block
+msgid "Nezha distance _ (cm)"
+msgstr "Nezha Entfernung _ (cm)"
+
+#. NeZha2 robot library block
+msgid "Nezha set _ servo _ angle to _"
+msgstr "Nezha setze _ Servo _ auf Winkel _"
+
+#. NeZha2 robot library label
+msgid "Nezha2"
+msgstr "Nezha2"
