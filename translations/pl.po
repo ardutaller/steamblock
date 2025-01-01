@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-29 10:57+0200\n"
-"PO-Revision-Date: 2024-12-30 19:00+0000\n"
+"PO-Revision-Date: 2025-01-01 01:02+0000\n"
 "Last-Translator: Michal Slaski <michal.slaski@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/microblocks/ide/"
 "pl/>\n"
@@ -487,7 +487,7 @@ msgstr ""
 
 #. Block in Data category
 msgid "free memory"
-msgstr ""
+msgstr "wolna pamięć"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
@@ -529,7 +529,7 @@ msgstr ""
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr ""
+msgstr "Wprowadź nazwę funkcji:"
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
