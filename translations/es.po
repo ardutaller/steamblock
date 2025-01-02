@@ -2743,7 +2743,7 @@ msgstr "recuento de vueltas _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Accelerometer _"
-msgstr "acelerómetro"
+msgstr "acelerómetro _"
 
 #. Infrared Remote library block
 msgid "receive IR code"

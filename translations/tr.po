@@ -88,7 +88,7 @@ msgstr "z"
 
 #. Servo motor library block
 msgid "stop servo _"
-msgstr "servoyu durdur"
+msgstr "servoyu durdur _"
 
 #. Tone library block
 msgid "play note _ octave _ for _ ms"
@@ -356,7 +356,7 @@ msgstr "son"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr "yeni bayt dizisi"
+msgstr "yeni bayt dizisi _"
 
 #. Block in Data category
 msgid "length of _"
@@ -2066,7 +2066,7 @@ msgstr "kart tipi"
 
 #. Block in Input category
 msgid "end time _"
-msgstr "bitme zamanı"
+msgstr "bitme zamanı _"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"

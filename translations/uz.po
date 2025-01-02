@@ -322,7 +322,7 @@ msgstr "Uzatuvchi blokni qo'shish"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr "bog'lamoq"
+msgstr "bog'lamoq _"
 
 #. Block in Data category
 msgid "separator _"
@@ -537,7 +537,7 @@ msgstr "oq _"
 
 #. Scrolling library block
 msgid "pausing _ ms"
-msgstr "ps pauza qilmoq"
+msgstr "ps pauza qilmoq _"
 
 #. BirdBrain Technologies Hummingbird kit library label
 msgid "Hummingbird LED _ _ %"
@@ -613,7 +613,7 @@ msgstr "matnni aylantirish _"
 
 #. File System library block
 msgid "open file _"
-msgstr "faylni ochish"
+msgstr "faylni ochish _"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Other"
@@ -869,7 +869,7 @@ msgstr "narsa imkoniyatini _ belgilash"
 
 #. Web Things library block
 msgid "trigger event _"
-msgstr "voqeani boshlash"
+msgstr "voqeani boshlash _"
 
 #. Web Things library block
 msgid "properties JSON"
@@ -1107,7 +1107,7 @@ msgstr "ko'chirish _"
 
 #. File System library block
 msgid "close file _"
-msgstr "faylni yopish"
+msgstr "faylni yopish _"
 
 #. DotStar LED library block
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
@@ -1385,7 +1385,7 @@ msgstr "Ohang"
 
 #. Tone library block
 msgid "attach buzzer to pin _"
-msgstr "qo’ng’iroqni pinga biriktirish"
+msgstr "qo’ng’iroqni pinga biriktirish _"
 
 #. Button Events library block
 msgid "button _ long pressed"
