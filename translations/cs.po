@@ -401,7 +401,7 @@ msgstr "smaž prvek _ ze seznamu _"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr "přidej _ do seznamu"
+msgstr "přidej _ do seznamu _"
 
 #. Block in Data category
 msgid "join _ _"

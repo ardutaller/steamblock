@@ -138,7 +138,7 @@ msgstr "bo'sh xotira"
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr "_unikodi"
+msgstr "_ unikodi _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "send NeoPixel rgb _"
@@ -194,7 +194,7 @@ msgstr "radio juftligini _ = _ yuborish"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
-msgstr "i2c qurilmasini _ ga _ ro'yxatiga olish"
+msgstr "i2c qurilmasini _ ga _ ro'yxatiga olish _"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
@@ -314,7 +314,7 @@ msgstr "Ma'lumotlar"
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr "_ ichidan topish"
+msgstr "_ ichidan topish _"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
@@ -322,7 +322,7 @@ msgstr "Uzatuvchi blokni qo'shish"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr "bog'lamoq _"
+msgstr "bog'lamoq _ _"
 
 #. Block in Data category
 msgid "separator _"
@@ -330,7 +330,7 @@ msgstr "ajratuvchi _"
 
 #. Block in Comm category
 msgid "i2c get device _ register _"
-msgstr "i2c qurilmani _ ro'yxatiga olish"
+msgstr "i2c qurilmani _ ro'yxatiga olish _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "start WiFi _ password _"
@@ -1246,11 +1246,11 @@ msgstr "analog pinni o'qish _"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr "raqamli pinni _ ga o’rnatish"
+msgstr "raqamli pinni _ ga o’rnatish _"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr "pinni _ ga  o'rnatish"
+msgstr "pinni _ ga o'rnatish _"
 
 #. Block in Pins category
 msgid "analog pins"

@@ -5659,7 +5659,7 @@ msgstr "dibuja vector x _ y _ ángulo _ longitud _ color _"
 
 #. Fractions library block
 msgid "fract _ / _"
-msgstr "fracción _/_"
+msgstr "fracción _ / _"
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"

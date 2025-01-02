@@ -299,7 +299,17 @@ method translateToCurrentLanguage AuthoringSpecs spec {
 
 	newSpecStrings = (list)
 	for s (specs spec) {
-		add newSpecStrings (at translationDictionary s s)
+		translatedSpecs = (at translationDictionary s s)
+		if (!=
+			(count (findAllMatches '_' s))
+			(count (findAllMatches '_' translatedSpecs))
+		) {
+			print 'translation parameter mismatch:'
+			print s '->' translatedSpecs
+			add newSpecStrings s
+		} else {
+			add newSpecStrings translatedSpecs
+		}
 	}
 	result = (clone spec)
 	setField result 'specs' newSpecStrings
