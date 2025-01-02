@@ -109,13 +109,13 @@ static void flashUserLED() {
 #define BLE_SEND_MAX 250
 #define INTER_SEND_TIME 20
 
-static BLEServer *pServer = NULL;
-static BLEService *pService = NULL;
-static BLEService *pUARTService = NULL;
-static BLECharacteristic *pTxCharacteristic;
-static BLECharacteristic *pRxCharacteristic;
-static BLECharacteristic *pUARTTxCharacteristic;
-static BLECharacteristic *pUARTRxCharacteristic;
+static NimBLEServer *pServer = NULL;
+static NimBLEService *pService = NULL;
+static NimBLEService *pUARTService = NULL;
+static NimBLECharacteristic *pTxCharacteristic;
+static NimBLECharacteristic *pRxCharacteristic;
+static NimBLECharacteristic *pUARTTxCharacteristic;
+static NimBLECharacteristic *pUARTRxCharacteristic;
 
 static bool bleRunning = false;
 static uint16_t connID = -1;
@@ -191,27 +191,27 @@ static int bleSendData(uint8_t *data, int byteCount) {
 	return byteCount;
 }
 
-class MyServerCallbacks: public BLEServerCallbacks {
-	void onConnect(BLEServer* pServer, ble_gap_conn_desc* desc) {
-		connID = desc->conn_handle;
+class ConnectionCallbacks: public NimBLEServerCallbacks {
+	void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) override {
+		connID = connInfo.getConnHandle();
 		lastRcvTime = microsecs();
 		BLE_connected_to_IDE = true;
 	}
-	void onDisconnect(BLEServer* pServer, ble_gap_conn_desc* desc) {
+	void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason) override {
 		connID = -1;
 		BLE_connected_to_IDE = false;
 		BLE_resumeAdvertising();
 	}
 };
 
-class MyCallbacks: public BLECharacteristicCallbacks {
-	void onWrite(BLECharacteristic *pCharacteristic, ble_gap_conn_desc* desc) {
+class IDECallbacks: public NimBLECharacteristicCallbacks {
+	void onWrite(NimBLECharacteristic *pCharacteristic, NimBLEConnInfo& connInfo) override {
 		// Handle incoming BLE data.
 
 		NimBLEAttValue value = pCharacteristic->getValue();
 		bleReceiveData(value.data(), value.length());
 	}
-	void onStatus(NimBLECharacteristic* pCharacteristic, Status s, int code) {
+	void onStatus(NimBLECharacteristic* pCharacteristic, int code) override {
 		// Record the last return code. This is used to tell when a notify() has failed
 		// (because there are no buffers) so that it can be re-tried later.
 
@@ -221,9 +221,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
 // BLE UART Support (NimBLE)
 
-class UARTCallbacks: public BLECharacteristicCallbacks {
-	void onWrite(BLECharacteristic *pCharacteristic, ble_gap_conn_desc* desc) {
-		int byteCount = pCharacteristic->getDataLength();
+class UARTCallbacks: public NimBLECharacteristicCallbacks {
+	void onWrite(NimBLECharacteristic *pCharacteristic, NimBLEConnInfo& connInfo) override {
+		int byteCount = pCharacteristic->getLength();
 		BLE_UART_ReceiveCallback((uint8 *) pCharacteristic->getValue().c_str(), byteCount);
 	}
 };
@@ -243,21 +243,21 @@ void BLE_start() {
 	initBLEDeviceName("MicroBlocks");
 
 	// Create BLE Device
-	BLEDevice::init(bleDeviceName);
+	NimBLEDevice::init(bleDeviceName);
 
 	// Create BLE Server
-	pServer = BLEDevice::createServer();
-	pServer->setCallbacks(new MyServerCallbacks());
+	pServer = NimBLEDevice::createServer();
+	pServer->setCallbacks(new ConnectionCallbacks());
 
 	// Create IDE Service
 	pService = pServer->createService(MB_SERVICE_UUID);
 	pTxCharacteristic = pService->createCharacteristic(MB_CHARACTERISTIC_UUID_TX, NIMBLE_PROPERTY::NOTIFY);
-	pTxCharacteristic->setCallbacks(new MyCallbacks());
+	pTxCharacteristic->setCallbacks(new IDECallbacks());
 	pRxCharacteristic = pService->createCharacteristic(MB_CHARACTERISTIC_UUID_RX, NIMBLE_PROPERTY::WRITE_NR);
-	pRxCharacteristic->setCallbacks(new MyCallbacks());
+	pRxCharacteristic->setCallbacks(new IDECallbacks());
 
 	// Create Nordic UART Service
-	BLEService *pUARTService = BLEDevice::getServer()->createService(UART_SERVICE_UUID);
+	NimBLEService *pUARTService = NimBLEDevice::getServer()->createService(UART_SERVICE_UUID);
 	pUARTTxCharacteristic = pUARTService->createCharacteristic(UART_UUID_TX, NIMBLE_PROPERTY::NOTIFY | NIMBLE_PROPERTY::READ);
 	pUARTTxCharacteristic->setCallbacks(new UARTCallbacks());
 	pUARTRxCharacteristic = pUARTService->createCharacteristic(UART_UUID_RX, NIMBLE_PROPERTY::WRITE_NR | NIMBLE_PROPERTY::WRITE);
@@ -280,9 +280,9 @@ void BLE_stop() {
 	connID = -1;
 	BLE_connected_to_IDE = false;
 
-	BLEDevice::getAdvertising()->reset();
+	NimBLEDevice::getAdvertising()->reset();
 	if (pServer) pServer->removeService(pService);
-	BLEDevice::deinit();
+	NimBLEDevice::deinit();
 
 	pServer = NULL;
 	pService = NULL;
@@ -297,7 +297,7 @@ void BLE_stop() {
 void BLE_pauseAdvertising() {
 	if (!bleRunning) return;
 
-	NimBLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
 	pAdvertising->reset();
 	pAdvertising->removeServiceUUID(NimBLEUUID(MB_SERVICE_UUID));
 }
@@ -305,7 +305,7 @@ void BLE_pauseAdvertising() {
 void BLE_resumeAdvertising() {
 	if (!bleRunning) return;
 
-	NimBLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
 	pAdvertising->reset();
 	if (BLE_connected_to_IDE || USB_connected_to_IDE) {
 		return; // don't advertise if connected to IDE
