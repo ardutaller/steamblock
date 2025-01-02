@@ -1062,7 +1062,7 @@ static void initPins(void) {
 	#endif
 }
 
-#if !defined(ARDUINO_SAM_DUE) && !defined(ESP8266)
+#if !defined(ARDUINO_SAM_DUE) && !defined(ESP8266) && !defined(PICO_RP2350)
 	#define HAS_INPUT_PULLDOWN true
 #endif
 
