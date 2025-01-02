@@ -756,11 +756,14 @@ function GP_openBoardie() {
 			}
 			boardie.element.style.cursor = 'grab';
 
+			var isStandAlone = window.matchMedia('(display-mode: standalone)').matches;
 			boardie.iframe = boardie.element.querySelector('iframe');
-			if (window.location.hostname == 'microblocks.fun') {
+			if ((window.location.hostname == 'microblocks.fun') && !isStandAlone) {
 				// Run Boardie from a separate domain to ensure it runs as an OOPIF
 				boardie.iframe.src = 'https://boardie.microblocks.fun/vm.html';
 			} else {
+				// Load from source domain when not running from microblocks.fun
+				// (e.g. when running as a stand-alone progressive web app).
 				// Not the end of the world, but the UI will interfere with
 				// time-sensitive threads, such as when making music
 				boardie.iframe.src = 'boardie/vm.html';
