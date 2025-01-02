@@ -24,11 +24,11 @@ msgstr "Accendi LED utente"
 
 #. Block in Output category
 msgid "say _"
-msgstr "dici"
+msgstr "dici _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr "grafico"
+msgstr "grafico _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
@@ -72,15 +72,15 @@ msgstr "versione"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr "millisecondi a partire da"
+msgstr "millisecondi a partire da _"
 
 #. Block in Input category
 msgid "end time _"
-msgstr "tempo finale"
+msgstr "tempo finale _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr "microsecondi a partire da"
+msgstr "microsecondi a partire da _"
 
 #. Block in Input category
 msgid "BLE id"

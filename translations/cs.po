@@ -1838,7 +1838,7 @@ msgstr "NSD _ _"
 
 #. Fractions library block
 msgid "lcm _ _"
-msgstr "NSN"
+msgstr "NSN _ _"
 
 #. Tone library label
 #. Generates music tones on buzzers
@@ -1945,7 +1945,7 @@ msgstr "zadrnkej MIDI klávesu _ oktáva _ po _ ms"
 
 #. Pluck library block
 msgid "set pluck pin _"
-msgstr "nastav pin pro drknání"
+msgstr "nastav pin pro drknání _"
 
 #. WAV library block
 msgid "play WAV file _"
@@ -2655,7 +2655,7 @@ msgstr "zavři soubor _"
 
 #. File System library block
 msgid "delete file _"
-msgstr "smaž soubor"
+msgstr "smaž soubor _"
 
 #. File System library block
 msgid "append line _ to file _"
@@ -2925,7 +2925,7 @@ msgstr "bme280 vlhkost"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 set base altitude _ meters"
-msgstr "bmx280 nastav nadmořskou výšku"
+msgstr "bmx280 nastav nadmořskou výšku _"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 altitude (cm)"
@@ -3050,7 +3050,7 @@ msgstr "cesta požadavku _"
 
 #. HTTP Server library block
 msgid "headers of request _"
-msgstr "záhlaví požadavku"
+msgstr "záhlaví požadavku _"
 
 #. HTTP Server library block
 msgid "method of request _"
@@ -3122,7 +3122,7 @@ msgstr "nastav číselnou hodnotu _ jméno _ min _ max _ @Typ _"
 
 #. Web Things library block
 msgid "read only _"
-msgstr "pouze pro čtení"
+msgstr "pouze pro čtení _"
 
 #. Web Things library block
 msgid "register event _ type _"
