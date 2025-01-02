@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-25 10:00+0000\n"
+"PO-Revision-Date: 2025-01-03 10:12+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1114,7 +1114,7 @@ msgstr "_ ohne Leerzeichen"
 
 #. Example string. Tells the user this input accepts a list or a string
 msgid "aListOrString"
-msgstr "Liste_oder_Text"
+msgstr "Liste oder Text"
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
@@ -1487,6 +1487,7 @@ msgid "scroll number _"
 msgstr "scrolle Zahl _"
 
 #. Example WiFi network password
+#, fuzzy
 msgid "Network_Password"
 msgstr "12345678"
 
@@ -1649,7 +1650,7 @@ msgstr "Plotter drehe _ Grad"
 
 #. Example string. Tells the user this input accepts a string
 msgid "aString"
-msgstr "einText"
+msgstr "ein Text"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 pressure"
@@ -1721,6 +1722,7 @@ msgid "pre"
 msgstr "pre"
 
 #. Example WiFi network name
+#, fuzzy
 msgid "Network_Name"
 msgstr "Netzwerk"
 
@@ -2963,7 +2965,7 @@ msgstr "_ beginnt mit _"
 
 #. Strings library block
 msgid "unicodes _"
-msgstr "Unicode von _"
+msgstr "Unicodes _"
 
 #. Strings library block
 msgid "str2num _"
@@ -4862,7 +4864,7 @@ msgstr ""
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong starte kontinuierlichen Servo _ mit Geschwindigkeit _ (-100~100)"
+msgstr "Wukong starte Rotationsservo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
@@ -4930,7 +4932,7 @@ msgstr "Nezha setze _ Servo _ auf Winkel _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "Nezha starte kontinuierlichen Servo _ mit Geschwindigkeit _ %"
+msgstr "Nezha starte Rotationsservo _ mit Geschwindigkeit _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
@@ -5526,7 +5528,7 @@ msgstr "sb drehe 180° servo _ (1~8) auf Winkel _ °"
 
 #. Shield:bit library block
 msgid "sb turn 360 servo S- _ (1-8) _ at _ %"
-msgstr "sb drehe kontinuierlichen Servo _ (1~8) _ mit _ %"
+msgstr "sb drehe Rotationsservo _ (1~8) _ mit _ %"
 
 #. Shield:bit library block
 msgid "sb turn DC M- _ (1-4) motor _ at _ %"
@@ -5796,7 +5798,7 @@ msgstr "Nezha stoppe alle Motoren"
 
 #. NeZha2 robot library block
 msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
-msgstr "Nezha starte kontinuierlichen Servo _ mit Geschwindigkeit _ (-100~100)"
+msgstr "Nezha starte Rotationsservo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
