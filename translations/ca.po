@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2024-12-09 19:14+0000\n"
+"PO-Revision-Date: 2025-01-03 10:12+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -6055,3 +6055,67 @@ msgstr "inicia rellotge MIDI"
 #. MIDI library block
 msgid "stop MIDI clock"
 msgstr "atura rellotge MIDI"
+
+#. NeZha2 robot library block
+msgid "Nezha beep _ Hz for _ msecs"
+msgstr "toca el brunzidor a _ Hz durant _ mil·lisegons"
+
+#. NeZha2 robot library block
+msgid "Nezha set LED _ to _"
+msgstr "posa el LED _ a _"
+
+#. NeZha2 robot library block
+msgid "Nezha set motor _ speed to _ (-100-100)"
+msgstr "posa el motor _ a velocitat _ (-100-100)"
+
+#. NeZha2 robot library block
+msgid "Nezha soil moisture _"
+msgstr "humitat del sòl _"
+
+#. NeZha2 robot library label
+msgid "Nezha2"
+msgstr "Nezha2"
+
+#. NeZha2 robot library block
+msgid "Nezha stop motor _"
+msgstr "atura el motor _"
+
+#. NeZha2 robot library block
+msgid "Nezha stop all motors"
+msgstr "atura tots els motors"
+
+#. NeZha2 robot library block
+msgid "Nezha set _ servo _ angle to _"
+msgstr "posa el servomotor _ de _ graus a _"
+
+#. NeZha2 robot library block
+msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
+msgstr "posa el servomotor continu _ a velocitat _ (-100 a 100)"
+
+#. NeZha2 robot library block
+msgid "brightness _ %"
+msgstr "brillantor _ %"
+
+#. NeZha2 robot library block
+msgid "Nezha set all LEDs to _"
+msgstr "posa tots els LEDs a _"
+
+#. NeZha2 robot library block
+msgid "Nezha crash sensor _"
+msgstr "sensor d'impacte _"
+
+#. NeZha2 robot library block
+msgid "Nezha line sensor _ sees line on left _ right _"
+msgstr "sensor de línia _ veu línia a l'esquerra _ i dreta _"
+
+#. NeZha2 robot library block
+msgid "Nezha distance _ (cm)"
+msgstr "distància _ (cm)"
+
+#. NeZha2 robot library block
+msgid "Nezha read analog _"
+msgstr "lectura analògica _"
+
+#. NeZha2 robot library block
+msgid "Nezha trim pot _"
+msgstr "potenciòmetre _"
