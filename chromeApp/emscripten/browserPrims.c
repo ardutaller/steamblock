@@ -540,6 +540,9 @@ static OBJ primBoardiePutFile(int nargs, OBJ args[]) {
 			for (var i = 0; i < data.length; i++) {
 				dataString += String.fromCharCode(data[i]);
 			}
+			// cache a local copy
+			GP.boardie.files[fileName] = dataString;
+			// and send the file to Boardie
 			GP.boardie.iframe.contentWindow.postMessage(
 				[ 'putFile', fileName, dataString ],
 				'*'
@@ -554,7 +557,7 @@ static OBJ primBoardiePutFile(int nargs, OBJ args[]) {
 static OBJ primBoardieGetFile(int nargs, OBJ args[]) {
 	int fileSize =
 		EM_ASM_INT(
-			{ return window.localStorage[UTF8ToString($0)].length },
+			{ return GP.boardie.files[UTF8ToString($0)].length },
 			obj2str(args[0])
 		);
 	OBJ result = newBinaryData(fileSize);
@@ -563,7 +566,7 @@ static OBJ primBoardieGetFile(int nargs, OBJ args[]) {
 		{
 			var fileName = UTF8ToString($1);
 			if (fileName === 'user-prefs') return;
-			var file = window.localStorage[fileName];
+			var file = GP.boardie.files[fileName];
 			for (var i = 0; i < file.length; i++) {
 				setValue($0++, file.charCodeAt(i), 'i8');
 			}
@@ -577,21 +580,21 @@ static OBJ primBoardieGetFile(int nargs, OBJ args[]) {
 static OBJ primBoardieListFiles(int nargs, OBJ args[]) {
 	int fileCount =
 			EM_ASM_INT({
-				return Object.keys(window.localStorage).filter(
+				return Object.keys(GP.boardie.files).filter(
 					fn => fn !== 'user-prefs').length;
 			});
 	OBJ fileList = newObj(ArrayClass, fileCount, nilObj);
 
 	for (int i = 0; i < fileCount; i++) {
 		int length = EM_ASM_INT(
-			{ return Object.keys(window.localStorage).filter(
+			{ return Object.keys(GP.boardie.files).filter(
 					fn => fn !== 'user-prefs')[$0].length; },
 			i
 		);
 		OBJ fileName = allocateString(length);
 		EM_ASM_(
 			{
-				var fileName = Object.keys(window.localStorage).filter(
+				var fileName = Object.keys(GP.boardie.files).filter(
 					fn => fn !== 'user-prefs')[$0];
 				stringToUTF8(fileName, $1, fileName.length + 1);
 			},

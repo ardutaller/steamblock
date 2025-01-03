@@ -81,6 +81,20 @@ void initMessageService() {
 	});
 }
 
+void syncFiles() {
+	// update IDE file cache with all files from Boardie's [local/session]Storage
+	EM_ASM_({
+		var origin = window.useSessionStorage ? 'session' : 'local';
+		Object.keys(window.localStorage).forEach(function (fileName) {
+			window.parent.postMessage(
+				'boardieGetFile ' + fileName + ' ' +
+					window[origin + 'Storage'][fileName],
+				'*'
+			);
+		});
+	});
+}
+
 int nextByte() {
 	return EM_ASM_INT({
 		// Returns first byte in the buffer, and removes it from the buffer
@@ -239,6 +253,8 @@ int main(int argc, char *argv[]) {
 	initMessageService();
 	initKeyboardHandler();
 	initSound();
+
+	syncFiles();
 
 	initTimers();
 	memInit();
