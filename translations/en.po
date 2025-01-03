@@ -3771,6 +3771,14 @@ msgstr "Home movement detected?"
 msgid "Home _ button pressed?"
 msgstr "Home _ button pressed?"
 
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr "left"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr "right"
+
 #. Keyestudio Smart Home library block
 msgid "Home gas detected?"
 msgstr "Home gas detected?"
