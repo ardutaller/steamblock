@@ -716,7 +716,7 @@ GP.boardie = {
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.add('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyDown ' + keyCode, '*');
+			this.iframe.contentWindow.postMessage(['keyDown', keyCode], '*');
 		}
 	},
 	unpress: function (keyCode, andSendToBoard) {
@@ -724,7 +724,7 @@ GP.boardie = {
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.remove('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyUp ' + keyCode, '*');
+			this.iframe.contentWindow.postMessage(['keyUp', keyCode], '*');
 		}
 	}
 };

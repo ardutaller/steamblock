@@ -540,7 +540,10 @@ static OBJ primBoardiePutFile(int nargs, OBJ args[]) {
 			for (var i = 0; i < data.length; i++) {
 				dataString += String.fromCharCode(data[i]);
 			}
-			window.localStorage[fileName] = dataString;
+			GP.boardie.iframe.contentWindow.postMessage(
+				[ 'putFile', fileName, dataString ],
+				'*'
+			);
 		},
 		obj2str(args[0]), // filename
 		&FIELD(args[1], 0), // file data
