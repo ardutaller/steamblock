@@ -87,8 +87,11 @@ void syncFiles() {
 		var origin = window.useSessionStorage ? 'session' : 'local';
 		Object.keys(window.localStorage).forEach(function (fileName) {
 			window.parent.postMessage(
-				'boardieGetFile ' + fileName + ' ' +
-					window[origin + 'Storage'][fileName],
+				[
+					'boardieGetFile',
+					fileName,
+					window[origin + 'Storage'][fileName]
+				],
 				'*'
 			);
 		});
@@ -135,11 +138,11 @@ void initKeyboardHandler() {
 	EM_ASM_({
 		window.keys = new Map();
 		window.addEventListener('keydown', function (event) {
-			window.parent.postMessage('boardieKeyDown ' + event.keyCode, '*');
+			window.parent.postMessage(['boardieKeyDown', event.keyCode], '*');
 			window.keys.set(event.keyCode, true);
 		}, false);
 		window.addEventListener('keyup', function (event) {
-			window.parent.postMessage('boardieKeyUp ' + event.keyCode, '*');
+			window.parent.postMessage(['boardieKeyUp', event.keyCode], '*');
 			window.keys.set(event.keyCode, false);
 		}, false);
 	});

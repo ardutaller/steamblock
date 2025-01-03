@@ -34,7 +34,7 @@ void closeAndDeleteFile(char *fileName) {
 		delete(window[origin + 'Storage'][fileName]);
 		delete(window.fileCharPositions[fileName]);
 		// also ask the IDE to remove this file from its local cache
-		window.parent.postMessage('boardieDeleteFile ' + fileName, '*');
+		window.parent.postMessage(['boardieDeleteFile', fileName], '*');
 	}, fileName);
 }
 
@@ -277,7 +277,11 @@ static OBJ primAppendLine(int argCount, OBJ *args) {
 		window[origin + 'Storage'][fileName] += line + '\n';
 		// update IDE cache
 		window.parent.postMessage(
-			'boardieGetFile ' + fileName + ' ' + window[origin + 'Storage'][fileName],
+			[
+				'boardieGetFile',
+				fileName,
+				window[origin + 'Storage'][fileName]
+			],
 			'*'
 		);
 	}, fileName, line);
@@ -306,8 +310,11 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 			window[origin + 'Storage'][fileName] = newContents;
 			// update IDE cache
 			window.parent.postMessage(
-				'boardieGetFile ' + fileName + ' ' +
-					window[origin + 'Storage'][fileName],
+				[
+					'boardieGetFile',
+					fileName,
+					window[origin + 'Storage'][fileName]
+				],
 				'*'
 			);
 		}, fileName, (uint8 *) &FIELD(data, 0), BYTES(data));
@@ -319,7 +326,11 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 			window[origin + 'Storage'][fileName] += UTF8ToString($1);
 			// update IDE cache
 			window.parent.postMessage(
-				'boardieGetFile ' + fileName + ' ' + window[origin + 'Storage'],
+				[
+					'boardieGetFile',
+					fileName,
+					window[origin + 'Storage']
+				],
 				'*'
 			);
 		}, fileName, (uint8 *) obj2str(data));
