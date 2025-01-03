@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-01-01 15:53+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-01-04 13:15+0000\n"
+"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -6161,3 +6161,75 @@ msgstr "inicia reloj MIDI"
 #. MIDI library block
 msgid "stop MIDI clock"
 msgstr "detén reloj MIDI"
+
+#. NeZha2 robot library block
+msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
+msgstr "pon el servomotor continuo _ a velocidad _ (-100 a 100)"
+
+#. NeZha2 robot library block
+msgid "Nezha trim pot _"
+msgstr "potenciómetro _"
+
+#. NeZha2 robot library block
+msgid "Nezha set _ servo _ angle to _"
+msgstr "pon el motor de _ grados número _ a ángulo _"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr "derecho"
+
+#. NeZha2 robot library block
+msgid "Nezha distance _ (cm)"
+msgstr "distancia _ (cm)"
+
+#. NeZha2 robot library block
+msgid "Nezha set all LEDs to _"
+msgstr "pon todos los LEDs a _"
+
+#. NeZha2 robot library block
+msgid "Nezha line sensor _ sees line on left _ right _"
+msgstr "sensor de línea _ detecta línea a la izquierda _ y derecha _"
+
+#. NeZha2 robot library block
+msgid "Nezha stop motor _"
+msgstr "detén motor _"
+
+#. NeZha2 robot library block
+msgid "Nezha set LED _ to _"
+msgstr "pon el LED _ a _"
+
+#. NeZha2 robot library block
+msgid "Nezha soil moisture _"
+msgstr "humedad del suelo _"
+
+#. NeZha2 robot library block
+msgid "Nezha read analog _"
+msgstr "lectura analógica _"
+
+#. NeZha2 robot library block
+msgid "Nezha crash sensor _"
+msgstr "sensor de impacto _"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr "izquierdo"
+
+#. NeZha2 robot library label
+msgid "Nezha2"
+msgstr "Nezha2"
+
+#. NeZha2 robot library block
+msgid "Nezha beep _ Hz for _ msecs"
+msgstr "toca el zumbador a _ Hz durante _ milisegundos"
+
+#. NeZha2 robot library block
+msgid "Nezha set motor _ speed to _ (-100-100)"
+msgstr "pon el motor _ a velocidad _ (-100-100)"
+
+#. NeZha2 robot library block
+msgid "Nezha stop all motors"
+msgstr "detén todos los motores"
+
+#. NeZha2 robot library block
+msgid "brightness _ %"
+msgstr "brillo _ %"
