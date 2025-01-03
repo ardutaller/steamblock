@@ -58,14 +58,40 @@ void initMessageService() {
 		window.addEventListener('message', function (event) {
 			if (event.data.constructor === Uint8Array) {
 				window.recvBuffer.push(...event.data);
-			} else {
-				if (event.data.startsWith('keyDown ')) {
-					window.keys.set(parseInt(event.data.substring(8), 10), true);
-				} else if (event.data.startsWith('keyUp ')) {
-					window.keys.set(parseInt(event.data.substring(6), 10), false);
+			} else if (event.data.constructor === Array) {
+				switch (event.data[0]) {
+					case 'putFile':
+						// store file in Boardie's localStorage
+						window.localStorage[event.data[1]] = event.data[2];
+						return;
+					case 'keyDown':
+						// button pressed
+						window.keys.set(parseInt(event.data.substring(8), 10), true);
+						return;
+					case 'keyUp':
+						// button released
+						window.keys.set(parseInt(event.data.substring(6), 10), false);
+						return;
+					default:
+						console.log('unrecognized message:', event.data[0]);
+						return;
 				}
 			}
 		}, false);
+	});
+}
+
+void syncFiles() {
+	// update IDE file cache with all files from Boardie's [local/session]Storage
+	EM_ASM_({
+		var origin = window.useSessionStorage ? 'session' : 'local';
+		Object.keys(window.localStorage).forEach(function (fileName) {
+			window.parent.postMessage(
+				'boardieGetFile ' + fileName + ' ' +
+					window[origin + 'Storage'][fileName],
+				'*'
+			);
+		});
 	});
 }
 
@@ -227,6 +253,8 @@ int main(int argc, char *argv[]) {
 	initMessageService();
 	initKeyboardHandler();
 	initSound();
+
+	syncFiles();
 
 	initTimers();
 	memInit();

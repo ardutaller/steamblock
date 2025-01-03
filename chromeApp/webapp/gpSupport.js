@@ -397,6 +397,11 @@ function handleMessage(evt) {
 			GP.boardie.press(msg.substring(15));
 		} else if (msg.startsWith('boardieKeyUp ')){
 			GP.boardie.unpress(msg.substring(13));
+		} else if (msg.startsWith('boardieGetFile ')){
+			var details = msg.split(' ');
+			GP.boardie.files[details[1]] = details[2];
+		} else if (msg.startsWith('boardieDeleteFile ')){
+			delete(GP.boardie.files[msg.substring(18)]);
 		} else if (msg == 'boardieSoundStart'){
 			boardie.element.querySelector('.audio').classList.add('--is-active');
 		} else if (msg == 'boardieSoundStop'){
@@ -711,12 +716,13 @@ GP.boardie = {
 				return '';
 		}
 	},
+	files: {},
 	press: function (keyCode, andSendToBoard) {
 		var button = this.buttonForCode(keyCode),
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.add('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyDown ' + keyCode, '*');
+			this.iframe.contentWindow.postMessage(['keyDown', keyCode], '*');
 		}
 	},
 	unpress: function (keyCode, andSendToBoard) {
@@ -724,7 +730,7 @@ GP.boardie = {
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.remove('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyUp ' + keyCode, '*');
+			this.iframe.contentWindow.postMessage(['keyUp', keyCode], '*');
 		}
 	}
 };
@@ -734,6 +740,7 @@ function GP_openBoardie() {
 		boardie = GP.boardie;
 
 	GP_closeSerialPort(); // close serial port if open
+	GP.boardie.files = {}; // reset file cache
 
 	req.open('GET', 'boardie/boardie.html');
 	req.onreadystatechange = function () {
