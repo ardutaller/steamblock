@@ -327,7 +327,7 @@ NimBLEUUID ANDROID_OCTO_UUID	= NimBLEUUID(ANDROID_OCTO_UUID_STRING);
 NimBLEUUID iOS_OCTO_UUID		= NimBLEUUID(iOS_OCTO_UUID_STRING);
 
 static void stopBeaming() {
-	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+	BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
 	if (pAdvertising->isAdvertising()) pAdvertising->stop();
 	pAdvertising->removeServiceUUID(iOS_OCTO_UUID);
 	BLE_resumeAdvertising();
@@ -337,9 +337,8 @@ static void startOctoBeam(char *msg) {
 	// Mimic iOS beam; data is encoded in name
 
 	BLE_pauseAdvertising();
-	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+	BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
 	pAdvertising->reset();
-	pAdvertising->enableScanResponse(true);
 	pAdvertising->addServiceUUID(iOS_OCTO_UUID);
 	pAdvertising->setName(msg);
 	pAdvertising->setMinInterval(32);
@@ -358,20 +357,20 @@ static void startRadioBeam(uint8 *msg, int msgByteCount) {
 	memcpy(&adv_data[6], msg, msgByteCount);
 
 	BLE_pauseAdvertising();
-	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+	BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
 	pAdvertising->reset();
 
 	// advertise using manufacturer data with msg payload
 	NimBLEAdvertisementData advertData;
-	advertData.addData((const uint8_t *) adv_data, msgByteCount + 6);
+	advertData.addData((char *) adv_data, msgByteCount + 6);
 	pAdvertising->setAdvertisementData(advertData);
 	pAdvertising->setMinInterval(32);
 	pAdvertising->setMaxInterval(32);
 	pAdvertising->start();
 }
 
-class MyScanCallbacks : public NimBLEScanCallbacks {
-	void onResult(const BLEAdvertisedDevice* advertisedDevice) override {
+class BLEScannerCallbacks : public BLEAdvertisedDeviceCallbacks {
+	void onResult(BLEAdvertisedDevice* advertisedDevice) {
 		if (advertisedDevice->haveServiceUUID()) {
 			// iOS
 			BLEUUID uuid = advertisedDevice->getServiceUUID();
@@ -406,12 +405,12 @@ class MyScanCallbacks : public NimBLEScanCallbacks {
 			}
 		}
 
-		const uint8_t *advData = advertisedDevice->getPayload().data();
-		const ble_addr_t *addr = advertisedDevice->getAddress().getBase();
+		const uint8_t *advData = advertisedDevice->getPayload();
+		NimBLEAddress addr = advertisedDevice->getAddress();
 
 		if (isBLERadioMsgToGroup(advData)) {
 			MsgID radioMsgID; // radioMsgID is 6-byte address + sequence number + group
-			memcpy(&radioMsgID, &addr->val, 6);
+			memcpy(&radioMsgID, addr.getNative(), 6);
 			memcpy(((uint8 *) &radioMsgID) + 6, &advData[4], 2);
 			saveRadioMsg(radioMsgID, advData);
 		}
@@ -419,14 +418,14 @@ class MyScanCallbacks : public NimBLEScanCallbacks {
 		if (lastScanPayloadLen != 0) return; // last capture has not been consumed
 
 		// capture scan payload
-		lastScanPayloadLen = advertisedDevice->getPayload().size();
+		lastScanPayloadLen = advertisedDevice->getPayloadLength();
 		if (lastScanPayloadLen > MAX_SCAN_PAYLOAD) lastScanPayloadLen = MAX_SCAN_PAYLOAD;
 		memcpy(lastScanPayload, advData, lastScanPayloadLen);
 
 		// capture RSSI and address
 		lastScanRSSI = -advertisedDevice->getRSSI(); // make it positive
-		lastScanAddressType = addr->type;
-		memcpy(lastScanAddress, &addr->val, 6);
+		lastScanAddressType = addr.getType();
+		memcpy(lastScanAddress, addr.getNative(), 6);
 	}
 };
 
@@ -435,8 +434,8 @@ static void startBLEScanner() {
 		// initialize allZeroMessageID; ignore messages with that ID sent by iOS OctoStudio
 		memcpy(&allZeroMessageID, "00000000", 8);
 
-		NimBLEScan *pScanner = NimBLEDevice::getScan();
-		pScanner->setScanCallbacks(new MyScanCallbacks());
+		BLEScan *pScanner = BLEDevice::getScan();
+		pScanner->setAdvertisedDeviceCallbacks(new BLEScannerCallbacks());
 		pScanner->setMaxResults(0); // don't save results; use callback only
 		pScanner->setActiveScan(true); // required by Octo
 		pScanner->setDuplicateFilter(false); // good ???
@@ -447,7 +446,7 @@ static void startBLEScanner() {
 
 static void stopBLEScanner() {
 	if (bleScannerRunning) {
-		NimBLEDevice::getScan()->stop();
+		BLEDevice::getScan()->stop();
 		bleScannerRunning = false;
 	}
 }
@@ -756,7 +755,7 @@ static void initializeEspNoW() {
 	if (!ok) {
 		// outputString("WifiEspNowBroadcast.begin() failed");
 		ESP.restart(); //
-	}
+	 }
 	// outputString("WifiEspNowBroadcast.begin() success");
 	WifiEspNowBroadcast.onReceive(processRx, nullptr);
 	EspNoWInitialized = true;
