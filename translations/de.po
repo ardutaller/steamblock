@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-04 13:08+0000\n"
+"PO-Revision-Date: 2025-01-04 16:56+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1853,7 +1853,7 @@ msgstr "normal (65%)"
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr "Nutzerdefiniert..."
+msgstr "Eigene Sprachdatei..."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
@@ -4221,7 +4221,7 @@ msgstr "initialisiere i2c _ Adresse(hex) _ reset pin# _ flip _"
 
 #. General MIDI control change
 msgid "hold"
-msgstr "halten"
+msgstr "Halten"
 
 #. OLED Graphics library block
 msgid "draw line from x _ y _ to x _ y _ erase _"
@@ -4606,7 +4606,7 @@ msgstr "verlasse Schleife"
 
 #. WiFi library block
 msgid "allow WiFi while using BLE _"
-msgstr "erlaube WiFi während BLE _ verwendet wird"
+msgstr "erlaube WiFi während BLE verwendet wird _"
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
@@ -6045,9 +6045,8 @@ msgid "High Agogo"
 msgstr "High Agogo"
 
 #. General MIDI instrument category
-#, fuzzy
 msgid "reed"
-msgstr "reed"
+msgstr "Zungenpfeife"
 
 #. General MIDI instrument category
 msgid "synth lead"
@@ -6072,3 +6071,171 @@ msgstr "Low Bongo"
 #. General MIDI drum instrument name
 msgid "Mute Hi Conga"
 msgstr "Mute Hi Conga"
+
+#. General MIDI control change
+msgid "decay time"
+msgstr "Abklingzeit"
+
+#. Scales & Chords library block
+msgid "chord progression _ with root _"
+msgstr "Akkordfolge _ mit Grundton _"
+
+#. Scales & Chords library block
+msgid "improvised arpeggio over _ for _ bars with durations _"
+msgstr "improvisiertes Arpeggio über _ für _ Takte mit Dauern _"
+
+#. Square Wave Chords library label
+msgid "Square Wave Chords"
+msgstr "Rechteckwellen-Akkorde"
+
+#. Scales & Chords library block
+msgid "_ chord root _"
+msgstr "_ Akkordgrundton _"
+
+#. Scales & Chords library block
+msgid "and _ steps per chord"
+msgstr "und _ Schritte pro Akkord"
+
+#. Scales & Chords library block
+msgid "arpeggiate _ in order _ duration _ and volume _ on _ _"
+msgstr "arpeggieren _ in Reihenfolge _ Dauer _ und Lautstärke _ auf _ _"
+
+#. Music chord type
+msgid "major 7th"
+msgstr "Major 7"
+
+#. General MIDI control change
+msgid "portamento"
+msgstr "Protamento"
+
+#. General MIDI control change
+msgid "portamento control"
+msgstr "Portamento Steuerung"
+
+#. General MIDI control change
+msgid "cutoff"
+msgstr "Abschaltung"
+
+#. Scales & Chords library block
+msgid "_ chord for root _"
+msgstr "_ Akkord für Grundton _"
+
+#. General MIDI control change
+msgid "vibrato rate"
+msgstr "Vibrato-Rate"
+
+#. Square Wave Chords library block
+msgid "set digital chord pins _ _ _"
+msgstr "setze digitale Akkord-Pins _ _ _"
+
+#. General MIDI control change
+msgid "pan"
+msgstr "Pan"
+
+#. Scales & Chords library block
+msgid "steps _"
+msgstr "Schritte _"
+
+#. Music chord type
+msgid "minor"
+msgstr "Minor"
+
+#. General MIDI control change
+msgid "portamento time"
+msgstr "Portamento-Zeit"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr "links"
+
+#. General MIDI control change
+msgid "vibrato depth"
+msgstr "Vibrato-Tiefe"
+
+#. Scales & Chords library block
+msgid "rotation _ of circle of 5ths _ M _ m _ º"
+msgstr "Drehung _ des Quintenzirkels _ M _ m _ º"
+
+#. Chiptune library block
+msgid "noise for _ ms pitch shifted by _ on pin _"
+msgstr "Rauschen für _ ms Tonhöhe verschoben um _ an Pin _"
+
+#. Scales & Chords library block
+msgid "pentatonic _ scale root _"
+msgstr "Pentatonisch _ Tonleiter-Grundton _"
+
+#. General MIDI control change
+msgid "attack time"
+msgstr "Angriffszeit"
+
+#. Music chord type
+msgid "minor 7th"
+msgstr "Minor 7"
+
+#. General MIDI control change
+msgid "sostenuto"
+msgstr "unterstützt"
+
+#. Chiptune library block
+msgid "fade noise for _ ms pitch shifted by _ on DAC pin _"
+msgstr "Ausblendrauschen für _ ms Tonhöhenverschiebung um _ an DAC-Pin _"
+
+#. General MIDI control change
+msgid "vibrato delay"
+msgstr "Vibrato-Verzögerung"
+
+#. Chiptune library block
+msgid "tom for _ ms pitch shifted by _ on pin _"
+msgstr "Tom für _ ms Tonhöhe verschoben um _ an Pin _"
+
+#. Chiptune library block
+msgid "laser for _ ms with frequency _ speed _ on pin _"
+msgstr "Laser für _ ms mit Frequenz _ Geschwindigkeit _ an Pin _"
+
+#. Square Wave Chords library block
+msgid "play chord _ for _ ms"
+msgstr "spiele Akkord _ für _ ms"
+
+#. Chiptune library block
+msgid "hihat for _ ms on DAC pin _"
+msgstr "Hi-Hat für _ ms an DAC-Pin _"
+
+#. Scales & Chords library block
+msgid "_ scale root _"
+msgstr "_ Tonleiter-Grundton _"
+
+#. Music chord type
+msgid "major"
+msgstr "Major"
+
+#. Music chord type
+msgid "diminished"
+msgstr "vermindert"
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "tone pin"
+msgstr "Sound-Pin"
+
+#. Scales & Chords library block
+msgid "_ transposed _ semitones"
+msgstr "_ transponierte _ Halbtöne"
+
+#. Chiptune library block
+msgid "kick for _ ms on pin _"
+msgstr "Kick für _ ms auf Pin _"
+
+#. Chiptune library block
+msgid "snare for _ ms on DAC pin _"
+msgstr "Snare für _ ms an DAC-Pin _"
+
+#. Music chord type
+msgid "Maj7"
+msgstr "Maj7"
+
+#. Scales & Chords library block
+msgid "improvise over _ for _ bars with durations _ on _ _ volume _"
+msgstr "improvisieren über _ für _ Takte mit Dauer _ auf _ _ Lautstärke _"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr "rechts"
