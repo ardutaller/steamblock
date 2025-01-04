@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-04 16:56+0000\n"
+"PO-Revision-Date: 2025-01-04 19:44+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -326,7 +326,7 @@ msgstr "Text oder Zahl"
 
 #. MicroBlocks IDE information
 msgid "Drag the firmware file you just saved to the %1 drive."
-msgstr "Ziehe die gerade gespeicherte Firmware-Datei auf das Laufwerk %1."
+msgstr "Kopiere die eben gespeicherte Firmware-Datei auf das Laufwerk %1."
 
 #. Block right-click context menu
 msgid "collapse"
@@ -2381,7 +2381,7 @@ msgstr "Projekt wird vom Board gelesen..."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Drücke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
+msgstr "Klicke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
@@ -2457,13 +2457,14 @@ msgstr "Firmware installiert"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
-msgstr "Klicke auf \"Verbinden\", um dein MicroBlocks-Gerät neu zu verbinden."
+msgstr ""
+"Klicke auf \"Verbinden\", um dein Board neu mit MicroBlocks zu verbinden."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
 msgstr ""
-"Halte beim Anschließen des USB-Kabels die weiße Taste BOOTSEL gedrückt, "
-"bevor du weiter machst."
+"Halte die weiße Taste BOOTSEL gedrückt, während du das USB-Kabel verbindest, "
+"und mache dann weiter."
 
 #. MicroBlocks IDE information
 msgid "You will be asked to save the firmware file."
@@ -2712,13 +2713,14 @@ msgstr "Eingabe"
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to see value, or drop into an input slot. [r] menu."
-msgstr "[l] zur Werteanzeige oder zum Ziehen in einen Eingabebereich. [r] Menü."
+msgstr ""
+"[l] Wert anzeigen. Block in ein Eingabefeld im Skript schieben. [r] Menü."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
 msgstr ""
-"Ziehe Blöcke von hier in den Skriptbereich. Bewege Blöcke und Skripte "
-"hierher, um sie zu löschen."
+"Blöcke nach rechts in den Skriptbereich schieben. Blöcke und Skripte zum "
+"Löschen hierher schieben."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Do nothing. Used to add notes and documentation."
@@ -2817,7 +2819,7 @@ msgstr "warte _ Mikrosekunden"
 
 #. Block in Control category
 msgid "return _"
-msgstr "berichte _"
+msgstr "Rückgabe _"
 
 #. Block in Control category
 msgid "for _ in _ _"
@@ -3208,7 +3210,9 @@ msgstr "[l] Wert ändern oder einen Rückgabeblock hineinziehen."
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to run, or drag to build scripts. [r] menu."
-msgstr "[l] zum Starten oder Ziehen zum Bauen eines Skipts. [r] Menü."
+msgstr ""
+"[l] zum Starten. Block zum Bauen eines Skripts nach rechts schieben. [r] "
+"Menü."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3884,7 +3888,7 @@ msgstr "Blockkategorie"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "Drag blocks here to build scripts. [r] menu."
-msgstr "Ziehe Blöcke hierher, um Skripte zu bauen. [r] Menü."
+msgstr "Blöcke hierher schieben, um Skripte zu bauen. [r] Menü."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Graph the value."
@@ -4036,7 +4040,7 @@ msgstr "links"
 
 #. Settings menu tooltip
 msgid "make the IDE darker"
-msgstr "stelle MicroBlocks IDE dunkler ein"
+msgstr "wähle einen dunklen Hintergrund für MicroBlocks"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "right" on your axis
@@ -4217,7 +4221,7 @@ msgstr "setze Video _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "initialisiere i2c _ Adresse(hex) _ reset pin# _ flip _"
+msgstr "initialisiere i2c _ Adresse(hex) _ Reset-Pin _ flip _"
 
 #. General MIDI control change
 msgid "hold"
@@ -4315,7 +4319,7 @@ msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "initialisiere spi _ d/c pin# _ reset pin# _ flip _"
+msgstr "initialisiere spi _ D/C-Pin _ Reset-Pin _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -4586,7 +4590,7 @@ msgstr "Erweiterter Modus"
 
 #. Settings menu tooltip
 msgid "show advanced blocks, menu items and editor functionalities"
-msgstr "zeige erweiterte Blöcke, Menüpunkte und Editorfunktionen an"
+msgstr "zeige erweiterte Blöcke, Menüpunkte und Editorfunktionen"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the given start milliseconds. Handles clock wrap."
