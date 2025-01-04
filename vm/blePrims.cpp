@@ -339,6 +339,7 @@ static void startOctoBeam(char *msg) {
 	BLE_pauseAdvertising();
 	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
 	pAdvertising->reset();
+	pAdvertising->enableScanResponse(true);
 	pAdvertising->addServiceUUID(iOS_OCTO_UUID);
 	pAdvertising->setName(msg);
 	pAdvertising->setMinInterval(32);
