@@ -361,16 +361,21 @@ OBJ primBrowserGetMessage(int nargs, OBJ args[]) {
 
 OBJ primBrowserPostMessage(int nargs, OBJ args[]) {
 	if (nargs < 1) return notEnoughArgsFailure();
-	if (NOT_CLASS(args[0], StringClass)) return primFailed("Argument must be a string");
+	OBJ message = args[0];
 	int postToParent = ((nargs > 1) && (trueObj == args[1]));
 
-	EM_ASM_({
-		if ($1) {
-			window.parent.postMessage(UTF8ToString($0), "*");
-		} else {
-			window.postMessage(UTF8ToString($0), "*");
-		}
-	}, obj2str(args[0]), postToParent);
+	EM_ASM_(
+		{
+			if ($2) {
+				window.parent.postMessage([UTF8ToString($0), UTF8ToString($1)], "*");
+			} else {
+				window.postMessage([UTF8ToString($0), UTF8ToString($1)], "*");
+			}
+		},
+		obj2str(FIELD(message, 0)),
+		objWords(message) == 2 ? obj2str(FIELD(message, 1)) : false,
+		postToParent
+	);
 	return nilObj;
 }
 

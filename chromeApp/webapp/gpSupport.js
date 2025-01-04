@@ -386,29 +386,40 @@ function handleMessage(evt) {
 			// Boardie sent us bytes. Let's add them to the serial buffer.
 			GP_serialInputBuffers.push(msg);
 		}
-	} else if (typeof msg === 'string' || msg instanceof String) {
-		if (msg.startsWith('showButton ')) {
-			var btn = document.getElementById(msg.substring(11));
-			if (btn) btn.style.display = 'inline';
-		} else if (msg.startsWith('hideButton ')){
-			var btn = document.getElementById(msg.substring(11));
-			if (btn) btn.style.display = 'none';
-		} else if (msg.startsWith('boardieKeyDown ')){
-			GP.boardie.press(msg.substring(15));
-		} else if (msg.startsWith('boardieKeyUp ')){
-			GP.boardie.unpress(msg.substring(13));
-		} else if (msg.startsWith('boardieGetFile ')){
-			var details = msg.split(' ');
-			GP.boardie.files[details[1]] = details[2];
-		} else if (msg.startsWith('boardieDeleteFile ')){
-			delete(GP.boardie.files[msg.substring(18)]);
-		} else if (msg == 'boardieSoundStart'){
-			boardie.element.querySelector('.audio').classList.add('--is-active');
-		} else if (msg == 'boardieSoundStop'){
-			boardie.element.querySelector('.audio').classList.remove('--is-active');
-		} else {
-			queueGPMessage(msg);
+	} else if (msg.constructor === Array) {
+		switch (msg[0]) {
+			case 'showButton':
+				var btn = msg[1];
+				if (btn) btn.style.display = 'inline';
+				return;
+			case 'hideButton':
+				var btn = document.getElementById(msg[1]);
+				if (btn) btn.style.display = 'none';
+				return;
+			case 'boardieKeyDown':
+				GP.boardie.press(msg[1]);
+				return;
+			case 'boardieKeyUp':
+				GP.boardie.unpress(msg[1]);
+				return;
+			case 'boardieGetFile':
+				GP.boardie.files[msg[1]] = msg[2];
+				return;
+			case 'boardieDeleteFile':
+				delete(GP.boardie.files[msg[1]]);
+				return;
+			case 'boardieSoundStart':
+				boardie.element.querySelector('.audio').classList.add('--is-active');
+				return;
+			case 'boardieSoundStop':
+				boardie.element.querySelector('.audio').classList.remove('--is-active');
+				return;
+			default:
+				console.log('unrecognized message:', msg);
+				return;
 		}
+	} else {
+		queueGPMessage(msg);
 	}
 }
 
@@ -696,7 +707,7 @@ GP.boardie = {
 	position: null,
 	reset: function () {
 		win = this.iframe.contentWindow;
-		postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ]), '*'); // system reset w/ Boardie option
+		win.postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ]), '*'); // system reset w/ Boardie option
 		ctx = win.document.querySelector('canvas').getContext('2d');
 		ctx.fillStyle = "#000";
 		ctx.fillRect(0, 0, 240, 240); // clear screen
