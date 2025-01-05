@@ -1543,6 +1543,9 @@ static OBJ primTftTouchX(int argCount, OBJ *args) { return falseObj; }
 static OBJ primTftTouchY(int argCount, OBJ *args) { return falseObj; }
 static OBJ primTftTouchPressure(int argCount, OBJ *args) { return falseObj; }
 
+static OBJ primAruco(int argCount, OBJ *args) { return falseObj; }
+static OBJ primAprilTag(int argCount, OBJ *args) { return falseObj; }
+
 #endif
 
 // Primitives
