@@ -416,7 +416,7 @@ void BLE_resumeAdvertising() {
 
 // Pico connect/disconnect callbacks
 
-static void deviceConnectedCallback(BLEStatus status, NimBLEDevice *device) {
+static void deviceConnectedCallback(BLEStatus status, BLEDevice *device) {
 	if (BLE_STATUS_OK == status) {
 		connectionHandle = device->getHandle();
 		BTstack.stopAdvertising();
@@ -425,7 +425,7 @@ static void deviceConnectedCallback(BLEStatus status, NimBLEDevice *device) {
 	}
 }
 
-static void deviceDisconnectedCallback(NimBLEDevice *device) {
+static void deviceDisconnectedCallback(BLEDevice *device) {
 	connectionHandle = 0;
 	BLE_resumeAdvertising();
 	BLE_connected_to_IDE = false;
@@ -433,7 +433,7 @@ static void deviceDisconnectedCallback(NimBLEDevice *device) {
 
 void bleDisconnect() {
 	if (connectionHandle) {
-		NimBLEDevice device(connectionHandle);
+		BLEDevice device(connectionHandle);
 		BTstack.bleDisconnect(&device);
 		connectionHandle = 0;
 	}
