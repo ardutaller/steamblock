@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-01-03 10:12+0000\n"
+"PO-Revision-Date: 2025-01-04 13:01+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -6119,3 +6119,11 @@ msgstr "lectura analògica _"
 #. NeZha2 robot library block
 msgid "Nezha trim pot _"
 msgstr "potenciòmetre _"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr "esquerre"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr "dret"

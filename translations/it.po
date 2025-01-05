@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-01-01 18:45+0200\n"
-"PO-Revision-Date: 2025-01-02 15:39+0000\n"
+"PO-Revision-Date: 2025-01-04 13:22+0000\n"
 "Last-Translator: Michele Zaffalon <michele.zaffalon@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/microblocks/ide/"
 "it/>\n"
@@ -175,7 +175,7 @@ msgstr "quando _"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr "attenti fino a _"
+msgstr "attendi fino a _"
 
 #. Block in Control category
 msgid "wait _ microsecs"
@@ -392,47 +392,47 @@ msgstr "Data"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr ""
+msgstr "gatto"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr ""
+msgstr "cane"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr ""
+msgstr "uccello"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr ""
+msgstr "pesce"
 
 #. Block in Data category
 msgid "length of _"
-msgstr ""
+msgstr "lunghezza di _"
 
 #. Block in Data category
 msgid "item _ of _"
-msgstr ""
+msgstr "elemento _ di _"
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr ""
+msgstr "sostituisce elemento _ della lista _ con _"
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr ""
+msgstr "rimuovi elemento _ della lista _"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr ""
+msgstr "aggiungi _ alla lista _"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr ""
+msgstr "unisci _ _"
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr ""
+msgstr "copia _ da _"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
@@ -440,48 +440,49 @@ msgid "smiles"
 msgstr ""
 
 #. Block in Data category
+#, fuzzy
 msgid "to _"
-msgstr ""
+msgstr "in _"
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr ""
+msgstr "trova _ in _"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr ""
+msgstr "partendo da _"
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr ""
+msgstr "unisci elementi della lista _"
 
 #. Block in Data category
 msgid "separator _"
-msgstr ""
+msgstr "separatore _"
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr ""
+msgstr "unicode _ di _"
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr ""
+msgstr "stringa da unicode _"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr ""
+msgstr "nuova lista con lunghezza _"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr ""
+msgstr "nuovo matrice byte _"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr ""
+msgstr "trasforma in matrice byte _"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr ""
+msgstr "unaListaByteOppureStringa"
 
 #. Block in Data category
 msgid "with all _"
@@ -489,45 +490,46 @@ msgstr ""
 
 #. Block in Data category
 msgid "free memory"
-msgstr ""
+msgstr "libera memoria"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr ""
+msgstr "tutto"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr ""
+msgstr "ultimo"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
+#, fuzzy
 msgid "random"
-msgstr ""
+msgstr "casuale"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr ""
+msgstr "separa _ con _"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr ""
+msgstr "I Miei Blocchi"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr ""
+msgstr "Generico"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr ""
+msgstr "Aggiungi un blocco commento"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr ""
+msgstr "Aggiungi un blocco reporter"
 
 #. Make a block dialog
 msgid "Enter function name:"
@@ -535,175 +537,180 @@ msgstr ""
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
-msgstr ""
+msgstr "Comunicazione"
 
 #. Block in Comm category
+#, fuzzy
 msgid "i2c get device _ register _"
-msgstr ""
+msgstr "i2c leggi dispositivo _ registro _"
 
 #. Block in Comm category
+#, fuzzy
 msgid "i2c set device _ register _ to _"
-msgstr ""
+msgstr "i2c scrivi dispositivo _ registro _ valore _"
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
-msgstr ""
+msgstr "i2c dispositivo _ leggi lista _"
 
 #. Block in Comm category
 msgid "i2c device _ write list _"
-msgstr ""
+msgstr "i2c dispositivo _ scrivi lista _"
 
 #. Block in Comm category
 msgid "i2c device _ exists?"
-msgstr ""
+msgstr "i2c dispositivo _ esiste?"
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr ""
+msgstr "spi invia _"
 
 #. Block in Comm category
 msgid "spi receive"
-msgstr ""
+msgstr "spi ricevi"
 
 #. Block in Comm category
 msgid "spi setup speed _"
-msgstr ""
+msgstr "spi configurazione velocità _"
 
 #. Block in Comm category
 msgid "mode _"
-msgstr ""
+msgstr "modo _"
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr ""
+msgstr "rpi canale _"
 
 #. Block in Comm category
 msgid "spi exchange bytes _"
-msgstr ""
+msgstr "spi scambia bytes _"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr ""
+msgstr "unaMatriceByte"
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr ""
+msgstr "seriale apri _ baud"
 
 #. Block in Comm category
 msgid "serial close"
-msgstr ""
+msgstr "seriale chiudi"
 
 #. Block in Comm category
 msgid "serial read"
-msgstr ""
+msgstr "seriale leggi"
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr ""
+msgstr "seriale scrivi _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
-msgstr ""
+msgstr "unInteroStringaListaOppureMatriceByte"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
-msgstr ""
+msgstr "seriale scrivi _ partendo da _"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 msgid "aStringListOrByteArray"
-msgstr ""
+msgstr "unaStringaListaOppureMatriceByte"
 
 #. Block in Comm category
+#, fuzzy
 msgid "soft serial write byte _ pin _ baud _"
-msgstr ""
+msgstr "soft seriale scrivi byte _ pin _ baud _"
 
 #. Block in Comm category
 msgid "print _"
-msgstr ""
+msgstr "stampa _"
 
 #. Block in Comm category
 msgid "no op"
-msgstr ""
+msgstr "no op"
 
 #. Block in Comm category
 msgid "ignore"
-msgstr ""
+msgstr "ignora"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "draw shape _ at x _ y _"
-msgstr ""
+msgstr "disegna forma _ a x _ y _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
-msgstr ""
+msgstr "forma per lettera _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "send NeoPixel rgb _"
-msgstr ""
+msgstr "invia NeoPixel rgb _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has tone support"
-msgstr ""
+msgstr "ha supporto suono"
 
 #. Primitive block. Mostly hidden from end users.
+#, fuzzy
 msgid "play tone pin _ frequency _"
-msgstr ""
+msgstr "suona pin _ frequenza _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has WiFi support"
-msgstr ""
+msgstr "ha supporto WiFi"
 
 #. Primitive block. Mostly hidden from end users.
+#, fuzzy
 msgid "start WiFi _ password _"
-msgstr ""
+msgstr "comincia WiFi _ password _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "stop WiFi"
-msgstr ""
+msgstr "arresta WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "WiFi status"
-msgstr ""
+msgstr "WiFi stato"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "my IP address"
-msgstr ""
+msgstr "mio indirizzo IP"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send number _"
-msgstr ""
+msgstr "radio invia numero _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send string _"
-msgstr ""
+msgstr "radio invia stringa _"
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "Hello!"
-msgstr ""
+msgstr "Ciao!"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send pair _ = _"
-msgstr ""
+msgstr "radio invia coppia _ = _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "light"
-msgstr ""
+msgstr "luce"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio message received?"
-msgstr ""
+msgstr "radio messaggio ricevuto?"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last number"
-msgstr ""
+msgstr "radio ultimo numero"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last string"
-msgstr ""
+msgstr "radio ultima stringa"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last message type"
-msgstr ""
+msgstr "radio tipo ultimo messaggio"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set group _ (0-255)"
@@ -719,15 +726,15 @@ msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last signal strength"
-msgstr ""
+msgstr "radio intensità ultimo segnale"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio receive packet _"
-msgstr ""
+msgstr "radio ricevi pacchetto _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send packet _"
-msgstr ""
+msgstr "radio invia pacchetto _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
@@ -735,7 +742,7 @@ msgstr ""
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr ""
+msgstr "Sensori Base"
 
 #. Block in Basic Sensors library
 msgid "tilt x"
