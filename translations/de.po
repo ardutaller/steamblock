@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-06 13:01+0000\n"
+"PO-Revision-Date: 2025-01-06 13:46+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -180,7 +180,7 @@ msgstr "dupliziere diese Blöcke"
 
 #. In MicroBlocks IDE project menu
 msgid "Open"
-msgstr "öffnen"
+msgstr "Öffnen"
 
 #. Window title
 msgid "About MicroBlocks"
@@ -289,7 +289,7 @@ msgstr "akzeptiere"
 
 #. Settings menu option
 msgid "hide implementation blocks"
-msgstr "verstecke Implementationsblöcke"
+msgstr "Implementationsblöcke verbergen"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the product of the given numbers."
@@ -841,7 +841,7 @@ msgstr "Ziel"
 
 #. Settings menu option
 msgid "about..."
-msgstr "über..."
+msgstr "Über..."
 
 #. Block right-click context menu
 msgid "help"
@@ -1829,7 +1829,7 @@ msgstr "Board wird gelöscht..."
 
 #. In MicroBlocks IDE project menu
 msgid "New"
-msgstr "neu"
+msgstr "Neu"
 
 #. Button
 msgid "Yes"
@@ -1841,11 +1841,11 @@ msgstr "%1 Sekunden verbleiben"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
-msgstr "verbinde (BLE)"
+msgstr "Verbinden (BLE)"
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr "verbinde das Board und versuche es nochmal"
+msgstr "Verbinde das Board und versuche es nochmal"
 
 #. Block size option
 msgid "normal (65%)"
@@ -1853,7 +1853,7 @@ msgstr "normal (65%)"
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr "Eigene Sprachdatei..."
+msgstr "Eigene Sprachdatei"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
@@ -1881,7 +1881,7 @@ msgstr "obsolet"
 
 #. In MicroBlocks IDE project menu
 msgid "Save"
-msgstr "speichern"
+msgstr "Speichern"
 
 #. Settings menu option
 msgid "download and install latest VM"
@@ -2421,7 +2421,7 @@ msgstr "setze Größenmaßstab für Export"
 
 #. Settings menu option
 msgid "enable or disable BLE"
-msgstr "aktiviere oder deaktivere BLE"
+msgstr "BLE aktivieren oder deaktiveren"
 
 #. Graph context menu option
 msgid "show data graph"
@@ -2433,7 +2433,7 @@ msgstr "MicroBlocks HTTP-Server wartet an Port 6473"
 
 #. Settings menu option
 msgid "show implementation blocks"
-msgstr "zeige Implementationsblöcke"
+msgstr "Implementationsblöcke anzeigen"
 
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
@@ -2463,7 +2463,7 @@ msgstr ""
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
 msgstr ""
-"Halte die weiße Taste BOOTSEL gedrückt, während du das USB-Kabel verbindest, "
+"Halte die weiße Taste BOOTSEL gedrückt, während du das USB-Kabel einsteckst, "
 "und mache dann weiter."
 
 #. MicroBlocks IDE information
@@ -2665,7 +2665,7 @@ msgstr "Anschluss?"
 
 #. Settings menu option
 msgid "update firmware on board"
-msgstr "aktualisiere Firmware auf dem Board"
+msgstr "Firmware auf dem Board aktualisieren"
 
 #. Settings menu option
 msgid "HTTP Server"
@@ -3051,7 +3051,7 @@ msgstr "WiFi letzte Zahl"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect"
-msgstr "verbinde (USB)"
+msgstr "Verbinden (USB)"
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
@@ -3107,7 +3107,7 @@ msgstr "Virtual Machine Version"
 msgid "do not show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
 msgstr ""
 "zeige keine Blöcke und Variablen an, die nur intern in Modulen verwendet "
-"werden (d.h. solche, deren Name mit einem Unterstrich beginnt)"
+"werden (d.h. solche, deren Name mit einem Unterstrich beginnen)"
 
 #. Project menu option
 msgid "put file on board"
@@ -3534,7 +3534,7 @@ msgstr "rückwärts"
 
 #. In MicroBlocks IDE project menu
 msgid "Copy project URL to clipboard"
-msgstr "kopiere Projekt-URL in die Zwischenablage"
+msgstr "Kopiere Projekt-URL in die Zwischenablage"
 
 #. About window info
 msgid "More info at http://microblocks.fun"
@@ -3747,11 +3747,11 @@ msgstr "lösche Auswahl"
 
 #. Settings menu option
 msgid "erase flash and update firmware on ESP board"
-msgstr "lösche Flash und aktualisiere ESP-Firmware"
+msgstr "Flash löschen und ESP-Firmware aktualisieren"
 
 #. Settings menu option
 msgid "install ESP firmware from URL"
-msgstr "installiere ESP-Firmware von URL"
+msgstr "ESP-Firmware von URL installieren"
 
 #. Firmware install board type confirmation. As in "Use board type micro:bit?"
 msgid "Use board type"
@@ -4027,7 +4027,7 @@ msgstr "zeichne Bild _ bei x _ y _"
 
 #. Settings menu option
 msgid "autoload board libraries"
-msgstr "lade Board-Module automatisch"
+msgstr "Board-Module automatisch laden"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degrees"
@@ -4091,7 +4091,7 @@ msgstr "Firmware-Version ausgeben, die auf das Board geladen ist."
 
 #. Settings menu option
 msgid "compact code store"
-msgstr "optimiere Codespeicher"
+msgstr "Codespeicher optimieren"
 
 #. Cutebot Pro library block dropdown option
 #. as in "both" lights
@@ -4357,7 +4357,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "PlugShare when project empty"
-msgstr "lade Board-Inhalt, wenn Projekt leer ist"
+msgstr "Board-Inhalt laden, wenn Projekt leer ist"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;AltGr"
@@ -4465,7 +4465,7 @@ msgstr "BLE-ID (3 Zeichen) des Boards ausgeben, wenn BLE unterstützt wird."
 
 #. Settings menu option
 msgid "install ESP firmware from microblocks.fun"
-msgstr "installiere ESP-Firmware von microblocks.fun"
+msgstr "ESP-Firmware von microblocks.fun installieren"
 
 #. Examples folder
 msgid "folder; by board"
