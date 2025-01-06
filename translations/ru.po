@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2024-12-20 12:00+0000\n"
-"Last-Translator: Andrey Kupreychik <foxel@quickfox.ru>\n"
+"PO-Revision-Date: 2025-01-06 13:02+0000\n"
+"Last-Translator: Konstantin <k3553620@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/microblocks/ide/"
 "ru/>\n"
 "Language: ru\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.9.2-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -2397,3 +2397,8 @@ msgstr "отпустить кнопку _"
 #. Key name (as in computer keyboard key)
 msgid "kbd;insert"
 msgstr "Insert"
+
+#. Block in Input category
+#, fuzzy
+msgid "end time _"
+msgstr "Время окончания"
