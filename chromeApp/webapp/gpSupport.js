@@ -386,24 +386,40 @@ function handleMessage(evt) {
 			// Boardie sent us bytes. Let's add them to the serial buffer.
 			GP_serialInputBuffers.push(msg);
 		}
-	} else if (typeof msg === 'string' || msg instanceof String) {
-		if (msg.startsWith('showButton ')) {
-			var btn = document.getElementById(msg.substring(11));
-			if (btn) btn.style.display = 'inline';
-		} else if (msg.startsWith('hideButton ')){
-			var btn = document.getElementById(msg.substring(11));
-			if (btn) btn.style.display = 'none';
-		} else if (msg.startsWith('boardieKeyDown ')){
-			GP.boardie.press(msg.substring(15));
-		} else if (msg.startsWith('boardieKeyUp ')){
-			GP.boardie.unpress(msg.substring(13));
-		} else if (msg == 'boardieSoundStart'){
-			boardie.element.querySelector('.audio').classList.add('--is-active');
-		} else if (msg == 'boardieSoundStop'){
-			boardie.element.querySelector('.audio').classList.remove('--is-active');
-		} else {
-			queueGPMessage(msg);
+	} else if (msg.constructor === Array) {
+		switch (msg[0]) {
+			case 'showButton':
+				var btn = msg[1];
+				if (btn) btn.style.display = 'inline';
+				return;
+			case 'hideButton':
+				var btn = document.getElementById(msg[1]);
+				if (btn) btn.style.display = 'none';
+				return;
+			case 'boardieKeyDown':
+				GP.boardie.press(msg[1]);
+				return;
+			case 'boardieKeyUp':
+				GP.boardie.unpress(msg[1]);
+				return;
+			case 'boardieGetFile':
+				GP.boardie.files[msg[1]] = msg[2];
+				return;
+			case 'boardieDeleteFile':
+				delete(GP.boardie.files[msg[1]]);
+				return;
+			case 'boardieSoundStart':
+				boardie.element.querySelector('.audio').classList.add('--is-active');
+				return;
+			case 'boardieSoundStop':
+				boardie.element.querySelector('.audio').classList.remove('--is-active');
+				return;
+			default:
+				console.log('unrecognized message:', msg);
+				return;
 		}
+	} else {
+		queueGPMessage(msg);
 	}
 }
 
@@ -691,7 +707,7 @@ GP.boardie = {
 	position: null,
 	reset: function () {
 		win = this.iframe.contentWindow;
-		postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ]), '*'); // system reset w/ Boardie option
+		win.postMessage(new Uint8Array([ 0xFA, 0x0F, 3 ]), '*'); // system reset w/ Boardie option
 		ctx = win.document.querySelector('canvas').getContext('2d');
 		ctx.fillStyle = "#000";
 		ctx.fillRect(0, 0, 240, 240); // clear screen
@@ -711,12 +727,13 @@ GP.boardie = {
 				return '';
 		}
 	},
+	files: {},
 	press: function (keyCode, andSendToBoard) {
 		var button = this.buttonForCode(keyCode),
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.add('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyDown ' + keyCode, '*');
+			this.iframe.contentWindow.postMessage(['keyDown', keyCode], '*');
 		}
 	},
 	unpress: function (keyCode, andSendToBoard) {
@@ -724,7 +741,7 @@ GP.boardie = {
 				element = this.element.querySelector(`[data-button="${button}"]`);
 		if (element) { element.classList.remove('--is-active'); }
 		if (andSendToBoard) {
-			this.iframe.contentWindow.postMessage('keyUp ' + keyCode, '*');
+			this.iframe.contentWindow.postMessage(['keyUp', keyCode], '*');
 		}
 	}
 };
@@ -734,6 +751,7 @@ function GP_openBoardie() {
 		boardie = GP.boardie;
 
 	GP_closeSerialPort(); // close serial port if open
+	GP.boardie.files = {}; // reset file cache
 
 	req.open('GET', 'boardie/boardie.html');
 	req.onreadystatechange = function () {
@@ -756,11 +774,14 @@ function GP_openBoardie() {
 			}
 			boardie.element.style.cursor = 'grab';
 
+			var isStandAlone = window.matchMedia('(display-mode: standalone)').matches;
 			boardie.iframe = boardie.element.querySelector('iframe');
-			if (window.location.hostname == 'microblocks.fun') {
+			if ((window.location.hostname == 'microblocks.fun') && !isStandAlone) {
 				// Run Boardie from a separate domain to ensure it runs as an OOPIF
 				boardie.iframe.src = 'https://boardie.microblocks.fun/vm.html';
 			} else {
+				// Load from source domain when not running from microblocks.fun
+				// (e.g. when running as a stand-alone progressive web app).
 				// Not the end of the world, but the UI will interfere with
 				// time-sensitive threads, such as when making music
 				boardie.iframe.src = 'boardie/vm.html';

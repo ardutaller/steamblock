@@ -1,6 +1,6 @@
-module NeoPixel 'Output'
+module NeoPixel Output
 author MicroBlocks
-version 1 10 
+version 1 11 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
 variables _np_pixels 
@@ -11,6 +11,7 @@ variables _np_pixels
   spec ' ' 'neoPixelSetAllToColor' 'set all NeoPixels color _' 'color'
   spec ' ' 'setNeoPixelColor' 'set NeoPixel _ color _' 'num color' 1
   space
+  spec 'r' 'neoPixel_colorSwatch' '_' 'color'
   spec 'r' 'colorFromRGB' 'color r _ g _ b _ (0-255)' 'num num num' 0 100 100
   spec 'r' 'randomColor' 'random color'
   space
@@ -137,6 +138,10 @@ to neoPixelSetAllToColor color {
   '_NeoPixel_ensureInitialized'
   atPut 'all' _np_pixels color
   '_NeoPixel_update'
+}
+
+to neoPixel_colorSwatch color {
+  return color
 }
 
 to randomColor {

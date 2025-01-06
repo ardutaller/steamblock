@@ -39,6 +39,9 @@
 	// Note: SDA and SCL are reversed from most other ESP32 boards!
 	#define PIN_WIRE_SCL 21
 	#define PIN_WIRE_SDA 22
+#elif defined(COCUBE)
+	#define PIN_WIRE_SCL 22
+	#define PIN_WIRE_SDA 21
 #elif !defined(PIN_WIRE_SCL)
 	#if defined(PIN_WIRE0_SCL)
 		#define PIN_WIRE_SCL PIN_WIRE0_SCL
@@ -740,7 +743,7 @@ static int readAcceleration(int registerID) {
 	Wire1.requestFrom(LIS3DH_ID, 2);
 	signed char highBits = Wire1.available() ? Wire1.read() : 0;
 	signed char lowBits = Wire1.available() ? Wire1.read() : 0;
-	int val =  (highBits << 2) | ((lowBits >> 6) & 3);
+	int val = (highBits << 2) | ((lowBits >> 6) & 3);
 	val = (200 * val) >> 9;
 	if (1 == registerID) val = -val; // invert sign for x axis
 	return val;
@@ -773,7 +776,7 @@ static int readTemperature() {
 		} else { // negative offset
 			degreesC = (hiByte - 256) + ((lowByte >= 128) ? -1 : 0); // round down
 		}
-		return  20 + degreesC; // adjusted temperature
+		return 20 + degreesC; // adjusted temperature
 	#else
 		setPinMode(A9, INPUT);
 		adc = analogRead(A9);
@@ -1039,7 +1042,7 @@ static int readTemperature() {
 		} else { // negative offset
 			offsetDegreesC = (hiByte - 256) + ((lowByte >= 128) ? -1 : 0); // round down
 		}
-		val =  20 + offsetDegreesC;
+		val = 20 + offsetDegreesC;
 		break;
 	case accel_MXC6655:
 		val = readI2CReg(MXC6655_ID, 0x09);
@@ -1243,7 +1246,7 @@ static void startAccelerometer() {
 		writeI2CReg(MPU9250, MPU9250_PWR_MGMT_1, 0);
 		writeI2CReg(MPU9250, MPU9250_PWR_MGMT_1, 1);
 		writeI2CReg(MPU9250, MPU9250_BYPASS_EN, 2); // allows i2c access to magnetometer
-		databotAK8963MageneticField();  // initialize magnetometer
+		databotAK8963MageneticField(); // initialize magnetometer
 		delay(20); // allow time for accelerometer startup
 	}
 	accelStarted = true;
@@ -1357,7 +1360,7 @@ static int databotAK09916MageneticField() {
 
 	if (!databotMagStarted) {
 		setRegisterBank(0);
-		writeI2CReg(ICM20948, 3, 32);  // set up I2C communications with magnetometer
+		writeI2CReg(ICM20948, 3, 32); // set up I2C communications with magnetometer
 		setRegisterBank(3);
 		writeI2CReg(ICM20948, 1, 7); // set I2C clock rate
 		writeAK09916Register(0x32, 1); // reset magnetometer
@@ -1867,7 +1870,7 @@ static int readDigitalMicrophone() {
 #include "Adafruit_ZeroPDM.h"
 
 #define SAMPLERATE_HZ 22000
-#define DECIMATION    64
+#define DECIMATION	64
 
 static Adafruit_ZeroPDM pdm = Adafruit_ZeroPDM(34, 35);
 
@@ -1901,7 +1904,7 @@ static int readDigitalMicrophone() {
 			// start at the LSB which is the 'first' bit to come down the line, chronologically
 			// (Note we had to set I2S_SERCTRL_BITREV to get this to work, but saves us time!)
 			if (sample & 0x1) {
-				runningsum += *sinc_ptr;     // do the convolution
+				runningsum += *sinc_ptr; // do the convolution
 			}
 			sinc_ptr++;
 			sample >>= 1;
@@ -1991,12 +1994,12 @@ int readAnalogMicrophone() {
 		NRF_SAADC->CH[i].PSELN = SAADC_CH_PSELP_PSELP_NC;
 		NRF_SAADC->CH[i].PSELP = SAADC_CH_PSELP_PSELP_NC;
 	}
-	NRF_SAADC->CH[0].CONFIG = ((SAADC_CH_CONFIG_RESP_Bypass     << SAADC_CH_CONFIG_RESP_Pos)   & SAADC_CH_CONFIG_RESP_Msk)
-							| ((SAADC_CH_CONFIG_RESP_Bypass     << SAADC_CH_CONFIG_RESN_Pos)   & SAADC_CH_CONFIG_RESN_Msk)
-							| ((gain                            << SAADC_CH_CONFIG_GAIN_Pos)   & SAADC_CH_CONFIG_GAIN_Msk)
-							| ((SAADC_CH_CONFIG_REFSEL_Internal << SAADC_CH_CONFIG_REFSEL_Pos) & SAADC_CH_CONFIG_REFSEL_Msk)
-							| ((SAADC_CH_CONFIG_TACQ_3us        << SAADC_CH_CONFIG_TACQ_Pos)   & SAADC_CH_CONFIG_TACQ_Msk)
-							| ((SAADC_CH_CONFIG_MODE_SE         << SAADC_CH_CONFIG_MODE_Pos)   & SAADC_CH_CONFIG_MODE_Msk);
+	NRF_SAADC->CH[0].CONFIG = ((SAADC_CH_CONFIG_RESP_Bypass		<< SAADC_CH_CONFIG_RESP_Pos)	& SAADC_CH_CONFIG_RESP_Msk)
+							| ((SAADC_CH_CONFIG_RESP_Bypass		<< SAADC_CH_CONFIG_RESN_Pos)	& SAADC_CH_CONFIG_RESN_Msk)
+							| ((gain							<< SAADC_CH_CONFIG_GAIN_Pos)	& SAADC_CH_CONFIG_GAIN_Msk)
+							| ((SAADC_CH_CONFIG_REFSEL_Internal << SAADC_CH_CONFIG_REFSEL_Pos)	& SAADC_CH_CONFIG_REFSEL_Msk)
+							| ((SAADC_CH_CONFIG_TACQ_3us		<< SAADC_CH_CONFIG_TACQ_Pos)	& SAADC_CH_CONFIG_TACQ_Msk)
+							| ((SAADC_CH_CONFIG_MODE_SE			<< SAADC_CH_CONFIG_MODE_Pos)	& SAADC_CH_CONFIG_MODE_Msk);
 
 	NRF_SAADC->CH[0].PSELN = micPin;
 	NRF_SAADC->CH[0].PSELP = micPin;
@@ -2087,6 +2090,59 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 	return int2obj(result);
 }
 
+// CoCube Position Sensor
+
+#if defined (COCUBE)
+	#include <CoCubeSensor.h>
+	CoCubeSensor cocube;
+
+	void cocubeSensorInit() {
+		cocube.Init();
+	}
+
+	void cocubeSensorUpdate() {
+		cocube.Update();
+		cocube.EncoderUpdate();
+	}
+
+	static OBJ primPositionX(int argCount, OBJ *args) {
+		int result = cocube.GetX();
+		return int2obj(result);
+	}
+
+	static OBJ primPositionY(int argCount, OBJ *args) {
+			int result = cocube.GetY();
+			return int2obj(result);
+		}
+
+	static OBJ primPositionYaw(int argCount, OBJ *args) {
+			int result = cocube.GetAngle();
+			return int2obj(result);
+	}
+
+	static OBJ primIndex(int argCount, OBJ *args) {
+			int result = cocube.GetIndex();
+			return int2obj(result);
+	}
+
+	static OBJ primCubeStatus(int argCount, OBJ *args) {
+		if (cocube.GetState())
+			return trueObj;
+		else
+			return falseObj;
+	}
+
+	static OBJ primPositionSpeedLeft(int argCount, OBJ *args) {
+			int result = cocube.GetSpeedLeft();
+			return int2obj(result);
+	}
+
+	static OBJ primPositionSpeedRight(int argCount, OBJ *args) {
+			int result = cocube.GetSpeedRight();
+			return int2obj(result);
+	}
+#endif
+
 // Signal Capture
 
 #define MAX_PULSE_TIMES 128
@@ -2164,6 +2220,16 @@ static PrimEntry entries[] = {
 	{"captureStart", captureStartPrim},
 	{"captureCount", primCaptureCount},
 	{"captureEnd", primCaptureEnd},
+
+	#if defined(COCUBE)
+	{"position_x", primPositionX},
+	{"position_y", primPositionY},
+	{"position_yaw", primPositionYaw},
+	{"cube_index", primIndex},
+	{"cube_status", primCubeStatus},
+	{"speed_left", primPositionSpeedLeft},
+	{"speed_right", primPositionSpeedRight},
+	#endif
 };
 
 void addSensorPrims() {

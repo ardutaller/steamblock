@@ -257,7 +257,7 @@ msgstr "νέος byte πίνακας _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send string _"
-msgstr "ράδιο στείλε σειρά χαρακτήρων"
+msgstr "ράδιο στείλε σειρά χαρακτήρων _"
 
 #. Block in Data category
 msgid "copy _ from _"
@@ -1558,7 +1558,7 @@ msgstr "απάντηση _ σε HTTP αίτηση"
 
 #. HTTP Server library block
 msgid "body of request _"
-msgstr "σώμα της αίτησης"
+msgstr "σώμα της αίτησης _"
 
 #. HTTP Server library block
 msgid "method of request _"

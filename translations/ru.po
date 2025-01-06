@@ -37,7 +37,7 @@ msgstr "строка"
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr "юникод _ из"
+msgstr "юникод _ из _"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
@@ -340,7 +340,7 @@ msgstr "Данные"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr "как массив байт"
+msgstr "как массив байт _"
 
 #. Block in Comm category
 msgid "print _"
@@ -1223,7 +1223,7 @@ msgstr "сказать _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr "график"
+msgstr "график _"
 
 #. "Control" blocks category label
 msgid "cat;Control"

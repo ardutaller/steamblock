@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2024-12-25 10:00+0000\n"
+"PO-Revision-Date: 2025-01-04 19:44+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -326,7 +326,7 @@ msgstr "Text oder Zahl"
 
 #. MicroBlocks IDE information
 msgid "Drag the firmware file you just saved to the %1 drive."
-msgstr "Ziehe die gerade gespeicherte Firmware-Datei auf das Laufwerk %1."
+msgstr "Kopiere die eben gespeicherte Firmware-Datei auf das Laufwerk %1."
 
 #. Block right-click context menu
 msgid "collapse"
@@ -897,7 +897,7 @@ msgstr "Circuit Playground setze Lautsprecher _"
 
 #. TFT Display library block
 msgid "filled _"
-msgstr "ausgefüllt _"
+msgstr "gefüllt _"
 
 #. MIDI library block
 msgid "set MIDI note _ to _ on channel _ volume _"
@@ -1114,7 +1114,7 @@ msgstr "_ ohne Leerzeichen"
 
 #. Example string. Tells the user this input accepts a list or a string
 msgid "aListOrString"
-msgstr "Liste_oder_Text"
+msgstr "Liste oder Text"
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
@@ -1487,6 +1487,7 @@ msgid "scroll number _"
 msgstr "scrolle Zahl _"
 
 #. Example WiFi network password
+#, fuzzy
 msgid "Network_Password"
 msgstr "12345678"
 
@@ -1649,7 +1650,7 @@ msgstr "Plotter drehe _ Grad"
 
 #. Example string. Tells the user this input accepts a string
 msgid "aString"
-msgstr "einText"
+msgstr "ein Text"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 pressure"
@@ -1721,6 +1722,7 @@ msgid "pre"
 msgstr "pre"
 
 #. Example WiFi network name
+#, fuzzy
 msgid "Network_Name"
 msgstr "Netzwerk"
 
@@ -1851,7 +1853,7 @@ msgstr "normal (65%)"
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr "Nutzerdefiniert..."
+msgstr "Eigene Sprachdatei..."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
@@ -2379,7 +2381,7 @@ msgstr "Projekt wird vom Board gelesen..."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Drücke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
+msgstr "Klicke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
@@ -2455,13 +2457,14 @@ msgstr "Firmware installiert"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
-msgstr "Klicke auf \"Verbinden\", um dein MicroBlocks-Gerät neu zu verbinden."
+msgstr ""
+"Klicke auf \"Verbinden\", um dein Board neu mit MicroBlocks zu verbinden."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
 msgstr ""
-"Halte beim Anschließen des USB-Kabels die weiße Taste BOOTSEL gedrückt, "
-"bevor du weiter machst."
+"Halte die weiße Taste BOOTSEL gedrückt, während du das USB-Kabel verbindest, "
+"und mache dann weiter."
 
 #. MicroBlocks IDE information
 msgid "You will be asked to save the firmware file."
@@ -2710,13 +2713,14 @@ msgstr "Eingabe"
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to see value, or drop into an input slot. [r] menu."
-msgstr "[l] zur Werteanzeige oder zum Ziehen in einen Eingabebereich. [r] Menü."
+msgstr ""
+"[l] Wert anzeigen. Block in ein Eingabefeld im Skript schieben. [r] Menü."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
 msgstr ""
-"Ziehe Blöcke von hier in den Skriptbereich. Bewege Blöcke und Skripte "
-"hierher, um sie zu löschen."
+"Blöcke nach rechts in den Skriptbereich schieben. Blöcke und Skripte zum "
+"Löschen hierher schieben."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Do nothing. Used to add notes and documentation."
@@ -2815,7 +2819,7 @@ msgstr "warte _ Mikrosekunden"
 
 #. Block in Control category
 msgid "return _"
-msgstr "berichte _"
+msgstr "Rückgabe _"
 
 #. Block in Control category
 msgid "for _ in _ _"
@@ -2927,7 +2931,7 @@ msgstr "zeichne abgerundetes Rechteck auf TFT bei x _ y _ Breite _ Höhe _ Radiu
 
 #. TFT Display library block
 msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
-msgstr "zeichne Dreieck auf TFT bei x _ y_ , x _ y, x _ y _ Farbe _"
+msgstr "zeichne Dreieck auf TFT bei x _ y _ , x _ y _ , x _ y _ Farbe _"
 
 #. Color library block
 msgid "color r _ g _ b _ (0-255)"
@@ -2963,7 +2967,7 @@ msgstr "_ beginnt mit _"
 
 #. Strings library block
 msgid "unicodes _"
-msgstr "Unicode von _"
+msgstr "Unicodes _"
 
 #. Strings library block
 msgid "str2num _"
@@ -3206,7 +3210,9 @@ msgstr "[l] Wert ändern oder einen Rückgabeblock hineinziehen."
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to run, or drag to build scripts. [r] menu."
-msgstr "[l] zum Starten oder Ziehen zum Bauen eines Skipts. [r] Menü."
+msgstr ""
+"[l] zum Starten. Block zum Bauen eines Skripts nach rechts schieben. [r] "
+"Menü."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3882,7 +3888,7 @@ msgstr "Blockkategorie"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "Drag blocks here to build scripts. [r] menu."
-msgstr "Ziehe Blöcke hierher, um Skripte zu bauen. [r] Menü."
+msgstr "Blöcke hierher schieben, um Skripte zu bauen. [r] Menü."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Graph the value."
@@ -4034,7 +4040,7 @@ msgstr "links"
 
 #. Settings menu tooltip
 msgid "make the IDE darker"
-msgstr "stelle MicroBlocks IDE dunkler ein"
+msgstr "wähle einen dunklen Hintergrund für MicroBlocks"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "right" on your axis
@@ -4186,7 +4192,7 @@ msgstr "die meisten"
 
 #. TFT Display library block
 msgid "draw vector x _ y _ angle _ length _ color _"
-msgstr "zeichne Vektor auf TFT von x _ y_ Winkel _ Länge _ Farbe _"
+msgstr "zeichne Vektor auf TFT von x _ y _ Winkel _ Länge _ Farbe _"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to speed _ (-100 to 100)"
@@ -4215,11 +4221,11 @@ msgstr "setze Video _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "initialisiere i2c _ Adresse(hex) _ reset pin# _ flip _"
+msgstr "initialisiere i2c _ Adresse(hex) _ Reset-Pin _ flip _"
 
 #. General MIDI control change
 msgid "hold"
-msgstr "halten"
+msgstr "Halten"
 
 #. OLED Graphics library block
 msgid "draw line from x _ y _ to x _ y _ erase _"
@@ -4313,7 +4319,7 @@ msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "initialisiere spi _ d/c pin# _ reset pin# _ flip _"
+msgstr "initialisiere spi _ D/C-Pin _ Reset-Pin _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -4359,7 +4365,7 @@ msgstr "AltGr"
 
 #. TFT Display library block
 msgid "draw text _ on TFT at x _ y _ color _"
-msgstr "zeichne Text _ auf TFT bei x _ y _ Farbe _"
+msgstr "schreibe Text _ auf TFT bei x _ y _ Farbe _"
 
 #. TFT Display library block
 msgid "draw bitmap _ palette _ on TFT at x _ y _"
@@ -4584,7 +4590,7 @@ msgstr "Erweiterter Modus"
 
 #. Settings menu tooltip
 msgid "show advanced blocks, menu items and editor functionalities"
-msgstr "zeige erweiterte Blöcke, Menüpunkte und Editorfunktionen an"
+msgstr "zeige erweiterte Blöcke, Menüpunkte und Editorfunktionen"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the given start milliseconds. Handles clock wrap."
@@ -4604,7 +4610,7 @@ msgstr "verlasse Schleife"
 
 #. WiFi library block
 msgid "allow WiFi while using BLE _"
-msgstr "erlaube WiFi während BLE _ verwendet wird"
+msgstr "erlaube WiFi während BLE verwendet wird _"
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
@@ -4862,7 +4868,7 @@ msgstr ""
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong starte kontinuierlichen Servo _ mit Geschwindigkeit _ (-100~100)"
+msgstr "Wukong starte Rotationsservo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
@@ -4930,7 +4936,7 @@ msgstr "Nezha setze _ Servo _ auf Winkel _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "Nezha starte kontinuierlichen Servo _ mit Geschwindigkeit _ %"
+msgstr "Nezha starte Rotationsservo _ mit Geschwindigkeit _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
@@ -5526,7 +5532,7 @@ msgstr "sb drehe 180° servo _ (1~8) auf Winkel _ °"
 
 #. Shield:bit library block
 msgid "sb turn 360 servo S- _ (1-8) _ at _ %"
-msgstr "sb drehe kontinuierlichen Servo _ (1~8) _ mit _ %"
+msgstr "sb drehe Rotationsservo _ (1~8) _ mit _ %"
 
 #. Shield:bit library block
 msgid "sb turn DC M- _ (1-4) motor _ at _ %"
@@ -5796,7 +5802,7 @@ msgstr "Nezha stoppe alle Motoren"
 
 #. NeZha2 robot library block
 msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
-msgstr "Nezha starte kontinuierlichen Servo _ mit Geschwindigkeit _ (-100~100)"
+msgstr "Nezha starte Rotationsservo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
@@ -5841,3 +5847,399 @@ msgstr "Nezha setze _ Servo _ auf Winkel _"
 #. NeZha2 robot library label
 msgid "Nezha2"
 msgstr "Nezha2"
+
+#. General MIDI drum instrument name
+msgid "Cowbell"
+msgstr "Cowbell"
+
+#. General MIDI drum set
+msgid "power"
+msgstr "power"
+
+#. General MIDI drum instrument name
+msgid "Long Guiro"
+msgstr "Long Guiro"
+
+#. General MIDI drum instrument name
+msgid "Maracas"
+msgstr "Maracas"
+
+#. General MIDI drum instrument name
+msgid "Hi Wood Block"
+msgstr "Hi Wood Block"
+
+#. General MIDI drum instrument name
+msgid "Tambourine"
+msgstr "Tambourine"
+
+#. General MIDI instrument category
+msgid "synth pad"
+msgstr "Synthesizer Patch"
+
+#. General MIDI drum instrument name
+msgid "Claves"
+msgstr "Claves"
+
+#. General MIDI drum instrument name
+msgid "Pedal Hi-Hat"
+msgstr "Pedal Hi-Hat"
+
+#. General MIDI drum instrument name
+msgid "High Floor Tom"
+msgstr "High Floor Tom"
+
+#. General MIDI drum instrument name
+msgid "Side Stick"
+msgstr "Side Stick"
+
+#. General MIDI drum instrument name
+msgid "Open Hi Conga"
+msgstr "Open Hi Conga"
+
+#. General MIDI drum instrument name
+msgid "Cabasa"
+msgstr "Cabasa"
+
+#. General MIDI drum instrument name
+msgid "High Tom"
+msgstr "High Tom"
+
+#. General MIDI drum instrument name
+msgid "Open Hi-Hat"
+msgstr "Open Hi-Hat"
+
+#. General MIDI instrument category
+msgid "percussive"
+msgstr "perkussiv"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 1"
+msgstr "Ride Cymbal 1"
+
+#. General MIDI drum instrument name
+msgid "Crash Cymbal 2"
+msgstr "Crash Cymbal 2"
+
+#. General MIDI drum instrument name
+msgid "Low Wood Block"
+msgstr "Low Wood Block"
+
+#. General MIDI drum instrument name
+msgid "Low Agogo"
+msgstr "Low Agogo"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 2"
+msgstr "Ride Cymbal 2"
+
+#. General MIDI drum set
+msgid "CM-64/CM-32L"
+msgstr "CM-64/CM-32L"
+
+#. General MIDI drum instrument name
+msgid "Bass Drum 1"
+msgstr "Bass Drum 1"
+
+#. General MIDI drum instrument name
+msgid "Chinese Cymbal"
+msgstr "Chinese Cymbal"
+
+#. General MIDI instrument category
+msgid "ethnic"
+msgstr "ethnisch"
+
+#. General MIDI drum instrument name
+msgid "Vibraslap"
+msgstr "Vibraslap"
+
+#. General MIDI drum instrument name
+msgid "Short Guiro"
+msgstr "Short Guiro"
+
+#. General MIDI drum instrument name
+msgid "Low Floor Tom"
+msgstr "Low Floor Tom"
+
+#. General MIDI drum instrument name
+msgid "Mute Cuica"
+msgstr "Mute Cuica"
+
+#. General MIDI control change
+msgid "bank select 2"
+msgstr "Bankauswahl 2"
+
+#. General MIDI drum set
+msgid "drumkit;SFX"
+msgstr "SFX"
+
+#. General MIDI drum instrument name
+msgid "Crash Cymbal 1"
+msgstr "Crash Cymbal 1"
+
+#. General MIDI drum instrument name
+msgid "Electric Snare"
+msgstr "Electric Snare"
+
+#. General MIDI drum instrument name
+msgid "Hi-Mid Tom"
+msgstr "Hi-Mid Tom"
+
+#. General MIDI drum instrument name
+msgid "Long Whistle"
+msgstr "Long Whistle"
+
+#. General MIDI drum instrument name
+msgid "Short Whistle"
+msgstr "Short Whistle"
+
+#. General MIDI drum instrument name
+msgid "Open Cuica"
+msgstr "Open Cuica"
+
+#. General MIDI control change
+msgid "bank select 1"
+msgstr "Bankauswahl 1"
+
+#. General MIDI instrument category
+msgid "synth SFX"
+msgstr "Synthesizer Soundeffekte"
+
+#. General MIDI drum instrument name
+msgid "Hand Clap"
+msgstr "Hand Clap"
+
+#. General MIDI drum instrument name
+msgid "High Timbale"
+msgstr "High Timbale"
+
+#. General MIDI instrument category
+msgid "pipe"
+msgstr "Flöte"
+
+#. General MIDI drum instrument name
+msgid "Low Timbale"
+msgstr "Low Timbale"
+
+#. General MIDI drum instrument name
+msgid "Low Conga"
+msgstr "Low Conga"
+
+#. General MIDI drum instrument name
+msgid "Closed Hi-Hat"
+msgstr "Closed Hi-Hat"
+
+#. General MIDI drum instrument name
+msgid "Low-Mid Tom"
+msgstr "Low-Mid Tom"
+
+#. General MIDI drum instrument name
+msgid "Ride Bell"
+msgstr "Ride Bell"
+
+#. General MIDI drum instrument name
+msgid "Splash Cymbal"
+msgstr "Splash Cymbal"
+
+#. General MIDI drum instrument name
+msgid "Hi Bongo"
+msgstr "Hi Bongo"
+
+#. General MIDI drum instrument name
+msgid "High Agogo"
+msgstr "High Agogo"
+
+#. General MIDI instrument category
+msgid "reed"
+msgstr "Zungenpfeife"
+
+#. General MIDI instrument category
+msgid "synth lead"
+msgstr "Synthesizer Lead"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Bass Drum"
+msgstr "Acoustic Bass Drum"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Snare"
+msgstr "Acoustic Snare"
+
+#. General MIDI drum instrument name
+msgid "Low Tom"
+msgstr "Low Tom"
+
+#. General MIDI drum instrument name
+msgid "Low Bongo"
+msgstr "Low Bongo"
+
+#. General MIDI drum instrument name
+msgid "Mute Hi Conga"
+msgstr "Mute Hi Conga"
+
+#. General MIDI control change
+msgid "decay time"
+msgstr "Abklingzeit"
+
+#. Scales & Chords library block
+msgid "chord progression _ with root _"
+msgstr "Akkordfolge _ mit Grundton _"
+
+#. Scales & Chords library block
+msgid "improvised arpeggio over _ for _ bars with durations _"
+msgstr "improvisiertes Arpeggio über _ für _ Takte mit Dauern _"
+
+#. Square Wave Chords library label
+msgid "Square Wave Chords"
+msgstr "Rechteckwellen-Akkorde"
+
+#. Scales & Chords library block
+msgid "_ chord root _"
+msgstr "_ Akkordgrundton _"
+
+#. Scales & Chords library block
+msgid "and _ steps per chord"
+msgstr "und _ Schritte pro Akkord"
+
+#. Scales & Chords library block
+msgid "arpeggiate _ in order _ duration _ and volume _ on _ _"
+msgstr "arpeggieren _ in Reihenfolge _ Dauer _ und Lautstärke _ auf _ _"
+
+#. Music chord type
+msgid "major 7th"
+msgstr "Major 7"
+
+#. General MIDI control change
+msgid "portamento"
+msgstr "Protamento"
+
+#. General MIDI control change
+msgid "portamento control"
+msgstr "Portamento Steuerung"
+
+#. General MIDI control change
+msgid "cutoff"
+msgstr "Abschaltung"
+
+#. Scales & Chords library block
+msgid "_ chord for root _"
+msgstr "_ Akkord für Grundton _"
+
+#. General MIDI control change
+msgid "vibrato rate"
+msgstr "Vibrato-Rate"
+
+#. Square Wave Chords library block
+msgid "set digital chord pins _ _ _"
+msgstr "setze digitale Akkord-Pins _ _ _"
+
+#. General MIDI control change
+msgid "pan"
+msgstr "Pan"
+
+#. Scales & Chords library block
+msgid "steps _"
+msgstr "Schritte _"
+
+#. Music chord type
+msgid "minor"
+msgstr "Minor"
+
+#. General MIDI control change
+msgid "portamento time"
+msgstr "Portamento-Zeit"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr "links"
+
+#. General MIDI control change
+msgid "vibrato depth"
+msgstr "Vibrato-Tiefe"
+
+#. Scales & Chords library block
+msgid "rotation _ of circle of 5ths _ M _ m _ º"
+msgstr "Drehung _ des Quintenzirkels _ M _ m _ º"
+
+#. Chiptune library block
+msgid "noise for _ ms pitch shifted by _ on pin _"
+msgstr "Rauschen für _ ms Tonhöhe verschoben um _ an Pin _"
+
+#. Scales & Chords library block
+msgid "pentatonic _ scale root _"
+msgstr "Pentatonisch _ Tonleiter-Grundton _"
+
+#. General MIDI control change
+msgid "attack time"
+msgstr "Angriffszeit"
+
+#. Music chord type
+msgid "minor 7th"
+msgstr "Minor 7"
+
+#. General MIDI control change
+msgid "sostenuto"
+msgstr "unterstützt"
+
+#. Chiptune library block
+msgid "fade noise for _ ms pitch shifted by _ on DAC pin _"
+msgstr "Ausblendrauschen für _ ms Tonhöhenverschiebung um _ an DAC-Pin _"
+
+#. General MIDI control change
+msgid "vibrato delay"
+msgstr "Vibrato-Verzögerung"
+
+#. Chiptune library block
+msgid "tom for _ ms pitch shifted by _ on pin _"
+msgstr "Tom für _ ms Tonhöhe verschoben um _ an Pin _"
+
+#. Chiptune library block
+msgid "laser for _ ms with frequency _ speed _ on pin _"
+msgstr "Laser für _ ms mit Frequenz _ Geschwindigkeit _ an Pin _"
+
+#. Square Wave Chords library block
+msgid "play chord _ for _ ms"
+msgstr "spiele Akkord _ für _ ms"
+
+#. Chiptune library block
+msgid "hihat for _ ms on DAC pin _"
+msgstr "Hi-Hat für _ ms an DAC-Pin _"
+
+#. Scales & Chords library block
+msgid "_ scale root _"
+msgstr "_ Tonleiter-Grundton _"
+
+#. Music chord type
+msgid "major"
+msgstr "Major"
+
+#. Music chord type
+msgid "diminished"
+msgstr "vermindert"
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "tone pin"
+msgstr "Sound-Pin"
+
+#. Scales & Chords library block
+msgid "_ transposed _ semitones"
+msgstr "_ transponierte _ Halbtöne"
+
+#. Chiptune library block
+msgid "kick for _ ms on pin _"
+msgstr "Kick für _ ms auf Pin _"
+
+#. Chiptune library block
+msgid "snare for _ ms on DAC pin _"
+msgstr "Snare für _ ms an DAC-Pin _"
+
+#. Music chord type
+msgid "Maj7"
+msgstr "Maj7"
+
+#. Scales & Chords library block
+msgid "improvise over _ for _ bars with durations _ on _ _ volume _"
+msgstr "improvisieren über _ für _ Takte mit Dauer _ auf _ _ Lautstärke _"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr "rechts"

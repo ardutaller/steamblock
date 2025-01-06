@@ -2785,7 +2785,7 @@ msgstr "eenLijst"
 
 #. Strings library block
 msgid "num2str _"
-msgstr "num2str"
+msgstr "num2str _"
 
 #. Strings library block
 msgid "str2num _"

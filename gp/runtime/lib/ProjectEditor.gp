@@ -57,7 +57,7 @@ to openProjectEditor tryRetina devMode {
 	if ('Browser' == (platform)) {
 		if ('go.html' == (extractCommand (browserURL))) { goFlag = true }
 		hide (morph (first (getField editor 'rightItems'))) // hide the 'Present' button in browser
-		browserPostMessage (join projName ' loaded') true
+		browserPostMessage (array (join projName ' loaded')) true
 	}
 	pageResized editor
 	developerModeChanged editor
@@ -499,12 +499,12 @@ method processBrowserMessages ProjectEditor {
 			stopAll (global 'page')
 		} ('seeInside' == msg) {
 			exitPresentation this
-			browserPostMessage 'hideButton SeeInsideButton'
-			browserPostMessage 'showButton PresentButton'
+			browserPostMessage (array 'hideButton' 'SeeInsideButton')
+			browserPostMessage (array 'showButton' 'PresentButton')
 		} ('present' == msg) {
 			enterPresentation this
-			browserPostMessage 'showButton SeeInsideButton'
-			browserPostMessage 'hideButton PresentButton'
+			browserPostMessage (array 'showButton' 'SeeInsideButton')
+			browserPostMessage (array 'hideButton' 'PresentButton')
 		}
 	}
 }

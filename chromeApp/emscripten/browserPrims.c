@@ -361,16 +361,21 @@ OBJ primBrowserGetMessage(int nargs, OBJ args[]) {
 
 OBJ primBrowserPostMessage(int nargs, OBJ args[]) {
 	if (nargs < 1) return notEnoughArgsFailure();
-	if (NOT_CLASS(args[0], StringClass)) return primFailed("Argument must be a string");
+	OBJ message = args[0];
 	int postToParent = ((nargs > 1) && (trueObj == args[1]));
 
-	EM_ASM_({
-		if ($1) {
-			window.parent.postMessage(UTF8ToString($0), "*");
-		} else {
-			window.postMessage(UTF8ToString($0), "*");
-		}
-	}, obj2str(args[0]), postToParent);
+	EM_ASM_(
+		{
+			if ($2) {
+				window.parent.postMessage([UTF8ToString($0), UTF8ToString($1)], "*");
+			} else {
+				window.postMessage([UTF8ToString($0), UTF8ToString($1)], "*");
+			}
+		},
+		obj2str(FIELD(message, 0)),
+		objWords(message) == 2 ? obj2str(FIELD(message, 1)) : false,
+		postToParent
+	);
 	return nilObj;
 }
 
@@ -540,7 +545,13 @@ static OBJ primBoardiePutFile(int nargs, OBJ args[]) {
 			for (var i = 0; i < data.length; i++) {
 				dataString += String.fromCharCode(data[i]);
 			}
-			window.localStorage[fileName] = dataString;
+			// cache a local copy
+			GP.boardie.files[fileName] = dataString;
+			// and send the file to Boardie
+			GP.boardie.iframe.contentWindow.postMessage(
+				[ 'putFile', fileName, dataString ],
+				'*'
+			);
 		},
 		obj2str(args[0]), // filename
 		&FIELD(args[1], 0), // file data
@@ -551,7 +562,7 @@ static OBJ primBoardiePutFile(int nargs, OBJ args[]) {
 static OBJ primBoardieGetFile(int nargs, OBJ args[]) {
 	int fileSize =
 		EM_ASM_INT(
-			{ return window.localStorage[UTF8ToString($0)].length },
+			{ return GP.boardie.files[UTF8ToString($0)].length },
 			obj2str(args[0])
 		);
 	OBJ result = newBinaryData(fileSize);
@@ -560,7 +571,7 @@ static OBJ primBoardieGetFile(int nargs, OBJ args[]) {
 		{
 			var fileName = UTF8ToString($1);
 			if (fileName === 'user-prefs') return;
-			var file = window.localStorage[fileName];
+			var file = GP.boardie.files[fileName];
 			for (var i = 0; i < file.length; i++) {
 				setValue($0++, file.charCodeAt(i), 'i8');
 			}
@@ -574,21 +585,21 @@ static OBJ primBoardieGetFile(int nargs, OBJ args[]) {
 static OBJ primBoardieListFiles(int nargs, OBJ args[]) {
 	int fileCount =
 			EM_ASM_INT({
-				return Object.keys(window.localStorage).filter(
+				return Object.keys(GP.boardie.files).filter(
 					fn => fn !== 'user-prefs').length;
 			});
 	OBJ fileList = newObj(ArrayClass, fileCount, nilObj);
 
 	for (int i = 0; i < fileCount; i++) {
 		int length = EM_ASM_INT(
-			{ return Object.keys(window.localStorage).filter(
+			{ return Object.keys(GP.boardie.files).filter(
 					fn => fn !== 'user-prefs')[$0].length; },
 			i
 		);
 		OBJ fileName = allocateString(length);
 		EM_ASM_(
 			{
-				var fileName = Object.keys(window.localStorage).filter(
+				var fileName = Object.keys(GP.boardie.files).filter(
 					fn => fn !== 'user-prefs')[$0];
 				stringToUTF8(fileName, $1, fileName.length + 1);
 			},

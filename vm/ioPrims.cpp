@@ -146,6 +146,11 @@ void hardwareInit() {
 	#if defined(ARDUINO_Mbits) || defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(STEAMaker)
 		mbDisplayColor = (190 << 16); // red (not full brightness)
 	#endif
+	#if defined(COCUBE)
+		#include "soc/rtc_cntl_reg.h" // for brownout control
+		WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // disable brownout detector
+		cocubeSensorInit();
+	#endif
 }
 
 // General Purpose I/O Pins
@@ -647,6 +652,27 @@ void hardwareInit() {
 		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 
+#elif defined(COCUBE)
+	#define BOARD_TYPE "COCUBE"
+	#define DIGITAL_PINS 40
+	#define ANALOG_PINS 16
+	#define TOTAL_PINS 40
+	static const int analogPin[] = {};
+	#define DEFAULT_TONE_PIN 4
+	#define PIN_LED -1
+	#define DEFAULT_BATTERY_PIN 34
+	#define DEFAULT_L1_PIN 9
+	#define DEFAULT_L2_PIN 10
+	#define DEFAULT_R1_PIN 26
+	#define DEFAULT_R2_PIN 25
+	#define PIN_BUTTON_A 38
+	#define PIN_BUTTON_B 37
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 1, 0, 1, 0, 1, 1, 1, 1, 0,
+		0, 1, 1, 0, 0, 1, 1, 1, 0, 0,
+		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+		1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+
 #elif defined(ARDUINO_ESP32_PICO)
 	#define BOARD_TYPE "ESP32-Pico-D4"
 	#define DIGITAL_PINS 40
@@ -1060,9 +1086,19 @@ static void initPins(void) {
 		pinMode(15, INPUT_PULLUP); // OK
 		pinMode(27, INPUT_PULLUP); // →
 	#endif
+
+	#ifdef COCUBE
+		pinMode(DEFAULT_BATTERY_PIN, INPUT); // BATTERY PIN
+		pinMode(DEFAULT_L1_PIN, OUTPUT); // L1 PIN
+		pinMode(DEFAULT_L2_PIN, OUTPUT); // L2 PIN
+		pinMode(DEFAULT_R1_PIN, OUTPUT); // L3 PIN
+		pinMode(DEFAULT_R2_PIN, OUTPUT); // L4 PIN
+		pinMode(PIN_BUTTON_A, INPUT_PULLUP); // BUTTON A
+		pinMode(PIN_BUTTON_B, INPUT_PULLUP); // BUTTON B
+	#endif
 }
 
-#if !defined(ARDUINO_SAM_DUE) && !defined(ESP8266)
+#if !defined(ARDUINO_SAM_DUE) && !defined(ESP8266) && !defined(PICO_RP2350)
 	#define HAS_INPUT_PULLDOWN true
 #endif
 
@@ -1293,7 +1329,7 @@ void primAnalogWrite(OBJ *args) {
 	#endif
 
 	#if defined(ESP32)
-	  #if !defined(ESP32_S3) && !defined(ESP32_C3)
+	  #if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(COCUBE)
 		if ((25 == pinNum) || (26 == pinNum)) { // ESP32 and ESP32-S2 DAC pins
 			dacWrite(pinNum, (value >> 2)); // convert 10-bit to 8-bit value for ESP32 DAC
 			return;
@@ -1454,7 +1490,7 @@ void primSetUserLED(OBJ *args) {
 			primMBUnplot(2, coords);
 		}
 	#elif defined(ARDUINO_CITILAB_ED1) || defined(ARDUINO_M5Stack_Core_ESP32) || \
-		defined(ARDUINO_M5STACK_Core2) || defined(TTGO_DISPLAY)
+		defined(ARDUINO_M5STACK_Core2) || defined(TTGO_DISPLAY)|| defined(COCUBE)
 			tftSetHugePixel(3, 1, (trueObj == args[0]));
 	#else
 		if (PIN_LED < 0) return; // board does not have a user LED

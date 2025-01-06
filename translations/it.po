@@ -1,250 +1,273 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2024-11-25 21:06+0000\n"
-"Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
-">\n"
-"Language: cs\n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
+"POT-Creation-Date: 2025-01-01 18:45+0200\n"
+"PO-Revision-Date: 2025-01-04 13:22+0000\n"
+"Last-Translator: Michele Zaffalon <michele.zaffalon@gmail.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/microblocks/ide/"
+"it/>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.9-dev\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr "Výstup	"
+msgstr "Risultato"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr "nastav uživatelskou LED _"
+msgstr "Accendi LED utente _"
 
 #. Block in Output category
 msgid "say _"
-msgstr "ukaž _"
+msgstr "dici _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr "Graf _"
+msgstr "grafico _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr "Vstup"
+msgstr "Ingresso"
 
 #. Block in Input category
 msgid "button A"
-msgstr "tlačítko A"
+msgstr "Tasto A"
 
 #. Block in Input category
 msgid "button B"
-msgstr "tlačítko B"
+msgstr "Tasto B"
 
 #. Block in Input category
 msgid "timer"
-msgstr "časovač"
+msgstr "cronometro"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr "vynulovat časovač"
+msgstr "azzera il timer"
+
+#. Block in Input category
+msgid "seconds"
+msgstr "secondi"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr "mikrosekundy"
+msgstr "microsecondi"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr "milisekundy"
+msgstr "millisecondi"
 
 #. Block in Input category
 msgid "board type"
-msgstr "Typ desky"
+msgstr "tipo di scheda"
+
+#. Block in Input category
+msgid "version"
+msgstr "versione"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr "počet milisekund od _"
+msgstr "millisecondi a partire da _"
 
 #. Block in Input category
 msgid "end time _"
-msgstr "do _"
+msgstr "tempo finale _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr "počet mikrosekund od _"
+msgstr "microsecondi a partire da _"
 
 #. Block in Input category
+msgid "BLE id"
+msgstr "numero di identificazione BLE"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "BLE connesso"
+
+#. Block in Input category
+#, fuzzy
 msgid "connected to IDE"
-msgstr "připojeno k IDE"
+msgstr "connesso all'IDE"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr "Piny"
+msgstr "pins"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr "přečtená logická hodnota z pinu _"
+msgstr "leggi pin digitale _"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr "přečtená analogová hodnota z pinu _"
+msgstr "leggi pin analogico _"
 
 #. Block in Pins category
+#, fuzzy
 msgid "pullup _"
 msgstr "pullup _"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr "zapiš do pinu _ logickou hodnotu _"
+msgstr "set pin digitale _ a _"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr "zapiš do pinu _ číslo _"
+msgstr "set pin _ a _"
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr "analogové piny"
+msgstr "pin analogici"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr "digitalní piny"
+msgstr "pin digitali"
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr "Řízení"
+msgstr "Controllo"
 
 #. Block in Control category
+#, fuzzy
 msgid "when started"
-msgstr "při startu"
+msgstr "quando partito"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr "při stisku tlačítka _"
+msgstr "quando tasto _ è premuto"
 
 #. Block in Control category
 msgid "forever _"
-msgstr "opakuj stále _"
+msgstr "all'infinito _"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr "opakuj _ _ krát"
+msgstr "ripeti _ _"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr "čekej _ milisekund"
+msgstr "attendi _ millisecondi"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr "když _ _"
+msgstr "se _ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr "když _ _ jinak _"
+msgstr "se _ _ altrimenti _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr "jinak když _ _"
+msgstr "altrimenti se _ _"
 
 #. Block in Control category
 msgid "else"
-msgstr "jinak"
+msgstr "altrimenti"
 
 #. Block in Control category
 msgid "when _"
-msgstr "dokud _"
+msgstr "quando _"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr "čekej dokud _"
+msgstr "attendi fino a _"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr "čekej _ mikrosekund"
+msgstr "attendi _ microsecondi"
 
 #. Block in Control category
 msgid "return _"
-msgstr "vrať _"
+msgstr "ritorna _"
 
 #. Block in Control category
 msgid "when _ received"
-msgstr "když _ přijato"
+msgstr "quando _ ricevuto"
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr "jdi!"
+msgstr "vai!"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr "rozešli _"
+msgstr "trasmetti _"
 
 #. Block in Control category
 msgid "comment _"
-msgstr "kommentář _"
+msgstr "commento _"
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr "Jak toto funguje..."
+msgstr "Come funziona..."
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr "rozsah od _ do _"
+msgstr "intervallo da _ a _"
 
 #. Block in Control category
 msgid "by _"
-msgstr "přírustek _"
+msgstr ""
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr "pro _ z _ _"
+msgstr "per ogni _ in _ _"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr "opakuj dokud _ _"
+msgstr "ripeti fino a _ _"
 
 #. Block in Control category
 msgid "stop this task"
-msgstr "zastav tuto úlohu"
+msgstr "arresta questo compito"
 
 #. Block in Control category
 msgid "stop other tasks"
-msgstr "zastav ostatní úlohy"
+msgstr "arresta altri compiti"
 
 #. Block in Control category
 msgid "stop all"
-msgstr "zastav vše"
+msgstr "arresta tutto"
 
 #. Block in Control category
 msgid "last message"
-msgstr "poslední zpráva"
+msgstr "ultimo messaggio"
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr "parametr _ default _"
+msgstr "argomento _ default _"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr ""
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr "default"
+msgstr "predefinito"
 
 #. Block in Control category
 msgid "call _"
-msgstr "zavolej _"
+msgstr "invoca _"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr "jméno funkce"
+msgstr "nome funzione"
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr "seznam parametrů"
+msgstr "lista dei parametri"
 
 #. Block in Control category
 msgid "with _"
-msgstr "s _"
+msgstr "con _"
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr "Operátory"
+msgstr "Operatori"
 
 #. Block in Operators category
 msgid "_ mod _"
@@ -252,116 +275,116 @@ msgstr "_ modulo _"
 
 #. Block in Operators category
 msgid "abs _"
-msgstr "abs _"
+msgstr "valore assoluto _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr "min _ _"
+msgstr "minimo _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr "max _ _"
+msgstr "massimo _"
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr "náhodné číslo od _ do _"
+msgstr ""
 
 #. Block in Operators category
 msgid "not _"
-msgstr "ne _"
+msgstr "nega _"
 
 #. Block in Operators category
 msgid "_ and _"
-msgstr "_ a _"
+msgstr "_ e _"
 
 #. Block in Operators category
 msgid "and _"
-msgstr "a _"
+msgstr "e _"
 
 #. Block in Operators category
 msgid "_ or _"
-msgstr "_ nebo _"
+msgstr "_ o _"
 
 #. Block in Operators category
 msgid "or _"
-msgstr "nebo _"
+msgstr "o _"
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr "_ ist ein(e) _"
+msgstr "_ é un _"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr "převést _ do _"
+msgstr "converti _ a _"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr "když _ pak _ jinak _"
+msgstr "se _ allora _ altrimenti _"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "boolean"
-msgstr "logika"
+msgstr "booleano"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
-msgstr "číslo"
+msgstr "numero"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr "text"
+msgstr "stringa"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 #. Also label of ( list < > ) block in Data category
 msgid "list"
-msgstr "seznam"
+msgstr "lista"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
-msgstr "pole bajtů"
+msgstr "arraz di byte"
 
 #. "Advanced" label for advanced blocks in the palette
 msgid "cat;Advanced:"
-msgstr "Rozšířené bloky:"
+msgstr "Avanzato:"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr "mapuj _ z rozsahu ( _ , _ ) do ( _ , _ )"
+msgstr "rescala _ da ( _ , _ ) a ( _ , _ )"
 
 #. Block in Operators category
 msgid "hex _"
-msgstr "hex _"
+msgstr "esadecimale _"
 
 #. Block in Operators category
 msgid "sqrt _"
-msgstr "sqrt _"
+msgstr "radice _"
 
 #. "Variables" blocks category label
 msgid "cat;Variables"
-msgstr "Proměnné"
+msgstr "Variabili"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr "Přidej proměnnou"
+msgstr "Aggiungi una variabile"
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr "Smaž proměnnou"
+msgstr "Cancella una variabile"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr "JMéno nové proměnné?"
+msgstr "Nome della nuova variabile?"
 
 #. Block in Variables category
 msgid "set _ to _"
-msgstr "nastav _ na _"
+msgstr "applica a _ il valore _"
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr "změň _ o _"
+msgstr "cambia _ di _"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr "nastav lokální proměnnou _ na _"
+msgstr "inizializza variabile locale _ a _"
 
 #. "Data" blocks category label
 msgid "cat;Data"
@@ -369,234 +392,239 @@ msgstr "Data"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr "kočka"
+msgstr "gatto"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr "pes"
+msgstr "cane"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr "pták"
+msgstr "uccello"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr "ryba"
+msgstr "pesce"
 
 #. Block in Data category
 msgid "length of _"
-msgstr "délka _"
+msgstr "lunghezza di _"
 
 #. Block in Data category
 msgid "item _ of _"
-msgstr "prvek _ z _"
+msgstr "elemento _ di _"
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr "nahraď prvek _ v seznamu _ hodnotou _"
+msgstr "sostituisce elemento _ della lista _ con _"
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr "smaž prvek _ ze seznamu _"
+msgstr "rimuovi elemento _ della lista _"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr "přidej _ do seznamu _"
+msgstr "aggiungi _ alla lista _"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr "spoj _ _"
+msgstr "unisci _ _"
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr "kopíruj _ od _"
+msgstr "copia _ da _"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr "smajlíky"
+msgstr ""
 
 #. Block in Data category
+#, fuzzy
 msgid "to _"
-msgstr "do _"
+msgstr "in _"
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr "najdi _ v _"
+msgstr "trova _ in _"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr "začínající na _"
+msgstr "partendo da _"
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr "spoj prvky seznamu _"
+msgstr "unisci elementi della lista _"
 
 #. Block in Data category
 msgid "separator _"
-msgstr "oddělovač _"
+msgstr "separatore _"
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr "unicode _ pro _"
+msgstr "unicode _ di _"
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr "řetězec z unicode _"
+msgstr "stringa da unicode _"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr "nová délka seznamu _"
+msgstr "nuova lista con lunghezza _"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr "nové pole bajtů _"
+msgstr "nuovo matrice byte _"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr "jako pole bajtů _"
+msgstr "trasforma in matrice byte _"
 
-#. Example string. Tells the user this input accepts a byte list or a string
+#. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr "bajt/seznam/řetězec"
+msgstr "unaListaByteOppureStringa"
 
 #. Block in Data category
 msgid "with all _"
-msgstr "se všemi _"
+msgstr ""
 
 #. Block in Data category
 msgid "free memory"
-msgstr "volná paměť"
+msgstr "libera memoria"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr "vše"
+msgstr "tutto"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr "poslední"
+msgstr "ultimo"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
+#, fuzzy
 msgid "random"
-msgstr "náhodný"
+msgstr "casuale"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr "rozděl _ podle _"
+msgstr "separa _ con _"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr "Moje bloky"
+msgstr "I Miei Blocchi"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr "Obecné"
+msgstr "Generico"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr "Přidej blok povelů"
+msgstr "Aggiungi un blocco commento"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr "Přidej blok povelů s návratovou hodnotou"
+msgstr "Aggiungi un blocco reporter"
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr "Zadej jméno funkce:"
+msgstr ""
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
-msgstr "Komunikace"
+msgstr "Comunicazione"
 
 #. Block in Comm category
+#, fuzzy
 msgid "i2c get device _ register _"
-msgstr "čti z I2C zařízení _ registr _"
+msgstr "i2c leggi dispositivo _ registro _"
 
 #. Block in Comm category
+#, fuzzy
 msgid "i2c set device _ register _ to _"
-msgstr "zapiš do I2C zařízení _ do registru _ hodnotu _"
+msgstr "i2c scrivi dispositivo _ registro _ valore _"
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
-msgstr "z I2C zařízení _ přečti seznam _"
+msgstr "i2c dispositivo _ leggi lista _"
 
 #. Block in Comm category
 msgid "i2c device _ write list _"
-msgstr "do I2C zařízení _ zapiš seznam _"
+msgstr "i2c dispositivo _ scrivi lista _"
 
 #. Block in Comm category
 msgid "i2c device _ exists?"
-msgstr "existuje I2C zařízení _ ?"
+msgstr "i2c dispositivo _ esiste?"
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr "pošli do SPI _"
+msgstr "spi invia _"
 
 #. Block in Comm category
 msgid "spi receive"
-msgstr "přijmi z SPI"
+msgstr "spi ricevi"
 
 #. Block in Comm category
 msgid "spi setup speed _"
-msgstr "SPI nastav rychlost _"
+msgstr "spi configurazione velocità _"
 
 #. Block in Comm category
 msgid "mode _"
-msgstr "režim _"
+msgstr "modo _"
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr "kanál RPI _"
+msgstr "rpi canale _"
 
 #. Block in Comm category
 msgid "spi exchange bytes _"
-msgstr "SPI přenes bajty _"
+msgstr "spi scambia bytes _"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr "pole bajtů"
+msgstr "unaMatriceByte"
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr "otevři seriový port pro rychlost _"
+msgstr "seriale apri _ baud"
 
 #. Block in Comm category
 msgid "serial close"
-msgstr "zavři seriový port"
+msgstr "seriale chiudi"
 
 #. Block in Comm category
 msgid "serial read"
-msgstr "přeči ze seriového portu"
+msgstr "seriale leggi"
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr "do seriového portu zapiš _"
+msgstr "seriale scrivi _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
-msgstr "číslo/řetězec/pole bajtů"
+msgstr "unInteroStringaListaOppureMatriceByte"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
-msgstr "do seriového portu zapiš _ od _"
+msgstr "seriale scrivi _ partendo da _"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 msgid "aStringListOrByteArray"
-msgstr "řetězec/pole bajtů"
+msgstr "unaStringaListaOppureMatriceByte"
 
 #. Block in Comm category
+#, fuzzy
 msgid "soft serial write byte _ pin _ baud _"
-msgstr "do SW seriového portu zapiš byte _ na pin _ rychlost _"
+msgstr "soft seriale scrivi byte _ pin _ baud _"
 
 #. Block in Comm category
 msgid "print _"
-msgstr "tiskni _"
+msgstr "stampa _"
 
 #. Block in Comm category
 msgid "no op"
@@ -604,307 +632,309 @@ msgstr "no op"
 
 #. Block in Comm category
 msgid "ignore"
-msgstr "ignoruj"
+msgstr "ignora"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "draw shape _ at x _ y _"
-msgstr "nakresli tvar _ na x _ y _"
+msgstr "disegna forma _ a x _ y _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
-msgstr "tvar pro písmeno _"
+msgstr "forma per lettera _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "send NeoPixel rgb _"
-msgstr "nastav NeoPixel RGB _"
+msgstr "invia NeoPixel rgb _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has tone support"
-msgstr "podporuje tóny"
+msgstr "ha supporto suono"
 
 #. Primitive block. Mostly hidden from end users.
+#, fuzzy
 msgid "play tone pin _ frequency _"
-msgstr "na pinu _ hrej tón o frekvenci _"
+msgstr "suona pin _ frequenza _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has WiFi support"
-msgstr "podporuje WiFi"
+msgstr "ha supporto WiFi"
 
 #. Primitive block. Mostly hidden from end users.
+#, fuzzy
 msgid "start WiFi _ password _"
-msgstr "připoj WiFi _ heslo _"
+msgstr "comincia WiFi _ password _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "stop WiFi"
-msgstr "zastav WiFi"
+msgstr "arresta WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "WiFi status"
-msgstr "WiFi stav"
+msgstr "WiFi stato"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "my IP address"
-msgstr "moje IP adresa"
+msgstr "mio indirizzo IP"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send number _"
-msgstr "odešli rádiem číslo _"
+msgstr "radio invia numero _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send string _"
-msgstr "odešli rádiem text _"
+msgstr "radio invia stringa _"
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "Hello!"
-msgstr "AHOJ!"
+msgstr "Ciao!"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send pair _ = _"
-msgstr "odešli rádiem jméno _ hodnota _"
+msgstr "radio invia coppia _ = _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "light"
-msgstr "světlo"
+msgstr "luce"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio message received?"
-msgstr "přijata rádiová zpráva?"
+msgstr "radio messaggio ricevuto?"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last number"
-msgstr "poslední rádiem přijaté číslo"
+msgstr "radio ultimo numero"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last string"
-msgstr "poslední rádiem přijaý text"
+msgstr "radio ultima stringa"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last message type"
-msgstr "typ poslední radiové zprávy"
+msgstr "radio tipo ultimo messaggio"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set group _ (0-255)"
-msgstr "nastav skupinu rádia na _ (0-255)"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set channel (0-83) _"
-msgstr "nastav kanál rádia (0-83) _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set power (0-7) _"
-msgstr "nastav výkon rádia (0-7) _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last signal strength"
-msgstr "síla posledního radiového signálu"
+msgstr "radio intensità ultimo segnale"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio receive packet _"
-msgstr "přijmi packet _ rádia"
+msgstr "radio ricevi pacchetto _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send packet _"
-msgstr "odešli packet _ rádiem"
+msgstr "radio invia pacchetto _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
-msgstr "deaktivuj radio"
+msgstr ""
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr "Jednoduché Senzory"
+msgstr "Sensori Base"
 
 #. Block in Basic Sensors library
 msgid "tilt x"
-msgstr "náklon x"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "tilt y"
-msgstr "náklon y"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "tilt z"
-msgstr "náklon z"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "acceleration"
-msgstr "zrychlení"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "light level"
-msgstr "intenzita světla"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
-msgstr "teplota (°C)"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
-msgstr "magnetické pole"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
-msgstr "nastav rozsah akcelerace _ g = 100"
+msgstr ""
 
 #. NeoPixel library label
 msgid "NeoPixel"
-msgstr "NeoPixel"
+msgstr ""
 
 #. NeoPixel library block
 msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
-msgstr "nastav NeoPixel _ _ _ _ _ _ _ _ _ _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "clear NeoPixels"
-msgstr "zhasni NeoPixel"
+msgstr ""
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
-msgstr "nastav NeoPixel _ barva _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
-msgstr "nastav na všech NepoPixelech barvu _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "rotate NeoPixels by _"
-msgstr "rotuj NeoPixel o _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "brighten NeoPixel _ by _"
-msgstr "zjasni NeoPixel _ o _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "brighten all NeoPixels by _"
-msgstr "zjasni všechny NeoPixely _ o _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
-msgstr "posuň NeoPixel_ barva o _ pozic"
+msgstr ""
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
-msgstr "posuň všechny barvy NeoPixel o _ pozic"
+msgstr ""
 
 #. NeoPixel library block
 msgid "attach _ LED NeoPixel strip to pin _"
-msgstr "připoj pásek _ NeoPixel LED na Pin _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "has white _"
-msgstr "s bílou _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "PIR"
-msgstr "PIR"
+msgstr ""
 
 #. NeoPixel library block
 msgid "PIR at pin _ detected movement"
-msgstr "PIR na pinu _ zjištěn pohyb"
+msgstr ""
 
 #. NeoPanel library label
 msgid "NeoPanel"
-msgstr "NepoPixel panel"
+msgstr ""
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
-msgstr "připoj NeoPixel panel šířka _ výška _ na Pin _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel set x _ y _ color _"
-msgstr "NeoPanel nastav x _ y _ barva"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
-msgstr "NeoPanel sloupec _ barva _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel fill row _ color _"
-msgstr "NeoPanel řádek _ barva _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
-msgstr "NeoPanel vyplň obdélník na x _ y _ šířka _ výška _ barva _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
-msgstr "NeoPanel zobraz text na x _ y _ barva _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr "NeoPanel zobraz BMP soubor na x _ y _"
+msgstr ""
 
 #. Microphone library label
 msgid "Microphone"
-msgstr "Mikrofon"
+msgstr ""
 
 #. Microphone library block
 msgid "microphone"
-msgstr "mikrofon"
+msgstr ""
 
 #. Microphone library block
 msgid "turn on microphone"
-msgstr "zapni mikrofon"
+msgstr ""
 
 #. Microphone library block
 msgid "loudness"
-msgstr "hlasitost"
+msgstr ""
 
 #. Microphone library block
 msgid "clap count"
-msgstr "počet tesknutí"
+msgstr ""
 
 #. Microphone library block
 msgid "set clap threshold _"
-msgstr "nastav práh tlesknutí _"
+msgstr ""
 
 #. Microphone library block
 msgid "estimate clap threshold"
-msgstr "odhadni práh tlesknutí"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library label
 msgid "ED1 Stepper Motor"
-msgstr "EDI krokový motor"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ steps _"
-msgstr "otoč motor __ o _ krok(ů)"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor 1 _ and motor 2 _ _ steps"
-msgstr "otoč motor 1 _ a motor 2 _ o _ krok(ů)"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ angle _ °"
-msgstr "otoč motor _ o úhel _ °"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ complete turns"
-msgstr "otoč motor _ o _ celých otáček"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "stop steppers"
-msgstr "zastav krokové motory"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
-msgstr "po směru hodinových ručiček"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "counter-clockwise"
-msgstr "proti směru hodinových ručiček"
+msgstr ""
 
 #. Citilab ED1 Buttons library label
 msgid "ED1 Buttons"
-msgstr "EDI tlačítka"
+msgstr ""
 
 #. Citilab ED1 Buttons library block
 msgid "capacitive sensor _"
-msgstr "kapacitní senzor _"
+msgstr ""
 
 #. Citilab ED1 Buttons library block
 msgid "set capacitive threshold to _"
-msgstr "nastav limit kapacitního senzoru na _"
+msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library label
 msgid "Hummingbird LED _ _ %"
@@ -932,23 +962,23 @@ msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Light"
-msgstr "Světlo"
+msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Distance (cm)"
-msgstr "Vzdálenost (cm)"
+msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Dial"
-msgstr "vytoč"
+msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Sound"
-msgstr "Zvuk"
+msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Other"
-msgstr "Jiné"
+msgstr ""
 
 #. BirdBrain Technologies Finch library label
 msgid "Finch Beak Red _ Green _ Blue _"
@@ -1004,23 +1034,23 @@ msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "All"
-msgstr "Vše"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Forward"
-msgstr "Vpřed"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Backward"
-msgstr "Vzad"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Right"
-msgstr "Doleva"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Left"
-msgstr "Doprava"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Beak Up"
@@ -1048,15 +1078,15 @@ msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "x"
-msgstr "x"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "y"
-msgstr "y"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "z"
-msgstr "z"
+msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "strength"
@@ -1064,399 +1094,398 @@ msgstr ""
 
 #. Ultrasound distance library block
 msgid "distance (cm) trigger _ echo _"
-msgstr "vzdálenost (cm) trigger _ echo _"
+msgstr ""
 
 #. Infrared remote library label
 msgid "IR Remote"
-msgstr "IR Ovladač"
+msgstr ""
 
 #. Infrared Remote library block
 msgid "receive IR code"
-msgstr "přijmi IR kód"
+msgstr ""
 
 #. Infrared Remote library block
 msgid "receive IR code from device _"
-msgstr "přijmi IR kód ze zařízení _"
+msgstr ""
 
 #. Infrared Remote library block
 msgid "test IR"
-msgstr "test IR"
+msgstr ""
 
 #. Infrared Remote library block
 msgid "attach IR receiver to pin _"
-msgstr "přípoj IR přijímač k pinu _"
+msgstr ""
 
 #. Infrared Remote library block
 msgid "IR transmit device _ command _"
-msgstr "IR odešli zařízení _ povel _"
+msgstr ""
 
 #. Keyboard and Mouse library label
 msgid "Keyboard and Mouse"
-msgstr "Klávesnice a myš"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "press key _"
-msgstr "stiskni klávesu _"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "while holding _"
-msgstr "dokud stisknuto _"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "hold key _"
-msgstr "podrž klávesu _"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "release key _"
-msgstr "uvolni klávesu _"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "release all keys"
-msgstr "uvolni všechny klávesy"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Shift"
-msgstr "Shift"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Control"
-msgstr "Ctrl"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Alt / ⌥"
-msgstr "Alt / ⌥"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Logo / ⌘"
-msgstr "Logo / ⌘"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;AltGr"
-msgstr "AltGr"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;enter"
-msgstr "enter"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;return"
-msgstr "return"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;tab"
-msgstr "tab"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;backspace"
-msgstr "backspace"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;delete"
-msgstr "delete"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;insert"
-msgstr "insert"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;home"
-msgstr "home"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;end"
-msgstr "end"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PgUp"
-msgstr "PgUp"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PgDown"
-msgstr "PgDown"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;CapsLock"
-msgstr "CapsLock"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;NumLock"
-msgstr "NumLock"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;ScrollLock"
-msgstr "ScrollLock"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PrintScreen"
-msgstr "PrintScreen"
+msgstr ""
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;ESC"
-msgstr "ESC"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "_ mouse click"
-msgstr "_ mouse click"
+msgstr ""
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;left"
-msgstr "levé"
+msgstr ""
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;right"
-msgstr "pravé"
+msgstr ""
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;middle"
-msgstr "middle"
+msgstr ""
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;both"
-msgstr "obě"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "move mouse pointer by _ , _"
-msgstr "posuň ukazatel myši o _ , _"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "scroll mouse by _"
-msgstr "scroll mouse by _"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "hold _ mouse button"
-msgstr "podrž _ tlačítko myši"
+msgstr ""
 
 #. Keyboard and Mouse library block
 msgid "release mouse buttons"
-msgstr "uvolni tlačítka myši"
+msgstr ""
 
 #. Lists library label
 #. Extra utilities for list manipulation and access
 msgid "Lists"
-msgstr "Seznamy"
+msgstr ""
 
 #. Lists library block
 msgid "list _ contains _"
-msgstr "seznam _ obsahuje _"
+msgstr ""
 
 #. Lists library block
 msgid "circular item _ of _"
-msgstr "cyklická položka _ z _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a list or a string
 msgid "aListOrString"
-msgstr "seznam/řetězec"
+msgstr ""
 
 #. Lists library block
 msgid "map _ over _"
-msgstr "mapuj _ pomocí _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a function name
 msgid "aFunction"
-msgstr "Funkce"
+msgstr ""
 
 #. Lists library block
 msgid "filter _ with _"
-msgstr "filtruj _ podle _"
+msgstr ""
 
 #. Lists library block
 msgid "pick _ from _"
-msgstr "vyber _ ze _"
+msgstr ""
 
 #. Option in ( pick (a few) from (aList) ) block in Lists library
 msgid "a few"
-msgstr "několik"
+msgstr ""
 
 #. Option in ( pick (some) from (aList) ) block in Lists library
 msgid "some"
-msgstr "nějaký"
+msgstr ""
 
 #. Option in ( pick (most) from (aList) ) block in Lists library
 msgid "most"
-msgstr "většina"
+msgstr ""
 
 #. Lists library block
 msgid "reverse _"
-msgstr "obrať _"
+msgstr ""
 
 #. Lists library block
 msgid "shuffle _"
-msgstr "proházej _"
+msgstr ""
 
 #. Lists library block
 msgid "sort _"
-msgstr "setřiď _"
+msgstr ""
 
 #. Lists library block
 msgid "unique _"
-msgstr "jedinečný _"
+msgstr ""
 
 #. Lists library block
 msgid "shuffled _"
-msgstr "proházený _"
+msgstr ""
 
 #. Lists library block
 msgid "reversed _"
-msgstr "obrácený _"
+msgstr ""
 
 #. Lists library block
 msgid "sorted _"
-msgstr "seřazný _"
+msgstr ""
 
 #. Lists library block
 msgid "uniqued _"
-msgstr "bez duplicit _"
+msgstr ""
 
 #. Pseudorandomness library label
 #. Creates pseudorandom numbers and lists of numbers given a particular seed
 msgid "Pseudorandomness"
-msgstr "Pseudonádodné"
+msgstr ""
 
 #. Pseudorandomness library block
 msgid "pseudorandom _ to _ with seed _"
-msgstr "pseudonáhodné číslo od _ do _ s klíčem"
+msgstr ""
 
 #. Pseudorandomness library block
 msgid "_ pseudorandom numbers _ to _ with seed _"
-msgstr "_ pseudonáhodná čísla od _ do _ s klíčem"
+msgstr ""
 
 #. BLE Keyboard library label
 msgid "BLE Keyboard"
-msgstr "BLE klávesnice"
+msgstr ""
 
 #. BLE Keyboard library block
-#, fuzzy
 msgid "start BLE Keyboard"
-msgstr "spustit BLE klávesnici"
+msgstr ""
 
 #. Radio comm library label
 #. Allows micro:bit boards to exchange messages
 #. All of its blocks are primitive (see "Primitives" section)
 msgid "Radio"
-msgstr "Radio"
+msgstr ""
 
 #. Text scrolling library label
 #. Scrolls text on 5x5 LED displays and simulated ones
 msgid "Scrolling"
-msgstr "Scrollen"
+msgstr ""
 
 #. Scrolling library block
 msgid "scroll text _"
-msgstr "zobraz text _"
+msgstr ""
 
 #. Example text for Scrolling library.
 msgid "HELLO ROSA!"
-msgstr "AHOJ KARLE!"
+msgstr ""
 
 #. Scrolling library block
 msgid "scroll number _"
-msgstr "zobraz číslo _"
+msgstr ""
 
 #. Scrolling library block
 msgid "pausing _ ms"
-msgstr "pauza _ ms"
+msgstr ""
 
 #. Scrolling library block
 msgid "stop scrolling"
-msgstr "zastav zobrazení"
+msgstr ""
 
 #. Servo motor library label
 msgid "Servo"
-msgstr "Servo"
+msgstr ""
 
 #. Servo motor library block
 msgid "set servo _ to _ degrees (-90 to 90)"
-msgstr "nastav servo _ na úhel _ (-90 až 90)"
+msgstr ""
 
 #. Servo motor library block
 msgid "set servo _ to speed _ (-100 to 100)"
-msgstr "nastav Servo _ na rychlost _ (-100 až 100)"
+msgstr ""
 
 #. Servo motor library block
 msgid "stop servo _"
-msgstr "zastav Servo _"
+msgstr ""
 
 #. 5x5 LED display library label
 #. Supports the micro:bit display, but also simulated 5x5 displays on boards
 #. with differently sized LED arrays, NeoPixel arrays or TFT displays
 msgid "LED Display"
-msgstr "LED Displej"
+msgstr ""
 
 #. 5x5 LED Display library block
 msgid "display _"
-msgstr "zobraz _"
+msgstr ""
 
 #. 5x5 LED Display library block
 msgid "display image _"
-msgstr "zobraz ikonu _"
+msgstr ""
 
 #. 5x5 LED Display library block
 msgid "clear display"
-msgstr "smaž displej"
+msgstr ""
 
 #. 5x5 LED Display library block
 msgid "set display color _"
-msgstr "nastav barvu displeje _"
+msgstr ""
 
 #. 5x5 LED Display library block
 msgid "plot x _ y _"
-msgstr "rozsviť x _ y _"
+msgstr ""
 
 #. 5x5 LED Display library block
 msgid "unplot x _ y _"
-msgstr "zhasni x _ y _"
+msgstr ""
 
 #. 5x5 LED Display library block
 msgid "display character _"
-msgstr "zobraz znak _"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "heart"
-msgstr "srdce"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "small heart"
-msgstr "malé srdce"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "yes"
-msgstr "ano"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "no"
-msgstr "ne"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "happy"
-msgstr "šťastný"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "sad"
-msgstr "smutný"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "confused"
-msgstr "zmatený"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "angry"
-msgstr "rozzlobený"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "asleep"
-msgstr "ospalý"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "surprised"
-msgstr "překvapený"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "silly"
-msgstr "hloupý"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "fabulous"
-msgstr "úžasný"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "meh"
@@ -1464,27 +1493,27 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "t-shirt"
-msgstr "triko"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "roller skate"
-msgstr "kolečkové brusle"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "duck"
-msgstr "kachna"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "house"
-msgstr "dům"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "tortoise"
-msgstr "želva"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "butterfly"
-msgstr "motýl"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "stick figure"
@@ -1492,477 +1521,475 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "ghost"
-msgstr "duch"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "sword"
-msgstr "meč"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "giraffe"
-msgstr "žirafa"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "skull"
-msgstr "lebka"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "umbrella"
-msgstr "deštník"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "snake"
-msgstr "had"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "rabbit"
-msgstr "zajíc"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "cow"
-msgstr "kráva"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "quarter note"
-msgstr "čtvrťová nota"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "eight note"
-msgstr "osminková nota"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "pitchfork"
-msgstr "vidle"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "target"
-msgstr "cíl"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "triangle"
-msgstr "trojúhelník"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "left triangle"
-msgstr "levý trojúhelník"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "chess board"
-msgstr "šachovnice"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "diamond"
-msgstr "diamant"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "small diamond"
-msgstr "malý diamant"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "square"
-msgstr "čtverec"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "small square"
-msgstr "malý čtverec"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "scissors"
-msgstr "nůžky"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "aktivuj OLED I2C _ adresa (hex) _ reset pin# _ otoč _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "aktivuj OLED SPI _ adresa (hex) _ reset pin# _ otoč _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
-msgstr "OLED napiš _ na x _ y _ inverze"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "show display buffer"
-msgstr "OLED ukaž obraz z paměti displeje"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "clear"
-msgstr "vymaž OLED"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "set contrast (1-4) _"
-msgstr "nastav kontrast OLED (1-4) _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "draw circle at x _ y _ radius _ erase _"
-msgstr "OLED nakresli kružnici střed x _ y _ poloměr _ výmaz"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "draw image _ at x _ y _"
-msgstr "OLED nakresli obrázek _ na x _ y _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "draw line from x _ y _ to x _ y _ erase _"
-msgstr "OLED nakresli přímku z bodu x _ y _ do x _ y _ výmaz _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
-msgstr "OLED nakresli obdélník x _ y _ š _ d _ výmaz _ zaoblení (3-15) _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "fill rectangle x _ y _ w _ h _ erase _"
-msgstr "OLED vyplň obdélník x _ y _ š _ d _ výmaz _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "_ překlop OLED displej nahoře _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "make image _"
-msgstr "vytvoř obrázek _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "set pixel x _ y _ erase _"
-msgstr "OLED nastav bod x _ y _ výmaz _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "set video _"
-msgstr "OLED nastav video _"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "cursor location"
-msgstr "OLED pozice kurzoru"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "defer display updates"
-msgstr "OLED odlož aktualizaci displeje"
+msgstr ""
 
 #. TFT display library block
 msgid "clear TFT display "
-msgstr "vymaž TFT displej"
+msgstr ""
 
 #. TFT Display library block
 msgid "enable TFT _"
-msgstr "aktivuj TFT _"
+msgstr ""
 
 #. TFT Display library block
 msgid "TFT width"
-msgstr "TFT šířka"
+msgstr ""
 
 #. TFT Display library block
 msgid "TFT height"
-msgstr "TFT výška"
+msgstr ""
 
 #. TFT Display library block
 msgid "set TFT pixel x _ y _ to _"
-msgstr "nastav TFT-Pixel x _ y _ na _"
+msgstr ""
 
 #. TFT Display library block
 msgid "draw line on TFT from x _ y _ to x _ y _ color _"
-msgstr "nakresli na TFT přímku z x _ y _ do x _ y _ barva _"
+msgstr ""
 
 #. TFT Display library block
 msgid "draw vector x _ y _ angle _ length _ color _"
-msgstr "nakresli na TFT vektor z x _ y _ úhel _ délka _ barva _"
+msgstr ""
 
 #. TFT Display library block
 msgid "draw rectangle on TFT at x _ y _ width _ height _ color _"
-msgstr "nakresli na TFT obdélník na x _ y _ šířka _ výška _ barva _"
+msgstr ""
 
 #. TFT Display library block
 msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
 msgstr ""
-"nakresli na TFT zaoblený obdélník na x _ y _ šířka _ výška _ poloměr _ barva "
-"_"
 
 #. TFT Display library block
 msgid "draw circle on TFT at x _ y _ radius _ color _"
-msgstr "nakresli na TFT kružnicí se středem x _ y _ poloměr _ barva _"
+msgstr ""
 
 #. TFT Display library block
 msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
-msgstr "nakresli na TFT trojúhelník s vrcholy x _ y_ , x _ y, x _ y _ barva _"
+msgstr ""
 
 #. TFT Display library block
 msgid "filled _"
-msgstr "vyplněno _"
+msgstr ""
 
 #. TFT Display library block
 msgid "write _ on TFT at x _ y _ color _"
-msgstr "na TFT napiš _ od x _ y _ barva _"
+msgstr ""
 
 #. TFT Display library block
 msgid "Hello World!"
-msgstr "Ahoj světe !"
+msgstr ""
 
 #. TFT Display library block
 msgid "scale _ wrap _"
-msgstr "měřítko _ zalomení _"
+msgstr ""
 
 #. TFT Display library block
 msgid "draw text _ on TFT at x _ y _ color _"
-msgstr "nakresli na TFT text _ na x _ y _ barva _"
+msgstr ""
 
 #. TFT Display library block
 msgid "scale _"
-msgstr "měřítko _"
+msgstr ""
 
 #. TFT Display library block
 msgid "bg color _"
-msgstr "barva pozadí _"
+msgstr ""
 
 #. TFT Display library block
 msgid "draw bitmap _ palette _ on TFT at x _ y _"
-msgstr "nakresli na TFT bitmapu _ na x _ y"
+msgstr ""
 
 #. TFT Display library block
 msgid "set TFT backlight _ (0-10)"
-msgstr "nastav podsvícení TFT _ (0-10)"
+msgstr ""
 
 #. TFT Display library and Color library block
 msgid "gray _ %"
-msgstr "šedá _ %"
+msgstr ""
 
 #. BMP library block
 msgid "display BMP file _ at x _ y _"
-msgstr "zobraz BMP soubor _ na x _ y _"
+msgstr ""
 
 #. BMP image example filename
 msgid "image.bmp"
-msgstr "obrázek.bmp"
+msgstr ""
 
 #. Color library label
 msgid "Color Operators"
-msgstr "Operace s barvami"
+msgstr ""
 
 #. Color library block
 msgid "color r _ g _ b _ (0-255)"
-msgstr "barva R _ G _ B _ (0-255)"
+msgstr ""
 
 #. Color library block
 msgid "random color"
-msgstr "náhodná barva"
+msgstr ""
 
 #. Color library block
 msgid "red _"
-msgstr "červená _"
+msgstr ""
 
 #. Color library block
 msgid "green _"
-msgstr "zelená _"
+msgstr ""
 
 #. Color library block
 msgid "blue _"
-msgstr "modrá _"
+msgstr ""
 
 #. Color library block
 msgid "color hue _ (0-360) saturation _ % brightness _ %"
-msgstr "barva - odstín _ (0-360) saturace _ % jas _ %"
+msgstr ""
 
 #. Color library block
 msgid "hue _"
-msgstr "odstín _"
+msgstr ""
 
 #. Color library block
 msgid "saturation _"
-msgstr "saturace _"
+msgstr ""
 
 #. Color library block
 msgid "brightness _"
-msgstr "jas _"
+msgstr ""
 
 #. Color library block
 msgid "_ with hue _ (0-360)"
-msgstr "_ odstínu _ (0-360)"
+msgstr ""
 
 #. Color library block
 msgid "_ with saturation _ %"
-msgstr "_ se saturací _ %"
+msgstr ""
 
 #. Color library block
 msgid "_ with brightness _ %"
-msgstr "_ s jasem _ %"
+msgstr ""
 
 #. Fractions library label
 msgid "Fractions"
-msgstr "Zlomky"
+msgstr ""
 
 #. Fractions library block
 msgid "fract _ / _"
-msgstr "zlomek _ / _"
+msgstr ""
 
 #. Fractions library block
 msgid "fract _ + _"
-msgstr "zlomek _ + _"
+msgstr ""
 
 #. Fractions library block
 msgid "fract _ - _"
-msgstr "zlomek _ - _"
+msgstr ""
 
 #. Fractions library block
 msgid "fract _ × _"
-msgstr "zlomek _ * _"
+msgstr ""
 
 #. Fractions library block
 msgid "fract _ = _"
-msgstr "zlomek _ = _"
+msgstr ""
 
 #. Fractions library block
 msgid "fract _ < _"
-msgstr "zlomek _ < _"
+msgstr ""
 
 #. Fractions library block
 msgid "fract _ > _"
-msgstr "zlomek _ > _"
+msgstr ""
 
 #. Fractions library block
 msgid "simplify fraction _"
-msgstr "zjednoduš zlomek _"
+msgstr ""
 
 #. Fractions library block
 msgid "integer part of fraction _"
-msgstr "celá část zlomku _"
+msgstr ""
 
 #. Fractions library block
 msgid "numerator of fraction _"
-msgstr "čitatel zlomku _"
+msgstr ""
 
 #. Fractions library block
 msgid "denominator of fraction _"
-msgstr "jmenovatel zlomku _"
+msgstr ""
 
 #. Fractions library block
 msgid "gcd _ _"
-msgstr "NSD _ _"
+msgstr ""
 
 #. Fractions library block
 msgid "lcm _ _"
-msgstr "NSN _ _"
+msgstr ""
 
 #. Tone library label
 #. Generates music tones on buzzers
 msgid "Tone"
-msgstr "Tóny"
+msgstr ""
 
 #. Tone library block
 msgid "attach buzzer to pin _"
-msgstr "připoj bzučák k pinu Pin _"
+msgstr ""
 
 #. Tone library block
 msgid "play note _ octave _ for _ ms"
-msgstr "hraj notu _ oktáva _ po _ ms"
+msgstr ""
 
 #. Tone library block
 msgid "play frequency _ for _ ms"
-msgstr "hraj kmitočet _ po _ ms"
+msgstr ""
 
 #. Tone library block
 msgid "play midi key _ for _ ms"
-msgstr "hraj MIDI notu _ po _ ms"
+msgstr ""
 
 #. Tone library block
 msgid "start tone _ Hz"
-msgstr "spusť tón _ Hz"
+msgstr ""
 
 #. Tone library block
 msgid "stop tone"
-msgstr "zastav tón"
+msgstr ""
 
 #. Musical note name
 msgid "nt;c"
-msgstr "c"
+msgstr ""
 
 #. Musical note name
 msgid "nt;c#"
-msgstr "c#"
+msgstr ""
 
 #. Musical note name
 msgid "nt;d"
-msgstr "d"
+msgstr ""
 
 #. Musical note name
 msgid "nt;d#"
-msgstr "d#"
+msgstr ""
 
 #. Musical note name
 msgid "nt;e"
-msgstr "e"
+msgstr ""
 
 #. Musical note name
 msgid "nt;f"
-msgstr "f"
+msgstr ""
 
 #. Musical note name
 msgid "nt;f#"
-msgstr "f#"
+msgstr ""
 
 #. Musical note name
 msgid "nt;g"
-msgstr "g"
+msgstr ""
 
 #. Musical note name
 msgid "nt;g#"
-msgstr "g#"
+msgstr ""
 
 #. Musical note name
 msgid "nt;a"
-msgstr "a"
+msgstr ""
 
 #. Musical note name
 msgid "nt;a#"
-msgstr "a#"
+msgstr ""
 
 #. Musical note name
 msgid "nt;b"
-msgstr "b"
+msgstr ""
 
 #. Ringtone library label
 #. Can play Nokring-formatted music. Also known as RTTTL.
 msgid "Ringtone"
-msgstr "Vyzvánění"
+msgstr ""
 
 #. Ringtone library block
 msgid "play ringtone _"
-msgstr "přehraj vyzvánění _"
+msgstr ""
 
 #. Ringtone library block
 msgid "current song name"
-msgstr "název aktuální písně"
+msgstr ""
 
 #. Pluck library label
 #. Generate music with plucked-string resembling sounds
 msgid "Pluck"
-msgstr "Drknání na struny"
+msgstr ""
 
 #. Pluck library block
 msgid "pluck note _ octave _ for _ ms"
-msgstr "zadrnkej notu _ oktáva _ po _ ms"
+msgstr ""
 
 #. Pluck library block
 msgid "pluck MIDI key _ for _ msecs"
-msgstr "zadrnkej MIDI klávesu _ oktáva _ po _ ms"
+msgstr ""
 
 #. Pluck library block
 msgid "set pluck pin _"
-msgstr "nastav pin pro drknání _"
+msgstr ""
 
 #. WAV library block
 msgid "play WAV file _"
-msgstr "přehrej WAV soubor _"
+msgstr ""
 
 #. Example file name with no extension
 msgid "filename"
-msgstr "soubor"
+msgstr ""
 
 #. Rhythm library label
 #. Useful to create musical patterns
 msgid "Rhythm"
-msgstr "Rytmus"
+msgstr ""
 
 #. Rhythm library block
 msgid "set tempo to _ bpm at _ / _ signature"
-msgstr "nastav tempo na _ bpm pro _ / _ tónt"
+msgstr ""
 
 #. Rhythm library block
 msgid "set pattern to _ bars"
@@ -1970,11 +1997,11 @@ msgstr ""
 
 #. Rhythm library block
 msgid "current beat"
-msgstr "aktuální doba"
+msgstr ""
 
 #. Rhythm library block
 msgid "current bar"
-msgstr "aktuální takt"
+msgstr ""
 
 #. Rhythm library block
 msgid "wait until next _ duration"
@@ -2437,6 +2464,14 @@ msgid "send MIDI continue playing"
 msgstr ""
 
 #. MIDI library block
+msgid "start MIDI clock"
+msgstr ""
+
+#. MIDI library block
+msgid "stop MIDI clock"
+msgstr ""
+
+#. MIDI library block
 msgid "set MIDI signal to pin _"
 msgstr ""
 
@@ -2595,562 +2630,566 @@ msgstr ""
 
 #. Turtle geometry library label
 msgid "Turtle"
-msgstr "Želva"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "trtl;home"
-msgstr "domů"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "move _"
-msgstr "jdi _"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "turn _ degrees"
-msgstr "otoč o _ stupnů"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "turn _ / _ of circle"
-msgstr "otoč o _/ _ kruhu"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "pen down"
-msgstr "pero dolů"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "pen up"
-msgstr "zvedni pero"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "set pen color to _"
-msgstr "nastav barvu pera na _"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "set pen to random color"
-msgstr "nastav náhodnou barvu pera"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "fill display with _"
-msgstr "vyplň obrazovku _"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "go to x _ y _"
-msgstr "jdi na x _ y _"
+msgstr ""
 
 #. Turtle Geometry library block
 msgid "point in direction _"
-msgstr "směr _"
+msgstr ""
 
 #. File system library label
 msgid "Files"
-msgstr "Soubory"
+msgstr ""
 
 #. File System library block
 msgid "open file _"
-msgstr "otevři soubor _"
+msgstr ""
 
 #. File System library block
 msgid "close file _"
-msgstr "zavři soubor _"
+msgstr ""
 
 #. File System library block
 msgid "delete file _"
-msgstr "smaž soubor _"
+msgstr ""
 
 #. File System library block
 msgid "append line _ to file _"
-msgstr "přidej řádek _ do souboru _"
+msgstr ""
 
 #. File System library block
 msgid "append bytes _ to file _"
-msgstr "přidej bajty _ do souboru _"
+msgstr ""
 
 #. File System library block
 msgid "end of file _"
-msgstr "konec souboru _"
+msgstr ""
 
 #. File System library block
 msgid "next line of file _"
-msgstr "další řádek souboru _"
+msgstr ""
 
 #. File System library block
 msgid "next _ bytes of file _"
-msgstr "dalších _ bajtů ze souboru _"
+msgstr ""
 
 #. File System library block
 msgid "read into _ from file _"
-msgstr "načti do _ ze souboru"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "a ByteArray"
-msgstr "pole bajtů"
+msgstr ""
 
 #. File System library block
 msgid "file names"
-msgstr "jménAa souborů"
+msgstr ""
 
 #. File System library block
 msgid "in directory _"
-msgstr "v adresáři _"
+msgstr ""
 
 #. File System library block
 msgid "size of file _"
-msgstr "velikost souboru _"
+msgstr ""
 
 #. File System library block
 msgid "file system info"
-msgstr "informace os systému souborů"
+msgstr ""
 
 #. Strings library label
 #. string (text) processing functions
 msgid "Strings"
-msgstr "Řetězce"
+msgstr ""
 
 #. Strings library block
 msgid "_ is a digit"
-msgstr "_ je číslice"
+msgstr ""
 
 #. Strings library block
 msgid "_ is lowercase"
-msgstr "_ je malé písmeno"
+msgstr ""
 
 #. Strings library block
 msgid "_ is uppercase"
-msgstr "_ je velké písmeno"
+msgstr ""
 
 #. Strings library block
 msgid "_ begins with _"
-msgstr "_ začíná textem _"
+msgstr ""
 
 #. Example string for ( (prefix) begins with (pre) )
 msgid "prefix"
-msgstr "prefix"
+msgstr ""
 
 #. Example string for ( (prefix) begins with (pre) )
 msgid "pre"
-msgstr "pre"
+msgstr ""
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "_ ends with _"
-msgstr "_ končí textem _"
+msgstr ""
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "suffix"
-msgstr "suffix"
+msgstr ""
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "fix"
-msgstr "fix"
+msgstr ""
 
 #. Strings library block
 msgid "_ contains _"
-msgstr "_ obsahuje text _"
+msgstr ""
 
 #. Strings library block
 msgid "lowercase _"
-msgstr "malá písmena _"
+msgstr ""
 
 #. Example text for lowercase and uppercase Strings library block
 msgid "THIS is a String! :)"
-msgstr "TOTO je řetězec! :-)"
+msgstr ""
 
 #. Strings library block
 msgid "uppercase _"
-msgstr "velká písmena _"
+msgstr ""
 
 #. Example text for Strings library block
 msgid "Hello, world!"
-msgstr "Ahoj světe!"
+msgstr ""
 
 #. Strings library block
 msgid "_ without white space"
-msgstr "_ bez mezer (bílych znaků)"
+msgstr ""
 
 #. Strings library block
 msgid "join string list _ separator _"
-msgstr "spoj seznam řetězců _ oddělovač"
+msgstr ""
 
 #. Strings library block
 msgid "unicodes _"
-msgstr "unicodes _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a string
 msgid "aString"
-msgstr "řetězec"
+msgstr ""
 
 #. Strings library block
 msgid "string from unicodes _"
-msgstr "řetězec z Unicode _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a list
 msgid "aList"
-msgstr "sezname"
+msgstr ""
 
 #. Strings library block
 msgid "num2str _"
-msgstr "číslo->text _"
+msgstr ""
 
 #. Strings library block
 msgid "str2num _"
-msgstr "text->číslo _"
+msgstr ""
 
 #. WiFi library label
 msgid "WiFi"
-msgstr "WiFi"
+msgstr ""
 
 #. WiFi library block
 msgid "wifi connect to _ password _"
-msgstr "WiFi připojení k AP _ heslo _"
+msgstr ""
 
 #. Example WiFi network name
 msgid "Network_Name"
-msgstr "Jméno sítě"
+msgstr ""
 
 #. WiFi library block
 msgid "IP _ gateway _ subnet _"
-msgstr "IP _ brána _ maska _"
+msgstr ""
 
 #. WiFi library block
 msgid "wifi create hotspot _ password _"
-msgstr "WiFi vytvoř hotspot _ heslo _"
+msgstr ""
 
 #. Example WiFi network password
 msgid "Network_Password"
-msgstr "Síťové heslo"
+msgstr ""
 
 #. WiFi library block
 msgid "IP address"
-msgstr "IP addresa"
+msgstr ""
 
 #. WiFi library block
 msgid "MAC address"
-msgstr "MAC adresa"
+msgstr ""
+
+#. WiFi library block
+msgid "allow WiFi while using BLE _"
+msgstr ""
 
 #. Motion library label
 #. Counts steps and detects motion via the internal accelerometer
 msgid "Motion"
-msgstr "Pohyb"
+msgstr ""
 
 #. Motion library block
 msgid "motion"
-msgstr "pohyb"
+msgstr ""
 
 #. Motion library block
 msgid "start step counter"
-msgstr "Zahaj počítání kroků"
+msgstr ""
 
 #. Motion library block
 msgid "step count"
-msgstr "počet kroků"
+msgstr ""
 
 #. Motion library block
 msgid "clear step count"
-msgstr "vynuluj počet kroků"
+msgstr ""
 
 #. Motion library block
 msgid "set step threshold _ (0-50)"
-msgstr "nastav práh kroku _ (0-50)"
+msgstr ""
 
 #. Button Events library label
 msgid "Button Events"
-msgstr "Události tlačítek"
+msgstr ""
 
 #. Button Events library block
 msgid "button _ double pressed"
-msgstr "dvakrát stisknuto tlačítko _"
+msgstr ""
 
 #. Button Events library block
 msgid "button _ long pressed"
-msgstr "dlouze stisknuto tlačítko _"
+msgstr ""
 
 #. Button Events library block
 msgid "button _ pressed"
-msgstr "stisknuto tlačítko _"
+msgstr ""
 
 #. Calliope board library block
 msgid "Calliope set LED red _ green _ blue _"
-msgstr "Calliope setze LED rot _ grün _ blau _"
+msgstr ""
 
 #. Calliope board library block
 msgid "Calliope set speaker _"
-msgstr "Calliope setze Lautsprecher _"
+msgstr ""
 
 #. Calliope board library block
 msgid "Calliope loudness"
-msgstr "Calliope Lautstärke"
+msgstr ""
 
 #. Circuit Playground Express board library block
 msgid "Circuit Playground set speaker _"
-msgstr "Circuit Playground setze Lautsprecher _"
+msgstr ""
 
 #. Circuit Playground Express board library block
 msgid "Circuit Playground slide switch"
-msgstr "Circuit Playground Schiebeschalter"
+msgstr ""
 
 #. DotStar LED library block
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
-msgstr "schließe _ DotStar LEDs an Daten-Pin _ Uhr-Pin _ an"
+msgstr ""
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
-msgstr "setze alle DotStar LEDs auf r _ g _ b _"
+msgstr ""
 
 #. DotStar LED library block
 msgid "set DotStar LED _ to r _ g _ b _"
-msgstr "setze DotStar LED _ auf r _ g _ b _"
+msgstr ""
 
 #. DotStar LED library block
 msgid "set DotStar brightness _"
-msgstr "setze DotStar Helligkeit _"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bme280 connected"
-msgstr "bme280 připojen"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bmp280 connected"
-msgstr "bmp280 připojen"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bmx280 temperature"
-msgstr "bmx280 teplota"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bmx280 pressure"
-msgstr "bmx280 tlak"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bme280 humidity"
-msgstr "bme280 vlhkost"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bmx280 set base altitude _ meters"
-msgstr "bmx280 nastav nadmořskou výšku _"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bmx280 altitude (cm)"
-msgstr "bmx280 nadmořská výška (cm)"
+msgstr ""
 
 #. BME280 environmental sensor library block
 msgid "bmx280 altitude (feet)"
-msgstr "bmx280 nadmořská výška (stopy)"
+msgstr ""
 
 #. TCS34725 color sensor library block
 msgid "TCS34725 connected"
-msgstr "TCS34725 připojen"
+msgstr ""
 
 #. TCS34725 color sensor library block
 msgid "TCS34725 rgb"
-msgstr "TCS34725 RGB"
+msgstr ""
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
-msgstr "barva _ jménu"
+msgstr ""
 
 #. DHT11 environmental sensor library block
 msgid "temperature (Celsius) DHT11 pin _"
-msgstr "teplota (Celsius) DHT11 Pin _"
+msgstr ""
 
 #. DHT11 environmental sensor library block
 msgid "humidity DHT11 pin _"
-msgstr "vlhkost DHT11 Pin _"
+msgstr ""
 
 #. DHT22 environmental sensor library block
 msgid "temperature (Celsius) DHT22 pin _"
-msgstr "teplota (Celsius) DHT22 Pin _"
+msgstr ""
 
 #. DHT22 environmental sensor library block
 msgid "humidity DHT22 pin _"
-msgstr "vlhkost DHT22 Pin _"
+msgstr ""
 
 #. PN532 RFID reader library block
 msgid "read PN532 RFID"
-msgstr "čti PN532 RFID"
+msgstr ""
 
 #. PN532 RFID reader library block
 msgid "RFID _ = _"
-msgstr "RFID _ = _"
+msgstr ""
 
 #. PN532 RFID reader library block
 msgid "get PN532 firmware version"
-msgstr "PN532 verze firmware"
+msgstr ""
 
 #. Touch Screen library label
 msgid "Touch Screen"
-msgstr "Dotyková obrazovka"
+msgstr ""
 
 #. Touch Screen library block
 msgid "TFT touched"
-msgstr "TFT dotek"
+msgstr ""
 
 #. Touch Screen library block
 msgid "TFT touch X position"
-msgstr "TFT dotek X souřadnice"
+msgstr ""
 
 #. Touch Screen library block
 msgid "TFT touch Y position"
-msgstr "TFT dotek Y souřadnice"
+msgstr ""
 
 #. Touch Screen library block
 msgid "TFT touch pressure"
-msgstr "TFT tlak doteku"
+msgstr ""
 
 #. HTTP Client library label
 msgid "HTTP client"
-msgstr "HTTP Client"
+msgstr ""
 
 #. HTTP Client library block.
 #. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
 msgid "_ data _ to http #SVG#colon-double-slash _"
-msgstr "_ data _ URL http #SVG#colon-double-slash _"
+msgstr ""
 
 #. HTTP Client library example data to send to a server
 msgid "MicroBlocks is fun"
-msgstr "Microblocks je fajn"
+msgstr ""
 
 #. HTTP Client library block
 msgid "port _"
-msgstr "port  _"
+msgstr ""
 
 #. HTTP Server library label
 msgid "HTTP server"
-msgstr "HTTP Server"
+msgstr ""
 
 #. HTTP Server library block
 msgid "start HTTP server"
-msgstr "spustit HTTP Server"
+msgstr ""
 
 #. HTTP Server library block
 msgid "HTTP server request"
-msgstr "požadavek na HTTP server"
+msgstr ""
 
 #. HTTP Server library block
 msgid "respond _ to HTTP request"
-msgstr "odpověď _ na HTTP požadavek"
+msgstr ""
 
 #. HTTP Server library block
 msgid "with body _"
-msgstr "s tělem _"
+msgstr ""
 
 #. HTTP Server library example response
 msgid "Welcome to the MicroBlocks HTTP server"
-msgstr "Vítejte na HTTP serveru MicroBlocks"
+msgstr ""
 
 #. HTTP Server library block
 msgid "and headers _"
-msgstr "a záhlaví _"
+msgstr ""
 
 #. HTTP Server library block
 msgid "body of request _"
-msgstr "tělo požadavku _"
+msgstr ""
 
 #. HTTP Server library block
 msgid "path of request _"
-msgstr "cesta požadavku _"
+msgstr ""
 
 #. HTTP Server library block
 msgid "headers of request _"
-msgstr "záhlaví požadavku _"
+msgstr ""
 
 #. HTTP Server library block
 msgid "method of request _"
-msgstr "metoda pro odpověď _"
+msgstr ""
 
 #. HTTP Server library block
 msgid "content length of request _"
-msgstr "délka obsahu požadavku _"
+msgstr ""
 
 #. WebSocket server library label
 msgid "WebSocket server"
-msgstr "WebSocket server"
+msgstr ""
 
 #. WebSocket Server library block
 msgid "start WebSocket server"
-msgstr "spustit WebSocket server"
+msgstr ""
 
 #. WebSocket Server library block
 msgid "last WebSocket event"
-msgstr "poslední událost WebSocekt"
+msgstr ""
 
 #. WebSocket Server library block
 msgid "client ID for WebSocket event _"
-msgstr "ID klienta pro WebSocket událost _"
+msgstr ""
 
 #. WebSocket Server library block
 msgid "payload for WebSocket event _"
-msgstr "payload pro WebSocket událost _"
+msgstr ""
 
 #. WebSocket Server library block
 msgid "type of WebSocket event _"
-msgstr "typ WebSocket události _"
+msgstr ""
 
 #. WebSocket Server library block
 msgid "send _ to WebSocket client _"
-msgstr "odešli _ WebSocket klientu _"
+msgstr ""
 
 #. WebSocket Server library example data to send to a client
 msgid "Hello, Client!"
-msgstr "Ahoj kliente!"
+msgstr ""
 
 #. Web Things library label
 msgid "Web Thing"
-msgstr "Web Thing"
+msgstr ""
 
 #. Web Things library block
 msgid "set thing name to _"
-msgstr "nastav jméno WebThing na _"
+msgstr ""
 
 #. Web Things library block
 msgid "set thing capability to _"
-msgstr "nastav schopnost WebThing na _"
+msgstr ""
 
 #. Web Things library block
 msgid "set boolean property _ title _ @Type _"
-msgstr "nastav logickou hodnotu _ jméno _ @Typ _"
+msgstr ""
 
 #. Web Things library block
 msgid "set string property _ title _ @Type _"
-msgstr "nastav textovou hodnotu _ jméno _ @Typ _"
+msgstr ""
 
 #. Web Things library block
 msgid "set number property _ title _ @Type _"
-msgstr "nastav číselnou hodnotu _ jméno _ @Typ _"
+msgstr ""
 
 #. Web Things library block
 msgid "set number property _ title _ min _ max _ @Type _"
-msgstr "nastav číselnou hodnotu _ jméno _ min _ max _ @Typ _"
+msgstr ""
 
 #. Web Things library block
 msgid "read only _"
-msgstr "pouze pro čtení _"
+msgstr ""
 
 #. Web Things library block
 msgid "register event _ type _"
-msgstr "registruj událost _ typ _"
+msgstr ""
 
 #. Web Things library block
 msgid "start WebThing server"
-msgstr "spustit WebThing Server"
+msgstr ""
 
 #. Web Things library block
 msgid "trigger event _"
-msgstr "trigger události _"
+msgstr ""
 
 #. Web Things library block
 msgid "thing description JSON"
-msgstr "WebThing JSON popis"
+msgstr ""
 
 #. Web Things library block
 msgid "properties JSON"
-msgstr "vlastnosti JSON"
+msgstr ""
 
 #. Web Things library block
 msgid "event definitions JSON"
-msgstr "definice událostí JSON"
+msgstr ""
 
 #. Web Things library block
 msgid "events JSON"
-msgstr "události JSON"
+msgstr ""
 
 #. Citilab Fantàstic Robot library block
 msgid "turn fantàstic _ degrees"
@@ -3387,6 +3426,10 @@ msgid "ms;start"
 msgstr ""
 
 #. micro:STEAMakers library block
+msgid "ms;stop"
+msgstr ""
+
+#. micro:STEAMakers library block
 msgid "ms;reset"
 msgstr ""
 
@@ -3456,23 +3499,23 @@ msgstr ""
 
 #. Generic robot turn block
 msgid "turn left"
-msgstr "zatoč vlevo"
+msgstr ""
 
 #. Generic stop block
 msgid "stop"
-msgstr "zastav"
+msgstr ""
 
 #. Generic robot "both sensors" input for a ( read ( right sensor ) ) block
 msgid "right sensor"
-msgstr "pravý senzor"
+msgstr ""
 
 #. Generic robot "both sensors" input for a ( read ( left sensor ) ) block
 msgid "left sensor"
-msgstr "levý senzor"
+msgstr ""
 
 #. Generic robot "both sensors" input for a ( read ( both sensors ) ) block
 msgid "both sensors"
-msgstr "oba senzory"
+msgstr ""
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR test buzzer"
@@ -3772,132 +3815,183 @@ msgstr ""
 
 #. MQTT library block
 msgid "MQTT connect to broker _"
-msgstr "MQTT připoj k brokeru _"
+msgstr ""
 
 #. MQTT library block
 msgid "buffer sizes _ client id _"
-msgstr "MQTT velikosti bufferů _ klienta _"
+msgstr ""
 
 #. MQTT library block
 msgid "username _ password _"
-msgstr "jméno _ heslo _"
+msgstr ""
 
 #. MQTT library block
 msgid "MQTT connected"
-msgstr "MQTT připojeno"
+msgstr ""
 
 #. MQTT library block
 msgid "MQTT disconnect"
-msgstr "MQTT odpojeno"
+msgstr ""
 
 #. MQTT library block
 msgid "MQTT sub _"
-msgstr "MQTT přihlas _"
+msgstr ""
 
 #. MQTT library block
 msgid "testTopic"
-msgstr "test Topic"
+msgstr ""
 
 #. MQTT library block
 msgid "MQTT unsub _"
-msgstr "MQTT odhlas _"
+msgstr ""
 
 #. MQTT library block
 msgid "MQTT pub topic _ payload _"
-msgstr "MQTT publikuj topic _ payload _"
+msgstr ""
 
 #. MQTT library block
 msgid "retain _ QoS _"
-msgstr "zachovej _ QoS _"
+msgstr ""
 
 #. MQTT library block
 msgid "MQTT event"
-msgstr "MQTT událost"
+msgstr ""
 
 #. MQTT library block
 msgid "binary _"
-msgstr "binární _"
+msgstr ""
 
 #. MQTT library block
 msgid "topic for MQTT event _"
-msgstr "topic pro MQTT událost _"
+msgstr ""
 
 #. MQTT library block
 msgid "payload for MQTT event _"
-msgstr "payload pro MQTT událost _"
+msgstr ""
 
 #. MQTT library block
 msgid "MQTT set will topic _ payload _"
-msgstr "MQTT závěť nastav topic _ payload _"
+msgstr ""
 
 #. MQTT library block
-#, fuzzy
 msgid "testWill"
-msgstr "MQTT test závěti"
+msgstr ""
 
 #. MQTT library block
 msgid "Last will!"
-msgstr "MQTT Poslední vůle!"
+msgstr ""
 
 #. MQTT library block
 msgid "buffer sizes _"
-msgstr "velikosti bufferů MQTT _"
+msgstr ""
 
 #. UDP library block
 msgid "UDP start port _"
-msgstr "spusť UDP na portu _"
+msgstr ""
 
 #. UDP library block
 msgid "UDP stop"
-msgstr "zastav UDP"
+msgstr ""
 
 #. UDP library block
 msgid "UDP send packet _ to ip _ port _"
-msgstr "odešli UDP packet _ to IP _ port"
+msgstr ""
 
 #. UDP library block
 msgid "UDP receive packet"
-msgstr "přijmi UDP packetu"
+msgstr ""
 
 #. UDP library block
 msgid "binary data _"
-msgstr "binární data _"
+msgstr ""
 
 #. UDP library block
 msgid "UDP remote IP address"
-msgstr "vzdálená IP adresa UDP"
+msgstr ""
 
 #. UDP library block
 msgid "UDP remote port"
-msgstr "vzdálený UDP port"
+msgstr ""
 
 #. WiFi Radio library block
 msgid "wifi send number _"
-msgstr "WiFi odešli číslo _"
+msgstr ""
 
 #. WiFi Radio library block
 msgid "wifi send string _"
-msgstr "WiFi odešli řetězec _"
+msgstr ""
 
 #. WiFi Radio library block
 msgid "wifi send pair _ = _"
-msgstr "WiFi odešli pár _ = _"
+msgstr ""
 
 #. WiFi Radio library block
 msgid "wifi message received?"
-msgstr "přijata WiFi zpráva ?"
+msgstr ""
 
 #. WiFi Radio library block
 msgid "wifi last number"
-msgstr "poslední číslo WiFi"
+msgstr ""
 
 #. WiFi Radio library block
 msgid "wifi last string"
-msgstr "poslední řetězec WiFi"
+msgstr ""
 
 #. WiFi Radio library block
 msgid "wifi set group _ (0-255)"
-msgstr "nastav skupinu WiFi _ (0-255)"
+msgstr ""
+
+#. BLE Radio library block
+msgid "ble send number _"
+msgstr ""
+
+#. BLE Radio library block
+msgid "ble send string _"
+msgstr ""
+
+#. BLE Radio library block
+msgid "ble send pair _ = _"
+msgstr ""
+
+#. BLE Radio library block
+msgid "ble message received?"
+msgstr ""
+
+#. BLE Radio library block
+msgid "ble last number"
+msgstr ""
+
+#. BLE Radio library block
+msgid "ble last string"
+msgstr ""
+
+#. BLE Radio library block
+msgid "ble set group _ (0-255)"
+msgstr ""
+
+#. BLE Scanner library block
+msgid "scan received"
+msgstr ""
+
+#. BLE Scanner library block
+msgid "RSSI"
+msgstr ""
+
+#. BLE Scanner library block
+msgid "address"
+msgstr ""
+
+#. BLE Scanner library block
+msgid "address type"
+msgstr ""
+
+#. BLE Scanner library block
+msgid "device name"
+msgstr ""
+
+#. BLE Scanner library block
+msgid "hasType _"
+msgstr ""
 
 #. Cutebot library label
 msgid "Cutebot"
@@ -4213,6 +4307,70 @@ msgstr ""
 msgid "NeZha set continuous rotation servo _ speed to _ %"
 msgstr ""
 
+#. NeZha2 robot library label
+msgid "Nezha2"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha beep _ Hz for _ msecs"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha set motor _ speed to _ (-100-100)"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha stop motor _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha stop all motors"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha set _ servo _ angle to _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha set LED _ to _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "brightness _ %"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha set all LEDs to _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha trim pot _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha soil moisture _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha read analog _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha crash sensor _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha line sensor _ sees line on left _ right _"
+msgstr ""
+
+#. NeZha2 robot library block
+msgid "Nezha distance _ (cm)"
+msgstr ""
+
 #. WuKong2040 robot library label
 msgid "WuKong2040"
 msgstr ""
@@ -4353,1670 +4511,1603 @@ msgstr ""
 msgid "Octo stop"
 msgstr ""
 
+#. CallioGamer library block
+msgid "A pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "B pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "LEFT pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "RIGHT pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "UP pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "DOWN pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "X pressed"
+msgstr ""
+
+#. CallioGamer library block
+msgid "Y pressed"
+msgstr ""
+
 #. In MicroBlocks IDE project menu
 msgid "New"
-msgstr "Nový"
+msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "Open"
-msgstr "Otevřít"
+msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "Open from board"
-msgstr "Otevřít z mikropočítače"
+msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "Copy project URL to clipboard"
-msgstr "Zkopírovat projekt z URL do schránky"
+msgstr ""
 
 #. In information window title
 msgid "Information"
-msgstr "Informace"
+msgstr ""
 
 #. MicroBlocks IDE message
 msgid "Plug in the board."
-msgstr "Připojte mikropočítač."
+msgstr ""
 
 #. MicroBlocks IDE message
-msgid "Plug in the board and click the USB icon to connect."
-msgstr "Připoj mikropočítač a klikni na ikonu USB pro pčipjení."
+msgid "Connect board to proceed."
+msgstr ""
 
 #. MicroBlocks IDE message
 msgid "Reading project from board..."
-msgstr "Načítání projektu z mikropočítače..."
+msgstr ""
 
 #. MicroBlocks IDE message
 msgid "Loading project..."
-msgstr "Nahrávání projektu..."
+msgstr ""
 
 #. MicroBlocks IDE message
 #. %1 holds the name of a library
 msgid "Found a newer version of %1."
-msgstr "Byla nalezena nová verze %1."
+msgstr ""
 
 #. MicroBlocks IDE message.
 #. First part is "Found a newer version of [a library name]"
 msgid "Do you want me to update the one in the project?"
-msgstr "Chcete toto aktualizovat v projektu?"
+msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "Save"
-msgstr "Uložit"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
-msgstr "Připojit"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "connect"
-msgstr "připojit"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
-msgstr "připojit (BLE)"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
-msgstr "spustit Boardie"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "disconnect"
-msgstr "odpojit"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "Serial port:"
-msgstr "Seriový port:"
+msgstr ""
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr "Připoj desku z zkus znovu"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu. Select "other..." serial port
 msgid "other..."
-msgstr "jiné..."
+msgstr ""
 
 #. In MicroBlocks IDE connection menu. Select "no" serial port
 msgid "none"
-msgstr "žádné připojení"
+msgstr ""
 
 #. In MicroBlocks IDE connection window. Serial port name to connect to.
 msgid "Port name?"
-msgstr "Název portu?"
+msgstr ""
 
 #. In MicroBlocks IDE firmware update widgets. Board type to update.
 msgid "Board type:"
-msgstr "Typ mikropočítače:"
+msgstr ""
 
 #. In MicroBlocks IDE firmware update widgets. Board to update.
 msgid "Select board:"
-msgstr "Vybrat desku mikropočítače:"
+msgstr ""
 
 #. Firmware file read error.
 #. %1 holds the firmware file name
 msgid "Could not read %1."
-msgstr "Nelze přečíst %1."
+msgstr ""
 
 #. About window info. As in "By Mary, Johanna and Tracy".
 #. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
 msgid "about;by %1, %2 & %3."
-msgstr "od %1, %2 & 3."
+msgstr ""
 
 #. About window info
 msgid "Created with GP"
-msgstr "Vytvořeno s použitím GP"
+msgstr ""
 
 #. About window info
 msgid "More info at http://microblocks.fun"
-msgstr "Další informace na http://microblocks.fun"
+msgstr ""
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
-msgstr "Skript je příliš velký aby mohl být odeslán do mikropočítače."
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Použijte tlačítko \"Připojit\" pro připojení zařízeni s MicroBlocks."
+msgstr ""
 
 #. MicroBlocks IDE error message.
 msgid "No boards found; is your board plugged in?"
-msgstr "Nenalezen žádný mikropočítač, je připojen?"
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
-msgstr "Pro mikropočítače AdaFruit stiskněte dvakrát tlačítko reset a zkuste znovu."
+msgstr ""
 
 #. MicroBlocks IDE error message.
 msgid "Only recent Chrome and Edge browsers support WebSerial."
-msgstr "Pouze nejnovější prohlížeče Chrome a Edge podporují WebSerial."
+msgstr ""
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
-msgstr "Mikropočítačová deska neodpovídá."
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "Try to Install MicroBlocks on the board?"
-msgstr "Instalovat MicroBlocks do mikropočítače?"
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "The MicroBlocks in your board is not current"
-msgstr "Verze MicroBlocks v mikropočítači není aktuální"
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "Try to update MicroBlocks on the board?"
-msgstr "Aktualizovat MicroBlocks v mikropočítači?"
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "The firmware on the board is not compatible with this version of MicroBlocks."
-msgstr "Firmware v mikropočítači není kompatibilní s touto verzí MicroBlocks."
+msgstr ""
 
 #. MicroBlocks doesn't need a translation, does it?
 msgid "MicroBlocks"
-msgstr "MicroBlocks"
+msgstr ""
 
 #. Tooltip in "Stop" button. Top right of IDE.
 msgid "Stop"
-msgstr "Stop"
+msgstr ""
 
 #. Tooltip in "Start" button. Top right of IDE.
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 #. Confirmation window
 msgid "Quit MicroBlocks?"
-msgstr "Ukončit MicroBlocks?"
+msgstr ""
 
 #. Confirmation window
 msgid "Discard current project?"
-msgstr "Zahodit aktuální projekt?"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "set block size..."
-msgstr "nastavit velikost bloku..."
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "make blocks bigger or smaller"
-msgstr "zvětšit / zmenšit bloky"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "clean up"
-msgstr "vyčistit"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "arrange scripts"
-msgstr "urovnat skripty"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "undrop (ctrl-Z)"
-msgstr "vrátit zpět (Strg-Z)"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "undo the last block drop"
-msgstr "vrátit zpět poslední položení bloku"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "copy all scripts to clipboard"
-msgstr "zkopírovat všechny skripty do schránky"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "copy all scripts to clipboard as URL"
-msgstr "zkopírovat všechny skripty do schránky jako URL"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "paste all scripts"
-msgstr "načíst všechny skripty ze schránky"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "paste script"
-msgstr "načíst skript ze schránky"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "paste script from clipboard"
-msgstr "načíst skript ze schránky"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "save a picture of all visible scripts"
-msgstr "uložit obrázky všech viditelných skriptů"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "set exported script scale"
-msgstr "nastavit měřítko exportovaných skriptů"
+msgstr ""
 
 #. Block size option
 msgid "small (50%)"
-msgstr "malé (50%)"
+msgstr ""
 
 #. Block size option
 msgid "normal (65%)"
-msgstr "standard (65%)"
+msgstr ""
 
 #. Block size option
 msgid "large (100%)"
-msgstr "velké (100%)"
+msgstr ""
 
 #. Block size option
 msgid "printable (200%)"
-msgstr "pro tisk (200%)"
+msgstr ""
 
 #. Block selection right-click context menu
 msgid "duplicate selection"
-msgstr "duplikovat vybrané"
+msgstr ""
 
 #. Block selection right-click context menu
 msgid "drag selection"
-msgstr "přetáhnout vybrané"
+msgstr ""
 
 #. Block selection right-click context menu
 msgid "delete selection"
-msgstr "smazat vybrané"
+msgstr ""
 
 #. Settings menu option
 msgid "about..."
-msgstr "o..."
+msgstr ""
 
 #. Window title
 msgid "About MicroBlocks"
-msgstr "O MicroBlocks"
+msgstr ""
 
 #. Settings menu option
 msgid "virtual machine version"
-msgstr "verze virtuálního stroje"
+msgstr ""
 
 #. Settings menu option
 msgid "update firmware on board"
-msgstr "aktualizace firmware v mikropočítači"
+msgstr ""
 
 #. Settings menu option
 msgid "enable or disable BLE"
-msgstr "povolit/zakázat BLE"
+msgstr ""
 
 #. config confirmation
 msgid "Allow the attached board to be connected via BLE?"
-msgstr "Povolit připojení mikropočítače pomocí BLE?"
+msgstr ""
 
 #. Graph context menu option
 msgid "show data graph"
-msgstr "zobrazit data v grafu"
+msgstr ""
 
 #. Graph context menu option
 msgid "set serial delay"
-msgstr "nastav prodlevu sériové linky"
+msgstr ""
 
 #. Settings menu option
 msgid "firmware version"
-msgstr "verze firmware"
+msgstr ""
 
 #. Settings menu option
 msgid "HTTP Server"
-msgstr "HTTP Server"
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "MicroBlocks HTTP Server listening on port 6473"
-msgstr "MicroBlocks HTTP Server poslouchá na portu 6473"
+msgstr ""
 
 #. Settings menu option
 msgid "disable autoloading board libraries"
-msgstr "deaktivovat automatické načítání knihoven mikropočítače"
+msgstr ""
 
 #. Settings menu option
 msgid "compact code store"
-msgstr "minimalizovat uložený kód"
+msgstr ""
 
 #. Settings menu option
 msgid "autoload board libraries"
-msgstr "automatické načítání knihoven z mikropočítače"
+msgstr ""
 
 #. Settings menu option
 msgid "PlugShare when project empty"
-msgstr "PlugShare, když je projekt prázdný"
+msgstr ""
 
 #. Settings menu option
 msgid "hide implementation blocks"
-msgstr "skrýt implementační bloky"
+msgstr ""
 
 #. Settings menu tooltip
 msgid "do not show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
-msgstr "skrýt interní bloky a proměnné knihoven (t.j. začínající znakem _ )"
+msgstr ""
 
 #. Settings menu option
 msgid "show implementation blocks"
-msgstr "zobrazovat implementační bloky"
+msgstr ""
 
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
-msgstr "zobrazovat interní bloky a proměnné knihoven (t.j. začínající znakem _ )"
+msgstr ""
 
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
-msgstr "načíst automaticky bloky z mikropočítače i když je aktuální projekt prázdný"
+msgstr ""
 
 #. Settings menu tooltip
 msgid "make the IDE darker"
-msgstr "nastaví IDE do tmavého režimu"
+msgstr ""
 
 #. Settings menu option
 msgid "erase flash and update firmware on ESP board"
-msgstr "vymazat flash mikropočítače a aktualizovat firmware ESP desky"
+msgstr ""
 
 #. Settings menu option
 msgid "install ESP firmware from URL"
-msgstr "instalovat ESP firmware z URL"
+msgstr ""
+
+#. Settings menu option
+msgid "install ESP firmware from microblocks.fun"
+msgstr ""
 
 #. Firmware install board type confirmation. As in "Use board type micro:bit?"
 msgid "Use board type"
-msgstr "Použít mikropočítač typu"
+msgstr ""
 
 #. Successful firmware installation confirmation window title
 msgid "Firmware Install"
-msgstr "Instalace firmware"
+msgstr ""
 
 #. Successful firmware installation confirmation window message
 msgid "Firmware Installed"
-msgstr "Firmware instalován"
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
 msgstr ""
-"Znovu připojte mikropočítač stisknutím tlačítka \"Připojit\" (ikona USB)."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
 msgstr ""
-"Před pokračováním stiskněte a držte bílé tlačítko BOOTSEL a připojte USB "
-"kabel."
 
 #. MicroBlocks IDE information
 msgid "You will be asked to save the firmware file."
-msgstr "Budete dotázáni na uložení souboru s firmware."
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "If your micro:bit shows a sad face, save the firmware.hex file to your disk then drop it onto the MICROBIT drive."
 msgstr ""
-"Pokud micro:bit zobrazí ikonu \"sad face\", uložte soubor firmware.hex na "
-"disk a potom jej přeneste na disk MICROBITu."
 
 #. MicroBlocks IDE information
 msgid "Save the firmware file when prompted."
-msgstr "Uloží soubor firmware po vyzvání."
+msgstr ""
 
 # %1 holds the drive name
 #. MicroBlocks IDE information
 msgid "Drag the firmware file you just saved to the %1 drive."
-msgstr "Přenes právě uložený firmware na %1 disk."
+msgstr ""
 
 #. Firmware installation process information
 msgid "Installing firmware..."
-msgstr "Instaluji firmware..."
+msgstr ""
 
 #. MicroBlocks IDE information
 msgid "Board not connected"
-msgstr "Mikropočítač není připojen"
+msgstr ""
 
 #. Board wiping process information
 msgid "Wiping board..."
-msgstr "Mazání mikropočítače..."
+msgstr ""
 
 #. Process cancellation tip
 msgid "(press ESC to cancel)"
-msgstr "Stiskněte ESC pro přerušení)"
+msgstr ""
 
 #. Process finished information
 msgid "Done!"
-msgstr "Hotovo!"
+msgstr ""
 
 #. Settings menu option
 msgid "download and install latest VM"
-msgstr "stáhnout a instalovat nejnovější virtuální stroj"
+msgstr ""
 
 #. Settings menu option
 msgid "Select board type:"
-msgstr "Výběr mikropočítače:"
+msgstr ""
 
 #. Firmware upload process information
 msgid "Uploading MicroBlocks to board..."
-msgstr "MicroBlocks bude instalován do mikropočítče..."
+msgstr ""
 
 #. Settings menu option
 msgid "dark mode"
-msgstr "tmavý režim"
+msgstr ""
 
 #. Settings menu option
-msgid "show advanced blocks"
-msgstr "zobrazit pokročilé bloky"
+msgid "advanced mode"
+msgstr ""
+
+#. Settings menu tooltip
+msgid "show advanced blocks, menu items and editor functionalities"
+msgstr ""
 
 #. Settings menu option
 msgid "export functions as library"
-msgstr "exportovat funkce jako knihovnu"
-
-#. Settings menu option
-msgid "hide advanced blocks"
-msgstr "skrýt pokročilé bloky"
+msgstr ""
 
 #. Project menu option
 msgid "put file on board"
-msgstr "ulož soubor do mikropočítačw"
+msgstr ""
 
 #. Project menu option
 msgid "get file from board"
-msgstr "načti soubor z mikropočítače"
+msgstr ""
 
 #. File upload process information
 msgid "uploaded"
-msgstr "nahráno"
+msgstr ""
 
 #. File download process information
 msgid "downloaded"
-msgstr "staženo"
+msgstr ""
 
 #. Graph window title
 msgid "Data Graph"
-msgstr "Graf dat"
+msgstr ""
 
 #. Graph button tooltip
 msgid "Graph"
-msgstr "Graf"
+msgstr ""
 
 #. Graph context menu option
 msgid "clear graph"
-msgstr "smazat graf"
+msgstr ""
 
 #. Graph context menu option
 msgid "zero at bottom"
-msgstr "0 dole"
+msgstr ""
 
 #. Graph context menu option
 msgid "zero in middle"
-msgstr "0 uprostřed"
+msgstr ""
 
 #. Graph context menu option
 msgid "export data to CSV file"
-msgstr "export dat do CSV souboru"
+msgstr ""
 
 #. Graph context menu option
 msgid "import data from CSV file"
-msgstr "import dat z CSV souboru"
+msgstr ""
 
 #. Graph context menu option
 msgid "copy graph data to clipboard"
-msgstr "kopírovat graf do schránky"
+msgstr ""
 
 #. Script right-click context menu
 msgid "show instructions"
-msgstr "ukázat kódy instrukcí"
+msgstr ""
 
 #. Script right-click context menu
 msgid "show compiled bytes"
-msgstr "ukázat kompilované bajty"
+msgstr ""
 
 #. Block right-click context menu
 msgid "expand"
-msgstr "rozbalit"
+msgstr ""
 
 #. Block right-click context menu
 msgid "collapse"
-msgstr "sbalit"
+msgstr ""
 
 #. Variable right-click context menu
 msgid "rename..."
-msgstr "přejmenovat..."
+msgstr ""
 
 #. Variable right-click context menu
 msgid "find variable accessors"
-msgstr "najít použití proměnné"
+msgstr ""
 
 #. Variable right-click context menu tooltip
 msgid "find scripts or block definitions where this variable is being read"
-msgstr "najít skripty nebo bloky kde je proměnná čtena"
+msgstr ""
 
 #. Variable right-click context menu
 msgid "find variable modifiers"
-msgstr "najít modifikátory proměnné"
+msgstr ""
 
 #. Variable right-click context menu tooltip
 msgid "find scripts or block definitions where this variable is being set or changed"
-msgstr "najít skripty nebo bloky kde je do proměnná zapisováno"
+msgstr ""
 
 #. Block right-click context menu
 msgid "find uses of this block"
-msgstr "najít použití aktuálního bloku"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "find scripts or block definitions using this block"
-msgstr "najít skripty nebo definice bloků které používají aktuální blok"
+msgstr ""
 
 #. Block right-click context menu
 msgid "show block definition..."
-msgstr "zobraz definici bloku..."
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "show the definition of this block"
-msgstr "zobraz definici aktuálního bloku"
+msgstr ""
 
 #. Block right-click context menu
 msgid "delete block definition..."
-msgstr "smaž definici bloku..."
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "delete the definition of this block"
-msgstr "smaž definici aktuálního bloku"
+msgstr ""
 
 #. Block right-click context menu
 msgid "duplicate"
-msgstr "duplikovat"
+msgstr ""
 
 #. Block right-click context menu
 msgid "help"
-msgstr "nápověda"
+msgstr ""
 
 #. Block right-click context menu
 msgid "duplicate this block"
-msgstr "duplikovat tento blok"
+msgstr ""
 
 #. Block right-click context menu
 msgid "delete block"
-msgstr "smazat blok"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "delete this block"
-msgstr "smazat tento blok"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "just this one block"
-msgstr "jen tento blok"
+msgstr ""
 
 #. Block right-click context menu
 msgid "copy to clipboard"
-msgstr "kopírovat do schránky"
+msgstr ""
 
 #. Block right-click context menu
 msgid "copy to clipboard as URL"
-msgstr "kopírovat do schránky jako URL"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "copy these blocks to the clipboard as a URL"
-msgstr "kopírovat vybrané bloky do schránky jako URL"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "copy these blocks to the clipboard"
-msgstr "kopírovat vybrané bloky do schránky"
+msgstr ""
 
 #. Block right-click context menu
 msgid "duplicate all"
-msgstr "duplikovat vše"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "duplicate these blocks"
-msgstr "duplikovat vybrané bloky"
+msgstr ""
 
 #. Block right-click context menu
 msgid "extract block"
-msgstr "extrahovat blok"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "pull out this block"
-msgstr "vytáhnout blok"
+msgstr ""
 
 #. Block right-click context menu tooltip
 msgid "show help for this block in a browser"
-msgstr "zobrazit nápovědu k bloku v prohlížeči"
+msgstr ""
 
 #. Script right-click context menu
 msgid "save picture of script"
-msgstr "uložit obrázek skriptu"
+msgstr ""
 
 #. Script right-click context menu
 msgid "save picture of script with result"
-msgstr "uložit obrázek skriptu s výsledkem"
+msgstr ""
 
 #. Script right-click context menu tooltip
 msgid "save a picture of this block definition as a PNG file"
-msgstr "uložit obrázek definice bloku jako PNG"
+msgstr ""
 
 #. Script right-click context menu tooltip
 msgid "save a picture of these blocks as a PNG file"
-msgstr "uložit obrázek vybraných bloků jako PNG"
+msgstr ""
 
 #. Script right-click context menu tooltip
 msgid "save a picture of these blocks and their result as a PNG file"
-msgstr "uložit obrázek vybraných bloků a jejich výsledku jako PNG"
+msgstr ""
 
 #. Script right-click context menu
 msgid "copy script"
-msgstr "kopírovat skript"
+msgstr ""
 
 #. Script right-click context menu
 msgid "script;delete"
-msgstr "vymazat"
+msgstr ""
 
 #. Block definition right-click context menu
 msgid "blockdef;delete"
-msgstr "vymazat"
+msgstr ""
 
 #. Block input right-click context menu
 msgid "Input type:"
-msgstr "Vstupní typ:"
+msgstr ""
 
 #. Block input right-click context menu option
 msgid "string only"
-msgstr "pouze řetězec"
+msgstr ""
 
 #. Block input right-click context menu option
 msgid "string or number"
-msgstr "řetězec nebo číslo"
+msgstr ""
 
 #. Block input right-click context menu option
 msgid "number only"
-msgstr "pouze číslo"
+msgstr ""
 
 #. Text right-click context menu option
 msgid "stop editing"
-msgstr "ukončit úpravy"
+msgstr ""
 
 #. Text right-click context menu option
 msgid "cut"
-msgstr "vyjmout"
+msgstr ""
 
 #. Text right-click context menu option
 msgid "copy"
-msgstr "kopírovat"
+msgstr ""
 
 #. Text right-click context menu option
 msgid "paste"
-msgstr "vložit"
+msgstr ""
 
 #. Text right-click context menu option
 msgid "accept"
-msgstr "přijmout"
+msgstr ""
 
 #. Text right-click context menu option
 msgid "revert"
-msgstr "vrátit"
+msgstr ""
 
 #. Block input right-click context menu option
 msgid "select all"
-msgstr "vybrat vše"
+msgstr ""
 
 #. Block input right-click context menu option
 msgid "define"
-msgstr "definovat"
+msgstr ""
 
 #. Block input right-click context menu option
 msgid "number/string"
-msgstr "číslo/řetězec"
+msgstr ""
 
 #. Block input right-click context menu option
 msgid "editable number or string"
-msgstr "editovatelné číslo/řetězec"
+msgstr ""
 
 #. Block part type, while making a new block
 msgid "label"
-msgstr "štítek"
+msgstr ""
 
 #. Block part type, while making a new block
 msgid "input"
-msgstr "vstup"
+msgstr ""
 
 #. Block definition right-click context menu option
 msgid "hide block definition"
-msgstr "skrýt definici bloku"
+msgstr ""
 
 #. Block definition right-click context menu option confirmation
 msgid "Are you sure you want to remove this block definition?"
-msgstr "Jsi si jistý že chceš odstranit definici tohoto bloku?"
+msgstr ""
 
 #. Language menu tooltip
 msgid "Language"
-msgstr "Jazyk"
+msgstr ""
+
+#. Language menu item. Takes the user to documentation about adding a missing language
+msgid "Missing language?"
+msgstr ""
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr "Uživatelský..."
+msgstr ""
 
 #. Obsolete blocks category label
 msgid "Obsolete"
-msgstr "Zastaralé"
+msgstr ""
 
 #. Button
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #. Button
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #. Button
 msgid "Yes"
-msgstr "Ano"
+msgstr ""
 
 #. Button
 msgid "No"
-msgstr "Ne"
+msgstr ""
 
 #. Button
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr ""
 
 #. Button
 msgid "Okay"
-msgstr "Okay"
+msgstr ""
 
 #. Window title
 msgid "Confirm"
-msgstr "Potvrdit"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Examples"
+msgstr ""
+
+#. Examples folder
+msgid "folder; by board"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Art"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Games"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Music"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Web of Things"
+msgstr ""
+
+#. Examples folder
+msgid "folder;CPX"
+msgstr ""
+
+#. Examples folder
+msgid "folder;microbit and Calliope"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Citilab ED1 and M5Stack"
+msgstr ""
 
 #. Library folder
 msgid "LIBRARIES"
-msgstr "KNIHOVNY"
+msgstr ""
 
 #. Library folder
 msgid "folder;Libraries"
-msgstr "Knihovny"
+msgstr ""
 
 #. Library folder
 msgid "folder;AI"
-msgstr "Umělá Inteligence (AI)"
+msgstr ""
 
 #. Library folder
 msgid "folder;Graphics and Displays"
-msgstr "Grafika a displeje"
+msgstr ""
 
 #. Library folder
 msgid "folder;Kits and Boards"
-msgstr "Stavebnice a desky"
+msgstr ""
 
 #. Library folder
 msgid "folder;Network"
-msgstr "Sítě"
+msgstr ""
 
 #. Library folder
 msgid "folder;Motors"
-msgstr "Motory"
+msgstr ""
 
 #. Library folder
 msgid "folder;Other"
-msgstr "Jiné"
+msgstr ""
 
 #. Library folder
 msgid "folder;Robots"
-msgstr "Roboti"
+msgstr ""
 
 #. Library folder
 msgid "folder;Sensing"
-msgstr "Senzory"
+msgstr ""
 
 #. Library folder
 msgid "folder;Sound"
-msgstr "Zvuk"
+msgstr ""
 
 #. Library folder
 msgid "folder;System"
-msgstr "Systém"
+msgstr ""
 
 #. Library folder
 msgid "folder;WorkInProgress"
-msgstr "Připravuje se"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "New library name?"
-msgstr "Jméno nové knihovny?"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "show all block definitions"
-msgstr "zobraz všechny definice bloků"
+msgstr ""
 
 #. Scripting area right-click context menu
 msgid "hide all block definitions"
-msgstr "skryj všechny definice bloků"
+msgstr ""
 
 #. Library label right click context menu option
 msgid "export this library"
-msgstr "exportuj tuto knihovnu"
+msgstr ""
 
 #. Library label right click context menu option
 msgid "delete library"
-msgstr "smaž knihovnu"
+msgstr ""
 
 #. Project source folder
 msgid "Examples"
-msgstr "Příklady"
+msgstr ""
 
 #. Project source folder
 msgid "Desktop"
-msgstr "Plocha"
+msgstr ""
 
 #. Project source folder
 msgid "Computer"
-msgstr "Počítač"
+msgstr ""
 
 #. Project source
 msgid "Cloud"
-msgstr "Cloud"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "File"
-msgstr "Soubor"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "File Open"
-msgstr "Otevřít soubor"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "File Save"
-msgstr "Uložit soubor"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "File name:"
-msgstr "Soubor:"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "New Folder"
-msgstr "Nová složka"
+msgstr ""
 
 #. String in file picker and library dialogs
 #. as in "by Jane Doe", the author of this library
 msgid "libdata;by"
-msgstr "od"
+msgstr ""
 
 #. String in file picker and library dialogs
 #. as in dependencies of this library
 msgid "Depends:"
-msgstr "Závislost:"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Tags:"
-msgstr "Klíčová slova:"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Path, name or URL for library?"
-msgstr "Cesta, jméno nebo URL knihovny?"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Invalid URL"
-msgstr "Neplatné URL"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Could not fetch library."
-msgstr "Nelze načíst knihovnu."
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Host does not exist or is currently down."
-msgstr "Server neexistuje nebo jem momentálně nedostupný."
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "File not found in server."
-msgstr "Soubor na serveru nenalezen."
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Server expects HTTPS, and MicroBlocks doesn't currently support it."
-msgstr "Server očekává HTTPS, momentálně MicroBlocks nepodporuje."
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "library information"
-msgstr "informace o knihovně"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "built-in library"
-msgstr "vestavěná knihovna"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Dependency path, name or URL?"
-msgstr "Závislost - cesta, jméno nebo URL?"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
 msgstr ""
-"Při přidání knihovny která je vestavěna v MicroBlocks lze zadat pouze její "
-"jméno."
 
 #. String in file picker and library dialogs
 msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
 msgstr ""
-"Pokud je vaše knihovna ve složce \"Libraries\" ve vaší lokální složce "
-"projektu MicroBlocks, musíte název doplnit prefixem \"/\"."
 
 #. String in file picker and library dialogs
 msgid "If the library is hosted online, please input its full URL."
-msgstr "Pokud je knihovna hostována online, je třeba zadat celou URL adresu."
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Tag name?"
-msgstr "Klíčové slovo?"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "user library"
-msgstr "uživatelská knihovna"
+msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "Přidat Knihovnu"
+msgstr ""
 
 #. the %1 tag should be kept intact. Seconds remaining for a process to finish.
 msgid "%1 seconds remaining"
-msgstr "%1 zbývající vteřiny"
+msgstr ""
 
 #. Block size button tooltip
 msgid "Decrease block size"
-msgstr "Zmenšit velikost bloku"
+msgstr ""
 
 #. Block size button tooltip
 msgid "Restore block size to 100%"
-msgstr "Obnovit velikost bloku (100%)"
+msgstr ""
 
 #. Block size button tooltip
 msgid "Increase block size"
-msgstr "Zvětšit velikost bloku"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Button"
-msgstr "Tlačítko"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Boolean Input"
-msgstr "Zadání logické hodnoty"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] toggle value, or drop a reporter into it."
-msgstr "[l] přepnutí hodnoty nebo přetažení hodnoty na pozici."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Color Input"
-msgstr "Zadání barvy"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] change the color, or drop a reporter into it."
-msgstr "[l] změna barvy nebo přetažení hodnoty na pozici."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Input"
-msgstr "Vstup"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] edit its value, or drop a reporter into it."
-msgstr "[l] úprava hodnoty nebo přetažení hodnoty na pozici."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Block Extension"
-msgstr "Rozšířené bloky"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] right arrow to show optional inputs, left arrow to hide."
 msgstr ""
-"[l] šipka doprava pro zobrazení volitelných parametrů, šipka doleva pro "
-"skrytí."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Command Block"
-msgstr "Příkazový blok"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Hat Block"
-msgstr "Zahajovací blok"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to run, or drag to build scripts. [r] menu."
-msgstr "[l] spustit, přetáhnout pro tvorbu skriptu. [r] menu."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Reporter Block"
-msgstr "Blok zprávy"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to see value, or drop into an input slot. [r] menu."
-msgstr "[l] zobrazit hodnotu, přetáhnout do místa pro vstup. [r] menu."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Script"
-msgstr "Skript"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to run. [r] menu."
-msgstr "[l] spustit. [r] menu."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Pane Divider"
-msgstr "Oddělovač panelů"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag to change pane width."
-msgstr "Táhnout pro změnu šířky panelu."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Library"
-msgstr "Knihovna"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to show the blocks in this library. [r] menu."
-msgstr "[l] zobrazení bloků v této knihovně. [r] menu."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Block Category"
-msgstr "Kategorie bloků"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] to show the blocks in this category."
-msgstr "[l] zobrazení bloků této kategorie."
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Palette"
-msgstr "Paleta"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
 msgstr ""
-"Odsud se tahají bloky pro vytváření skriptů. Pro smazání skriptu jej upusťte "
-"zde."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Scripts Pane"
-msgstr "Panel skriptů"
+msgstr ""
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "Drag blocks here to build scripts. [r] menu."
-msgstr "Do tohoto panelu se vkládají bloky pro vytváření skriptu. [r] menu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Turn the user LED on or off."
-msgstr "Zhasnutí/rozsvícení uživatelské LED na desce."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Display a bubble showing the value."
-msgstr "Zobrazení bubliny s hodnotou."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Graph the value."
-msgstr "Zápis hodnotu do grafu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the state of button A ( (-o) or (o-) )."
-msgstr "Vrátí stav tlačítka A ( (-o) or (o-) )."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the state of button B ( (-o) or (o-) )."
-msgstr "Vrátí stav tlačítka B ( (-o) or (o-) )."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the timer was last reset."
-msgstr "Vrátí počet milisekund od posledního nulování časovače."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Reset the timer."
-msgstr "Vynulování časovače."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the seconds since power up."
-msgstr "Vrátí počet vteřin od zapnutí mikropočítače."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since power up."
-msgstr "Vrátí počet milisekund od zapnutí mikropočítače."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the microseconds since power up."
-msgstr "Vrátí počet mikrosekund od zapnutí mikropočítače."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the board type."
-msgstr "Vrátí typ mikropočítače/desky."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Reports firmware version loaded on the board."
-msgstr "Vrátí aktuální verzi firmware mikropočítače."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Reports the three-letter BLE ID of the board if it supports BLE."
-msgstr "Vrátí 3-znakové BLE-ID pokud deska mikropočítače podporuje BLE."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Reports (-o) if a BLE client is connected."
-msgstr "Vrátí (-o) pokud je připojen BLE klient."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the given start milliseconds. Handles clock wrap."
-msgstr "Vrátí počet milisekund od daného počátečního stavu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the microseconds since the given start microseconds. Handles clock wrap."
-msgstr "Vrátí počet mikrosekund od daného počátečního stavu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Reports (-o) if the board is connected to IDE."
-msgstr "Vrátí (-o) pokud je mikropočítač připojen k IDE."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the electrical logic level on a digital pin ( (-o) or (o-) )."
-msgstr "Vrátí logickou hodnotu digitálního vstupu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a number proportional to the voltage on an analog pin (0 = ground, 1023 = supply voltage)."
 msgstr ""
-"Vrátí hodnotu odpovídající napětí na analogovém vstupu (0=GND, 1023=napájecí "
-"napětí)."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Turn a pin on or off ( (-o) or (o-) )."
-msgstr "Nastaví logickou hodnotu na výstupním pinu ( (-o) or (o-) )."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Pulse width modulate (PWM) a pin with the given duty cycle (0 - 1023)."
-msgstr "Nastavení šířky PWM pulzu na výstupním pinu (0-1023)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report number of analog pins on this device."
-msgstr "Vrátí počet analogových pinů mikropočítače/desky."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report number of digital pins on this device."
-msgstr "Vrátí počet digitálních pinů mikropočítače/desky."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the value of a register (0-255) of an I2C device (0-127)."
-msgstr "Vrátí hodnotu registru (0-255) z I2C zařízení (adresa 0-127)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set an I2C device and register to given value (0-255)."
-msgstr "Nastaví registr I2C zařízení na zadanou hodnotu (0-255)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Receive multiple bytes from an I2C device."
-msgstr "Příjem více bajtů z I2C zařízení."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send multiple bytes to an I2C device."
-msgstr "Odeslání více bajtů do I2C zařízení."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte (0-255) to an SPI device."
-msgstr "Odeslání bajtu (0-255) do SPI zařízení."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Read a byte from an SPI device while sending a zero byte. Report the byte received."
-msgstr "Vrátí přečtený bajt z SPI zařízení zatímco odešle bajt=0."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set the SPI clock speed, mode, channel (Raspberry Pi only), and bit order."
-msgstr "Nastaví rychlost hodin SPI, kanál (pouce RPI) a pořadí bitů."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte array via SPI, replacing its contents with the bytes received."
-msgstr "Odeslání pole bajtů do SPI a nahrazení jejich obsahu přijatými bajty."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Open the serial port at the given baud rate."
-msgstr "Otevření sériového portu s danou přenosovou rychlostí."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Close the serial port."
-msgstr "Zavření sériového portu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report data received from the serial port (a byte array)."
-msgstr "Vrátí data přijatá ze sériového portu (pole bajtů)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte array to the serial port."
-msgstr "Odeslání pole bajtů po sériovém portu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte array to the serial port, starting at the given byte."
-msgstr "Odeslání pole bajtů po sériovém portu počínaje daným bajtem."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Write a byte to the pin at the specified baud rate."
-msgstr "Odeslání jednoho bajtu na výstup specifikovanou rychlostí (baud)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Run when the board powers up or when the IDE start button is clicked."
 msgstr ""
-"Úkol spuštěný po zapnutí napájení desky mikropočítače nebo při kliknutí na "
-"tlačítko start v pravém horním rohu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Run when buttons A, B, or A+B are pressed."
-msgstr "Úkol spuštěný při stisku tlačítka A, B nebo A+B."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks indefinitely."
-msgstr "Nekonečné opakování vnořených bloků."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks the given number of times."
-msgstr "Opakování vnořených bloků tolikrát kolikrát je uvedeno."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Wait the given number of milliseconds."
-msgstr "Čekání po zadaný čas (v milisekundách)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Run the first set of blocks whose test condition is (-o) ."
-msgstr "Provede první skupinu bloků když je splněna podmínka (-o) ."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Run when the condition becomes (-o) ."
-msgstr "Úkol běží při splnění podmínky (-o) ."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Wait until the condition becomes (-o) ."
-msgstr "Čekání na splnění podmínky (-o) ."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Return (report) the given value from a function or script."
-msgstr "Vrátí výstupní hodnotu z funkce nebo skriptu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Run when the given message is received as a broadcast."
-msgstr "Spuštění úkolu když je přijata zadaná zpráva."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Broadcast the given message."
-msgstr "Rozeslání zadané zprávy."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Do nothing. Used to add notes and documentation."
-msgstr "Prázdný příkaz. Nedělá nic, používá se pro poznámky a dokumentaci."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a list containing the given range of numbers (with optional increment). Useful in \"for\" loops."
 msgstr ""
-"Vrátí seznam obsahující zadaný rozsah čísel. Užitečné pro počítané cykly ("
-"\"for\")."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks with the variable set to the current iteration number or item."
 msgstr ""
-"Opakování vnořených bloků s s proměnnou nastavenou číslo aktuálního cyklu "
-"nebo položky seznamu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Repeat the enclosed blocks until the condition becomes (-o) ."
-msgstr "Opakování vnořených bloků tolikrát dokud není splněna podmínka."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Stop this task."
-msgstr "Zastaví tento úkol."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Stop all tasks except this one."
-msgstr "Zastaví všechny úkoly kromě aktuálního."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Wait the given number of microseconds."
-msgstr "Čekání po zadaný čas (v mikrosekundách)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the last broadcast message received."
-msgstr "Vrátí poslední přijato zprávu systému."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the given argument or defaultValue if the argument was not supplied by the caller."
 msgstr ""
-"Vrátí zadaný argument nebo default hodnotu pokud argument nebyl při volání "
-"dodán."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Call the function with the given name and optional parameter list."
-msgstr "Zavolá funkci daného jména s případnými parametry."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Call the function with the given name and optional parameter list and report its return value."
 msgstr ""
-"Zavolá funkci daného jména s případnými parametry a vrátí návratovou hodnotu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the sum of the given numbers."
-msgstr "Vrátí součet zadaných čísel."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the first number minus the second."
-msgstr "Vrátí rozdíl čísel."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the product of the given numbers."
-msgstr "Vrátí součin čísel."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the first number divided by the second."
-msgstr "Vrátí podíl čísel (celočíselný)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the remainder of dividing the first number by the second."
-msgstr "Vrátí zbytek po celočíselném dělení."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
-msgstr "Vátí absolutní hodnotu čísla (vždy >=0 )."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the minimum of the values."
-msgstr "Vrátí nejmenší hodnotu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the maximum of the values."
-msgstr "Vrátí největší hodnotu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a randomly chosen number in the given range."
-msgstr "Vrátí náhodné číslo z rozsahu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if the first value is less than the second one."
-msgstr "Vrátí (-o) když je první hodnota menší než druhá."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if the first value is less than or equal to the second one."
-msgstr "Vrátí (-o) když je první hodnota menší nebo stejná jako druhá."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if the two values are equal."
-msgstr "Vrátí (-o) když jsou obě hodnoty stejné."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if the two values are not equal."
-msgstr "Vrátí (-o) když jsou hodnoty odlišné."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if the first value is greater than or equal to the second one."
-msgstr "Vrátí (-o) když je první hodnota větší nebo stejná jako druhá."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if the first value is greater than the second one."
-msgstr "Vrátí (-o) když je první hodnota větší než druhá."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Boolean constant ( (-o) or (o-) )."
-msgstr "Logická hodnota ( (-o) or (o-) )."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the logical inverse of a Boolean ( (-o) or (o-) ) value."
-msgstr "Vrátí opak logické hodnoty ( (-o) or (o-) )."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if both values are (-o)"
-msgstr "Vrátí (-o) pokud jsou obě hodnoty (-o)"
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if either value is (-o)"
-msgstr "Vrátí (-o) pokud je nějaká z hodnot (-o)"
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if first input is a value of the given data type."
-msgstr "Vrátí (-o) první údaj je daného typu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Convert a value to the given data type."
-msgstr "Zkonvertuje hodnotu do zadaného datového typu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "If the condition is (-o) report the first alternative otherwise report the second alternative."
-msgstr "Když je podmínka (-o) vrací první variantu jinak vrací druhou variantu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Map a value in the \"from\" range to the corresponding value in the \"to\" range."
-msgstr "Mapuje hodnotu ze vstupního rozsahu do výstupního rozsahu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the numerical value of a hexadecimal string (range: -0x1FFFFFFF to 0x1FFFFFFF)"
 msgstr ""
-"Vrátí numerickou hodnotu jako hexadecimální řetězec (rozsah: -0x1FFFFFFF to "
-"0x1FFFFFFF)"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report bitwise AND of two numbers."
-msgstr "Vrátí bitové AND dvou čísel."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report bitwise OR of two numbers."
-msgstr "Vrátí bitové OR dvou čísel."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report bitwise XOR (exclusive OR) of two numbers."
-msgstr "Vrátí bitové XOR dvou čísel."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report bitwise inverse of the given number."
-msgstr "Vrátí bitovou inverzi čísla."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the given number shifted left by the given number of bits."
-msgstr "Vrátí hodnotu čísla posunutou doleva o zadaný počet bitů."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the given number shifted right by the given number of bits (arithmetic shift; sign is maintained)."
 msgstr ""
-"Vrátí hodnotu čísla posunutou doprava o zadaný počet bitů (aritmetický "
-"posun, znaménko zůstává zachováno)."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set a variable to the given value."
-msgstr "Nastaví proměnnou na danou hodnotu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Change a variable by the given amount."
-msgstr "Změní proměnnou o danou hodnotu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Create a variable local to the containing script with the given initial value."
 msgstr ""
-"Vytvoří lokální proměnnou aktuálního skriptu s danou počíteční hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the Nth item of a list, string, or byte array."
-msgstr "Vrátí n-tou položku seznamu, řetězce nebo pole bajtů."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of items in a list, string, or byte array."
-msgstr "Vrátí počet položek (délku) seznamu, řetězce nebo pole bajtů."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Join (concatenate) the given lists, strings, or byte arrays and report the result."
-msgstr "Spojí zadané seznamy, řetězce nebo pole bajtů a vrátí výsledek."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Create and report a short list containing the given items. Length limited by available stack space."
 msgstr ""
-"Vytvoří a vrátí seznam obsahující dané položky. Délka je limitována "
-"dostupnou velikostí zásobníku."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Add an item to the end of a list."
-msgstr "Přidá položku na konec seznamu."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Replace the Nth item (or all items) of a list or byte array with the given value."
 msgstr ""
-"Nahradí N-tou položku seznamu/pole bajtů (případně všechny) danou hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Delete the Nth item (or all items) of a list."
-msgstr "Smaže N-tou položku seznamu (případně všechny)."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Find and report the index of an item in a list or a substring within a string. Report -1 if not found."
 msgstr ""
-"Vyhledá a vrátí index položky v seznamu nebo podřetězce v textu. Pokud není "
-"položka nalezena vrátí -1."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a copy from the given index through the end (or optional stop index) of the given list, string, or byte array."
 msgstr ""
-"Pro zadaný seznam/text/pole bajtů Vrátí kopii od daného indexu do konce ("
-"případně do zadaného koncového indexu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Split the given string with the given delimiter and report the result (a list of strings)."
 msgstr ""
-"Rozdělí text do seznamu řetězců podle zadaného oddělovače a vrátí tento "
-"seznam."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Combine the items of a list into a string, optionally separated by a delimiter (e.g. comma)."
 msgstr ""
-"Spojí položky seznamu do řetězce, s použitím volitelného oddělovače položek."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the Unicode value (\"code point\") of the Nth character of the given string."
-msgstr "Vrací Unicode N-tého znaku řetězce."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a string containing the given Unicode value (\"code point\") or list of values."
-msgstr "Vrací řetězec obsahující zadanou hodnotu Unicode nebo seznamu hodnot."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new list of the given length filled with zero or the optional value."
 msgstr ""
-"Vrací nový seznam dané délky vyplněný nulami případně zadanou volitelnou "
-"hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new byte array of the given length filled with zero or the optional value."
 msgstr ""
-"Vrací nové pole bajtů dané délky vyplněné nulami případně zadanou volitelnou "
-"hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a byte array containing the UTF-8 bytes of the given string."
-msgstr "Vrací pole bajtů obsahující UTF-8 hodnoty znaků zadaného řetězce."
+msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
-msgstr "Vrací velikost dostupné paměti (words). Stop uvolňuje paměť."
-
-#. Block in Input category
-msgid "version"
-msgstr "verze"
-
-#. Block in Input category
-msgid "BLE connected"
-msgstr "BLE připojeno"
-
-#. Block in Input category
-msgid "BLE id"
-msgstr "BLE id"
-
-#. Block in Input category
-msgid "seconds"
-msgstr "vteřiny"
-
-#. Settings menu option
-msgid "advanced mode"
-msgstr "pokročilý režim"
-
-#. Settings menu tooltip
-msgid "show advanced blocks, menu items and editor functionalities"
-msgstr "zobrazit pokročilé bloky, položky menu a funkce editoru"
-
-#. Language menu item. Takes the user to documentation about adding a missing language
-msgid "Missing language?"
-msgstr "Chybí jazyk?"
-
-#. BLE Radio library block
-msgid "ble last number"
-msgstr "BLE poslední číslo"
-
-#. Examples folder
-msgid "folder;microbit and Calliope"
-msgstr "Micro:bit a Calliope"
-
-#. Examples folder
-msgid "folder; by board"
-msgstr " podle desky/mikropočítače"
-
-#. Examples folder
-msgid "folder;Art"
-msgstr "Umění"
-
-#. Block in Control category
-msgid "exit loop"
-msgstr "opusť smyčku"
-
-#. BLE Radio library block
-msgid "ble send number _"
-msgstr "BLE odešli číslo _"
-
-#. BLE Radio library block
-msgid "ble send string _"
-msgstr "BLE odešli řetězec _"
-
-#. BLE Radio library block
-msgid "ble send pair _ = _"
-msgstr "BLE odešli dvojici _ = _"
-
-#. BLE Radio library block
-msgid "ble message received?"
-msgstr "přijata BLE zpráva?"
-
-#. BLE Radio library block
-msgid "ble last string"
-msgstr "BLE poslední řetězec"
-
-#. BLE Radio library block
-msgid "ble set group _ (0-255)"
-msgstr "nastav skupinu BLE _ (0-255)"
-
-#. BLE Scanner library block
-msgid "scan received"
-msgstr "BLE skenování přijato"
-
-#. BLE Scanner library block
-msgid "address"
-msgstr "adresa"
-
-#. BLE Scanner library block
-msgid "address type"
-msgstr "typ adresy"
-
-#. BLE Scanner library block
-msgid "device name"
-msgstr "název zařízení"
-
-#. Examples folder
-msgid "folder;Games"
-msgstr "Hry"
-
-#. Examples folder
-msgid "folder;Examples"
-msgstr "Příklady"
-
-#. Examples folder
-msgid "folder;Music"
-msgstr "Hudba"
+msgstr ""

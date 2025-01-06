@@ -1303,6 +1303,9 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'Basic Sensors'
 		importEmbeddedLibrary scripter 'NeoPixel'
 		importEmbeddedLibrary scripter 'Tone'
+	} ('COCUBE' == boardType) {
+		importEmbeddedLibrary scripter 'CoCube'
+		importEmbeddedLibrary scripter 'LED Display'
 	} ('M5Stack-Core' == boardType) {
 		importEmbeddedLibrary scripter 'LED Display'
 		importEmbeddedLibrary scripter 'Tone'
@@ -1343,7 +1346,7 @@ method boardIsBLECapable SmallRuntime {
 	if ('connected' != status) { return false }
 	if (isNil boardType) { getVersion this }
 	if (isOneOf boardType
-		'Citilab ED1' 'Databot' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers') {
+		'Citilab ED1' 'COCUBE' 'Databot' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers') {
 		return true
 	}
 	return false
@@ -2375,7 +2378,10 @@ method boardHasFileSystem SmallRuntime {
 	if (and (isWebSerial this) (not (isOpenSerialPort 1))) { return false }
 	if (not (connectedToBoard this)) { return false }
 	if (isNil boardType) { getVersion this }
-	return (isOneOf boardType 'Citilab ED1' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040' 'Boardie' 'Databot' 'Mbits' 'micro:STEAMakers' 'RP2040 XRP')
+	return (isOneOf boardType
+		'Citilab ED1' 'COCUBE' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix'
+		'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040'
+		'Boardie' 'Databot' 'Mbits' 'micro:STEAMakers' 'RP2040 XRP')
 }
 
 method deleteFileOnBoard SmallRuntime fileName {
@@ -2815,7 +2821,7 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 		}
 		popUpAtHand menu (global 'page')
 	} (notNil boardType) {
-		if (and (contains (array 'Citilab ED1' 'micro:STEAMakers' 'M5Stack-Core' 'ESP8266' 'ESP32' 'Databot') boardType)
+		if (and (contains (array 'Citilab ED1' 'COCUBE' 'micro:STEAMakers' 'M5Stack-Core' 'ESP8266' 'ESP32' 'Databot') boardType)
 				(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 		} (isOneOf boardType 'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort') {
@@ -2833,7 +2839,7 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 			}
 			addLine menu
 		}
-		for boardName (array 'Citilab ED1' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot') {
+		for boardName (array 'Citilab ED1' 'COCUBE' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot') {
 			addItem menu boardName (action 'flashVM' this boardName eraseFlashFlag downloadLatestFlag)
 		}
 		if (not eraseFlashFlag) {
@@ -2989,7 +2995,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 	} (isOneOf boardType 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040') {
 		rp2040ResetMessage this
 	} (and
-		(isOneOf boardType 'Citilab ED1' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot')
+		(isOneOf boardType 'Citilab ED1' 'COCUBE' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot')
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 	} else {
@@ -2997,6 +3003,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 		if eraseFlashFlag {
 			addItem menu 'Citilab ED1'
 			addItem menu 'micro:STEAMakers'
+			addItem menu 'COCUBE'
 			addItem menu 'Databot'
 			addItem menu 'M5Stack-Core'
 			addItem menu 'ESP32'
@@ -3007,6 +3014,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addLine menu
 			addItem menu 'Citilab ED1'
 			addItem menu 'micro:STEAMakers'
+			addItem menu 'COCUBE'
 			addItem menu 'Databot'
 			addLine menu
 			addItem menu 'ELECFREAKS Pico:ed'
@@ -3046,7 +3054,7 @@ method flashVMInBrowser SmallRuntime boardName eraseFlashFlag downloadLatestFlag
 }
 
 method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boardName {
-	if (isOneOf boardName 'Citilab ED1' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot') {
+	if (isOneOf boardName 'Citilab ED1' 'COCUBE' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot') {
 		flashVM this boardName eraseFlashFlag downloadLatestFlag
 		return
 	}
