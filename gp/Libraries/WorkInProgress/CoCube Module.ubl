@@ -1,7 +1,7 @@
 module 'CoCube Module'
 author 'Liang Shuai'
 version 1 4 
-depends Servo NeoPixel 'Robots/CoCube' 'Sensing/Distance (HC-SR04)' 'Other/System/sensorPrims' 
+depends Servo NeoPixel 'Robots/CoCube' 'Sensing/Distance (HC-SR04)' 
 description 'External modules of CoCube'
 
   spec ' ' 'ccmodule_Power on module' 'Power on module'
