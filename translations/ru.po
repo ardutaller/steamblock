@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-01-06 13:02+0000\n"
+"PO-Revision-Date: 2025-01-06 13:46+0000\n"
 "Last-Translator: Konstantin <k3553620@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/microblocks/ide/"
 "ru/>\n"
@@ -2399,6 +2399,94 @@ msgid "kbd;insert"
 msgstr "Insert"
 
 #. Block in Input category
-#, fuzzy
 msgid "end time _"
-msgstr "Время окончания"
+msgstr "Время окончания_"
+
+#. Block in Comm category
+msgid "serial open _ baud"
+msgstr "Включить сериал на _ частоте"
+
+#. Example string. Tells the user this input accepts a byte array
+msgid "aByteArray"
+msgstr "Порядок битов"
+
+#. Block in Comm category
+msgid "serial write _ starting at _"
+msgstr "Отправить _ по сериал, начиная с _"
+
+#. Example string. Tells the user this input accepts an integer, a string list or a byte array
+msgid "anIntegerStringListOrByteArray"
+msgstr "Список чисел, текстов или линия байтов"
+
+#. Block in Comm category
+msgid "serial close"
+msgstr "Отключить сериал"
+
+#. Block in Comm category
+msgid "serial write _"
+msgstr "Отправить _ по сериал"
+
+#. Block in Comm category
+msgid "serial read"
+msgstr "Прочитать сериал"
+
+#. Block in Comm category
+msgid "spi exchange bytes _"
+msgstr "обмен битами по протоколу spi_"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;return"
+msgstr "return"
+
+#. Lists library label
+#. Extra utilities for list manipulation and access
+msgid "Lists"
+msgstr "Списки"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgDown"
+msgstr "PgDown"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ESC"
+msgstr "ESC"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;CapsLock"
+msgstr "CapsLock"
+
+#. Lists library block
+msgid "list _ contains _"
+msgstr "Список _ содержит _"
+
+#. NeoPanel library label
+msgid "NeoPanel"
+msgstr "NeoPanel"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgUp"
+msgstr "PgUp"
+
+#. Block in Control category
+msgid "by _"
+msgstr "от_"
+
+#. Block in Control category
+msgid "arg _ default _"
+msgstr "стандартный_аргумент_"
+
+#. Example string. Tells the user this input accepts a list or a string
+msgid "aListOrString"
+msgstr "Список или текст"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;NumLock"
+msgstr "NumLock"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PrintScreen"
+msgstr "PrintScreen"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ScrollLock"
+msgstr "ScrollLock"
