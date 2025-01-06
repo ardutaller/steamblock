@@ -15,7 +15,7 @@ cp .pio/build/nodemcu/firmware.bin precompiled/vm_nodemcu.bin
 pio run -e ed1
 cp .pio/build/ed1/firmware.bin precompiled/vm_citilab-ed1.bin
 pio run -e cocube
-cp .pio/build/ed1/firmware.bin precompiled/vm_cocube.bin
+cp .pio/build/cocube/firmware.bin precompiled/vm_cocube.bin
 
 pio run -e m5stack
 cp .pio/build/m5stack/firmware.bin precompiled/vm_m5stack.bin
