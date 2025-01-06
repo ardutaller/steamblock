@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-12-29 10:57+0200\n"
-"PO-Revision-Date: 2025-01-01 15:53+0000\n"
+"PO-Revision-Date: 2025-01-06 13:02+0000\n"
 "Last-Translator: Michal Slaski <michal.slaski@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/microblocks/ide/"
 "pl/>\n"
@@ -11,8 +11,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
@@ -1113,554 +1113,554 @@ msgstr ""
 
 #. Keyboard and Mouse library label
 msgid "Keyboard and Mouse"
-msgstr ""
+msgstr "Klawiatura i Mysz"
 
 #. Keyboard and Mouse library block
 msgid "press key _"
-msgstr ""
+msgstr "naciśnij klawisz _"
 
 #. Keyboard and Mouse library block
 msgid "while holding _"
-msgstr ""
+msgstr "gdy wciśnięty klawisz _"
 
 #. Keyboard and Mouse library block
 msgid "hold key _"
-msgstr ""
+msgstr "przytrzymaj wciśnięty klawisz _"
 
 #. Keyboard and Mouse library block
 msgid "release key _"
-msgstr ""
+msgstr "puść klawisz _"
 
 #. Keyboard and Mouse library block
 msgid "release all keys"
-msgstr ""
+msgstr "puść wszystkie klawisze"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Shift"
-msgstr ""
+msgstr "Shift"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Control"
-msgstr ""
+msgstr "Control"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Alt / ⌥"
-msgstr ""
+msgstr "Alt"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Logo / ⌘"
-msgstr ""
+msgstr "Logo / ⌘"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;AltGr"
-msgstr ""
+msgstr "AltGr"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;enter"
-msgstr ""
+msgstr "enter"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;return"
-msgstr ""
+msgstr "return"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;tab"
-msgstr ""
+msgstr "tab"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;backspace"
-msgstr ""
+msgstr "backspace"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;delete"
-msgstr ""
+msgstr "delete"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;insert"
-msgstr ""
+msgstr "insert"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;home"
-msgstr ""
+msgstr "home"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;end"
-msgstr ""
+msgstr "end"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PgUp"
-msgstr ""
+msgstr "PgUp"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PgDown"
-msgstr ""
+msgstr "PgDown"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;CapsLock"
-msgstr ""
+msgstr "CapsLock"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;NumLock"
-msgstr ""
+msgstr "NumLock"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;ScrollLock"
-msgstr ""
+msgstr "ScrollLock"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PrintScreen"
-msgstr ""
+msgstr "PrintScreen"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;ESC"
-msgstr ""
+msgstr "ESC"
 
 #. Keyboard and Mouse library block
 msgid "_ mouse click"
-msgstr ""
+msgstr "_ przycisk myszy"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;left"
-msgstr ""
+msgstr "lewy"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;right"
-msgstr ""
+msgstr "prawy"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;middle"
-msgstr ""
+msgstr "środkowy"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;both"
-msgstr ""
+msgstr "lewy i prawy"
 
 #. Keyboard and Mouse library block
 msgid "move mouse pointer by _ , _"
-msgstr ""
+msgstr "przesuń wskaźnik myszy o _ , _"
 
 #. Keyboard and Mouse library block
 msgid "scroll mouse by _"
-msgstr ""
+msgstr "przewiń myszą o _"
 
 #. Keyboard and Mouse library block
 msgid "hold _ mouse button"
-msgstr ""
+msgstr "przytrzymaj _ przycisk myszy"
 
 #. Keyboard and Mouse library block
 msgid "release mouse buttons"
-msgstr ""
+msgstr "zwolnij przyciski myszy"
 
 #. Lists library label
 #. Extra utilities for list manipulation and access
 msgid "Lists"
-msgstr ""
+msgstr "Listy"
 
 #. Lists library block
 msgid "list _ contains _"
-msgstr ""
+msgstr "lista _ zwiera _"
 
 #. Lists library block
 msgid "circular item _ of _"
-msgstr ""
+msgstr "element _ z listy _"
 
 #. Example string. Tells the user this input accepts a list or a string
 msgid "aListOrString"
-msgstr ""
+msgstr "ListaLubTekst"
 
 #. Lists library block
 msgid "map _ over _"
-msgstr ""
+msgstr "mapuj za pomocą _ listę _"
 
 #. Example string. Tells the user this input accepts a function name
 msgid "aFunction"
-msgstr ""
+msgstr "Funkcja"
 
 #. Lists library block
 msgid "filter _ with _"
-msgstr ""
+msgstr "filtruj listę _ za pomocą _"
 
 #. Lists library block
 msgid "pick _ from _"
-msgstr ""
+msgstr "wybierz _ z listy _"
 
 #. Option in ( pick (a few) from (aList) ) block in Lists library
 msgid "a few"
-msgstr ""
+msgstr "kilka"
 
 #. Option in ( pick (some) from (aList) ) block in Lists library
 msgid "some"
-msgstr ""
+msgstr "niektóre"
 
 #. Option in ( pick (most) from (aList) ) block in Lists library
 msgid "most"
-msgstr ""
+msgstr "większość"
 
 #. Lists library block
 msgid "reverse _"
-msgstr ""
+msgstr "odwróć _"
 
 #. Lists library block
 msgid "shuffle _"
-msgstr ""
+msgstr "przetasuj _"
 
 #. Lists library block
 msgid "sort _"
-msgstr ""
+msgstr "sortuj _"
 
 #. Lists library block
 msgid "unique _"
-msgstr ""
+msgstr "unikalny _"
 
 #. Lists library block
 msgid "shuffled _"
-msgstr ""
+msgstr "przetasowana _"
 
 #. Lists library block
 msgid "reversed _"
-msgstr ""
+msgstr "odwrócona _"
 
 #. Lists library block
 msgid "sorted _"
-msgstr ""
+msgstr "posortowana _"
 
 #. Lists library block
 msgid "uniqued _"
-msgstr ""
+msgstr "unikalne elementy _"
 
 #. Pseudorandomness library label
 #. Creates pseudorandom numbers and lists of numbers given a particular seed
 msgid "Pseudorandomness"
-msgstr ""
+msgstr "Pseudolosowość"
 
 #. Pseudorandomness library block
 msgid "pseudorandom _ to _ with seed _"
-msgstr ""
+msgstr "pseudolosuj od _ do _ z seedem _"
 
 #. Pseudorandomness library block
 msgid "_ pseudorandom numbers _ to _ with seed _"
-msgstr ""
+msgstr "_ pseudolosowych liczb od _ do _ z seedem _"
 
 #. BLE Keyboard library label
 msgid "BLE Keyboard"
-msgstr ""
+msgstr "Klawiatura Bluetooth"
 
 #. BLE Keyboard library block
 msgid "start BLE Keyboard"
-msgstr ""
+msgstr "uruchom Klawiaturę Bluetooth"
 
 #. Radio comm library label
 #. Allows micro:bit boards to exchange messages
 #. All of its blocks are primitive (see "Primitives" section)
 msgid "Radio"
-msgstr ""
+msgstr "Radio"
 
 #. Text scrolling library label
 #. Scrolls text on 5x5 LED displays and simulated ones
 msgid "Scrolling"
-msgstr ""
+msgstr "Przewijanie"
 
 #. Scrolling library block
 msgid "scroll text _"
-msgstr ""
+msgstr "przewiń tekst _"
 
 #. Example text for Scrolling library.
 msgid "HELLO ROSA!"
-msgstr ""
+msgstr "WITAJ HELENKO!"
 
 #. Scrolling library block
 msgid "scroll number _"
-msgstr ""
+msgstr "przewiń liczbę _"
 
 #. Scrolling library block
 msgid "pausing _ ms"
-msgstr ""
+msgstr "czekaj _ ms"
 
 #. Scrolling library block
 msgid "stop scrolling"
-msgstr ""
+msgstr "przestań przewijać"
 
 #. Servo motor library label
 msgid "Servo"
-msgstr ""
+msgstr "Serwo"
 
 #. Servo motor library block
 msgid "set servo _ to _ degrees (-90 to 90)"
-msgstr ""
+msgstr "ustaw serwo _ na _ stopni (od -90 do 90)"
 
 #. Servo motor library block
 msgid "set servo _ to speed _ (-100 to 100)"
-msgstr ""
+msgstr "ustaw prędkość serwo _ na _ (od -100 do 100)"
 
 #. Servo motor library block
 msgid "stop servo _"
-msgstr ""
+msgstr "zatrzymaj serwo _"
 
 #. 5x5 LED display library label
 #. Supports the micro:bit display, but also simulated 5x5 displays on boards
 #. with differently sized LED arrays, NeoPixel arrays or TFT displays
 msgid "LED Display"
-msgstr ""
+msgstr "Wyświetlacz LED"
 
 #. 5x5 LED Display library block
 msgid "display _"
-msgstr ""
+msgstr "wyświetlacz _"
 
 #. 5x5 LED Display library block
 msgid "display image _"
-msgstr ""
+msgstr "wyświetl obraz _"
 
 #. 5x5 LED Display library block
 msgid "clear display"
-msgstr ""
+msgstr "wyczyść wyświetlacz"
 
 #. 5x5 LED Display library block
 msgid "set display color _"
-msgstr ""
+msgstr "ustaw kolor wyświetlacza _"
 
 #. 5x5 LED Display library block
 msgid "plot x _ y _"
-msgstr ""
+msgstr "zaświeć x _ y _"
 
 #. 5x5 LED Display library block
 msgid "unplot x _ y _"
-msgstr ""
+msgstr "zgaś x _ y _"
 
 #. 5x5 LED Display library block
 msgid "display character _"
-msgstr ""
+msgstr "wyświetl znak _"
 
 #. Image name for the "display image" block
 msgid "heart"
-msgstr ""
+msgstr "serce"
 
 #. Image name for the "display image" block
 msgid "small heart"
-msgstr ""
+msgstr "małe serce"
 
 #. Image name for the "display image" block
 msgid "yes"
-msgstr ""
+msgstr "tak"
 
 #. Image name for the "display image" block
 msgid "no"
-msgstr ""
+msgstr "nie"
 
 #. Image name for the "display image" block
 msgid "happy"
-msgstr ""
+msgstr "szczęśliwy"
 
 #. Image name for the "display image" block
 msgid "sad"
-msgstr ""
+msgstr "smutny"
 
 #. Image name for the "display image" block
 msgid "confused"
-msgstr ""
+msgstr "zdezorientowany"
 
 #. Image name for the "display image" block
 msgid "angry"
-msgstr ""
+msgstr "zły"
 
 #. Image name for the "display image" block
 msgid "asleep"
-msgstr ""
+msgstr "śpi"
 
 #. Image name for the "display image" block
 msgid "surprised"
-msgstr ""
+msgstr "zdziwiony"
 
 #. Image name for the "display image" block
 msgid "silly"
-msgstr ""
+msgstr "wygłupia się"
 
 #. Image name for the "display image" block
 msgid "fabulous"
-msgstr ""
+msgstr "fantastyczny"
 
 #. Image name for the "display image" block
 msgid "meh"
-msgstr ""
+msgstr "nudny"
 
 #. Image name for the "display image" block
 msgid "t-shirt"
-msgstr ""
+msgstr "t-shirt"
 
 #. Image name for the "display image" block
 msgid "roller skate"
-msgstr ""
+msgstr "wrotka"
 
 #. Image name for the "display image" block
 msgid "duck"
-msgstr ""
+msgstr "kaczka"
 
 #. Image name for the "display image" block
 msgid "house"
-msgstr ""
+msgstr "dom"
 
 #. Image name for the "display image" block
 msgid "tortoise"
-msgstr ""
+msgstr "żółw"
 
 #. Image name for the "display image" block
 msgid "butterfly"
-msgstr ""
+msgstr "motyl"
 
 #. Image name for the "display image" block
 msgid "stick figure"
-msgstr ""
+msgstr "ludzik"
 
 #. Image name for the "display image" block
 msgid "ghost"
-msgstr ""
+msgstr "duch"
 
 #. Image name for the "display image" block
 msgid "sword"
-msgstr ""
+msgstr "miecz"
 
 #. Image name for the "display image" block
 msgid "giraffe"
-msgstr ""
+msgstr "żyrafa"
 
 #. Image name for the "display image" block
 msgid "skull"
-msgstr ""
+msgstr "czaszka"
 
 #. Image name for the "display image" block
 msgid "umbrella"
-msgstr ""
+msgstr "parasol"
 
 #. Image name for the "display image" block
 msgid "snake"
-msgstr ""
+msgstr "wąż"
 
 #. Image name for the "display image" block
 msgid "rabbit"
-msgstr ""
+msgstr "królik"
 
 #. Image name for the "display image" block
 msgid "cow"
-msgstr ""
+msgstr "krowa"
 
 #. Image name for the "display image" block
 msgid "quarter note"
-msgstr ""
+msgstr "ćwierćnuta"
 
 #. Image name for the "display image" block
 msgid "eight note"
-msgstr ""
+msgstr "ósemka"
 
 #. Image name for the "display image" block
 msgid "pitchfork"
-msgstr ""
+msgstr "widły"
 
 #. Image name for the "display image" block
 msgid "target"
-msgstr ""
+msgstr "cel"
 
 #. Image name for the "display image" block
 msgid "triangle"
-msgstr ""
+msgstr "trójkąt"
 
 #. Image name for the "display image" block
 msgid "left triangle"
-msgstr ""
+msgstr "trójkąt prostokątny"
 
 #. Image name for the "display image" block
 msgid "chess board"
-msgstr ""
+msgstr "szachownica"
 
 #. Image name for the "display image" block
 msgid "diamond"
-msgstr ""
+msgstr "diament"
 
 #. Image name for the "display image" block
 msgid "small diamond"
-msgstr ""
+msgstr "mały diament"
 
 #. Image name for the "display image" block
 msgid "square"
-msgstr ""
+msgstr "kwadrat"
 
 #. Image name for the "display image" block
 msgid "small square"
-msgstr ""
+msgstr "mały kwadrat"
 
 #. Image name for the "display image" block
 msgid "scissors"
-msgstr ""
+msgstr "nożyczki"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr ""
+msgstr "zainicjuj i2c _ adres (hex) _ reset pin# _ flip _"
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr ""
+msgstr "zainicjuj spi _ d/c pin# _ reset pin# _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
-msgstr ""
+msgstr "napisz _ w x _ y _ odwróć _"
 
 #. OLED Graphics library block
 msgid "show display buffer"
-msgstr ""
+msgstr "pokaż bufor wyświetlacza"
 
 #. OLED Graphics library block
 msgid "clear"
-msgstr ""
+msgstr "wyczyść wyświetlacz"
 
 #. OLED Graphics library block
 msgid "set contrast (1-4) _"
-msgstr ""
+msgstr "ustaw kontrast (1-4) _"
 
 #. OLED Graphics library block
 msgid "draw circle at x _ y _ radius _ erase _"
-msgstr ""
+msgstr "rysuj koło w x _ y _ promień _ usuń _"
 
 #. OLED Graphics library block
 msgid "draw image _ at x _ y _"
-msgstr ""
+msgstr "rysuj obraz _ w x _ y _"
 
 #. OLED Graphics library block
 msgid "draw line from x _ y _ to x _ y _ erase _"
-msgstr ""
+msgstr "rysuj linię od x _ y _ do x _ y _ usuń _"
 
 #. OLED Graphics library block
 msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
-msgstr ""
+msgstr "rysuj prostokąt x _ y _ w _ h _ usuń _ zaokrąglanie(3-15) _"
 
 #. OLED Graphics library block
 msgid "fill rectangle x _ y _ w _ h _ erase _"
-msgstr ""
+msgstr "wypełnij prostokąt x _ y _ w _ h _ usuń _"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr ""
+msgstr "_ odwróć wyświetlacz góra _"
 
 #. OLED Graphics library block
 msgid "make image _"
-msgstr ""
+msgstr "stwórz obraz _"
 
 #. OLED Graphics library block
 msgid "set pixel x _ y _ erase _"
-msgstr ""
+msgstr "ustaw piksel x _ y _ usuń _"
 
 #. OLED Graphics library block
 msgid "set video _"
-msgstr ""
+msgstr "ustaw video _"
 
 #. OLED Graphics library block
 msgid "cursor location"
-msgstr ""
+msgstr "położenie kursora"
 
 #. OLED Graphics library block
 msgid "defer display updates"
-msgstr ""
+msgstr "odrocz aktualizacje wyświetlacza"
 
 #. TFT display library block
 msgid "clear TFT display "
-msgstr ""
+msgstr "wyczyść wyświetlacz TFT"
 
 #. TFT Display library block
 msgid "enable TFT _"
@@ -2730,107 +2730,107 @@ msgstr ""
 #. Strings library label
 #. string (text) processing functions
 msgid "Strings"
-msgstr ""
+msgstr "Ciągi znaków (napisy)"
 
 #. Strings library block
 msgid "_ is a digit"
-msgstr ""
+msgstr "_ jest cyfrą"
 
 #. Strings library block
 msgid "_ is lowercase"
-msgstr ""
+msgstr "_ jest małą literą"
 
 #. Strings library block
 msgid "_ is uppercase"
-msgstr ""
+msgstr "_ jest dużą literą"
 
 #. Strings library block
 msgid "_ begins with _"
-msgstr ""
+msgstr "_ zaczyna się od _"
 
 #. Example string for ( (prefix) begins with (pre) )
 msgid "prefix"
-msgstr ""
+msgstr "prefiks"
 
 #. Example string for ( (prefix) begins with (pre) )
 msgid "pre"
-msgstr ""
+msgstr "pre"
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "_ ends with _"
-msgstr ""
+msgstr "_ kończy się na _"
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "suffix"
-msgstr ""
+msgstr "przyrostek"
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "fix"
-msgstr ""
+msgstr "tek"
 
 #. Strings library block
 msgid "_ contains _"
-msgstr ""
+msgstr "_ zawiera _"
 
 #. Strings library block
 msgid "lowercase _"
-msgstr ""
+msgstr "małą literą _"
 
 #. Example text for lowercase and uppercase Strings library block
 msgid "THIS is a String! :)"
-msgstr ""
+msgstr "TO jest Napis! :)"
 
 #. Strings library block
 msgid "uppercase _"
-msgstr ""
+msgstr "dużą literą _"
 
 #. Example text for Strings library block
 msgid "Hello, world!"
-msgstr ""
+msgstr "Witaj świecie!"
 
 #. Strings library block
 msgid "_ without white space"
-msgstr ""
+msgstr "_ bez spacji"
 
 #. Strings library block
 msgid "join string list _ separator _"
-msgstr ""
+msgstr "połącz listę napisów _ separator _"
 
 #. Strings library block
 msgid "unicodes _"
-msgstr ""
+msgstr "kody Unicode _"
 
 #. Example string. Tells the user this input accepts a string
 msgid "aString"
-msgstr ""
+msgstr "CiągZnaków"
 
 #. Strings library block
 msgid "string from unicodes _"
-msgstr ""
+msgstr "znaki z kodów Unicode _"
 
 #. Example string. Tells the user this input accepts a list
 msgid "aList"
-msgstr ""
+msgstr "Lista"
 
 #. Strings library block
 msgid "num2str _"
-msgstr ""
+msgstr "num2str _"
 
 #. Strings library block
 msgid "str2num _"
-msgstr ""
+msgstr "str2num _"
 
 #. WiFi library label
 msgid "WiFi"
-msgstr ""
+msgstr "WiFi"
 
 #. WiFi library block
 msgid "wifi connect to _ password _"
-msgstr ""
+msgstr "połącz się z wifi _ hasło _"
 
 #. Example WiFi network name
 msgid "Network_Name"
-msgstr ""
+msgstr "Nazwa_Sieci"
 
 #. WiFi library block
 msgid "IP _ gateway _ subnet _"
