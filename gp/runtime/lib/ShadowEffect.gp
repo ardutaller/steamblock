@@ -16,7 +16,7 @@ method initialize ShadowEffect aBlock effectType {
 	targetBlock = aBlock
 	scale = (global 'scale')
 	if ('highlight' == effectType) {
-		color = (microBlocksColor 'yellow')
+		color = (microBlocksColor 'scriptRunning')
 		offset = 8
 		blur = 0
 	} else {

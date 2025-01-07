@@ -144,7 +144,7 @@ method darkModeChanged MicroBlocksScripter {
 		scriptingActionsContainerColor = (copy (microBlocksColor 'blueGray' 800))
 		scriptingActionsContainerBorderColor = (copy (microBlocksColor 'blueGray' 600))
 	} else {
-		scriptsFrameColor = (microBlocksColor 'white')
+		scriptsFrameColor = (lighter (microBlocksColor 'blueGray' 50) 50)
 		blocksFrameColor = (microBlocksColor 'blueGray' 50)
 		sliderFGColor = (microBlocksColor 'blueGray' 200)
 		scriptingActionsContainerColor = (microBlocksColor 'white')
