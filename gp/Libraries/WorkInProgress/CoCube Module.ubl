@@ -1,7 +1,7 @@
 module 'CoCube Module'
 author 'Liang Shuai'
-version 1 4 
-depends Servo NeoPixel 'Robots/CoCube' 'Sensing/Distance (HC-SR04)' 
+version 1 5 
+depends Servo NeoPixel 'Robots/CoCube' 'Sensing/Distance (VL53L0X)' 'Sensing/Gesture (PAJ7620)' 
 description 'External modules of CoCube'
 
   spec ' ' 'ccmodule_Power on module' 'Power on module'
@@ -9,21 +9,25 @@ description 'External modules of CoCube'
   space
   spec ' ' 'ccmodule_Gripper Open' 'Gripper Open'
   spec ' ' 'ccmodule_Gripper Close' 'Gripper Close'
+  spec ' ' 'ccmodule_Gripper Stop' 'Gripper Stop'
   spec ' ' 'ccmodule_Gripper degree' 'Gripper degrees _ (-70 to 0)' 'num' 0
   space
-  spec ' ' 'ccmodule_attach NeoPixel' 'attach NeoPixel'
+  spec ' ' 'ccmodule_attach NeoPixels' 'attach NeoPixels'
   spec ' ' 'ccmodule_set all NeoPixels color' 'set all NeoPixels color _' 'color'
   spec ' ' 'ccmodule_clear NeoPixels' 'clear NeoPixels'
   space
-  spec 'r' 'ccmodule_Ultrasonic distance (cm)' 'Ultrasonic distance (cm)'
+  spec 'r' 'ccmodule_ToF connected' 'ToF connected'
+  spec 'r' 'ccmodule_ToF distance' 'ToF distance (mm)'
   space
-  spec 'r' 'ccmodule_Ambient Light' 'Ambient Light'
+  spec 'r' 'ccmodule_Gesture connected' '3D Gesture connected'
+  spec 'r' 'ccmodule_Gesture read' '3D Gesture read'
 
-to 'ccmodule_Ambient Light' {
-  i2cSet (hexToInt '23') 23 (hexToInt '21')
-  read = (newList 2)
-  '[sensors:i2cRead]' (hexToInt '23') read
-  return (((at 1 read) << 8) | (at 2 read))
+to 'ccmodule_Gesture connected' {
+  return ('paj7620 connected')
+}
+
+to 'ccmodule_Gesture read' {
+  return ('paj7620 read')
 }
 
 to 'ccmodule_Gripper Close' {
@@ -32,6 +36,10 @@ to 'ccmodule_Gripper Close' {
 
 to 'ccmodule_Gripper Open' {
   setServoAngle 22 0
+}
+
+to 'ccmodule_Gripper Stop' {
+  stopServo 22
 }
 
 to 'ccmodule_Gripper degree' degree {
@@ -52,12 +60,16 @@ to 'ccmodule_Power on module' {
   digitalWriteOp 13 true
 }
 
-to 'ccmodule_Ultrasonic distance (cm)' {
-  return ('distance (cm)' 21 22)
+to 'ccmodule_ToF connected' {
+  return ('VL53L0X connected')
 }
 
-to 'ccmodule_attach NeoPixel' {
-  neoPixelAttach 64 22
+to 'ccmodule_ToF distance' {
+  return ('VL53L0X distance (mm)')
+}
+
+to 'ccmodule_attach NeoPixels' {
+  neoPixelAttach 48 22
 }
 
 to 'ccmodule_clear NeoPixels' {
