@@ -251,7 +251,7 @@ method initMicroBlocksUIColors Color {
 	atPut palette 'gray' (colorHex '383838')
 
 	// running script hightlight color
-	atPut palette 'scriptRunning' (darker (at palette 'green') 15)
+	atPut palette 'scriptRunning' (at palette 'yellow')
 
 	// blueGrays
 	atPut palette 'blueGray-50' (colorHex 'ECEDF1')
