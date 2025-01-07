@@ -795,7 +795,7 @@ method highlight Morph size {
 	} else {
 		s2 = (size * 2)
 		bm = (fullCostume this)
-		hl = (newBitmap (+ s2 (width bm)) (+ s2 (height bm)) (colorHex 'FED722'))
+		hl = (newBitmap (+ s2 (width bm)) (+ s2 (height bm)) (microBlocksColor 'scriptRunning'))
 
 		maskBM = (newBitmap (width hl) (height hl))
 		drawBitmap maskBM bm 0 0
