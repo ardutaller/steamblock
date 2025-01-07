@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-07 15:20+0000\n"
+"PO-Revision-Date: 2025-01-08 08:53+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1372,7 +1372,7 @@ msgstr "Sonstige"
 
 #. Servo motor library block
 msgid "set servo _ to speed _ (-100 to 100)"
-msgstr "setze Servo _ auf Geschwindigkeit _ (-100 bis 100)"
+msgstr "drehe Rotationsservo _ mit _ % (-100~100)"
 
 #. Robot direction input. Used in robot libraries
 msgid "forward"
@@ -3952,7 +3952,7 @@ msgstr "Mikrosekunden seit _"
 
 #. Cutebot Pro library block
 msgid "CBPro move _ (-255 to 255 cm)"
-msgstr "CBPro gehe _ (-255 bis 255 cm)"
+msgstr "CBPro fahre _ (-255~255 cm)"
 
 #. Cutebot Pro library block
 msgid "CBPro distance (cm)"
@@ -4058,7 +4058,7 @@ msgstr "links-auf-der-Stelle"
 
 #. Cutebot Pro library block
 msgid "CBPro servo _ speed to _ (-100 to 100)"
-msgstr "CBPro Servo _ Geschwindigkeit auf _ (-100 bis 100)"
+msgstr "CBPro drehe Rotationsservo _ mit _ (-100~100)"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
@@ -4196,7 +4196,7 @@ msgstr "zeichne Vektor auf TFT von x _ y _ Winkel _ Länge _ Farbe _"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to speed _ (-100 to 100)"
-msgstr "Cutebot setze Servo _ auf Geschwindigkeit _ (-100 bis 100)"
+msgstr "Cutebot drehe Rotationsservo _ mit _ % (-100~100)"
 
 #. OLED Graphics library block
 msgid "set pixel x _ y _ erase _"
@@ -4445,15 +4445,15 @@ msgstr "180°"
 
 #. Cutebot Pro library block
 msgid "CBPro set wheel speed left _ right _ (-60 to 60 cm/s)"
-msgstr "CBPro setze Radgeschwindigkeit links _ rechts _ (-60 bis 60 cm/s)"
+msgstr "CBPro setze Radgeschwindigkeit links _ rechts _ (-60~60 cm/s)"
 
 #. Cutebot Pro library block
 msgid "CBPro speed of _ wheel (cm/s)"
-msgstr "CBPro Geschwindigkeit vom _ Rad (cm/s)"
+msgstr "CBPro Geschwindigkeit _ Rad (cm/s)"
 
 #. Cutebot Pro library block
 msgid "CBPro set external motor power to _ (-100 to 100)"
-msgstr "CBPro setze externe Motorspannung auf _ (-100 to 100)"
+msgstr "CBPro setze externe Motorspannung auf _ (-100~100)"
 
 #. Settings menu option
 msgid "dark mode"
@@ -4868,11 +4868,11 @@ msgstr ""
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong drehe Rotationsservo _ mit _ %"
+msgstr "Wukong drehe Rotationsservo _ mit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
-msgstr "Nezha starte Motor_ mit Geschwindigkeit _ %"
+msgstr "Nezha starte Motor_ mit _ % (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong stop motor _"
@@ -4916,7 +4916,7 @@ msgstr "Wukong2040 setze Motor _ auf Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
-msgstr "Wukong setze Servo _ auf Winkel _ ° (-90~90)"
+msgstr "Wukong setze 180°-Servo _ auf _ ° (-90~90)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
@@ -5052,7 +5052,7 @@ msgstr "g#"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong starte Motor _ mit Geschwindigkeit _ (-100~100)"
+msgstr "Wukong starte Motor _ mit _ (-100~100)"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
@@ -5300,7 +5300,7 @@ msgstr "Klavier"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set servo _ to speed _ (-100 to 100)"
-msgstr "Imagina setze Geschwindigkeit von Servo _ auf _ (-100 to 100)"
+msgstr "Imagina drehe Rotationsservo _ mit _ % (-100~100)"
 
 #. Keyestudio Smart Home library block
 msgid "Home clear leds"
@@ -5802,7 +5802,7 @@ msgstr "Nezha stoppe alle Motoren"
 
 #. NeZha2 robot library block
 msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
-msgstr "Nezha drehe Rotationsservo _ mit _ %"
+msgstr "Nezha drehe Rotationsservo _ mit _ % (-100~100)"
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
