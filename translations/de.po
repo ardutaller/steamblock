@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-06 13:46+0000\n"
+"PO-Revision-Date: 2025-01-07 15:20+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -180,7 +180,7 @@ msgstr "dupliziere diese Blöcke"
 
 #. In MicroBlocks IDE project menu
 msgid "Open"
-msgstr "Öffnen"
+msgstr "öffnen"
 
 #. Window title
 msgid "About MicroBlocks"
@@ -841,7 +841,7 @@ msgstr "Ziel"
 
 #. Settings menu option
 msgid "about..."
-msgstr "Über..."
+msgstr "über..."
 
 #. Block right-click context menu
 msgid "help"
@@ -1829,7 +1829,7 @@ msgstr "Board wird gelöscht..."
 
 #. In MicroBlocks IDE project menu
 msgid "New"
-msgstr "Neu"
+msgstr "neu"
 
 #. Button
 msgid "Yes"
@@ -1841,7 +1841,7 @@ msgstr "%1 Sekunden verbleiben"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
-msgstr "Verbinden (BLE)"
+msgstr "verbinden (BLE)"
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
@@ -1881,7 +1881,7 @@ msgstr "obsolet"
 
 #. In MicroBlocks IDE project menu
 msgid "Save"
-msgstr "Speichern"
+msgstr "speichern"
 
 #. Settings menu option
 msgid "download and install latest VM"
@@ -2369,7 +2369,7 @@ msgstr "linker Sensor"
 
 #. In MicroBlocks IDE project menu
 msgid "Open from board"
-msgstr "Vom Board öffnen"
+msgstr "vom Board öffnen"
 
 #. In information window title
 msgid "Information"
@@ -2409,7 +2409,7 @@ msgstr "füge Skript ein"
 
 #. Scripting area right-click context menu
 msgid "paste script from clipboard"
-msgstr "füge Skript aus Zwischenablage ein"
+msgstr "füge Skript aus der Zwischenablage ein"
 
 #. Scripting area right-click context menu
 msgid "save a picture of all visible scripts"
@@ -2438,13 +2438,13 @@ msgstr "Implementationsblöcke anzeigen"
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
 msgstr ""
-"zeige Blöcke und Variablen an, die nur intern in Modulen verwendet werden ("
-"d.h. solche, deren Name mit einem Unterstrich beginnt)"
+"zeige auch Blöcke und Variablen an, die nur intern in Modulen verwendet "
+"werden (d.h. solche, deren Name mit einem Unterstrich beginnen)"
 
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
 msgstr ""
-"lade automatisch den Inhalt des Board, wenn ein Board verbunden wird und das "
+"lade automatisch alle Inhalte, wenn ein Board verbunden wird und das "
 "aktuelle Projekt leer ist"
 
 #. Successful firmware installation confirmation window title
@@ -2531,7 +2531,7 @@ msgstr "zurücknehmen"
 
 #. Block input right-click context menu option
 msgid "select all"
-msgstr "alles Auswählen"
+msgstr "alles auswählen"
 
 #. Block definition right-click context menu option
 msgid "hide block definition"
@@ -3051,7 +3051,7 @@ msgstr "WiFi letzte Zahl"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect"
-msgstr "Verbinden (USB)"
+msgstr "verbinden (USB)"
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
@@ -3072,7 +3072,7 @@ msgstr "Board-Typ:"
 #. About window info. As in "By Mary, Johanna and Tracy".
 #. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
 msgid "about;by %1, %2 & %3."
-msgstr "von %1, %2 und %3."
+msgstr "von %1, %2 & %3."
 
 #. Firmware file read error.
 #. %1 holds the firmware file name
@@ -3081,7 +3081,7 @@ msgstr "Lesen von %1 nicht möglich."
 
 #. MicroBlocks IDE information
 msgid "The MicroBlocks in your board is not current"
-msgstr "MicroBlocks auf deinem Board ist nicht aktuell"
+msgstr "MicroBlocks ist auf deinem Board nicht aktuell"
 
 #. Confirmation window
 msgid "Discard current project?"
@@ -3175,11 +3175,11 @@ msgstr "speichere Bild dieser Blöcke und deren Ergebnis als PNG-Datei"
 
 #. Text right-click context menu option
 msgid "copy"
-msgstr "kopiere"
+msgstr "kopieren"
 
 #. Text right-click context menu option
 msgid "paste"
-msgstr "füge ein"
+msgstr "einfügen"
 
 #. Button
 msgid "Okay"
@@ -3377,7 +3377,7 @@ msgstr "stoppe Bearbeitung"
 
 #. Text right-click context menu option
 msgid "cut"
-msgstr "schneide aus"
+msgstr "ausschneiden"
 
 #. Window title
 msgid "Confirm"
@@ -3534,7 +3534,7 @@ msgstr "rückwärts"
 
 #. In MicroBlocks IDE project menu
 msgid "Copy project URL to clipboard"
-msgstr "Kopiere Projekt-URL in die Zwischenablage"
+msgstr "Projekt-URL in die Zwischenablage kopieren"
 
 #. About window info
 msgid "More info at http://microblocks.fun"
@@ -3550,7 +3550,7 @@ msgstr "setze serielle Verzögerung"
 
 #. Settings menu option
 msgid "disable autoloading board libraries"
-msgstr "lade Board-Module nicht automatisch"
+msgstr "Board-Module nicht automatisch laden"
 
 #. Script right-click context menu
 msgid "copy script"
