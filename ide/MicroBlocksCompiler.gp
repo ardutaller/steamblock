@@ -156,10 +156,11 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' '[data:convertType]'	'convert _ to _' 'auto menu.typesMenu' 123 'number')
 	'cat;Operators-Advanced'
 		(array 'r' 'ifExpression'		'if _ then _ else _' 'bool auto auto' true 1 0)
+		(array 'r' 'hexToInt'			'hex _' 'str' '3F')
 		'-'
 		(array 'r' '[misc:rescale]'		'rescale _ from ( _ , _ ) to ( _ , _ )' 'num num num num num' 3 0 10 0 100)
 		(array 'r' '[misc:sqrt]'		'sqrt _' 'num' 9)
-		(array 'r' 'hexToInt'			'hex _' 'str' '3F')
+		(array 'r' '[misc:atan2]'		'arctan x _ y _' 'num num' 1 1)
 		'-'
 		(array 'r' '&'					'_ & _' 'num num' 1 3)
 		(array 'r' '|'					'_ | _' 'num num' 1 2)
@@ -249,7 +250,6 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' 'getArg'				'arg _' 'num' 0)
 		(array 'r' 'longMult'			'( _ * _ ) >> _' 'num num num' 1024 2048 10)
 		(array 'r' '[misc:sin]'			'fixed sine _' 'num' 9000)
-		(array 'r' '[misc:atan2]'		'arctan x _ y _' 'num num' 1 1)
 
 		(array ' ' '[misc:broadcastToIDE]' 'broadcast _ to IDE only' 'str' '')
 
