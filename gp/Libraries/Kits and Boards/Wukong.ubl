@@ -2,7 +2,7 @@ module Wukong Output
 author wwj718
 version 1 7 
 depends NeoPixel 
-choices wukong_motor '1' '2' both 
+choices wukong_motor '1' '2' 'wukong;both'
 choices wukongServoType '180°' '270°' '360°' 
 description 'Wukong is a compact micro:bit breakout board with servo and motor drivers, eight I/O pins, four NeoPixels, and four blue LEDs.
 
@@ -13,8 +13,8 @@ The base board design is compatible with Lego.
 https://www.elecfreaks.com/learn-en/microbitExtensionModule/wukong.html
 '
 
-  spec ' ' 'wukong_setMotor' 'Wukong set motor _ to _ (-100 to 100)' 'menu.wukong_motor num' 'both' 50
-  spec ' ' 'wukong_stopMotor' 'Wukong stop motor _' 'menu.wukong_motor' 'both'
+  spec ' ' 'wukong_setMotor' 'Wukong set motor _ to _ (-100 to 100)' 'menu.wukong_motor num' 'wukong;both' 50
+  spec ' ' 'wukong_stopMotor' 'Wukong stop motor _' 'menu.wukong_motor' 'wukong;both'
   space
   spec ' ' 'wukong_setServo' 'Wukong set servo _ to _ degrees (-90 to 90)' 'menu.range:0-7 num' 0 0
   spec ' ' 'wukong_setServoSpeed' 'Wukong set servo _ to speed _ (-100 to 100)' 'menu.range:0-7 num' 0 100
@@ -70,7 +70,7 @@ to wukong_setLEDBrightness num {
 to wukong_setMotor motor power {
   comment 'motor (number): 1, 2, or both'
   comment 'power (number): -100 to 100'
-  if ('both' == motor) {
+  if ('wukong;both' == motor) {
     '_wukong_setMotorPower' 1 power
     '_wukong_setMotorPower' 2 power
   } else {

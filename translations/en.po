@@ -4226,6 +4226,14 @@ msgid "Wukong set servo _ to _ degrees (-90 to 90)"
 msgstr "Wukong set servo _ to _ degrees (-90 to 90)"
 
 #. Wukong robot library block
+msgid "Wukong set _ servo _ to _ degrees"
+msgstr "Wukong set _ servo _ to _ degrees"
+
+#. Wukong robot library menu option, as in "both motors"
+msgid "wukong;both"
+msgstr "both"
+
+#. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
 msgstr "Wukong set servo _ to speed _ (-100 to 100)"
 
