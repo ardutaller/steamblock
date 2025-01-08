@@ -32,7 +32,7 @@ method drawOn CachedTexture ctx {
 	// always draw with shadow
 	shadowColor = (gray 0 60)
 	shadowBlur = (1 * (global 'scale'))
-	browserSetShadow shadowColor shadowOffset shadowBlur
+	browserSetShadow shadowColor shadowOffset shadowOffset shadowBlur
 
 	drawTexture ctx cachedTexture (left morph) (top morph)
 	browserClearShadow
