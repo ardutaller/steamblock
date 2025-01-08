@@ -429,7 +429,7 @@ method metadataBytesInAllLibraries SmallRuntime {
 }
 
 method metadataBytesInAllProjects SmallRuntime {
-   // metadataBytesInAllProjects (smallRuntime)
+	// metadataBytesInAllProjects (smallRuntime)
 
 	for fn (listEmbeddedFiles) {
 		if (beginsWith fn 'Examples') {
@@ -440,7 +440,7 @@ method metadataBytesInAllProjects SmallRuntime {
 }
 
 method metadataBytesInAllLibraries SmallRuntime {
-   // metadataBytesInAllLibraries (smallRuntime)
+	// metadataBytesInAllLibraries (smallRuntime)
 
 	for fn (listEmbeddedFiles) {
 		if (beginsWith fn 'Libraries') {
