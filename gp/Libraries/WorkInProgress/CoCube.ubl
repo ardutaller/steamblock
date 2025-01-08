@@ -1,6 +1,6 @@
 module CoCube
 author 'Liang Shuai'
-version 2 6 
+version 2 7 
 depends Tone Display TFT 'Motors/PID' 
 tags 'cocube robot' 
 choices cocube_rotate_Menu left right 
@@ -33,7 +33,7 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   space
   spec 'r' 'CoCube position_X' 'X position'
   spec 'r' 'CoCube position_Y' 'Y position'
-  spec 'r' 'CoCube position_Direction' 'Direction'
+  spec 'r' 'CoCube direction' 'direction'
   space
   spec ' ' 'CoCube move by step' 'move _ at _ speed (0-50) by _ steps' 'menu.cocube_move_Menu num num' 'forward' 40 50
   spec ' ' 'CoCube rotate by degree' 'rotate _ at _ speed (0-50) by _ degrees' 'menu.cocube_rotate_Menu num num' 'left' 30 90
@@ -42,14 +42,14 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' 'CoCube rotate to target' 'rotate to target X _ Y _ at _ speed (0-50)' 'num num num' 0 0 30
   spec ' ' 'CoCube move to target' 'move to target X _ Y _ at _ speed (0-50)' 'num num num' 0 0 40
   space
-  spec 'r' 'CoCube On The Mat' 'On The Mat'
-  spec 'r' 'CoCube Card ID' 'Card ID'
+  spec 'r' 'CoCube on the mat' 'on the mat'
+  spec 'r' 'CoCube card ID' 'card ID'
   space
-  spec ' ' 'CoCube draw Aruco Marker on TFT' 'draw Aruco Marker on TFT _' 'num' 0
+  spec ' ' 'CoCube draw ArUco marker on TFT' 'draw ArUco marker on TFT _' 'num' 0
   spec ' ' 'CoCube draw AprilTag on TFT' 'draw AprilTag on TFT _' 'num' 0
   spec ' ' 'CoCube set TFT backlight' 'set TFT backlight _' 'bool' false
   space
-  spec 'r' 'CoCube Battery Percentage' 'Battery Percentage'
+  spec 'r' 'CoCube battery percentage' 'battery percentage'
   space
   spec ' ' '_cocube_motors_speed' '_cocube_motors_speed left _ right _' 'num num' 10 10
   spec ' ' '_cocube_pid_init' '_cocube_pid_init'
@@ -58,16 +58,16 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' '_cocube_calculate_angle_error_' '_cocube_calculate_angle_error angle _' 'num' 0
   spec ' ' '_cocube_calculate_distance_error target_x _ target_y _' '_cocube_calculate_distance_error Target_X _ Target_Y _' 'num num' 0 0
 
-to 'CoCube Battery Percentage' {
+to 'CoCube battery percentage' {
   return (minimum (((254 * ('[misc:rescale]' (analogReadOp 34) 0 1023 0 3300)) - 680000) / 1600) 100)
 }
 
-to 'CoCube Card ID' {
+to 'CoCube card ID' {
   return (callCustomReporter '[sensors:cube_index]')
 }
 
-to 'CoCube On The Mat' {
-  return (callCustomReporter '[sensors:cube_status]')
+to 'CoCube direction' {
+  return (callCustomReporter '[sensors:position_yaw]')
 }
 
 to 'CoCube draw AprilTag on TFT' id {
@@ -79,7 +79,7 @@ to 'CoCube draw AprilTag on TFT' id {
   }
 }
 
-to 'CoCube draw Aruco Marker on TFT' id {
+to 'CoCube draw ArUco marker on TFT' id {
   comment '0 <= id < 100'
   if (id >= 100) {
     sayIt '0 <= id < 100'
@@ -97,7 +97,7 @@ to 'CoCube move' direction speed {
 }
 
 to 'CoCube move by step' direction speed steps {
-  if ('CoCube On The Mat') {
+  if ('CoCube on the mat') {
     local 'begin_x' ('CoCube position_X')
     local 'begin_y' ('CoCube position_Y')
     'CoCube move' direction speed
@@ -122,7 +122,7 @@ to 'CoCube move for msecs' direction speed time {
 }
 
 to 'CoCube move to target' target_x target_y speed {
-  if ('CoCube On The Mat') {
+  if ('CoCube on the mat') {
     _cocube_target_x = target_x
     _cocube_target_y = target_y
     _cocube_target_speed = speed
@@ -145,8 +145,8 @@ to 'CoCube move to target' target_x target_y speed {
   }
 }
 
-to 'CoCube position_Direction' {
-  return (callCustomReporter '[sensors:position_yaw]')
+to 'CoCube on the mat' {
+  return (callCustomReporter '[sensors:cube_status]')
 }
 
 to 'CoCube position_X' {
@@ -166,8 +166,8 @@ to 'CoCube rotate' direction speed {
 }
 
 to 'CoCube rotate by degree' direction speed degree {
-  if ('CoCube On The Mat') {
-    local 'begin_degree' ('CoCube position_Direction')
+  if ('CoCube on the mat') {
+    local 'begin_degree' ('CoCube direction')
     forever {
       if (direction == 'left') {
         '_cocube_calculate_angle_error_' (begin_degree + degree)
@@ -198,7 +198,7 @@ to 'CoCube rotate for msecs' direction speed time {
 }
 
 to 'CoCube rotate to angle' angle speed {
-  if ('CoCube On The Mat') {
+  if ('CoCube on the mat') {
     local 'abs_speed' (absoluteValue speed)
     forever {
       '_cocube_calculate_angle_error_' angle
@@ -248,7 +248,7 @@ to 'CoCube wheels stop' {
 }
 
 to '_cocube_calculate_angle_error_' angle {
-  _cocube_error_angle = ((angle % 360) - ('CoCube position_Direction'))
+  _cocube_error_angle = ((angle % 360) - ('CoCube direction'))
   if (_cocube_error_angle > 180) {
     _cocube_error_angle += -360
   } (_cocube_error_angle < -180) {
