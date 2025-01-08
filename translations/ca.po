@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-01-08 09:20+0000\n"
+"PO-Revision-Date: 2025-01-08 10:17+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -6147,3 +6147,11 @@ msgstr "connecta (USB)"
 #. File System library block
 msgid "skip _ bytes of file _"
 msgstr "ignora _ bytes de l'arxiu _"
+
+#. Wukong robot library block
+msgid "Wukong set _ servo _ to _ degrees"
+msgstr "posa el servo de _ graus _ a _ graus"
+
+#. Wukong robot library menu option, as in "both motors"
+msgid "wukong;both"
+msgstr "tots dos"
