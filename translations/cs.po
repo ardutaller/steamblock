@@ -1639,7 +1639,7 @@ msgid "defer display updates"
 msgstr "OLED odlož aktualizaci displeje"
 
 #. TFT display library block
-msgid "clear TFT display "
+msgid "clear TFT display"
 msgstr "vymaž TFT displej"
 
 #. TFT Display library block

@@ -4244,7 +4244,7 @@ msgid "Color Operators"
 msgstr "Farboperatoren"
 
 #. TFT display library block
-msgid "clear TFT display "
+msgid "clear TFT display"
 msgstr "lösche TFT-Display"
 
 #. OLED Graphics library block

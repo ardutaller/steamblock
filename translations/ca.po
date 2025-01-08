@@ -1638,7 +1638,7 @@ msgid "defer display updates"
 msgstr "ajornar les actualitzacions de la pantalla"
 
 #. TFT display library block
-msgid "clear TFT display "
+msgid "clear TFT display"
 msgstr "esborra pantalla TFT"
 
 #. TFT Display library block

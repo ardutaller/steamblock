@@ -1642,7 +1642,7 @@ msgid "defer display updates"
 msgstr "defer display updates"
 
 #. TFT display library block
-msgid "clear TFT display "
+msgid "clear TFT display"
 msgstr "clear TFT display"
 
 #. TFT Display library block
@@ -1720,6 +1720,10 @@ msgstr "draw bitmap _ palette _ on TFT at x _ y _"
 #. TFT Display library block
 msgid "set TFT backlight _ (0-10)"
 msgstr "set TFT backlight _ (0-10)"
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
+msgstr "draw pixel row _ x _ y _"
 
 #. TFT Display library and Color library block
 msgid "gray _ %"
@@ -2673,6 +2677,18 @@ msgstr "append line _ to file _"
 #. File System library block
 msgid "append bytes _ to file _"
 msgstr "append bytes _ to file _"
+
+#. File System library block
+msgid "read position of file _"
+msgstr "read position of file _"
+
+#. File System library block
+msgid "set read position _ of file _"
+msgstr "set read position _ of file _"
+
+#. File System library block
+msgid "skip _ bytes of file _"
+msgstr "skip _ bytes of file _"
 
 #. File System library block
 msgid "end of file _"
@@ -4582,6 +4598,10 @@ msgstr "Connect"
 #. In MicroBlocks IDE connection menu
 msgid "connect"
 msgstr "connect"
+
+#. In MicroBlocks IDE connection menu
+msgid "connect (USB)"
+msgstr "connect (USB)"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
