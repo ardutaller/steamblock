@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-01-04 13:15+0000\n"
-"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
+"PO-Revision-Date: 2025-01-08 09:20+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -6233,3 +6233,23 @@ msgstr "detén todos los motores"
 #. NeZha2 robot library block
 msgid "brightness _ %"
 msgstr "brillo _ %"
+
+#. File System library block
+msgid "set read position _ of file _"
+msgstr "establece posición de lectura a _ para el archivo _"
+
+#. File System library block
+msgid "skip _ bytes of file _"
+msgstr "ignora _ bytes del archivo _"
+
+#. In MicroBlocks IDE connection menu
+msgid "connect (USB)"
+msgstr "conecta (USB)"
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
+msgstr "dibuja línea de píxeles _ en x _ y _"
+
+#. File System library block
+msgid "read position of file _"
+msgstr "posición de lectura del archivo _"
