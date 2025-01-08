@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-01-08 09:20+0000\n"
+"PO-Revision-Date: 2025-01-08 10:17+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -6253,3 +6253,11 @@ msgstr "dibuja línea de píxeles _ en x _ y _"
 #. File System library block
 msgid "read position of file _"
 msgstr "posición de lectura del archivo _"
+
+#. Wukong robot library menu option, as in "both motors"
+msgid "wukong;both"
+msgstr "ambos"
+
+#. Wukong robot library block
+msgid "Wukong set _ servo _ to _ degrees"
+msgstr "fija el servo de _ grados _ a _ grados"
