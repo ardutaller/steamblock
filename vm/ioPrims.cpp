@@ -653,7 +653,7 @@ void hardwareInit() {
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #elif defined(COCUBE)
-	#define BOARD_TYPE "COCUBE"
+	#define BOARD_TYPE "CoCube"
 	#define DIGITAL_PINS 40
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 40
