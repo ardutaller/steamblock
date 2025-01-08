@@ -1344,7 +1344,7 @@ method addLanguangeMenuEntry MicroBlocksEditor langCode menu {
 		addItem menu language (action 'setLanguage' this langCode) nil (newCheckmark this true)
 	} else {
 		addItem menu language (action 'setLanguage' this langCode)
-				}
+	}
 }
 
 method setLanguage MicroBlocksEditor langCode {
