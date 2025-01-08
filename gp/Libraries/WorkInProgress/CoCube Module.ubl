@@ -3,6 +3,10 @@ author 'Liang Shuai'
 version 1 6 
 depends Servo NeoPixel 'Robots/CoCube' 'Sensing/Distance (VL53L0X)' 'Sensing/Gesture (PAJ7620)' 
 description 'External modules of CoCube.
+CoCube is a tabletop modular multi-robot platform for education and research.
+https://www.cocubefun.com/
+sliang23@m.fudan.edu.cn
+
 Note: All functions must start by turning on pin 13 to power the module.
 The power pin is off by default and is also turned off by the IDE stop button.'
 variables ccmodule_lastDistance 

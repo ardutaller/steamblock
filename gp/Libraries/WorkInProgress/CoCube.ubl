@@ -6,6 +6,10 @@ tags 'cocube robot'
 choices cocube_rotate_Menu left right 
 choices cocube_move_Menu forward backward 
 description 'CoCube Robot library
+CoCube is a tabletop modular multi-robot platform for education and research.
+https://www.cocubefun.com/
+sliang23@m.fudan.edu.cn
+
 v1.0 Basic functions
 v2.0 Comprehensively add encoder control motor function
 v2.1 Fix some bugs caused by broadcasting
