@@ -39,10 +39,10 @@ method setLastScriptPicFolder MicroBlocksEditor dir { lastScriptPicFolder = dir 
 to openMicroBlocksEditor devMode {
 	if (isNil devMode) { devMode = false }
 	if ('Browser' == (platform)) {
-	    browserSize = (browserSize)
-	    page = (newPage (first browserSize) (last browserSize))
+		browserSize = (browserSize)
+		page = (newPage (first browserSize) (last browserSize))
 	} else {
-    	page = (newPage 1000 600)
+		page = (newPage 1000 600)
 	}
 	setDevMode page devMode
 	toggleMorphicMenu (hand page) (contains (commandLine) '--allowMorphMenu')
@@ -158,11 +158,11 @@ method addTopBarParts MicroBlocksEditor {
 		frameRate = (newText '00 fps' 'Arial' (14 * scale) (microBlocksColor 'blueGray' 200))
 		addPart morph (morph frameRate)
 		add rightItems frameRate
-	    add rightItems (12 * scale)
+		add rightItems (12 * scale)
 	}
 
-    connectionWidget = (newMicroBlocksConnectWidget this)
-    addPart morph (morph connectionWidget)
+	connectionWidget = (newMicroBlocksConnectWidget this)
+	addPart morph (morph connectionWidget)
 
 	add rightItems (addTwoStateSVGIconButton this 'icon-graph' 'showGraph' 'Graph')
 	add rightItems (12 * scale)
@@ -333,9 +333,9 @@ method clearProject MicroBlocksEditor {
 	}
 	clearLoggedData (smallRuntime)
 
-    // close graph window
-    graph = (findMorph 'MicroBlocksDataGraph')
-    if (notNil graph) { destroy graph }
+	// close graph window
+	graph = (findMorph 'MicroBlocksDataGraph')
+	if (notNil graph) { destroy graph }
 }
 
 method closeAllDialogs MicroBlocksEditor {
@@ -624,11 +624,11 @@ method drawProgressIndicator MicroBlocksEditor bm phase downloadProgress {
 // Connection indicator
 
 method updateIndicator MicroBlocksEditor forcefully {
-    updateIndicator connectionWidget forcefully
+	updateIndicator connectionWidget forcefully
 }
 
 method updateConnectionName MicroBlocksEditor aString {
-    updateConnectionName connectionWidget aString
+	updateConnectionName connectionWidget aString
 }
 
 // browser support
@@ -1312,22 +1312,18 @@ method languageMenu MicroBlocksEditor {
 	if ('Browser' == (platform)) {
 		for fn (sorted (listFiles 'translations')) {
 			fn = (withoutExtension fn)
-			langCode = (withoutExtension fn)
-			language = (languageNameForCode (authoringSpecs) langCode)
-			addItem menu language (action 'setLanguage' this langCode)
+			if (isNil (findSubstring 'template' fn)) {
+				langCode = (withoutExtension fn)
+				addLanguangeMenuEntry this langCode menu
+			}
 		}
 	} else {
 		for fn (sorted (listEmbeddedFiles)) {
 			fn = (withoutExtension fn)
 			if (and (beginsWith fn 'translations/')
-			        (isNil (findSubstring 'template' fn))) {
+					(isNil (findSubstring 'template' fn))) {
 				langCode = (withoutExtension (substring fn 14))
-				language = (languageNameForCode (authoringSpecs) langCode)
-				if (language == (language (authoringSpecs))) {
-					addItem menu language (action 'setLanguage' this langCode) nil (newCheckmark this true)
-				} else {
-					addItem menu language (action 'setLanguage' this langCode)
-				}
+				addLanguangeMenuEntry this langCode menu
 			}
 		}
 	}
@@ -1340,6 +1336,15 @@ method languageMenu MicroBlocksEditor {
 		addItem menu 'Custom...' (action 'readCustomTranslationFile' this)
 	}
 	popUpAtHand menu (global 'page')
+}
+
+method addLanguangeMenuEntry MicroBlocksEditor langCode menu {
+	language = (languageNameForCode (authoringSpecs) langCode)
+	if (language == (language (authoringSpecs))) {
+		addItem menu language (action 'setLanguage' this langCode) nil (newCheckmark this true)
+	} else {
+		addItem menu language (action 'setLanguage' this langCode)
+				}
 }
 
 method setLanguage MicroBlocksEditor langCode {

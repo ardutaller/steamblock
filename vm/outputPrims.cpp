@@ -425,7 +425,7 @@ OBJ primMBDisplay(int argCount, OBJ *args) {
 OBJ primMBDisplayOff(int argCount, OBJ *args) {
 	microBitDisplayBits = 0;
 	#if !defined(OLED_128_64)
-	    if (useTFT) tftClear();
+		if (useTFT) tftClear();
 	#endif
 	return falseObj;
 }
@@ -789,9 +789,9 @@ static void initNeoPixelPin(int pinNum) { // ESP32
 		#elif defined(DATABOT)
 			pinNum = 2; // internal NeoPixel pin
 		#elif defined(ESP32_S3)
-		    pinNum = 48; // ESP32-S3-DevKitC-1 internal NeoPixel pin
+			pinNum = 48; // ESP32-S3-DevKitC-1 internal NeoPixel pin
 		#elif defined(ESP32_C3)
-		    pinNum = 8; // ESP32-C3-DevKitC-02 internal NeoPixel pin
+			pinNum = 8; // ESP32-C3-DevKitC-02 internal NeoPixel pin
 		#else
 			pinNum = 0; // default to pin 0
 		#endif
@@ -934,9 +934,9 @@ static inline int gamma(int val) {
 	// which is about (neoPixelMax / 255) * 20 mA per color channel.
 
 	#if defined(ARDUINO_Mbits)
-	    // The Mbits power supply cannot supply enough current to run both
-	    // the WiFi/BLE radio and the Neopixel array a full brightness.
-	    if (val > 175) val = 175; // limit brightness to avoid making WiFi fail
+	// The Mbits power supply cannot supply enough current to run both
+	// the WiFi/BLE radio and the Neopixel array a full brightness.
+	if (val > 175) val = 175; // limit brightness to avoid making WiFi fail
 	#endif
 
 	const int divisor = (255 * 255) / neoPixelMax;

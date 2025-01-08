@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-01-04 13:01+0000\n"
+"PO-Revision-Date: 2025-01-08 10:17+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -1638,7 +1638,7 @@ msgid "defer display updates"
 msgstr "ajornar les actualitzacions de la pantalla"
 
 #. TFT display library block
-msgid "clear TFT display "
+msgid "clear TFT display"
 msgstr "esborra pantalla TFT"
 
 #. TFT Display library block
@@ -6127,3 +6127,31 @@ msgstr "esquerre"
 #. Keyestudio Smart Home button (left/right) label
 msgid "shbutton;right"
 msgstr "dret"
+
+#. File System library block
+msgid "read position of file _"
+msgstr "posició de lectura de l'arxiu _"
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
+msgstr "dibuixa línia de píxels _ a x _ y _"
+
+#. File System library block
+msgid "set read position _ of file _"
+msgstr "estableix posició de lectura a _ per a l'arxiu _"
+
+#. In MicroBlocks IDE connection menu
+msgid "connect (USB)"
+msgstr "connecta (USB)"
+
+#. File System library block
+msgid "skip _ bytes of file _"
+msgstr "ignora _ bytes de l'arxiu _"
+
+#. Wukong robot library block
+msgid "Wukong set _ servo _ to _ degrees"
+msgstr "posa el servo de _ graus _ a _ graus"
+
+#. Wukong robot library menu option, as in "both motors"
+msgid "wukong;both"
+msgstr "tots dos"

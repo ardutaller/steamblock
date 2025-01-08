@@ -1638,7 +1638,7 @@ msgid "defer display updates"
 msgstr "uitstellen display updates"
 
 #. TFT display library block
-msgid "clear TFT display "
+msgid "clear TFT display"
 msgstr "wis TFT scherm"
 
 #. TFT Display library block
