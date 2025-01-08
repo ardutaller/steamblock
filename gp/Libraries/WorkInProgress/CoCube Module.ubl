@@ -98,14 +98,14 @@ to 'ccmodule_ultrasonic distance' {
   comment 'Wait for a low-to-high edge on the echo pin.
 Timeout if an edge is not detected. '
   local 'start' (millisOp)
-  waitUntil (or (not (digitalReadOp ech)) ((millisSince start) > 2))
-  waitUntil (or (digitalReadOp ech) ((millisSince start) > 2))
+  waitUntil (or (not (digitalReadOp echo)) ((millisSince start) > 2))
+  waitUntil (or (digitalReadOp echo) ((millisSince start) > 2))
   if ((millisSince start) > 2) {
     comment 'Distance sensor not ready; return the last distance reading'
     return ccmodule_lastDistance
   }
   comment 'Starting pulse was sent. Measure time until echo is detected.'
-  '[sensors:captureStart]' ech
+  '[sensors:captureStart]' echo
   start = (millisOp)
   waitUntil (or (('[sensors:captureCount]') > 0) ((millisSince start) > 25))
   comment 'Default value of 23320 usecs reports 4000 mm
