@@ -113,7 +113,7 @@ method y Hand {return y}
 method downX Hand {return downX}
 method downY Hand {return downY}
 method focus Hand {return focus}
-method focusOn Hand aHandler {focus = aHandler}
+method focusOn Hand aHandler { cancelTouchHold this;  focus = aHandler }
 method button Hand {return mouseButton}
 
 method objectAt Hand pixelPerfect {
