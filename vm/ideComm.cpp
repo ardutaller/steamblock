@@ -153,6 +153,7 @@ static void updateConnectionState() {
 			// tell runtime that we've gotten a ping
 			lastRcvTime = microsecs();
 			USB_connected_to_IDE = true;
+			BLE_pauseAdvertising();
 		}
 	}
 }
@@ -280,7 +281,7 @@ void BLE_stop() {
 	connID = -1;
 	BLE_connected_to_IDE = false;
 
-	NimBLEDevice::getAdvertising()->reset();
+	NimBLEDevice::getAdvertising()->stop();
 	if (pServer) pServer->removeService(pService);
 	NimBLEDevice::deinit();
 
@@ -295,21 +296,23 @@ void BLE_stop() {
 // Stop and resume advertising (for use by Octo primitives)
 
 void BLE_pauseAdvertising() {
+	// Stop advertising and remove all service UUID's.
+
 	if (!bleRunning) return;
 
 	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
 	pAdvertising->reset();
-	pAdvertising->removeServiceUUID(NimBLEUUID(MB_SERVICE_UUID));
+	pAdvertising->removeServices();
 }
 
 void BLE_resumeAdvertising() {
 	if (!bleRunning) return;
 
-	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-	pAdvertising->reset();
 	if (BLE_connected_to_IDE || USB_connected_to_IDE) {
 		return; // don't advertise if connected to IDE
 	}
+	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+	pAdvertising->removeServices();
 	pAdvertising->addServiceUUID(MB_SERVICE_UUID);
 	pAdvertising->setName(bleDeviceName);
 	pAdvertising->setMinInterval(32); // 20 msecs (minumum allowable interval)

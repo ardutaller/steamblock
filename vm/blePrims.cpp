@@ -327,9 +327,7 @@ NimBLEUUID ANDROID_OCTO_UUID	= NimBLEUUID(ANDROID_OCTO_UUID_STRING);
 NimBLEUUID iOS_OCTO_UUID		= NimBLEUUID(iOS_OCTO_UUID_STRING);
 
 static void stopBeaming() {
-	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-	if (pAdvertising->isAdvertising()) pAdvertising->stop();
-	pAdvertising->removeServiceUUID(iOS_OCTO_UUID);
+	BLE_pauseAdvertising();
 	BLE_resumeAdvertising();
 }
 
@@ -338,7 +336,6 @@ static void startOctoBeam(char *msg) {
 
 	BLE_pauseAdvertising();
 	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-	pAdvertising->reset();
 	pAdvertising->addServiceUUID(iOS_OCTO_UUID);
 	pAdvertising->setName(msg);
 	pAdvertising->setMinInterval(32);
@@ -358,7 +355,6 @@ static void startRadioBeam(uint8 *msg, int msgByteCount) {
 
 	BLE_pauseAdvertising();
 	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-	pAdvertising->reset();
 
 	// advertise using manufacturer data with msg payload
 	NimBLEAdvertisementData advertData;
