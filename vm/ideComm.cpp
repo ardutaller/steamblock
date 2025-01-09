@@ -141,6 +141,7 @@ static void updateConnectionState() {
 			connID = -1;
 		}
 		BLE_connected_to_IDE = false;
+		BLE_resumeAdvertising();
 	}
 	if (!USB_connected_to_IDE) { // either not connected or connected via BLE
 		if (Serial.available()) {
@@ -311,6 +312,7 @@ void BLE_resumeAdvertising() {
 	if (BLE_connected_to_IDE || USB_connected_to_IDE) {
 		return; // don't advertise if connected to IDE
 	}
+
 	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
 	pAdvertising->removeServices();
 	pAdvertising->addServiceUUID(MB_SERVICE_UUID);
@@ -405,11 +407,14 @@ void BLE_pauseAdvertising() {
 	if (!__isPicoW) return;
 
 	BTstack.stopAdvertising();
-	setAdvertisingInterval(32, 32); // set mimimal advertising interval for Octo
 }
 
 void BLE_resumeAdvertising() {
 	if (!__isPicoW) return;
+
+	if (BLE_connected_to_IDE || USB_connected_to_IDE) {
+		return; // don't advertise if connected to IDE
+	}
 
 	BTstack.stopAdvertising();
 	BLE_setPicoAdvertisingData(bleDeviceName, MB_SERVICE_UUID); // resume BLE advertisting
@@ -430,8 +435,8 @@ static void deviceConnectedCallback(BLEStatus status, BLEDevice *device) {
 
 static void deviceDisconnectedCallback(BLEDevice *device) {
 	connectionHandle = 0;
-	BLE_resumeAdvertising();
 	BLE_connected_to_IDE = false;
+	BLE_resumeAdvertising();
 }
 
 void bleDisconnect() {
@@ -463,6 +468,12 @@ static int gattWriteCallback(uint16_t attribute_handle, uint8_t *data, uint16_t 
 static void updateConnectionState() {
 	if (!__isPicoW) return;
 
+	if ((USB_connected_to_IDE || BLE_connected_to_IDE) && !ideConnected()) {
+		// lost connection to IDE; resume advertisting
+		USB_connected_to_IDE = false;
+		BLE_connected_to_IDE = false;
+		BLE_resumeAdvertising();
+	}
 	if (!USB_connected_to_IDE) { // either not connected or connected via BLE
 		if (Serial.available()) {
 			// new serial connection; disconnect BLE if it is connected
