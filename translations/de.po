@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-08 19:17+0000\n"
+"PO-Revision-Date: 2025-01-10 11:14+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -780,7 +780,7 @@ msgstr "Stift runter"
 
 #. Library folder
 msgid "folder;Graphics and Displays"
-msgstr "Displays & Grafik"
+msgstr "Grafik & Displays"
 
 #. Lists library label
 #. Extra utilities for list manipulation and access
@@ -1340,7 +1340,7 @@ msgstr "wütend"
 
 #. Example string. Tells the user this input accepts a list
 msgid "aList"
-msgstr "eineListe"
+msgstr "eine Liste"
 
 #. Web Things library label
 msgid "Web Thing"
@@ -2472,8 +2472,8 @@ msgstr "Du wirst aufgefordert, die Firmware-Datei zu speichern."
 msgid "If your micro:bit shows a sad face, save the firmware.hex file to your disk then drop it onto the MICROBIT drive."
 msgstr ""
 "Wenn dein Micro:bit ein trauriges Gesicht zeigt, speichere die Datei "
-"Firmware.hex auf deine Festplatte und lege sie dann auf dem Laufwerk "
-"MICROBIT ab."
+"Firmware.hex auf deine Festplatte und kopiere sie dann auf das Laufwerk "
+"MICROBIT."
 
 #. MicroBlocks IDE information
 msgid "Save the firmware file when prompted."
@@ -3458,7 +3458,7 @@ msgstr "pullup _"
 
 #. Servo motor library block
 msgid "set servo _ to _ degrees (-90 to 90)"
-msgstr "setze Servo _ auf Winkel _ ° (-90 bis 90)"
+msgstr "setze 180°-Servo _ auf Winkel _ ° (-90~90)"
 
 #. 5x5 LED display library label
 #. Supports the micro:bit display, but also simulated 5x5 displays on boards
@@ -4482,7 +4482,7 @@ msgstr "Musik"
 
 #. Examples folder
 msgid "folder;microbit and Calliope"
-msgstr "Microbit und Calliope"
+msgstr "Micro:bit und Calliope"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the seconds since power up."
