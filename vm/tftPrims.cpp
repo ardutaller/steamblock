@@ -803,7 +803,8 @@ static int hasTFT() {
 	return useTFT;
 }
 
-uint16_t bufferPixels[TFT_WIDTH * 8]; // used by primPixelRow and primDrawBuffer
+#define BUFFER_PIXELS_SIZE (TFT_WIDTH * 8)
+uint16_t bufferPixels[BUFFER_PIXELS_SIZE]; // used by primPixelRow and primDrawBuffer
 
 static int color24to16b(int color24b) {
 	// Convert 24-bit RGB888 format to the TFT's target pixel format.
@@ -1009,6 +1010,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 	if (IS_TYPE(pixelDataObj, ListType)) {
 		int pixelCount = obj2int(FIELD(pixelDataObj, 0));
 		if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
+		if (pixelCount > BUFFER_PIXELS_SIZE) pixelCount = BUFFER_PIXELS_SIZE;
 		for (int i = 0; i < pixelCount; i++) {
 			OBJ pixelObj = FIELD(pixelDataObj, (i + 1));
 			bufferPixels[i] = (isInt(pixelObj)) ? color24to16b(obj2int(pixelObj)) : 0;
@@ -1024,6 +1026,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 
 		int pixelCount = BYTES(pixelDataObj) / bytesPerPixel;
 		if (pixelCount > (TFT_WIDTH - x)) pixelCount = TFT_WIDTH - x;
+		if (pixelCount > BUFFER_PIXELS_SIZE) pixelCount = BUFFER_PIXELS_SIZE;
 		uint8 *byte = (uint8 *) &FIELD(pixelDataObj, 0);
 		if (1 == bytesPerPixel) {
 			for (int i = 0; i < pixelCount; i++) {
