@@ -987,7 +987,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 
 	OBJ pixelDataObj = args[0];
 	int x = obj2int(args[1]);
-	if ((x < 0) || (x >= TFT_WIDTH)) return falseObj;
+	if (x >= TFT_WIDTH) return falseObj;
 	int y = obj2int(args[2]);
 	if ((y < 0) || (y >= TFT_HEIGHT)) return falseObj;
 	int bytesPerPixel = ((argCount > 3) && isInt(args[3])) ? obj2int(args[3]) : 4;
