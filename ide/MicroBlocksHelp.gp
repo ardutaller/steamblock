@@ -109,6 +109,8 @@ method initialize MicroBlocksHelp {
 		(array '[data:convertType]' 'operators#convert' 'Convert a value to the given data type.')
 		(array 'ifExpression' 'operators#ternary-if' 'If the condition is (-o) report the first alternative otherwise report the second alternative.')
 		(array '[misc:rescale]' 'operators#rescale' 'Map a value in the "from" range to the corresponding value in the "to" range.')
+		(array '[misc:sqrt]' 'operators#sqrt' 'Returns the square root value of the number input.')
+		(array '[misc:atan2]' 'operators#arctan' 'Calculates the angle from x (adjacent), y (opposite) sides of a right-angled triangle, and returns degrees multiplied by 100.')
 		(array 'hexToInt' 'operators#hex' 'Report the numerical value of a hexadecimal string (range: -0x1FFFFFFF to 0x1FFFFFFF)')
 		(array '&' 'operators#bitwise-and' 'Report bitwise AND of two numbers.')
 		(array '|' 'operators#bitwise-or' 'Report bitwise OR of two numbers.')
