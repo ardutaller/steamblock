@@ -1,72 +1,74 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-01-10 12:14+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-01-10 15:22+0000\n"
+"Last-Translator: Inigo Gebara <igebara@disroot.org>\n"
+"Language-Team: Basque <https://hosted.weblate.org/projects/microblocks/ide/"
+"eu/>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.14.5\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Irteera"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "ezarri erabiltzaile LEDa_"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "esan_"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "grafikatu_"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "Sarrrera"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "A botoia"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "B botoia"
 
 #. Block in Input category
 msgid "timer"
-msgstr ""
+msgstr "kronometroa"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr ""
+msgstr "berrabiarazi kronometroa"
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "segundo"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "mikrosegundo"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "milisegundo"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "plaka mota"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "bertsioa"
 
 #. Block in Input category
 msgid "milliseconds since _"
