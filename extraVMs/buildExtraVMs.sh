@@ -24,8 +24,11 @@ pio run -e m5atom-lite
 cp .pio/build/m5atom-lite/firmware.bin extraVMs/vm_m5atom_lite.bin
 pio run -e esp32-atom-s3
 cp .pio/build/esp32-atom-s3/firmware.bin extraVMs/vm_m5atom_lite_s3.bin
-pio run -e esp32-s3-matrix
-cp .pio/build/esp32-s3-matrix/firmware.bin extraVMs/vm_s3_matrix.bin
+
+pio run -e m5stick
+cp .pio/build/m5stick/firmware.bin extraVMs/vm_m5stick.bin
+pio run -e m5stick-plus
+cp .pio/build/m5stick-plus/firmware.bin extraVMs/vm_m5stick_plus.bin
 
 pio run -e esp32-s2
 cp .pio/build/esp32-s2/firmware.bin extraVMs/vm_esp32-s2.bin
