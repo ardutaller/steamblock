@@ -1,11 +1,12 @@
 module CoCube
 author 'Liang Shuai'
-version 2 7 
+version 2 8 
 depends Tone Display TFT 'Motors/PID' 
 tags 'cocube robot' 
 choices cocube_rotate_Menu left right 
 choices cocube_move_Menu forward backward 
 description 'CoCube Robot library
+
 CoCube is a tabletop modular multi-robot platform for education and research.
 https://www.cocubefun.com/
 sliang23@m.fudan.edu.cn
@@ -39,8 +40,8 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' 'CoCube rotate by degree' 'rotate _ at _ speed (0-50) by _ degrees' 'menu.cocube_rotate_Menu num num' 'left' 30 90
   space
   spec ' ' 'CoCube rotate to angle' 'rotate to angle _ at _ speed (0-50)' 'num num' 0 30
-  spec ' ' 'CoCube rotate to target' 'rotate to target X _ Y _ at _ speed (0-50)' 'num num num' 0 0 30
-  spec ' ' 'CoCube move to target' 'move to target X _ Y _ at _ speed (0-50)' 'num num num' 0 0 40
+  spec ' ' 'CoCube point towards' 'point towards X _ Y _ at _ speed (0-50)' 'num num num' 0 0 30
+  spec ' ' 'CoCube move to' 'move to X _ Y _ at _ speed (0-50)' 'num num num' 0 0 40
   space
   spec 'r' 'CoCube on the mat' 'on the mat'
   spec 'r' 'CoCube card ID' 'card ID'
@@ -121,7 +122,7 @@ to 'CoCube move for msecs' direction speed time {
   'CoCube wheels break'
 }
 
-to 'CoCube move to target' target_x target_y speed {
+to 'CoCube move to' target_x target_y speed {
   if ('CoCube on the mat') {
     _cocube_target_x = target_x
     _cocube_target_y = target_y
@@ -147,6 +148,11 @@ to 'CoCube move to target' target_x target_y speed {
 
 to 'CoCube on the mat' {
   return (callCustomReporter '[sensors:cube_status]')
+}
+
+to 'CoCube point towards' target_x target_y speed {
+  _cocube_target_angle = (('[misc:atan2]' (target_y - ('CoCube position_Y')) (target_x - ('CoCube position_X'))) / 100)
+  'CoCube rotate to angle' _cocube_target_angle speed
 }
 
 to 'CoCube position_X' {
@@ -217,11 +223,6 @@ to 'CoCube rotate to angle' angle speed {
   } else {
     sayIt 'Please put CoCube on Mat'
   }
-}
-
-to 'CoCube rotate to target' target_x target_y speed {
-  _cocube_target_angle = (('[misc:atan2]' (target_y - ('CoCube position_Y')) (target_x - ('CoCube position_X'))) / 100)
-  'CoCube rotate to angle' _cocube_target_angle speed
 }
 
 to 'CoCube set TFT backlight' state {
