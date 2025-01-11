@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-13 08:35+0000\n"
+"PO-Revision-Date: 2025-01-13 08:44+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -6274,129 +6274,161 @@ msgid "Wukong set _ servo _ to _ degrees"
 msgstr "Wukong setze _ Servo _ auf _ °"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50) for _ msecs"
 msgstr "fahre _ mit Geschwindigkeit _ (0~50) für _ ms"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50)"
 msgstr "drehe _ mit Geschwindigkeit _ (0~50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "wheels stop"
 msgstr "stoppe Räder"
 
 #. CoCube library block
+#, fuzzy
 msgid "wheels break"
 msgstr "stoppe Räder hart"
 
 #. CoCube library block
+#, fuzzy
 msgid "X position"
 msgstr "X-Position"
 
 #. CoCube library block
+#, fuzzy
 msgid "Y position"
 msgstr "Y-Position"
 
 #. CoCube library block
+#, fuzzy
 msgid "direction"
 msgstr "Richtung"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50) by _ degrees"
 msgstr "drehe _ mit Geschwindigkeit _ (0~50) für _ Grad"
 
 #. CoCube library block
+#, fuzzy
 msgid "point towards X _ Y _ at _ speed (0-50)"
 msgstr "zeige Richtung x _ y _ mit Geschwindigkeit _ (0~50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "on the mat"
 msgstr "auf der Matte"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50)"
 msgstr "fahre _ mit Geschwindigkeit _ (0~50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50) by _ steps"
 msgstr "fahre _ mit Geschwindigkeit _ (0~50) für _ Schritte"
 
 #. CoCube library block
+#, fuzzy
 msgid "move to X _ Y _ at _ speed (0-50)"
 msgstr "fahre zu x _ y _ mit Geschwindigkeit _ (0~50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "card ID"
 msgstr "Karten-ID"
 
 #. CoCube library block
+#, fuzzy
 msgid "draw ArUco marker on TFT _"
 msgstr "zeichne ArUco-Marker auf TFT _"
 
 #. CoCube library block
+#, fuzzy
 msgid "set TFT backlight _"
 msgstr "setze TFT-Hintergrundlicht _"
 
 #. CoCube library block
+#, fuzzy
 msgid "battery percentage"
 msgstr "Batterie-Ladung"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper close"
 msgstr "Greifer zu"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper stop"
 msgstr "Greifer stopp"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper open"
 msgstr "Greifer auf"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper degrees _ (0 to 70)"
 msgstr "Greifer Winkel _ (0~70)"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "attach NeoPixels"
 msgstr "verbinde NeoPixel"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "3D gesture connected"
 msgstr "3D-Gestensensor verbunden"
 
 #. CoCube library block
+#, fuzzy
 msgid "draw AprilTag on TFT _"
 msgstr "zeichne April-Tag auf TFT _"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "ToF connected"
 msgstr "ToF-Sensor verbunden"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "ToF distance (mm)"
 msgstr "ToF-Sensor Entfernung (mm)"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "3D gesture read"
 msgstr "3D-Gestensensor lesen"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "ultrasonic distance (mm)"
 msgstr "Ultrasonic Entfernung (mm)"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "power on module"
 msgstr "schalte Modul ein"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50) for _ msecs"
 msgstr "drehe _ mit Geschwindigkeit _ (0~50) für _ ms"
 
 #. CoCube library block
+#, fuzzy
 msgid "set wheel left _ right _ (-50 to 50)"
 msgstr "setze Rad links _ rechts _ (-50~50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate to angle _ at _ speed (0-50)"
 msgstr "drehe auf Winkel _ mit Geschwindigkeit _ (0~50)"
