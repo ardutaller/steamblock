@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-29 09:24+0200\n"
-"PO-Revision-Date: 2025-01-12 02:00+0000\n"
+"PO-Revision-Date: 2025-01-13 08:44+0000\n"
 "Last-Translator: Peter Mathijssen <pmathijssen@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/microblocks/ide/nl/"
 ">\n"
@@ -6061,38 +6061,47 @@ msgid "folder;Examples"
 msgstr "Voorbeelden"
 
 #. CoCube library block
+#, fuzzy
 msgid "move to X _ Y _ at _ speed (0-50)"
 msgstr "beweeg naar X _ Y _ met _ snelheid (0-50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50)"
 msgstr "beweeg _ met _ snelheid (0-50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "X position"
 msgstr "X positie"
 
 #. CoCube library block
+#, fuzzy
 msgid "direction"
 msgstr "richting"
 
 #. CoCube library block
+#, fuzzy
 msgid "draw AprilTag on TFT _"
 msgstr "teken AprilTag op TFT _"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "ultrasonic distance (mm)"
 msgstr "ultrasone afstand (mm)"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50) for _ msecs"
 msgstr "beweeg _ met _ snelheid (0-50) voor _ msec"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper open"
 msgstr "grijper open"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper stop"
 msgstr "grijper stop"
 
@@ -6101,93 +6110,116 @@ msgid "connect (USB)"
 msgstr "verbinden (USB)"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper degrees _ (0 to 70)"
 msgstr "grijper _ graden (0 to 70)"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50) for _ msecs"
 msgstr "draai _ met _ snelheid (0-50) voor _ msec"
 
 #. CoCube library block
+#, fuzzy
 msgid "set wheel left _ right _ (-50 to 50)"
 msgstr "zet wiel links _ rechts _ (-50 tot 50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "wheels stop"
 msgstr "stop wielen"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50) by _ steps"
 msgstr "beweeg _ met _ snelheid (0-50) met _ stappen"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50) by _ degrees"
 msgstr "draai _ met _ snelheid (0-50) met _ graden"
 
 #. CoCube library block
+#, fuzzy
 msgid "point towards X _ Y _ at _ speed (0-50)"
 msgstr "draai naar X _ Y _ met _ snelheid (0-50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "on the mat"
 msgstr "op de mat"
 
 #. CoCube library block
+#, fuzzy
 msgid "draw ArUco marker on TFT _"
 msgstr "teken ArUco markering op TFT _"
 
 #. CoCube library block
+#, fuzzy
 msgid "battery percentage"
 msgstr "batterijpercentage"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "3D gesture connected"
 msgstr "3D beweging verbonden"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "3D gesture read"
 msgstr "3D beweging gelezen"
 
 #. CoCube library block
+#, fuzzy
 msgid "set TFT backlight _"
 msgstr "zet TFT  achtergrondverlichting _"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "ToF distance (mm)"
 msgstr "ToF afstand (mm)"
 
 #. CoCube library block
+#, fuzzy
 msgid "Y position"
 msgstr "Y positie"
 
 #. CoCube library block
+#, fuzzy
 msgid "wheels break"
 msgstr "wielen remmen"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50)"
 msgstr "draai _ met _ snelheid (0-50)"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "gripper close"
 msgstr "grijper dicht"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate to angle _ at _ speed (0-50)"
 msgstr "draai naar _ graden met _ snelheid (0-50)"
 
 #. CoCube library block
+#, fuzzy
 msgid "card ID"
 msgstr "kaart ID"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "attach NeoPixels"
 msgstr "bevestig NeoPixels"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "ToF connected"
 msgstr "ToF verbonden"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "power on module"
 msgstr "module aanzetten"
