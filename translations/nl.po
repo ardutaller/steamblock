@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-29 09:24+0200\n"
-"PO-Revision-Date: 2024-12-05 08:00+0000\n"
+"PO-Revision-Date: 2025-01-12 02:00+0000\n"
 "Last-Translator: Peter Mathijssen <pmathijssen@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/microblocks/ide/nl/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -4662,11 +4662,11 @@ msgstr ""
 
 #. Settings menu option
 msgid "autoload board libraries"
-msgstr ""
+msgstr "board bibliotheken automatisch laden"
 
 #. Settings menu option
 msgid "PlugShare when project empty"
-msgstr ""
+msgstr "Board inhoud laden wanneer project leeg is"
 
 #. Settings menu option
 msgid "hide implementation blocks"
@@ -5921,7 +5921,6 @@ msgid "BLE connected"
 msgstr "BLE verbonden"
 
 #. Settings menu option
-#, fuzzy
 msgid "install ESP firmware from microblocks.fun"
 msgstr "Installeer ESP firmware van microblocks.fun"
 
@@ -6060,3 +6059,135 @@ msgstr "Verbind board om verder te gaan."
 #. Examples folder
 msgid "folder;Examples"
 msgstr "Voorbeelden"
+
+#. CoCube library block
+msgid "move to X _ Y _ at _ speed (0-50)"
+msgstr "beweeg naar X _ Y _ met _ snelheid (0-50)"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50)"
+msgstr "beweeg _ met _ snelheid (0-50)"
+
+#. CoCube library block
+msgid "X position"
+msgstr "X positie"
+
+#. CoCube library block
+msgid "direction"
+msgstr "richting"
+
+#. CoCube library block
+msgid "draw AprilTag on TFT _"
+msgstr "teken AprilTag op TFT _"
+
+#. CoCube Module library block
+msgid "ultrasonic distance (mm)"
+msgstr "ultrasone afstand (mm)"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) for _ msecs"
+msgstr "beweeg _ met _ snelheid (0-50) voor _ msec"
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr "grijper open"
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr "grijper stop"
+
+#. In MicroBlocks IDE connection menu
+msgid "connect (USB)"
+msgstr "verbinden (USB)"
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr "grijper _ graden (0 to 70)"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) for _ msecs"
+msgstr "draai _ met _ snelheid (0-50) voor _ msec"
+
+#. CoCube library block
+msgid "set wheel left _ right _ (-50 to 50)"
+msgstr "zet wiel links _ rechts _ (-50 tot 50)"
+
+#. CoCube library block
+msgid "wheels stop"
+msgstr "stop wielen"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) by _ steps"
+msgstr "beweeg _ met _ snelheid (0-50) met _ stappen"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) by _ degrees"
+msgstr "draai _ met _ snelheid (0-50) met _ graden"
+
+#. CoCube library block
+msgid "point towards X _ Y _ at _ speed (0-50)"
+msgstr "draai naar X _ Y _ met _ snelheid (0-50)"
+
+#. CoCube library block
+msgid "on the mat"
+msgstr "op de mat"
+
+#. CoCube library block
+msgid "draw ArUco marker on TFT _"
+msgstr "teken ArUco markering op TFT _"
+
+#. CoCube library block
+msgid "battery percentage"
+msgstr "batterijpercentage"
+
+#. CoCube Module library block
+msgid "3D gesture connected"
+msgstr "3D beweging verbonden"
+
+#. CoCube Module library block
+msgid "3D gesture read"
+msgstr "3D beweging gelezen"
+
+#. CoCube library block
+msgid "set TFT backlight _"
+msgstr "zet TFT  achtergrondverlichting _"
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr "ToF afstand (mm)"
+
+#. CoCube library block
+msgid "Y position"
+msgstr "Y positie"
+
+#. CoCube library block
+msgid "wheels break"
+msgstr "wielen remmen"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50)"
+msgstr "draai _ met _ snelheid (0-50)"
+
+#. CoCube Module library block
+msgid "gripper close"
+msgstr "grijper dicht"
+
+#. CoCube library block
+msgid "rotate to angle _ at _ speed (0-50)"
+msgstr "draai naar _ graden met _ snelheid (0-50)"
+
+#. CoCube library block
+msgid "card ID"
+msgstr "kaart ID"
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr "bevestig NeoPixels"
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr "ToF verbonden"
+
+#. CoCube Module library block
+msgid "power on module"
+msgstr "module aanzetten"
