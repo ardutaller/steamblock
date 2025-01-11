@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2024-12-10 15:02+0000\n"
-"Last-Translator: patchli <lihao214@gmail.com>\n"
+"PO-Revision-Date: 2025-01-12 02:00+0000\n"
+"Last-Translator: John Maloney <jhmaloney@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
 "Language: zh-chs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. Block in Control category
 msgid "by _"
@@ -4450,3 +4450,19 @@ msgstr "BLE 已连接"
 #. Block in Input category
 msgid "seconds"
 msgstr "秒"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50)"
+msgstr "向  _  以  _  速度 (0-50) 旋转"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) for _ msecs"
+msgstr "向  _  以  _  速度 (0-50) 旋转  _  毫秒"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50)"
+msgstr "向 _  以  _  速度 (0-50) 移动"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) for _ msecs"
+msgstr "向  _  以  _  速度 (0-50) 移动  _  毫秒"
