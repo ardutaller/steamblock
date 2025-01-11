@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-10 11:14+0000\n"
+"PO-Revision-Date: 2025-01-12 02:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -188,7 +188,7 @@ msgstr "Über MicroBlocks"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
-msgstr "Das Skript ist zu groß und kann nicht an das Board gesendet werden."
+msgstr "Das Skript ist zu groß, um es zum Board zu senden."
 
 #. Graph context menu option
 msgid "clear graph"
@@ -289,7 +289,7 @@ msgstr "akzeptiere"
 
 #. Settings menu option
 msgid "hide implementation blocks"
-msgstr "Implementationsblöcke verbergen"
+msgstr "verberge Implementationsblöcke"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the product of the given numbers."
@@ -2367,7 +2367,7 @@ msgstr "linker Sensor"
 
 #. In MicroBlocks IDE project menu
 msgid "Open from board"
-msgstr "vom Board öffnen"
+msgstr "öffne vom Board"
 
 #. In information window title
 msgid "Information"
@@ -2419,7 +2419,7 @@ msgstr "setze Größenmaßstab für Export"
 
 #. Settings menu option
 msgid "enable or disable BLE"
-msgstr "BLE aktivieren oder deaktiveren"
+msgstr "aktiviere oder deaktiviere BLE"
 
 #. Graph context menu option
 msgid "show data graph"
@@ -2431,7 +2431,7 @@ msgstr "MicroBlocks HTTP-Server wartet an Port 6473"
 
 #. Settings menu option
 msgid "show implementation blocks"
-msgstr "Implementationsblöcke anzeigen"
+msgstr "zeige Implementationsblöcke"
 
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
@@ -2663,7 +2663,7 @@ msgstr "Anschluss?"
 
 #. Settings menu option
 msgid "update firmware on board"
-msgstr "Firmware auf dem Board aktualisieren"
+msgstr "aktualisiere Firmware auf dem Board"
 
 #. Settings menu option
 msgid "HTTP Server"
@@ -3050,7 +3050,7 @@ msgstr "WiFi letzte Zahl"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect"
-msgstr "verbinden (USB)"
+msgstr "verbinden"
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
@@ -3352,7 +3352,7 @@ msgstr "MicroBlocks auf dem Board installieren?"
 
 #. config confirmation
 msgid "Allow the attached board to be connected via BLE?"
-msgstr "Verbindung des angeschlossenen Boards via BLE erlauben?"
+msgstr "Verbindung des angeschlossenen Boards über BLE zulassen?"
 
 #. Block right-click context menu
 msgid "find uses of this block"
@@ -3535,7 +3535,7 @@ msgstr "rückwärts"
 
 #. In MicroBlocks IDE project menu
 msgid "Copy project URL to clipboard"
-msgstr "Projekt-URL in die Zwischenablage kopieren"
+msgstr "kopiere Projekt-URL in die Zwischenablage"
 
 #. About window info
 msgid "More info at http://microblocks.fun"
@@ -3551,7 +3551,7 @@ msgstr "setze serielle Verzögerung"
 
 #. Settings menu option
 msgid "disable autoloading board libraries"
-msgstr "Board-Module nicht automatisch laden"
+msgstr "lade Board-Module nicht automatisch"
 
 #. Script right-click context menu
 msgid "copy script"
@@ -3749,15 +3749,15 @@ msgstr "lösche Auswahl"
 
 #. Settings menu option
 msgid "erase flash and update firmware on ESP board"
-msgstr "Flash löschen und ESP-Firmware aktualisieren"
+msgstr "lösche Flash und aktualisiere ESP-Firmware"
 
 #. Settings menu option
 msgid "install ESP firmware from URL"
-msgstr "ESP-Firmware von URL installieren"
+msgstr "installiere ESP-Firmware von URL"
 
 #. Firmware install board type confirmation. As in "Use board type micro:bit?"
 msgid "Use board type"
-msgstr "Verwende Board-Typ"
+msgstr "verwende Board-Typ"
 
 #. Variable right-click context menu
 msgid "find variable modifiers"
@@ -4029,7 +4029,7 @@ msgstr "zeichne Bild _ bei x _ y _"
 
 #. Settings menu option
 msgid "autoload board libraries"
-msgstr "Board-Module automatisch laden"
+msgstr "lade Board-Module automatisch"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degrees"
@@ -4093,7 +4093,7 @@ msgstr "zeigt die Firmware-Version, die auf dem Board geladen ist."
 
 #. Settings menu option
 msgid "compact code store"
-msgstr "Codespeicher optimieren"
+msgstr "optimiere Codespeicher"
 
 #. Cutebot Pro library block dropdown option
 #. as in "both" lights
@@ -4358,7 +4358,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "PlugShare when project empty"
-msgstr "Board-Inhalt laden, wenn Projekt leer ist"
+msgstr "lade Board-Inhalt, wenn Projekt leer ist"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;AltGr"
@@ -4466,7 +4466,7 @@ msgstr "zeigt die BLE-ID (3 Zeichen) des Boards, wenn BLE unterstützt wird."
 
 #. Settings menu option
 msgid "install ESP firmware from microblocks.fun"
-msgstr "ESP-Firmware von microblocks.fun installieren"
+msgstr "installiere ESP-Firmware von microblocks.fun"
 
 #. Examples folder
 msgid "folder; by board"
@@ -6272,3 +6272,131 @@ msgstr "1+2"
 #. Wukong robot library block
 msgid "Wukong set _ servo _ to _ degrees"
 msgstr "Wukong setze _ Servo _ auf _ °"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) for _ msecs"
+msgstr "fahre _ mit Geschwindigkeit _ (0~50) für _ ms"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50)"
+msgstr "drehe _ mit Geschwindigkeit _ (0~50)"
+
+#. CoCube library block
+msgid "wheels stop"
+msgstr "stoppe Räder"
+
+#. CoCube library block
+msgid "wheels break"
+msgstr "stoppe Räder hart"
+
+#. CoCube library block
+msgid "X position"
+msgstr "X-Position"
+
+#. CoCube library block
+msgid "Y position"
+msgstr "Y-Position"
+
+#. CoCube library block
+msgid "direction"
+msgstr "Richtung"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) by _ degrees"
+msgstr "drehe _ mit Geschwindigkeit _ (0~50) für _ Grad"
+
+#. CoCube library block
+msgid "point towards X _ Y _ at _ speed (0-50)"
+msgstr "zeige Richtung x _ y _ mit Geschwindigkeit _ (0~50)"
+
+#. CoCube library block
+msgid "on the mat"
+msgstr "auf der Matte"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50)"
+msgstr "fahre _ mit Geschwindigkeit _ (0~50)"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) by _ steps"
+msgstr "fahre _ mit Geschwindigkeit _ (0~50) für _ Schritte"
+
+#. CoCube library block
+msgid "move to X _ Y _ at _ speed (0-50)"
+msgstr "fahre zu x _ y _ mit Geschwindigkeit _ (0~50)"
+
+#. CoCube library block
+msgid "card ID"
+msgstr "Karten-ID"
+
+#. CoCube library block
+msgid "draw ArUco marker on TFT _"
+msgstr "zeichne ArUco-Marker auf TFT _"
+
+#. CoCube library block
+msgid "set TFT backlight _"
+msgstr "setze TFT-Hintergrundlicht _"
+
+#. CoCube library block
+msgid "battery percentage"
+msgstr "Batterie-Ladung"
+
+#. CoCube Module library block
+msgid "gripper close"
+msgstr "Greifer zu"
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr "Greifer stopp"
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr "Greifer auf"
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr "Greifer Winkel _ (0~70)"
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr "verbinde NeoPixel"
+
+#. CoCube Module library block
+msgid "3D gesture connected"
+msgstr "3D-Gestensensor verbunden"
+
+#. CoCube library block
+msgid "draw AprilTag on TFT _"
+msgstr "zeichne April-Tag auf TFT _"
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr "ToF-Sensor verbunden"
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr "ToF-Sensor Entfernung (mm)"
+
+#. CoCube Module library block
+msgid "3D gesture read"
+msgstr "3D-Gestensensor lesen"
+
+#. CoCube Module library block
+msgid "ultrasonic distance (mm)"
+msgstr "Ultrasonic Entfernung (mm)"
+
+#. CoCube Module library block
+msgid "power on module"
+msgstr "schalte Modul ein"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) for _ msecs"
+msgstr "drehe _ mit Geschwindigkeit _ (0~50) für _ ms"
+
+#. CoCube library block
+msgid "set wheel left _ right _ (-50 to 50)"
+msgstr "setze Rad links _ rechts _ (-50~50)"
+
+#. CoCube library block
+msgid "rotate to angle _ at _ speed (0-50)"
+msgstr "drehe auf Winkel _ mit Geschwindigkeit _ (0~50)"
