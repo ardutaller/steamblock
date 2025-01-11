@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2025-01-12 02:00+0000\n"
+"PO-Revision-Date: 2025-01-13 08:44+0000\n"
 "Last-Translator: John Maloney <jhmaloney@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -4452,17 +4452,21 @@ msgid "seconds"
 msgstr "秒"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50)"
 msgstr "向  _  以  _  速度 (0-50) 旋转"
 
 #. CoCube library block
+#, fuzzy
 msgid "rotate _ at _ speed (0-50) for _ msecs"
 msgstr "向  _  以  _  速度 (0-50) 旋转  _  毫秒"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50)"
 msgstr "向 _  以  _  速度 (0-50) 移动"
 
 #. CoCube library block
+#, fuzzy
 msgid "move _ at _ speed (0-50) for _ msecs"
 msgstr "向  _  以  _  速度 (0-50) 移动  _  毫秒"
