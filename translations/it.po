@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-01-01 18:45+0200\n"
-"PO-Revision-Date: 2025-01-04 13:22+0000\n"
+"PO-Revision-Date: 2025-01-13 13:19+0000\n"
 "Last-Translator: Michele Zaffalon <michele.zaffalon@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/microblocks/ide/"
 "it/>\n"
@@ -1441,43 +1441,43 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "heart"
-msgstr ""
+msgstr "cuore"
 
 #. Image name for the "display image" block
 msgid "small heart"
-msgstr ""
+msgstr "cuore piccolo"
 
 #. Image name for the "display image" block
 msgid "yes"
-msgstr ""
+msgstr "si"
 
 #. Image name for the "display image" block
 msgid "no"
-msgstr ""
+msgstr "no"
 
 #. Image name for the "display image" block
 msgid "happy"
-msgstr ""
+msgstr "felice"
 
 #. Image name for the "display image" block
 msgid "sad"
-msgstr ""
+msgstr "triste"
 
 #. Image name for the "display image" block
 msgid "confused"
-msgstr ""
+msgstr "confuso"
 
 #. Image name for the "display image" block
 msgid "angry"
-msgstr ""
+msgstr "arrabbiato"
 
 #. Image name for the "display image" block
 msgid "asleep"
-msgstr ""
+msgstr "addormentato"
 
 #. Image name for the "display image" block
 msgid "surprised"
-msgstr ""
+msgstr "sorpreso"
 
 #. Image name for the "display image" block
 msgid "silly"
@@ -1493,27 +1493,27 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "t-shirt"
-msgstr ""
+msgstr "t-shift"
 
 #. Image name for the "display image" block
 msgid "roller skate"
-msgstr ""
+msgstr "pattino a rotelle"
 
 #. Image name for the "display image" block
 msgid "duck"
-msgstr ""
+msgstr "anatra"
 
 #. Image name for the "display image" block
 msgid "house"
-msgstr ""
+msgstr "casa"
 
 #. Image name for the "display image" block
 msgid "tortoise"
-msgstr ""
+msgstr "tartaruga"
 
 #. Image name for the "display image" block
 msgid "butterfly"
-msgstr ""
+msgstr "farfalla"
 
 #. Image name for the "display image" block
 msgid "stick figure"
@@ -1521,43 +1521,43 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "ghost"
-msgstr ""
+msgstr "fantasma"
 
 #. Image name for the "display image" block
 msgid "sword"
-msgstr ""
+msgstr "spada"
 
 #. Image name for the "display image" block
 msgid "giraffe"
-msgstr ""
+msgstr "giraffa"
 
 #. Image name for the "display image" block
 msgid "skull"
-msgstr ""
+msgstr "teschio"
 
 #. Image name for the "display image" block
 msgid "umbrella"
-msgstr ""
+msgstr "ombrello"
 
 #. Image name for the "display image" block
 msgid "snake"
-msgstr ""
+msgstr "serpente"
 
 #. Image name for the "display image" block
 msgid "rabbit"
-msgstr ""
+msgstr "coniglio"
 
 #. Image name for the "display image" block
 msgid "cow"
-msgstr ""
+msgstr "mucca"
 
 #. Image name for the "display image" block
 msgid "quarter note"
-msgstr ""
+msgstr "quarto di nota"
 
 #. Image name for the "display image" block
 msgid "eight note"
-msgstr ""
+msgstr "ottavo di nota"
 
 #. Image name for the "display image" block
 msgid "pitchfork"
@@ -1565,7 +1565,7 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "target"
-msgstr ""
+msgstr "bersaglio"
 
 #. Image name for the "display image" block
 msgid "triangle"
@@ -1577,27 +1577,27 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "chess board"
-msgstr ""
+msgstr "scacchiera"
 
 #. Image name for the "display image" block
 msgid "diamond"
-msgstr ""
+msgstr "diamante"
 
 #. Image name for the "display image" block
 msgid "small diamond"
-msgstr ""
+msgstr "diamante piccolo"
 
 #. Image name for the "display image" block
 msgid "square"
-msgstr ""
+msgstr "quadrato"
 
 #. Image name for the "display image" block
 msgid "small square"
-msgstr ""
+msgstr "quadrato piccolo"
 
 #. Image name for the "display image" block
 msgid "scissors"
-msgstr ""
+msgstr "forbici"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
@@ -4591,7 +4591,7 @@ msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
@@ -4603,39 +4603,39 @@ msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
-msgstr ""
+msgstr "connetti (BLE)"
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
-msgstr ""
+msgstr "apri Boardie"
 
 #. In MicroBlocks IDE connection menu
 msgid "disconnect"
-msgstr ""
+msgstr "disconnetti"
 
 #. In MicroBlocks IDE connection menu
 msgid "Serial port:"
-msgstr ""
+msgstr "Porta seriale:"
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr ""
+msgstr "Connetti la scheda e prova nuovamente"
 
 #. In MicroBlocks IDE connection menu. Select "other..." serial port
 msgid "other..."
-msgstr ""
+msgstr "altro..."
 
 #. In MicroBlocks IDE connection menu. Select "no" serial port
 msgid "none"
-msgstr ""
+msgstr "nessuno"
 
 #. In MicroBlocks IDE connection window. Serial port name to connect to.
 msgid "Port name?"
-msgstr ""
+msgstr "Nome porta?"
 
 #. In MicroBlocks IDE firmware update widgets. Board type to update.
 msgid "Board type:"
-msgstr ""
+msgstr "Tipo scheda:"
 
 #. In MicroBlocks IDE firmware update widgets. Board to update.
 msgid "Select board:"
@@ -6111,3 +6111,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
 msgstr ""
+
+#. In MicroBlocks IDE connection menu
+msgid "connect (USB)"
+msgstr "connetti (USB)"
