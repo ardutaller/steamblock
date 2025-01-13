@@ -4603,7 +4603,7 @@ msgstr "rotate to angle _ at _ speed (0-50)"
 
 #. CoCube library block
 msgid "point towards X _ Y _ at _ speed (0-50)"
-msgstr "rotate to angle _ at _ speed (0-50)"
+msgstr "point towards X _ Y _ at _ speed (0-50)"
 
 #. CoCube library block
 msgid "move to X _ Y _ at _ speed (0-50)"
