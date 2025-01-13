@@ -155,11 +155,6 @@ method grab Hand handler {
 	oldOwner = parent
 	oldX = (left (morph handler))
 	oldY = (top (morph handler))
-	fb = (fullBounds (morph handler))
-	if (not (containsPoint fb x y)) {
-		// avoid "trailing behind" the mouse cursor
-		setPosition (morph handler) (x - 5) (y - 5)
-	}
 	aboutToBeGrabbed handler
 	removeAllParts morph
 	addPart morph (morph handler)
@@ -226,7 +221,14 @@ method rootForGrab Hand handler {
 		if (rule == 'ignore') {return nil}
 		if (rule == 'handle') {return result}
 		if (rule == 'draggableParts') {return result}
-		if (rule == 'template') {return (duplicate result)}
+		if (rule == 'template') {
+			dup = (duplicate result)
+			// adjust offset of the duplicate in case hand has moved
+			xOffset = (downX - (left (morph result)))
+			yOffset = (downY - (top (morph result)))
+			fastSetPosition (morph dup) (x - xOffset) (y - yOffset)
+			return dup
+		}
 		parent = (owner (morph result))
 		if (isNil parent) {return nil}
 		if ('draggableParts' == (grabRule parent)) {
