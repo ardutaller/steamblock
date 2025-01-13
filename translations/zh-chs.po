@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2025-01-13 13:19+0000\n"
+"PO-Revision-Date: 2025-01-13 14:25+0000\n"
 "Last-Translator: John Maloney <jhmaloney@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -4481,7 +4481,7 @@ msgstr "开启外接模块电源"
 
 #. CoCube library block
 msgid "X position"
-msgstr "X position"
+msgstr "位置X"
 
 #. CoCube library block
 msgid "Y position"
@@ -4574,3 +4574,11 @@ msgstr "夹爪张开"
 #. CoCube Module library block
 msgid "ToF distance (mm)"
 msgstr "ToF 距离(mm)"
+
+#. Block in Input category
+msgid "BLE id"
+msgstr "cocube"
+
+#. CoCube library block
+msgid "point towards X _ Y _ at _ speed (0-50)"
+msgstr "转向目标点 X _ Y _ 速度 _ (0-50)"
