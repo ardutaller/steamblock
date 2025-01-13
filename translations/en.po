@@ -4550,10 +4550,6 @@ msgid "Y pressed"
 msgstr "Y pressed"
 
 #. CoCube library block
-msgid "Y pressed"
-msgstr "Y pressed"
-
-#. CoCube library block
 msgid "move _ at _ speed (0-50) for _ msecs"
 msgstr "move _ at _ speed (0-50) for _ msecs"
 
@@ -4656,14 +4652,6 @@ msgstr "gripper degrees _ (0 to 70)"
 #. CoCube Module library block
 msgid "attach NeoPixels"
 msgstr "attach NeoPixels"
-
-#. CoCube Module library block
-msgid "set all NeoPixels color _"
-msgstr "set all NeoPixels color _"
-
-#. CoCube Module library block
-msgid "clear NeoPixels"
-msgstr "clear NeoPixels"
 
 #. CoCube Module library block
 msgid "ToF connected"
