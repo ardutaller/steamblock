@@ -727,6 +727,11 @@ method processDroppedFile MicroBlocksEditor fName data {
 		// install ESP firmware file
 		if (isNil data) { return } // could not read file
 		installESPFirmwareFromFile (smallRuntime) fName data
+	} (endsWith lcFilename '.po') {
+		if (notNil data) {
+			installTranslation (authoringSpecs) (toString data)
+			languageChanged this
+		}
 	} (endsWith lcFilename '.gp') {
 		// xxx for testing:
 		eval (toString data) nil (topLevelModule)
