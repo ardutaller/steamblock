@@ -1,6 +1,6 @@
 module 'CoCube Module'
 author 'Liang Shuai'
-version 1 7 
+version 1 8 
 depends Servo NeoPixel 'Robots/CoCube' 'Sensing/Distance (VL53L0X)' 'Sensing/Gesture (PAJ7620)' 
 description 'External modules of CoCube.
 
@@ -8,13 +8,12 @@ CoCube is a tabletop modular multi-robot platform for education and research.
 https://www.cocubefun.com/
 sliang23@m.fudan.edu.cn
 
-Note: All functions must start by turning on pin 13 to power the module.
+Note: All functions start by turning on pin 13 to power the module.
 The power pin is off by default and is also turned off by the IDE stop button.'
 variables ccmodule_lastDistance 
 
   spec ' ' 'ccmodule_gripper open' 'gripper open'
   spec ' ' 'ccmodule_gripper close' 'gripper close'
-  spec ' ' 'ccmodule_gripper stop' 'gripper stop'
   spec ' ' 'ccmodule_gripper degree' 'gripper degrees _ (0 to 70)' 'num' 0
   space
   spec ' ' 'ccmodule_attach NeoPixels' 'attach NeoPixels'
@@ -67,31 +66,37 @@ when no echo is detected.'
 }
 
 to 'ccmodule_ToF connected' {
+  stopServo 22
   digitalWriteOp 13 true
   return ('VL53L0X connected')
 }
 
 to 'ccmodule_ToF distance' {
+  stopServo 22
   digitalWriteOp 13 true
   return ('VL53L0X distance (mm)')
 }
 
 to 'ccmodule_attach NeoPixels' {
+  stopServo 22
   digitalWriteOp 13 true
   neoPixelAttach 48 22
 }
 
 to 'ccmodule_clear NeoPixels' {
+  stopServo 22
   digitalWriteOp 13 true
   clearNeoPixels
 }
 
 to 'ccmodule_gesture connected' {
+  stopServo 22
   digitalWriteOp 13 true
   return ('paj7620 connected')
 }
 
 to 'ccmodule_gesture read' {
+  stopServo 22
   digitalWriteOp 13 true
   return ('paj7620 read')
 }
@@ -118,16 +123,12 @@ to 'ccmodule_gripper open' {
   setServoAngle 22 0
 }
 
-to 'ccmodule_gripper stop' {
-  digitalWriteOp 13 true
-  stopServo 22
-}
-
 to 'ccmodule_power on module' {
   digitalWriteOp 13 true
 }
 
 to 'ccmodule_set all NeoPixels color' color {
+  stopServo 22
   digitalWriteOp 13 true
   neoPixelSetAllToColor color
 }
