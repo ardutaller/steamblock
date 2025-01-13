@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2025-01-13 08:44+0000\n"
+"PO-Revision-Date: 2025-01-13 13:19+0000\n"
 "Last-Translator: John Maloney <jhmaloney@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -4452,21 +4452,125 @@ msgid "seconds"
 msgstr "秒"
 
 #. CoCube library block
-#, fuzzy
 msgid "rotate _ at _ speed (0-50)"
-msgstr "向  _  以  _  速度 (0-50) 旋转"
+msgstr "向 _ 以 _ 速度 (0-50) 旋转"
 
 #. CoCube library block
-#, fuzzy
 msgid "rotate _ at _ speed (0-50) for _ msecs"
-msgstr "向  _  以  _  速度 (0-50) 旋转  _  毫秒"
+msgstr "向 _ 以 _ 速度 (0-50) 旋转 _ 毫秒"
 
 #. CoCube library block
-#, fuzzy
 msgid "move _ at _ speed (0-50)"
-msgstr "向 _  以  _  速度 (0-50) 移动"
+msgstr "向 _ 以 _ 速度 (0-50) 移动"
 
 #. CoCube library block
-#, fuzzy
 msgid "move _ at _ speed (0-50) for _ msecs"
-msgstr "向  _  以  _  速度 (0-50) 移动  _  毫秒"
+msgstr "向 _ 以 _ 速度 (0-50) 移动 _ 毫秒"
+
+#. CoCube library block
+msgid "set wheel left _ right _ (-50 to 50)"
+msgstr "左轮以 _ 速度、右轮以 _ 速度移动"
+
+#. CoCube library block
+msgid "wheels stop"
+msgstr "电机停转"
+
+#. CoCube Module library block
+msgid "power on module"
+msgstr "开启外接模块电源"
+
+#. CoCube library block
+msgid "X position"
+msgstr "X position"
+
+#. CoCube library block
+msgid "Y position"
+msgstr "位置Y"
+
+#. CoCube library block
+msgid "direction"
+msgstr "方向角"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) by _ steps"
+msgstr "向 _ 以 _ 速度 (0-50) 移动 _ 步"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) by _ degrees"
+msgstr "向 _ 以 _ 速度 (0-50) 旋转 _ 度"
+
+#. CoCube library block
+msgid "rotate to angle _ at _ speed (0-50)"
+msgstr "转向角度 _ 速度 _ (0-50)"
+
+#. CoCube library block
+msgid "move to X _ Y _ at _ speed (0-50)"
+msgstr "移动到目标点 X _ Y _ 速度 _ (0-50)"
+
+#. CoCube library block
+msgid "on the mat"
+msgstr "在定位垫上"
+
+#. CoCube library block
+msgid "card ID"
+msgstr "卡片ID"
+
+#. CoCube library block
+msgid "draw ArUco marker on TFT _"
+msgstr "TFT绘制ArUco标签 _"
+
+#. CoCube library block
+msgid "draw AprilTag on TFT _"
+msgstr "TFT绘制AprilTag标签 _"
+
+#. CoCube library block
+msgid "set TFT backlight _"
+msgstr "设置TFT背光 _"
+
+#. CoCube library block
+msgid "battery percentage"
+msgstr "电量百分比"
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr "夹爪停止"
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr "夹爪角度 _ (0 to 70)"
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr "连接 NeoPixels"
+
+#. CoCube Module library block
+msgid "ultrasonic distance (mm)"
+msgstr "超声波 距离(mm)"
+
+#. CoCube library block
+msgid "wheels break"
+msgstr "电机刹车"
+
+#. CoCube Module library block
+msgid "3D gesture read"
+msgstr "3D 手势传感器读取数据"
+
+#. CoCube Module library block
+msgid "3D gesture connected"
+msgstr "3D 手势传感器已连接"
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr "ToF 已连接"
+
+#. CoCube Module library block
+msgid "gripper close"
+msgstr "夹爪闭合"
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr "夹爪张开"
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr "ToF 距离(mm)"
