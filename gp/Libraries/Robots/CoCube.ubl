@@ -1,10 +1,10 @@
 module CoCube
 author 'Liang Shuai'
-version 2 8 
+version 2 9 
 depends Tone Display TFT 'Motors/PID' 
 tags 'cocube robot' 
-choices cocube_rotate_Menu left right 
-choices cocube_move_Menu forward backward 
+choices cocube_rotate_Menu 'cocube;left' 'cocube;right' 
+choices cocube_move_Menu 'cocube;forward' 'cocube;backward' 
 description 'CoCube Robot library
 
 CoCube is a tabletop modular multi-robot platform for education and research.
