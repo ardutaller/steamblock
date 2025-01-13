@@ -4550,6 +4550,22 @@ msgid "Y pressed"
 msgstr ""
 
 #. CoCube library block
+msgid "cocube;left"
+msgstr ""
+
+#. CoCube library block
+msgid "cocube;right"
+msgstr ""
+
+#. CoCube library block
+msgid "cocube;forward"
+msgstr ""
+
+#. CoCube library block
+msgid "cocube;backward"
+msgstr ""
+
+#. CoCube library block
 msgid "move _ at _ speed (0-50) for _ msecs"
 msgstr ""
 
