@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-12 02:00+0000\n"
+"PO-Revision-Date: 2025-01-13 08:35+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -797,7 +797,7 @@ msgstr "Board auswählen:"
 
 #. File System library block
 msgid "read into _ from file _"
-msgstr "lies nach _ aus Datei _"
+msgstr "lies in _ aus der Datei _"
 
 #. Lists library block
 msgid "sorted _"
@@ -2271,7 +2271,7 @@ msgstr "spiele Klingelton _"
 
 #. File System library block
 msgid "append bytes _ to file _"
-msgstr "füge Bytes _ zu Datei _ hinzu"
+msgstr "füge Bytes _ zur Datei _ hinzu"
 
 #. File System library block
 msgid "end of file _"
@@ -2718,8 +2718,8 @@ msgstr ""
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
 msgstr ""
-"Blöcke nach rechts in den Skriptbereich schieben. Blöcke und Skripte zum "
-"Löschen hierher schieben."
+"schiebe Blöcke nach rechts in den Skriptbereich. Schiebe Blöcke und Skripte "
+"zum Löschen hierher."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Do nothing. Used to add notes and documentation."
@@ -3110,7 +3110,7 @@ msgstr ""
 
 #. Project menu option
 msgid "put file on board"
-msgstr "Datei zum Board senden"
+msgstr "sende Datei zum Board"
 
 #. File download process information
 msgid "downloaded"
@@ -3830,7 +3830,7 @@ msgstr "letzte Blockverschiebung zurücknehmen"
 
 #. Project menu option
 msgid "get file from board"
-msgstr "Datei vom Board laden"
+msgstr "lade Datei vom Board"
 
 #. Block input right-click context menu option
 msgid "define"
@@ -3890,7 +3890,7 @@ msgstr "Blockkategorie"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "Drag blocks here to build scripts. [r] menu."
-msgstr "Blöcke hierher schieben, um Skripte zu bauen. [r] Menü."
+msgstr "schiebe Blöcke hierher, um Skripte zu bauen. [r] Menü."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Graph the value."
