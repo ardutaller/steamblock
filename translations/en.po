@@ -4555,107 +4555,107 @@ msgstr "Y pressed"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50) for _ msecs"
-msgstr ""
+msgstr "move _ at _ speed (0-50) for _ msecs"
 
 #. CoCube library block
 msgid "rotate _ at _ speed (0-50) for _ msecs"
-msgstr ""
+msgstr "rotate _ at _ speed (0-50) for _ msecs"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50)"
-msgstr ""
+msgstr "move _ at _ speed (0-50)"
 
 #. CoCube library block
 msgid "rotate _ at _ speed (0-50)"
-msgstr ""
+msgstr "rotate _ at _ speed (0-50)"
 
 #. CoCube library block
 msgid "set wheel left _ right _ (-50 to 50)"
-msgstr ""
+msgstr "set wheel left _ right _ (-50 to 50)"
 
 #. CoCube library block
 msgid "wheels stop"
-msgstr ""
+msgstr "wheels stop"
 
 #. CoCube library block
 msgid "wheels break"
-msgstr ""
+msgstr "wheels break"
 
 #. CoCube library block
 msgid "X position"
-msgstr ""
+msgstr "X position"
 
 #. CoCube library block
 msgid "Y position"
-msgstr ""
+msgstr "Y position"
 
 #. CoCube library block
 msgid "direction"
-msgstr ""
+msgstr "direction"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50) by _ steps"
-msgstr ""
+msgstr "move _ at _ speed (0-50) by _ steps"
 
 #. CoCube library block
 msgid "rotate _ at _ speed (0-50) by _ degrees"
-msgstr ""
+msgstr "rotate _ at _ speed (0-50) by _ degrees"
 
 #. CoCube library block
 msgid "rotate to angle _ at _ speed (0-50)"
-msgstr ""
+msgstr "rotate to angle _ at _ speed (0-50)"
 
 #. CoCube library block
 msgid "point towards X _ Y _ at _ speed (0-50)"
-msgstr ""
+msgstr "rotate to angle _ at _ speed (0-50)"
 
 #. CoCube library block
 msgid "move to X _ Y _ at _ speed (0-50)"
-msgstr ""
+msgstr "move to X _ Y _ at _ speed (0-50)"
 
 #. CoCube library block
 msgid "on the mat"
-msgstr ""
+msgstr "on the mat"
 
 #. CoCube library block
 msgid "card ID"
-msgstr ""
+msgstr "card ID"
 
 #. CoCube library block
 msgid "draw ArUco marker on TFT _"
-msgstr ""
+msgstr "draw ArUco marker on TFT _"
 
 #. CoCube library block
 msgid "draw AprilTag on TFT _"
-msgstr ""
+msgstr "draw AprilTag on TFT _"
 
 #. CoCube library block
 msgid "set TFT backlight _"
-msgstr ""
+msgstr "set TFT backlight _"
 
 #. CoCube library block
 msgid "battery percentage"
-msgstr ""
+msgstr "battery percentage"
 
 #. CoCube Module library block
 msgid "gripper open"
-msgstr ""
+msgstr "gripper open"
 
 #. CoCube Module library block
 msgid "gripper close"
-msgstr ""
+msgstr "gripper close"
 
 #. CoCube Module library block
 msgid "gripper stop"
-msgstr ""
+msgstr "gripper stop"
 
 #. CoCube Module library block
 msgid "gripper degrees _ (0 to 70)"
-msgstr ""
+msgstr "gripper degrees _ (0 to 70)"
 
 #. CoCube Module library block
 msgid "attach NeoPixels"
-msgstr ""
+msgstr "attach NeoPixels"
 
 #. CoCube Module library block
 msgid "set all NeoPixels color _"
@@ -4667,27 +4667,27 @@ msgstr "clear NeoPixels"
 
 #. CoCube Module library block
 msgid "ToF connected"
-msgstr ""
+msgstr "ToF connected"
 
 #. CoCube Module library block
 msgid "ToF distance (mm)"
-msgstr ""
+msgstr "ToF distance (mm)"
 
 #. CoCube Module library block
 msgid "3D gesture connected"
-msgstr ""
+msgstr "3D gesture connected"
 
 #. CoCube Module library block
 msgid "3D gesture read"
-msgstr ""
+msgstr "3D gesture read"
 
 #. CoCube Module library block
 msgid "power on module"
-msgstr ""
+msgstr "power on module"
 
 #. CoCube Module library block
 msgid "ultrasonic distance (mm)"
-msgstr ""
+msgstr "ultrasonic distance (mm)"
 
 #. In MicroBlocks IDE project menu
 msgid "New"
