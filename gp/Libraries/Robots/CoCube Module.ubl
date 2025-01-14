@@ -1,6 +1,6 @@
 module 'CoCube Module'
 author 'Liang Shuai'
-version 1 8 
+version 1 9 
 depends Servo NeoPixel 'Robots/CoCube' 'Sensing/Distance (VL53L0X)' 'Sensing/Gesture (PAJ7620)' 
 description 'External modules of CoCube.
 
@@ -80,11 +80,11 @@ to 'ccmodule_ToF distance' {
 to 'ccmodule_attach NeoPixels' {
   stopServo 22
   digitalWriteOp 13 true
+  waitMillis 10
   neoPixelAttach 48 22
 }
 
 to 'ccmodule_clear NeoPixels' {
-  stopServo 22
   digitalWriteOp 13 true
   clearNeoPixels
 }
@@ -128,7 +128,6 @@ to 'ccmodule_power on module' {
 }
 
 to 'ccmodule_set all NeoPixels color' color {
-  stopServo 22
   digitalWriteOp 13 true
   neoPixelSetAllToColor color
 }
