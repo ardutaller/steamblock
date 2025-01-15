@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-01-14 17:00+0000\n"
+"PO-Revision-Date: 2025-01-16 08:03+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr "Výstup	"
+msgstr "Výstup"
 
 #. Block in Output category
 msgid "set user LED _"
@@ -180,7 +180,7 @@ msgstr "rozešli _"
 
 #. Block in Control category
 msgid "comment _"
-msgstr "kommentář _"
+msgstr "komentář _"
 
 #. Example content for the comment block
 msgid "How this works..."
@@ -288,7 +288,7 @@ msgstr "nebo _"
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr "_ ist ein(e) _"
+msgstr "_ je _"
 
 #. Block in Operators category
 msgid "convert _ to _"
@@ -3238,63 +3238,63 @@ msgstr ""
 
 #. Shield:bit library block
 msgid "sb LEDs off"
-msgstr ""
+msgstr "sb vypnout LED"
 
 #. Shield:bit library block
 msgid "sb set all LEDs to _"
-msgstr ""
+msgstr "sb nastav všechny LED na _"
 
 #. Shield:bit library block
 msgid "sb set LED _ (1-4) to _"
-msgstr ""
+msgstr "sb nastav LED _ (1-4) na _"
 
 #. Shield:bit library block
 msgid "sb send audio to shield _"
-msgstr ""
+msgstr "sb _ pošli audio na ??? _"
 
 #. Shield:bit library block
 msgid "sb stop _"
-msgstr ""
+msgstr "sb zastav _"
 
 #. Shield:bit library block
 msgid "sb turn 180 servo S- _ (1-8) to angle _"
-msgstr ""
+msgstr "sb natoč 180 servo S- _ (1-8) do úhlu _"
 
 #. Shield:bit library block
 msgid "sb turn 360 servo S- _ (1-8) _ at _ %"
-msgstr ""
+msgstr "sb roztoč servo S- _ (1-8) _ na _ 5"
 
 #. Shield:bit library block
 msgid "sb turn DC M- _ (1-4) motor _ at _ %"
-msgstr ""
+msgstr "sb DC motor M- _ (1-4) _ rychlost _ %"
 
 #. Shield:bit library block
 msgid "sb turn Stepper- _ (1-2) motor _ for _ _"
-msgstr ""
+msgstr "sb krokový motor _ (1-2) _ otoč _ _"
 
 #. Shield:bit library block
 msgid "sb set pin S- _ (1-8) to _ %"
-msgstr ""
+msgstr "sb nastav pin S- (1-8) na hodnotu _ %"
 
 #. Shield:bit library motor type
 msgid "sb;DC/Stepper_motors"
-msgstr ""
+msgstr "DC/Krokové motory"
 
 #. Shield:bit library motor type
 msgid "sb;servomotors"
-msgstr ""
+msgstr "servo motory"
 
 #. Shield:bit library motor type
 msgid "sb;all_motors"
-msgstr ""
+msgstr "všechny motory"
 
 #. Shield:bit library motor movement type selection
 msgid "turns"
-msgstr ""
+msgstr "otáčky"
 
 #. Shield:bit library motor movement type selection
 msgid "degrees"
-msgstr ""
+msgstr "stupně"
 
 #. micro:STEAMakers library block
 #. The #BR# tag must be kept intact. It translates to a new line
@@ -3432,27 +3432,27 @@ msgstr ""
 
 #. Color name input. Used in robot light colors
 msgid "red"
-msgstr ""
+msgstr "červená"
 
 #. Color name input. Used in robot light colors
 msgid "yellow"
-msgstr ""
+msgstr "žlutá"
 
 #. Color name input. Used in robot light colors
 msgid "green"
-msgstr ""
+msgstr "zelená"
 
 #. Robot direction input. Used in robot libraries
 msgid "forward"
-msgstr ""
+msgstr "dopředu"
 
 #. Robot direction input. Used in robot libraries
 msgid "backward"
-msgstr ""
+msgstr "dozadu"
 
 #. Generic robot turn block
 msgid "turn right"
-msgstr ""
+msgstr "zatoč doprava"
 
 #. Generic robot turn block
 msgid "turn left"
@@ -4115,35 +4115,35 @@ msgstr ""
 
 #. Wukong robot library label
 msgid "Wukong"
-msgstr ""
+msgstr "Wukong"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr ""
+msgstr "Wukong motor _ rychlost _ (-100 - 100)"
 
 #. Wukong robot library block
 msgid "Wukong stop motor _"
-msgstr ""
+msgstr "Wukong zastav motor _"
 
 #. Wukong robot library block
 msgid "Wukong stop all"
-msgstr ""
+msgstr "Wukong zastav vše"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
-msgstr ""
+msgstr "Wukong nastav servo _ úhel _ stupňů (-90 - 90)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr ""
+msgstr "Wukong servo _ rychlost _ (-100 - 100)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
-msgstr ""
+msgstr "Wukong nastav NeoPixels _ _ _ _"
 
 #. Wukong robot library block
 msgid "Wukong set LED brightness to _"
-msgstr ""
+msgstr "Wukong nastav jas LED na _"
 
 #. Sphero-RVR robot library block
 msgid "wake"
@@ -4687,7 +4687,9 @@ msgstr "zobrazovat interní bloky a proměnné knihoven (t.j. začínající zna
 
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
-msgstr "načíst automaticky bloky z mikropočítače i když je aktuální projekt prázdný"
+msgstr ""
+"načíst automaticky skripty z mikropočítače do IDE když je aktuální projekt "
+"prázdný"
 
 #. Settings menu tooltip
 msgid "make the IDE darker"
@@ -5649,13 +5651,13 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks with the variable set to the current iteration number or item."
 msgstr ""
-"Opakování vnořených bloků s s proměnnou nastavenou číslo aktuálního cyklu "
-"nebo položky seznamu."
+"Opakování vnořených bloků s proměnnou pro hodnoty z rozsahu nebo položky ze "
+"seznamu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Repeat the enclosed blocks until the condition becomes (-o) ."
-msgstr "Opakování vnořených bloků tolikrát dokud není splněna podmínka."
+msgstr "Opakování vnořených bloků dokud není splněna podmínka."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Stop this task."
@@ -5779,7 +5781,7 @@ msgstr "Vrátí (-o) pokud je nějaká z hodnot (-o)"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Report (-o) if first input is a value of the given data type."
-msgstr "Vrátí (-o) první údaj je daného typu."
+msgstr "Vrátí (-o) pokud první údaj je daného typu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Convert a value to the given data type."
@@ -6044,3 +6046,15 @@ msgstr "Citilab ED1 a M5Stack"
 #. MicroBlocks IDE message
 msgid "Connect board to proceed."
 msgstr "Pro pokračování připoj mikropočítač."
+
+#. BLE Scanner library block
+msgid "hasType _"
+msgstr "je typu _"
+
+#. Wukong robot library block
+msgid "Wukong set _ servo _ to _ degrees"
+msgstr "Wukong natoč _ servo _ na _ stupňů"
+
+#. Wukong robot library menu option, as in "both motors"
+msgid "wukong;both"
+msgstr "oba"
