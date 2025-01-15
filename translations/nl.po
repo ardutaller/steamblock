@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-29 09:24+0200\n"
-"PO-Revision-Date: 2025-01-13 08:44+0000\n"
+"PO-Revision-Date: 2025-01-14 17:00+0000\n"
 "Last-Translator: Peter Mathijssen <pmathijssen@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/microblocks/ide/nl/"
 ">\n"
@@ -6170,9 +6170,8 @@ msgid "3D gesture read"
 msgstr "3D beweging gelezen"
 
 #. CoCube library block
-#, fuzzy
 msgid "set TFT backlight _"
-msgstr "zet TFT  achtergrondverlichting _"
+msgstr "zet TFT achtergrondverlichting _"
 
 #. CoCube Module library block
 #, fuzzy
@@ -6223,3 +6222,7 @@ msgstr "ToF verbonden"
 #, fuzzy
 msgid "power on module"
 msgstr "module aanzetten"
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
+msgstr "teken pixel rij _ x _ y _"
