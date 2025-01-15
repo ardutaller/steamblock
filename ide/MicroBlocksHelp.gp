@@ -394,6 +394,21 @@ method initialize MicroBlocksHelp {
 		(array 'xrp_readLineSensors' '/extension_libraries/xrp#read-left-right-line-sensors' 'Read the left and right line sensors.')
 		(array 'edcmotors_getNumMotors' '/extension_libraries/xrp#get-the-number-of-encoded-dc-motors' 'Get the number of encoded DC motors.')
 
+		// REX
+		(array 'REX Arm servo'	      '/extension_libraries/rex/#rex-arm-servo'	       'Moves selected servos of the Arm module.')
+		(array 'REX Arm stop'	      '/extension_libraries/rex/#rex-arm-stop'	       'Stops selected servos of the Arm module.')
+		(array 'REX beep'             '/extension_libraries/rex/#rex-beep'             'Emits a beep sound from the rex speaker.')
+		(array 'REX distance'	      '/extension_libraries/rex/#rex-distance'	       'displays distance measured by the HCSR04 sensor.')
+		(array 'REX motor'            '/extension_libraries/rex/#rex-motor'            'Controls selected motors attached to the controller.')
+		(array 'REX line sensor'	  '/extension_libraries/rex/#rex-line-sensor'	   'Returns TRUE if the line sensor detects a dark line.')
+		(array 'REX sees line'	      '/extension_libraries/rex/#rex-sees-line'	       'Returns the result of the evaluation of both line sensors.')
+		(array 'REX speed'	          '/extension_libraries/rex/#rex-speed'	           'Facilitates easy selection of motor speeds.')
+		(array 'REX Arm new default'  '/extension_libraries/rex/#_rex-arm-new-default' 'Sets DEFAULT values for the Arm servos.')
+		(array '_REX Arm new max'	  '/extension_libraries/rex/#_rex-arm-new-max'	   'Sets MAXIMUM values for the Arm servos.')
+		(array '_REX Arm new min'	  '/extension_libraries/rex/#_rex-arm-new-min'	   'Sets MINIMUM values for the Arm servos.')
+		(array '_REX anglevalid'	  '/extension_libraries/rex/#_rex-anglevalid'	   'Returns TRUE if the selected angle is in the range of 0-180 degrees.')
+		(array '_REX anglesOK servo'  '/extension_libraries/rex/#_rex-anglesok-servo'  'Returns TRUE if the selected angle for a servo is within min & max. ')
+		(array '_REX initialize'	  '/extension_libraries/rex/#_rex-initialize'	   'Initializes the library.')
 	)
 
 	opDict = (dictionary)
