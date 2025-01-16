@@ -1,6 +1,6 @@
 module 'REX Kit' Output
 author 'Turgut Guneysu'
-version 1 2 
+version 1 4 
 depends 'Distance (HC-SR04)' 'IR Remote' Servo varPrims 
 choices servoAngleMenu '0' Def Min Max 
 choices servoNumMenu 'base:1' '2:2' '3:3' 'top:4' ALL 
@@ -29,6 +29,7 @@ See https://www.robotistan.com/rex-evolution-serisi-super-star-transformers-8-in
 CHANGES:
 - Motors C & D Pin swaps due to error by Robotistan. Will be fixed in the new board version.
 - Speed selection by menu
+- Correct motor 0 speed logic
 '
 variables rex_armMin rex_armMax rex_armCur rex_armDef rex_armIncr rex_armAddr rex_armWait rex_irAddr rex_motorAddr rex_initialized rex_trigEchoAddr rex_buzzerAddr 
 
@@ -188,14 +189,20 @@ STOP:   All LOW'
     motor = ('[data:asByteArray]' motor)
   }
   for m# motor {
-    local 'motorAddrIdx' (m# + dir)
     analogWriteOp pwmAddr speed
-    if (0 == dir) {
-      digitalWriteOp (at motorAddrIdx rex_motorAddr) true
+    if (0 == speed) {
+      local 'motorAddrIdx' m#
+      digitalWriteOp (at motorAddrIdx rex_motorAddr) false
       digitalWriteOp (at (motorAddrIdx + 1) rex_motorAddr) false
     } else {
-      digitalWriteOp (at motorAddrIdx rex_motorAddr) true
-      digitalWriteOp (at (motorAddrIdx - 1) rex_motorAddr) false
+      local 'motorAddrIdx' (m# + dir)
+      if (0 == dir) {
+        digitalWriteOp (at motorAddrIdx rex_motorAddr) true
+        digitalWriteOp (at (motorAddrIdx + 1) rex_motorAddr) false
+      } else {
+        digitalWriteOp (at motorAddrIdx rex_motorAddr) true
+        digitalWriteOp (at (motorAddrIdx - 1) rex_motorAddr) false
+      }
     }
   }
 }
