@@ -50,6 +50,7 @@ method initialize MicroBlocksHelp {
 		(array 'i2cSet' 'comm#i2c-set-device' 'Set an I2C device and register to given value (0-255).')
 		(array '[sensors:i2cRead]' 'comm#i2c-device-read' 'Receive multiple bytes from an I2C device.')
 		(array '[sensors:i2cWrite]' 'comm#i2c-device-write' 'Send multiple bytes to an I2C device.')
+		(array '[sensors:i2cExists]' 'comm#i2c-device-exists' 'Return true if there is an I2C device at the given address.')
 		(array 'spiSend' 'comm#spi-send' 'Send a byte (0-255) to an SPI device.')
 		(array 'spiRecv' 'comm#spi-receive' 'Read a byte from an SPI device while sending a zero byte. Report the byte received.')
 		(array '[sensors:spiSetup]' 'comm#xxx' 'Set the SPI clock speed, mode, channel (Raspberry Pi only), and bit order.')
@@ -79,6 +80,7 @@ method initialize MicroBlocksHelp {
 		(array 'repeatUntil' 'control#repeat-until' 'Repeat the enclosed blocks until the condition becomes (-o) .')
 		(array 'stopTask' 'control#stop-this-task' 'Stop this task.')
 		(array 'stopAll' 'control#stop-other-tasks' 'Stop all tasks except this one.')
+		(array 'exitLoop' 'control#exit-loop' 'Stop the innermost loop and continue execution with the block following the loop. Do nothing if the block is not in a loop.')
 		(array 'waitMicros' 'control#wait-microsecs' 'Wait the given number of microseconds.')
 		(array 'getLastBroadcast' 'control#last-message' 'Report the last broadcast message received.')
 		(array 'argOrDefault' 'control#arg' 'Report the given argument or defaultValue if the argument was not supplied by the caller.')
@@ -163,7 +165,7 @@ method initialize MicroBlocksHelp {
 		(array 'displayCharacter' '/libraries#display-character' 'Display a single character on the LED display.')
 		(array 'scroll_text' '/libraries#scroll-text' 'Scroll words or numbers across the LED display.')
 		(array 'stopScrollingText' '/libraries#stop-scrolling' 'Stop scrolling and clear the display.')
-		(array '_set display color' '/libraries#set-display-color' 'Sets the color of the 5x5 square LED pixels to the color selected.')
+		(array 'set display color' '/libraries#set-display-color' 'Sets the color of the 5x5 LED pixel array to the given color if possible (e.g. display is a TFT or NeoPixel array).')
 		(array '_led_image' '/libraries#led-image' 'Reports a number representative of the image drawn on the 5x5 LED panel pixels.')
 		(array '_led_namedImage' '/libraries#_led_namedimage' 'Returns the integer value representing the image selected from the drop-down menu.')
 
@@ -176,8 +178,10 @@ method initialize MicroBlocksHelp {
 		(array 'rotateNeoPixelsBy' '/libraries#rotate-neopixels-by' 'Shift/rotate the NeoPixel colors by the given number.')
 		(array 'colorFromRGB' '/libraries#color-r-g-b' 'Return a color defined by values of R G B (0-255).')
 		(array 'randomColor' '/libraries#random-color' 'Return a random color.')
-		(array 'NeoPixel_brighten' '/libraries' 'Brighten a single NeoPixel.')
-		(array 'NeoPixel_brighten_all' '/libraries' 'Brighten all NeoPixels.')
+		(array 'NeoPixel_brighten' '/libraries#neopixel-brighten-one' 'Brighten or darken a single NeoPixel.')
+		(array 'NeoPixel_brighten_all' '/libraries#neopixel-brighten-all' 'Brighten or darken all NeoPixels.')
+		(array 'NeoPixel_shift_color' '/libraries#neopixel-hue-shift-one' 'Shift the hue of a single NeoPixel around the 360 degree color circle.')
+		(array 'NeoPixel_shift_all_colors' '/libraries#neopixel-hue-shift-all' 'Shift the hue of all NeoPixels around the 360 degree color circle.')
 
 		// RADIO
 		(array '[radio:sendInteger]' '/libraries#radio-send-number' 'Send a numerical message.')
