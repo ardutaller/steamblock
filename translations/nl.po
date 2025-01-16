@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-29 09:24+0200\n"
-"PO-Revision-Date: 2025-01-14 17:00+0000\n"
+"PO-Revision-Date: 2025-01-17 01:30+0000\n"
 "Last-Translator: Peter Mathijssen <pmathijssen@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/microblocks/ide/nl/"
 ">\n"
@@ -6226,3 +6226,19 @@ msgstr "module aanzetten"
 #. TFT Display library block
 msgid "draw pixel row _ x _ y _"
 msgstr "teken pixel rij _ x _ y _"
+
+#. CoCube library block
+msgid "cocube;left"
+msgstr "links"
+
+#. CoCube library block
+msgid "cocube;right"
+msgstr "rechts"
+
+#. CoCube library block
+msgid "cocube;forward"
+msgstr "vooruit"
+
+#. CoCube library block
+msgid "cocube;backward"
+msgstr "achteruit"
