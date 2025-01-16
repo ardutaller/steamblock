@@ -113,7 +113,6 @@ variables _stop_scrolling_text
   spec 'r' '_led_namedImage' '_led_namedImage _' 'menu.led_imageMenu' 'happy'
   spec 'r' '_led_imageData' '_led_imageData'
   spec ' ' 'set display color' 'set display color _' 'color'
-  spec ' ' '_set display color' 'obsolete set display color _' 'color'
 
 to '_led_image' twentyFiveBitInt {
   comment 'An LED image is a 25-bit integer'
