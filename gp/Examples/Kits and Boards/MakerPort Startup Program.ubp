@@ -484,7 +484,7 @@ to MenuAction4 {}
 
 module 'Distance (HC-SR04)' Input
 author 'Joan Guillén & Josep Ferràndiz'
-version 1 2 
+version 1 4 
 tags sensor 'hc-sr04' distance ultrasound 
 description 'Support for the HC-SR04 ultrasound distance sensor.'
 variables _sr04_last 
@@ -512,9 +512,6 @@ to 'distance (cm)' trig ech {
   _sr04_last = ((10 * ((microsOp) - start)) / 583)
   comment 'Leave some time for reverberations to die away.'
   waitMillis 10
-  if (_sr04_last == 0) {
-    zeroCount += 1
-  }
   return _sr04_last
 }
 
@@ -525,7 +522,7 @@ to sr04_distanceOnePin pin {
 
 module 'IR Remote' Comm
 author MicroBlocks
-version 1 7 
+version 1 8 
 tags ir infrared remote 
 description 'Sends and receives infrared remote control messages like the ones used for TV sets or air conditioners. Currently supports only the NEC protocol, which is quite common but not the only IR protocol in use. An NEC message consists of a one byte device number and a one byte command.
 
@@ -552,6 +549,8 @@ variables _ir_pin _ir_pulse_times _ir_last_code _ir_last_device _ir_transmit_pin
   spec 'r' '_getIRByte' '_getIRByte _' 'auto any' 4
   spec 'r' '_got32Bits' '_got32Bits' 'any'
   spec ' ' '_IR_SendByte' '_IR_SendByte _' 'auto' '10'
+  spec ' ' 'timerIRCapture' 'timerIRCapture'
+  spec ' ' 'interruptIRCapture' 'interruptIRCapture'
 
 to IR_Transmit device command {
   if (_ir_transmit_pin == 0) {if (or ((boardType) == 'CircuitPlayground') ((boardType) == 'M5Atom-Matrix')) {
@@ -602,7 +601,7 @@ to '_IR_SendByte' byte {
 
 to '_captureIRMessage' {
   if (_ir_pulse_times == 0) {
-    _ir_pulse_times = (newList 200)
+    _ir_pulse_times = (newList 100)
     if (_ir_pin == 0) {
       if ((boardType) == 'CircuitPlayground') {
         _ir_pin = 11
@@ -617,31 +616,8 @@ to '_captureIRMessage' {
       }
     }
   }
-  atPut 'all' _ir_pulse_times 0
-  local 'i' 1
-  comment 'Wait for IR signal -- this is the start of a new message.
-Note: THe pin goes low when an IR signal is detected.'
-  waitUntil (not (digitalReadOp _ir_pin))
-  local 'start' (microsOp)
-  forever {
-    comment 'Record the time until the end of the current IR pulse ("mark")'
-    waitUntil (digitalReadOp _ir_pin)
-    local 'end' (microsOp)
-    atPut i _ir_pulse_times (end - start)
-    i += 1
-    start = end
-    comment 'Record time until the start of the next IR pulse ("space")'
-    repeatUntil (not (digitalReadOp _ir_pin)) {
-      if (((microsOp) - start) > 5000) {
-        comment 'No IR pulse for 5000 usecs means "end of message"'
-        return 0
-      }
-    }
-    local 'end' (microsOp)
-    atPut i _ir_pulse_times (end - start)
-    i += 1
-    start = end
-  }
+  comment 'Capture the next IR message.'
+  interruptIRCapture
 }
 
 to '_dumpIR' {
@@ -713,6 +689,27 @@ to attachIRTransmitter pin {
   _ir_transmit_pin = pin
 }
 
+to interruptIRCapture {
+  comment 'Capture IR pulses using interrupt-based pulse capture system.'
+  atPut 'all' _ir_pulse_times 0
+  comment 'Wait for IR signal -- this is the start of a new message.
+Note: THe pin goes low when an IR signal is detected.'
+  waitUntil (not (digitalReadOp _ir_pin))
+  local 'start' (millisOp)
+  '[sensors:captureStart]' _ir_pin
+  comment 'Collect IR pulses until we receive over 67 pulses or until the timeout.'
+  repeatUntil (or (('[sensors:captureCount]') > 67) ((millisSince start) > 200)) {
+    waitMillis 5
+  }
+  local 'pulseData' ('[sensors:captureEnd]')
+  comment 'If we got at least 67 pulses, copy their absolute values (durations) into _ir_pulse_times.'
+  if ((size pulseData) >= 67) {
+    for i 67 {
+      atPut i _ir_pulse_times (absoluteValue (at i pulseData))
+    }
+  }
+}
+
 to ir_code_received {
   return ((receiveIR) >= 0)
 }
@@ -732,6 +729,35 @@ to receiveIR {
       atPut 'all' _ir_pulse_times 0
       return _ir_last_code
     }
+  }
+}
+
+to timerIRCapture {
+  comment 'Capture IR pulses using the microseconds timer. (Original version, not currently used.)'
+  atPut 'all' _ir_pulse_times 0
+  local 'i' 1
+  comment 'Wait for IR signal -- this is the start of a new message.
+Note: THe pin goes low when an IR signal is detected.'
+  waitUntil (not (digitalReadOp _ir_pin))
+  local 'start' (microsOp)
+  forever {
+    comment 'Record the time until the end of the current IR pulse ("mark")'
+    waitUntil (digitalReadOp _ir_pin)
+    local 'end' (microsOp)
+    atPut i _ir_pulse_times (end - start)
+    i += 1
+    start = end
+    comment 'Record time until the start of the next IR pulse ("space")'
+    repeatUntil (not (digitalReadOp _ir_pin)) {
+      if (((microsOp) - start) > 5000) {
+        comment 'No IR pulse for 5000 usecs means "end of message"'
+        return 0
+      }
+    }
+    local 'end' (microsOp)
+    atPut i _ir_pulse_times (end - start)
+    i += 1
+    start = end
   }
 }
 
@@ -913,7 +939,7 @@ to '_LCD1602 toggle enable' bits {
 
 module 'MP3 Player' Output
 author MicroBlocks
-version 1 11 
+version 1 13 
 choices mp3PlayerType MakerPort 'MakerBit/HyperDuino' DFRobot Octopus 
 description 'Support for Octopus (FN-M16P and YX6300 chips) and DFRobot/HyperDuino/MakerBit/MakerPort) MP3 Players (YX5300, A19HFA440, and GD3300B chips).
 
@@ -937,7 +963,6 @@ variables _mp3UseChecksum _mp3Pin _mp3RxPin _mp3Status
   space
   spec ' ' '_mp3_sendMP3Cmd' '_mp3_sendMP3Cmd _ _ _' 'auto num num' '0x0C' 0 0
   spec 'r' '_mp3_timeForResponse' '_mp3_timeForResponse timeout _ msecs' 'auto' 1000
-  spec ' ' '_mp3_waitForResponse' 'obsolete _mp3_waitForResponse'
 
 to '_mp3_sendMP3Cmd' cmd arg1 arg2 {
   if (_mp3UseChecksum == 0) {
@@ -962,6 +987,8 @@ to '_mp3_sendMP3Cmd' cmd arg1 arg2 {
   for byte msg {
     '[io:softWriteByte]' byte _mp3Pin 9600
   }
+  comment 'Leave some time for MP3 chip to process command'
+  waitMillis 5
 }
 
 to '_mp3_timeForResponse' timeout {
@@ -999,7 +1026,7 @@ to mp3_initialize type pin optionalRxPin {
       _mp3Status = 'no card'
       return 0
     }
-    waitMillis 500
+    waitMillis 100
     comment 'Try to play a non-existent track; should respond in under 800 msecs.
 Times out when MP3 switch is in "files" mode.'
     mp3_playTrack 87 87
@@ -1008,6 +1035,7 @@ Times out when MP3 switch is in "files" mode.'
     } else {
       _mp3Status = 'ok'
     }
+    waitMillis 500
   }
 }
 
@@ -1078,7 +1106,7 @@ to mp3_setVolume level {
 
 module MakerPort Output
 author MicroBlocks
-version 2 2 
+version 2 3 
 depends 'LCD Display' 'MP3 Player' Tone Touch 'IR Remote' 
 choices makerport_audioSource MP3 Tone 
 choices makerport_loudnessPin 'mp3 player' 'analog pin (13)' 'extra pin (17)' 
@@ -1113,11 +1141,7 @@ to makerport_beep freq msecs optionalVolume {
 to makerport_initialize {
   makerport_setAllLEDs false
   mp3_initialize 'MakerPort' 20 21
-  if ((boardType) == 'MakerPort V3') {
-    attachIR 22
-  } else {
-    attachIR 18
-  }
+  attachIR 22
 }
 
 to makerport_loudness soundPin {
@@ -1155,7 +1179,7 @@ to makerport_typeString s {
 
 module NeoPixel Output
 author MicroBlocks
-version 1 10 
+version 1 11 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
 variables _np_pixels 
@@ -1166,6 +1190,7 @@ variables _np_pixels
   spec ' ' 'neoPixelSetAllToColor' 'set all NeoPixels color _' 'color'
   spec ' ' 'setNeoPixelColor' 'set NeoPixel _ color _' 'num color' 1
   space
+  spec 'r' 'neoPixel_colorSwatch' '_' 'color'
   spec 'r' 'colorFromRGB' 'color r _ g _ b _ (0-255)' 'num num num' 0 100 100
   spec 'r' 'randomColor' 'random color'
   space
@@ -1292,6 +1317,10 @@ to neoPixelSetAllToColor color {
   '_NeoPixel_ensureInitialized'
   atPut 'all' _np_pixels color
   '_NeoPixel_update'
+}
+
+to neoPixel_colorSwatch color {
+  return color
 }
 
 to randomColor {
