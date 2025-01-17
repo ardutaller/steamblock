@@ -387,7 +387,7 @@ method fixLayout MicroBlocksScripter {
 	leftEdge = (left morph)
 	topEdge = (top morph)
 	fastSetPosition (morph categoryFrame) leftEdge topEdge
-	fastSetPosition (morph categorySelector) leftEdge (topEdge + (24 * scale))
+	fastSetPosition (morph categorySelector) leftEdge ((top (morph categoryPane)) + (24 * scale))
 	fastSetPosition (morph libHeader) leftEdge (bottom (morph categorySelector))
 	fastSetPosition (morph libAddButton) (24 * scale) ((bottom (morph libHeader)) + (8 * scale))
 	fastSetPosition (morph libSelector) leftEdge ((bottom (morph libAddButton)) + (8 * scale))
@@ -412,7 +412,6 @@ method fixLayout MicroBlocksScripter {
 }
 
 method fixCategoryPaneExtent MicroBlocksScripter {
-	scrollToY categoryFrame 0
 	// 54 is the height of the gradient (30) plus the height of a category button (24)
 	setExtent (morph categoryPane) (width (morph libSelector)) (((bottom (morph libSelector)) - (top (morph spacer))) + (54 * (global 'scale')))
 }
