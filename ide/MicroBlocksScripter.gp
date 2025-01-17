@@ -1441,6 +1441,7 @@ method updateLibraryList MicroBlocksScripter {
 	scale = (global 'scale')
 	fastSetPosition (morph libAddButton) (24 * scale) ((bottom (morph libHeader)) + (8 * scale))
 	fixCategoryPaneExtent this
+	scrollToY categoryFrame 0
 }
 
 method justGrabbedPart MicroBlocksScripter part {

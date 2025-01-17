@@ -50,7 +50,7 @@ method initialize MicroBlocksHelp {
 		(array 'i2cSet' 'comm#i2c-set-device' 'Set an I2C device and register to given value (0-255).')
 		(array '[sensors:i2cRead]' 'comm#i2c-device-read' 'Receive multiple bytes from an I2C device.')
 		(array '[sensors:i2cWrite]' 'comm#i2c-device-write' 'Send multiple bytes to an I2C device.')
-		(array '[sensors:i2cExists]' 'comm#i2c-device-exists' 'Return true if there is an I2C device at the given address.')
+		(array '[sensors:i2cExists]' 'comm#i2c-device-exists' 'Return (-o) if there is an I2C device at the given address.')
 		(array 'spiSend' 'comm#spi-send' 'Send a byte (0-255) to an SPI device.')
 		(array 'spiRecv' 'comm#spi-receive' 'Read a byte from an SPI device while sending a zero byte. Report the byte received.')
 		(array '[sensors:spiSetup]' 'comm#xxx' 'Set the SPI clock speed, mode, channel (Raspberry Pi only), and bit order.')
