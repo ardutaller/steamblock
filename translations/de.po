@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-14 17:00+0000\n"
+"PO-Revision-Date: 2025-01-17 01:30+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2974,7 +2974,7 @@ msgstr "str2num _"
 
 #. WiFi library block
 msgid "wifi create hotspot _ password _"
-msgstr "WiFi öffne Hotspot _ mit Kennwort _"
+msgstr "WiFi erzeuge Hotspot _ mit Kennwort _"
 
 #. WiFi library block
 msgid "MAC address"
@@ -4458,7 +4458,7 @@ msgstr "CBPro setze externe Motorspannung auf _ (-100~100)"
 
 #. Settings menu option
 msgid "dark mode"
-msgstr "Dunkler Modus"
+msgstr "dunkler Modus"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Reports the three-letter BLE ID of the board if it supports BLE."
@@ -4587,7 +4587,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "advanced mode"
-msgstr "Erweiterter Modus"
+msgstr "erweiterter Modus"
 
 #. Settings menu tooltip
 msgid "show advanced blocks, menu items and editor functionalities"
