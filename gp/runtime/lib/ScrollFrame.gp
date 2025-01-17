@@ -17,7 +17,7 @@ method initialize ScrollFrame newContents aColor noSliderFlag thickness padding 
 	enableAutoScroll = true
 	verticalScrollOnly = false
 	hideWhenNotScrolling = false
-	lastScrollUpdate = 0
+	lastScrollMSecs = 0
 	addPart morph (morph contents)
 	setTransparentTouch morph true
 	setClipping morph true
