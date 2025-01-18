@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-29 09:24+0200\n"
-"PO-Revision-Date: 2025-01-17 01:30+0000\n"
+"PO-Revision-Date: 2025-01-18 12:02+0000\n"
 "Last-Translator: Peter Mathijssen <pmathijssen@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/microblocks/ide/nl/"
 ">\n"
@@ -405,7 +405,7 @@ msgstr "voeg _ toe aan lijst _"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr "voeg _ _ samen"
+msgstr "samenvoegen _ _"
 
 #. Block in Data category
 msgid "copy _ from _"
