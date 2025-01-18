@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-01-16 08:03+0000\n"
+"PO-Revision-Date: 2025-01-19 08:58+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -108,7 +108,7 @@ msgstr "analogové piny"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr "digitalní piny"
+msgstr "digitální piny"
 
 #. "Control" blocks category label
 msgid "cat;Control"
@@ -152,7 +152,7 @@ msgstr "jinak"
 
 #. Block in Control category
 msgid "when _"
-msgstr "dokud _"
+msgstr "pokud _"
 
 #. Block in Control category
 msgid "wait until _"
@@ -192,7 +192,7 @@ msgstr "rozsah od _ do _"
 
 #. Block in Control category
 msgid "by _"
-msgstr "přírustek _"
+msgstr "přírůstek _"
 
 #. Block in Control category
 msgid "for _ in _ _"
@@ -300,7 +300,7 @@ msgstr "když _ pak _ jinak _"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "boolean"
-msgstr "logika"
+msgstr "logická hodnota"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -349,7 +349,7 @@ msgstr "Smaž proměnnou"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr "JMéno nové proměnné?"
+msgstr "Jméno nové proměnné?"
 
 #. Block in Variables category
 msgid "set _ to _"
@@ -426,7 +426,7 @@ msgstr "najdi _ v _"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr "začínající na _"
+msgstr "začínající od _"
 
 #. Block in Data category
 msgid "join items of list _"
@@ -446,7 +446,7 @@ msgstr "řetězec z unicode _"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr "nová délka seznamu _"
+msgstr "nový seznam délky _"
 
 #. Block in Data category
 msgid "new byte array _"
@@ -492,7 +492,7 @@ msgstr "rozděl _ podle _"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr "Moje bloky"
+msgstr "Moje Bloky"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
@@ -564,19 +564,19 @@ msgstr "pole bajtů"
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr "otevři seriový port pro rychlost _"
+msgstr "otevři sériový port rychlost _"
 
 #. Block in Comm category
 msgid "serial close"
-msgstr "zavři seriový port"
+msgstr "zavři sériový port"
 
 #. Block in Comm category
 msgid "serial read"
-msgstr "přeči ze seriového portu"
+msgstr "přečti ze sériového portu"
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr "do seriového portu zapiš _"
+msgstr "zapiš do sériového portu _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
@@ -584,7 +584,7 @@ msgstr "číslo/řetězec/pole bajtů"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
-msgstr "do seriového portu zapiš _ od _"
+msgstr "do sériového portu zapiš _ od _"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 msgid "aStringListOrByteArray"
@@ -592,7 +592,7 @@ msgstr "řetězec/pole bajtů"
 
 #. Block in Comm category
 msgid "soft serial write byte _ pin _ baud _"
-msgstr "do SW seriového portu zapiš byte _ na pin _ rychlost _"
+msgstr "zapiš byte _ do SW sériového portu na pinu _ rychlost _"
 
 #. Block in Comm category
 msgid "print _"
@@ -640,7 +640,7 @@ msgstr "zastav WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "WiFi status"
-msgstr "WiFi stav"
+msgstr "stav WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "my IP address"
@@ -676,7 +676,7 @@ msgstr "poslední rádiem přijaté číslo"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last string"
-msgstr "poslední rádiem přijaý text"
+msgstr "poslední rádiem přijatý text"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last message type"
@@ -708,7 +708,7 @@ msgstr "odešli packet _ rádiem"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
-msgstr "deaktivuj radio"
+msgstr "deaktivuj rádio"
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
@@ -792,7 +792,7 @@ msgstr "připoj pásek _ NeoPixel LED na Pin _"
 
 #. NeoPixel library block
 msgid "has white _"
-msgstr "s bílou _"
+msgstr "má bílou _"
 
 #. NeoPixel library block
 msgid "PIR"
@@ -852,7 +852,7 @@ msgstr "hlasitost"
 
 #. Microphone library block
 msgid "clap count"
-msgstr "počet tesknutí"
+msgstr "počet tlesknutí"
 
 #. Microphone library block
 msgid "set clap threshold _"
@@ -868,7 +868,7 @@ msgstr "EDI krokový motor"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ steps _"
-msgstr "otoč motor __ o _ krok(ů)"
+msgstr "otoč motor _ _ o _ krok(ů)"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor 1 _ and motor 2 _ _ steps"
@@ -1024,27 +1024,27 @@ msgstr "Doprava"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Beak Up"
-msgstr ""
+msgstr "Zobák nahoru"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Beak Down"
-msgstr ""
+msgstr "Zobák dolů"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Tilt Left"
-msgstr ""
+msgstr "Náklon doleva"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Tilt Right"
-msgstr ""
+msgstr "Náklon doprava"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Level"
-msgstr ""
+msgstr "Úroveň"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Upside Down"
-msgstr ""
+msgstr "hlavou dolů"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "x"
@@ -1060,7 +1060,7 @@ msgstr "z"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "strength"
-msgstr ""
+msgstr "síla"
 
 #. Ultrasound distance library block
 msgid "distance (cm) trigger _ echo _"
@@ -1208,7 +1208,7 @@ msgstr "pravé"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;middle"
-msgstr "middle"
+msgstr "prostřední"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;both"
@@ -1220,7 +1220,7 @@ msgstr "posuň ukazatel myši o _ , _"
 
 #. Keyboard and Mouse library block
 msgid "scroll mouse by _"
-msgstr "scroll mouse by _"
+msgstr "roluj myš o _"
 
 #. Keyboard and Mouse library block
 msgid "hold _ mouse button"
@@ -1301,7 +1301,7 @@ msgstr "obrácený _"
 
 #. Lists library block
 msgid "sorted _"
-msgstr "seřazný _"
+msgstr "seřazený _"
 
 #. Lists library block
 msgid "uniqued _"
@@ -1310,7 +1310,7 @@ msgstr "bez duplicit _"
 #. Pseudorandomness library label
 #. Creates pseudorandom numbers and lists of numbers given a particular seed
 msgid "Pseudorandomness"
-msgstr "Pseudonádodné"
+msgstr "Pseudonáhodné"
 
 #. Pseudorandomness library block
 msgid "pseudorandom _ to _ with seed _"
@@ -1318,7 +1318,7 @@ msgstr "pseudonáhodné číslo od _ do _ s klíčem"
 
 #. Pseudorandomness library block
 msgid "_ pseudorandom numbers _ to _ with seed _"
-msgstr "_ pseudonáhodná čísla od _ do _ s klíčem"
+msgstr "_ pseudonáhodná čísla od _ do _ s klíčem _"
 
 #. BLE Keyboard library label
 msgid "BLE Keyboard"
@@ -1333,12 +1333,12 @@ msgstr "spustit BLE klávesnici"
 #. Allows micro:bit boards to exchange messages
 #. All of its blocks are primitive (see "Primitives" section)
 msgid "Radio"
-msgstr "Radio"
+msgstr "Rádio"
 
 #. Text scrolling library label
 #. Scrolls text on 5x5 LED displays and simulated ones
 msgid "Scrolling"
-msgstr "Scrollen"
+msgstr "rolování"
 
 #. Scrolling library block
 msgid "scroll text _"
@@ -1358,7 +1358,7 @@ msgstr "pauza _ ms"
 
 #. Scrolling library block
 msgid "stop scrolling"
-msgstr "zastav zobrazení"
+msgstr "zastav rolování"
 
 #. Servo motor library label
 msgid "Servo"
@@ -1370,11 +1370,11 @@ msgstr "nastav servo _ na úhel _ (-90 až 90)"
 
 #. Servo motor library block
 msgid "set servo _ to speed _ (-100 to 100)"
-msgstr "nastav Servo _ na rychlost _ (-100 až 100)"
+msgstr "nastav servo _ na rychlost _ (-100 až 100)"
 
 #. Servo motor library block
 msgid "stop servo _"
-msgstr "zastav Servo _"
+msgstr "zastav servo _"
 
 #. 5x5 LED display library label
 #. Supports the micro:bit display, but also simulated 5x5 displays on boards
@@ -1488,7 +1488,7 @@ msgstr "motýl"
 
 #. Image name for the "display image" block
 msgid "stick figure"
-msgstr ""
+msgstr "postava"
 
 #. Image name for the "display image" block
 msgid "ghost"
@@ -1847,7 +1847,7 @@ msgstr "Tóny"
 
 #. Tone library block
 msgid "attach buzzer to pin _"
-msgstr "připoj bzučák k pinu Pin _"
+msgstr "připoj bzučák k pinu _"
 
 #. Tone library block
 msgid "play note _ octave _ for _ ms"
@@ -1949,7 +1949,7 @@ msgstr "nastav pin pro drknání _"
 
 #. WAV library block
 msgid "play WAV file _"
-msgstr "přehrej WAV soubor _"
+msgstr "přehraj WAV soubor _"
 
 #. Example file name with no extension
 msgid "filename"
@@ -1962,7 +1962,7 @@ msgstr "Rytmus"
 
 #. Rhythm library block
 msgid "set tempo to _ bpm at _ / _ signature"
-msgstr "nastav tempo na _ bpm pro _ / _ tónt"
+msgstr "nastav tempo na _ bpm pro _ / _ tón"
 
 #. Rhythm library block
 msgid "set pattern to _ bars"
@@ -2869,27 +2869,27 @@ msgstr "stisknuto tlačítko _"
 
 #. Calliope board library block
 msgid "Calliope set LED red _ green _ blue _"
-msgstr "Calliope setze LED rot _ grün _ blau _"
+msgstr "Calliope nastav LED R _ G _ B _"
 
 #. Calliope board library block
 msgid "Calliope set speaker _"
-msgstr "Calliope setze Lautsprecher _"
+msgstr "Calliope Nastav reproduktor _"
 
 #. Calliope board library block
 msgid "Calliope loudness"
-msgstr "Calliope Lautstärke"
+msgstr "Calliope hlasitost"
 
 #. Circuit Playground Express board library block
 msgid "Circuit Playground set speaker _"
-msgstr "Circuit Playground setze Lautsprecher _"
+msgstr "Circuit Playground hlasitost reproduktoru _"
 
 #. Circuit Playground Express board library block
 msgid "Circuit Playground slide switch"
-msgstr "Circuit Playground Schiebeschalter"
+msgstr "Circuit Playground popsuvný spínač"
 
 #. DotStar LED library block
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
-msgstr "schließe _ DotStar LEDs an Daten-Pin _ Uhr-Pin _ an"
+msgstr ""
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
@@ -3258,11 +3258,11 @@ msgstr "sb zastav _"
 
 #. Shield:bit library block
 msgid "sb turn 180 servo S- _ (1-8) to angle _"
-msgstr "sb natoč 180 servo S- _ (1-8) do úhlu _"
+msgstr "sb natoč 180 servo S- _ (1-8) do úhlu _ stupňů"
 
 #. Shield:bit library block
 msgid "sb turn 360 servo S- _ (1-8) _ at _ %"
-msgstr "sb roztoč servo S- _ (1-8) _ na _ 5"
+msgstr "sb roztoč servo S- _ (1-8) _ na _ %"
 
 #. Shield:bit library block
 msgid "sb turn DC M- _ (1-4) motor _ at _ %"
@@ -4119,7 +4119,7 @@ msgstr "Wukong"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong motor _ rychlost _ (-100 - 100)"
+msgstr "Wukong motor _ rychlost _ (-100 až 100)"
 
 #. Wukong robot library block
 msgid "Wukong stop motor _"
@@ -4131,11 +4131,11 @@ msgstr "Wukong zastav vše"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
-msgstr "Wukong nastav servo _ úhel _ stupňů (-90 - 90)"
+msgstr "Wukong nastav servo _ úhel _ stupňů (-90 až 90)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong servo _ rychlost _ (-100 - 100)"
+msgstr "Wukong servo _ rychlost _ (-100 až 100)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
@@ -4179,71 +4179,71 @@ msgstr ""
 
 #. Joystick:bit library block
 msgid "button _ is pressed"
-msgstr ""
+msgstr "tlačítko _ je stisknuto"
 
 #. Joystick:bit library block
 msgid "rocker value of _"
-msgstr ""
+msgstr "hodnota kniplu _"
 
 #. Joystick:bit library block
 msgid "motor vibrate for _ ms"
-msgstr ""
+msgstr "vibrace po dobu _ ms"
 
 #. NeZha robot library label
 msgid "NeZha"
-msgstr ""
+msgstr "NeZha"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
-msgstr ""
+msgstr "NeZha motor _ rychlost _ %"
 
 #. NeZha robot library block
 msgid "NeZha stop motor _"
-msgstr ""
+msgstr "NeZha zastav motor _"
 
 #. NeZha robot library block
 msgid "NeZha stop all motors"
-msgstr ""
+msgstr "NeZha zastav všechny motory"
 
 #. NeZha robot library block
 msgid "NeZha set _ servo _ angle to _"
-msgstr ""
+msgstr "NeZha nsatav servo _ úhel _ stupňů"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr ""
+msgstr "NeZha nastav kontinuální servo _ rychlost _ (-100 až 100)"
 
 #. WuKong2040 robot library label
 msgid "WuKong2040"
-msgstr ""
+msgstr "WuKong2040"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ color to _"
-msgstr ""
+msgstr "WuKong2040 duhová LED _ barva _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
-msgstr ""
+msgstr "WuKong2040 duhová LED _ R _ G _ B (0-255)"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 clear all rainbowLED"
-msgstr ""
+msgstr "WuKong2040 zhasnout všechny duhové LED"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
-msgstr ""
+msgstr "WuKong2040 motor _ rychlost _ (-100 až 100)"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop motor _"
-msgstr ""
+msgstr "WuKong2040 zastavit motor _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop all motors"
-msgstr ""
+msgstr "WuKong2040 zastavit všechny motory"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 buzzer beep _ ms"
-msgstr ""
+msgstr "WuKong2040 bzučák pípnutí _ ms"
 
 #. Elecfreaks Octopus sensor library label
 msgid "Octopus"
@@ -4479,7 +4479,7 @@ msgstr "Použijte tlačítko \"Připojit\" pro připojení zařízeni s MicroBlo
 
 #. MicroBlocks IDE error message.
 msgid "No boards found; is your board plugged in?"
-msgstr "Nenalezen žádný mikropočítač, je připojen?"
+msgstr "Nenalezen žádný mikropočítač - je připojen?"
 
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
@@ -4547,7 +4547,7 @@ msgstr "urovnat skripty"
 
 #. Scripting area right-click context menu
 msgid "undrop (ctrl-Z)"
-msgstr "vrátit zpět (Strg-Z)"
+msgstr "vrátit zpět (Ctrl-Z)"
 
 #. Scripting area right-click context menu
 msgid "undo the last block drop"
@@ -4743,7 +4743,7 @@ msgstr "Uloží soubor firmware po vyzvání."
 # %1 holds the drive name
 #. MicroBlocks IDE information
 msgid "Drag the firmware file you just saved to the %1 drive."
-msgstr "Přenes právě uložený firmware na %1 disk."
+msgstr "Přenese právě uložený firmware na %1 disk."
 
 #. Firmware installation process information
 msgid "Installing firmware..."
@@ -4759,7 +4759,7 @@ msgstr "Mazání mikropočítače..."
 
 #. Process cancellation tip
 msgid "(press ESC to cancel)"
-msgstr "Stiskněte ESC pro přerušení)"
+msgstr "Stiskněte ESC pro přerušení"
 
 #. Process finished information
 msgid "Done!"
@@ -4771,7 +4771,7 @@ msgstr "stáhnout a instalovat nejnovější virtuální stroj"
 
 #. Settings menu option
 msgid "Select board type:"
-msgstr "Výběr mikropočítače:"
+msgstr "Vyberte mikropočítač:"
 
 #. Firmware upload process information
 msgid "Uploading MicroBlocks to board..."
@@ -4795,7 +4795,7 @@ msgstr "skrýt pokročilé bloky"
 
 #. Project menu option
 msgid "put file on board"
-msgstr "ulož soubor do mikropočítačw"
+msgstr "ulož soubor do mikropočítače"
 
 #. Project menu option
 msgid "get file from board"
@@ -4867,15 +4867,15 @@ msgstr "najít použití proměnné"
 
 #. Variable right-click context menu tooltip
 msgid "find scripts or block definitions where this variable is being read"
-msgstr "najít skripty nebo bloky kde je proměnná čtena"
+msgstr "najít skripty nebo bloky kde se proměnná používá"
 
 #. Variable right-click context menu
 msgid "find variable modifiers"
-msgstr "najít modifikátory proměnné"
+msgstr "najít změny proměnné"
 
 #. Variable right-click context menu tooltip
 msgid "find scripts or block definitions where this variable is being set or changed"
-msgstr "najít skripty nebo bloky kde je do proměnná zapisováno"
+msgstr "najít skripty nebo bloky kde se nastavuje/mění hodnota proměnné"
 
 #. Block right-click context menu
 msgid "find uses of this block"
@@ -5099,7 +5099,7 @@ msgstr "Zrušit"
 
 #. Button
 msgid "Okay"
-msgstr "Okay"
+msgstr "Potvrdit"
 
 #. Window title
 msgid "Confirm"
@@ -5241,7 +5241,7 @@ msgstr "Nelze načíst knihovnu."
 
 #. String in file picker and library dialogs
 msgid "Host does not exist or is currently down."
-msgstr "Server neexistuje nebo jem momentálně nedostupný."
+msgstr "Server neexistuje nebo je momentálně nedostupný."
 
 #. String in file picker and library dialogs
 msgid "File not found in server."
@@ -5431,7 +5431,7 @@ msgstr "Do tohoto panelu se vkládají bloky pro vytváření skriptu. [r] menu.
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Turn the user LED on or off."
-msgstr "Zhasnutí/rozsvícení uživatelské LED na desce."
+msgstr "Zhasnutí/rozsvícení uživatelské LED na desce mikropočítače."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Display a bubble showing the value."
@@ -5445,13 +5445,13 @@ msgstr "Zápis hodnotu do grafu."
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the state of button A ( (-o) or (o-) )."
-msgstr "Vrátí stav tlačítka A ( (-o) or (o-) )."
+msgstr "Vrátí stav tlačítka A ( (-o) nebo (o-) )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the state of button B ( (-o) or (o-) )."
-msgstr "Vrátí stav tlačítka B ( (-o) or (o-) )."
+msgstr "Vrátí stav tlačítka B ( (-o) nebo (o-) )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the timer was last reset."
@@ -5512,14 +5512,14 @@ msgstr "Vrátí logickou hodnotu digitálního vstupu."
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a number proportional to the voltage on an analog pin (0 = ground, 1023 = supply voltage)."
 msgstr ""
-"Vrátí hodnotu odpovídající napětí na analogovém vstupu (0=GND, 1023=napájecí "
-"napětí)."
+"Vrátí hodnotu odpovídající napětí na analogovém vstupu ( 0 = GND, 1023 = "
+"napájecí napětí )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Turn a pin on or off ( (-o) or (o-) )."
-msgstr "Nastaví logickou hodnotu na výstupním pinu ( (-o) or (o-) )."
+msgstr "Nastaví logickou hodnotu na výstupním pinu ( (-o) nebo (o-) )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Pulse width modulate (PWM) a pin with the given duty cycle (0 - 1023)."
@@ -5559,7 +5559,7 @@ msgstr "Vrátí přečtený bajt z SPI zařízení zatímco odešle bajt=0."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set the SPI clock speed, mode, channel (Raspberry Pi only), and bit order."
-msgstr "Nastaví rychlost hodin SPI, kanál (pouce RPI) a pořadí bitů."
+msgstr "Nastaví rychlost hodin SPI, kanál (pouze RPI) a pořadí bitů."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte array via SPI, replacing its contents with the bytes received."
@@ -5597,7 +5597,7 @@ msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Run when buttons A, B, or A+B are pressed."
-msgstr "Úkol spuštěný při stisku tlačítka A, B nebo A+B."
+msgstr "Úkol běží při stisku tlačítka A, B nebo A+B."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks indefinitely."
@@ -5712,7 +5712,7 @@ msgstr "Vrátí zbytek po celočíselném dělení."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
-msgstr "Vátí absolutní hodnotu čísla (vždy >=0 )."
+msgstr "Vrátí absolutní hodnotu čísla (vždy >= 0 )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the minimum of the values."
@@ -5760,13 +5760,13 @@ msgstr "Vrátí (-o) když je první hodnota větší než druhá."
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Boolean constant ( (-o) or (o-) )."
-msgstr "Logická hodnota ( (-o) or (o-) )."
+msgstr "Logická hodnota ( (-o) nebo (o-) )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the logical inverse of a Boolean ( (-o) or (o-) ) value."
-msgstr "Vrátí opak logické hodnoty ( (-o) or (o-) )."
+msgstr "Vrátí opak logické hodnoty ( (-o) případně (o-) )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
@@ -5839,7 +5839,7 @@ msgstr "Změní proměnnou o danou hodnotu."
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Create a variable local to the containing script with the given initial value."
 msgstr ""
-"Vytvoří lokální proměnnou aktuálního skriptu s danou počíteční hodnotou."
+"Vytvoří lokální proměnnou aktuálního skriptu s danou počáteční hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the Nth item of a list, string, or byte array."
@@ -6025,7 +6025,7 @@ msgstr "Hudba"
 
 #. Examples folder
 msgid "folder;Web of Things"
-msgstr "Internet věcí"
+msgstr "Web věcí"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (USB)"
@@ -6058,3 +6058,92 @@ msgstr "Wukong natoč _ servo _ na _ stupňů"
 #. Wukong robot library menu option, as in "both motors"
 msgid "wukong;both"
 msgstr "oba"
+
+#. NeZha2 robot library label
+msgid "Nezha2"
+msgstr "Nezha2"
+
+#. NeZha2 robot library block
+msgid "Nezha stop all motors"
+msgstr "Nezha zastav všechny motory"
+
+#. NeZha2 robot library block
+msgid "brightness _ %"
+msgstr "jas _ %"
+
+#. File System library block
+#, fuzzy
+msgid "skip _ bytes of file _"
+msgstr "přeskoč _ bajtů souboru _"
+
+#. NeZha2 robot library block
+msgid "Nezha beep _ Hz for _ msecs"
+msgstr "Nezha tón _ Hz po dobu _ ms"
+
+#. NeZha2 robot library block
+msgid "Nezha set _ servo _ angle to _"
+msgstr "Nezha nastav servo _ na úhel _ stupňů"
+
+#. NeZha2 robot library block
+msgid "Nezha trim pot _"
+msgstr "Nezha potenciometr _"
+
+#. NeZha2 robot library block
+msgid "Nezha set all LEDs to _"
+msgstr "Nezha nastav všechny LED na _"
+
+#. NeZha2 robot library block
+msgid "Nezha set LED _ to _"
+msgstr "Nezha nastav LED _ na _"
+
+#. NeZha2 robot library block
+msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
+msgstr "Nezha nastav kontinuální servo _ rychlost _ (-100 až 100)"
+
+#. NeZha2 robot library block
+msgid "Nezha stop motor _"
+msgstr "Nezha zastav motor _"
+
+#. NeZha2 robot library block
+msgid "Nezha crash sensor _"
+msgstr "Nezha senzor nárazu _"
+
+#. NeZha2 robot library block
+msgid "Nezha read analog _"
+msgstr "Nezha přečíst analogový vstup _"
+
+#. CoCube Module library block
+msgid "power on module"
+msgstr "zapnout modul"
+
+#. NeZha2 robot library block
+#, fuzzy
+msgid "Nezha line sensor _ sees line on left _ right _"
+msgstr "Nezha senzor čáry _ vidí čáru vlevo _ vpravo _"
+
+#. File System library block
+#, fuzzy
+msgid "set read position _ of file _"
+msgstr "nastav pozici čtení _ souboru _"
+
+#. WiFi library block
+msgid "allow WiFi while using BLE _"
+msgstr "povolit WiFi při používání BLE _"
+
+#. File System library block
+#, fuzzy
+msgid "read position of file _"
+msgstr "čti pozici souboru _"
+
+#. NeZha2 robot library block
+msgid "Nezha soil moisture _"
+msgstr "Nezha vhlkost půdy _"
+
+#. TFT Display library block
+#, fuzzy
+msgid "draw pixel row _ x _ y _"
+msgstr "zobraz řadu bodů _ x _ y _"
+
+#. NeZha2 robot library block
+msgid "Nezha set motor _ speed to _ (-100-100)"
+msgstr "Nezha motor _ rychlost _ (-100 až 100)"
