@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-18 04:53+0000\n"
+"PO-Revision-Date: 2025-01-19 08:58+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -430,7 +430,7 @@ msgstr "Radio sende Wertepaar _ = _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
-msgstr "Ganzzahl Textliste oder ByteArray"
+msgstr "Ganzzahl, Text, Liste oder ByteArray"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
@@ -442,7 +442,7 @@ msgstr "Katze"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 msgid "aStringListOrByteArray"
-msgstr "Textliste oder ByteArray"
+msgstr "Text, Liste oder ByteArray"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
@@ -961,7 +961,7 @@ msgstr "Backspace"
 
 #. Fractions library label
 msgid "Fractions"
-msgstr "Brüche"
+msgstr "Rationale Zahlen"
 
 #. WiFi Radio library block
 msgid "wifi set group _ (0-255)"
@@ -1070,7 +1070,7 @@ msgstr "WiFi verbinde zu _ mit Kennwort _"
 
 #. Fractions library block
 msgid "integer part of fraction _"
-msgstr "ganzer Teil des Bruchs _"
+msgstr "ganzzahliger Teil des Bruchs _"
 
 #. File System library block
 msgid "next line of file _"
