@@ -1,6 +1,6 @@
 module 'REX Kit' Output
 author 'Turgut Guneysu'
-version 1 4 
+version 1 5 
 depends 'Distance (HC-SR04)' 'IR Remote' Servo varPrims 
 choices servoAngleMenu '0' Def Min Max 
 choices servoNumMenu 'base:1' '2:2' '3:3' 'top:4' ALL 
@@ -30,6 +30,7 @@ CHANGES:
 - Motors C & D Pin swaps due to error by Robotistan. Will be fixed in the new board version.
 - Speed selection by menu
 - Correct motor 0 speed logic
+- Adjust Servo defaults
 '
 variables rex_armMin rex_armMax rex_armCur rex_armDef rex_armIncr rex_armAddr rex_armWait rex_irAddr rex_motorAddr rex_initialized rex_trigEchoAddr rex_buzzerAddr 
 
@@ -310,10 +311,10 @@ To turn BWD, the bwd pin is energized and fwd pin is set to 0.
   rex_armIncr = 2
   rex_armWait = 30
   rex_armAddr = ('[data:asByteArray]' ('[data:makeList]' 2 26 18 19))
-  rex_armCur = ('[data:asByteArray]' ('[data:makeList]' 90 150 90 15))
-  rex_armDef = ('[data:asByteArray]' ('[data:makeList]' 90 150 90 90))
-  rex_armMax = ('[data:asByteArray]' ('[data:makeList]' 180 150 150 120))
-  rex_armMin = ('[data:asByteArray]' ('[data:makeList]' 0 20 0 15))
+  rex_armCur = ('[data:asByteArray]' ('[data:makeList]' 90 150 90 45))
+  rex_armDef = ('[data:asByteArray]' ('[data:makeList]' 90 150 90 45))
+  rex_armMax = ('[data:asByteArray]' ('[data:makeList]' 180 150 150 90))
+  rex_armMin = ('[data:asByteArray]' ('[data:makeList]' 0 20 0 0))
   rex_buzzerAddr = 25
   rex_irAddr = ('[data:asByteArray]' ('[data:makeList]' 34 35))
   rex_motorAddr = ('[data:asByteArray]' ('[data:makeList]' 15 23 32 33 27 14 5 4))
