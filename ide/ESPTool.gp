@@ -17,14 +17,27 @@ to espTest {
 // openPort espTool '/dev/cu.usbmodem01' 'ESP32-S2'
 // vmData = (readFile '../blink_s2.bin' true)
 
-// 	openPort espTool '/dev/cu.usbserial-110' 'ESP32-S3'
-// 	vmData = (readFile '../blink_s3.bin' true)
+//	openPort espTool '/dev/cu.usbserial-110' 'ESP32-S3'
+//	vmData = (readFile '../blink_s3.bin' true)
 
 openPort espTool '/dev/cu.usbserial-110' 'ESP32-C3'
 vmData = (readFile '../blink_c3.bin' true)
 
 	uploadESP32VM espTool vmData false
 	closeSerialPort port
+}
+
+to espConnectTest portName {
+	espTool = (newESPTool)
+	openPort espTool (join '/dev/' portName) 'ESP32-C3'
+	print 'port opened; trying to connect'
+	connect espTool
+	waitMSecs 1000
+	exitBootMode espTool
+	print 'exited boot mode'
+	waitMSecs 1000
+	closePort espTool
+	print 'port closed'
 }
 
 method initialize ESPTool {
@@ -63,17 +76,30 @@ method openPort ESPTool portName boardName {
 // m5atom - 115200 (42.5; 28.3 compressed) connects, but not reliable at 230400
 
 method baudForBoard ESPTool boardName {
-	if ('ESP8266' == boardName) { return 230400
-	} ('D1-Mini' == boardName) { return 921600
-	} ('ESP32' == boardName) { return 230400
-	} ('Citilab ED1' == boardName) { return 230400
-	} ('M5Stack-Core' == boardName) { return 230400
-	} ('M5StickC' == boardName) { return 230400
-	} ('M5StickC+' == boardName) { return 230400
-	} ('M5Atom-Matrix' == boardName) { return 115200
-	} ('Databot' == boardName) { return 230400
-	} ('Mbits' == boardName) { return 230400
-	} (isOneOf boardName 'ESP32-S2' 'ESP32-S3' 'ESP32-C3') { return 115200 // was 460800
+	if ('ESP8266' == boardName) {
+		return 230400
+	} ('D1-Mini' == boardName) {
+		return 921600
+	} ('ESP32' == boardName) {
+		return 230400
+	} ('micro:STEAMakers' == boardName) {
+		return 230400
+	} ('Citilab ED1' == boardName) {
+		return 230400
+	} ('M5Stack-Core' == boardName) {
+		return 230400
+	} ('M5StickC' == boardName) {
+		return 230400
+	} ('M5StickC+' == boardName) {
+		return 230400
+	} ('M5Atom-Matrix' == boardName) {
+		return 115200
+	} ('Databot' == boardName) {
+		return 230400
+	} ('Mbits' == boardName) {
+		return 230400
+	} (isOneOf boardName 'ESP32-S2' 'ESP32-S3' 'ESP32-C3') {
+		return 115200 // was 460800
 	}
 	return 115200
 }
@@ -97,8 +123,12 @@ method connect ESPTool {
 	// Enter boot mode and connect to the ROM boot loader.
 
 	status = 'Connecting...'
-	repeat 30 {
-		enterBootMode this
+	for i 30 {
+		if (0 == (i & 1)) {
+			enterBootMode this
+		} else {
+			enterBootModeUSB this
+		}
 		waitMSecs 30
 		recvBuf = (newBinaryData)
 		repeat 10 {
@@ -134,11 +164,31 @@ method enterBootMode ESPTool {
 	if (isNil port) { return }
 	setSerialPortDTR port false		// IO0 = high
 	setSerialPortRTS port true		// EN = low (chip in reset)
-	waitMSecs 250 					// might need to increase to 220 msecs on some chips
+	waitMSecs 250					// might need to increase to 220 msecs on some chips
 	setSerialPortDTR port true		// IO0 = low
 	setSerialPortRTS port false		// EN = high (exit reset)
-	waitMSecs 500 					// might need to increase to 450 msecs on some chips
+	waitMSecs 500					// might need to increase to 450 msecs on some chips
 	setSerialPortDTR port false		// IO0 = high
+}
+
+method enterBootModeUSB ESPTool {
+	// Use the RTS/DTR lines to force the chip into bootloader mode on newer ESP chips
+	// with a built-in USB-JTAG controller (ESP32-S3, ESP32-C3, ESP32-C6).
+	// Note: RTS and DTR are inverted by transistors on the board.
+
+	if (isNil port) { return }
+	setSerialPortRTS port false
+	setSerialPortDTR port false
+	waitMSecs 100
+	setSerialPortDTR port true
+	setSerialPortRTS port false
+	waitMSecs 100
+	setSerialPortRTS port true
+	setSerialPortDTR port false
+	setSerialPortRTS port true
+	waitMSecs 100
+	setSerialPortRTS port false
+	setSerialPortDTR port false
 }
 
 method exitBootMode ESPTool {
@@ -434,6 +484,8 @@ method vmNameForBoard ESPTool boardName {
 	} ('D1-Mini' == boardName) { return 'vm_nodemcu.bin'
 	} ('ESP32' == boardName) { return 'vm_esp32.bin'
 	} ('Citilab ED1' == boardName) { return 'vm_citilab-ed1.bin'
+	} ('micro:STEAMakers' == boardName) { return 'vm_micro_steamakers.bin'
+	} ('CoCube' == boardName) { return 'vm_cocube.bin'
 	} ('M5Stack-Core' == boardName) { return 'vm_m5stack.bin'
 	} ('M5StickC' == boardName) { return 'vm_m5stick.bin'
 	} ('M5StickC+' == boardName) { return 'vm_m5stick+.bin'

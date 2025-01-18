@@ -156,8 +156,8 @@ sometimes with a short time lag for testing.
 
 ## Contributing ##
 
-We welcome your feedback, comments, feature requests, and
-[bug reports](https://bitbucket.org/john_maloney/smallvm/issues?status=new&status=open).
+We welcome your feedback, comments, feature requests, 
+[bug reports](https://bitbucket.org/john_maloney/smallvm/issues?status=new&status=open) on BitBucket and [translations](https://hosted.weblate.org/engage/microblocks/) on Weblate.
 
 Since MicroBlocks is still under active development by the core team, we are not currently
 soliciting code contributions or pull requests. However, if you are creating tutorials or other materials for MicroBlocks, please let us know so we can link to your website.

@@ -377,7 +377,7 @@ void updateMicrobitDisplay() {
 	displayCycle = (displayCycle + 1) % 5;
 }
 
-#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits)
+#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 
 	static void updateNeoPixelDisplay(); // forward reference
 
@@ -407,7 +407,7 @@ void updateMicrobitDisplay() {
 
 OBJ primMBSetColor(int argCount, OBJ *args) {
 	mbDisplayColor = obj2int(args[0]);
-#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits)
+#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 	displaySnapshot = 0; // update the display on the next cycle
 #else
 	tftSetHugePixelBits(microBitDisplayBits);
@@ -425,7 +425,7 @@ OBJ primMBDisplay(int argCount, OBJ *args) {
 OBJ primMBDisplayOff(int argCount, OBJ *args) {
 	microBitDisplayBits = 0;
 	#if !defined(OLED_128_64)
-	    if (useTFT) tftClear();
+		if (useTFT) tftClear();
 	#endif
 	return falseObj;
 }
@@ -463,6 +463,9 @@ static OBJ primLightLevel(int argCount, OBJ *args) {
 	#elif defined(DATABOT)
 		const char *msg = "Use 'Light & Gesture' library on Databot.";
 		return newStringFromBytes(msg, strlen(msg));
+	#elif defined(STEAMaker)
+		// log makes the function more linear, 27.684 takes it to a ~0-100 range
+		lightLevel = (int) (log10((float) analogRead(39)) * 27.684);
 	#else
 		lightReadingRequested = true;
 	#endif
@@ -777,18 +780,18 @@ static void initRMT(int pinNum) {
 
 static void initNeoPixelPin(int pinNum) { // ESP32
 	if ((pinNum < 0) || (pinNum >= pinCount())) {
-		#if defined(ARDUINO_M5Atom_Matrix_ESP32)
+		#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_M5Atom_Lite_ESP32)
 			pinNum = 27; // internal NeoPixel pin
-		#elif defined(ARDUINO_M5Atom_Lite_ESP32)
-			pinNum = 27;
-		#elif defined(ARDUINO_Mbits)
+		#elif defined(ARDUINO_M5Atom_Lite_S3)
+			pinNum = 35;
+		#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
 			pinNum = 13; // internal NeoPixel pin
 		#elif defined(DATABOT)
 			pinNum = 2; // internal NeoPixel pin
 		#elif defined(ESP32_S3)
-		    pinNum = 48; // ESP32-S3-DevKitC-1 internal NeoPixel pin
+			pinNum = 48; // ESP32-S3-DevKitC-1 internal NeoPixel pin
 		#elif defined(ESP32_C3)
-		    pinNum = 8; // ESP32-C3-DevKitC-02 internal NeoPixel pin
+			pinNum = 8; // ESP32-C3-DevKitC-02 internal NeoPixel pin
 		#else
 			pinNum = 0; // default to pin 0
 		#endif
@@ -919,23 +922,24 @@ static void sendNeoPixelData(int val) { }
 
 #endif // NeoPixel Support
 
+static int neoPixelMax = 40;
+
 static inline int gamma(int val) {
 	// This function computes the n^2 gamma curve, where n is a brightness in the range 0.0..1.0,
-	// with the result scaled to the integer range 0..neoMax, but it uses only integer arithmetic.
+	// with the result scaled to the integer range 0..neoPixelMax, but it uses only integer arithmetic.
 	// The input is assumed to be an integer in the range 0..255, and what's computed is the
-	// neoMax * ((val / 255) ^ 3). Since (val / 255) has the range 0.0 and 1.0, ((val / 255) ^ 3)
-	// will also be in the range 0.0..1.0, and that is scaled to 0..neoMax.
-	// neoMax determines the max brightness (and power draw!) of each NeoPixel color channel,
-	// which is about (neoMax / 255) * 20 mA per color channel.
+	// neoPixelMax * ((val / 255) ^ 3). Since (val / 255) has the range 0.0 and 1.0, ((val / 255) ^ 3)
+	// will also be in the range 0.0..1.0, and that is scaled to 0..neoPixelMax.
+	// neoPixelMax determines the max brightness (and power draw!) of each NeoPixel color channel,
+	// which is about (neoPixelMax / 255) * 20 mA per color channel.
 
 	#if defined(ARDUINO_Mbits)
-	    // The Mbits power supply cannot supply enough current to run both
-	    // the WiFi/BLE radio and the Neopixel array a full brightness.
-	    if (val > 175) val = 175; // limit brightness to avoid making WiFi fail
+	// The Mbits power supply cannot supply enough current to run both
+	// the WiFi/BLE radio and the Neopixel array a full brightness.
+	if (val > 175) val = 175; // limit brightness to avoid making WiFi fail
 	#endif
 
-	const int neoMax = 40;
-	const int divisor = (255 * 255) / neoMax;
+	const int divisor = (255 * 255) / neoPixelMax;
 	return ((val * val) / divisor) & 0xFF;
 }
 
@@ -973,7 +977,7 @@ OBJ primNeoPixelSend(int argCount, OBJ *args) {
 		}
 		sendNeoPixelData(val);
 	}
-
+	taskSleep(1); // NeoPixels latch time
 	return falseObj;
 }
 
@@ -981,6 +985,16 @@ OBJ primNeoPixelSetPin(int argCount, OBJ *args) {
 	int pinNum = isInt(args[0]) ? obj2int(args[0]) : -1; // -1 means "internal NeoPixel pin"
 	neoPixelBits = ((argCount > 1) && (trueObj == args[1])) ? 32 : 24;
 	initNeoPixelPin(mapDigitalPinNum(pinNum));
+	return falseObj;
+}
+
+OBJ primNeoPixelSetMaxBrightness(int argCount, OBJ *args) {
+	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
+
+	int maxBrightness = obj2int(args[0]);
+	if (maxBrightness < 10) maxBrightness = 10;
+	if (maxBrightness > 255) maxBrightness = 255;
+	neoPixelMax = maxBrightness;
 	return falseObj;
 }
 
@@ -1002,7 +1016,7 @@ void turnOffInternalNeoPixels() {
 	int count = 0;
 	#if defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
 		count = 10;
-	#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits)
+	#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 		count = 25;
 		// sending neopixel data twice on the Atom Matrix eliminates green pixel at startup
 		for (int i = 0; i < count; i++) sendNeoPixelData(0);
@@ -1021,15 +1035,15 @@ void turnOffInternalNeoPixels() {
 	delay(1); // NeoPixels latch time
 }
 
-// Simulate the micro:bit 5x5 LED display on M5Stack Atom Matrix and Mbits
+// Simulate the micro:bit 5x5 LED display on 5x5 NeoPixel display
 
-#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits)
+#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 
 	void updateNeoPixelDisplay() {
 		int oldPinMask = neoPixelPinMask;
 #if defined(ARDUINO_M5Atom_Matrix_ESP32)
 		initNeoPixelPin(27); // use internal NeoPixels
-#elif defined(ARDUINO_Mbits)
+#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
 		initNeoPixelPin(13); // use internal NeoPixels
 #endif
 		delay(1); // make sure NeoPixels are latched and ready for new data
@@ -1046,6 +1060,7 @@ void turnOffInternalNeoPixels() {
 			sendNeoPixelData(isOn ? pixelValue : 0);
 		}
 		neoPixelPinMask = oldPinMask; // restore the old NeoPixel pin
+		delay(1); // NeoPixels latch time
 	}
 
 #endif
@@ -1154,6 +1169,7 @@ static PrimEntry entries[] = {
 	{"mbEnableDisplay", primMBEnableDisplay},
 	{"neoPixelSend", primNeoPixelSend},
 	{"neoPixelSetPin", primNeoPixelSetPin},
+	{"neoPixelSetMaxBrightness", primNeoPixelSetMaxBrightness},
 };
 
 void addDisplayPrims() {

@@ -39,6 +39,9 @@
 	// Note: SDA and SCL are reversed from most other ESP32 boards!
 	#define PIN_WIRE_SCL 21
 	#define PIN_WIRE_SDA 22
+#elif defined(COCUBE)
+	#define PIN_WIRE_SCL 22
+	#define PIN_WIRE_SDA 21
 #elif !defined(PIN_WIRE_SCL)
 	#if defined(PIN_WIRE0_SCL)
 		#define PIN_WIRE_SCL PIN_WIRE0_SCL
@@ -172,8 +175,8 @@ static OBJ primI2cExists(int argCount, OBJ *args) {
 	if (!wireStarted) return falseObj;
 
 	Wire.beginTransmission(i2cAddress);
-    int error = Wire.endTransmission();
-    return error ? falseObj : trueObj;
+	int error = Wire.endTransmission();
+	return error ? falseObj : trueObj;
 }
 
 static OBJ primI2cRead(int argCount, OBJ *args) {
@@ -332,24 +335,24 @@ static OBJ primI2cSetPins(int argCount, OBJ *args) {
 // SPI prims
 
 #if defined(PICO_ED)
-  #define SPI SPI1
-  #define PIN_SPI_MISO (8u)
-  #define PIN_SPI_SS   (9u)
-  #define PIN_SPI_SCK  (10u)
-  #define PIN_SPI_MOSI (11u)
+	#define SPI SPI1
+	#define PIN_SPI_MISO (8u)
+	#define PIN_SPI_SS   (9u)
+	#define PIN_SPI_SCK  (10u)
+	#define PIN_SPI_MOSI (11u)
 #elif defined(WUKONG2040)
-  #define PIN_SPI_MISO (4u)
-  #define PIN_SPI_SS   (5u)
-  #define PIN_SPI_SCK  (2u)
-  #define PIN_SPI_MOSI (3u)
+	#define PIN_SPI_MISO (4u)
+	#define PIN_SPI_SS   (5u)
+	#define PIN_SPI_SCK  (2u)
+	#define PIN_SPI_MOSI (3u)
 #elif defined(ARDUINO_ARCH_RP2040) && !defined(PIN_SPI_MISO)
-  #define PIN_SPI_MISO PIN_SPI0_MISO
-  #define PIN_SPI_MOSI PIN_SPI0_MOSI
-  #define PIN_SPI_SCK  PIN_SPI0_SCK
+	#define PIN_SPI_MISO PIN_SPI0_MISO
+	#define PIN_SPI_MOSI PIN_SPI0_MOSI
+	#define PIN_SPI_SCK  PIN_SPI0_SCK
 #endif
 
 #if defined(ESP8266) || defined(ESP32) || defined(ARDUINO_TEENSY40) || defined(ARDUINO_TEENSY41)
-  #define BitOrder int
+	#define BitOrder int
 #endif
 
 static int spiSpeed = 1000000;
@@ -707,10 +710,10 @@ static void setAccelRange(int range) {
 #define LIS3DH_ID 25
 
 #if defined(MAKERPORT_ACCEL)
-  // use Wire on MakerPort_v2/v3
-  #define Wire1 Wire
-  #undef LIS3DH_ID
-  #define LIS3DH_ID 24
+	// use Wire on MakerPort_v2/v3
+	#define Wire1 Wire
+	#undef LIS3DH_ID
+	#define LIS3DH_ID 24
 #endif
 
 static void setAccelRange(int range); // forward reference
@@ -740,7 +743,7 @@ static int readAcceleration(int registerID) {
 	Wire1.requestFrom(LIS3DH_ID, 2);
 	signed char highBits = Wire1.available() ? Wire1.read() : 0;
 	signed char lowBits = Wire1.available() ? Wire1.read() : 0;
-	int val =  (highBits << 2) | ((lowBits >> 6) & 3);
+	int val = (highBits << 2) | ((lowBits >> 6) & 3);
 	val = (200 * val) >> 9;
 	if (1 == registerID) val = -val; // invert sign for x axis
 	return val;
@@ -773,7 +776,7 @@ static int readTemperature() {
 		} else { // negative offset
 			degreesC = (hiByte - 256) + ((lowByte >= 128) ? -1 : 0); // round down
 		}
-		return  20 + degreesC; // adjusted temperature
+		return 20 + degreesC; // adjusted temperature
 	#else
 		setPinMode(A9, INPUT);
 		adc = analogRead(A9);
@@ -801,9 +804,9 @@ static int readTemperature() {
 #elif defined(ARDUINO_NRF52840_CLUE) || defined(XRP)
 
 #if defined(XRP)
-  #define LSM6DS 107
+	#define LSM6DS 107
 #else
-  #define LSM6DS 106
+	#define LSM6DS 106
 #endif
 
 static void startAccelerometer() {
@@ -1039,7 +1042,7 @@ static int readTemperature() {
 		} else { // negative offset
 			offsetDegreesC = (hiByte - 256) + ((lowByte >= 128) ? -1 : 0); // round down
 		}
-		val =  20 + offsetDegreesC;
+		val = 20 + offsetDegreesC;
 		break;
 	case accel_MXC6655:
 		val = readI2CReg(MXC6655_ID, 0x09);
@@ -1052,9 +1055,14 @@ static int readTemperature() {
 	return val;
 }
 
-#elif defined(ARDUINO_Mbits)
+#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
 
-#define MPU6050 0x69
+#if defined(ARDUINO_Mbits)
+	#define MPU6050 0x69
+#elif defined(STEAMaker)
+	#define MPU6050 0x68
+#endif
+
 #define MPU6050_ACCEL_XOUT_H 59
 #define MPU6050_PWR_MGMT_1 107
 
@@ -1064,11 +1072,10 @@ static void mpu6050readData() {
 	if (!accelStarted) {
 		if (!wireStarted) startWire();
 		if (!wireStarted) return;
-
-		writeI2CReg(MPU6050, MPU6050_PWR_MGMT_1, 1); // use x-gyro clock
-		delay(1);
 		accelStarted = true;
 	}
+
+	writeI2CReg(MPU6050, MPU6050_PWR_MGMT_1, 1); // use x-gyro clock
 
 	// Request accelerometer data
 	Wire.beginTransmission(MPU6050);
@@ -1086,11 +1093,16 @@ static void mpu6050readData() {
 
 static int readAcceleration(int registerID) {
 	mpu6050readData();
-
 	int val = 0;
-	if (1 == registerID) val = fix16bitSign((mpuData[2] << 8) | mpuData[3]); // x-axis
-	if (3 == registerID) val = -fix16bitSign((mpuData[0] << 8) | mpuData[1]); // y-axis
-	if (5 == registerID) val = -fix16bitSign((mpuData[4] << 8) | mpuData[5]); // z-axis
+	#if defined(STEAMaker)
+		if (1 == registerID) val = -fix16bitSign((mpuData[2] << 8) | mpuData[3]); // x-axis
+		if (3 == registerID) val = fix16bitSign((mpuData[0] << 8) | mpuData[1]); // y-axis
+		if (5 == registerID) val = -fix16bitSign((mpuData[4] << 8) | mpuData[5]); // z-axis
+	#else
+		if (1 == registerID) val = fix16bitSign((mpuData[2] << 8) | mpuData[3]); // x-axis
+		if (3 == registerID) val = -fix16bitSign((mpuData[0] << 8) | mpuData[1]); // y-axis
+		if (5 == registerID) val = -fix16bitSign((mpuData[4] << 8) | mpuData[5]); // z-axis
+	#endif
 
 	return (100 * val) >> 14;
 }
@@ -1103,10 +1115,61 @@ static void setAccelRange(int range) {
 	writeI2CReg(MPU6050, 0x1C, (range << 3));
 }
 
+#define AHT20_ADDR 0x38
+
+int aht20_initialized = false;
+
+static int aht20_temperature(); // forward reference
+
+static void aht20_init() {
+	if (aht20_initialized) return;
+
+	// Send initialization commands
+	Wire.beginTransmission(AHT20_ADDR);
+	Wire.write(0xBE);
+	Wire.write(0x08);
+	Wire.write(0x00);
+	Wire.endTransmission();
+
+	delay(10); // initialization time
+	aht20_initialized = true;
+
+	aht20_temperature(); // get initial reading
+}
+
+static int aht20_temperature() {
+	if (!wireStarted) startWire();
+	if (!wireStarted) return 0;
+	aht20_init();
+
+	// get the data from the last reading
+	uint8 data[6];
+	int readCount = sizeof(data);
+	Wire.requestFrom(AHT20_ADDR, readCount);
+	for (int i = 0; i < readCount; i++) {
+		data[i] = Wire.available() ? Wire.read() : 255; // 255 if no data available
+	}
+
+	// send a new read command so data will be ready on the next call
+	Wire.beginTransmission(AHT20_ADDR);
+	Wire.write(0xAC);
+	Wire.write(0x33);
+	Wire.write(0x00);
+	Wire.endTransmission();
+	taskSleep(75);
+
+	int raw = ((data[3] & 15) << 16) | (data[4] << 8) | data[5];
+	return ((raw * 200) / 1048576) - 50;
+}
+
 #define TMP75_ADDR 0x48
 #define TMP75_TEMP_REG 0
 
 static int readTemperature() {
+	#if defined(STEAMaker)
+		return aht20_temperature();
+	#endif
+
 	if (!wireStarted) startWire();
 	if (!wireStarted) return 0;
 
@@ -1183,7 +1246,7 @@ static void startAccelerometer() {
 		writeI2CReg(MPU9250, MPU9250_PWR_MGMT_1, 0);
 		writeI2CReg(MPU9250, MPU9250_PWR_MGMT_1, 1);
 		writeI2CReg(MPU9250, MPU9250_BYPASS_EN, 2); // allows i2c access to magnetometer
-		databotAK8963MageneticField();  // initialize magnetometer
+		databotAK8963MageneticField(); // initialize magnetometer
 		delay(20); // allow time for accelerometer startup
 	}
 	accelStarted = true;
@@ -1297,7 +1360,7 @@ static int databotAK09916MageneticField() {
 
 	if (!databotMagStarted) {
 		setRegisterBank(0);
-		writeI2CReg(ICM20948, 3, 32);  // set up I2C communications with magnetometer
+		writeI2CReg(ICM20948, 3, 32); // set up I2C communications with magnetometer
 		setRegisterBank(3);
 		writeI2CReg(ICM20948, 1, 7); // set I2C clock rate
 		writeAK09916Register(0x32, 1); // reset magnetometer
@@ -1530,7 +1593,7 @@ OBJ primMBTiltZ(int argCount, OBJ *args) { return int2obj(readAcceleration(5)); 
 // Magnetometer
 
 #ifdef ARDUINO_ARCH_ESP32
-  #include "driver/adc.h"
+	#include "driver/adc.h"
 #endif
 
 // accelerometer addresses for ID testing:
@@ -1628,8 +1691,6 @@ OBJ primMagneticField(int argCount, OBJ *args) {
 
 	#if defined(DATABOT)
 		return int2obj(databotMageneticField());
-	#elif defined(ESP32_ORIGINAL)
-		return int2obj(hall_sensor_read());
 	#elif defined(ARDUINO_BBC_MICROBIT) || defined(ARDUINO_CALLIOPE_MINI) || \
 			defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_SINOBIT)
 		readMagMicrobitV1CalliopeClue(buf);
@@ -1705,8 +1766,8 @@ static OBJ primTouchRead(int argCount, OBJ *args) { return zeroObj; }
 static uint8_t dhtData[5];
 
 #if !defined(ARDUINO_ARCH_RP2040)
-  // this macro does nothing on non-RP2040 boards
-  #define __not_in_flash_func(f) (f)
+	// this macro does nothing on non-RP2040 boards
+	#define __not_in_flash_func(f) (f)
 #endif
 
 static int __not_in_flash_func(readDHTData)(int pin) {
@@ -1798,7 +1859,8 @@ static int readDigitalMicrophone() {
 	return ((int) mic_sample) >> 3; // scale result
 }
 
-#elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
+#elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS_DISABLED)
+// Note: Disable for now; PlatformIO is no longer able to install the AdaFruit ZeroPDM library.
 
 #define USE_DIGITAL_MICROPHONE 1
 
@@ -1808,7 +1870,7 @@ static int readDigitalMicrophone() {
 #include "Adafruit_ZeroPDM.h"
 
 #define SAMPLERATE_HZ 22000
-#define DECIMATION    64
+#define DECIMATION	64
 
 static Adafruit_ZeroPDM pdm = Adafruit_ZeroPDM(34, 35);
 
@@ -1842,7 +1904,7 @@ static int readDigitalMicrophone() {
 			// start at the LSB which is the 'first' bit to come down the line, chronologically
 			// (Note we had to set I2S_SERCTRL_BITREV to get this to work, but saves us time!)
 			if (sample & 0x1) {
-				runningsum += *sinc_ptr;     // do the convolution
+				runningsum += *sinc_ptr; // do the convolution
 			}
 			sinc_ptr++;
 			sample >>= 1;
@@ -1932,12 +1994,12 @@ int readAnalogMicrophone() {
 		NRF_SAADC->CH[i].PSELN = SAADC_CH_PSELP_PSELP_NC;
 		NRF_SAADC->CH[i].PSELP = SAADC_CH_PSELP_PSELP_NC;
 	}
-	NRF_SAADC->CH[0].CONFIG = ((SAADC_CH_CONFIG_RESP_Bypass     << SAADC_CH_CONFIG_RESP_Pos)   & SAADC_CH_CONFIG_RESP_Msk)
-							| ((SAADC_CH_CONFIG_RESP_Bypass     << SAADC_CH_CONFIG_RESN_Pos)   & SAADC_CH_CONFIG_RESN_Msk)
-							| ((gain                            << SAADC_CH_CONFIG_GAIN_Pos)   & SAADC_CH_CONFIG_GAIN_Msk)
-							| ((SAADC_CH_CONFIG_REFSEL_Internal << SAADC_CH_CONFIG_REFSEL_Pos) & SAADC_CH_CONFIG_REFSEL_Msk)
-							| ((SAADC_CH_CONFIG_TACQ_3us        << SAADC_CH_CONFIG_TACQ_Pos)   & SAADC_CH_CONFIG_TACQ_Msk)
-							| ((SAADC_CH_CONFIG_MODE_SE         << SAADC_CH_CONFIG_MODE_Pos)   & SAADC_CH_CONFIG_MODE_Msk);
+	NRF_SAADC->CH[0].CONFIG = ((SAADC_CH_CONFIG_RESP_Bypass		<< SAADC_CH_CONFIG_RESP_Pos)	& SAADC_CH_CONFIG_RESP_Msk)
+							| ((SAADC_CH_CONFIG_RESP_Bypass		<< SAADC_CH_CONFIG_RESN_Pos)	& SAADC_CH_CONFIG_RESN_Msk)
+							| ((gain							<< SAADC_CH_CONFIG_GAIN_Pos)	& SAADC_CH_CONFIG_GAIN_Msk)
+							| ((SAADC_CH_CONFIG_REFSEL_Internal << SAADC_CH_CONFIG_REFSEL_Pos)	& SAADC_CH_CONFIG_REFSEL_Msk)
+							| ((SAADC_CH_CONFIG_TACQ_3us		<< SAADC_CH_CONFIG_TACQ_Pos)	& SAADC_CH_CONFIG_TACQ_Msk)
+							| ((SAADC_CH_CONFIG_MODE_SE			<< SAADC_CH_CONFIG_MODE_Pos)	& SAADC_CH_CONFIG_MODE_Msk);
 
 	NRF_SAADC->CH[0].PSELN = micPin;
 	NRF_SAADC->CH[0].PSELP = micPin;
@@ -2005,7 +2067,7 @@ int readAnalogMicrophone() {
 	#if defined(ARDUINO_CITILAB_ED1)
 		int pin = 36; // Pin A0 on ED1
 		return (analogRead(pin) >> 2);
-	#elif defined(ARDUINO_Mbits)
+	#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
 		int pin = 35;
 		return (analogRead(pin) >> 2);
 	#endif
@@ -2027,6 +2089,59 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 	return int2obj(result);
 }
+
+// CoCube Position Sensor
+
+#if defined (COCUBE)
+	#include <CoCubeSensor.h>
+	CoCubeSensor cocube;
+
+	void cocubeSensorInit() {
+		cocube.Init();
+	}
+
+	void cocubeSensorUpdate() {
+		cocube.Update();
+		cocube.EncoderUpdate();
+	}
+
+	static OBJ primPositionX(int argCount, OBJ *args) {
+		int result = cocube.GetX();
+		return int2obj(result);
+	}
+
+	static OBJ primPositionY(int argCount, OBJ *args) {
+			int result = cocube.GetY();
+			return int2obj(result);
+		}
+
+	static OBJ primPositionYaw(int argCount, OBJ *args) {
+			int result = cocube.GetAngle();
+			return int2obj(result);
+	}
+
+	static OBJ primIndex(int argCount, OBJ *args) {
+			int result = cocube.GetIndex();
+			return int2obj(result);
+	}
+
+	static OBJ primCubeStatus(int argCount, OBJ *args) {
+		if (cocube.GetState())
+			return trueObj;
+		else
+			return falseObj;
+	}
+
+	static OBJ primPositionSpeedLeft(int argCount, OBJ *args) {
+			int result = cocube.GetSpeedLeft();
+			return int2obj(result);
+	}
+
+	static OBJ primPositionSpeedRight(int argCount, OBJ *args) {
+			int result = cocube.GetSpeedRight();
+			return int2obj(result);
+	}
+#endif
 
 // Signal Capture
 
@@ -2067,8 +2182,9 @@ OBJ primCaptureCount(int argCount, OBJ *args) {
 }
 
 OBJ primCaptureEnd(int argCount, OBJ *args) {
-	detachInterrupt(pulsePin); // stop pin change interrupts, if any
+	if (pulsePin >= 0) detachInterrupt(pulsePin); // stop pin change interrupts, if any
 	pulsePin = -1;
+	setPinMode(pulsePin, INPUT);
 
 	int count = pulseIndex;
 	pulseIndex = 0; // clear capture
@@ -2104,6 +2220,16 @@ static PrimEntry entries[] = {
 	{"captureStart", captureStartPrim},
 	{"captureCount", primCaptureCount},
 	{"captureEnd", primCaptureEnd},
+
+	#if defined(COCUBE)
+	{"position_x", primPositionX},
+	{"position_y", primPositionY},
+	{"position_yaw", primPositionYaw},
+	{"cube_index", primIndex},
+	{"cube_status", primCubeStatus},
+	{"speed_left", primPositionSpeedLeft},
+	{"speed_right", primPositionSpeedRight},
+	#endif
 };
 
 void addSensorPrims() {

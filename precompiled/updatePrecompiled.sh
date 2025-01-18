@@ -14,6 +14,9 @@ pio run -e nodemcu
 cp .pio/build/nodemcu/firmware.bin precompiled/vm_nodemcu.bin
 pio run -e ed1
 cp .pio/build/ed1/firmware.bin precompiled/vm_citilab-ed1.bin
+pio run -e cocube
+cp .pio/build/cocube/firmware.bin precompiled/vm_cocube.bin
+
 pio run -e m5stack
 cp .pio/build/m5stack/firmware.bin precompiled/vm_m5stack.bin
 pio run -e esp32
@@ -32,6 +35,10 @@ pio run -e wukong2040
 cp .pio/build/wukong2040/firmware.uf2 precompiled/vm_wukong2040.uf2
 pio run -e databot
 cp .pio/build/databot/firmware.bin precompiled/vm_databot.bin
+pio run -e steam-maker
+cp .pio/build/steam-maker/firmware.bin precompiled/vm_micro_steamakers.bin
+pio run -e makerportV3
+python precompiled/uf2conv.py -c .pio/build/makerportV3/firmware.bin -o precompiled/vm_makerport.uf2
 
 # Copy Linux VMs
 cp linux+pi/vm_* precompiled/

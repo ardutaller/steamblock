@@ -23,7 +23,7 @@ to 'draw color' color {
   '[tft:text]' color (64 - ((size color) * 6)) 79 (colorSwatch 251 140 69 255)
 }
 
-script 50 54 {
+script 50 50 {
 whenStarted
 forever {
   local 'color' ('TCS34725 rgb')
@@ -144,7 +144,7 @@ to color color {
 
 module TFT Output
 author MicroBlocks
-version 1 9 
+version 1 11 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -161,6 +161,7 @@ description 'Draw graphics and write text on boards with a TFT display, such as 
 Line 2' 50 20 nil 2
   space
   spec ' ' '[tft:setPixel]' 'set TFT pixel x _ y _ to _' 'num num color' 10 10
+  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytesPerPixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
   spec ' ' '[tft:drawBitmap]' 'draw bitmap _ palette _ on TFT at x _ y _' 'str str num num' 'aBitmap' 'a list of colors' 10 10
   space
   spec 'r' 'tft_colorSwatch' '_' 'color'
