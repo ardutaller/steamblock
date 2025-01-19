@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-01-19 08:58+0000\n"
+"PO-Revision-Date: 2025-01-19 08:59+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -2881,11 +2881,11 @@ msgstr "Calliope hlasitost"
 
 #. Circuit Playground Express board library block
 msgid "Circuit Playground set speaker _"
-msgstr "Circuit Playground hlasitost reproduktoru _"
+msgstr "Circuit Playground nastav reproduktor _"
 
 #. Circuit Playground Express board library block
 msgid "Circuit Playground slide switch"
-msgstr "Circuit Playground popsuvný spínač"
+msgstr "Circuit Playground posuvný spínač"
 
 #. DotStar LED library block
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
