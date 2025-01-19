@@ -136,6 +136,7 @@ method addTrashcan MicroBlocksScripter {
 
 method darkModeChanged MicroBlocksScripter {
 	changed morph // report damage
+	libWasSelected = (notNil (currentLibrary this))
 	sliderBGColor = (transparent)
 	if (darkModeEnabled projectEditor) {
 		scriptsFrameColor = (microBlocksColor 'blueGray' 800)
@@ -159,7 +160,11 @@ method darkModeChanged MicroBlocksScripter {
 	setColor scriptingActionsContainer scriptingActionsContainerColor
 	setAlpha (color scriptingActionsContainer) 200
 	setBorderColor scriptingActionsContainer scriptingActionsContainerBorderColor
-	categorySelected this
+	if libWasSelected {
+	    librarySelected this
+	} else {
+	    categorySelected this
+	}
 
 	removePart morph trashcanIcon
 	addTrashcan this
