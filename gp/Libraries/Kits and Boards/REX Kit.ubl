@@ -1,6 +1,6 @@
 module 'REX Kit' Output
 author 'Turgut Guneysu'
-version 1 5 
+version 1 6 
 depends 'Distance (HC-SR04)' 'IR Remote' Servo varPrims 
 choices servoAngleMenu '0' Def Min Max 
 choices servoNumMenu 'base:1' '2:2' '3:3' 'top:4' ALL 
@@ -27,10 +27,12 @@ Use separate libraries to control:
 See https://www.robotistan.com/rex-evolution-serisi-super-star-transformers-8-in-1  
 
 CHANGES:
-- Motors C & D Pin swaps due to error by Robotistan. Will be fixed in the new board version.
+- Motors C & D Pin swaps due to design change by Robotistan. 
+  Will be fixed in the new board version.
 - Speed selection by menu
 - Correct motor 0 speed logic
 - Adjust Servo defaults
+- Limit script naming corrections
 '
 variables rex_armMin rex_armMax rex_armCur rex_armDef rex_armIncr rex_armAddr rex_armWait rex_irAddr rex_motorAddr rex_initialized rex_trigEchoAddr rex_buzzerAddr 
 
@@ -42,9 +44,9 @@ variables rex_armMin rex_armMax rex_armCur rex_armDef rex_armIncr rex_armAddr re
   spec 'r' 'REX line sensor' 'REX line sensor _' 'menu.trackerMenu' 'left'
   spec 'r' 'REX sees line' 'REX sees line on left _ right _' 'bool bool' true true
   spec 'r' 'REX speed' 'REX speed _' 'str.speedMenu' 'slow'
-  spec ' ' '_REX Arm new default base' '_REX Arm new default base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
-  spec ' ' '_REX Arm new maximum base' '_REX Arm new maximum base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
-  spec ' ' '_REX Arm new minimum base' '_REX Arm new minimum base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
+  spec ' ' '_REX Arm new default' '_REX Arm new default base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
+  spec ' ' '_REX Arm new maximum' '_REX Arm new maximum base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
+  spec ' ' '_REX Arm new minimum' '_REX Arm new minimum base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
   spec 'r' '_REX angleValid' '_REX angleValid _' 'num' 90
   spec 'r' '_REX anglesOK servo' '_REX anglesOK s# _ angle _' 'str.servoNumMenu num' 1 0
   spec ' ' '_REX initialize' '_REX initialize'
