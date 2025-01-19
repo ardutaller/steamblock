@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-01-19 08:59+0000\n"
+"PO-Revision-Date: 2025-01-19 22:12+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -2888,20 +2888,21 @@ msgid "Circuit Playground slide switch"
 msgstr "Circuit Playground posuvný spínač"
 
 #. DotStar LED library block
+#, fuzzy
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
-msgstr ""
+msgstr "připoj _ DotStar LED pin data _ pin hodiny _"
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
-msgstr "setze alle DotStar LEDs auf r _ g _ b _"
+msgstr "nastav všechny DotStar LED na R _ G _ B _"
 
 #. DotStar LED library block
 msgid "set DotStar LED _ to r _ g _ b _"
-msgstr "setze DotStar LED _ auf r _ g _ b _"
+msgstr "nastv DotStar LED _ na R _ G _ B _"
 
 #. DotStar LED library block
 msgid "set DotStar brightness _"
-msgstr "setze DotStar Helligkeit _"
+msgstr "nastav DotStar jas _"
 
 #. BME280 environmental sensor library block
 msgid "bme280 connected"
@@ -3070,7 +3071,7 @@ msgstr "spustit WebSocket server"
 
 #. WebSocket Server library block
 msgid "last WebSocket event"
-msgstr "poslední událost WebSocekt"
+msgstr "poslední událost WebSocket"
 
 #. WebSocket Server library block
 msgid "client ID for WebSocket event _"
