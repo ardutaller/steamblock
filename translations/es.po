@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-01-08 10:17+0000\n"
+"PO-Revision-Date: 2025-01-20 08:22+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -6261,3 +6261,147 @@ msgstr "ambos"
 #. Wukong robot library block
 msgid "Wukong set _ servo _ to _ degrees"
 msgstr "fija el servo de _ grados _ a _ grados"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) for _ msecs"
+msgstr "muévete hacia _ a velocidad _ (0-50) durante _ ms"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) for _ msecs"
+msgstr "gira _ a velocidad _ (0-50) durante _ ms"
+
+#. CoCube library block
+msgid "draw ArUco marker on TFT _"
+msgstr "dibuja marcador ArUco _ en el TFT"
+
+#. CoCube library block
+msgid "draw AprilTag on TFT _"
+msgstr "dibuja AprilTag _ en el TFT"
+
+#. CoCube library block
+msgid "set TFT backlight _"
+msgstr "pon la luz de fondo del TFT a _"
+
+#. CoCube library block
+msgid "battery percentage"
+msgstr "porcentaje de batería"
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr "pon la pinza a _ (0 a 70) grados"
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr "inicializa NeoPíxeles"
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr "ToF conectado"
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr "distancia ToF (mm)"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50)"
+msgstr "muévete hacia _ a velocidad _ (0-50)"
+
+#. CoCube library block
+msgid "set wheel left _ right _ (-50 to 50)"
+msgstr "pon la velocidad de la rueda izquierda a _ y derecha a _ (-50 a 50)"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) by _ degrees"
+msgstr "gira _ a velocidad _ (0-50) en _ grados"
+
+#. CoCube library block
+msgid "point towards X _ Y _ at _ speed (0-50)"
+msgstr "apunta hacia X _ Y _ a velocidad _ (0-50)"
+
+#. CoCube library block
+msgid "card ID"
+msgstr "ID de la tarjeta"
+
+#. CoCube Module library block
+msgid "3D gesture read"
+msgstr "lectura del sensor de gestos 3D"
+
+#. CoCube library block
+msgid "wheels stop"
+msgstr "detén las ruedas"
+
+#. CoCube library block
+msgid "wheels break"
+msgstr "frena las ruedas"
+
+#. CoCube library block
+msgid "X position"
+msgstr "posición X"
+
+#. CoCube library block
+msgid "Y position"
+msgstr "posición Y"
+
+#. CoCube library block
+msgid "direction"
+msgstr "dirección"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) by _ steps"
+msgstr "muévete hacia _ a velocidad _ (0-50) en _ pasos"
+
+#. CoCube library block
+msgid "rotate to angle _ at _ speed (0-50)"
+msgstr "gira hacia el ángulo _ a velocidad _ (0-50)"
+
+#. CoCube library block
+msgid "move to X _ Y _ at _ speed (0-50)"
+msgstr "muévete hasta X _ Y _ a velocidad _ (0-50)"
+
+#. CoCube library block
+msgid "on the mat"
+msgstr "sobre la alfombra"
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr "abre la pinza"
+
+#. CoCube Module library block
+msgid "gripper close"
+msgstr "cierra la pinza"
+
+#. CoCube Module library block
+msgid "3D gesture connected"
+msgstr "sensor de gestos 3D conectado"
+
+#. CoCube Module library block
+msgid "power on module"
+msgstr "activa la alimentación del módulo"
+
+#. CoCube Module library block
+msgid "ultrasonic distance (mm)"
+msgstr "distancia (mm) por ultrasonidos"
+
+#. CoCube library block
+msgid "cocube;right"
+msgstr "a la derecha"
+
+#. CoCube library block
+msgid "cocube;forward"
+msgstr "adelante"
+
+#. CoCube library block
+msgid "cocube;left"
+msgstr "a la izquierda"
+
+#. CoCube library block
+msgid "cocube;backward"
+msgstr "atrás"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50)"
+msgstr "gira _ a velocidad _ (0-50)"
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr "detén la pinza"
