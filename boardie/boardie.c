@@ -66,11 +66,11 @@ void initMessageService() {
 						return;
 					case 'keyDown':
 						// button pressed
-						window.keys.set(parseInt(event.data.substring(8), 10), true);
+						window.keys.set(event.data[1], true);
 						return;
 					case 'keyUp':
 						// button released
-						window.keys.set(parseInt(event.data.substring(6), 10), false);
+						window.keys.set(event.data[1], false);
 						return;
 					default:
 						console.log('unrecognized message:', event.data[0]);
