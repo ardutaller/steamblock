@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-01-08 10:17+0000\n"
+"PO-Revision-Date: 2025-01-20 08:13+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -6155,3 +6155,147 @@ msgstr "posa el servo de _ graus _ a _ graus"
 #. Wukong robot library menu option, as in "both motors"
 msgid "wukong;both"
 msgstr "tots dos"
+
+#. CoCube library block
+msgid "Y position"
+msgstr "posició Y"
+
+#. CoCube library block
+msgid "X position"
+msgstr "posició X"
+
+#. CoCube Module library block
+msgid "gripper close"
+msgstr "tanca la pinça"
+
+#. CoCube Module library block
+msgid "3D gesture read"
+msgstr "lectura del sensor de gestos 3D"
+
+#. CoCube Module library block
+msgid "3D gesture connected"
+msgstr "sensor de gestos 3D connectat"
+
+#. CoCube Module library block
+msgid "power on module"
+msgstr "activa l'alimentació del mòdul"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50)"
+msgstr "mou-te cap _ a velocitat _ (0-50)"
+
+#. CoCube library block
+msgid "rotate to angle _ at _ speed (0-50)"
+msgstr "gira cap a l'angle _ a velocitat _ (0-50)"
+
+#. CoCube library block
+msgid "cocube;left"
+msgstr "a l'esquerra"
+
+#. CoCube library block
+msgid "cocube;right"
+msgstr "a la dreta"
+
+#. CoCube library block
+msgid "cocube;forward"
+msgstr "endavant"
+
+#. CoCube library block
+msgid "cocube;backward"
+msgstr "enrere"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) for _ msecs"
+msgstr "mou-te cap _ a velocitat _ (0-50) durant _ ms"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) for _ msecs"
+msgstr "gira _ a velocitat _ (0-50) durant _ ms"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50)"
+msgstr "gira _ a velocitat _ (0-50)"
+
+#. CoCube library block
+msgid "set wheel left _ right _ (-50 to 50)"
+msgstr "posa la velocitat de la roda esquerra a _ i dreta a _ (-50 a 50)"
+
+#. CoCube library block
+msgid "wheels stop"
+msgstr "atura les rodes"
+
+#. CoCube library block
+msgid "wheels break"
+msgstr "frena les rodes"
+
+#. CoCube library block
+msgid "direction"
+msgstr "direcció"
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) by _ steps"
+msgstr "mou-te cap _ a velocitat _ (0-50) en _ passos"
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) by _ degrees"
+msgstr "gira _ a velocitat _ (0-50) en _ graus"
+
+#. CoCube library block
+msgid "point towards X _ Y _ at _ speed (0-50)"
+msgstr "apunta cap a X _ Y _ a velocitat _ (0-50)"
+
+#. CoCube library block
+msgid "move to X _ Y _ at _ speed (0-50)"
+msgstr "mou-te cap a X _ Y _ a velocitat _ (0-50)"
+
+#. CoCube library block
+msgid "on the mat"
+msgstr "sobre l'estora"
+
+#. CoCube library block
+msgid "card ID"
+msgstr "ID de la targeta"
+
+#. CoCube library block
+msgid "draw ArUco marker on TFT _"
+msgstr "dibuixa el marcador ArUco _ al TFT"
+
+#. CoCube library block
+msgid "draw AprilTag on TFT _"
+msgstr "dibuixa l'AprilTag _ al TFT"
+
+#. CoCube library block
+msgid "set TFT backlight _"
+msgstr "posa la llum de fons del TFT a _"
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr "atura la pinça"
+
+#. CoCube library block
+msgid "battery percentage"
+msgstr "percentatge de bateria"
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr "obre la pinça"
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr "posa la pinça a _ (0 a 70) graus"
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr "inicialitza NeoPíxels"
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr "ToF connectat"
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr "distància ToF (mm)"
+
+#. CoCube Module library block
+msgid "ultrasonic distance (mm)"
+msgstr "distància (mm) per ultrasons"
