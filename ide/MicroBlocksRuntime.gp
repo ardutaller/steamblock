@@ -3323,7 +3323,7 @@ method installESPFirmwareFromRepo SmallRuntime {
 	if (isPilot (findMicroBlocksEditor)) {
 		version = 'pilot'
 	} else {
-		version = ideVersion
+		version = (join 'v' ideVersion)
 	}
 	menu = (menu 'Select firmware:' this)
 	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
