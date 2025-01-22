@@ -622,11 +622,11 @@ method instructionsFor SmallCompiler aBlockOrFunction {
 			} else {
 				addAll result (instructionsForCmdList this cmdOrReporter)
 			}
-			if ('returnResult' != (first (last result))) {
-				// Add a "return false" if the function body does not end with a return
-				add result (array 'pushImmediate' falseObj)
-				add result (array 'returnResult' 0)
-			}
+			// Add a "return false"
+			// Note: This final return is needed even if the previous instruction is a 'return'
+			// because the previous instruction may be in an "if" branch that is skipped
+			add result (array 'pushImmediate' falseObj)
+			add result (array 'returnResult' 0)
 		} else {
 			addAll result (instructionsForCmdList this cmdOrReporter)
 		}
