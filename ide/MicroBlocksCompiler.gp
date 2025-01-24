@@ -151,7 +151,7 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' 'and'				'_ and _' 'bool bool' true false)
 		(array 'r' 'or'					'_ or _ ' 'bool bool' true false)
 		'-'
-		(array 'r' '[data:toString]'	'“ _ ”' 'auto' '123')
+		(array 'r' '[data:toString]'	'“ _ ”' 'str' '123')
 		(array 'r' 'isType'				'_ is a _' 'auto menu.typesMenu' 123 'number')
 		(array 'r' '[data:convertType]'	'convert _ to _' 'auto menu.typesMenu' 123 'number')
 	'cat;Operators-Advanced'
@@ -622,11 +622,11 @@ method instructionsFor SmallCompiler aBlockOrFunction {
 			} else {
 				addAll result (instructionsForCmdList this cmdOrReporter)
 			}
-			if ('returnResult' != (first (last result))) {
-				// Add a "return false" if the function body does not end with a return
-				add result (array 'pushImmediate' falseObj)
-				add result (array 'returnResult' 0)
-			}
+			// Add a "return false"
+			// Note: This final return is needed even if the previous instruction is a 'return'
+			// because the previous instruction may be in an "if" branch that is skipped
+			add result (array 'pushImmediate' falseObj)
+			add result (array 'returnResult' 0)
 		} else {
 			addAll result (instructionsForCmdList this cmdOrReporter)
 		}

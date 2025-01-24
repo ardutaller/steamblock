@@ -1153,7 +1153,9 @@ method duplicate Block {
 		op = (op def)
 		spec = (specForOp (authoringSpecs) op)
 		if (isNil spec) {spec = (blockSpecFor function)}
-		return (blockForSpec spec) spec
+		dup = (blockForSpec spec)
+		setPosition (morph dup) (left morph) (top morph)
+		return dup
 	}
 
 	if (notNil blockSpec) {

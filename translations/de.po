@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-19 08:58+0000\n"
+"PO-Revision-Date: 2025-01-22 18:05+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -662,7 +662,7 @@ msgstr "spi tausche Bytes _"
 
 #. Block in Data category
 msgid "with all _"
-msgstr "mit allen _"
+msgstr "und alles _"
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
@@ -2109,7 +2109,7 @@ msgstr "Text"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr "beginnend bei _"
+msgstr "starte bei _"
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "Hello!"
