@@ -1,6 +1,6 @@
 // editable input slot for blocks
 
-defineClass InputSlot morph text contents color menuSelector menuRange isStatic isAuto isID isMonospace isComment pathCache cacheW cacheH
+defineClass InputSlot morph text contents color menuSelector menuRange isStatic isAuto wasAuto isID isMonospace isComment pathCache cacheW cacheH
 
 to newInputSlot default editRule blockColor menuSelector {
 	if (isNil default) {default = ''}
@@ -51,6 +51,7 @@ method color InputSlot {return color}
 method isMonospace InputSlot {return isMonospace}
 method setMonospace InputSlot bool {isMonospace = bool}
 method setComment InputSlot {isComment = true}
+method isAuto InputSlot {return isAuto}
 
 method contents InputSlot {
 	if ((editRule text) == 'static') {
@@ -197,6 +198,20 @@ method textChanged InputSlot {
 		setContents this (toNumber (text text))
 	} else {
 		setContents this (text text)
+		if (and (wasAuto == true) (representsANumber (text text))) {
+			wasAuto = false
+			switchType this 'auto'
+		}
+	}
+}
+
+method textEdited InputSlot {
+	if (and (wasAuto == true) (isEmpty (text text))) {
+		// revert slot type if this was originally an 'auto' slot and got converted
+		// into an 'editable' one by pressing shift+enter
+		wasAuto = false
+		switchType this 'auto'
+		setText text ''
 	}
 }
 
@@ -679,6 +694,11 @@ method addSlotSwitchItems InputSlot aMenu {
 
 method switchType InputSlot editRule {
 	dta = (contents this)
+	if (and isAuto (editRule == 'editable')) {
+		// store auto state for when slot gets cleared
+		// useful to revert shift+enter transforming auto slots into string slots
+		wasAuto = true
+	}
 	if (editRule == 'auto') {
 		isAuto = true
 		setEditRule text 'line'
