@@ -1,84 +1,88 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-02-04 13:58+0000\n"
+"Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
+"ide/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.14.7\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Вивід"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "встановити стан світлодіода _"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "сказати _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "будувати графік _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "Ввід"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "кнопка A"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "кнопка B"
 
 #. Block in Input category
 msgid "timer"
-msgstr ""
+msgstr "таймер"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr ""
+msgstr "збити таймер"
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "секунди"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "мікросекунди"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "мілісекунди"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "тип плати"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "версія"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr ""
+msgstr "мілісекунд від _"
 
 #. Block in Input category
+#, fuzzy
 msgid "end time _"
-msgstr ""
+msgstr "до моменту часу _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr ""
+msgstr "мікросекунд від _"
 
 #. Block in Input category
 msgid "BLE id"
@@ -126,83 +130,84 @@ msgstr ""
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr ""
+msgstr "Контроль"
 
 #. Block in Control category
 msgid "when started"
-msgstr ""
+msgstr "на початку"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr ""
+msgstr "коли натиснуто кнопку _"
 
 #. Block in Control category
 msgid "forever _"
-msgstr ""
+msgstr "нескінченно _"
 
 #. Block in Control category
+#, fuzzy
 msgid "repeat _ _"
-msgstr ""
+msgstr "повторити _ разів _"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr ""
+msgstr "чекати _ мілісекунд"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr ""
+msgstr "якщо _ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr ""
+msgstr "якщо _ _ інакше _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr ""
+msgstr "інакше, якщо _ _"
 
 #. Block in Control category
 msgid "else"
-msgstr ""
+msgstr "інакше"
 
 #. Block in Control category
 msgid "when _"
-msgstr ""
+msgstr "коли _"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr ""
+msgstr "чекати на _"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr ""
+msgstr "чекати _ мікросекунд"
 
 #. Block in Control category
 msgid "return _"
-msgstr ""
+msgstr "повернути _"
 
 #. Block in Control category
 msgid "when _ received"
-msgstr ""
+msgstr "коли отримано _"
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr ""
+msgstr "пуск!"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr ""
+msgstr "віщати _"
 
 #. Block in Control category
 msgid "comment _"
-msgstr ""
+msgstr "коментар _"
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr ""
+msgstr "Як це працює..."
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr ""
+msgstr "проміжок від _ до _"
 
 #. Block in Control category
 msgid "by _"
