@@ -101,7 +101,9 @@ method addLibrary MicroBlocksProject aMicroBlocksModule {
 		updatingLibrary oldLib aMicroBlocksModule
 	}
 	remove libraries libName
-	atPut libraries libName aMicroBlocksModule
+	if (not (isImplementationLib aMicroBlocksModule)) {
+		atPut libraries libName aMicroBlocksModule
+	}
 
 	// the functions in this new library supersede all earlier versions of those functions
 	newFunctionNames = (dictionary)
@@ -461,7 +463,7 @@ method equal MicroBlocksProject proj {
 
 // MicroBlocksModule Class
 
-defineClass MicroBlocksModule moduleName moduleCategory dependencies version author description tags path variableNames blockList functions scripts blockSpecs choices translationSources
+defineClass MicroBlocksModule moduleName moduleCategory dependencies version author description tags path variableNames blockList functions scripts blockSpecs choices translationSources isImplementation
 
 to newMicroBlocksModule modName {
 	return (initialize (new 'MicroBlocksModule') modName)
@@ -482,6 +484,7 @@ method initialize MicroBlocksModule name {
 	functions = (array)
 	scripts = (array)
 	translationSources = (dictionary)
+	isImplementation = false
 	return this
 }
 
@@ -498,6 +501,8 @@ method tags MicroBlocksModule { return (copy tags) }
 method choices MicroBlocksModule { return choices }
 method path MicroBlocksModule { return path }
 method dependencies MicroBlocksModule { return (copy dependencies) }
+method isImplementationLib MicroBlocksModule { return isImplementation }
+method beImplementation MicroBlocksModule { isImplementation = true }
 method setDependencies MicroBlocksModule deps { dependencies = (toArray (copy deps)) }
 method setDescription MicroBlocksModule desc { description = desc }
 method setAuthor MicroBlocksModule auth { author = auth }

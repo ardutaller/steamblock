@@ -479,6 +479,7 @@ method drawOn MicroBlocksScripter ctx {
 method developerModeChanged MicroBlocksScripter {
 	catList = categorySelector
 	setCollection catList (categories this)
+	updateLibraryList this
 	if (not (or (contains (collection catList) (selection catList))
 				(notNil (selection libSelector)))
 	) {
@@ -1318,11 +1319,13 @@ method allFilesInDir MicroBlocksScripter rootDir {
 }
 
 method importEmbeddedLibrary MicroBlocksScripter libName {
+	asImplementation = ((at libName 1) == '_')
+	if asImplementation { libName = (substring libName 2) }
 	if ('Browser' == (platform)) {
 		libFileName = (join libName '.ubl')
 		for filePath (allFilesInDir this 'Libraries') {
 			if (endsWith filePath libFileName) {
-				importLibraryFromFile this filePath nil false
+				importLibraryFromFile this filePath nil false asImplementation
 				return
 			}
 		}
@@ -1330,7 +1333,7 @@ method importEmbeddedLibrary MicroBlocksScripter libName {
 	}
 	for filePath (listEmbeddedFiles) {
 		if (endsWith filePath (join libName '.ubl')) {
-			importLibraryFromFile this (join '//' filePath) nil false
+			importLibraryFromFile this (join '//' filePath) nil false asImplementation
 			return
 		}
 	}
@@ -1359,7 +1362,7 @@ method importLocalizedLibraryFromFile MicroBlocksScripter fileName {
 	setTranslations library translations
 }
 
-method importLibraryFromFile MicroBlocksScripter fileName data updateLastLibFolder {
+method importLibraryFromFile MicroBlocksScripter fileName data updateLastLibFolder asImplementation {
 	// Import a library with the given file path. If data is not nil, it came from
 	// a browser upload or file drop. Use it rather than attempting to read the file.
 
@@ -1376,11 +1379,16 @@ method importLibraryFromFile MicroBlocksScripter fileName data updateLastLibFold
 	}
 
 	libName = (withoutExtension (filePart fileName))
-	if (notNil (libraryNamed mbProject libName)) {
+	existingLib = (libraryNamed mbProject libName)
+	if (notNil existingLib) {
 		// replacing library; first hide its block definitions
 		hideAllLibraryDefinitions this libName
 	}
-	importLibraryFromString this (toString data) libName fileName
+	asImplementation = (and
+		(asImplementation == true)
+		(or (isNil existingLib) (isImplementationLib existingLib))
+	)
+	importLibraryFromString this (toString data) libName fileName asImplementation
 }
 
 method importLibraryFromUrl MicroBlocksScripter fullUrl {
@@ -1423,8 +1431,9 @@ method importLibraryFromUrl MicroBlocksScripter fullUrl {
 	return true
 }
 
-method importLibraryFromString MicroBlocksScripter data libName fileName {
+method importLibraryFromString MicroBlocksScripter data libName fileName asImplementation {
 	addLibraryFromString mbProject (toString data) libName fileName
+	if asImplementation { beImplementation (libraryNamed mbProject libName) }
 	variablesChanged (smallRuntime)
 
 	// update library list and select the new library
@@ -1437,7 +1446,16 @@ method importLibraryFromString MicroBlocksScripter data libName fileName {
 }
 
 method updateLibraryList MicroBlocksScripter {
-	libNames = (sorted (keys (libraries mbProject)))
+	if (not (showHiddenBlocksEnabled projectEditor)) {
+		libNames = (list)
+		for lib (sorted (values (libraries mbProject))) {
+			if (not (isImplementationLib lib)) {
+				add libNames (moduleName lib)
+			}
+		}
+	} else {
+		libNames = (sorted (keys (libraries mbProject)))
+	}
 	setCollection libSelector libNames
 	oldSelection = (selection libSelector)
 	if (not (contains libNames oldSelection)) {
