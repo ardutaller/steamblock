@@ -1,7 +1,7 @@
 module NeoPanel Output
 author 'José García Yeste & Víctor Casado'
-version 1 4 
-depends NeoPixel BMP 
+version 1 5 
+depends _NeoPixel _BMP 
 description 'Draw lines, rectangles, text, and images on a NeoPixel panels (e.g. 8x8, 16x16 or 32x8) in either horizontal or vertical orientation. Panels can be daisy-chained to create larger displays if there is sufficient power to drive them.
 See: https://www.btf-lighting.com/collections/led-matrix-display/products/ws2812b-panel-screen-8-8-16-16-8-32-pixel-256-pixels-digital-flexible-led-programmed-individually-addressable-full-color-dc5v#
 '

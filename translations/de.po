@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-01-22 18:05+0000\n"
+"PO-Revision-Date: 2025-02-02 16:03+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2778,7 +2778,7 @@ msgstr "setze digitalen Pin _ auf _"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr "setze Pin _ auf _"
+msgstr "setze analogen Pin _ auf _"
 
 #. Block in Pins category
 msgid "digital pins"

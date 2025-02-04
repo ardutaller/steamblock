@@ -297,9 +297,14 @@ method itemDropped MicroBlocksListItemViewer itemMorph aHand {
 
 method renderedItemName MicroBlocksListItemViewer item {
 	if (notNil itemRenderer) {
-		return (call itemRenderer item)
+		itemName = (call itemRenderer item)
 	} else {
-		return item
+		itemName = item
+	}
+	if ((at itemName 1) == '_') {
+		return (substring itemName 2)
+	} else {
+		return itemName
 	}
 }
 

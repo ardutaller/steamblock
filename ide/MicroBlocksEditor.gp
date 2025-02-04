@@ -1492,17 +1492,14 @@ method redrawnMorphs MicroBlocksEditor {
 
 // Script image utility
 
-method fixScriptsInFolderTree MicroBlocksEditor language countryCode rootPath {
+method fixScriptsInFolderTree MicroBlocksEditor countryCode rootPath {
 	scriptEditor = (scriptEditor scripter)
 	setBlockScalePercent this 150
 	setExportScale scriptEditor 200
-	setLanguage this language
+	setLanguage this countryCode
 
-	pattern = (join 'locales/' countryCode '/files/')
 	for pngFilePath (allFiles rootPath '.png') {
-		if (notNil (findSubstring pattern pngFilePath)) {
-			fixPNGScriptImage this pngFilePath
-		}
+		fixPNGScriptImage this pngFilePath
 	}
 }
 
@@ -1517,6 +1514,9 @@ method fixPNGScriptImage MicroBlocksEditor pngFile {
 	if (0 == scriptCount) { return }
 
 	updateLibraryList scripter
+
+	cleanUp scriptEditor
+
 	if (1 == scriptCount) {
 		block = (handler (first (parts (morph scriptEditor))))
 		exportAsImageScaled block nil false pngFile
