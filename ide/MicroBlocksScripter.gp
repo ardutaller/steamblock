@@ -1604,6 +1604,20 @@ method scriptsBottom MicroBlocksScripter {
 	return result
 }
 
+// dropping
+
+method wantsDropOf MicroBlocksScripter aHandler {
+	return (isAnyClass aHandler 'Block' 'Monitor' 'MicroBlocksSelectionContents')
+}
+
+method justReceivedDrop MicroBlocksScripter aHandler {
+    // let blockPalette handle this drop
+    justReceivedDrop (blockPalette this) aHandler
+    return
+}
+
+// gradient bitmap
+
 method gradientBitmap MicroBlocksScripter {
 	data = ' iVBORw0KGgoAAAANSUhEUgAAAAEAAAAeCAYAAADtlXTHAAAACXBIWXMAAA7DAAAOwwHHb
 6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAFh0RVh0Q29weXJpZ2h0AENDM
