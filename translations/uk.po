@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-02-04 13:58+0000\n"
+"PO-Revision-Date: 2025-02-05 07:20+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -89,44 +89,49 @@ msgid "BLE id"
 msgstr ""
 
 #. Block in Input category
+#, fuzzy
 msgid "BLE connected"
-msgstr ""
+msgstr "BLE під'єднано"
 
 #. Block in Input category
+#, fuzzy
 msgid "connected to IDE"
-msgstr ""
+msgstr "під'єднано до IDE"
 
 #. "Pins" blocks category label
+#, fuzzy
 msgid "cat;Pins"
-msgstr ""
+msgstr "Піни"
 
 #. Block in Pins category
+#, fuzzy
 msgid "read digital pin _"
-msgstr ""
+msgstr "прочитати цифровий пін _"
 
 #. Block in Pins category
+#, fuzzy
 msgid "read analog pin _"
-msgstr ""
+msgstr "прочитати аналоговий пін _"
 
 #. Block in Pins category
 msgid "pullup _"
-msgstr ""
+msgstr "підтяжка _"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr ""
+msgstr "встановити цифровий пін _ у _"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr ""
+msgstr "встановити пін _ у _"
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr ""
+msgstr "аналогові піни"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr ""
+msgstr "цифрові піни"
 
 #. "Control" blocks category label
 msgid "cat;Control"
@@ -210,234 +215,237 @@ msgid "range _ to _"
 msgstr "проміжок від _ до _"
 
 #. Block in Control category
+#, fuzzy
 msgid "by _"
-msgstr ""
+msgstr "по _"
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr ""
+msgstr "для _ серед _ _"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr ""
+msgstr "повторювати до _ _"
 
 #. Block in Control category
 msgid "stop this task"
-msgstr ""
+msgstr "зупинити цю задачу"
 
 #. Block in Control category
 msgid "stop other tasks"
-msgstr ""
+msgstr "зупинити інші задачі"
 
 #. Block in Control category
 msgid "stop all"
-msgstr ""
+msgstr "зупинити все"
 
 #. Block in Control category
 msgid "last message"
-msgstr ""
+msgstr "останнє повідомлення"
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr ""
+msgstr "аргумент _, за замовчуванням _"
 
 #. Block in Control category
 msgid "exit loop"
-msgstr ""
+msgstr "вийти з циклу"
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr ""
+msgstr "значення за замовчуванням"
 
 #. Block in Control category
 msgid "call _"
-msgstr ""
+msgstr "викликати _"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr ""
+msgstr "ім'я функції"
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr ""
+msgstr "список параметрів"
 
 #. Block in Control category
 msgid "with _"
-msgstr ""
+msgstr "з _"
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr ""
+msgstr "Оператори"
 
 #. Block in Operators category
 msgid "_ mod _"
-msgstr ""
+msgstr "остача від ділення _ на _"
 
 #. Block in Operators category
 msgid "abs _"
-msgstr ""
+msgstr "модуль _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr ""
+msgstr "найменше поміж _ та _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr ""
+msgstr "найбільше поміж _ та _"
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr ""
+msgstr "випадкове число від _ до _"
 
 #. Block in Operators category
 msgid "not _"
-msgstr ""
+msgstr "зворотнє від _"
 
 #. Block in Operators category
 msgid "_ and _"
-msgstr ""
+msgstr "_ та _"
 
 #. Block in Operators category
 msgid "and _"
-msgstr ""
+msgstr "та _"
 
 #. Block in Operators category
 msgid "_ or _"
-msgstr ""
+msgstr "_ або _"
 
 #. Block in Operators category
 msgid "or _"
-msgstr ""
+msgstr "або _"
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr ""
+msgstr "_ являє собою _"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr ""
+msgstr "перетворити _ на _"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr ""
+msgstr "якщо _ тоді _ інакше _"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "boolean"
-msgstr ""
+msgstr "булев тип"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
-msgstr ""
+msgstr "числений тип"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr ""
+msgstr "рядок"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 #. Also label of ( list < > ) block in Data category
 msgid "list"
-msgstr ""
+msgstr "список"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
-msgstr ""
+msgstr "масив байтів"
 
 #. "Advanced" label for advanced blocks in the palette
 msgid "cat;Advanced:"
-msgstr ""
+msgstr "Просунуте:"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr ""
+msgstr "перерахувати _ з проміжку (_, _) на (_, _)"
 
 #. Block in Operators category
 msgid "hex _"
-msgstr ""
+msgstr "шістнадцятковий запис _"
 
 #. Block in Operators category
 msgid "sqrt _"
-msgstr ""
+msgstr "корінь _"
 
 #. "Variables" blocks category label
 msgid "cat;Variables"
-msgstr ""
+msgstr "Змінні"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr ""
+msgstr "Додати змінну"
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr ""
+msgstr "Видалити змінну"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr ""
+msgstr "Ім'я нової змінної?"
 
 #. Block in Variables category
 msgid "set _ to _"
-msgstr ""
+msgstr "встановити _ у _"
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr ""
+msgstr "змінити _ на _"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr ""
+msgstr "ініціалізувати локальну _ у _"
 
 #. "Data" blocks category label
 msgid "cat;Data"
-msgstr ""
+msgstr "Дані"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr ""
+msgstr "кіт"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr ""
+msgstr "пес"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr ""
+msgstr "птах"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr ""
+msgstr "риба"
 
 #. Block in Data category
 msgid "length of _"
-msgstr ""
+msgstr "довжина _"
 
 #. Block in Data category
+#, fuzzy
 msgid "item _ of _"
-msgstr ""
+msgstr "елемент _ від _"
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr ""
+msgstr "замінити елемент _ списку _ на _"
 
 #. Block in Data category
+#, fuzzy
 msgid "delete item _ of list _"
-msgstr ""
+msgstr "видалити елемент _ зі списку _"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr ""
+msgstr "додати _ до списку _"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr ""
+msgstr "з'єднати _ та _"
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr ""
+msgstr "скопіювати _ з _"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr ""
+msgstr "урок"
 
 #. Block in Data category
 msgid "to _"
@@ -445,51 +453,56 @@ msgstr ""
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr ""
+msgstr "знайти _ у _"
 
 #. Block in Data category
+#, fuzzy
 msgid "starting at _"
-msgstr ""
+msgstr "починаючи на _"
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr ""
+msgstr "з'єднати елементи списка _"
 
 #. Block in Data category
+#, fuzzy
 msgid "separator _"
-msgstr ""
+msgstr "розділитель"
 
 #. Block in Data category
+#, fuzzy
 msgid "unicode _ of _"
-msgstr ""
+msgstr "юнікод _ від _"
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr ""
+msgstr "рядок з юнікоду _"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr ""
+msgstr "встановити довжину списка у _"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr ""
+msgstr "новий байтовий масив _"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr ""
+msgstr "як байтовий масив _"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
+#, fuzzy
 msgid "aByteListOrString"
-msgstr ""
+msgstr "цеБайтовийСписокАбоРядок"
 
 #. Block in Data category
+#, fuzzy
 msgid "with all _"
-msgstr ""
+msgstr "з усіма _"
 
 #. Block in Data category
 msgid "free memory"
-msgstr ""
+msgstr "кількість вільної пам'яті"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
