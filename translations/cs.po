@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-01-19 22:12+0000\n"
-"Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
+"PO-Revision-Date: 2025-02-05 12:11+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
 "Language: cs\n"
@@ -1527,6 +1527,7 @@ msgid "quarter note"
 msgstr "čtvrťová nota"
 
 #. Image name for the "display image" block
+#, fuzzy
 msgid "eight note"
 msgstr "osminková nota"
 
