@@ -1531,7 +1531,7 @@ msgstr "quarter note"
 
 #. Image name for the "display image" block
 msgid "eight note"
-msgstr "eight note"
+msgstr "eighth note"
 
 #. Image name for the "display image" block
 msgid "pitchfork"
