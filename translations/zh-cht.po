@@ -1,19 +1,18 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2024-10-28 15:36+0000\n"
-"Last-Translator: wwj718 <wuwenjie718@gmail.com>\n"
+"PO-Revision-Date: 2025-02-05 12:11+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hant/>\n"
 "Language: zh-cht\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: ENCODING\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8.2-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. WebSocket Server library example data to send to a client
 msgid "Hello, Client!"
@@ -966,6 +965,7 @@ msgid "clap count"
 msgstr "拍手次數"
 
 #. Image name for the "display image" block
+#, fuzzy
 msgid "eight note"
 msgstr "八分音符"
 
