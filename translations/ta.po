@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-01-18 05:53+0200\n"
-"PO-Revision-Date: 2025-02-05 12:11+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-02-06 13:02+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/microblocks/ide/ta/"
 ">\n"
 "Language: ta\n"
@@ -1546,7 +1546,6 @@ msgid "quarter note"
 msgstr "காலாண்டு குறிப்பு"
 
 #. Image name for the "display image" block
-#, fuzzy
 msgid "eight note"
 msgstr "எட்டு குறிப்பு"
 
