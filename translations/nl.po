@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-29 09:24+0200\n"
-"PO-Revision-Date: 2025-01-18 12:02+0000\n"
-"Last-Translator: Peter Mathijssen <pmathijssen@gmail.com>\n"
+"PO-Revision-Date: 2025-02-05 12:11+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/microblocks/ide/nl/"
 ">\n"
 "Language: nl\n"
@@ -1526,6 +1526,7 @@ msgid "quarter note"
 msgstr "kwart noot"
 
 #. Image name for the "display image" block
+#, fuzzy
 msgid "eight note"
 msgstr "achtste noot"
 
