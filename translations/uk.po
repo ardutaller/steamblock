@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-02-05 07:24+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-02-07 13:40+0000\n"
+"Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
@@ -86,7 +86,7 @@ msgstr "мікросекунд від _"
 
 #. Block in Input category
 msgid "BLE id"
-msgstr ""
+msgstr "BLE ідентифікатор"
 
 #. Block in Input category
 #, fuzzy
@@ -448,8 +448,9 @@ msgid "smiles"
 msgstr "урок"
 
 #. Block in Data category
+#, fuzzy
 msgid "to _"
-msgstr ""
+msgstr "до _"
 
 #. Block in Data category
 msgid "find _ in _"
@@ -508,55 +509,56 @@ msgstr "кількість вільної пам'яті"
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr ""
+msgstr "всі"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr ""
+msgstr "останній"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
 msgid "random"
-msgstr ""
+msgstr "випадковий"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr ""
+msgstr "розбити _ по _"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr ""
+msgstr "Мої Блоки"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr ""
+msgstr "Загальні"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr ""
+msgstr "Додати блок-команду"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr ""
+msgstr "Додати блок-доповідач"
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr ""
+msgstr "Введіть ім'я функції:"
 
 #. "Comm" blocks category label
+#, fuzzy
 msgid "cat;Comm"
-msgstr ""
+msgstr "Зв'язок"
 
 #. Block in Comm category
 msgid "i2c get device _ register _"
-msgstr ""
+msgstr "i2c: прочитати з пристрою _ регістр _"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
-msgstr ""
+msgstr "i2c: записати у пристрій _ в регістр _ значення _"
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
@@ -623,8 +625,9 @@ msgid "serial write _ starting at _"
 msgstr ""
 
 #. Example string. Tells the user this input accepts a string list or a byte array
+#, fuzzy
 msgid "aStringListOrByteArray"
-msgstr ""
+msgstr "цеСписокРядківАбоМасивБайтів"
 
 #. Block in Comm category
 msgid "soft serial write byte _ pin _ baud _"
