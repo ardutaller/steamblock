@@ -371,6 +371,72 @@ static int deferUpdates = false;
 			useTFT = true;
 		}
 
+		// M5 Core2 touchscreen support
+
+		#define HAS_TOUCH_SCREEN 1
+		#define CORE2_TOUCH_SCREEN_ADDR 0x38
+		#define CORE2_SCREEN_TOUCHED_PIN 39
+
+		static void setCore2TouchScreenReg(int regID, int value) {
+			Wire1.beginTransmission(CORE2_TOUCH_SCREEN_ADDR);
+			Wire1.write(regID);
+			Wire1.write(value);
+			Wire1.endTransmission();
+		}
+
+		static void touchInit() {
+			setCore2TouchScreenReg(0xA4, 0); // hold TOUCHED_PIN low while screen touched
+			pinMode(CORE2_SCREEN_TOUCHED_PIN, INPUT);
+			touchEnabled = true;
+		}
+
+		static uint32 lastTouchUpdate = 0;
+		static int touchScreenX = -1;
+		static int touchScreenY = -1;
+
+		static int screenTouched() {
+			if (!touchEnabled) touchInit();
+			return !digitalRead(CORE2_SCREEN_TOUCHED_PIN);
+		}
+
+		static void touchUpdate() {
+			if (!touchEnabled) touchInit();
+			uint32 now = millisecs();
+			if ((now - lastTouchUpdate) < 10) return;
+			if (screenTouched()) {
+				uint8 data[4];
+				Wire1.beginTransmission(CORE2_TOUCH_SCREEN_ADDR);
+				Wire1.write(3);
+				Wire1.endTransmission();
+				Wire1.requestFrom(CORE2_TOUCH_SCREEN_ADDR, sizeof(data));
+				for (int i = 0; i < sizeof(data); i++) {
+					data[i] = Wire1.read();
+				}
+				touchScreenX = ((data[0] & 0xF) << 8) | data[1];
+				touchScreenY = ((data[2] & 0xF) << 8) | data[3];
+			} else {
+				touchScreenX = -1;
+				touchScreenY = -1;
+			}
+			lastTouchUpdate = now;
+		}
+
+		static int screenTouchX() {
+			touchUpdate();
+			return touchScreenX;
+		}
+
+		static int screenTouchY() {
+			touchUpdate();
+			return touchScreenY;
+		}
+
+		static int screenTouchPressure() {
+			// pressure not supported; return a constant value if screen is touched, -1 if not
+			if (!touchEnabled) touchInit();
+			return screenTouched() ? 10 : -1;
+		}
+
 	#elif defined(ARDUINO_NRF52840_CLUE)
 		#include "Adafruit_GFX.h"
 		#include "Adafruit_ST7789.h"
@@ -406,7 +472,7 @@ static int deferUpdates = false;
 		#include <XPT2046_Touchscreen.h>
 		#include <SPI.h>
 
-		#define HAS_TFT_TOUCH
+		#define HAS_TOUCH_SCREEN 1
 		#define TOUCH_CS_PIN 16
 		XPT2046_Touchscreen ts(TOUCH_CS_PIN);
 
@@ -434,11 +500,34 @@ static int deferUpdates = false;
 			useTFT = true;
 		}
 
-		void touchInit() {
+		static void touchInit() {
 			ts.begin();
 			ts.setCalibration(X_MIN, X_MAX, Y_MIN, Y_MAX);
 			ts.setRotation(1);
 			touchEnabled = true;
+		}
+
+		static int screenTouched() {
+			if (!touchEnabled) touchInit();
+			return ts.touched();
+		}
+
+		static int screenTouchX() {
+			if (!touchEnabled) touchInit();
+			if (!ts.touched()) { return -1; }
+			return ts.getMappedPoint().x;
+		}
+
+		static int screenTouchY() {
+			if (!touchEnabled) touchInit();
+			if (!ts.touched()) { return -1; }
+			return ts.getMappedPoint().y;
+		}
+
+		static int screenTouchPressure() {
+			if (!touchEnabled) touchInit();
+			if (!ts.touched()) { return -1; }
+			return ts.getMappedPoint().z;
 		}
 
 	#elif defined(SCOUT_MAKES_AZUL)
@@ -1471,49 +1560,6 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 	return falseObj;
 }
 
-// touchscreen ops
-
-static OBJ primTftTouched(int argCount, OBJ *args) {
-	#ifdef HAS_TFT_TOUCH
-		if (!touchEnabled) { touchInit(); }
-		return ts.touched() ? trueObj : falseObj;
-	#endif
-	return falseObj;
-}
-
-static OBJ primTftTouchX(int argCount, OBJ *args) {
-	#ifdef HAS_TFT_TOUCH
-		if (!touchEnabled) { touchInit(); }
-		if (ts.touched()) {
-			TS_Point p = ts.getMappedPoint();
-			return int2obj(p.x);
-		}
-	#endif
-	return int2obj(-1);
-}
-
-static OBJ primTftTouchY(int argCount, OBJ *args) {
-	#ifdef HAS_TFT_TOUCH
-		if (!touchEnabled) { touchInit(); }
-		if (ts.touched()) {
-			TS_Point p = ts.getMappedPoint();
-			return int2obj(p.y);
-		}
-	#endif
-	return int2obj(-1);
-}
-
-static OBJ primTftTouchPressure(int argCount, OBJ *args) {
-	#ifdef HAS_TFT_TOUCH
-		if (!touchEnabled) { touchInit(); }
-		if (ts.touched()) {
-			TS_Point p = ts.getMappedPoint();
-			return int2obj(p.z);
-		}
-	#endif
-	return int2obj(-1);
-}
-
 #else // stubs
 
 void tftInit() { }
@@ -1541,15 +1587,40 @@ static OBJ primMergeBitmap(int argCount, OBJ *args) { return falseObj; }
 static OBJ primDrawBuffer(int argCount, OBJ *args) { return falseObj; }
 static OBJ primDrawBitmap(int argCount, OBJ *args) { return falseObj; }
 
-static OBJ primTftTouched(int argCount, OBJ *args) { return falseObj; }
-static OBJ primTftTouchX(int argCount, OBJ *args) { return falseObj; }
-static OBJ primTftTouchY(int argCount, OBJ *args) { return falseObj; }
-static OBJ primTftTouchPressure(int argCount, OBJ *args) { return falseObj; }
-
 static OBJ primAruco(int argCount, OBJ *args) { return falseObj; }
 static OBJ primAprilTag(int argCount, OBJ *args) { return falseObj; }
 
 #endif
+
+// Touchscreen Primitives
+
+static OBJ primTftTouched(int argCount, OBJ *args) {
+	#ifdef HAS_TOUCH_SCREEN
+		return screenTouched() ? trueObj : falseObj;
+	#endif
+	return falseObj;
+}
+
+static OBJ primTftTouchX(int argCount, OBJ *args) {
+	#ifdef HAS_TOUCH_SCREEN
+		return int2obj(screenTouchX());
+	#endif
+	return int2obj(-1);
+}
+
+static OBJ primTftTouchY(int argCount, OBJ *args) {
+	#ifdef HAS_TOUCH_SCREEN
+		return int2obj(screenTouchY());
+	#endif
+	return int2obj(-1);
+}
+
+static OBJ primTftTouchPressure(int argCount, OBJ *args) {
+	#ifdef HAS_TOUCH_SCREEN
+		return int2obj(screenTouchPressure());
+	#endif
+	return int2obj(-1);
+}
 
 // Primitives
 
