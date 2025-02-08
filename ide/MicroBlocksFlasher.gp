@@ -103,6 +103,7 @@ method installFromData MicroBlocksFlasher serialPortID fileNameOrURL data {
 	}
 
 	if (notNil (findSubstring 'databot2.0_' fileNameOrURL)) { setAllInOneBinary espTool true }
+	if (notNil (findSubstring 'vm_s3_matrix.bin' fileNameOrURL)) { setAllInOneBinary espTool true }
 
 	// install the downloaded firmware
 	spinner = (newSpinner (action 'espToolStatus' this) (action 'espToolDone' this))
