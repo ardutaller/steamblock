@@ -1,6 +1,6 @@
 module DrawBot Output
 author 'MicroBlocks and José García'
-version 2 3 
+version 2 4 
 depends _Files _Servo _Strings 
 tags cnc protoneer drawbot plotter 
 description 'Control CoreXY DrawBots that use the Protoneer CNC shield.'
