@@ -1918,7 +1918,7 @@ static int readDigitalMicrophone() {
 	return result;
 }
 
-#elif defined(DATABOT)
+#elif defined(DATABOT) || defined(ARDUINO_M5STACK_Core2)
 
 #define USE_DIGITAL_MICROPHONE 1
 
@@ -1926,9 +1926,17 @@ static int readDigitalMicrophone() {
 
 // I2S port and pins
 #define I2S_PORT I2S_NUM_0
-#define I2S_WS 19
-#define I2S_SD 18
-#define I2S_SCK 5
+#if defined(DATABOT)
+	#define I2S_WS 19
+	#define I2S_SD 18
+	#define I2S_SCK 5
+	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX)
+#elif defined(ARDUINO_M5STACK_Core2)
+	#define I2S_WS 0
+	#define I2S_SD 34
+	#define I2S_SCK 12
+	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM)
+#endif
 
 // Microphone input buffer (minimum sample count is 8)
 // Use smallest possible buffer to minimize latency
@@ -1943,7 +1951,7 @@ void initI2SMicrophone() {
 
 	// configure I2S driver
 	const i2s_config_t i2s_config = {
-		.mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_RX),
+		.mode = i2s_mode_t(I2S_MODE), // xxx I2S_MODE_MASTER | I2S_MODE_RX),
 		.sample_rate = 22050,
 		.bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
 		.channel_format = I2S_CHANNEL_FMT_ONLY_RIGHT,
