@@ -219,6 +219,7 @@ method microBlocksSpecs SmallCompiler {
 		(array ' ' '[display:neoPixelSetPin]'	'set NeoPixel pin _ is RGBW _' 'auto bool' '' false)
 		(array ' ' '[display:neoPixelSend]'		'send NeoPixel rgb _' 'num' 5)
 		(array ' ' '[display:neoPixelSetMaxBrightness]' 'set NeoPixel max brightness _ (10-255)' 'num' 40)
+		(array ' ' '[display:neoPixelSetRGB]' 'NeoPixel is RGB _' 'bool' false)
 	'Prims-Sensing (not in palette)'
 		(array 'r' '[sensors:acceleration]'	'acceleration')
 		(array ' ' '[sensors:setAccelerometerRange]' 'set accelerometer range _' 'num' 1)

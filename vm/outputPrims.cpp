@@ -923,6 +923,7 @@ static void sendNeoPixelData(int val) { }
 #endif // NeoPixel Support
 
 static int neoPixelMax = 40;
+static int neoPixelIsRGB = false;
 
 static inline int gamma(int val) {
 	// This function computes the n^2 gamma curve, where n is a brightness in the range 0.0..1.0,
@@ -960,7 +961,12 @@ OBJ primNeoPixelSend(int argCount, OBJ *args) {
 			int r = gamma((rgb >> 16) & 0xFF);
 			int g = gamma((rgb >> 8) & 0xFF);
 			int b = gamma(rgb & 0xFF);
-			int val = (g << 16) | (r << 8) | b; // NeoPixel order is GRB
+			int val;
+			if (neoPixelIsRGB) {
+				val = (r << 16) | (g << 8) | b; // NeoPixel order is RGB
+			} else {
+				val = (g << 16) | (r << 8) | b; // NeoPixel order is GRB
+			}
 			if (32 == neoPixelBits) { // send white as the final byte of four
 				val = (val << 8) | whiteTable[(rgb >> 24) & 0x3F];
 			}
@@ -995,6 +1001,12 @@ OBJ primNeoPixelSetMaxBrightness(int argCount, OBJ *args) {
 	if (maxBrightness < 10) maxBrightness = 10;
 	if (maxBrightness > 255) maxBrightness = 255;
 	neoPixelMax = maxBrightness;
+	return falseObj;
+}
+
+OBJ primNeoPixelSetRGB(int argCount, OBJ *args) {
+	if ((argCount < 1) || !isBoolean(args[0])) return fail(needsBooleanError);
+	neoPixelIsRGB = (trueObj == args[0]);
 	return falseObj;
 }
 
@@ -1170,6 +1182,7 @@ static PrimEntry entries[] = {
 	{"neoPixelSend", primNeoPixelSend},
 	{"neoPixelSetPin", primNeoPixelSetPin},
 	{"neoPixelSetMaxBrightness", primNeoPixelSetMaxBrightness},
+	{"neoPixelSetRGB", primNeoPixelSetRGB},
 };
 
 void addDisplayPrims() {

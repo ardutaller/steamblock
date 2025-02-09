@@ -22,3 +22,4 @@ description 'Miscellaneous system primitives.
   space
   spec ' ' '[display:mbEnableDisplay]' 'enable LED display _' 'bool' false
   spec ' ' '[display:neoPixelSetMaxBrightness]' 'set NeoPixel max brightness _ (10-255)' 'num' 40
+  spec ' ' '[display:neoPixelSetRGB]' 'NeoPixel is RGB _' 'bool' false
