@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-02-05 12:11+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-02-10 21:02+0000\n"
+"Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
 "Language: cs\n"
@@ -660,7 +660,7 @@ msgstr "AHOJ!"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send pair _ = _"
-msgstr "odešli rádiem jméno _ hodnota _"
+msgstr "odešli rádiem dvojici _ = _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "light"
@@ -700,11 +700,11 @@ msgstr "síla posledního radiového signálu"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio receive packet _"
-msgstr "přijmi packet _ rádia"
+msgstr "přijmi paket _ rádia"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send packet _"
-msgstr "odešli packet _ rádiem"
+msgstr "odešli paket _ rádiem"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
@@ -2785,7 +2785,7 @@ msgstr "řetězec z Unicode _"
 
 #. Example string. Tells the user this input accepts a list
 msgid "aList"
-msgstr "sezname"
+msgstr "seznam"
 
 #. Strings library block
 msgid "num2str _"
@@ -3883,7 +3883,7 @@ msgstr "WiFi odešli řetězec _"
 
 #. WiFi Radio library block
 msgid "wifi send pair _ = _"
-msgstr "WiFi odešli pár _ = _"
+msgstr "WiFi odešli dvojici _ = _"
 
 #. WiFi Radio library block
 msgid "wifi message received?"
