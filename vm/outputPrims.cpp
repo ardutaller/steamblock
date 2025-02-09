@@ -798,6 +798,7 @@ static void initNeoPixelPin(int pinNum) { // ESP32
 	}
 	setPinMode(pinNum, OUTPUT);
 	initRMT(pinNum);
+	taskSleep(1); // allow RMT time to stabilize
 	neoPixelPinMask = true; // show that NeoPixel are initialized
 }
 
@@ -933,6 +934,8 @@ static inline int gamma(int val) {
 	// will also be in the range 0.0..1.0, and that is scaled to 0..neoPixelMax.
 	// neoPixelMax determines the max brightness (and power draw!) of each NeoPixel color channel,
 	// which is about (neoPixelMax / 255) * 20 mA per color channel.
+
+	if (255 == neoPixelMax) return (val & 0xFF); // no gamma correction if max is 255
 
 	#if defined(ARDUINO_Mbits)
 	// The Mbits power supply cannot supply enough current to run both
