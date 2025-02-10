@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-02-09 20:01+0000\n"
+"PO-Revision-Date: 2025-02-10 21:02+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -562,63 +562,64 @@ msgstr "i2c: записати у пристрій _ в регістр _ знач
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
-msgstr ""
+msgstr "i2c: з пристрою _ прочитати список _"
 
 #. Block in Comm category
 msgid "i2c device _ write list _"
-msgstr ""
+msgstr "i2c: у пристрій _ записати список _"
 
 #. Block in Comm category
 msgid "i2c device _ exists?"
-msgstr ""
+msgstr "i2c: пристрій _ існує?"
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr ""
+msgstr "spi: надіслати _"
 
 #. Block in Comm category
 msgid "spi receive"
-msgstr ""
+msgstr "spi: отримати"
 
 #. Block in Comm category
 msgid "spi setup speed _"
-msgstr ""
+msgstr "spi: встановити швидкість _"
 
 #. Block in Comm category
 msgid "mode _"
-msgstr ""
+msgstr "режим _"
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr ""
+msgstr "rpi канал _"
 
 #. Block in Comm category
+#, fuzzy
 msgid "spi exchange bytes _"
-msgstr ""
+msgstr "spi: обміняти байти _"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr ""
+msgstr "цеМасивБайтів"
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr ""
+msgstr "послідовний порт: відкрити з швидкістю _ бод"
 
 #. Block in Comm category
 msgid "serial close"
-msgstr ""
+msgstr "закрити послідовний порт"
 
 #. Block in Comm category
 msgid "serial read"
-msgstr ""
+msgstr "прочитати з послідовного порту"
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr ""
+msgstr "записати у послідовний порт _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
-msgstr ""
+msgstr "цеЦілеАбоСписокРядківАбоМасивБайтів"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
@@ -851,43 +852,43 @@ msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel set x _ y _ color _"
-msgstr ""
+msgstr "НеоПанель: встановити за координатами x _ y _ колір _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
-msgstr ""
+msgstr "НеоПанельЖ заповнити колонку _ кольором _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill row _ color _"
-msgstr ""
+msgstr "НеоПанельЖ заповнити ряд _ кольором _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
-msgstr ""
+msgstr "НеоПанель: заповнити прямокутник x _ y _ шириною _ висотою _ кольором _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
-msgstr ""
+msgstr "НеоПанель: відобразити текст _ за координатами x _ y _ кольором _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr ""
+msgstr "НеоПанель: відобразити BMP-файл _ за координатами x _ y _"
 
 #. Microphone library label
 msgid "Microphone"
-msgstr ""
+msgstr "Мікрофон"
 
 #. Microphone library block
 msgid "microphone"
-msgstr ""
+msgstr "мікрофон"
 
 #. Microphone library block
 msgid "turn on microphone"
-msgstr ""
+msgstr "увімкнути мікрофон"
 
 #. Microphone library block
 msgid "loudness"
-msgstr ""
+msgstr "гучність"
 
 #. Microphone library block
 msgid "clap count"
