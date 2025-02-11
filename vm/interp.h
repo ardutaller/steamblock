@@ -354,6 +354,9 @@ OBJ primNeoPixelSend(int argCount, OBJ *args);
 OBJ primNeoPixelSetPin(int argCount, OBJ *args);
 void turnOffInternalNeoPixels();
 
+OBJ primDeferUpdates(int argCount, OBJ *args);
+OBJ primResumeUpdates(int argCount, OBJ *args);
+
 // TFT Support
 
 extern int useTFT;

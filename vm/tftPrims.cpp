@@ -984,11 +984,13 @@ void tftSetHugePixelBits(int bits) {
 	if (0 == bits) {
 		tftClear();
 	} else {
+		deferUpdates = true;
 		for (int x = 1; x <= 5; x++) {
 			for (int y = 1; y <= 5; y++) {
 				tftSetHugePixel(x, y, bits & (1 << ((5 * (y - 1) + x) - 1)));
 			}
 		}
+		deferUpdates = false;
 	}
 	UPDATE_DISPLAY();
 }
@@ -1396,13 +1398,13 @@ static OBJ primAprilTag(int argCount, OBJ *args) {
 
 // display update control
 
-static OBJ primDeferUpdates(int argCount, OBJ *args) {
+OBJ primDeferUpdates(int argCount, OBJ *args) {
 	if (!hasTFT()) return falseObj;
 	deferUpdates = true;
 	return falseObj;
 }
 
-static OBJ primResumeUpdates(int argCount, OBJ *args) {
+OBJ primResumeUpdates(int argCount, OBJ *args) {
 	if (!hasTFT()) return falseObj;
 	deferUpdates = false;
 	UPDATE_DISPLAY();

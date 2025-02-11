@@ -1143,6 +1143,7 @@ OBJ primMBDrawShape(int argCount, OBJ *args) {
 		return falseObj;
 	#endif
 
+	primDeferUpdates(NULL, 0);
 	int srcMask = 1;
 	for (int dstY = y; dstY < (y + 5); dstY++) {
 		for (int dstX = x; dstX < (x + 5); dstX++) {
@@ -1167,6 +1168,7 @@ OBJ primMBDrawShape(int argCount, OBJ *args) {
 			if (useTFT) tftSetHugePixel(5 + x, (i + 1), false);
 		}
 	}
+	primResumeUpdates(NULL, 0);
 	return falseObj;
 }
 
