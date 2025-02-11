@@ -1,72 +1,74 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-11 15:48+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-02-12 08:33+0000\n"
+"Last-Translator: JaeHwan So <cowcowwow@icloud.com>\n"
+"Language-Team: Korean <https://hosted.weblate.org/projects/microblocks/ide/"
+"ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.14.7\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "출력"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "LED _"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "_ 말하기"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "_ 그래프 표시"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "입력"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "A 버튼"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "B 버튼"
 
 #. Block in Input category
 msgid "timer"
-msgstr ""
+msgstr "타이머"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr ""
+msgstr "타이머 초기화"
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "초"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "마이크로초"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "밀리초"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "보드 유형"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "버전"
 
 #. Block in Input category
 msgid "milliseconds since _"
@@ -82,179 +84,179 @@ msgstr ""
 
 #. Block in Input category
 msgid "BLE id"
-msgstr ""
+msgstr "BLE ID"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr ""
+msgstr "BLE 연결됨"
 
 #. Block in Input category
 msgid "connected to IDE"
-msgstr ""
+msgstr "IDE 연결됨"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr ""
+msgstr "핀"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr ""
+msgstr "_ 디지털 핀 값 읽기"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr ""
+msgstr "_ 아날로그 핀 값 읽기"
 
 #. Block in Pins category
 msgid "pullup _"
-msgstr ""
+msgstr "_ 핀 풀업 설정"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr ""
+msgstr "_ 디지털 핀 _ 설정"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr ""
+msgstr "_ 핀 _ 설정"
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr ""
+msgstr "아날로그 핀"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr ""
+msgstr "디지털 핀"
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr ""
+msgstr "제어"
 
 #. Block in Control category
 msgid "when started"
-msgstr ""
+msgstr "시작하면"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr ""
+msgstr "_버튼 누르면"
 
 #. Block in Control category
 msgid "forever _"
-msgstr ""
+msgstr "_무한반복"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr ""
+msgstr "__번 반복"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr ""
+msgstr "_ 밀리초 기다리기"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr ""
+msgstr "만약 __ 라면"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr ""
+msgstr "만약 __이라면 아니라면_"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr ""
+msgstr "아니고 만약 __라면"
 
 #. Block in Control category
 msgid "else"
-msgstr ""
+msgstr "아니면"
 
 #. Block in Control category
 msgid "when _"
-msgstr ""
+msgstr "_ 때"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr ""
+msgstr "_ 기다리기"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr ""
+msgstr "_ 마이크로초 기다리기"
 
 #. Block in Control category
 msgid "return _"
-msgstr ""
+msgstr "_ 반환"
 
 #. Block in Control category
 msgid "when _ received"
-msgstr ""
+msgstr "_ 받으면"
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr ""
+msgstr "가자!"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr ""
+msgstr "_ 방송하기"
 
 #. Block in Control category
 msgid "comment _"
-msgstr ""
+msgstr "_ 댓글 남기기"
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr ""
+msgstr "어떻게 작동하냐면..."
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr ""
+msgstr "_부터 _"
 
 #. Block in Control category
 msgid "by _"
-msgstr ""
+msgstr "_ 배"
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr ""
+msgstr "_ 가 __ 라면"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr ""
+msgstr "__ 까지 반복 실행"
 
 #. Block in Control category
 msgid "stop this task"
-msgstr ""
+msgstr "이 코드 멈추기"
 
 #. Block in Control category
 msgid "stop other tasks"
-msgstr ""
+msgstr "다른 코드 멈추기"
 
 #. Block in Control category
 msgid "stop all"
-msgstr ""
+msgstr "모든 코드 멈추기"
 
 #. Block in Control category
 msgid "last message"
-msgstr ""
+msgstr "마지막 메시지"
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr ""
+msgstr "_ 번째 인자 기본값 _"
 
 #. Block in Control category
 msgid "exit loop"
-msgstr ""
+msgstr "반복 종료"
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr ""
+msgstr "기본값"
 
 #. Block in Control category
 msgid "call _"
-msgstr ""
+msgstr "_ 함수 실행하기"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr ""
+msgstr "함수 이름"
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr ""
+msgstr "매개변수 목록"
 
 #. Block in Control category
 msgid "with _"
@@ -262,7 +264,7 @@ msgstr ""
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr ""
+msgstr "연산"
 
 #. Block in Operators category
 msgid "_ mod _"
