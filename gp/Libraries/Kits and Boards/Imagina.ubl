@@ -1,6 +1,6 @@
 module Imagina
 author 'Josep Ferràndiz'
-version 1 0 
+version 1 1 
 depends 'IR Remote' 'Distance (HC-SR04)' Servo Tone 
 choices nunchuck joyX joyY butC butZ accX accY accZ 
 choices motorRotation stop forward backward 
@@ -109,11 +109,6 @@ to imagina_set_digital sensor state {
 to imagina_set_led led state {
   comment 'For yellow and red leds, only works if nothing is connected
 to D5 or D6 pins respectively (SL, servo B/ SR, servo A)'
-  if (state == 'on') {
-    state = true
-  } else {
-    state = false
-  }
   if (led == 'red') {
     digitalWriteOp 27 state
   } (led == 'yellow') {
