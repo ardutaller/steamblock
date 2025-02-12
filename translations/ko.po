@@ -136,15 +136,15 @@ msgstr "시작하면"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr "_버튼 누르면"
+msgstr "_ 버튼 누르면"
 
 #. Block in Control category
 msgid "forever _"
-msgstr "_무한반복"
+msgstr "_ 무한반복"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr "__번 반복"
+msgstr "_ _ 번 반복"
 
 #. Block in Control category
 msgid "wait _ millisecs"
@@ -152,15 +152,15 @@ msgstr "_ 밀리초 기다리기"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr "만약 __ 라면"
+msgstr "만약 _ _ 라면"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr "만약 __이라면 아니라면_"
+msgstr "만약 _ _ 이라면 아니라면 _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr "아니고 만약 __라면"
+msgstr "아니고 만약 _ _ 라면"
 
 #. Block in Control category
 msgid "else"
@@ -204,7 +204,7 @@ msgstr "어떻게 작동하냐면..."
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr "_부터 _"
+msgstr "_ 부터 _"
 
 #. Block in Control category
 msgid "by _"
@@ -212,11 +212,11 @@ msgstr "_ 배"
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr "_ 가 __ 라면"
+msgstr "_ 가 _ _ 라면"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr "__ 까지 반복 실행"
+msgstr "_ _ 까지 반복 실행"
 
 #. Block in Control category
 msgid "stop this task"
