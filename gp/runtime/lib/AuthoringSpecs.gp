@@ -516,6 +516,7 @@ method languageCodeList AuthoringSpecs {
 		(array 'Galego' 'gl')
 		(array 'Italiano' 'it')
 		(array '日本語' 'ja')
+		(array '한국어' 'ko')
 		(array 'Nederlands' 'nl')
 		(array 'Polski' 'pl')
 		(array 'Português (Brasil)' 'pt-br')
