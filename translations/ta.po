@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-01-18 05:53+0200\n"
-"PO-Revision-Date: 2025-02-06 13:02+0000\n"
+"PO-Revision-Date: 2025-02-13 15:50+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/microblocks/ide/ta/"
 ">\n"
@@ -159,6 +159,7 @@ msgid "if _ _ else _"
 msgstr "_ _ வேறு _ என்றால்"
 
 #. Block in Control category
+#, fuzzy
 msgid "else if _ _"
 msgstr "_ _ என்றால் வேறு என்றால்"
 
