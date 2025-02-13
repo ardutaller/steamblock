@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-13 08:15+0000\n"
+"PO-Revision-Date: 2025-02-13 15:50+0000\n"
 "Last-Translator: \"Miguel A. Bouzada\" <mbouzada@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/microblocks/ide/"
 "gl/>\n"
@@ -156,7 +156,7 @@ msgstr "escribir no dispositivo I²C _ o rexistro _ con _"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
-msgstr "pon todos os NeoPíxeles de cor _"
+msgstr "pinta todos os NeoPíxeles de cor _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
@@ -1411,3 +1411,39 @@ msgstr "ler do dispositivo I²C _ o rexistro _"
 #. TFT Display library block
 msgid "draw pixel row _ x _ y _"
 msgstr "debuxa a liña de píxeles _ en x _ y _"
+
+#. NeoPixel library block
+msgid "brighten all NeoPixels by _"
+msgstr "iluminar todo os NeoPíxeles en _"
+
+#. NeoPixel library block
+msgid "brighten NeoPixel _ by _"
+msgstr "ilumina o NeoPíxel _ en _"
+
+#. NeoPixel library block
+msgid "has white _"
+msgstr "con branco _"
+
+#. NeoPixel library block
+msgid "attach _ LED NeoPixel strip to pin _"
+msgstr "inicializa a tira de _ NeoPíxeles no pin _"
+
+#. NeoPixel library block
+msgid "PIR"
+msgstr "Sensor de presencia"
+
+#. NeoPanel library label
+msgid "NeoPanel"
+msgstr "NeoPanel"
+
+#. NeoPixel library block
+msgid "shift all NeoPixel colors by _"
+msgstr "cambia todas as cores dos NeoPíxeles por _"
+
+#. NeoPixel library block
+msgid "PIR at pin _ detected movement"
+msgstr "Movemento detectado polo PIR no pin _"
+
+#. NeoPixel library block
+msgid "shift NeoPixel _ color by _"
+msgstr "cambia a cor do NeoPíxel _ por _"
