@@ -1499,7 +1499,7 @@ method installLibraryNamed MicroBlocksScripter libName {
 	if (notNil (libraryNamed mbProject libName)) { return } // library already installed
 	fileName = (fileNameForLibraryNamed this libName)
 	if (isNil fileName) {
-		print 'Unknown library:' libName
+		print 'Unknown library:' libName 'fileName:' fileName
 		return
 	}
 	if (not (endsWith fileName '.ubl')) { fileName = (join fileName '.ubl') }
@@ -1531,6 +1531,9 @@ method fileNameForLibraryNamed MicroBlocksScripter libName {
 			}
 		}
 	}
+	// renamed libraries
+	if ('HSV Colors' == libName) { libName = 'Color' }
+	if ('VL53L0X' == libName) { libName = 'Distance (VL53L0X)' }
 	return (at embeddedLibraries libName)
 }
 
@@ -1538,12 +1541,13 @@ method extractLibraryName MicroBlocksScripter libData {
 	if (isNil libData) { return nil }
 	for line (lines libData) {
 		if (beginsWith line 'module') {
-			i = (findFirst line '''')
-			if (notNil i) { // quoted library name
+		    libName = (at (words line) 2)
+		    if ('''' == (at libName 1)) { // quoted library name
+			    i = (findFirst line '''')
 				j = (findLast line '''')
-				if ((j - i) > 2) { return (substring line (i + 1) (j - 1)) }
+				libName = (substring line (i + 1) (j - 1))
 			}
-			return (at (words line) 2)
+			return libName
 		}
 	}
 	return nil
