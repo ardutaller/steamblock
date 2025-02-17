@@ -1492,35 +1492,123 @@ method redrawnMorphs MicroBlocksEditor {
 
 // Script image utility
 
-method fixScriptsInFolderTree MicroBlocksEditor countryCode rootPath {
-	scriptEditor = (scriptEditor scripter)
-	setBlockScalePercent this 150
-	setExportScale scriptEditor 200
-	setLanguage this countryCode
+method fixScriptsInFolderTree MicroBlocksEditor rootPath defaultCountryCode {
+	// Replaces all PNG files with one or multiple scripts with new ones with blocks re-drawn.
+	// The language will extracted from the locale in the file path (e.g. ".../locales/ca/...").
+	// If the path does not have a locale, defaultCountryCode will be used.
+	//
+	// Note: This script will remove any result bubbles shown in the original PNG file.
+	// Thus, before running this script, you may want to identify the scripts that
+	// have result bubbles using the findScriptsWithResults method, allowing those PNG's
+	// to be manually updated.
+	//
+	// fixScriptsInFolderTree (first (allInstances 'MicroBlocksEditor')) '/Users/johnmaloney/Projects-2022/microblocks-learn/data'
+
+	if (isNil defaultCountryCode) { defaultCountryCode = 'en' }
+	setBlockScalePercent this 125 // scale for multiple script PNG images
+	setExportScale (scriptEditor scripter) 200 // scale for single script PNG images
 
 	for pngFilePath (allFiles rootPath '.png') {
-		fixPNGScriptImage this pngFilePath
+		pngData = (readFile pngFilePath true)
+		pngReader = (new 'PNGReader')
+		scriptString = (getScriptText pngReader pngData pngFilePath)
+		if (notNil scriptString) {
+			fixPNGScriptImage this pngFilePath scriptString defaultCountryCode
+		}
 	}
+	setLanguage this 'en'
 }
 
-method fixPNGScriptImage MicroBlocksEditor pngFile {
+method fixPNGScriptImage MicroBlocksEditor pngFilePath scriptString countryCode {
 	scriptEditor = (scriptEditor scripter)
 
 	// load scripts from file
 	clearProject this
-	importFromPNG this (readFile pngFile true)
+	code = (extractCountryCode this pngFilePath countryCode)
+	setLanguage this code
 
+	importFromScriptString this scriptString
 	scriptCount = (count (parts (morph scriptEditor)))
 	if (0 == scriptCount) { return }
 
 	updateLibraryList scripter
-
 	cleanUp scriptEditor
 
+	gc
 	if (1 == scriptCount) {
 		block = (handler (first (parts (morph scriptEditor))))
-		exportAsImageScaled block nil false pngFile
+print '   ' (substring pngFilePath 68)
+		exportAsImageScaled block nil false pngFilePath
 	} else {
-		saveScriptsImage scriptEditor pngFile true
+print '* multiple scripts:' (substring pngFilePath 68)
+		saveScriptsImage scriptEditor pngFilePath true
 	}
+}
+
+method extractCountryCode MicroBlocksEditor filePath defaultCountryCode {
+	if (isNil defaultCountryCode) { defaultCountryCode = 'en' }
+	i = (findSubstring 'locales/' filePath)
+	if (isNil i) { return defaultCountryCode }
+	start = (i + 8)
+	end = (findSubstring '/' filePath start)
+	result = (substring filePath start (end - 1))
+	if ('cn' == result) { result = 'zh-chs' } // map 'cn' to Simplified Chinese
+	return result
+}
+
+method importFromScriptString MicroBlocksEditor scriptString {
+	if (isNil scriptString) { return } // no script in this PNG file
+	i = (find (letters scriptString) (newline))
+	scriptString = (substring scriptString i)
+	pasteScripts scripter scriptString
+}
+
+method findScriptsWithResults MicroBlocksEditor rootPath {
+	// Prints a list of script PNG files that have result bubbles in the given folder hierarchy.
+	// findScriptsWithResults (first (allInstances 'MicroBlocksEditor')) '/Users/johnmaloney/Projects-2022/microblocks-learn/data'
+
+	for pngFilePath (allFiles rootPath '.png') {
+		pngData = (readFile pngFilePath true)
+		pngReader = (new 'PNGReader')
+		scriptString = (getScriptText pngReader pngData pngFilePath)
+		if (notNil scriptString) {
+			gc
+			bm = (readFrom pngReader pngData)
+			grayCount = (countTalkBubblePixels this bm)
+			if (grayCount > 100) {
+				print pngFilePath (width bm) 'x' (height bm) 'grays:' grayCount
+			}
+		}
+	}
+}
+
+method countTalkBubblePixels MicroBlocksEditor bm {
+	talkBubbleGray = (pixelRGB (gray 140))
+	result = 0
+	pixelData = (pixelData bm)
+	pixelCount = ((width bm) * (height bm))
+	for i pixelCount {
+		if ((getPixelRGB pixelData i) == talkBubbleGray) {
+			result += 1
+		}
+	}
+	return result
+}
+
+method countScriptPNGs MicroBlocksEditor rootPath {
+	// Prints a list of script PNG files that have result bubbles in the given folder hierarchy.
+	// findScriptsWithResults (first (allInstances 'MicroBlocksEditor')) '/Users/johnmaloney/Projects-2022/microblocks-learn/data'
+
+	pngCount = 0
+	pngWithScriptCount = 0
+	for pngFilePath (allFiles rootPath '.png') {
+		pngCount += 1
+		pngData = (readFile pngFilePath true)
+		scriptString = (getScriptText (new 'PNGReader') pngData pngFilePath)
+		if (notNil scriptString) {
+print pngFilePath
+			pngWithScriptCount += 1
+		}
+	}
+	print pngWithScriptCount 'PNG files have scripts out of' pngCount
 }
