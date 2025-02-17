@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-11 15:48+0200\n"
-"PO-Revision-Date: 2025-02-12 08:33+0000\n"
+"PO-Revision-Date: 2025-02-14 16:02+0000\n"
 "Last-Translator: JaeHwan So <cowcowwow@icloud.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/microblocks/ide/"
 "ko/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -160,7 +160,7 @@ msgstr "만약 _ _ 이라면 아니라면 _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr "아니고 만약 _ _ 라면"
+msgstr "아니고 만약 _ _"
 
 #. Block in Control category
 msgid "else"
@@ -268,43 +268,43 @@ msgstr "연산"
 
 #. Block in Operators category
 msgid "_ mod _"
-msgstr ""
+msgstr "_ 를 _(으)로 나눈 나머지"
 
 #. Block in Operators category
 msgid "abs _"
-msgstr ""
+msgstr "_의 절댓값"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr ""
+msgstr "최솟값 _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr ""
+msgstr "최댓값__"
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr ""
+msgstr "_~_사이 랜덤값"
 
 #. Block in Operators category
 msgid "not _"
-msgstr ""
+msgstr "_반대값"
 
 #. Block in Operators category
 msgid "_ and _"
-msgstr ""
+msgstr "_ 그리고 _"
 
 #. Block in Operators category
 msgid "and _"
-msgstr ""
+msgstr "그리고 _"
 
 #. Block in Operators category
 msgid "_ or _"
-msgstr ""
+msgstr "_또는_"
 
 #. Block in Operators category
 msgid "or _"
-msgstr ""
+msgstr "또는_"
 
 #. Block in Operators category
 msgid "_ is a _"
@@ -312,36 +312,36 @@ msgstr ""
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr ""
+msgstr "_(을)를_로 변환하기"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr ""
+msgstr "만약_라면_아니면_"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "boolean"
-msgstr ""
+msgstr "불리언"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
-msgstr ""
+msgstr "숫자"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr ""
+msgstr "문자열"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 #. Also label of ( list < > ) block in Data category
 msgid "list"
-msgstr ""
+msgstr "리스트"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
-msgstr ""
+msgstr "바이트어레이"
 
 #. "Advanced" label for advanced blocks in the palette
 msgid "cat;Advanced:"
-msgstr ""
+msgstr "고급 기능:"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
@@ -349,92 +349,92 @@ msgstr ""
 
 #. Block in Operators category
 msgid "hex _"
-msgstr ""
+msgstr "_헥사값(16진법)"
 
 #. Block in Operators category
 msgid "sqrt _"
-msgstr ""
+msgstr "_제곱근"
 
 #. "Variables" blocks category label
 msgid "cat;Variables"
-msgstr ""
+msgstr "변수"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr ""
+msgstr "변수 추가하기"
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr ""
+msgstr "변수 삭제하기"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr ""
+msgstr "새로운 변수 이름은?"
 
 #. Block in Variables category
 msgid "set _ to _"
-msgstr ""
+msgstr "_(을)를_로 설정하기"
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr ""
+msgstr "_(을)를 _만큼 바꾸기"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr ""
+msgstr "지역 변수 _ 초기값 _로 설정하기"
 
 #. "Data" blocks category label
 msgid "cat;Data"
-msgstr ""
+msgstr "데이터"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr ""
+msgstr "고양이"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr ""
+msgstr "강아지"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr ""
+msgstr "새"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr ""
+msgstr "물고기"
 
 #. Block in Data category
 msgid "length of _"
-msgstr ""
+msgstr "_리스트의 길이"
 
 #. Block in Data category
 msgid "item _ of _"
-msgstr ""
+msgstr "_리스트의 _번 째 항목"
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr ""
+msgstr "_리스트의 _번 째 항목 _로 바꾸기"
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr ""
+msgstr "_리스트의 _번 째 항목 지우기"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr ""
+msgstr "_리스트에 _ 추가하기"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr ""
+msgstr "_리스트와_합치기"
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr ""
+msgstr "_리스트를 _리스트로 복사하기"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr ""
+msgstr "미소"
 
 #. Block in Data category
 msgid "to _"
@@ -442,35 +442,35 @@ msgstr ""
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr ""
+msgstr "_에서 _ 찾기"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr ""
+msgstr "_로 시작하는 데이터"
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr ""
+msgstr "_리스트 항목 합치기"
 
 #. Block in Data category
 msgid "separator _"
-msgstr ""
+msgstr "_로 분리하기"
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr ""
+msgstr "_리스트의 _항목 유니코드"
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr ""
+msgstr "_유니코드 문자열 변환값"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr ""
+msgstr "_길이의 새로운 리스트"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr ""
+msgstr "_ 새로운 바이트어레이"
 
 #. Block in Data category
 msgid "as byte array _"
@@ -478,7 +478,7 @@ msgstr ""
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr ""
+msgstr "바이트리스트또는문자열입력"
 
 #. Block in Data category
 msgid "with all _"
@@ -486,7 +486,7 @@ msgstr ""
 
 #. Block in Data category
 msgid "free memory"
-msgstr ""
+msgstr "잔여 메모리"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
@@ -504,7 +504,7 @@ msgstr ""
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
 msgid "random"
-msgstr ""
+msgstr "랜덤"
 
 #. Block in Data category
 msgid "split _ by _"
@@ -512,7 +512,7 @@ msgstr ""
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr ""
+msgstr "내 블록"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
@@ -520,7 +520,7 @@ msgstr ""
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr ""
+msgstr "명령어 블록 추가하기"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
@@ -528,7 +528,7 @@ msgstr ""
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr ""
+msgstr "함수 이름을 입력하세요:"
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
