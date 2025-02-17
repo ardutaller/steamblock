@@ -1582,8 +1582,8 @@ static OBJ primTriangle(int argCount, OBJ *args) { return falseObj; }
 static OBJ primText(int argCount, OBJ *args) { return falseObj; }
 static OBJ primClear(int argCount, OBJ *args) { return falseObj; }
 
-static OBJ primDeferUpdates(int argCount, OBJ *args) { return falseObj; }
-static OBJ primResumeUpdates(int argCount, OBJ *args) { return falseObj; }
+OBJ primDeferUpdates(int argCount, OBJ *args) { return falseObj; }
+OBJ primResumeUpdates(int argCount, OBJ *args) { return falseObj; }
 
 static OBJ primMergeBitmap(int argCount, OBJ *args) { return falseObj; }
 static OBJ primDrawBuffer(int argCount, OBJ *args) { return falseObj; }

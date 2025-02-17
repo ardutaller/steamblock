@@ -783,6 +783,7 @@ method webSerialConnect SmallRuntime action {
 		port = nil
 	} ('open Boardie' == action) {
 		browserOpenBoardie
+		waitMSecs 100 // make sure Boardie is ready to receive messages
 		disconnected = false
 		connectionStartTime = (msecsSinceStart)
 		portName = 'boardie'
