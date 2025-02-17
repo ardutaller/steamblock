@@ -1646,7 +1646,13 @@ method labelText Block aString {
 
 	if (and (notNil blockSpec) ('comment' == (blockOp blockSpec))) { labelColor = (gray 80) }
 	if isSVG {
-		return (newSVGImage (substring aString 6) labelColor color scale)
+		colorIndex = (findSubstring '#' aString 6)
+		if (colorIndex > 0) {
+			labelColor = (colorHex (substring aString (colorIndex + 1)))
+		} else {
+			colorIndex = ((count aString) + 1)
+		}
+		return (newSVGImage (substring aString 6 (colorIndex - 1)) labelColor color scale)
 	}
 	if ('Linux' == (platform)) {
 		fontName = 'Noto Sans Bold'
