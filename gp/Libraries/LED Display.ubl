@@ -1,9 +1,10 @@
 module 'LED Display' Output
 author MicroBlocks
-version 1 9
-choices led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors
-description 'Display primitives for the 5x5 LED display on the BBC micro:bit, Calliope mini and M5Atom Matrix. Boards with TFT displays (such as the Citilab ED1 or the M5Stack family) support these primitives with a simulated "fat pixel" display.'
-variables _stop_scrolling_text
+version 1 10 
+choices led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors 
+description 'Display primitives for the 5x5 LED display on the BBC micro:bit, Calliope mini and M5Atom Matrix. Boards with TFT displays (such as the Citilab ED1 or the M5Stack family) support these primitives with a simulated "fat pixel" display.
+'
+variables _stop_scrolling_text 
 
   spec ' ' '[display:mbDisplay]' 'display _' 'microbitDisplay' 15237440
   spec ' ' 'led_displayImage' 'display image _ : x _ y _' 'menu.led_imageMenu num num' 'happy' 1 1
@@ -15,12 +16,12 @@ variables _stop_scrolling_text
   spec ' ' 'displayCharacter' 'display character _' 'str' 'A'
   spec ' ' 'scroll_text' 'scroll text _ : pausing _ ms' 'str num' 'HELLO ROSA!' 100
   spec ' ' 'stopScrollingText' 'stop scrolling'
+  advanced
+  spec ' ' 'set display color' 'set display color _' 'color'
   space
   spec 'r' '_led_image' 'led image _' 'microbitDisplay' 15237440
   spec 'r' '_led_namedImage' '_led_namedImage _' 'menu.led_imageMenu' 'happy'
   spec 'r' '_led_imageData' '_led_imageData'
-  advanced
-  spec ' ' 'set display color' 'set display color _' 'color'
 
 to '_led_image' twentyFiveBitInt {
   comment 'An LED image is a 25-bit integer'
@@ -41,10 +42,6 @@ to '_led_namedImage' name {
   local 'start' (('[data:find]' ':' data i) + 1)
   local 'end' (('[data:find]' ',' data i) - 1)
   return ('[data:convertType]' ('[data:copyFromTo]' data start end) 'number')
-}
-
-to 'set display color' color {
-  callCustomCommand '[display:mbSetColor]' ('[data:makeList]' color)
 }
 
 to displayCharacter s {
@@ -78,6 +75,15 @@ to scroll_text text optionalDelay {
       '[tft:text]' text (17 - position) 0 (colorSwatch 125 125 125 255) 1 true
       waitMillis (delay / 2)
     }
+  } ('kidsIOT' == (boardType)) {
+    for position (((size text) * 6) + 21) {
+      if _stop_scrolling_text {return 0}
+      '_deferMonochromeDisplayUpdates'
+      '[tft:clear]'
+      '[tft:text]' text (128 - (6 * position)) 6 (colorSwatch 255 255 255 255) 6 false
+      '_resumeMonochromeDisplayUpdates'
+      waitMillis (delay / 8)
+    }
   } else {
     for position (((size text) * 6) + 6) {
       if _stop_scrolling_text {return 0}
@@ -87,6 +93,10 @@ to scroll_text text optionalDelay {
       waitMillis delay
     }
   }
+}
+
+to 'set display color' color {
+  '[display:mbSetColor]' color
 }
 
 to stopScrollingText {
