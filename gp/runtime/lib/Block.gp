@@ -255,6 +255,11 @@ method fixLayout Block {
 			elem = (last each)
 			if (isClass elem 'CommandSlot') {
 				blockWidth = (max blockWidth (56 * scale)) // min size for "forever" and "if"
+				if (and (notNil expression) ('if' == (primName expression)) ((count expression) > 8)) {
+					// expanded "if" block; adjust width for translated "else" label
+					widthOfElse = (width (morph (labelText this (localized 'else'))))
+					blockWidth = (max blockWidth (widthOfElse + (7 * scale))) // min size for "if"
+				}
 			} else {
 				blockWidth = ((max blockWidth ((right (fullBounds (morph elem))) - left)))
 			}
