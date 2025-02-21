@@ -133,6 +133,39 @@ void writeI2CReg(int deviceID, int reg, int value) {
 	Wire.endTransmission();
 }
 
+#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) || defined(ARDUINO_M5STACK_Core2)
+
+#define HAS_INTERNAL_I2C 1
+
+static int internalWireStarted = false;
+
+static void startInternalWire() {
+	Wire1.begin();
+	Wire1.setClock(400000); // i2c fast mode (seems pretty ubiquitous among i2c devices)
+	internalWireStarted = true;
+}
+
+static int readInternalI2CReg(int deviceID, int reg) {
+	if (!internalWireStarted) startInternalWire();
+	Wire1.beginTransmission(deviceID);
+	Wire1.write(reg);
+	int error = Wire1.endTransmission();
+	if (error) return -error; // error; bad device ID?
+
+	Wire1.requestFrom(deviceID, 1);
+	return Wire1.available() ? Wire1.read() : 0;
+}
+
+static void writeInternalI2CReg(int deviceID, int reg, int value) {
+	if (!internalWireStarted) startInternalWire();
+	Wire1.beginTransmission(deviceID);
+	Wire1.write(reg);
+	Wire1.write(value);
+	Wire1.endTransmission();
+}
+
+#endif
+
 // other helper functions
 
 static inline int fix16bitSign(int n) {
@@ -164,6 +197,40 @@ OBJ primI2cSet(OBJ *args) {
 	writeI2CReg(deviceID, registerID, value);
 	return falseObj;
 }
+
+// internal i2c primitives
+
+#if defined(HAS_INTERNAL_I2C)
+
+static OBJ primInternalI2cGet(int argCount, OBJ *args) {
+	if (!isInt(args[0]) || !isInt(args[1])) return fail(needsIntegerError);
+	int deviceID = obj2int(args[0]);
+	int registerID = obj2int(args[1]);
+	if ((deviceID < 0) || (deviceID > 128)) return fail(i2cDeviceIDOutOfRange);
+	if ((registerID < 0) || (registerID > 255)) return fail(i2cRegisterIDOutOfRange);
+
+	return int2obj(readInternalI2CReg(deviceID, registerID));
+}
+
+static OBJ primInternalI2cSet(int argCount, OBJ *args) {
+	if (!isInt(args[0]) || !isInt(args[1]) || !isInt(args[2])) return fail(needsIntegerError);
+	int deviceID = obj2int(args[0]);
+	int registerID = obj2int(args[1]);
+	int value = obj2int(args[2]);
+	if ((deviceID < 0) || (deviceID > 128)) return fail(i2cDeviceIDOutOfRange);
+	if ((registerID < 0) || (registerID > 255)) return fail(i2cRegisterIDOutOfRange);
+	if ((value < 0) || (value > 255)) return fail(i2cValueOutOfRange);
+
+	writeInternalI2CReg(deviceID, registerID, value);
+	return falseObj;
+}
+
+#else
+
+static OBJ primInternalI2cGet(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
+static OBJ primInternalI2cSet(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
+
+#endif
 
 static OBJ primI2cExists(int argCount, OBJ *args) {
 	// Return true if there is an i2c device at the given address. Used for i2c scanning.
@@ -533,33 +600,6 @@ static int readTemperature() {
 
 #elif defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3)
 
-static int internalWireStarted = false;
-
-static void startInternalWire() {
-	Wire1.begin();
-	Wire1.setClock(400000); // i2c fast mode (seems pretty ubiquitous among i2c devices)
-	internalWireStarted = true;
-}
-
-static int readInternalI2CReg(int deviceID, int reg) {
-	if (!internalWireStarted) startInternalWire();
-	Wire1.beginTransmission(deviceID);
-	Wire1.write(reg);
-	int error = Wire1.endTransmission((bool) false);
-	if (error) return -error; // error; bad device ID?
-
-	Wire1.requestFrom(deviceID, 1);
-	return Wire1.available() ? Wire1.read() : 0;
-}
-
-static void writeInternalI2CReg(int deviceID, int reg, int value) {
-	if (!internalWireStarted) startInternalWire();
-	Wire1.beginTransmission(deviceID);
-	Wire1.write(reg);
-	Wire1.write(value);
-	Wire1.endTransmission();
-}
-
 typedef enum {
 	accel_unknown = -1,
 	accel_none = 0,
@@ -857,7 +897,7 @@ static int readTemperature() {
 }
 
 #elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5Stick_C) || \
-	defined(ARDUINO_M5Atom_Matrix_ESP32) || ARDUINO_M5STACK_Core2 || \
+	defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_M5STACK_Core2) || \
 	defined(ARDUINO_M5Atom_Lite_ESP32)
 
 #ifdef ARDUINO_M5Stack_Core_ESP32
@@ -2221,6 +2261,8 @@ static PrimEntry entries[] = {
 	{"i2cWrite", primI2cWrite},
 	{"i2cSetClockSpeed", primI2cSetClockSpeed},
 	{"i2cSetPins", primI2cSetPins},
+	{"internalI2cGet", primInternalI2cGet},
+	{"internalI2cSet", primInternalI2cSet},
 	{"spiExchange", primSPIExchange},
 	{"spiSetup", primSPISetup},
 	{"readDHT", primReadDHT},
