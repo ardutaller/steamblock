@@ -428,11 +428,11 @@ static OBJ primClear(int argCount, OBJ *args) {
 
 // defer/force update
 
-static OBJ primDeferUpdates(int argCount, OBJ *args) {
+OBJ primDeferUpdates(int argCount, OBJ *args) {
 	return falseObj; // noop; Boardie always defers updates
 }
 
-static OBJ primResumeUpdates(int argCount, OBJ *args) {
+OBJ primResumeUpdates(int argCount, OBJ *args) {
 	// Return control to the browser to allow display update.
 
 	taskSleep(0); // ends the current interpreter step
