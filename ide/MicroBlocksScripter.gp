@@ -1626,6 +1626,52 @@ method scriptsBottom MicroBlocksScripter {
 	return result
 }
 
+// category export
+
+method exportPNGsForBuiltinBlocks MicroBlocksScripter {
+	// Exports PNG's for all built-in blocks at 100% and 50% in one folder per blocks category.
+	// To run:
+	//   exportPNGsForBuiltinBlocks (scripter (first (allInstances 'MicroBlocksEditor')))
+
+	allCategories = (list 'Output' 'Input' 'Pins' 'Comm' 'Control' 'Operators' 'Variables' 'Data')
+	for category allCategories {
+		cat = (join 'cat;' category)
+		exportBlockPNGsForCategory (scripter (first (allInstances 'MicroBlocksEditor'))) cat 1.0
+		exportBlockPNGsForCategory (scripter (first (allInstances 'MicroBlocksEditor'))) cat 0.5
+	}
+}
+
+method exportBlockPNGsForCategory MicroBlocksScripter cat scale {
+	makeDirectory 'block-pngs'
+	folderName = (join './block-pngs/' (substring cat 5))
+	makeDirectory folderName
+	suffix = '.png'
+	oldExportScale = (global 'blockExportScale')
+	setGlobal 'blockExportScale' scale
+	if (scale < 1) {
+		n = (round (100 * scale))
+		suffix = (join '_' n 'p.png')
+	}
+	specList = (specsFor (authoringSpecs) cat)
+	addAll specList (specsFor (authoringSpecs) (join cat '-Advanced'))
+	for spec specList {
+		if (not (isOneOf spec '-')) {
+			blockName = (blockOp spec)
+			i = (findFirst blockName ':')
+			if (and (beginsWith blockName '[') (notNil i)) {
+				blockName = (join
+					(substring blockName 2 (i - 1))
+					'_'
+					(substring blockName (i + 1) ((count blockName) - 1)))
+			}
+			filePath = (toLowerCase (join folderName '/' blockName suffix))
+			print filePath (blockForSpec spec)
+			exportAsImageScaled (blockForSpec spec) nil nil filePath
+		}
+	}
+    setGlobal 'blockExportScale' oldExportScale
+}
+
 // dropping
 
 method wantsDropOf MicroBlocksScripter aHandler {
