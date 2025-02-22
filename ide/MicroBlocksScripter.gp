@@ -1534,6 +1534,7 @@ method fileNameForLibraryNamed MicroBlocksScripter libName {
 	// renamed libraries
 	if ('HSV Colors' == libName) { libName = 'Color' }
 	if ('VL53L0X' == libName) { libName = 'Distance (VL53L0X)' }
+	if ('CutebotPRO' == libName) { libName = 'Cutebot Pro' }
 	return (at embeddedLibraries libName)
 }
 
@@ -1664,9 +1665,13 @@ method exportBlockPNGsForCategory MicroBlocksScripter cat scale {
 					'_'
 					(substring blockName (i + 1) ((count blockName) - 1)))
 			}
+			block = (blockForSpec spec)
+			addPart morph (morph block)
+			if ('/' == blockName) { blockName = 'div' }
 			filePath = (toLowerCase (join folderName '/' blockName suffix))
-			print filePath (blockForSpec spec)
-			exportAsImageScaled (blockForSpec spec) nil nil filePath
+			print filePath
+			exportAsImageScaled block nil nil filePath
+			removePart morph (morph block)
 		}
 	}
     setGlobal 'blockExportScale' oldExportScale
