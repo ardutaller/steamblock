@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-23 18:29+0000\n"
+"PO-Revision-Date: 2025-02-24 23:20+0000\n"
 "Last-Translator: \"Miguel A. Bouzada\" <mbouzada@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/microblocks/ide/"
 "gl/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1-dev\n"
+"X-Generator: Weblate 5.10.2-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -20,7 +20,7 @@ msgstr "Saída"
 
 #. Citilab ED1 Buttons library block
 msgid "set capacitive threshold to _"
-msgstr "pon o limiar capacitivo a _"
+msgstr "fixa o limiar capacitivo en _"
 
 #. TFT Display library block
 msgid "enable TFT _"
@@ -349,7 +349,7 @@ msgstr "animar o texto _"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Battery (mV)"
-msgstr "Hummingbird Batería (mV)"
+msgstr "Batería Hummingbird (mV)"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Dial"
@@ -387,7 +387,7 @@ msgstr "deter motores"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
-msgstr "Hummingbird Tri-LED _ Vermello _ % Verde _ % Azul _ %"
+msgstr "Tri-LED Hummingbird _ vermello _ % verde _ % azul _ %"
 
 #. Infrared remote library label
 msgid "IR Remote"
@@ -399,7 +399,7 @@ msgstr "Motores ED1"
 
 #. BirdBrain Technologies Hummingbird kit library label
 msgid "Hummingbird LED _ _ %"
-msgstr "Hummingbird LED _ _ %"
+msgstr "LED Hummingbird _ _ %"
 
 #. Servo motor library label
 msgid "Servo"
@@ -423,7 +423,7 @@ msgstr "recibir código IR dende"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Rotation Servo _ _ %"
-msgstr "Hummingbird Servo Rotacional _ _ %"
+msgstr "Servo de rotacion Hummingbird _ _ %"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Other"
@@ -451,7 +451,7 @@ msgstr "Control"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor 1 _ and motor 2 _ _ steps"
-msgstr "mover o motor 1 en _ e o motor 2 en _ _ pasos"
+msgstr "move motor 1 en _ e o motor 2 en _ _ pasos"
 
 #. Infrared Remote library block
 msgid "test IR"
@@ -1450,16 +1450,134 @@ msgstr "cambia a cor do NeoPíxel _ por _"
 
 #. NeoPanel library block
 msgid "NeoPanel set x _ y _ color _"
-msgstr "pinta o píxel x _ y _ coa cor _ no NeoPanel"
+msgstr "pinta píxel x _ y _ cor _ no NeoPanel"
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
-msgstr "pinta a columna _ coa cor _ no NeoPanel"
+msgstr "pinta columna _ cor _ no NeoPanel"
 
 #. NeoPanel library block
 msgid "NeoPanel fill row _ color _"
-msgstr "pinta a fila _ coa cor _ no NeoPanel"
+msgstr "pinta fila _ cor _ no NeoPanel"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
 msgstr "inicializa panel de NeoPíxeles largo _ alto _ no pin _"
+
+#. Microphone library block
+msgid "microphone"
+msgstr "micrófono"
+
+#. Microphone library block
+msgid "estimate clap threshold"
+msgstr "detecta o limiar de aplauso"
+
+#. Microphone library block
+msgid "clap count"
+msgstr "reconto de aplausos"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Light"
+msgstr "luz _ do Finch"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Distance (cm)"
+msgstr "distancia do Finch (cm)"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Accelerometer _"
+msgstr "acelerómetro do Finch _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Move _ _ cm at _ %"
+msgstr "move o Finch _ _ cm a velocidade _ %"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ angle _ °"
+msgstr "move motor _ ángulo _ °"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Turn _ _ ° at _ %"
+msgstr "xira o Finch _ _ ° á velocidade _ %"
+
+#. Microphone library block
+msgid "set clap threshold _"
+msgstr "fixa o limiar de aplauso en _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ steps _"
+msgstr "move motor _ _ pasos _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Stop"
+msgstr "detén o Finch"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Tail _ Red _ Green _ Blue _"
+msgstr "acende a cola _ de cor vermello _% verde _% azul _%"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Encoder"
+msgstr "contador de voltas _"
+
+#. Microphone library label
+msgid "Microphone"
+msgstr "Micrófono"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Position Servo _ _ °"
+msgstr "Servo de posición Hummingbird _ _ °"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ complete turns"
+msgstr "move motor _ _ voltas completas"
+
+#. NeoPanel library block
+msgid "NeoPanel draw BMP file _ at x _ y _"
+msgstr "amosa imaxe BMP _ x _ y _ no NeoPanel"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Line"
+msgstr "líña _ do Finch"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Battery"
+msgstr "nivel de batería do Finch"
+
+#. BirdBrain Technologies Finch library label
+msgid "Finch Beak Red _ Green _ Blue _"
+msgstr "acende o bico de cor vermello _ % verde _ % azul _ %"
+
+#. Microphone library block
+msgid "turn on microphone"
+msgstr "activa o micrófono"
+
+#. Microphone library block
+msgid "loudness"
+msgstr "volume"
+
+#. HTTP Server library block
+msgid "respond _ to HTTP request"
+msgstr "responde _ á petición HTTP"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Map a value in the \"from\" range to the corresponding value in the \"to\" range."
+msgstr ""
+"Transforma un número desde o intervalo orixinal ao valor correspondente "
+"noutro intervalo."
+
+#. NeoPanel library block
+msgid "NeoPanel draw text _ at x _ y _ color _"
+msgstr "escribe _ en x _ y _ cor _ no NeoPanel"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Wheels L _ % R _ %"
+msgstr "pon as rodas á velocidade E _ % D _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Reset Encoders"
+msgstr "reinicia os contadores de voltas do Finch"
+
+#. NeoPanel library block
+msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
+msgstr "pinta rectángulo x _ y _ largo _ alto _ cor _ no NeoPanel"
