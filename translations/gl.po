@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-13 15:50+0000\n"
+"PO-Revision-Date: 2025-02-23 18:29+0000\n"
 "Last-Translator: \"Miguel A. Bouzada\" <mbouzada@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/microblocks/ide/"
 "gl/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10.1-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -124,7 +124,7 @@ msgstr "último texto recibido por radio"
 
 #. Block in Comm category
 msgid "no op"
-msgstr ""
+msgstr "non op"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set power (0-7) _"
@@ -156,7 +156,7 @@ msgstr "escribir no dispositivo I²C _ o rexistro _ con _"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
-msgstr "pinta todos os NeoPíxeles de cor _"
+msgstr "pinta todos os NeoPíxeles coa cor _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
@@ -204,7 +204,7 @@ msgstr "escribe _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send packet _"
-msgstr "envía os paquetes por radio _"
+msgstr "envía paquete por radio _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "stop WiFi"
@@ -260,7 +260,7 @@ msgstr "admite tons"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio receive packet _"
-msgstr "recepción de paquetes por radio _"
+msgstr "recibe paquete por radio _"
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
@@ -328,7 +328,7 @@ msgstr "limpeza"
 
 #. TFT Display library block
 msgid "set TFT pixel x _ y _ to _"
-msgstr "pinta o píxel x _ y _ da cor _"
+msgstr "pinta o píxel x _ y _ coa cor _"
 
 #. Tone library label
 #. Generates music tones on buzzers
@@ -1260,7 +1260,7 @@ msgstr "microsegundos desde _"
 
 #. Block in Input category
 msgid "connected to IDE"
-msgstr "conectado a la IDE"
+msgstr "conectado á IDE"
 
 #. Block in Pins category
 msgid "pullup _"
@@ -1447,3 +1447,19 @@ msgstr "Movemento detectado polo PIR no pin _"
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
 msgstr "cambia a cor do NeoPíxel _ por _"
+
+#. NeoPanel library block
+msgid "NeoPanel set x _ y _ color _"
+msgstr "pinta o píxel x _ y _ coa cor _ no NeoPanel"
+
+#. NeoPanel library block
+msgid "NeoPanel fill column _ color _"
+msgstr "pinta a columna _ coa cor _ no NeoPanel"
+
+#. NeoPanel library block
+msgid "NeoPanel fill row _ color _"
+msgstr "pinta a fila _ coa cor _ no NeoPanel"
+
+#. NeoPanel library block
+msgid "attach NeoPixel panel width _ height _ at pin _"
+msgstr "inicializa panel de NeoPíxeles largo _ alto _ no pin _"
