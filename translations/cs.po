@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-02-19 01:56+0000\n"
+"PO-Revision-Date: 2025-02-23 08:05+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -156,7 +156,7 @@ msgstr "pokud _"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr "čekej dokud _"
+msgstr "čekej až bude _"
 
 #. Block in Control category
 msgid "wait _ microsecs"
@@ -199,9 +199,8 @@ msgid "for _ in _ _"
 msgstr "pro _ z _ _"
 
 #. Block in Control category
-#, fuzzy
 msgid "repeat until _ _"
-msgstr "opakuj až do _"
+msgstr "opakuj dokud není _ _"
 
 #. Block in Control category
 msgid "stop this task"
@@ -1326,9 +1325,8 @@ msgid "BLE Keyboard"
 msgstr "BLE klávesnice"
 
 #. BLE Keyboard library block
-#, fuzzy
 msgid "start BLE Keyboard"
-msgstr "spustit BLE klávesnici"
+msgstr "aktivovat BLE klávesnici"
 
 #. Radio comm library label
 #. Allows micro:bit boards to exchange messages
@@ -1461,7 +1459,7 @@ msgstr "úžasný"
 
 #. Image name for the "display image" block
 msgid "meh"
-msgstr ""
+msgstr "hmmm"
 
 #. Image name for the "display image" block
 msgid "t-shirt"
@@ -1528,7 +1526,6 @@ msgid "quarter note"
 msgstr "čtvrťová nota"
 
 #. Image name for the "display image" block
-#, fuzzy
 msgid "eight note"
 msgstr "osminková nota"
 
