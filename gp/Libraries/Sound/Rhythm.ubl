@@ -1,6 +1,6 @@
 module Rhythm Control
 author MicroBlocks
-version 2 4 
+version 2 5 
 description 'Keeps time according to a tempo and time signature. Useful to create musical patterns.
 
 Includes abstractions for note durations, bars and beats.
@@ -13,7 +13,7 @@ variables _rhy_tempo _rhy_bars _rhy_beat_duration _rhy_measures _rhy_reference_n
   spec 'r' 'rhy_current bar' 'current bar'
   spec 'r' 'rhy_current beat' 'current beat'
   space
-  spec ' ' 'rhy_wait until next' 'wait until next _ duration' 'num' 
+  spec ' ' 'rhy_wait until next' 'wait until next _ duration' 'num'
   spec ' ' 'rhy wait until beat' 'wait until beat _' 'num' 3
   spec ' ' 'rhy wait until bar' 'wait until bar _' 'num' 2
   space
@@ -52,26 +52,26 @@ to 'rhy wait until bar' 'bar number' {
   if (_rhy_bars == 0) {'rhy_set bars' 16}
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
   local 'round duration' ((v 'bar duration') * _rhy_bars)
-  local 'wakeTime' (((v 'round duration') * (((millisOp) / (v 'round duration')) + 1)) + (((v 'bar number') - 1) * (v 'bar duration')))
-  waitMillis ((wakeTime - (millisOp)) % (v 'round duration'))
+  local 'wakeTime' (((v 'round duration') * (((timer) / (v 'round duration')) + 1)) + (((v 'bar number') - 1) * (v 'bar duration')))
+  waitMillis ((wakeTime - (timer)) % (v 'round duration'))
 }
 
 to 'rhy wait until beat' 'beat number' {
   if (_rhy_beat_duration == 0) {'rhy_set tempo' 120 4 4}
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
-  local 'wakeTime' (((v 'bar duration') * (((millisOp) / (v 'bar duration')) + 1)) + (((v 'beat number') - 1) * _rhy_beat_duration))
-  waitMillis ((wakeTime - (millisOp)) % (v 'bar duration'))
+  local 'wakeTime' (((v 'bar duration') * (((timer) / (v 'bar duration')) + 1)) + (((v 'beat number') - 1) * _rhy_beat_duration))
+  waitMillis ((wakeTime - (timer)) % (v 'bar duration'))
 }
 
 to 'rhy_current bar' {
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
   local 'round duration' ((v 'bar duration') * _rhy_bars)
-  return ((((millisOp) % (v 'round duration')) / (v 'bar duration')) + 1)
+  return ((((timer) % (v 'round duration')) / (v 'bar duration')) + 1)
 }
 
 to 'rhy_current beat' {
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
-  return ((((millisOp) % (v 'bar duration')) / _rhy_beat_duration) + 1)
+  return ((((timer) % (v 'bar duration')) / _rhy_beat_duration) + 1)
 }
 
 to rhy_dotted duration {
@@ -111,11 +111,10 @@ to rhy_triplet duration {
 }
 
 to 'rhy_wait until next' duration {
-  local 'wakeTime' (duration * (((millisOp) / duration) + 1))
-  waitMillis (wakeTime - (millisOp))
+  local 'wakeTime' (duration * (((timer) / duration) + 1))
+  waitMillis (wakeTime - (timer))
 }
 
 to 'rhy_whole duration' {
   return ('_rhy duration of note value' 1)
 }
-
