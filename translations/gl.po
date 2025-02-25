@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-24 23:20+0000\n"
+"PO-Revision-Date: 2025-02-26 09:10+0000\n"
 "Last-Translator: \"Miguel A. Bouzada\" <mbouzada@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/microblocks/ide/"
 "gl/>\n"
@@ -24,7 +24,7 @@ msgstr "fixa o limiar capacitivo en _"
 
 #. TFT Display library block
 msgid "enable TFT _"
-msgstr "activar TFT _"
+msgstr "activa TFT _"
 
 #. Script right-click context menu
 msgid "script;delete"
@@ -345,7 +345,7 @@ msgstr "Botóns ED1"
 
 #. Scrolling library block
 msgid "scroll text _"
-msgstr "animar o texto _"
+msgstr "anima o texto _"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Battery (mV)"
@@ -379,7 +379,7 @@ msgstr "Hummingbird _ _"
 
 #. 5x5 LED Display library block
 msgid "display character _"
-msgstr "amosar carácter _"
+msgstr "amosa o carácter _"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "stop steppers"
@@ -407,19 +407,19 @@ msgstr "Servomotores"
 
 #. Infrared Remote library block
 msgid "receive IR code from device _"
-msgstr "recibir código IR dende o dispositivo _"
+msgstr "recibe código IR desde o dispositivo _"
 
 #. Scrolling library block
 msgid "stop scrolling"
-msgstr "deter a animación"
+msgstr "para a animación"
 
 #. 5x5 LED Display library block
 msgid "plot x _ y _"
-msgstr "acender x _ y _"
+msgstr "acende x _ y _"
 
 #. Infrared Remote library block
 msgid "receive IR code"
-msgstr "recibir código IR dende"
+msgstr "recibe código IR"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Rotation Servo _ _ %"
@@ -439,7 +439,7 @@ msgstr "inicializar zunidor no pin _"
 
 #. Scrolling library block
 msgid "scroll number _"
-msgstr "animar o número _"
+msgstr "anima o número _"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Sound"
@@ -455,7 +455,7 @@ msgstr "move motor 1 en _ e o motor 2 en _ _ pasos"
 
 #. Infrared Remote library block
 msgid "test IR"
-msgstr "probar IR"
+msgstr "proba IR"
 
 #. TFT Display library block
 msgid "draw line on TFT from x _ y _ to x _ y _ color _"
@@ -467,7 +467,7 @@ msgstr "sentido antihorario"
 
 #. Infrared Remote library block
 msgid "attach IR receiver to pin _"
-msgstr "inicializar o receptor IR no pin _"
+msgstr "inicializa o receptor IR no pin _"
 
 #. In MicroBlocks IDE connection menu. Select "other..." serial port
 msgid "other..."
@@ -551,7 +551,7 @@ msgstr "Deter"
 
 #. About window info
 msgid "Created with GP"
-msgstr "Creado con GP."
+msgstr "Creado con GP"
 
 #. Block right-click context menu
 msgid "duplicate all"
@@ -937,7 +937,7 @@ msgstr "limpar pantalla"
 
 #. 5x5 LED Display library block
 msgid "unplot x _ y _"
-msgstr "apagar x _ y _"
+msgstr "apaga x _ y _"
 
 #. Block right-click context menu
 msgid "collapse"
@@ -1581,3 +1581,566 @@ msgstr "reinicia os contadores de voltas do Finch"
 #. NeoPanel library block
 msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
 msgstr "pinta rectángulo x _ y _ largo _ alto _ cor _ no NeoPanel"
+
+#. Keyboard and Mouse library block
+msgid "hold key _"
+msgstr "mantén a tecla _ premida"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;tab"
+msgstr "tabulador"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;both"
+msgstr "ambos"
+
+#. Lists library block
+msgid "reversed _"
+msgstr "_ invertida"
+
+#. Pseudorandomness library block
+msgid "_ pseudorandom numbers _ to _ with seed _"
+msgstr "_ números pseudoaleatorios entre _ e _ coa semente _"
+
+#. Servo motor library block
+msgid "stop servo _"
+msgstr "para o servo _"
+
+#. Image name for the "display image" block
+msgid "square"
+msgstr "cadrado"
+
+#. OLED Graphics library block
+msgid "clear"
+msgstr "limpar"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;insert"
+msgstr "inserir"
+
+#. Image name for the "display image" block
+msgid "confused"
+msgstr "confuso"
+
+#. Example string. Tells the user this input accepts a list or a string
+msgid "aListOrString"
+msgstr "unhaListaOuTexto"
+
+#. Lists library block
+msgid "map _ over _"
+msgstr "asigna _ sobre _"
+
+#. Image name for the "display image" block
+msgid "silly"
+msgstr "atolado"
+
+#. Keyboard and Mouse library block
+msgid "_ mouse click"
+msgstr "clic _ do rato"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Up"
+msgstr "Bico cara arriba"
+
+#. Keyboard and Mouse library label
+msgid "Keyboard and Mouse"
+msgstr "Teclado e rato"
+
+#. Pseudorandomness library label
+#. Creates pseudorandom numbers and lists of numbers given a particular seed
+msgid "Pseudorandomness"
+msgstr "Pseudoaleatoriedade"
+
+#. Image name for the "display image" block
+msgid "stick figure"
+msgstr "persoa"
+
+#. Scrolling library block
+msgid "pausing _ ms"
+msgstr "pausando _ ms"
+
+#. Keyboard and Mouse library block
+msgid "press key _"
+msgstr "preme a tecla _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgDown"
+msgstr "AvPáx"
+
+#. BLE Keyboard library block
+msgid "start BLE Keyboard"
+msgstr "inicia teclado BLE"
+
+#. OLED Graphics library block
+msgid "cursor location"
+msgstr "posición do cursor"
+
+#. Image name for the "display image" block
+msgid "diamond"
+msgstr "diamante"
+
+#. Lists library block
+msgid "shuffle _"
+msgstr "baralla _"
+
+#. Image name for the "display image" block
+msgid "duck"
+msgstr "parrulo"
+
+#. Image name for the "display image" block
+msgid "roller skate"
+msgstr "patín"
+
+#. Image name for the "display image" block
+msgid "umbrella"
+msgstr "paraugas"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Right"
+msgstr "Dereita"
+
+#. BLE Keyboard library label
+msgid "BLE Keyboard"
+msgstr "Teclado BLE"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "x"
+msgstr "x"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ESC"
+msgstr "Esc"
+
+#. Image name for the "display image" block
+msgid "house"
+msgstr "casa"
+
+#. Lists library block
+msgid "list _ contains _"
+msgstr "a lista _ contén _"
+
+#. OLED Graphics library block
+msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
+msgstr ""
+"debuxar un rectángulo x _ y _ largo _ alto _ borrar _ arredondado (3-15) _"
+
+#. Keyboard and Mouse library block
+msgid "hold _ mouse button"
+msgstr "mantén premido o botón _ do rato"
+
+#. OLED Graphics library block
+msgid "make image _"
+msgstr "constrúe imaxe _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Shift"
+msgstr "Maiúsculas"
+
+#. Keyboard and Mouse library block
+msgid "release key _"
+msgstr "solta a tecla _"
+
+#. Image name for the "display image" block
+msgid "happy"
+msgstr "ledo"
+
+#. Lists library label
+#. Extra utilities for list manipulation and access
+msgid "Lists"
+msgstr "Listas"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;home"
+msgstr "inicio"
+
+#. Image name for the "display image" block
+msgid "eight note"
+msgstr "corchea"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Upside Down"
+msgstr "Cabeza abaixo"
+
+#. Keyboard and Mouse library block
+msgid "release mouse buttons"
+msgstr "solta os botóns do rato"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;AltGr"
+msgstr "AltGr"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;right"
+msgstr "dereito"
+
+#. Example text for Scrolling library.
+msgid "HELLO ROSA!"
+msgstr "OLA, ROSA!"
+
+#. OLED Graphics library block
+msgid "defer display updates"
+msgstr "pospoñer as actualizacións da pantalla"
+
+#. Image name for the "display image" block
+msgid "cow"
+msgstr "vaca"
+
+#. Image name for the "display image" block
+msgid "small heart"
+msgstr "corazón pequeno"
+
+#. Image name for the "display image" block
+msgid "butterfly"
+msgstr "bolboreta"
+
+#. Image name for the "display image" block
+msgid "no"
+msgstr "non"
+
+#. Lists library block
+msgid "shuffled _"
+msgstr "_ barallada"
+
+#. Image name for the "display image" block
+msgid "giraffe"
+msgstr "xirafa"
+
+#. Image name for the "display image" block
+msgid "yes"
+msgstr "si"
+
+#. Image name for the "display image" block
+msgid "tortoise"
+msgstr "sapoconcho"
+
+#. Lists library block
+msgid "pick _ from _"
+msgstr "escolle _ elementos de _"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;left"
+msgstr "esquerdo"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "y"
+msgstr "y"
+
+#. Image name for the "display image" block
+msgid "sad"
+msgstr "triste"
+
+#. OLED Graphics library block
+msgid "set contrast (1-4) _"
+msgstr "definir o contraste (1-4) _"
+
+#. 5x5 LED Display library block
+msgid "set display color _"
+msgstr "fixa a cor da pantalla en _"
+
+#. Option in ( pick (most) from (aList) ) block in Lists library
+msgid "most"
+msgstr "moitos"
+
+#. Image name for the "display image" block
+msgid "angry"
+msgstr "anoxado"
+
+#. Image name for the "display image" block
+msgid "scissors"
+msgstr "tesoira"
+
+#. Keyboard and Mouse library block
+msgid "scroll mouse by _"
+msgstr "despraza o rato en _"
+
+#. OLED Graphics library block
+msgid "set pixel x _ y _ erase _"
+msgstr "pon píxel x _ y _ borrado _"
+
+#. Image name for the "display image" block
+msgid "triangle"
+msgstr "triángulo"
+
+#. Servo motor library block
+msgid "set servo _ to speed _ (-100 to 100)"
+msgstr "fai xirar o servo _ á velocidade _ (-100 a 100)"
+
+#. Image name for the "display image" block
+msgid "ghost"
+msgstr "pantasma"
+
+#. OLED Graphics library block
+msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
+msgstr "inicializar spi _ d/c pin nº. _ restabelecer pin nº. _ xirar _"
+
+#. Image name for the "display image" block
+msgid "snake"
+msgstr "serpe"
+
+#. Image name for the "display image" block
+msgid "fabulous"
+msgstr "xenial"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Backward"
+msgstr "Atrás"
+
+#. Lists library block
+msgid "reverse _"
+msgstr "inverte _"
+
+#. Image name for the "display image" block
+msgid "chess board"
+msgstr "xadrez"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;middle"
+msgstr "medio"
+
+#. Infrared Remote library block
+msgid "IR transmit device _ command _"
+msgstr "envía ao dispositivo IR _ a orde _"
+
+#. OLED Graphics library block
+msgid "set video _"
+msgstr "fixa o vídeo a _"
+
+#. Keyboard and Mouse library block
+msgid "release all keys"
+msgstr "solta todas as teclas"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Level"
+msgstr "Plano"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;backspace"
+msgstr "retroceso"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Alt / ⌥"
+msgstr "Alt / ⌥"
+
+#. Option in ( pick (some) from (aList) ) block in Lists library
+msgid "some"
+msgstr "uns cantos"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;CapsLock"
+msgstr "BloqMaiús"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Forward"
+msgstr "Adiante"
+
+#. Example string. Tells the user this input accepts a function name
+msgid "aFunction"
+msgstr "unhaFunción"
+
+#. Lists library block
+msgid "unique _"
+msgstr "elimina duplicados de _"
+
+#. 5x5 LED Display library block
+msgid "display image _"
+msgstr "amosa a imaxe _"
+
+#. TFT Display library block
+msgid "TFT height"
+msgstr "alyo da pantalla TFT"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PrintScreen"
+msgstr "ImpPant"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Down"
+msgstr "Bico cara abaixo"
+
+#. OLED Graphics library block
+msgid "fill rectangle x _ y _ w _ h _ erase _"
+msgstr "debuxar un rectángulo sólido x _ y _ largo _ alto _ borrar _"
+
+#. Lists library block
+msgid "sort _"
+msgstr "ordena _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;return"
+msgstr "retorno"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;NumLock"
+msgstr "BloqNúm"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Left"
+msgstr "Inclinado á esquerda"
+
+#. Image name for the "display image" block
+msgid "left triangle"
+msgstr "triángulo rectángulo"
+
+#. OLED Graphics library block
+msgid "_flip display top _"
+msgstr "_xirar a parte superior da pantalla _"
+
+#. Image name for the "display image" block
+msgid "asleep"
+msgstr "durmido"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgUp"
+msgstr "RePáx"
+
+#. Image name for the "display image" block
+msgid "rabbit"
+msgstr "coello"
+
+#. Image name for the "display image" block
+msgid "quarter note"
+msgstr "nota"
+
+#. OLED Graphics library block
+msgid "write _ at x _ y _ inverse _"
+msgstr "amosar _ en x _ y _ inverter _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Left"
+msgstr "Esquerda"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Right"
+msgstr "Inclinado á dereita"
+
+#. Keyboard and Mouse library block
+msgid "while holding _"
+msgstr "mantendo _ premida"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ScrollLock"
+msgstr "BloqDespr"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;end"
+msgstr "fin"
+
+#. Lists library block
+msgid "circular item _ of _"
+msgstr "elemento circular _ de _"
+
+#. Image name for the "display image" block
+msgid "t-shirt"
+msgstr "camiseta"
+
+#. Image name for the "display image" block
+msgid "pitchfork"
+msgstr "forca"
+
+#. Image name for the "display image" block
+msgid "surprised"
+msgstr "sorprendido"
+
+#. TFT Display library block
+msgid "TFT width"
+msgstr "largo da pantalla TFT"
+
+#. Image name for the "display image" block
+msgid "heart"
+msgstr "corazón"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "z"
+msgstr "z"
+
+#. Image name for the "display image" block
+msgid "meh"
+msgstr "apático"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "All"
+msgstr "Todos"
+
+#. Lists library block
+msgid "uniqued _"
+msgstr "_ sen duplicados"
+
+#. Pseudorandomness library block
+msgid "pseudorandom _ to _ with seed _"
+msgstr "número pseudoaleatorio entre _ e _ coa semente _"
+
+#. Image name for the "display image" block
+msgid "sword"
+msgstr "espada"
+
+#. OLED Graphics library block
+msgid "show display buffer"
+msgstr "amosar memoria intermedia de visualización"
+
+#. OLED Graphics library block
+msgid "draw image _ at x _ y _"
+msgstr "debuxar imaxe _ en x _ y _"
+
+#. OLED Graphics library block
+msgid "draw line from x _ y _ to x _ y _ erase _"
+msgstr "debuxar unha liña desde x _ y _ ata x _ y _ borrar _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "strength"
+msgstr "potencia"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Logo / ⌘"
+msgstr "Logo / ⌘"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;enter"
+msgstr "intro"
+
+#. Keyboard and Mouse library block
+msgid "move mouse pointer by _ , _"
+msgstr "move o punteiro do rato _ , _"
+
+#. Lists library block
+msgid "filter _ with _"
+msgstr "filtra _ empregando _"
+
+#. Option in ( pick (a few) from (aList) ) block in Lists library
+msgid "a few"
+msgstr "poucos"
+
+#. Lists library block
+msgid "sorted _"
+msgstr "_ ordenada"
+
+#. Servo motor library block
+msgid "set servo _ to _ degrees (-90 to 90)"
+msgstr "pon o servo _ a _ graos (-90 a 90)"
+
+#. Image name for the "display image" block
+msgid "skull"
+msgstr "caveira"
+
+#. Image name for the "display image" block
+msgid "target"
+msgstr "diana"
+
+#. Image name for the "display image" block
+msgid "small diamond"
+msgstr "diamante pequeno"
+
+#. Image name for the "display image" block
+msgid "small square"
+msgstr "cadrado pequeno"
+
+#. OLED Graphics library block
+msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
+msgstr "inicializar I²C _ dirección(hex) _ restabelecer pin nº. _ xirar _"
+
+#. OLED Graphics library block
+msgid "draw circle at x _ y _ radius _ erase _"
+msgstr "debuxar círculo en x _ y _ radio _ borrar _"
+
+#. TFT display library block
+msgid "clear TFT display"
+msgstr "borra pantalla TFT"
