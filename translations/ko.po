@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-11 15:48+0200\n"
-"PO-Revision-Date: 2025-02-14 16:02+0000\n"
-"Last-Translator: JaeHwan So <cowcowwow@icloud.com>\n"
+"PO-Revision-Date: 2025-02-20 23:22+0000\n"
+"Last-Translator: brainspark_kr <admin@brainspark.co.kr>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/microblocks/ide/"
 "ko/>\n"
 "Language: ko\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.10.1-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -1759,7 +1759,7 @@ msgstr ""
 
 #. Color library block
 msgid "color r _ g _ b _ (0-255)"
-msgstr ""
+msgstr "컬러 R_B_B_(0-255사이)"
 
 #. Color library block
 msgid "random color"

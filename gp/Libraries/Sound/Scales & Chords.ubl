@@ -1,6 +1,6 @@
 module 'Scales & Chords' Data
 author MicroBlocks
-version 2 7 
+version 2 8 
 depends MIDI Rhythm _Tone 
 choices sound_dst 'MIDI channel' 'tone pin' 
 choices scales ionian dorian phrygian lydian mixolydian aeolian locrian chromatic tonal 
@@ -10,7 +10,7 @@ description 'Lists of relative semitone intervals for all Western diatonic scale
 
 It also includes intervals for the most common chords and progressions, an abstraction of the circle of fifths, an arpeggiator and an improviser.
 '
-variables _scales_degrees _scales_circle5ths _scales_delay
+variables _scales_degrees _scales_circle5ths _scales_delay 
 
   spec 'r' 'scales_scale' '_ scale root _ : steps _' 'menu.scales num num' 'ionian' 60 7
   spec 'r' 'scales_pentatonic scale' 'pentatonic _ scale root _ : steps _' 'menu.pentatonics num num' 'major' 60 7
@@ -102,13 +102,9 @@ to '_scales_init_circle' {
 }
 
 to scales_arpeggiate 'note list' order duration volume destination channel/pin {
-  if ((v '_scales_delay') == 0) {
-    if ((boardType) == 'Boardie') {
-      _scales_delay = 12
-    } else {
-      _scales_delay = 2
-    }
-  }
+  if (_scales_delay == 0) {if ((boardType) == 'Boardie') {
+    _scales_delay = 12
+  }}
   if (isType (v 'note list') 'string') {'note list' = ('_scales parsed shorthand' (v 'note list'))}
   if (order == '') {
     order = ('[data:range]' 1 (size (v 'note list')))
@@ -126,10 +122,10 @@ to scales_arpeggiate 'note list' order duration volume destination channel/pin {
       local 'dur' duration
     }
     if (('[data:convertType]' (at i order) 'number') == 0) {
-      waitMillis ((dur - ((millisOp) - start)) - (v '_scales_delay'))
+      waitMillis ((dur - ((millisOp) - start)) - _scales_delay)
     } else {
       if (destination == 'MIDI channel') {
-        'MIDI_play MIDI note' ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - (v '_scales_delay')) channel/pin volume
+        'MIDI_play MIDI note' ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - _scales_delay) channel/pin volume
       } else {
         if (channel/pin != '') {_tonePin = channel/pin}
         playMIDIKey ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - 1)
