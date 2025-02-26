@@ -1147,7 +1147,7 @@ method gearMenu MicroBlocksEditor {
 	menu = (menu 'MicroBlocks' this)
 	setIsTopMenu menu true
 	addItem menu 'about...' (action 'showAboutBox' (smallRuntime))
-	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification when a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
+	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addLine menu
 	addItem menu 'update firmware on board' (action 'installVM' (smallRuntime) false false) // do not wipe flash, do not download VM from server
 	addLine menu
