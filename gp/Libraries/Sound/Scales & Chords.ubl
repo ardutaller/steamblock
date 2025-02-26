@@ -115,20 +115,20 @@ to scales_arpeggiate 'note list' order duration volume destination channel/pin {
     duration = ('_scales parsed durations' duration)
   }
   for i (size order) {
-    local 'start' (timer)
+    local 'start' (millisOp)
     if (isType duration 'list') {
       local 'dur' ('_scales circular item' i duration)
     } else {
       local 'dur' duration
     }
     if (('[data:convertType]' (at i order) 'number') == 0) {
-      waitMillis ((dur - ((timer) - start)) - _scales_delay)
+      waitMillis ((dur - ((millisOp) - start)) - _scales_delay)
     } else {
       if (destination == 'MIDI channel') {
-        'MIDI_play MIDI note' ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((timer) - start)) - _scales_delay) channel/pin volume
+        'MIDI_play MIDI note' ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - _scales_delay) channel/pin volume
       } else {
         if (channel/pin != '') {_tonePin = channel/pin}
-        playMIDIKey ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((timer) - start)) - 1)
+        playMIDIKey ('[data:convertType]' (at (at i order) (v 'note list')) 'number') ((dur - ((millisOp) - start)) - 1)
       }
     }
   }
@@ -300,3 +300,4 @@ to scales_transposed 'note or chord' semitones {
     return ((v 'note or chord') + semitones)
   }
 }
+
