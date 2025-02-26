@@ -4998,6 +4998,14 @@ msgid "virtual machine version"
 msgstr "virtual machine version"
 
 #. Settings menu option
+msgid "inform of new versions"
+msgstr "inform of new versions"
+
+#. Settings menu option
+msgid "when opening the IDE, show a notification if a new version of MicroBlocks has been released"
+msgstr "when opening the IDE, show a notification if a new version of MicroBlocks has been released"
+
+#. Settings menu option
 msgid "update firmware on board"
 msgstr "update firmware on board"
 
