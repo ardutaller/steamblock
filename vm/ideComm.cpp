@@ -489,9 +489,12 @@ static void updateConnectionState() {
 
 static int bleSendData(uint8_t *data, int byteCount) {
 	if (byteCount <= 0) return 0;
+	if (byteCount > BLE_BUF_MAX) byteCount = BLE_BUF_MAX;
+
+	int mtu = att_server_get_mtu(connectionHandle);
+	if (byteCount > mtu) byteCount = mtu; // send at most MTU bytes
 
 	// send byteCount bytes
-	if (byteCount > BLE_BUF_MAX) byteCount = BLE_BUF_MAX;
 	int err = att_server_notify(connectionHandle, txCharacteristic, data, byteCount);
 	return err ? 0 : byteCount;
 }
