@@ -2932,6 +2932,38 @@ msgstr "set DotStar LED _ to r _ g _ b _"
 msgid "set DotStar brightness _"
 msgstr "set DotStar brightness _"
 
+#. Barometer (LPS331AP) library
+msgid "Barometer (LPS331AP)"
+msgstr "Barometer (LPS331AP)"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºC"
+msgstr "ºC"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºF"
+msgstr "ºF"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;hPa"
+msgstr "hPa"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;inHg"
+msgstr "inHg"
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP pressure _"
+msgstr "LPS331AP pressure _"
+
+#. Barometer (LPS331AP) library block
+msgid "numeric (x100) _"
+msgstr "numeric (x100) _"
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP temperature _"
+msgstr "LPS331AP temperature _"
+
 #. BME280 environmental sensor library block
 msgid "bme280 connected"
 msgstr "bme280 connected"
