@@ -26,7 +26,7 @@ to uload fileName {
 	return (load fileName (topLevelModule))
 }
 
-defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer connectionWidget progressIndicator httpServer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode
+defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer connectionWidget progressIndicator httpServer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode versionCheckOnStartup
 
 method scriptingActionsContainer MicroBlocksEditor { return scriptingActionsContainer }
 method fileName MicroBlocksEditor { return fileName }
@@ -549,8 +549,10 @@ method step MicroBlocksEditor {
 		launch (global 'page') (newCommand 'checkLatestVersion' this) // start version check
 		newerVersion = nil
 	} (notNil newerVersion) {
-		reportNewerVersion this
-		newerVersion = nil
+		if versionCheckOnStartup {
+			reportNewerVersion this
+			newerVersion = nil
+		}
 	}
 	if (notNil frameRate) {
 		updateFPS this
@@ -956,6 +958,11 @@ method applyUserPreferences MicroBlocksEditor {
 	} else {
 		setLanguage this 'en'
 	}
+	if (notNil (at prefs 'versionCheckOnStartup')) {
+		versionCheckOnStartup = (at prefs 'versionCheckOnStartup')
+	} else {
+		versionCheckOnStartup = true
+	}
 	if (notNil (at prefs 'boardLibAutoLoadDisabled')) {
 		boardLibAutoLoadDisabled = (at prefs 'boardLibAutoLoadDisabled')
 	}
@@ -1030,6 +1037,11 @@ method toggleDarkMode MicroBlocksEditor {
 
 method darkModeEnabled MicroBlocksEditor {
 	return (darkMode == true)
+}
+
+method toggleVersionCheck MicroBlocksEditor {
+	versionCheckOnStartup = (not versionCheckOnStartup)
+	saveToUserPreferences this 'versionCheckOnStartup' versionCheckOnStartup
 }
 
 // developer mode
@@ -1135,6 +1147,7 @@ method gearMenu MicroBlocksEditor {
 	menu = (menu 'MicroBlocks' this)
 	setIsTopMenu menu true
 	addItem menu 'about...' (action 'showAboutBox' (smallRuntime))
+	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addLine menu
 	addItem menu 'update firmware on board' (action 'installVM' (smallRuntime) false false) // do not wipe flash, do not download VM from server
 	addLine menu
