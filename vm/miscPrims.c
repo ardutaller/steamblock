@@ -355,6 +355,7 @@ static PrimEntry entries[] = {
 	{"bleID", primBLE_ID},
 	{"hexToInt", primHexToInt},
 	{"rescale", primRescale},
+#if !defined(DUELink)
 	{"hsvColor", primHSVColor},
 	{"hue", primColorHue},
 	{"saturation", primColorSaturation},
@@ -363,6 +364,7 @@ static PrimEntry entries[] = {
 	{"sqrt", primSqrt},
 	{"atan2", primArctan},
 	{"pressureToAltitude", primPressureToAltitude},
+#endif
 	{"bme680GasResistance", primBMP680GasResistance},
 	{"connectedToIDE", primConnectedToIDE},
 	{"broadcastToIDE", primBroadcastToIDEOnly},

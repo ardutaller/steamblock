@@ -195,6 +195,8 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 // Use Serial2 on original ESP32 and Pico:ed boards, Serial1 on others
 #if (ESP32_ORIGINAL) || defined(PICO_ED) || defined(COCUBE)
 	#define SERIAL_PORT Serial2
+#elif defined(DUELink)
+	#define SERIAL_PORT Serial
 #else
 	#define SERIAL_PORT Serial1
 #endif
@@ -256,7 +258,7 @@ static int serialAvailable() {
 }
 
 static void serialReadBytes(uint8 *buf, uint32 byteCount) {
-	if (isOpen) SERIAL_PORT.readBytes(buf, byteCount);
+	if (isOpen) SERIAL_PORT.readBytes((char *) buf, byteCount);
 }
 
 static int serialWriteBytes(uint8 *buf, uint32 byteCount) {

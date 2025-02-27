@@ -30,6 +30,10 @@ extern "C" {
 	#define ESP32_C6 1
 #endif
 
+#if defined(ARDUINO_NUCLEO_C071RB)
+	#define DUELink
+#endif
+
 #if defined(ESP32) && !(defined(ESP32_S2) || defined(ESP32_S3) || defined(ESP32_C3) || defined(ESP32_C6))
 	#define ESP32_ORIGINAL 1
 #endif

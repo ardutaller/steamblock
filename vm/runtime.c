@@ -131,6 +131,24 @@ OBJ doPrimitiveCall(PrimitiveSetIndex setIndex, const char *primName, int argCou
 void primsInit() {
 	// Called at startup to call functions to add named primitive sets.
 
+#if defined(DUELink)
+	addDataPrims();
+//	addDisplayPrims();
+//	addFilePrims();
+	addIOPrims();
+	addMiscPrims();
+// 	addNetPrims();
+// 	addBLEPrims();
+// 	addRadioPrims();
+	addSensorPrims();
+	addSerialPrims();
+// 	addTFTPrims();
+	addVarPrims();
+// 	addHIDPrims();
+// 	addOneWirePrims();
+// 	addCameraPrims();
+// 	addEncoderPrims();
+#else
 	addDataPrims();
 	addDisplayPrims();
 	addFilePrims();
@@ -147,6 +165,7 @@ void primsInit() {
 	addOneWirePrims();
 	addCameraPrims();
 	addEncoderPrims();
+#endif
 }
 
 // Task Ops

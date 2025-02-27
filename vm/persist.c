@@ -469,6 +469,9 @@ void flashWriteData(int *dst, int wordCount, uint8 *src) {
 	#elif defined(ARDUINO_ARCH_RP2040)
 		#define USE_CODE_FILE RP2040_PHILHOWER
 		#define HALF_SPACE (40 * 1024)
+	#elif defined(DUELink)
+		// temporary, until Flash code store is implemented
+		#define HALF_SPACE (1 * 1024)
 	#else
 		#define HALF_SPACE (40 * 1024)
 	#endif
