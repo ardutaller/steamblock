@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-26 09:10+0000\n"
+"PO-Revision-Date: 2025-02-28 09:02+0000\n"
 "Last-Translator: \"Miguel A. Bouzada\" <mbouzada@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/microblocks/ide/"
 "gl/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2-dev\n"
+"X-Generator: Weblate 5.10.2-rc\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -184,7 +184,7 @@ msgstr "Variábeis"
 
 #. Block in Data category
 msgid "length of _"
-msgstr "largo de _"
+msgstr "lonxitude de _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send string _"
@@ -411,7 +411,7 @@ msgstr "recibe código IR desde o dispositivo _"
 
 #. Scrolling library block
 msgid "stop scrolling"
-msgstr "para a animación"
+msgstr "detén a animación"
 
 #. 5x5 LED Display library block
 msgid "plot x _ y _"
@@ -531,7 +531,7 @@ msgstr "texto ou número"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
-msgstr "O programa é grande de máis para envialo á placa.."
+msgstr "O programa é grande de máis para envialo á placa."
 
 #. In MicroBlocks IDE firmware update widgets. Board type to update.
 msgid "Board type:"
@@ -1220,7 +1220,7 @@ msgstr "escribe _ no porto serie"
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
 msgid "random"
-msgstr "calquera"
+msgstr "ao chou"
 
 #. Block in Operators category
 msgid "sqrt _"
@@ -1604,7 +1604,7 @@ msgstr "_ números pseudoaleatorios entre _ e _ coa semente _"
 
 #. Servo motor library block
 msgid "stop servo _"
-msgstr "para o servo _"
+msgstr "detén o servo _"
 
 #. Image name for the "display image" block
 msgid "square"
@@ -1999,7 +1999,7 @@ msgstr "coello"
 
 #. Image name for the "display image" block
 msgid "quarter note"
-msgstr "nota"
+msgstr "negra"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -2139,8 +2139,743 @@ msgstr "inicializar I²C _ dirección(hex) _ restabelecer pin nº. _ xirar _"
 
 #. OLED Graphics library block
 msgid "draw circle at x _ y _ radius _ erase _"
-msgstr "debuxar círculo en x _ y _ radio _ borrar _"
+msgstr "debuxar círculo en x _ y _ raio _ borrar _"
 
 #. TFT display library block
 msgid "clear TFT display"
 msgstr "borra pantalla TFT"
+
+#. General MIDI drum instrument name
+msgid "Open Cuica"
+msgstr "Cuica aberta"
+
+#. General MIDI instrument category
+msgid "chromatic percussion"
+msgstr "percusión cromática"
+
+#. General MIDI control change
+msgid "vibrato depth"
+msgstr "intensidade do vibrato"
+
+#. MIDI library block
+msgid "variation _"
+msgstr "variación _"
+
+#. Ringtone library block
+msgid "current song name"
+msgstr "título da canción actual"
+
+#. General MIDI drum set
+msgid "power"
+msgstr "potente"
+
+#. General MIDI drum instrument name
+msgid "Side Stick"
+msgstr "Aro de caixa"
+
+#. General MIDI instrument category
+msgid "brass"
+msgstr "vento metal"
+
+#. Fractions library block
+msgid "fract _ = _"
+msgstr "frac. _ = _"
+
+#. General MIDI drum instrument name
+msgid "Low Timbale"
+msgstr "Timbal grave"
+
+#. Pluck library block
+msgid "pluck MIDI key _ for _ msecs"
+msgstr "tangue a nota MIDI _ durante _ ms"
+
+#. Fractions library block
+msgid "fract _ × _"
+msgstr "frac. _ × _"
+
+#. Color library block
+msgid "_ with brightness _ %"
+msgstr "_ cun brillo do _ %"
+
+#. General MIDI drum instrument name
+msgid "Closed Hi-Hat"
+msgstr "Charles pechado"
+
+#. Color library block
+msgid "red _"
+msgstr "vermello _"
+
+#. General MIDI control change
+msgid "decay time"
+msgstr "tempo de decaemento"
+
+#. Tone library block
+msgid "start tone _ Hz"
+msgstr "comeza a tocar a frecuencia _ Hz"
+
+#. General MIDI control change
+msgid "portamento time"
+msgstr "tempo de portamento"
+
+#. Fractions library block
+msgid "denominator of fraction _"
+msgstr "denominador da fracción _"
+
+#. General MIDI drum instrument name
+msgid "Mute Hi Conga"
+msgstr "Conga aguda xorda"
+
+#. TFT Display library block
+msgid "filled _"
+msgstr "cheo _"
+
+#. General MIDI control change
+msgid "cutoff"
+msgstr "filtro de frecuencia"
+
+#. General MIDI drum set
+msgid "room"
+msgstr "estudio"
+
+#. General MIDI instrument category
+msgid "organ"
+msgstr "órgano"
+
+#. General MIDI control change
+msgid "vibrato rate"
+msgstr "frecuencia do vibrato"
+
+#. MIDI library block
+msgid "instrument _ number _"
+msgstr "instrumento _ número _"
+
+#. MIDI library block
+msgid "drum _"
+msgstr "percusión _"
+
+#. WAV library block
+msgid "play WAV file _"
+msgstr "reproduce o ficheiro WAV _"
+
+#. General MIDI drum instrument name
+msgid "Splash Cymbal"
+msgstr "Prato splash"
+
+#. General MIDI control change
+msgid "hold"
+msgstr "tempo de sostido"
+
+#. Color library block
+msgid "hue _"
+msgstr "ton de _"
+
+#. General MIDI control change
+msgid "effect 1"
+msgstr "efecto 1"
+
+#. General MIDI drum instrument name
+msgid "Low Tom"
+msgstr "Tom-tom grave"
+
+#. General MIDI drum instrument name
+msgid "Pedal Hi-Hat"
+msgstr "Charles (pedal)"
+
+#. General MIDI drum instrument name
+msgid "Mute Triangle"
+msgstr "Ferriños xordo"
+
+#. Rhythm library block
+msgid "set pattern to _ bars"
+msgstr "fixa o patrón a _ compases"
+
+#. TFT Display library block
+msgid "scale _"
+msgstr "escala _"
+
+#. General MIDI drum instrument name
+msgid "Hi Wood Block"
+msgstr "Caixa chinesa aguda"
+
+#. General MIDI drum instrument name
+msgid "Maracas"
+msgstr "Maracas"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Snare"
+msgstr "Caixa acústica"
+
+#. General MIDI instrument category
+msgid "gm;SFX"
+msgstr "Efectos especiais"
+
+#. Ringtone library label
+#. Can play Nokring-formatted music. Also known as RTTTL.
+msgid "Ringtone"
+msgstr "Politóns"
+
+#. General MIDI drum set
+msgid "brush"
+msgstr "vasoiriñas"
+
+#. General MIDI drum instrument name
+msgid "High Tom"
+msgstr "Tom-tom agudo"
+
+#. Color library block
+msgid "blue _"
+msgstr "azul _"
+
+#. General MIDI control change
+msgid "resonance"
+msgstr "resonancia"
+
+#. MIDI library block
+msgid "stop all notes on channel _"
+msgstr "detén todas as notas na canle _"
+
+#. General MIDI drum instrument name
+msgid "Low Bongo"
+msgstr "Bongó grave"
+
+#. General MIDI drum instrument name
+msgid "Low Conga"
+msgstr "Conga grave"
+
+#. General MIDI instrument category
+msgid "guitar"
+msgstr "guitarra"
+
+#. Pluck library block
+msgid "set pluck pin _"
+msgstr "fixa o pin de corda tanguida no _"
+
+#. General MIDI instrument category
+msgid "percussive"
+msgstr "percusión"
+
+#. Color library block
+msgid "_ with saturation _ %"
+msgstr "_ coa saturación do _ %"
+
+#. General MIDI drum set
+msgid "jazz"
+msgstr "jazz"
+
+#. TFT Display library block
+msgid "scale _ wrap _"
+msgstr "escala _ con saltos de liña _"
+
+#. General MIDI drum instrument name
+msgid "Hand Clap"
+msgstr "Aplauso"
+
+#. General MIDI control change
+msgid "modulation"
+msgstr "modulación"
+
+#. TFT Display library block
+msgid "write _ on TFT at x _ y _ color _"
+msgstr "escribe _ en x _ y _ cor _"
+
+#. General MIDI drum instrument name
+msgid "Crash Cymbal 2"
+msgstr "Prato de acenos (crash) 2"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 1"
+msgstr "Prato de ritmo (ride) 1"
+
+#. General MIDI drum instrument name
+msgid "Low Wood Block"
+msgstr "Caixa chinesa grave"
+
+#. General MIDI control change
+msgid "portamento"
+msgstr "portamento"
+
+#. TFT Display library block
+msgid "draw vector x _ y _ angle _ length _ color _"
+msgstr "debuxa vector x _ y _ ángulo _ lonxitude _ cor _"
+
+#. Fractions library block
+msgid "numerator of fraction _"
+msgstr "numerador da fracción _"
+
+#. Rhythm library block
+msgid "current beat"
+msgstr "tempo actual"
+
+#. General MIDI drum instrument name
+msgid "Low Agogo"
+msgstr "Agogô grave"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 2"
+msgstr "Prato de ritmo (ride) 2"
+
+#. General MIDI drum instrument name
+msgid "Bass Drum 1"
+msgstr "Bombo 1"
+
+#. General MIDI drum set
+msgid "CM-64/CM-32L"
+msgstr "CM-64/CM-32L"
+
+#. General MIDI drum instrument name
+msgid "Chinese Cymbal"
+msgstr "Prato chinés"
+
+#. General MIDI drum instrument name
+msgid "High Timbale"
+msgstr "Timbal agudo"
+
+#. General MIDI instrument category
+msgid "ethnic"
+msgstr "étnico"
+
+#. General MIDI drum instrument name
+msgid "Ride Bell"
+msgstr "Campá"
+
+#. Fractions library block
+msgid "lcm _ _"
+msgstr "mcm de _ i _"
+
+#. Fractions library block
+msgid "fract _ / _"
+msgstr "frac. _ / _"
+
+#. Pluck library block
+msgid "pluck note _ octave _ for _ ms"
+msgstr "tangue a nota _ na oitava _ durante _ ms"
+
+#. BMP library block
+msgid "display BMP file _ at x _ y _"
+msgstr "amosa imaxe BMP _ en x _ y _"
+
+#. General MIDI control change
+msgid "vibrato delay"
+msgstr "atraso do vibrato"
+
+#. General MIDI control change
+msgid "release time"
+msgstr "tempo de extinción"
+
+#. MIDI library block
+msgid "select MIDI drum kit _"
+msgstr "selecciona batería MIDI _"
+
+#. General MIDI drum set
+msgid "standard"
+msgstr "estándar"
+
+#. TFT Display library block
+msgid "Hello World!"
+msgstr "Ola, xente!"
+
+#. General MIDI drum instrument name
+msgid "Short Guiro"
+msgstr "Güiro curto"
+
+#. General MIDI drum instrument name
+msgid "Low Floor Tom"
+msgstr "Timbal base grave"
+
+#. TFT Display library block
+msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
+msgstr "debuxa rectángulo aredondado en x _ y _ largo _ alto _ raio _ cor _"
+
+#. General MIDI control change
+msgid "bank select 2"
+msgstr "selección de banco 2"
+
+#. General MIDI instrument category
+msgid "strings"
+msgstr "sección de cordas"
+
+#. Tone library block
+msgid "stop tone"
+msgstr "detén o son"
+
+#. General MIDI instrument category
+msgid "ensemble"
+msgstr "coro"
+
+#. General MIDI control change
+msgid "pan"
+msgstr "panorama"
+
+#. Rhythm library block
+msgid "current bar"
+msgstr "compás actual"
+
+#. General MIDI drum instrument name
+msgid "Hi-Mid Tom"
+msgstr "Tom-tom medio-agudo"
+
+#. General MIDI drum instrument name
+msgid "Electric Snare"
+msgstr "Caixa eléctrica"
+
+#. General MIDI instrument category
+msgid "piano"
+msgstr "piano"
+
+#. General MIDI drum instrument name
+msgid "Short Whistle"
+msgstr "Chifre curto"
+
+#. Color library block
+msgid "color hue _ (0-360) saturation _ % brightness _ %"
+msgstr "cor co ton _ (0-360) saturación _ % brillo _ %"
+
+#. Color library block
+msgid "_ with hue _ (0-360)"
+msgstr "_ co ton _ (0-360)"
+
+#. General MIDI control change
+msgid "bank select 1"
+msgstr "selección de banco 1"
+
+#. Fractions library block
+msgid "fract _ + _"
+msgstr "frac. _ + _"
+
+#. General MIDI drum instrument name
+msgid "Open Triangle"
+msgstr "Ferriños aberto"
+
+#. General MIDI instrument category
+msgid "bass"
+msgstr "baixo"
+
+#. General MIDI instrument category
+msgid "pipe"
+msgstr "vento madeira"
+
+#. General MIDI instrument category
+msgid "synth lead"
+msgstr "sintetizador solista"
+
+#. General MIDI instrument category
+msgid "synth pad"
+msgstr "sintetizador ambiente"
+
+#. General MIDI drum set
+msgid "electronic"
+msgstr "electrónica"
+
+#. General MIDI drum set
+msgid "orchestra"
+msgstr "orquestra"
+
+#. General MIDI control change
+msgid "volume"
+msgstr "volume"
+
+#. TFT Display library block
+msgid "draw text _ on TFT at x _ y _ color _"
+msgstr "escribe _ en x _ y _ coa cor _"
+
+#. TFT Display library block
+msgid "draw circle on TFT at x _ y _ radius _ color _"
+msgstr "debuxa círculo en x _ y _ raio _ cor _"
+
+#. TFT Display library block
+msgid "set TFT backlight _ (0-10)"
+msgstr "fixa a luz de fondo a _ (0-10)"
+
+#. Color library label
+msgid "Color Operators"
+msgstr "Cor"
+
+#. Color library block
+msgid "color r _ g _ b _ (0-255)"
+msgstr "cor vermello _ verde _ azul _ (0-255)"
+
+#. Fractions library block
+msgid "fract _ < _"
+msgstr "frac. _ < _"
+
+#. Ringtone library block
+msgid "play ringtone _"
+msgstr "toca o politón _"
+
+#. Example file name with no extension
+msgid "filename"
+msgstr "nome de ficheiro"
+
+#. General MIDI drum instrument name
+msgid "Crash Cymbal 1"
+msgstr "Prato de acenos (crash) 1"
+
+#. General MIDI drum instrument name
+msgid "Tambourine"
+msgstr "Pandeireta"
+
+#. General MIDI drum instrument name
+msgid "Cowbell"
+msgstr "Choca"
+
+#. General MIDI drum instrument name
+msgid "Vibraslap"
+msgstr "Vibraslap"
+
+#. General MIDI drum instrument name
+msgid "Hi Bongo"
+msgstr "Bongó agudo"
+
+#. General MIDI control change
+msgid "sostenuto"
+msgstr "pedal tonal"
+
+#. General MIDI control change
+msgid "attack time"
+msgstr "tempo de ataque"
+
+#. TFT Display library block
+msgid "bg color _"
+msgstr "cor de fondo _"
+
+#. TFT Display library block
+msgid "draw bitmap _ palette _ on TFT at x _ y _"
+msgstr "debuxa mapa de bits _ coa paleta _ en x _ y _"
+
+#. Fractions library block
+msgid "gcd _ _"
+msgstr "mcd de _ i _"
+
+#. Rhythm library block
+msgid "wait until bar _"
+msgstr "agarda ata o compás _"
+
+#. General MIDI control change
+msgid "expression"
+msgstr "expresión"
+
+#. MIDI library block
+msgid "select MIDI instrument _ number _ for channel _"
+msgstr "selecciona instrumento MIDI _ número _ para a canle _"
+
+#. Fractions library label
+msgid "Fractions"
+msgstr "Fraccións"
+
+#. Musical note name
+msgid "nt;c"
+msgstr "do"
+
+#. Musical note name
+msgid "nt;c#"
+msgstr "do#"
+
+#. Musical note name
+msgid "nt;d"
+msgstr "re"
+
+#. Musical note name
+msgid "nt;g#"
+msgstr "sol#"
+
+#. Musical note name
+msgid "nt;f#"
+msgstr "fa#"
+
+#. Musical note name
+msgid "nt;g"
+msgstr "sol"
+
+#. Rhythm library label
+#. Useful to create musical patterns
+msgid "Rhythm"
+msgstr "Ritmo"
+
+#. Pluck library label
+#. Generate music with plucked-string resembling sounds
+msgid "Pluck"
+msgstr "Corda tanguida"
+
+#. Rhythm library block
+msgid "set tempo to _ bpm at _ / _ signature"
+msgstr "fixa tempo a _ bpm e compás a _ / _"
+
+#. Rhythm library block
+msgid "wait until next _ duration"
+msgstr "agarda ata a próxima duración _"
+
+#. General MIDI drum instrument name
+msgid "High Floor Tom"
+msgstr "Timbal base agudo"
+
+#. Rhythm library block
+msgid "wait until beat _"
+msgstr "agarda ata o tempo _"
+
+#. General MIDI drum instrument name
+msgid "Open Hi-Hat"
+msgstr "Charles aberto"
+
+#. General MIDI drum instrument name
+msgid "Low-Mid Tom"
+msgstr "Tom-tom medio-grave"
+
+#. General MIDI drum instrument name
+msgid "Open Hi Conga"
+msgstr "Conga aguda aberta"
+
+#. General MIDI drum instrument name
+msgid "High Agogo"
+msgstr "Agogô agudo"
+
+#. General MIDI drum instrument name
+msgid "Long Whistle"
+msgstr "Chifre longo"
+
+#. General MIDI drum instrument name
+msgid "Long Guiro"
+msgstr "Güiro longo"
+
+#. General MIDI drum instrument name
+msgid "Claves"
+msgstr "Claves"
+
+#. General MIDI drum instrument name
+msgid "Mute Cuica"
+msgstr "Cuica xorda"
+
+#. General MIDI instrument category
+msgid "reed"
+msgstr "vento caña"
+
+#. General MIDI instrument category
+msgid "synth SFX"
+msgstr "efectos sintetizados"
+
+#. General MIDI control change
+msgid "portamento control"
+msgstr "control do portamento"
+
+#. General MIDI control change
+msgid "effect 2"
+msgstr "efecto 2"
+
+#. MIDI library block
+msgid "play MIDI note _ for _ ms on channel _ volume _"
+msgstr "toca nota MIDI _ durante _ ms na canle _ volume _"
+
+#. MIDI library block
+msgid "set MIDI note _ to _ on channel _ volume _"
+msgstr "pon a nota MIDI _ a _ na canle _ volume _"
+
+#. MIDI library block
+msgid "note _ octave _ to MIDI key"
+msgstr "nota _ oitava _ á tecla MIDI"
+
+#. MIDI library block
+msgid "play MIDI drum _ for _ ms volume _"
+msgstr "toca percusión MIDI _ durante _ ms volume _"
+
+#. MIDI library block
+msgid "select MIDI instrument _ for channel _"
+msgstr "selecciona instrumento MIDI _ para a canle _"
+
+#. Strings library block
+msgid "join string list _ separator _"
+msgstr "une a lista de textos _ co separador _"
+
+#. HTTP Server library block
+msgid "content length of request _"
+msgstr "lonxitude do contido da solicitude _"
+
+#. General MIDI drum set
+msgid "TR-808"
+msgstr "TR-808"
+
+#. General MIDI drum set
+msgid "drumkit;SFX"
+msgstr "Efectos especiais"
+
+#. General MIDI control change
+msgid "soft"
+msgstr "suave"
+
+#. Musical note name
+msgid "nt;e"
+msgstr "mi"
+
+#. Musical note name
+msgid "nt;f"
+msgstr "fa"
+
+#. TFT Display library and Color library block
+msgid "gray _ %"
+msgstr "gris _ %"
+
+#. Color library block
+msgid "random color"
+msgstr "cor ao chou"
+
+#. Color library block
+msgid "green _"
+msgstr "verde _"
+
+#. Color library block
+msgid "saturation _"
+msgstr "saturación do _"
+
+#. Color library block
+msgid "brightness _"
+msgstr "brillo do _"
+
+#. Fractions library block
+msgid "fract _ - _"
+msgstr "frac. _ - _"
+
+#. Fractions library block
+msgid "fract _ > _"
+msgstr "frac. _ > _"
+
+#. Fractions library block
+msgid "simplify fraction _"
+msgstr "simplifica fracción _"
+
+#. Fractions library block
+msgid "integer part of fraction _"
+msgstr "parte enteira da fracción _"
+
+#. Musical note name
+msgid "nt;d#"
+msgstr "re#"
+
+#. Musical note name
+msgid "nt;a#"
+msgstr "la#"
+
+#. TFT Display library block
+msgid "draw rectangle on TFT at x _ y _ width _ height _ color _"
+msgstr "debuxa rectángulo en x _ y _ largo _ alto _ cor _"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Bass Drum"
+msgstr "Bombo acústico"
+
+#. TFT Display library block
+msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
+msgstr "debuxa triángulo en x _ y _ , x _ y _ , x _ y _ cor _"
+
+#. Musical note name
+msgid "nt;a"
+msgstr "la"
+
+#. BMP image example filename
+msgid "image.bmp"
+msgstr "imaxe.bmp"
+
+#. Musical note name
+msgid "nt;b"
+msgstr "si"
+
+#. General MIDI drum instrument name
+msgid "Cabasa"
+msgstr "Cabasa"
