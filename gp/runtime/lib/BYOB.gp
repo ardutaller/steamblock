@@ -795,6 +795,10 @@ method setType InputDeclaration typeStr defaultValue {
 		if (not (isClass defaultValue 'Boolean')) {
 			defaultValue = true
 		}
+	} ('color' == typeStr) {
+		if (not (isClass defaultValue 'Color')) {
+			defaultValue = nil
+		}
 	}
 	removeAllParts morph
 	type = (element this typeStr)
