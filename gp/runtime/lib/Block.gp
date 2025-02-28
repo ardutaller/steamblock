@@ -1285,7 +1285,11 @@ method exportAsImageScaled Block result isError fName {
 	setGlobal 'blockScale' scale
 
 	if (notNil (function this)) {
+		blockDef = (handler (first (parts morph)))
 		scaledScript = (scriptForFunction (function this))
+		if (detailsHidden blockDef) {
+			hideDetails (editedDefinition scaledScript) // collapse function definition
+		}
 	} else {
 		scaledScript = (toBlock (expression this))
 	}

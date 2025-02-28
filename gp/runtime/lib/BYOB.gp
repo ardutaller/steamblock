@@ -53,6 +53,7 @@ to blockType blockSpecType {
 }
 
 method op BlockDefinition {return op}
+method detailsHidden BlockDefinition {return isShort}
 
 method initializeSections BlockDefinition aBlockSpec firstSection argNames {
 	if (isNil aBlockSpec) {return}
