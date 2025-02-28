@@ -1232,9 +1232,12 @@ method extractBoardType SmallRuntime versionString {
 
 method versionReceived SmallRuntime versionString {
 	if (isNil versionString) { return } // bad version message
-	if (isNil vmVersion) { // first time: record and check the version number
-		vmVersion = (extractVersionNumber this versionString)
-		boardType = (extractBoardType this versionString)
+
+	// update vmVersion and boardType
+	vmVersion = (extractVersionNumber this versionString)
+	boardType = (extractBoardType this versionString)
+
+	if (isNil vmVersion) { // first time: check the version number and load board libraries
 		checkVmVersion this
 		installBoardSpecificBlocks this
 	} else { // not first time: show the version number
