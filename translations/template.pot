@@ -1279,6 +1279,10 @@ msgstr ""
 msgid "most"
 msgstr ""
 
+#. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
+msgid "_ with _ items replaced by _"
+msgstr ""
+
 #. Lists library block
 msgid "reverse _"
 msgstr ""
