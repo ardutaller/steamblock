@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-28 09:02+0000\n"
+"PO-Revision-Date: 2025-03-01 23:02+0000\n"
 "Last-Translator: \"Miguel A. Bouzada\" <mbouzada@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/microblocks/ide/"
 "gl/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2-rc\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -487,7 +487,7 @@ msgstr "A placa non responde."
 
 #. Settings menu option
 msgid "export functions as library"
-msgstr "exportar as funcións como unha biblioteca"
+msgstr "exporta as funcións como unha biblioteca"
 
 #. In MicroBlocks IDE project menu
 msgid "New"
@@ -523,7 +523,7 @@ msgstr "desconectar"
 
 #. Script right-click context menu
 msgid "show instructions"
-msgstr "amosar as instrucións"
+msgstr "amosa as instrucións"
 
 #. Block input right-click context menu option
 msgid "string or number"
@@ -834,7 +834,7 @@ msgstr "Gráfico de datos"
 
 #. Script right-click context menu
 msgid "show compiled bytes"
-msgstr "amosar os bytes compilados"
+msgstr "amosa os bytes compilados"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
@@ -1947,7 +1947,7 @@ msgstr "amosa a imaxe _"
 
 #. TFT Display library block
 msgid "TFT height"
-msgstr "alyo da pantalla TFT"
+msgstr "altura da pantalla TFT"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PrintScreen"
@@ -2879,3 +2879,359 @@ msgstr "si"
 #. General MIDI drum instrument name
 msgid "Cabasa"
 msgstr "Cabasa"
+
+#. Language menu item. Takes the user to documentation about adding a missing language
+msgid "Missing language?"
+msgstr "Falta un idioma?"
+
+#. Script right-click context menu
+msgid "save picture of script with result"
+msgstr "garda a imaxe do programa co seu resultado"
+
+#. File upload process information
+msgid "uploaded"
+msgstr "enviado"
+
+#. Text right-click context menu option
+msgid "copy"
+msgstr "copia"
+
+#. Graph context menu option
+msgid "zero at bottom"
+msgstr "cero embaixo"
+
+#. Text right-click context menu option
+msgid "revert"
+msgstr "reverte"
+
+#. Process cancellation tip
+msgid "(press ESC to cancel)"
+msgstr "(preme ESC para cancelar)"
+
+#. String in file picker and library dialogs
+msgid "Tags:"
+msgstr "Etiquetas:"
+
+#. Text right-click context menu option
+msgid "paste"
+msgstr "pega"
+
+#. Library folder
+msgid "folder;Motors"
+msgstr "Motores"
+
+#. Scales & Chords library block
+msgid "_ chord root _"
+msgstr "acorde _ con raíz _"
+
+#. Music chord type
+msgid "Maj7"
+msgstr "Mai7"
+
+#. Musical scale name
+msgid "phrygian"
+msgstr "frixia"
+
+#. Musical scale name
+msgid "lydian"
+msgstr "lidia"
+
+#. Musical scale name
+msgid "locrian"
+msgstr "locria"
+
+#. Music chord type
+msgid "minor 7th"
+msgstr "7ª menor"
+
+#. Music chord type
+msgid "diminished"
+msgstr "diminuída"
+
+#. Block right-click context menu
+msgid "help"
+msgstr "axuda"
+
+#. Graph context menu option
+msgid "clear graph"
+msgstr "limpar o gráfico"
+
+#. Settings menu option
+msgid "download and install latest VM"
+msgstr "descarga e instala a última máquina virtual"
+
+#. Project menu option
+msgid "get file from board"
+msgstr "obtér o ficheiro da placa"
+
+#. Project menu option
+msgid "put file on board"
+msgstr "cargar o ficheiro na placa"
+
+#. Scales & Chords library block
+msgid "_ chord for root _"
+msgstr "acorde _ para raíz _"
+
+#. Graph context menu option
+msgid "export data to CSV file"
+msgstr "exportar datos a ficheiro CSV"
+
+#. Variable right-click context menu
+msgid "find variable accessors"
+msgstr "busca accesos á variábel"
+
+#. Library folder
+msgid "LIBRARIES"
+msgstr "BIBLIOTECAS"
+
+#. Project source
+msgid "Cloud"
+msgstr "Nube"
+
+#. Musical scale name
+msgid "dorian"
+msgstr "dórica"
+
+#. Musical scale name
+msgid "aeolian"
+msgstr "eólica"
+
+#. Music chord type
+msgid "major"
+msgstr "maior"
+
+#. Music chord type
+msgid "minor"
+msgstr "menor"
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "MIDI channel"
+msgstr "canle MIDI"
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "tone pin"
+msgstr "pin de zunidor"
+
+#. Scales & Chords library block
+msgid "_ scale root _"
+msgstr "escala _ con raíz _"
+
+#. Scales & Chords library block
+msgid "steps _"
+msgstr "e _ graos"
+
+#. Variable right-click context menu tooltip
+msgid "find scripts or block definitions where this variable is being set or changed"
+msgstr ""
+"busca programas ou definicións de bloques nos que se estea a fixar ou "
+"modificar o valor desta variábel"
+
+#. String in file picker and library dialogs
+#. as in dependencies of this library
+msgid "Depends:"
+msgstr "Depende de:"
+
+#. Project source folder
+msgid "Desktop"
+msgstr "Escritorio"
+
+#. Library folder
+msgid "folder;Graphics and Displays"
+msgstr "Gráficas e pantallas"
+
+#. Library folder
+msgid "folder;AI"
+msgstr "Intelixencia artificial"
+
+#. Musical scale name
+msgid "mixolydian"
+msgstr "mixolidia"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Drag to change pane width."
+msgstr "Arrástrao para modificar a largura da área."
+
+#. Examples folder
+msgid "folder;Art"
+msgstr "Arte"
+
+#. Examples folder
+msgid "folder; by board"
+msgstr " por placa"
+
+#. MicroBlocks IDE information
+msgid "Board not connected"
+msgstr "Placa non conectada"
+
+#. Graph button tooltip
+msgid "Graph"
+msgstr "Gráfico"
+
+#. Variable right-click context menu tooltip
+msgid "find scripts or block definitions where this variable is being read"
+msgstr ""
+"busca programas ou definicións de bloque onde se estea a ler esta variábel"
+
+#. Block right-click context menu tooltip
+msgid "find scripts or block definitions using this block"
+msgstr ""
+"busca programas ou definicións de bloques nos que se estea a empregar este "
+"bloque"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard as a URL"
+msgstr "copia estes bloques no portapapeis como un URL"
+
+#. Settings menu option
+msgid "dark mode"
+msgstr "modo escuro"
+
+#. Scales & Chords library block
+msgid "pentatonic _ scale root _"
+msgstr "escala pentatónica _ con raíz _"
+
+#. Examples folder
+msgid "folder;Games"
+msgstr "Xogos"
+
+#. Library folder
+msgid "folder;Kits and Boards"
+msgstr "Kits e placas"
+
+#. Process finished information
+msgid "Done!"
+msgstr "Feito!"
+
+#. Settings menu option
+msgid "Select board type:"
+msgstr "Selecciona a túa placa:"
+
+#. Settings menu option
+msgid "advanced mode"
+msgstr "modo avanzado"
+
+#. Graph context menu option
+msgid "zero in middle"
+msgstr "cero no medio"
+
+#. Variable right-click context menu
+msgid "find variable modifiers"
+msgstr "busca modificadores da variábel"
+
+#. Block right-click context menu tooltip
+msgid "show help for this block in a browser"
+msgstr "amosa axuda para este bloque no teu navegador"
+
+#. Examples folder
+msgid "folder;Examples"
+msgstr "Exemplos"
+
+#. String in file picker and library dialogs
+msgid "New Folder"
+msgstr "Novo cartafol"
+
+#. Settings menu tooltip
+msgid "show advanced blocks, menu items and editor functionalities"
+msgstr "amosa bloques, opcións de menú e funcionalidades de edición avanzadas"
+
+#. Project source folder
+msgid "Examples"
+msgstr "Exemplos"
+
+#. Examples folder
+msgid "folder;Citilab ED1 and M5Stack"
+msgstr "Citilab ED1 e M5Stack"
+
+#. Examples folder
+msgid "folder;CPX"
+msgstr "CPX"
+
+#. Examples folder
+msgid "folder;microbit and Calliope"
+msgstr "microbit e Calliope"
+
+#. Examples folder
+msgid "folder;Music"
+msgstr "Música"
+
+#. Examples folder
+msgid "folder;Web of Things"
+msgstr "Web das cousas (WoT)"
+
+#. Library folder
+msgid "folder;System"
+msgstr "Sistema"
+
+#. Musical scale name
+msgid "ionian"
+msgstr "xónica"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks and their result as a PNG file"
+msgstr "garda unha image destes bloques e o seu resultado en formato PNG"
+
+#. Block right-click context menu
+msgid "copy to clipboard as URL"
+msgstr "copia no portapapeis como URL"
+
+#. Block right-click context menu
+msgid "find uses of this block"
+msgstr "busca usos deste bloque"
+
+#. File download process information
+msgid "downloaded"
+msgstr "descargado"
+
+#. Graph context menu option
+msgid "import data from CSV file"
+msgstr "importar datos desde ficheiro CSV"
+
+#. Graph context menu option
+msgid "copy graph data to clipboard"
+msgstr "copiar datos do gráfico ao portapapeis"
+
+#. Library folder
+msgid "folder;Network"
+msgstr "Rede"
+
+#. Block input right-click context menu option
+msgid "select all"
+msgstr "seleccionao todo"
+
+#. Text right-click context menu option
+msgid "stop editing"
+msgstr "detén a edición"
+
+#. Text right-click context menu option
+msgid "cut"
+msgstr "corta"
+
+#. Text right-click context menu option
+msgid "accept"
+msgstr "acepta"
+
+#. Library folder
+msgid "folder;Sensing"
+msgstr "Sensores"
+
+#. Music chord type
+msgid "major 7th"
+msgstr "7ª maior"
+
+#. Scales & Chords library block
+msgid "arpeggiate _ in order _ duration _ and volume _ on _ _"
+msgstr "arpexa _ en orde _ duración _ e volume _ no _ _"
+
+#. Project source folder
+msgid "Computer"
+msgstr "Computador"
+
+#. Library folder
+msgid "folder;Robots"
+msgstr "Robots"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Pulse width modulate (PWM) a pin with the given duty cycle (0 - 1023)."
+msgstr ""
+"Modula por amplitude de pulsos (PWM) un pin cun ciclo de traballo "
+"determinado (0 - 1023)."
