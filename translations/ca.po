@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-02-06 13:01+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-02-28 09:02+0000\n"
+"Last-Translator: JOSEP FERRANDIZ FARRE <jferran6@xtec.cat>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10.2-rc\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -6299,3 +6299,35 @@ msgstr "distància ToF (mm)"
 #. CoCube Module library block
 msgid "ultrasonic distance (mm)"
 msgstr "distància (mm) per ultrasons"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºF"
+msgstr "ºF"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;hPa"
+msgstr "hPa"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;inHg"
+msgstr "inHg"
+
+#. Barometer (LPS331AP) library block
+msgid "numeric (x100) _"
+msgstr "numèric (x100) _"
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP pressure _"
+msgstr "lps331ap pressió _"
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP temperature _"
+msgstr "lps331ap temperatura _"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºC"
+msgstr "ºC"
+
+#. Barometer (LPS331AP) library
+msgid "Barometer (LPS331AP)"
+msgstr "Baròmetre (LPS331AP)"
