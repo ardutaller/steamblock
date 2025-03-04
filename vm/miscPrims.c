@@ -206,6 +206,16 @@ static OBJ primPressureToAltitude(int argCount, OBJ *args) {
 	return int2obj((int) (1000.0 * result)); // return result in millimeters
 }
 
+static OBJ primConnectedToIDE(int argCount, OBJ *args) {
+	return ideConnected() ? trueObj : falseObj;
+}
+
+static OBJ primScriptTooLarge(int argCount, OBJ *args) {
+	// Used by IDE to report scriptTooLarge errors.
+
+	return fail(scriptTooLarge);
+}
+
 static OBJ jsonValue(char *item) {
 	char buf[1024];
 	char *end;
@@ -229,16 +239,6 @@ static OBJ jsonValue(char *item) {
 		return newStringFromBytes("null", 4);
 	}
 	return newString(0); // json parse error or end
-}
-
-static OBJ primConnectedToIDE(int argCount, OBJ *args) {
-	return ideConnected() ? trueObj : falseObj;
-}
-
-static OBJ primScriptTooLarge(int argCount, OBJ *args) {
-	// Used by IDE to report scriptTooLarge errors.
-
-	return fail(scriptTooLarge);
 }
 
 static OBJ primJSONGet(int argCount, OBJ *args) {
