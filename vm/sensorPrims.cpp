@@ -2193,6 +2193,8 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 // Signal Capture
 
+#if !defined(DUELink)
+
 #define MAX_PULSE_TIMES 128
 int16_t pulseTimes[MAX_PULSE_TIMES];
 
@@ -2247,6 +2249,8 @@ OBJ primCaptureEnd(int argCount, OBJ *args) {
 	return result;
 }
 
+#endif
+
 static PrimEntry entries[] = {
 	{"acceleration", primAcceleration},
 	{"temperature", primMBTemp},
@@ -2267,9 +2271,12 @@ static PrimEntry entries[] = {
 	{"spiSetup", primSPISetup},
 	{"readDHT", primReadDHT},
 	{"microphone", primMicrophone},
+
+	#if !defined(DUELink)
 	{"captureStart", captureStartPrim},
 	{"captureCount", primCaptureCount},
 	{"captureEnd", primCaptureEnd},
+	#endif
 
 	#if defined(COCUBE)
 	{"position_x", primPositionX},

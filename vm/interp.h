@@ -84,7 +84,7 @@ typedef enum {
 
 #ifdef GNUBLOCKS
 	#define STACK_LIMIT 10000 // Task size is 6 + STACK_LIMIT words
-#elif (defined(NRF51) || defined(ESP8266))
+#elif (defined(NRF51) || defined(ESP8266) || defined(DUELink))
 	#define STACK_LIMIT 54 // Task size is 6 + STACK_LIMIT words
 #else
 	#define STACK_LIMIT 100 // Task size is 6 + STACK_LIMIT words
