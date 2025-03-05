@@ -31,7 +31,8 @@ extern "C" {
 #endif
 
 #if defined(ARDUINO_NUCLEO_C071RB)
-	#define DUELink
+	#define DUELink 1
+	#define HAS_LED_MATRIX 1
 #endif
 
 #if defined(ESP32) && !(defined(ESP32_S2) || defined(ESP32_S3) || defined(ESP32_C3) || defined(ESP32_C6))

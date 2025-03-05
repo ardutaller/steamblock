@@ -79,6 +79,20 @@ int mbDisplayColor = 0x00FF00; // Green by default
 #define COL4 6
 #define COL5 10
 
+#elif defined(DUELink) // CincoBit
+
+#define ROW1 7
+#define ROW2 12
+#define ROW3 15
+#define ROW4 54
+#define ROW5 11
+
+#define COL1 29
+#define COL2 10
+#define COL3 2
+#define COL4 8
+#define COL5 14
+
 #endif
 
 static int microBitDisplayBits = 0;
@@ -371,6 +385,72 @@ void updateMicrobitDisplay() {
 	int offset = columnOffsets[displayCycle];
 	for (int i = 0; i < 5; i++) {
 		digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i) + 1));
+	}
+	setPinMode(columnPins[displayCycle], OUTPUT);
+	digitalWrite(columnPins[displayCycle], LOW);
+	displayCycle = (displayCycle + 1) % 5;
+}
+
+#elif defined(DUELink)
+
+static int displaySnapshot = 0;
+static int displayCycle = 0;
+static int rowPins[5] = {ROW1, ROW2, ROW3, ROW4, ROW5};
+static int columnPins[5] = {COL1, COL2, COL3, COL4, COL5};
+static int columnOffsets[5] = {1, 2, 5, 4, 3};
+
+#define DISPLAY_BIT(n) (((displaySnapshot >> (n - 1)) & 1) ? LOW : HIGH)
+
+static void turnDisplayOn() {
+	for (int i = 0; i < 5; i++) {
+		setPinMode(columnPins[i], INPUT);
+		setPinMode(rowPins[i], OUTPUT);
+	}
+}
+
+static void turnDisplayOff() {
+	for (int i = 0; i < 5; i++) {
+		setPinMode(columnPins[i], INPUT);
+		setPinMode(rowPins[i], INPUT);
+	}
+}
+
+static int updateLightLevel() { // placeholder
+	lightReadingRequested = false;
+	return true;
+}
+
+void updateMicrobitDisplay() {
+	// Update the display by cycling through the three columns, turning on the rows
+	// for each column. To minimize display artifacts, the display bits are snapshot
+	// at the start of each cycle and the snapshot is not changed during the cycle.
+
+	if (disableLEDDisplay) return;
+
+	if (!microBitDisplayBits && !displaySnapshot) { // display is off
+		if (lightReadingRequested) updateLightLevel();
+		return;
+	}
+
+	if (0 == displayCycle) { // starting a new cycle
+		if (lightReadingRequested && !updateLightLevel()) return; // reading light level
+
+		if (displaySnapshot && !microBitDisplayBits) { // display just became off
+			displaySnapshot = 0;
+			turnDisplayOff();
+			return;
+		}
+
+		// take a snapshot of the display bits for the next cycle
+		displaySnapshot = microBitDisplayBits;
+		turnDisplayOn();
+	}
+	int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
+	setPinMode(columnPins[previousColumn], INPUT); // turn off previous column
+
+	int offset = columnOffsets[displayCycle];
+	for (int i = 0; i < 5; i++) {
+		digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i)));
 	}
 	setPinMode(columnPins[displayCycle], OUTPUT);
 	digitalWrite(columnPins[displayCycle], LOW);
@@ -958,6 +1038,7 @@ OBJ primNeoPixelSend(int argCount, OBJ *args) {
 	OBJ arg = args[0];
 	if (IS_TYPE(arg, ListType)) {
 		int count = obj2int(FIELD(arg, 0));
+reportNum("NeoPixel count", count);
 		for (int i = 0; i < count; i++) {
 			OBJ item = FIELD(arg, i + 1);
 			int rgb = evalInt(item);
@@ -974,6 +1055,7 @@ OBJ primNeoPixelSend(int argCount, OBJ *args) {
 				val = (val << 8) | whiteTable[(rgb >> 24) & 0x3F];
 			}
 			sendNeoPixelData(val);
+delayMicroseconds(10);
 		}
 	} else {
 		int rgb = evalInt(arg);

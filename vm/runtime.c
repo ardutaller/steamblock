@@ -133,7 +133,7 @@ void primsInit() {
 
 #if defined(DUELink)
 	addDataPrims();
-//	addDisplayPrims();
+	addDisplayPrims();
 //	addFilePrims();
 	addIOPrims();
 	addMiscPrims();
