@@ -8,9 +8,18 @@
 #include "interp.h"
 #include "persist.h"
 
+#ifdef DUELink
+	#include "stm32yyxx_ll_utils.h"
+#endif
+
 void setup() {
 #ifdef ARDUINO_NRF52_PRIMO
 	sd_softdevice_disable();
+#endif
+#ifdef DUELink
+	// Workaround: start USB clock
+	LL_RCC_HSI48_Enable();
+	while (LL_RCC_HSI48_IsReady() != 1) {}
 #endif
 	memInit();
 	primsInit();
