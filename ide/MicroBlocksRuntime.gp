@@ -788,6 +788,8 @@ method webSerialConnect SmallRuntime action {
 		connectionStartTime = (msecsSinceStart)
 		portName = 'boardie'
 		port = 1
+		lastPingRecvMSecs = 0
+		sendMsg this 'pingMsg'
 	} else {
 		if (and ('Browser' == (platform)) (not (or (browserIsChromeOS) (browserHasWebSerial)))) { // running in a browser w/o WebSerial (or it is not enabled)
 			inform (localized 'Only recent Chrome and Edge browsers support WebSerial.')
@@ -1234,10 +1236,11 @@ method versionReceived SmallRuntime versionString {
 	if (isNil versionString) { return } // bad version message
 
 	// update vmVersion and boardType
+	justConnected = (isNil vmVersion)
 	vmVersion = (extractVersionNumber this versionString)
 	boardType = (extractBoardType this versionString)
 
-	if (isNil vmVersion) { // first time: check the version number and load board libraries
+	if justConnected { // check the version number and load board libraries
 		checkVmVersion this
 		installBoardSpecificBlocks this
 	} else { // not first time: show the version number
