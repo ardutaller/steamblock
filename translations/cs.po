@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-02-23 08:05+0000\n"
+"PO-Revision-Date: 2025-03-06 12:37+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10.1-dev\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -776,7 +776,7 @@ msgstr "zjasni NeoPixel _ o _"
 
 #. NeoPixel library block
 msgid "brighten all NeoPixels by _"
-msgstr "zjasni všechny NeoPixely _ o _"
+msgstr "zjasni všechny NeoPixely o _"
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
@@ -812,7 +812,7 @@ msgstr "připoj NeoPixel panel šířka _ výška _ na Pin _"
 
 #. NeoPanel library block
 msgid "NeoPanel set x _ y _ color _"
-msgstr "NeoPanel nastav x _ y _ barva"
+msgstr "NeoPanel nastav x _ y _ barva _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
@@ -828,11 +828,11 @@ msgstr "NeoPanel vyplň obdélník na x _ y _ šířka _ výška _ barva _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
-msgstr "NeoPanel zobraz text na x _ y _ barva _"
+msgstr "NeoPanel zobraz text _ na x _ y _ barva _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr "NeoPanel zobraz BMP soubor na x _ y _"
+msgstr "NeoPanel zobraz BMP soubor _ na x _ y _"
 
 #. Microphone library label
 msgid "Microphone"
@@ -1314,7 +1314,7 @@ msgstr "Pseudonáhodné"
 
 #. Pseudorandomness library block
 msgid "pseudorandom _ to _ with seed _"
-msgstr "pseudonáhodné číslo od _ do _ s klíčem"
+msgstr "pseudonáhodné číslo od _ do _ s klíčem _"
 
 #. Pseudorandomness library block
 msgid "_ pseudorandom numbers _ to _ with seed _"
@@ -1681,7 +1681,7 @@ msgstr "nakresli na TFT kružnicí se středem x _ y _ poloměr _ barva _"
 
 #. TFT Display library block
 msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
-msgstr "nakresli na TFT trojúhelník s vrcholy x _ y_ , x _ y, x _ y _ barva _"
+msgstr "nakresli na TFT trojúhelník s vrcholy x _ y _ , x _ y, x _ y _ barva _"
 
 #. TFT Display library block
 msgid "filled _"
@@ -1713,7 +1713,7 @@ msgstr "barva pozadí _"
 
 #. TFT Display library block
 msgid "draw bitmap _ palette _ on TFT at x _ y _"
-msgstr "nakresli na TFT bitmapu _ na x _ y"
+msgstr "nakresli na TFT bitmapu _ paleta _ na x _ y _"
 
 #. TFT Display library block
 msgid "set TFT backlight _ (0-10)"
@@ -2678,7 +2678,7 @@ msgstr "dalších _ bajtů ze souboru _"
 
 #. File System library block
 msgid "read into _ from file _"
-msgstr "načti do _ ze souboru"
+msgstr "načti do _ ze souboru _"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "a ByteArray"
@@ -2767,7 +2767,7 @@ msgstr "_ bez mezer (bílych znaků)"
 
 #. Strings library block
 msgid "join string list _ separator _"
-msgstr "spoj seznam řetězců _ oddělovač"
+msgstr "spoj seznam řetězců _ oddělovač _"
 
 #. Strings library block
 msgid "unicodes _"
@@ -2803,7 +2803,7 @@ msgstr "WiFi připojení k AP _ heslo _"
 
 #. Example WiFi network name
 msgid "Network_Name"
-msgstr "Jméno sítě"
+msgstr "Jméno sítě _"
 
 #. WiFi library block
 msgid "IP _ gateway _ subnet _"
@@ -2815,11 +2815,11 @@ msgstr "WiFi vytvoř hotspot _ heslo _"
 
 #. Example WiFi network password
 msgid "Network_Password"
-msgstr "Síťové heslo"
+msgstr "Síťové heslo _"
 
 #. WiFi library block
 msgid "IP address"
-msgstr "IP addresa"
+msgstr "IP adresa"
 
 #. WiFi library block
 msgid "MAC address"
@@ -3853,7 +3853,7 @@ msgstr "zastav UDP"
 
 #. UDP library block
 msgid "UDP send packet _ to ip _ port _"
-msgstr "odešli UDP packet _ to IP _ port"
+msgstr "odešli UDP packet _ to IP _ port _"
 
 #. UDP library block
 msgid "UDP receive packet"
@@ -4459,7 +4459,7 @@ msgstr "Nelze přečíst %1."
 #. About window info. As in "By Mary, Johanna and Tracy".
 #. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
 msgid "about;by %1, %2 & %3."
-msgstr "od %1, %2 & 3."
+msgstr "od %1, %2 & %3."
 
 #. About window info
 msgid "Created with GP"
@@ -4675,7 +4675,8 @@ msgstr "skrýt implementační bloky"
 
 #. Settings menu tooltip
 msgid "do not show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
-msgstr "skrýt interní bloky a proměnné knihoven (t.j. začínající znakem _ )"
+msgstr ""
+"skrýt interní bloky a proměnné knihoven (t.j. začínající znakem podtržítko )"
 
 #. Settings menu option
 msgid "show implementation blocks"
@@ -4683,7 +4684,9 @@ msgstr "zobrazovat implementační bloky"
 
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
-msgstr "zobrazovat interní bloky a proměnné knihoven (t.j. začínající znakem _ )"
+msgstr ""
+"zobrazovat interní bloky a proměnné knihoven (t.j. začínající znakem "
+"podtržítko )"
 
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
