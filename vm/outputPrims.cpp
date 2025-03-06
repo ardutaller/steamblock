@@ -1038,7 +1038,6 @@ OBJ primNeoPixelSend(int argCount, OBJ *args) {
 	OBJ arg = args[0];
 	if (IS_TYPE(arg, ListType)) {
 		int count = obj2int(FIELD(arg, 0));
-reportNum("NeoPixel count", count);
 		for (int i = 0; i < count; i++) {
 			OBJ item = FIELD(arg, i + 1);
 			int rgb = evalInt(item);
@@ -1055,7 +1054,6 @@ reportNum("NeoPixel count", count);
 				val = (val << 8) | whiteTable[(rgb >> 24) & 0x3F];
 			}
 			sendNeoPixelData(val);
-delayMicroseconds(10);
 		}
 	} else {
 		int rgb = evalInt(arg);
