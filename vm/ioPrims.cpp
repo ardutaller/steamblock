@@ -875,7 +875,7 @@ void hardwareInit() {
 		#define PIN_BUTTON_A 15
 		#define PIN_BUTTON_B 14
 	#elif defined(KIDS_IOT)
-		#define BOARD_TYPE "kidsIOT"
+		#define BOARD_TYPE "KidsIOT"
 	#else
 		#define BOARD_TYPE "ESP32"
 	#endif
