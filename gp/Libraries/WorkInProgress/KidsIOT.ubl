@@ -1,4 +1,4 @@
-module 'KidsIOT'
+module KidsIOT
 author 'Josep Ferràndiz'
 version 1 1 
 depends Tone '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' 
