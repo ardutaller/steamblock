@@ -1,11 +1,11 @@
 module Rhythm Control
-author MicroBlocks
-version 2 5 
+author 'per MicroBlocks'
+version 2 6 
 description 'Keeps time according to a tempo and time signature. Useful to create musical patterns.
 
 Includes abstractions for note durations, bars and beats.
 '
-variables _rhy_tempo _rhy_bars _rhy_beat_duration _rhy_measures _rhy_reference_note _rhy_start_time
+variables _rhy_tempo _rhy_bars _rhy_beat_duration _rhy_measures _rhy_reference_note _rhy_start_time 
 
   spec ' ' 'rhy_set tempo' 'set tempo to _ bpm at _ / _ signature' 'num num num' 120 4 4
   spec ' ' 'rhy_set bars' 'set pattern to _ bars' 'num' 16
@@ -66,12 +66,12 @@ to 'rhy wait until beat' 'beat number' {
 to 'rhy_current bar' {
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
   local 'round duration' ((v 'bar duration') * _rhy_bars)
-  return ((((_rhy_start_time + (millisOp)) % (v 'round duration')) / (v 'bar duration')) + 1)
+  return (((((millisOp) - _rhy_start_time) % (v 'round duration')) / (v 'bar duration')) + 1)
 }
 
 to 'rhy_current beat' {
   local 'bar duration' (_rhy_measures * _rhy_beat_duration)
-  return ((((_rhy_start_time + (millisOp)) % (v 'bar duration')) / _rhy_beat_duration) + 1)
+  return (((((millisOp) - _rhy_start_time) % (v 'bar duration')) / _rhy_beat_duration) + 1)
 }
 
 to rhy_dotted duration {
