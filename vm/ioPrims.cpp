@@ -1000,15 +1000,19 @@ void hardwareInit() {
 #elif defined(DUELink)
 
 	#define BOARD_TYPE "DUELink"
-	#define DIGITAL_PINS 60
-	#define ANALOG_PINS 15
-	#define TOTAL_PINS DIGITAL_PINS
+	#define DIGITAL_PINS 27
+	#define ANALOG_PINS 5
+	#define TOTAL_PINS 60
 	#define PIN_LED -1 // no user LED
-	#define PIN_BUTTON_A 28
-	#define PIN_BUTTON_B 27
+	#define PIN_BUTTON_A 28 // edge pin 5
+	#define PIN_BUTTON_B 27 // edge pin 11
 	#undef BUTTON_PRESSED
 	#define BUTTON_PRESSED HIGH
-	#define DEFAULT_TONE_PIN 13
+	#define DEFAULT_TONE_PIN 26
+	static const char cincoPin[] = {
+		16, 17, 18, 14, 29, 28,  8, 10, 37, 19,
+		 2, 27, 32,  9,  5,  4, 33, -1, -1, 0,
+		 1,  7, 12, 15, 54, 11, 13};
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14};
 
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
@@ -1131,6 +1135,9 @@ void turnOffPins() {
 int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return digitalPin[pinNum];
+	#elif defined(DUELink)
+		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return cincoPin[pinNum];
+		return -1; // out of range
 	#endif
 	#if defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pinNum) && (pinNum <= 139)) {
@@ -1312,6 +1319,9 @@ void primAnalogWrite(OBJ *args) {
 		} else {
 			return;
 		}
+	#elif defined(DUELink)
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return;
 	#elif defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
 			pinNum = digitalPin[pinNum];
@@ -1392,6 +1402,9 @@ OBJ primDigitalRead(int argCount, OBJ *args) {
 	#elif defined(ARDUINO_SAM_ZERO) // M0
 		if ((pinNum == 14) || (pinNum == 15) ||
 			((18 <= pinNum) && (pinNum <= 23))) return falseObj;
+	#elif defined(DUELink)
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return falseObj;
 	#elif defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
 			pinNum = digitalPin[pinNum];
@@ -1449,6 +1462,9 @@ void primDigitalSet(int pinNum, int flag) {
 	#elif defined(ARDUINO_NRF52_PRIMO)
 		if (22 == pinNum) return;
 		if (23 == pinNum) { digitalWrite(BUZZER, (flag ? HIGH : LOW)); return; }
+	#elif defined(DUELink)
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return;
 	#elif defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
 			pinNum = digitalPin[pinNum];
@@ -1558,7 +1574,7 @@ OBJ primButtonA(OBJ *args) {
 			  defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
 		#elif defined(DUELink)
-			SET_MODE(PIN_BUTTON_A, INPUT_PULLDOWN);
+			setPinMode(PIN_BUTTON_A, INPUT_PULLDOWN); // Arduino pin number not edge pin
 		#else
 			SET_MODE(PIN_BUTTON_A, INPUT);
 		#endif
@@ -1579,7 +1595,7 @@ OBJ primButtonB(OBJ *args) {
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
 		#elif defined(DUELink)
-			SET_MODE(PIN_BUTTON_B, INPUT_PULLDOWN);
+			setPinMode(PIN_BUTTON_B, INPUT_PULLDOWN); // Arduino pin number not edge pin
 		#else
 			SET_MODE(PIN_BUTTON_B, INPUT);
 		#endif
@@ -2172,6 +2188,9 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 
 	#if defined(USE_DIGITAL_PIN_MAP)
 		pin = digitalPin[pin];
+	#elif defined(DUELink)
+		pin = mapDigitalPinNum(pin);
+		if (pin < 0) return falseObj;
 	#endif
 
 	#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
@@ -2212,6 +2231,9 @@ OBJ primSetServo(int argCount, OBJ *args) {
 	if ((pin < 0) || (pin >= DIGITAL_PINS)) return falseObj;
 	#if defined(USE_DIGITAL_PIN_MAP)
 		pin = digitalPin[pin];
+	#elif defined(DUELink)
+		pin = mapDigitalPinNum(pin);
+		if (pin < 0) return falseObj;
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pin) && (pin <= 139)) {
 			pin = pin - 100; // allows access to unmapped IO pins 0-39 as 100-139
