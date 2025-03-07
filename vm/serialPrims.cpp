@@ -196,7 +196,7 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 #if (ESP32_ORIGINAL) || defined(PICO_ED) || defined(COCUBE)
 	#define SERIAL_PORT Serial2
 #elif defined(DUELink)
-	#define SERIAL_PORT Serial
+	#define SERIAL_PORT Serial2
 #else
 	#define SERIAL_PORT Serial1
 #endif
@@ -247,6 +247,11 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate); // reset to discard garbage byte
 	#elif defined(ESP32_ORIGINAL)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
+	#elif defined(DUELink)
+		// DUELink Serial is not yet working
+// 		SERIAL_PORT.setRx(mapDigitalPinNum(0));
+// 		SERIAL_PORT.setTx(mapDigitalPinNum(1));
+		SERIAL_PORT.begin(baudRate);
 	#else
 		SERIAL_PORT.begin(baudRate);
 	#endif
