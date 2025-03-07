@@ -89,9 +89,9 @@ int mbDisplayColor = 0x00FF00; // Green by default
 
 #define COL1 29
 #define COL2 10
-#define COL3 2
+#define COL3 14
 #define COL4 8
-#define COL5 14
+#define COL5 2
 
 #endif
 
@@ -397,14 +397,13 @@ static int displaySnapshot = 0;
 static int displayCycle = 0;
 static int rowPins[5] = {ROW1, ROW2, ROW3, ROW4, ROW5};
 static int columnPins[5] = {COL1, COL2, COL3, COL4, COL5};
-static int columnOffsets[5] = {1, 2, 5, 4, 3};
 
-#define DISPLAY_BIT(n) (((displaySnapshot >> (n - 1)) & 1) ? LOW : HIGH)
+#define DISPLAY_BIT(n) (((displaySnapshot >> n) & 1) ? LOW : HIGH)
 
 static void turnDisplayOn() {
 	for (int i = 0; i < 5; i++) {
-		setPinMode(columnPins[i], INPUT);
-		setPinMode(rowPins[i], OUTPUT);
+		setPinMode(rowPins[i], INPUT);
+		setPinMode(columnPins[i], OUTPUT);
 	}
 }
 
@@ -445,15 +444,14 @@ void updateMicrobitDisplay() {
 		displaySnapshot = microBitDisplayBits;
 		turnDisplayOn();
 	}
-	int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
-	setPinMode(columnPins[previousColumn], INPUT); // turn off previous column
+	int previousRow = (displayCycle > 0) ? (displayCycle - 1) : 4;
+	setPinMode(rowPins[previousRow], INPUT); // turn off previous row
 
-	int offset = columnOffsets[displayCycle];
 	for (int i = 0; i < 5; i++) {
-		digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i)));
+		digitalWrite(columnPins[i], DISPLAY_BIT((5 * displayCycle) + i));
 	}
-	setPinMode(columnPins[displayCycle], OUTPUT);
-	digitalWrite(columnPins[displayCycle], LOW);
+	setPinMode(rowPins[displayCycle], OUTPUT);
+	digitalWrite(rowPins[displayCycle], HIGH);
 	displayCycle = (displayCycle + 1) % 5;
 }
 
