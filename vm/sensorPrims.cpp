@@ -42,6 +42,9 @@
 #elif defined(COCUBE)
 	#define PIN_WIRE_SCL 22
 	#define PIN_WIRE_SDA 21
+#elif defined(DUELink)
+	#define PIN_WIRE_SCL 1
+	#define PIN_WIRE_SDA 0
 #elif !defined(PIN_WIRE_SCL)
 	#if defined(PIN_WIRE0_SCL)
 		#define PIN_WIRE_SCL PIN_WIRE0_SCL
@@ -82,6 +85,9 @@ static void startWire() {
 		Wire.setSCL(PIN_WIRE_SCL);
 	#elif defined(ARDUINO_ARCH_ESP32)
 		Wire.setPins(PIN_WIRE_SDA, PIN_WIRE_SCL);
+	#elif defined(DUELink)
+		Wire.setSDA(PIN_WIRE_SDA);
+		Wire.setSCL(PIN_WIRE_SCL);
 	#endif
 
 	#if defined(ARDUINO_ARCH_SAMD)
