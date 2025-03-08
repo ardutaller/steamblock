@@ -43,8 +43,9 @@
 	#define PIN_WIRE_SCL 22
 	#define PIN_WIRE_SDA 21
 #elif defined(DUELink)
-	#define PIN_WIRE_SCL 1
-	#define PIN_WIRE_SDA 0
+	// DUE downlink port not working use edge pins 19 and 20 for now
+	#define PIN_WIRE_SCL 1 // 47 -> PA3 (DUE downlink port SCL)
+	#define PIN_WIRE_SDA 0 // 52 -> PA2 (DUE downlink port SDA)
 #elif !defined(PIN_WIRE_SCL)
 	#if defined(PIN_WIRE0_SCL)
 		#define PIN_WIRE_SCL PIN_WIRE0_SCL
@@ -80,14 +81,11 @@ int hasI2CPullups() {
 }
 
 static void startWire() {
-	#if defined(ARDUINO_ARCH_RP2040)
+	#if defined(ARDUINO_ARCH_RP2040) || defined(DUELink)
 		Wire.setSDA(PIN_WIRE_SDA);
 		Wire.setSCL(PIN_WIRE_SCL);
 	#elif defined(ARDUINO_ARCH_ESP32)
 		Wire.setPins(PIN_WIRE_SDA, PIN_WIRE_SCL);
-	#elif defined(DUELink)
-		Wire.setSDA(PIN_WIRE_SDA);
-		Wire.setSCL(PIN_WIRE_SCL);
 	#endif
 
 	#if defined(ARDUINO_ARCH_SAMD)
@@ -142,6 +140,11 @@ void writeI2CReg(int deviceID, int reg, int value) {
 #if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) || defined(ARDUINO_M5STACK_Core2)
 
 #define HAS_INTERNAL_I2C 1
+
+#if defined(DUELink)
+	// not working on CincoBit; internal I2C disabled for now
+	TwoWire Wire1 = TwoWire(0, 1); // 0 -> PB7 (SDA), 1 -> PB6 (SCL)
+#endif
 
 static int internalWireStarted = false;
 
