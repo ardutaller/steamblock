@@ -249,8 +249,8 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
 	#elif defined(DUELink)
 		// DUELink Serial is not yet working
-// 		SERIAL_PORT.setRx(mapDigitalPinNum(0));
-// 		SERIAL_PORT.setTx(mapDigitalPinNum(1));
+		SERIAL_PORT.setRx(mapDigitalPinNum(0));
+		SERIAL_PORT.setTx(mapDigitalPinNum(1));
 		SERIAL_PORT.begin(baudRate);
 	#else
 		SERIAL_PORT.begin(baudRate);
