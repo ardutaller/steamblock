@@ -1000,7 +1000,7 @@ void hardwareInit() {
 #elif defined(DUELink)
 
 	#define BOARD_TYPE "DUELink"
-	#define DIGITAL_PINS 27
+	#define DIGITAL_PINS 29
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
 	#define PIN_LED -1 // no user LED
@@ -1012,7 +1012,7 @@ void hardwareInit() {
 	static const char cincoPin[] = {
 		16, 17, 18, 14, 29, 28,  8, 10, 37, 19,
 		 2, 27, 32,  9,  5,  4, 33, -1, -1, 0,
-		 1,  7, 12, 15, 54, 11, 13};
+		 1,  7, 12, 15, 54, 11, 13, 52, 47};
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14};
 
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
