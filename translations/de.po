@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-03-09 13:02+0000\n"
+"PO-Revision-Date: 2025-03-10 14:54+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -5053,7 +5053,7 @@ msgstr "g#"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong starte Motor _ mit _ (-100~100)"
+msgstr "Wukong drehe Motor _ mit _ % (-100~100)"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
