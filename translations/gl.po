@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-03-10 14:54+0000\n"
+"PO-Revision-Date: 2025-03-11 16:28+0000\n"
 "Last-Translator: \"Miguel A. Bouzada\" <mbouzada@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/microblocks/ide/"
 "gl/>\n"
@@ -435,7 +435,7 @@ msgstr "crea punto de acceso WiFi _ co contrasinal _"
 
 #. Tone library block
 msgid "attach buzzer to pin _"
-msgstr "inicializar zunidor no pin _"
+msgstr "inicializa o zunidor no pin _"
 
 #. Scrolling library block
 msgid "scroll number _"
@@ -665,7 +665,7 @@ msgstr "Non foi posíbel ler %1."
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
 msgstr ""
-"Utilice o botón «Conectar» para conectarse a un dispositivo MicroBlocks."
+"Empregue o botón «Conectar» para conectarse a un dispositivo MicroBlocks."
 
 #. MicroBlocks IDE information
 msgid "Try to Install MicroBlocks on the board?"
@@ -1462,7 +1462,7 @@ msgstr "pinta fila _ cor _ no NeoPanel"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
-msgstr "inicializa panel de NeoPíxeles largo _ alto _ no pin _"
+msgstr "inicializa o panel de NeoPíxeles largo _ alto _ no pin _"
 
 #. Microphone library block
 msgid "microphone"
@@ -1554,7 +1554,7 @@ msgstr "activa o micrófono"
 
 #. Microphone library block
 msgid "loudness"
-msgstr "volume"
+msgstr "nivel sonoro"
 
 #. HTTP Server library block
 msgid "respond _ to HTTP request"
@@ -3721,3 +3721,315 @@ msgstr "ms amosa a imaxe _ coa cor _"
 #. Scales & Chords library block
 msgid "chord progression _ with root _"
 msgstr "progresión de acordes _ con raíz _"
+
+#. WebSocket server library label
+msgid "WebSocket server"
+msgstr "Servidor de WebSocket"
+
+#. File System library block
+msgid "skip _ bytes of file _"
+msgstr "ignora _ bytes do ficheiro _"
+
+#. File System library block
+msgid "in directory _"
+msgstr "no directorio _"
+
+#. File System library block
+msgid "size of file _"
+msgstr "tamaño do ficheiro _"
+
+#. Strings library label
+#. string (text) processing functions
+msgid "Strings"
+msgstr "Texto"
+
+#. Strings library block
+msgid "_ is a digit"
+msgstr "_ é un díxito"
+
+#. Strings library block
+msgid "_ is lowercase"
+msgstr "_ está en minúsculas"
+
+#. Strings library block
+msgid "_ begins with _"
+msgstr "_ comeza por _"
+
+#. Example string for ( (prefix) begins with (pre) )
+msgid "prefix"
+msgstr "prefixo"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "_ ends with _"
+msgstr "_ remata en _"
+
+#. Strings library block
+msgid "unicodes _"
+msgstr "unicodes de _"
+
+#. Motion library block
+msgid "start step counter"
+msgstr "comeza a contar pasos"
+
+#. Motion library block
+msgid "set step threshold _ (0-50)"
+msgstr "fixa o limiar dos pasos en _ (0-50)"
+
+#. Button Events library label
+msgid "Button Events"
+msgstr "Eventos de botón"
+
+#. Button Events library block
+msgid "button _ pressed"
+msgstr "toque curto no botón _"
+
+#. Calliope board library block
+msgid "Calliope set LED red _ green _ blue _"
+msgstr "pon o LED da Calliope a vermello _ verde _ azul _"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground slide switch"
+msgstr "interruptor da Circuit Playground"
+
+#. DotStar LED library block
+msgid "attach _ DotStar LEDs to data pin _ clock pin _"
+msgstr "inicializa a tira de _ LED DotStar ao pin de datos _ e pin de reloxo _"
+
+#. DotStar LED library block
+msgid "set all DotStar LEDs to r _ g _ b _"
+msgstr "pon todos os LED DotStar a vermello _ verde _ azul _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 temperature"
+msgstr "temperatura do bmx280"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 pressure"
+msgstr "presión do bmx280"
+
+#. BME280 environmental sensor library block
+msgid "bme280 humidity"
+msgstr "humidade do bme280"
+
+#. DHT22 environmental sensor library block
+msgid "temperature (Celsius) DHT22 pin _"
+msgstr "temperatura (ºC) do DHT22 no pin _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 set base altitude _ meters"
+msgstr "bmx280 fixar a altitude de referencia en _ metros"
+
+#. PN532 RFID reader library block
+msgid "read PN532 RFID"
+msgstr "le RFID PN532"
+
+#. Touch Screen library block
+msgid "TFT touched"
+msgstr "TFT tocada"
+
+#. Touch Screen library block
+msgid "TFT touch pressure"
+msgstr "presión do toque na TFT"
+
+#. Cutebot Pro library block dropdown option
+#. as in "left" side
+msgid "cutebotside;left"
+msgstr "esquerda"
+
+#. Cutebot Pro library block
+msgid "CBPro version"
+msgstr "versión do CBPro"
+
+#. Motion library block
+msgid "step count"
+msgstr "pasos"
+
+#. Cutebot library block
+msgid "Cutebot set NeoPixel _ to _"
+msgstr "pon o NeoPíxel _ do Cutebot a _"
+
+#. Cutebot Pro library block dropdown option
+#. as in "right" side
+msgid "cutebotside;right"
+msgstr "dereita"
+
+#. Wukong robot library block
+msgid "Wukong set NeoPixels _ _ _ _"
+msgstr "pon os NeoPíxeles do Wukong a _ _ _ _"
+
+#. WebSocket Server library block
+msgid "start WebSocket server"
+msgstr "inicia o servidor de WebSocket"
+
+#. Calliope board library block
+msgid "Calliope loudness"
+msgstr "nivel sonoro da Calliope"
+
+#. Example string. Tells the user this input accepts a byte array
+msgid "a ByteArray"
+msgstr "unha ListaDeBytes"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 rgb"
+msgstr "cor RGB do TCS34725"
+
+#. File System library block
+msgid "file system info"
+msgstr "detalles do sistema de ficheiros"
+
+#. DotStar LED library block
+msgid "set DotStar brightness _"
+msgstr "fixa o brillo dos DotStar a _"
+
+#. Keyestudio Smart Home library block
+msgid "Home set NeoPixels _ _ _ _"
+msgstr "Home pon _ _ _ _ en NeoPíxeles"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 altitude (feet)"
+msgstr "bmx280 altitude (pés)"
+
+#. DHT22 environmental sensor library block
+msgid "humidity DHT22 pin _"
+msgstr "humidade do DHT22 no pin _"
+
+#. PN532 RFID reader library block
+msgid "get PN532 firmware version"
+msgstr "versión do firmware do PN532"
+
+#. Button Events library block
+msgid "button _ double pressed"
+msgstr "dobre toque no botón _"
+
+#. config confirmation
+msgid "Allow the attached board to be connected via BLE?"
+msgstr "Queres que a placa connectada poida programarse a través de BLE?"
+
+#. File System library block
+msgid "end of file _"
+msgstr "fin do ficheiro _"
+
+#. File System library block
+msgid "next line of file _"
+msgstr "seguinte liña do ficheiro _"
+
+#. File System library block
+msgid "next _ bytes of file _"
+msgstr "seguintes _ bytes do ficheiro _"
+
+#. File System library block
+msgid "read into _ from file _"
+msgstr "le a _ desde ficheiro _"
+
+#. File System library block
+msgid "file names"
+msgstr "nomes de ficheiro"
+
+#. Strings library block
+msgid "_ is uppercase"
+msgstr "_ está en maiúsculas"
+
+#. Example string for ( (prefix) begins with (pre) )
+msgid "pre"
+msgstr "pre"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "suffix"
+msgstr "sufixo"
+
+#. WebSocket Server library block
+msgid "payload for WebSocket event _"
+msgstr "carga útil do evento de WebSocket _"
+
+#. WebSocket Server library block
+msgid "type of WebSocket event _"
+msgstr "tipo do evento de WebSocket _"
+
+#. WebSocket Server library block
+msgid "send _ to WebSocket client _"
+msgstr "envía _ ao cliente WebSocket _"
+
+#. Calliope board library block
+msgid "Calliope set speaker _"
+msgstr "pon o altofalante da Calliope a _"
+
+#. BME280 environmental sensor library block
+msgid "bmp280 connected"
+msgstr "bmp280 conectado"
+
+#. DHT11 environmental sensor library block
+msgid "humidity DHT11 pin _"
+msgstr "humidade do DHT11 no pin _"
+
+#. WebSocket Server library block
+msgid "last WebSocket event"
+msgstr "último evento de WebSocket"
+
+#. BME280 environmental sensor library block
+msgid "bme280 connected"
+msgstr "bme280 conectado"
+
+#. DHT11 environmental sensor library block
+msgid "temperature (Celsius) DHT11 pin _"
+msgstr "temperatura (°C) do DHT11 no pin _"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 connected"
+msgstr "TCS34725 conectado"
+
+#. Touch Screen library block
+msgid "TFT touch X position"
+msgstr "posición X do toque na TFT"
+
+#. Touch Screen library block
+msgid "TFT touch Y position"
+msgstr "posición Y do toque na TFT"
+
+#. HTTP Client library block.
+#. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
+msgid "_ data _ to http #SVG#colon-double-slash _"
+msgstr "solicitude _ co contido _ a http #SVG#colon-double-slash _"
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr "inicializa NeoPíxeis"
+
+#. Motion library block
+msgid "clear step count"
+msgstr "limpa o reconto de pasos"
+
+#. File System library block
+msgid "set read position _ of file _"
+msgstr "define posición de lectura a _ para o ficheiro _"
+
+#. Button Events library block
+msgid "button _ long pressed"
+msgstr "toque longo no botón _"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground set speaker _"
+msgstr "pon o altofalante da Circuit Playground a _"
+
+#. DotStar LED library block
+msgid "set DotStar LED _ to r _ g _ b _"
+msgstr "pon o LED DotStar _ a vermello _ verde _ azul _"
+
+#. WebSocket Server library block
+msgid "client ID for WebSocket event _"
+msgstr "ID de cliente do evento de WebSocket _"
+
+#. Cutebot Pro library block
+msgid "CBPro set NeoPixel _ to _"
+msgstr "pon o NeoPíxel _ do CBPro a _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 altitude (cm)"
+msgstr "bmx280 altitude (cm)"
+
+#. HTTP Client library example data to send to a server
+msgid "MicroBlocks is fun"
+msgstr "MicroBlocks é divertido"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Reset the timer."
+msgstr "Reinicia o temporizador."
