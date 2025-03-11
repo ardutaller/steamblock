@@ -1,5 +1,5 @@
 module Rhythm Control
-author 'per per MicroBlocks'
+author 'MicroBlocks'
 version 2 7 
 description 'Keeps time according to a tempo and time signature. Useful to create musical patterns.
 
