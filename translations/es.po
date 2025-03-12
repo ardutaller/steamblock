@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-03-01 23:02+0000\n"
-"Last-Translator: JOSEP FERRANDIZ FARRE <jferran6@xtec.cat>\n"
+"PO-Revision-Date: 2025-03-12 14:08+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -6437,3 +6437,17 @@ msgstr "hPa"
 #. Barometer (LPS331AP) library dropdown menu option
 msgid "lps331;inHg"
 msgstr "inHg"
+
+#. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
+msgid "_ with _ items replaced by _"
+msgstr "_ con _ elementos sustituidos por _"
+
+#. Settings menu option
+msgid "inform of new versions"
+msgstr "informar de nuevas versiones"
+
+#. Settings menu option
+msgid "when opening the IDE, show a notification if a new version of MicroBlocks has been released"
+msgstr ""
+"al abrir el editor, mostrar una notificación si hay una nueva versión de "
+"MicroBlocks disponible"
