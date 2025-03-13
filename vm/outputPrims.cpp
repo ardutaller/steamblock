@@ -455,7 +455,7 @@ void updateMicrobitDisplay() {
 	displayCycle = (displayCycle + 1) % 5;
 }
 
-#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
+#elif defined(HAS_LED_MATRIX)
 
 	static void updateNeoPixelDisplay(); // forward reference
 
@@ -485,7 +485,7 @@ void updateMicrobitDisplay() {
 
 OBJ primMBSetColor(int argCount, OBJ *args) {
 	mbDisplayColor = obj2int(args[0]);
-#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
+#if defined(HAS_LED_MATRIX)
 	displaySnapshot = 0; // update the display on the next cycle
 #else
 	tftSetHugePixelBits(microBitDisplayBits);
@@ -1109,6 +1109,8 @@ void turnOffInternalNeoPixels() {
 	int count = 0;
 	#if defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
 		count = 10;
+	#elif defined(FOXBIT)
+		count = 35;
 	#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 		count = 25;
 		// sending neopixel data twice on the Atom Matrix eliminates green pixel at startup
@@ -1151,6 +1153,38 @@ void turnOffInternalNeoPixels() {
 		for (int i = 0; i < 25; i++) {
 			int isOn = (microBitDisplayBits & (1 << i));
 			sendNeoPixelData(isOn ? pixelValue : 0);
+		}
+		neoPixelPinMask = oldPinMask; // restore the old NeoPixel pin
+		delay(1); // NeoPixels latch time
+	}
+
+#endif
+
+// Simulate the micro:bit 5x5 LED display on 7x5 NeoPixel display
+
+#if defined(FOXBIT)
+
+	void updateNeoPixelDisplay() {
+		int oldPinMask = neoPixelPinMask;
+		initNeoPixelPin(13); // use internal NeoPixels
+		delay(1); // make sure NeoPixels are latched and ready for new data
+
+		// compute color RGB value; NeoPixel order is GRB
+		int r = gamma((mbDisplayColor >> 16) & 0xFF);
+		int g = gamma((mbDisplayColor >> 8) & 0xFF);
+		int b = gamma(mbDisplayColor & 0xFF);
+		int pixelValue = (g << 16) | (r << 8) | b;
+
+		// update the NeoPixels
+		for (int y = 0; y < 5; y++) {
+			for (int x = 0; x < 7; x++) {
+				int isOn = false;
+				if ((1 <= x) && (x <= 5)) {
+					int i = (5 * y) + (x - 1);
+					isOn = (microBitDisplayBits & (1 << i));
+				}
+				sendNeoPixelData(isOn ? pixelValue : 0);
+			}
 		}
 		neoPixelPinMask = oldPinMask; // restore the old NeoPixel pin
 		delay(1); // NeoPixels latch time

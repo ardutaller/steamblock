@@ -143,7 +143,7 @@ void hardwareInit() {
 		int yellow = 14864128;
 		setAllNeoPixels(-1, 3, yellow);
 	#endif
-	#if defined(ARDUINO_Mbits) || defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(STEAMaker)
+	#if defined(HAS_LED_MATRIX) && !defined(GNUBLOCKS)
 		mbDisplayColor = (190 << 16); // red (not full brightness)
 	#endif
 	#if defined(COCUBE)
@@ -707,6 +707,30 @@ void hardwareInit() {
 		0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
 		0, 0, 0, 0, 0, 1, 1, 0, 1, 1};
 
+#elif defined(FOXBIT)
+	#define BOARD_TYPE "FOXBIT"
+	#define PIN_BUTTON_A 0
+	#define PIN_BUTTON_B 15
+	#define DIGITAL_PINS 25
+	#define ANALOG_PINS 16
+	#define TOTAL_PINS 40
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[] = {};
+	static const char digitalPin[DIGITAL_PINS] = {
+		12, 14, 32, 13, 27,  0, 2,  25,  17, 16,
+		26,  4, 15, 18, 19, 23, 5, 255, 255, 22,
+		21, 33, 35, 36, 39}; // edge connector pins 17 & 18 are not used (-1)
+	// 21 (GPIO 33) - buzzer
+	// 22 (GPIO 35) - loudness sensor
+	// 23 (GPIO 36) - current sensor
+	// 24 (GPIO 39) - light sensor
+	#define DEFAULT_TONE_PIN 21 // maps to GPIO33
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 1, 0, 1, 0, 0, 1, 1, 1, 1,
+		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+		1, 1, 0, 0, 0, 0, 0, 1, 1, 0};
+
 #elif defined(TTGO_DISPLAY)
 	#define BOARD_TYPE "TTGO_DISPLAY"
 	#define DIGITAL_PINS 40
@@ -1214,7 +1238,7 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		}
 	#endif
 	#ifdef ARDUINO_ARCH_ESP32
-		#if defined(ARDUINO_Mbits) || defined(STEAMaker)
+		#if defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
 			if ((0 <= pinNum) && (pinNum < DIGITAL_PINS) && (pinNum != 17) && (pinNum != 18)) {
 				pinNum = digitalPin[pinNum]; // map edge connector pin number to ESP32 pin number
 			}
@@ -1300,7 +1324,7 @@ void primAnalogWrite(OBJ *args) {
 				pinNum = ed1DigitalPinMap[pinNum - 1];
 			}
 		#endif
-		#if defined(ARDUINO_Mbits) || defined(STEAMaker)
+		#if defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
 			if ((0 <= pinNum) && (pinNum < DIGITAL_PINS) && (pinNum != 17) && (pinNum != 18)) {
 				pinNum = digitalPin[pinNum]; // map edge connector pin number to ESP32 pin number
 			}
@@ -1570,6 +1594,8 @@ OBJ primButtonA(OBJ *args) {
 			}
 			buttonIndex = (buttonIndex + 1) % 6;
 			return (buttonReadings[4] < CAP_THRESHOLD) ? trueObj : falseObj;
+		#elif defined(FOXBIT)
+			setPinMode(PIN_BUTTON_A, INPUT_PULLUP); // ESP32 pin number not edge pin
 		#elif defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_ARCH_ESP32) || \
 			  defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
@@ -1592,6 +1618,8 @@ OBJ primButtonB(OBJ *args) {
 	#ifdef PIN_BUTTON_B
 		#if defined(ARDUINO_CITILAB_ED1)
 			return (buttonReadings[3] < CAP_THRESHOLD) ? trueObj : falseObj;
+ 		#elif defined(FOXBIT)
+ 			setPinMode(PIN_BUTTON_B, INPUT_PULLUP); // ESP32 pin number not edge pin
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
 		#elif defined(DUELink)
