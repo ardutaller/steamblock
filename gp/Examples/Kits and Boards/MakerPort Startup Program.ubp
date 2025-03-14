@@ -1,8 +1,8 @@
 module main
 author 'Roger Wagner'
-version 2 0
+version 1 0 
 description ''
-variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NeoPixelsOn NumberOfNeopixels PreviousPinTouched CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived MyFolder50Present FairyLightsPin SoundLevel SoundLevelMax LightLevel step MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy SDA SCL StartupTrack WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold SwitchTimeLimit Acceleration FilesSwitch DevelopmentBuild BasicMode Folder76Present LEDNumber HappyAngle SadAngle FaceTurned
+variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NeoPixelsOn NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived MyFolder50Present FairyLightsPin SoundLevel SoundLevelMax LightLevel step MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy SDA SCL WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold skamps PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed 
 
   spec ' ' 'Initialize lists' 'Initialize lists'
   spec ' ' 'MenuAction5' 'MenuActionAccelerometer'
@@ -27,10 +27,12 @@ variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameL
   spec ' ' 'DoNoCard' 'DoNoCard'
   spec ' ' 'DoMrHappySad' 'DoMrHappySad'
   spec ' ' 'IsThereFolder76' 'IsThereFolder76'
+  spec ' ' 'DoServeLeft' 'DoServeLeft'
+  spec ' ' 'DoServeRight' 'DoServeRight'
+  spec ' ' 'NewGame' 'NewGame'
 
 to DefinePinNumbers {
   Mp3VolumeLevelPin = 0
-  LEDNumber = 1
   Analog = 13
   Servo1 = 14
   Servo2 = 15
@@ -42,8 +44,6 @@ to DefinePinNumbers {
   Mp3Rx = 21
   IRReceiver = 22
   Mp3Busy = 23
-  SDA = 24
-  SCL = 25
   DistancePinTrigger = Extra1
   DistancePinEcho = Extra2
   LightShowNeoPixPin = Extra1
@@ -53,6 +53,12 @@ to DefinePinNumbers {
 }
 
 to DefineVariables {
+  LCDWaitTime = 1500
+  comment 'ms to wait after displaying each status update 
+during startup when the LCD is attached.
+There is also a "Time Threshold" for the maximum 
+amount of time to wait when looking for a folder.'
+  TimeThreshold = 1600
   ReadyForTasks = (booleanConstant false)
   KeyboardOn = (booleanConstant false)
   comment 'KeyboardOn is for the keyboard mode, i.e., no flash card'
@@ -60,32 +66,45 @@ to DefineVariables {
   TimeEnd = 0
   WelcomeToMakerPortFolder = 99
   WelcometoMakerPortTrack = 3
+  MyFolder = 1
   MyFolderPresent = (booleanConstant false)
+  comment 'MyFolder 01 is used to initiate auto-play'
   FilesSwitch = (booleanConstant false)
+  NumberOfNeopixels = 64
+  comment 'Folder 50 is additional sounds 1 to 12, 
+Folder 51 is default 1st folder for "piano" playback'
+  folder = 51
   MyFolder50Present = (booleanConstant false)
+  comment 'Folder 50 is additional sounds 1 to 12'
   Folder75Present = (booleanConstant false)
+  RedMax = 255
+  LightThreshold = 10
+  comment 'Folder 75 is Halloween Lantern files'
   Folder76Present = (booleanConstant false)
-  Folder99Present = (booleanConstant false)
-  MicroSDPresent = (booleanConstant false)
-  ThingIsRunning = (booleanConstant false)
+  HappyAngle = 100
+  SadAngle = -100
   FaceTurned = (booleanConstant false)
   comment 'temporarily set right after Mr. Happy-Sad changes orientation'
-  PreviousPinTouched = 0
+  comment 'Folder 76 is Mr. Happy-Sad files '
+  Folder99Present = (booleanConstant false)
+  comment 'Folder 99 is MakerPort welcome sounds and is used 
+to test for presence of the MakerPort flash drive files '
+  MicroSDPresent = (booleanConstant false)
+  ThingIsRunning = (booleanConstant false)
   DistanceThreshold = 30
   Mp3Volume = 30
   SoundLevel = (makerport_loudness 'mp3 player')
   SoundLevelMax = 10
-  SwitchTimeLimit = 500
-  TimeThreshold = 1600
   ToneVolume = 5
-  folder = 51
-  MyFolder = 1
-  StartupTrack = 99
-  Acceleration = 0
-  NumberOfNeopixels = 24
-  RedMax = 255
-  HappyAngle = 100
-  SadAngle = -100
+  PlayingPong = (booleanConstant false)
+  NewGameAllowed = (booleanConstant true)
+  ServeLeft = (booleanConstant true)
+  LeftPaddleVisible = (booleanConstant false)
+  RightPaddleVisible = (booleanConstant false)
+  Delay = 120
+  SpeedUpTime = 30
+  ScoreLeft = 0
+  ScoreRight = 0
 }
 
 to DoMrHappySad {
@@ -95,7 +114,7 @@ to DoMrHappySad {
     Volume = (makerport_loudness 'mp3 player')
     if (and (Volume > 5) FaceTurned) {
       comment 'happy position'
-      digitalWriteOp LEDNumber true
+      digitalWriteOp 1 true
       setServoAngle Servo1 HappyAngle
       LCD1602_write 'Happy!' 2
       sayIt 'Happy!'
@@ -103,7 +122,7 @@ to DoMrHappySad {
     }
     if (and (Volume <= 4) (not FaceTurned)) {
       comment 'sad position'
-      digitalWriteOp LEDNumber false
+      digitalWriteOp 1 false
       setServoAngle Servo1 SadAngle
       waitMillis 250
       comment 'wait for servo to finish move'
@@ -134,6 +153,50 @@ to DoNoCard {
   KeyboardOn = (booleanConstant true)
   ReadyForTasks = (booleanConstant true)
   EnableTouchLEDsIRRemote
+}
+
+to DoServeLeft {
+  neoPanel_drawPixel 1 3 (colorSwatch 255 255 255 255)
+  waitMillis (random 100 1500)
+  for i ('[data:range]' 2 9) {
+    waitMillis Delay
+    neoPanel_drawPixel (i - 1) 3 (colorSwatch 0 0 0 255)
+    neoPanel_drawPixel i 3 (color_withBrightness (colorSwatch 255 0 0 255) 50)
+    if (and (or (i == 7) (i == 8)) RightPaddleVisible) {
+      makerport_beep 440 50 5
+      ScoreRight = (ScoreRight + 1)
+      neoPanel_fillRectangle 8 (9 - ScoreRight) 1 ScoreRight (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      if (ScoreRight == 4) {
+        'play ringtone' 'Pacman:d=16,o=6,b=140:
+b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
+        NewGame
+      }
+    }
+  }
+  ServeLeft = (booleanConstant false)
+  waitMillis 1000
+}
+
+to DoServeRight {
+  neoPanel_drawPixel 8 3 (colorSwatch 255 255 255 255)
+  waitMillis (random 100 1500)
+  for i ('[data:range]' 7 0) {
+    waitMillis Delay
+    neoPanel_drawPixel (i + 1) 3 (colorSwatch 0 0 0 255)
+    neoPanel_drawPixel i 3 (color_withBrightness (colorSwatch 255 0 0 255) 50)
+    if (and (or (i == 2) (i == 1)) LeftPaddleVisible) {
+      makerport_beep 440 50
+      ScoreLeft = (ScoreLeft + 1)
+      neoPanel_fillRectangle 1 (9 - ScoreLeft) 1 ScoreLeft (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      if (ScoreLeft == 4) {
+        'play ringtone' 'Pacman:d=16,o=6,b=140:
+b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
+        NewGame
+      }
+    }
+  }
+  ServeLeft = (booleanConstant true)
+  waitMillis 1000
 }
 
 to DownArrowVolume {
@@ -209,18 +272,18 @@ to 'IsThere Track' Track Folder {
   if (and (LCD1602_isConnected) DevelopmentBuild) {
     LCD1602_write_field TimeThreshold 1 1 3
     LCD1602_write_field TimeEnd 1 14 16
-    waitMillis 1000
+    waitMillis LCDWaitTime
   }
   if (TimeEnd > TimeThreshold) {
     if ('[misc:connectedToIDE]') {
       sayIt Track Folder TimeEnd 'not found'
-      waitMillis 1000
+      waitMillis LCDWaitTime
     }
     return (booleanConstant false)
   } else {
     if ('[misc:connectedToIDE]') {
       sayIt Track Folder TimeEnd 'found'
-      waitMillis 1000
+      waitMillis LCDWaitTime
     }
     return (booleanConstant true)
   }
@@ -239,10 +302,10 @@ to IsThereFolder75 {
       LCD1602_clear
       LCD1602_write '   Folder 75' 1
       LCD1602_write ' for Halloween!' 2
-      waitMillis 2000
+      waitMillis LCDWaitTime
       LCD1602_write 'Distance in Extra' 1
       LCD1602_write 'NeoPixels Servo2' 2
-      waitMillis 2000
+      waitMillis LCDWaitTime
     }
   } else {
     Folder75Present = (booleanConstant false)
@@ -290,18 +353,18 @@ to IsThereMyFolder {
       if DevelopmentBuild {
         LCD1602_write_field '*' 2 16 16
       }
-      waitMillis 2000
+      waitMillis LCDWaitTime
       LCD1602_write 'Servo in Servo1 ' 1
       LCD1602_write 'Fairy Lts Servo2 ' 2
-      waitMillis 2000
+      waitMillis LCDWaitTime
       LCD1602_write 'NeoPix Extra(16)' 2
-      waitMillis 2000
+      waitMillis LCDWaitTime
     }
   } else {
     MyFolderPresent = (booleanConstant false)
     if (and (LCD1602_isConnected) DevelopmentBuild) {
       LCD1602_write_field '#' 2 16 16
-      waitMillis 1000
+      waitMillis LCDWaitTime
     }
   }
 }
@@ -317,7 +380,7 @@ to IsThereMyFolder50 {
       LCD1602_clear
       LCD1602_write '  More sounds' 1
       LCD1602_write ' in folder 50!' 2
-      waitMillis 2000
+      waitMillis LCDWaitTime
       LCD1602_clear
       LCD1602_write '   MakerPort' 1
       if (and Folder99Present DevelopmentBuild) {
@@ -355,14 +418,18 @@ to IsThereMyFolder99 {
 }
 
 to 'MakerPort Setup' {
+  setServoAngle Servo1 0
+  waitMillis 75
+  stopServo Servo1
+  stopServo Servo2
   if ('[misc:connectedToIDE]') {
     sayIt 'free memory' ('[data:freeMemory]')
-    waitMillis 1000
+    waitMillis LCDWaitTime
   }
   if (LCD1602_isConnected) {
     LCD1602_write '  Welcome to' 1
     LCD1602_write ' the MakerPort!' 2
-    waitMillis 1000
+    waitMillis LCDWaitTime
     LCD1602_clear
   }
   comment '0 - not initialized
@@ -371,7 +438,7 @@ no card - microSD card is not inserted
 files mode - switch is in the "files" position'
   if (and (LCD1602_isConnected) DevelopmentBuild) {
     LCD1602_write ('[data:join]' 'SD:' _mp3Status) 1
-    waitMillis 2000
+    waitMillis LCDWaitTime
     LCD1602_clear
   }
   if (_mp3Status == 'files mode') {
@@ -414,6 +481,16 @@ to MenuAction5 {
   }
 }
 
+to NewGame {
+  clearNeoPixels
+  Delay = (Delay - 50)
+  ServeLeft = (booleanConstant true)
+  ScoreLeft = 0
+  ScoreRight = 0
+  sendBroadcast 'ShowLeftPaddle'
+  sendBroadcast 'ShowRightPaddle'
+}
+
 to PinKeyTouched {
   if MicroSDPresent {
     if (TPin != 12) {
@@ -438,10 +515,31 @@ to PinKeyTouched {
 to PinKeyTouched2 {
   if MicroSDPresent {
     if (TPin != 12) {
+      if (TPin == 1) {
+        setServoAngle Servo1 90
+        if (and PlayingPong (not ServeLeft)) {
+          sendBroadcast 'ShowLeftPaddle'
+        }
+        if (and (not PlayingPong) NewGameAllowed) {
+          NewGame
+        }
+      }
+      if (TPin == 5) {
+        setServoSpeed Servo2 50
+        if (and (not PlayingPong) NewGameAllowed) {
+          NewGame
+        }
+      }
       sendBroadcast 'PlayTrack'
     } else {
       IncrementFolderP12
       LCD1602_write_field ('[data:join]' 'Folder:' folder) 2 8 16
+      if (and PlayingPong ServeLeft) {
+        sendBroadcast 'ShowRightPaddle'
+      }
+      if (and (not PlayingPong) NewGameAllowed) {
+        NewGame
+      }
       mp3_playTrack 99 folder
     }
   } else {
@@ -505,14 +603,15 @@ to SystemSetup2 {
   if MyFolderPresent {
     LCD1602_write 'Auto-Play...' 1
     LCD1602_write 'Ready...' 2
-    mp3_repeatAllInFolder MyFolder
     waitMillis 50
+    mp3_repeatAllInFolder MyFolder
     sendBroadcast 'Servo+LightShow'
   } else {
     LCD1602_write 'Ready...' 1
     if (and Folder99Present (not BasicMode)) {
       LCD1602_write ('[data:join]' '       Folder:' folder) 2
       mp3_playTrack WelcometoMakerPortTrack WelcomeToMakerPortFolder
+      sendBroadcast 'PlayPong!'
     } else {
       comment 'F4'
       makerport_beep 349 250
@@ -550,25 +649,41 @@ to myBlock {
     Distance = ('distance (cm)' DistancePinTrigger DistancePinEcho)
     waitMillis 50
     LCD1602_write_field ('[data:join]' Distance 'cm' '...') 2 5 12
-    if (and (Distance < DistanceThreshold) (not ThingIsRunning)) {
-      LCD1602_write 'Happy Halloween!' 1
-      ThingIsRunning = (booleanConstant true)
-      mp3_resume
-    } (Distance < DistanceThreshold) {
-      neoPixelSetAllToColor (colorFromRGB RedMax (RedMax / 2) 0)
-      waitMillis (random 10 500)
-      neoPixelSetAllToColor (colorSwatch 0 0 0 255)
-      waitMillis (random 3 5)
+    LCD1602_write_field (makerport_loudness 'analog pin (13)') 2 14 16
+    if (and (Distance < DistanceThreshold) ((makerport_loudness 'analog pin (13)') > LightThreshold)) {
+      if (not ThingIsRunning) {
+        LCD1602_write 'Happy Halloween!' 1
+        ThingIsRunning = (booleanConstant true)
+        mp3_resume
+      } else {
+        neoPixelSetAllToColor (colorFromRGB RedMax (RedMax / 2) 0)
+        waitMillis (random 10 500)
+        neoPixelSetAllToColor (colorSwatch 0 0 0 255)
+        waitMillis (random 3 5)
+      }
     } else {
       clearNeoPixels
       mp3_pause
       ThingIsRunning = (booleanConstant false)
-      LCD1602_write '  Come Closer!' 1
+      if ((makerport_loudness 'analog pin (13)') > LightThreshold) {
+        LCD1602_write '  Come Closer!' 1
+      } else {
+        LCD1602_write 'Lower the lights' 1
+      }
     }
   }
 }
 
-script 172 50 {
+script 573 50 {
+stopAll
+mp3_pause
+}
+
+script 425 54 {
+QATestSimple
+}
+
+script 58 60 {
 makerport_initialize
 DefinePinNumbers
 DefineVariables
@@ -576,8 +691,8 @@ DefineVariables
 LCD1602_clear
 sayIt ('IsThere Track' 1 1)
 comment 'observed times for track 1 in folders:
-100 - switch=code -
-         switch=files -
+100 - switch=code - 
+         switch=files - 
 99 - 496
 76 - 793
 75 - 668
@@ -593,33 +708,26 @@ observed times for track 99 in folders:
 '
 }
 
-script 536 63 {
-QATestSimple
-}
-
-script 395 67 {
+script 575 141 {
 mp3_pause
 }
 
-script 544 138 {
-stopAll
-mp3_pause
-}
-
-script 870 360 {
+script 762 331 {
 to 'MakerPort Setup' {}
 }
 
-script 174 497 {
+script 56 512 {
 whenStarted
-comment 'MakerPort Startup v01.23.25 - Animatronics'
-comment 'Uses timed playback to detect microSD card, not the  "mp3 player has flashcard" block (MakerPort)'
+Comment = 'MakerPort Startup v03.13.25 - Animatronics'
+Comment = 'Uses timed playback to detect microSD card, not the  "mp3 player has flashcard" block (MakerPort)'
 DevelopmentBuild = (booleanConstant false)
-comment 'Set "DevelopmentBuild" to true during development, false for production startup program'
+Comment = 'Set "DevelopmentBuild" to true during development, false for production startup program'
 BasicMode = (booleanConstant false)
-comment 'Basic mode is for the "basic" MakerPort, i.e., not the lantern, neopixels, etc.'
+Comment = 'Basic mode is for the "basic" MakerPort, i.e., not the lantern, neopixels, etc.'
 DefinePinNumbers
 DefineVariables
+neoPixelAttach 64 Extra1
+clearNeoPixels
 'Initialize lists'
 makerport_initialize
 'MakerPort Setup'
@@ -629,7 +737,7 @@ if MicroSDPresent {
 }
 }
 
-script 170 1289 {
+script 58 1259 {
 whenBroadcastReceived 'Servo+LightShow'
 makerport_setAllLEDs true
 neoPixelAttach NumberOfNeopixels LightShowNeoPixPin
@@ -643,39 +751,56 @@ forever {
   }
   LightLevel = ('[misc:rescale]' ((SoundLevel * 100) / SoundLevelMax) 0 100 0 1023)
   analogWriteOp FairyLightsPin LightLevel
-  for i 12 {
+  for i ('[data:range]' 1 12) {
     analogWriteOp i LightLevel
+    comment 'Only LEDs 3, 4, 5, 7, 8, 9, 10, 11 & 12 have variable brightness
+LEDS 1, 2, 6 do not have variable brightness, but will quickly 
+turn on/off in response to the sound volume level.'
   }
-  setNeoPixelColor (random 1 24) (color_withBrightness (randomColor) 75)
+  setNeoPixelColor (random 1 NumberOfNeopixels) (color_withBrightness (randomColor) 50)
   setServoAngle Servo1 ('[misc:rescale]' ((SoundLevel * 100) / SoundLevelMax) 0 100 0 90)
 }
 }
 
-script 1625 1347 {
+script 1514 1435 {
 to DoNoCard {}
 }
 
-script 868 1654 {
+script 762 1787 {
 to SystemSetup2 {}
 }
 
-script 176 2196 {
+script 62 2194 {
 whenBroadcastReceived 'WatchForTouch'
 forever {
   if (and (touch_touch_event) ReadyForTasks) {
     LCD1602_write_field ('[data:join]' 'Touch:' (touch_last_touched_pin)) 1 1 16
     if Folder76Present {
+      comment 'Mr. Happy-Sad - play whenever a touchpoint
+is being touched'
       mp3_playTrack 1 76
       sendBroadcast 'WatchForRelease'
     } else {
-      stopAll
-      comment 'Cancel auto-play if a touchpoint is touched'
+      if (or MyFolderPresent Folder75Present) {
+        comment 'Cancel demo program if a touchpoint is touched 
+AND a demo is running (01 or 75)'
+        stopAll
+        MyFolderPresent = (booleanConstant false)
+        Folder75Present = (booleanConstant false)
+      }
       stopServo Servo1
-      MyFolderPresent = (booleanConstant false)
       TPin = (touch_last_touched_pin)
-      PreviousPinTouched = TPin
       makerport_setAllLEDs false
       digitalWriteOp TPin true
+      if (or (TPin == 1) (or (TPin == 5) (TPin == 12))) {
+        comment '"You may pass" (don''t stop other tasks)'
+      } else {
+        comment 'Cancel pong if other than 1, 5 or 12'
+        stopAll
+        clearNeoPixels
+        PlayingPong = (booleanConstant false)
+        NewGameAllowed = (booleanConstant false)
+      }
       comment 'KeyboardOn = true to output characters'
       if KeyboardOn {
         LCD1602_write_field (at TPin CharacterNames) 2 1 16
@@ -693,7 +818,7 @@ forever {
 }
 }
 
-script 1420 3058 {
+script 1309 3146 {
 whenBroadcastReceived 'WatchForIRCommand'
 forever {
   if (and (ir_code_received) ReadyForTasks) {
@@ -732,10 +857,21 @@ forever {
 }
 }
 
-script 173 3312 {
+script 755 3529 {
+whenBroadcastReceived 'PlayTrack'
+LCD1602_write_field ('[data:join]' '       Folder:' folder) 2 1 16
+mp3_playTrackUntilDone TPin folder
+makerport_setAllLEDs false
+}
+
+script 61 3662 {
 whenBroadcastReceived 'WatchForRelease'
 forever {
   if (and (touch_release_event) ReadyForTasks) {
+    setServoAngle Servo1 0
+    waitMillis 75
+    stopServo Servo1
+    stopServo Servo2
     ReleasedTPin = (touch_last_released_pin)
     if (and Folder76Present ((touch_last_released_pin) == 1)) {
       mp3_pause
@@ -754,14 +890,7 @@ forever {
 }
 }
 
-script 866 3441 {
-whenBroadcastReceived 'PlayTrack'
-LCD1602_write_field ('[data:join]' '       Folder:' folder) 2 1 16
-mp3_playTrackUntilDone TPin folder
-makerport_setAllLEDs false
-}
-
-script 50 4131 {
+script 599 3771 {
 whenBroadcastReceived 'PortTest'
 forever {
   digitalWriteOp 13 true
@@ -778,52 +907,85 @@ forever {
 }
 }
 
-script 807 4233 {
+script 696 4321 {
 to IsThereFolder75 {}
 }
 
-script 322 4325 {
-to IsThereMyFolder99 {}
-}
-
-script 1381 4361 {
+script 1270 4449 {
 to IsThereFolder76 {}
 }
 
-script 262 4953 {
+script 63 4482 {
+to IsThereMyFolder99 {}
+}
+
+script 151 5041 {
 to IsThereMyFolder50 {}
 }
 
-script 812 5038 {
+script 701 5126 {
 to IsThereMyFolder {}
 }
 
-script 284 5922 {
+script 189 6018 {
 to DefinePinNumbers {}
 }
 
-script 697 5929 {
+script 718 6027 {
 to DefineVariables {}
 }
 
-script 164 6907 {
+script 50 6743 {
 to 'IsThere Track' {}
 }
 
-script 164 7890 {
-to DoMrHappySad {}
+script 712 7597 {
+whenBroadcastReceived 'PlayPong!'
+neoPanel_attach 8 8 Extra1
+clearNeoPixels
+PlayingPong = (booleanConstant true)
+forever {
+  if ServeLeft {
+    DoServeLeft
+  } else {
+    comment 'serve right'
+    DoServeRight
+  }
+}
 }
 
-script 163 8843 {
+script 62 7756 {
 to PinKeyTouched2 {}
+}
+
+script 710 7978 {
+whenBroadcastReceived 'ShowLeftPaddle'
+LeftPaddleVisible = (booleanConstant true)
+neoPanel_fillRectangle 1 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
+waitMillis (Delay * (3 / 2))
+LeftPaddleVisible = (booleanConstant false)
+neoPanel_fillRectangle 1 2 1 3 (colorSwatch 0 0 0 255)
+}
+
+script 717 8277 {
+whenBroadcastReceived 'ShowRightPaddle'
+RightPaddleVisible = (booleanConstant true)
+neoPanel_fillRectangle 8 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
+waitMillis (Delay * (3 / 2))
+RightPaddleVisible = (booleanConstant false)
+neoPanel_fillRectangle 8 2 1 3 (colorSwatch 0 0 0 255)
+}
+
+script 66 9011 {
+to DoServeLeft {}
 }
 
 
 module 'Basic Sensors' Input
 author MicroBlocks
-version 1 1
-tags tilt acceleration light sensor
-choices accelerometerRange '1' '2' '4' '8'
+version 1 2 
+tags tilt acceleration light sensor 
+choices accelerometerRange '1' '2' '4' '8' 
 description 'Provides blocks to read tilt in the three axes, acceleration, temperature and light level. Many boards come with this particular set of sensors, such as the micro:bit, the Circuit Playground Express, the Calliope or the Citilab ED1.'
 
   spec 'r' '[sensors:tiltX]' 'tilt x'
@@ -833,16 +995,17 @@ description 'Provides blocks to read tilt in the three axes, acceleration, tempe
   spec 'r' '[display:lightLevel]' 'light level'
   spec 'r' '[sensors:temperature]' 'temperature (°C)'
   spec 'r' '[sensors:magneticField]' 'magnetic field'
-  spec ' ' '_setAccelRange' 'set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
+  spec ' ' 'setAccelRange' 'set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
+  spec ' ' '_setAccelRange' 'obsolete set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
 
-to '_setAccelRange' n {
+to setAccelRange n {
   '[sensors:setAccelerometerRange]' (0 + n)
 }
 
 
 module Color Operators
 author MicroBlocks
-version 1 1
+version 1 1 
 description 'Support for color operations, Work with color hue, saturation, and brightness (HSV).'
 
   spec 'r' 'color_colorSwatch' '_' 'color'
@@ -919,10 +1082,10 @@ to color_withSaturation color saturation {
 
 module 'Distance (HC-SR04)' Input
 author 'Joan Guillén & Josep Ferràndiz'
-version 1 4
-tags sensor 'hc-sr04' distance ultrasound
+version 1 4 
+tags sensor 'hc-sr04' distance ultrasound 
 description 'Support for the HC-SR04 ultrasound distance sensor.'
-variables _sr04_last
+variables _sr04_last 
 
   spec 'r' 'distance (cm)' 'distance (cm) trigger _ echo _' 'num num' 2 4
   spec 'r' 'sr04_distanceOnePin' 'distance (cm) pin _' 'num' 0
@@ -957,15 +1120,15 @@ to sr04_distanceOnePin pin {
 
 module 'IR Remote' Comm
 author MicroBlocks
-version 1 8
-tags ir infrared remote
+version 1 8 
+tags ir infrared remote 
 description 'Sends and receives infrared remote control messages like the ones used for TV sets or air conditioners. Currently supports only the NEC protocol, which is quite common but not the only IR protocol in use. An NEC message consists of a one byte device number and a one byte command.
 
 Note: Transmitting IR does not work on ESP8266 boards.
 
 Receiving requires an IR receiver module, such as those built into the Circuit Playground Express and ED1 boards. Transmitting requires an IR transmitter LED, such as those built into the Circuit Playground Express and several M5 Stack products. Inexpensive IR LED transmitter and receivers are available for use with other boards.
 '
-variables _ir_pin _ir_pulse_times _ir_last_code _ir_last_device _ir_transmit_pin
+variables _ir_pin _ir_pulse_times _ir_last_code _ir_last_device _ir_transmit_pin 
 
   spec ' ' 'attachIR' 'attach IR receiver to pin _' 'num' 0
   spec 'r' 'ir_code_received' 'IR code received?'
@@ -1199,10 +1362,10 @@ Note: THe pin goes low when an IR signal is detected.'
 
 module 'Keyboard and Mouse' Comm
 author MicroBlocks
-version 1 8
-choices keyModifiers 'kbd;Shift' 'kbd;Control' 'kbd;Alt / ⌥' 'kbd;Logo / ⌘' 'kbd;AltGr'
-choices mouseButtons 'mouse;left' 'mouse;right' 'mouse;middle' 'mouse;both'
-choices specialKeys 'kbd;enter:10' 'kbd;tab:9' 'kbd;backspace:8' 'kbd;ESC:177' 'kbd;insert:209' 'kbd;delete:212' 'kbd;home:210' 'kbd;end:213' 'kbd;PgUp:211' 'kbd;PgDown:214' '→:215' '←:216' '↓:217' '↑:218' 'F1:194' 'F2:195' 'F3:196' 'F4:197' 'F5:198' 'F6:199' 'F7:200' 'F8:201' 'F9:202' 'F10:203' 'F11:204' 'F12:205' 'kbd;PrintScreen:206'
+version 1 8 
+choices keyModifiers 'kbd;Shift' 'kbd;Control' 'kbd;Alt / ⌥' 'kbd;Logo / ⌘' 'kbd;AltGr' 
+choices mouseButtons 'mouse;left' 'mouse;right' 'mouse;middle' 'mouse;both' 
+choices specialKeys 'kbd;enter:10' 'kbd;tab:9' 'kbd;backspace:8' 'kbd;ESC:177' 'kbd;insert:209' 'kbd;delete:212' 'kbd;home:210' 'kbd;end:213' 'kbd;PgUp:211' 'kbd;PgDown:214' '→:215' '←:216' '↓:217' '↑:218' 'F1:194' 'F2:195' 'F3:196' 'F4:197' 'F5:198' 'F6:199' 'F7:200' 'F8:201' 'F9:202' 'F10:203' 'F11:204' 'F12:205' 'kbd;PrintScreen:206' 
 description 'This library can send mouse and keyboard events to a computer over USB (i.e. it emulates a USB HID device) on boards with the necessary hardware. It currently works on RP2040 and SAMD21 boards such as the Adafruit Circuit Playground Express, Trinket M0, and Metro M0 Express. It also works on the MakerPort.
 
 It is based on the Arduino Mouse and Keyboard libraries. The list of special, non-ascii keys and modifiers is here:
@@ -1238,11 +1401,11 @@ to 'press key' key modifier {
 
 module 'LCD Display' Output
 author MicroBlocks
-version 1 5
+version 1 5 
 description 'Library for 16x2 LCD text displays with 1602 controller I2C "backpack" like the ones from DFRobot, SunFounder, and others. These displays have two lines of sixteen characters.
 
 Most of these displays require 5 volts to provide sufficient LCD contrast, so you will need an external power source for 3.3v boards like the micro:bit.'
-variables _LCD1602_ADDR _LCD1602_LINE1 _LCD1602_LINE2 _LCD1602_LOCK_MSECS
+variables _LCD1602_ADDR _LCD1602_LINE1 _LCD1602_LINE2 _LCD1602_LOCK_MSECS 
 
   spec ' ' 'LCD1602_write' 'write _ on LCD line _' 'str num num num' 'Hello, World!' 1 1 16
   spec ' ' 'LCD1602_write_field' 'write field _ on LCD line _ from _ to _' 'str num num num' 'Moon!' 1 8 12
@@ -1374,15 +1537,15 @@ to '_LCD1602 toggle enable' bits {
 
 module 'MP3 Player' Output
 author MicroBlocks
-version 1 14
-choices mp3PlayerType MakerPort 'MakerBit/HyperDuino' DFRobot Octopus
+version 1 14 
+choices mp3PlayerType MakerPort 'MakerBit/HyperDuino' DFRobot Octopus 
 description 'Support for Octopus (FN-M16P and YX6300 chips) and DFRobot/HyperDuino/MakerBit/MakerPort) MP3 Players (YX5300, A19HFA440, and GD3300B chips).
 
 Sends commands to MP3 player using software serial via any digital pin on any board.
 
 To use the "mp3 play ... until done" block, connect TX of MP3 player to a second pin and set that pin as the optional "rx pin" in the "mp3 initialize" block .
 '
-variables _mp3UseChecksum _mp3Pin _mp3RxPin _mp3Status
+variables _mp3UseChecksum _mp3Pin _mp3RxPin _mp3Status 
 
   spec ' ' 'mp3_initialize' 'mp3 initialize _ pin _ : rx pin _' 'menu.mp3PlayerType num num' 'MakerPort' 20 21
   spec ' ' 'mp3_setVolume' 'mp3 set volume _ (0-30)' 'num' 20
@@ -1541,12 +1704,12 @@ to mp3_setVolume level {
 
 module MakerPort Output
 author MicroBlocks
-version 2 3
-depends 'LCD Display' 'MP3 Player' Tone Touch 'IR Remote'
-choices makerport_audioSource MP3 Tone
-choices makerport_loudnessPin 'mp3 player' 'analog pin (13)' 'extra pin (17)'
+version 2 3 
+depends 'LCD Display' 'MP3 Player' Tone Touch 'IR Remote' 
+choices makerport_audioSource MP3 Tone 
+choices makerport_loudnessPin 'mp3 player' 'analog pin (13)' 'extra pin (17)' 
 description 'Support for MakerPort (https://makerport.fun)'
-variables _makerport_microSDInserted
+variables _makerport_microSDInserted 
 
   spec ' ' 'makerport_initialize' 'MakerPort initialize'
   space
@@ -1558,6 +1721,7 @@ variables _makerport_microSDInserted
   space
   spec 'r' 'makerport_loudness' 'loudness pin _' 'auto.makerport_loudnessPin' 'mp3 player'
   spec 'r' 'makerport_mp3_hasCard' 'mp3 player has Flash card'
+  spec ' ' 'makerport_setAudioSource' 'obsolete obsolete obsolete set MakerPort audio source to _' 'menu.makerport_audioSource' 'MP3'
 
 to makerport_beep freq msecs optionalVolume {
   if (freq < 1) {return 0}
@@ -1612,12 +1776,134 @@ to makerport_typeString s {
 }
 
 
+module NeoPanel Output
+author 'José García Yeste & Víctor Casado'
+version 1 5 
+depends _NeoPixel _BMP 
+description 'Draw lines, rectangles, text, and images on a NeoPixel panels (e.g. 8x8, 16x16 or 32x8) in either horizontal or vertical orientation. Panels can be daisy-chained to create larger displays if there is sufficient power to drive them.
+See: https://www.btf-lighting.com/collections/led-matrix-display/products/ws2812b-panel-screen-8-8-16-16-8-32-pixel-256-pixels-digital-flexible-led-programmed-individually-addressable-full-color-dc5v#
+'
+variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal 
+
+  spec ' ' 'neoPanel_attach' 'attach NeoPixel panel width _ height _ at pin _' 'num num num' 8 8 1
+  space
+  spec ' ' 'neoPanel_drawPixel' 'NeoPanel set x _ y _ color _' 'num num color' 1 1
+  spec ' ' 'neoPanel_drawVerticalLine' 'NeoPanel fill column _ color _' 'num color' 1
+  spec ' ' 'neoPanel_drawHorizontalLine' 'NeoPanel fill row _ color _' 'num color' 1
+  spec ' ' 'neoPanel_fillRectangle' 'NeoPanel fill rectangle x _ y _ width _ height _ color _' 'num num num num color' 1 1 4 4
+  space
+  spec ' ' 'neoPanel_drawText' 'NeoPanel draw text _ at x _ y _ color _' 'str num num color' 'HELLO' 1 1
+  spec ' ' 'neoPanel_drawBMP' 'NeoPanel draw BMP file _ at x _ y _' 'str num num' '' 1 1
+  space
+  spec 'r' '_neoPanel_indexForXY' '_neoPanel_index for x _ y _' 'num num' 1 1
+  spec 'r' '_neopanel_setPixel' '_neopanel_setPixel x _ y _ color _' 'auto auto color' 1 1
+
+to '_neoPanel_indexForXY' x y {
+  if (or (x < 1) (y < 1)) {return 0}
+  if (or (x > _neoPanel_width) (y > _neoPanel_height)) {return 0}
+  if _neoPanel_isHorizontal {
+    if ((x & 1) == 0) {
+      return (((x - 1) * _neoPanel_height) + ((_neoPanel_height - y) + 1))
+    } else {
+      return (((x - 1) * _neoPanel_height) + y)
+    }
+  } else {
+    if ((y & 1) == 0) {
+      return (((y - 1) * _neoPanel_width) + x)
+    } else {
+      return (((y - 1) * _neoPanel_width) + ((_neoPanel_width - x) + 1))
+    }
+  }
+}
+
+to '_neopanel_setPixel' x y color {
+  local 'index' ('_neoPanel_indexForXY' x y)
+  if (index > 0) {
+    atPut index _np_pixels color
+  }
+  return index
+}
+
+to neoPanel_attach width height pin {
+  _neoPanel_width = width
+  _neoPanel_height = height
+  _neoPanel_isHorizontal = (width >= height)
+  neoPixelAttach (_neoPanel_width * _neoPanel_height) pin
+}
+
+to neoPanel_drawBMP filename originX originY {
+  if ('_bmp_readHeader' filename) {
+    '_bmp_drawBMPPixels' filename originX originY '_neopanel_setPixel'
+    '_NeoPixel_update'
+  }
+}
+
+to neoPanel_drawHorizontalLine y color {
+  if (and (y > 0) (y <= _neoPanel_height)) {for x _neoPanel_width {
+    atPut ('_neoPanel_indexForXY' x y) _np_pixels color
+  }
+}
+  '_NeoPixel_update'
+}
+
+to neoPanel_drawPixel x y color {
+  setNeoPixelColor ('_neoPanel_indexForXY' x y) color
+}
+
+to neoPanel_drawText text x0 y0 color {
+  for letter text {
+    local 'shape' ('[display:mbShapeForLetter]' letter)
+    local 'mask' 1
+    local 'x' (x0 - 1)
+    local 'y' (y0 - 1)
+    for c 5 {
+      for f 5 {
+        if ((shape & mask) != 0) {
+          local 'i' ('_neoPanel_indexForXY' (x + f) (y + c))
+          if (i > 0) {
+            atPut i _np_pixels color
+          }
+        }
+        mask = (mask << 1)
+      }
+    }
+    if _neoPanel_isHorizontal {
+      x0 += 5
+    } else {
+      y0 += 6
+    }
+  }
+  '_NeoPixel_update'
+}
+
+to neoPanel_drawVerticalLine x color {
+  if (and (x > 0) (x <= _neoPanel_width)) {for y _neoPanel_height {
+    atPut ('_neoPanel_indexForXY' x y) _np_pixels color
+  }
+}
+  '_NeoPixel_update'
+}
+
+to neoPanel_fillRectangle x y width height color {
+  local 'column' y
+  repeat height {
+    local 'row' x
+    repeat width {
+      atPut ('_neoPanel_indexForXY' row column) _np_pixels color
+      row += 1
+    }
+    column += 1
+  }
+  '_NeoPixel_update'
+}
+
+
 module NeoPixel Output
 author MicroBlocks
-version 1 11
+version 1 11 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
-variables _np_pixels
+variables _np_pixels 
 
   spec ' ' 'neoPixelAttach' 'attach _ LED NeoPixel strip to pin _ : has white _' 'num auto bool' 10 '' false
   spec ' ' 'setNeoPixelColors10' 'set NeoPixels _ _ _ _ _ _ _ _ _ _' 'color color color color color color color color color color'
@@ -1822,13 +2108,121 @@ to setNeoPixelColors10 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 {
 }
 
 
+module Ringtone Output
+author MicroBlocks
+version 1 3 
+depends _Tone 
+description 'Plays tunes in RTTTL (Ringtone Text Transfer Language) a language developed by Nokia to store ringtones.
+Also known as Nokring.'
+variables '_RTTTL default duration' '_RTTTL default octave' '_RTTTL bpm' '_RTTTL song name' 
+
+  spec 'r' '_RTTTL parse control from' '_RTTTL parse control from _' 'str' ''
+  spec ' ' 'play ringtone' 'play ringtone _' 'str' 'Pacman:d=16,o=6,b=140:
+b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
+  spec 'r' 'current song name' 'current song name'
+  spec ' ' '_RTTTL play note' '_RTTTL play note _' 'str' '8c#'
+
+to '_RTTTL parse control from' 'control section' {
+  comment 'Extract control section'
+  local 'd' 4
+  local 'o' 6
+  local 'b' 63
+  repeatUntil ((size (v 'control section')) == 0) {
+    local 'next separator' ('[data:find]' ',' (v 'control section'))
+    if ((v 'next separator') == -1) {
+      'next separator' = (size (v 'control section'))
+    }
+    local 'to process' ('[data:copyFromTo]' (v 'control section') 1 (v 'next separator'))
+    'control section' = ('[data:copyFromTo]' (v 'control section') ((v 'next separator') + 1))
+    'next separator' = ('[data:find]' ',' (v 'to process'))
+    if ((v 'next separator') == -1) {
+      'next separator' = ((size (v 'to process')) + 1)
+    }
+    if (('[data:find]' 'd' (v 'to process')) > 0) {
+      d = ('[data:copyFromTo]' (v 'to process') (('[data:find]' '=' (v 'to process')) + 1) ((v 'next separator') - 1))
+    } (('[data:find]' 'b' (v 'to process')) > 0) {
+      b = ('[data:copyFromTo]' (v 'to process') (('[data:find]' '=' (v 'to process')) + 1) ((v 'next separator') - 1))
+    } (('[data:find]' 'o' (v 'to process')) > 0) {
+      o = ('[data:copyFromTo]' (v 'to process') (('[data:find]' '=' (v 'to process')) + 1) ((v 'next separator') - 1))
+    }
+  }
+  return ('[data:makeList]' d o b)
+}
+
+to '_RTTTL play note' note {
+  local 'duration' ''
+  local 'note name' ''
+  local 'octave' (v '_RTTTL default octave')
+  local 'ms / whole note' (240000 / (v '_RTTTL bpm'))
+  local 'isDotted' (('[data:find]' '.' note) > -1)
+  note = ('_trimmedLowercase' note)
+  if (note == '') {
+    comment 'empty note string; skip'
+    return 0
+  }
+  comment 'parse duration value, if there is one'
+  repeatUntil (or (('[data:unicodeAt]' 1 note) < 48) (('[data:unicodeAt]' 1 note) > 57)) {
+    duration = ('[data:join]' duration (at 1 note))
+    note = ('[data:copyFromTo]' note 2)
+  }
+  if (duration == '') {
+    duration = (v '_RTTTL default duration')
+  }
+  comment 'parse note name'
+  if (or (('[data:find]' '#' note) > -1) (('[data:find]' '_' note) > -1)) {
+    'note name' = ('[data:copyFromTo]' note 1 2)
+  } else {
+    'note name' = (at 1 note)
+  }
+  note = ('[data:copyFromTo]' note ((size (v 'note name')) + 1))
+  comment 'deal with dotted notes'
+  if isDotted {
+    duration = ((((v 'ms / whole note') / duration) * 15) / 10)
+  } else {
+    duration = ((v 'ms / whole note') / duration)
+  }
+  comment 'parse octave, if there is one'
+  if (note != '') {
+    octave = (at 1 note)
+  }
+  'play tone' (v 'note name') (octave - 4) duration
+}
+
+to 'current song name' {
+  return (v '_RTTTL song name')
+}
+
+to 'play ringtone' RTTTL {
+  comment 'Initialize frequency map.'
+  ignoreArgs ('_baseFreqForNote' 'c')
+  comment 'Remove song name'
+  '_RTTTL song name' = ('[data:copyFromTo]' RTTTL 1 (('[data:find]' ':' RTTTL) - 1))
+  RTTTL = ('[data:copyFromTo]' RTTTL ((size (v '_RTTTL song name')) + 2))
+  local 'control' ('_RTTTL parse control from' ('[data:copyFromTo]' RTTTL 1 (('[data:find]' ':' RTTTL) - 1)))
+  '_RTTTL default duration' = (at 1 control)
+  '_RTTTL default octave' = (at 2 control)
+  '_RTTTL bpm' = (at 3 control)
+  RTTTL = ('[data:copyFromTo]' RTTTL (('[data:find]' ':' RTTTL) + 1))
+  repeatUntil ((size RTTTL) == 0) {
+    local 'next separator' ('[data:find]' ',' RTTTL)
+    if ((v 'next separator') == -1) {
+      'next separator' = ((size RTTTL) + 1)
+    }
+    local 'next note' ('[data:copyFromTo]' RTTTL 1 ((v 'next separator') - 1))
+    RTTTL = ('[data:copyFromTo]' RTTTL ((v 'next separator') + 1))
+    '_RTTTL play note' (v 'next note')
+  }
+  '_RTTTL song name' = ''
+}
+
+
 module Servo Output
 author MicroBlocks
-version 1 3
-tags servo motor angle rotation position
+version 1 3 
+tags servo motor angle rotation position 
 description 'Control both positional (angle) and rotational servo motors.
 '
-variables _servoPin _servoPulseWidth
+variables _servoPin _servoPulseWidth 
 
   spec ' ' 'setServoAngle' 'set servo _ to _ degrees (-90 to 90)' 'num num' 1 90
   spec ' ' 'setServoSpeed' 'set servo _ to speed _ (-100 to 100)' 'num num' 1 100
@@ -1929,12 +2323,12 @@ to stopServo which {
 
 module Tone Output
 author MicroBlocks
-version 1 9
-tags tone sound music audio note speaker
-choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b'
+version 1 9 
+tags tone sound music audio note speaker 
+choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 
 description 'Audio tone generation. Make music with MicroBlocks!
 '
-variables _tonePin _toneInitalized _toneLoopOverhead _toneNoteNames _toneArezzoNotes _toneFrequencies
+variables _tonePin _toneInitalized _toneLoopOverhead _toneNoteNames _toneArezzoNotes _toneFrequencies 
 
   spec ' ' 'play tone' 'play note _ octave _ for _ ms' 'str.tone_NoteName num num' 'nt;c' 0 500
   spec ' ' 'playMIDIKey' 'play midi key _ for _ ms' 'num num' 60 500
@@ -2103,10 +2497,10 @@ to stopTone {
 
 module Touch Input
 author MicroBlocks
-version 1 11
+version 1 11 
 description 'Support for one or two MPR121 12-channel i2c touch sensors.
 Detects MPR121 chips at I2C addresses 90 and, optionally, 92 to handle up to 24 touch pins.'
-variables _touch_pinCount _touch_state _touch_isTouched _touch_eventPending _touch_last_touched_pin _touch_last_released_pin
+variables _touch_pinCount _touch_state _touch_isTouched _touch_eventPending _touch_last_touched_pin _touch_last_released_pin 
 
   spec 'r' 'touch_isTouched' 'is pin _ touched?' 'menu.range:1-24' 1
   space
