@@ -996,7 +996,6 @@ description 'Provides blocks to read tilt in the three axes, acceleration, tempe
   spec 'r' '[sensors:temperature]' 'temperature (°C)'
   spec 'r' '[sensors:magneticField]' 'magnetic field'
   spec ' ' 'setAccelRange' 'set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
-  spec ' ' '_setAccelRange' 'obsolete set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
 
 to setAccelRange n {
   '[sensors:setAccelerometerRange]' (0 + n)
@@ -1721,7 +1720,6 @@ variables _makerport_microSDInserted
   space
   spec 'r' 'makerport_loudness' 'loudness pin _' 'auto.makerport_loudnessPin' 'mp3 player'
   spec 'r' 'makerport_mp3_hasCard' 'mp3 player has Flash card'
-  spec ' ' 'makerport_setAudioSource' 'obsolete obsolete obsolete set MakerPort audio source to _' 'menu.makerport_audioSource' 'MP3'
 
 to makerport_beep freq msecs optionalVolume {
   if (freq < 1) {return 0}
