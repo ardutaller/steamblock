@@ -1134,7 +1134,7 @@ void turnOffInternalNeoPixels() {
 
 #if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 
-	void updateNeoPixelDisplay() {
+	static void updateNeoPixelDisplay() {
 		int oldPinMask = neoPixelPinMask;
 #if defined(ARDUINO_M5Atom_Matrix_ESP32)
 		initNeoPixelPin(27); // use internal NeoPixels
@@ -1158,13 +1158,11 @@ void turnOffInternalNeoPixels() {
 		delay(1); // NeoPixels latch time
 	}
 
-#endif
+#elif defined(FOXBIT)
 
 // Simulate the micro:bit 5x5 LED display on 7x5 NeoPixel display
 
-#if defined(FOXBIT)
-
-	void updateNeoPixelDisplay() {
+	static void updateNeoPixelDisplay() {
 		int oldPinMask = neoPixelPinMask;
 		initNeoPixelPin(13); // use internal NeoPixels
 		delay(1); // make sure NeoPixels are latched and ready for new data
@@ -1189,6 +1187,10 @@ void turnOffInternalNeoPixels() {
 		neoPixelPinMask = oldPinMask; // restore the old NeoPixel pin
 		delay(1); // NeoPixels latch time
 	}
+
+#else
+
+	static void updateNeoPixelDisplay() {} // no NeoPixel display
 
 #endif
 
