@@ -145,9 +145,9 @@ void primsInit() {
 // 	addTFTPrims();
 	addVarPrims();
 // 	addHIDPrims();
-// 	addOneWirePrims();
+ 	addOneWirePrims();
 // 	addCameraPrims();
-// 	addEncoderPrims();
+ 	addEncoderPrims();
 #else
 	addDataPrims();
 	addDisplayPrims();

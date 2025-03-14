@@ -24,11 +24,7 @@
  * - Call stopCounting to stop counting and disable interrupts for the given encoder.
  */
 
-#if defined(DUELink)
-	#define NUM_ENCODERS 0
-#else
-	#define NUM_ENCODERS 4
-#endif
+#define NUM_ENCODERS 4
 
 typedef void (*interruptHandler)(void);
 static interruptHandler encoderInterruptHandlerFor(int encoderIndex); // forward reference
