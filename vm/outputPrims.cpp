@@ -535,15 +535,16 @@ static OBJ primLightLevel(int argCount, OBJ *args) {
 	#if defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) || defined(ARDUINO_NRF52840_CIRCUITPLAY)
 		OBJ analogPin = int2obj(8);
 		lightLevel = obj2int(primAnalogRead(1, &analogPin));
-		lightLevel = lightLevel;
 	#elif defined(ARDUINO_CITILAB_ED1)
-		lightLevel = analogRead(34) * 1000 / 4095;
+		lightLevel = analogRead(34) * 1000 / 4095; // output range 0-1000
 	#elif defined(DATABOT)
 		const char *msg = "Use 'Light & Gesture' library on Databot.";
 		return newStringFromBytes(msg, strlen(msg));
 	#elif defined(STEAMaker)
 		// log makes the function more linear, 27.684 takes it to a ~0-100 range
 		lightLevel = (int) (log10((float) analogRead(39)) * 27.684);
+	#elif defined(FOXBIT)
+		lightLevel = analogRead(39) * 1000 / 4095; // output range 0-1000
 	#else
 		lightReadingRequested = true;
 	#endif

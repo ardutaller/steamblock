@@ -1482,6 +1482,52 @@ static int databotMageneticField() {
 	return 0;
 }
 
+#elif defined(FOXBIT)
+
+#define QMI8658_ADDR 107
+#define QMI8658_CTRL2 3
+#define QMI8658_CTRL3 4
+#define QMI8658_CTRL7 8
+#define QMI8658_TEMP 51
+#define QMI8658_ACCEL_XOUT 53
+
+static void startQMI8658() {
+	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL7, 3);	// enable accel + gyro
+	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL2, (0 << 4) | 3);	// accel range +/- 2G, ODR = 1000
+	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL3, (5 << 4) | 3);	// gyro range = 512 deg/sec, ODR = 1000
+	accelStarted = true;
+}
+
+static int qmi8658Read16Bit(int reg) {
+	if (!accelStarted) startQMI8658();
+	if (!accelStarted) return 0;
+	int lowByte = readI2CReg(QMI8658_ADDR, reg);
+	int highByte = readI2CReg(QMI8658_ADDR, reg + 1);
+	return fix16bitSign((highByte << 8) | lowByte);
+}
+
+static int readAcceleration(int registerID) {
+	int val = 0;
+	if (1 == registerID) val = -qmi8658Read16Bit(QMI8658_ACCEL_XOUT); // x-axis
+	if (3 == registerID) val = -qmi8658Read16Bit(QMI8658_ACCEL_XOUT + 2); // y-axis
+	if (5 == registerID) val = -qmi8658Read16Bit(QMI8658_ACCEL_XOUT + 4); // z-axis
+	return (100 * val) >> 14;
+}
+
+static void setAccelRange(int range) {
+	// Range is 0, 1, 2, or 3 for +/- 2, 4, 8, or 16 g.
+
+	if (!accelStarted) startQMI8658();
+	if (!accelStarted) return;
+	if ((range < 0) || (range > 3)) return; // out of range
+	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL2, (range << 4) | 3);	// ODR = 1000
+}
+
+static int readTemperature() {
+	int fudgeFactor = -3;
+	return (qmi8658Read16Bit(QMI8658_TEMP) >> 8) + fudgeFactor;
+}
+
 #elif defined(RP2040_PHILHOWER)
 
 static int readTemperature() { return analogReadTemp(); }
