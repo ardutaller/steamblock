@@ -681,6 +681,8 @@ method codeString MicroBlocksModule owningProject newLibName {
 	for op blockList {
 		if ('-' == op) {
 			add result (join '  space' (newline))
+		} ('advanced' == op) {
+			add result (join '  advanced' (newline))
 		} else {
 			spec = (at projectSpecs op)
 			if (notNil spec) {
