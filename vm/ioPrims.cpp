@@ -1034,9 +1034,9 @@ void hardwareInit() {
 	#define BUTTON_PRESSED HIGH
 	#define DEFAULT_TONE_PIN 26
 	static const char cincoPin[] = {
-		16, 17, 18, 14, 29, 28,  8, 10, 37, 19,
-		 2, 27, 32,  9,  5,  4, 33, -1, -1, 0,
-		 1,  7, 12, 15, 54, 11, 13, 52, 47};
+		16, 17, 18, 14, 29, 28,  8,  10, 37, 19,
+		 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
+		 1,  7, 12, 15, 54, 11, 13,  52, 47};
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14};
 
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
