@@ -863,7 +863,7 @@ static void initNeoPixelPin(int pinNum) { // ESP32
 			pinNum = 27; // internal NeoPixel pin
 		#elif defined(ARDUINO_M5Atom_Lite_S3)
 			pinNum = 35;
-		#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
+		#elif defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
 			pinNum = 13; // internal NeoPixel pin
 		#elif defined(DATABOT)
 			pinNum = 2; // internal NeoPixel pin

@@ -144,7 +144,7 @@ void hardwareInit() {
 		setAllNeoPixels(-1, 3, yellow);
 	#endif
 	#if defined(HAS_LED_MATRIX) && !defined(GNUBLOCKS)
-		mbDisplayColor = (190 << 16); // red (not full brightness)
+		mbDisplayColor = (150 << 16); // red (not full brightness)
 	#endif
 	#if defined(COCUBE)
 		#include "soc/rtc_cntl_reg.h" // for brownout control
