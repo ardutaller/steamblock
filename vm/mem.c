@@ -66,6 +66,8 @@
 	#define OBJSTORE_BYTES 76000
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
 	#define OBJSTORE_BYTES 38000
+#elif defined(DUELink) && defined(OLED_128_64)
+	#define OBJSTORE_BYTES 2000
 #else
 	#define OBJSTORE_BYTES 4000
 	// max that works on Wemos D1 mini (ESP8266) is 11000

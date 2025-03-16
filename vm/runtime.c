@@ -142,7 +142,9 @@ void primsInit() {
 // 	addRadioPrims();
 	addSensorPrims();
 	addSerialPrims();
-// 	addTFTPrims();
+	#if defined(OLED_128_64)
+ 		addTFTPrims();
+ 	#endif
 	addVarPrims();
 // 	addHIDPrims();
  	addOneWirePrims();

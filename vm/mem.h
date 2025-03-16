@@ -32,11 +32,15 @@ extern "C" {
 
 #if defined(ARDUINO_NUCLEO_C071RB)
 	#define DUELink 1
-	// For CincoBit and PixoBit, define DUE_EDGE_CONNECTOR
-	// For PixoBit, define HAS_LED_MATRIX
-	// For other DUELink boards, comment out DUE_EDGE_CONNECTOR and HAS_LED_MATRIX
+
+	// For CincoBit and PixoBit, define DUE_EDGE_CONNECTOR; comment out for other boards
 	#define DUE_EDGE_CONNECTOR 1
-	#define HAS_LED_MATRIX 1
+
+	// For CincoBit, define HAS_LED_MATRIX; comment out for other boards
+// 	#define HAS_LED_MATRIX 1
+
+	// For PixoBit, define OLED_128_64; comment out for other boards
+//	#define OLED_128_64 1
 #endif
 
 #if defined(ESP32) && !(defined(ESP32_S2) || defined(ESP32_S3) || defined(ESP32_C3) || defined(ESP32_C6))
