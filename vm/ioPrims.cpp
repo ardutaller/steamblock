@@ -1033,10 +1033,17 @@ void hardwareInit() {
 	#undef BUTTON_PRESSED
 	#define BUTTON_PRESSED HIGH
 	#define DEFAULT_TONE_PIN 26
-	static const char cincoPin[] = {
-		16, 17, 18, 14, 29, 28,  8,  10, 37, 19,
-		 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
-		 1,  7, 12, 15, 54, 11, 13,  52, 47};
+	#ifdef DUE_EDGE_CONNECTOR
+		static const char duePin[] = {
+			16, 17, 18, 14, 29, 28,  8,  10, 37, 19,
+			 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
+			 1,  7, 12, 15, 54, 11, 13,  52, 47};
+	#else
+		static const char duePin[] = {
+			15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
+			33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
+			28,  8,  2, 27, 32, 52, 47, 42};
+	#endif
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14};
 
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
@@ -1160,7 +1167,7 @@ int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return digitalPin[pinNum];
 	#elif defined(DUELink)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return cincoPin[pinNum];
+		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return duePin[pinNum];
 		return -1; // out of range
 	#endif
 	#if defined(ARDUINO_CITILAB_ED1)
