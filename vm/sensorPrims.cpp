@@ -143,7 +143,7 @@ void writeI2CReg(int deviceID, int reg, int value) {
 
 #if defined(DUELink)
 	// not working on CincoBit; internal I2C disabled for now
-	TwoWire Wire1 = TwoWire(0, 1); // 0 -> PB7 (SDA), 1 -> PB6 (SCL)
+//	TwoWire Wire1 = TwoWire(0, 1); // 0 -> PB7 (SDA), 1 -> PB6 (SCL)
 #endif
 
 static int internalWireStarted = false;
@@ -2248,8 +2248,6 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 // Signal Capture
 
-#if !defined(DUELink)
-
 #define MAX_PULSE_TIMES 128
 int16_t pulseTimes[MAX_PULSE_TIMES];
 
@@ -2304,8 +2302,6 @@ OBJ primCaptureEnd(int argCount, OBJ *args) {
 	return result;
 }
 
-#endif
-
 static PrimEntry entries[] = {
 	{"acceleration", primAcceleration},
 	{"temperature", primMBTemp},
@@ -2327,11 +2323,9 @@ static PrimEntry entries[] = {
 	{"readDHT", primReadDHT},
 	{"microphone", primMicrophone},
 
-	#if !defined(DUELink)
 	{"captureStart", captureStartPrim},
 	{"captureCount", primCaptureCount},
 	{"captureEnd", primCaptureEnd},
-	#endif
 
 	#if defined(COCUBE)
 	{"position_x", primPositionX},
