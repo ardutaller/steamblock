@@ -79,20 +79,6 @@ int mbDisplayColor = 0x00FF00; // Green by default
 #define COL4 6
 #define COL5 10
 
-#elif defined(DUELink) // CincoBit
-
-#define ROW1 7
-#define ROW2 12
-#define ROW3 15
-#define ROW4 54
-#define ROW5 11
-
-#define COL1 29
-#define COL2 10
-#define COL3 14
-#define COL4 8
-#define COL5 2
-
 #endif
 
 static int microBitDisplayBits = 0;
@@ -391,7 +377,19 @@ void updateMicrobitDisplay() {
 	displayCycle = (displayCycle + 1) % 5;
 }
 
-#elif defined(DUELink)
+#elif defined(DUELink) && defined(HAS_LED_MATRIX)  // CincoBit
+
+#define ROW1 7
+#define ROW2 12
+#define ROW3 15
+#define ROW4 54
+#define ROW5 11
+
+#define COL1 29
+#define COL2 10
+#define COL3 14
+#define COL4 8
+#define COL5 2
 
 static int displaySnapshot = 0;
 static int displayCycle = 0;

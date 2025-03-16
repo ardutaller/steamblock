@@ -32,6 +32,10 @@ extern "C" {
 
 #if defined(ARDUINO_NUCLEO_C071RB)
 	#define DUELink 1
+	// For CincoBit and PixoBit, define DUE_EDGE_CONNECTOR
+	// For PixoBit, define HAS_LED_MATRIX
+	// For other DUELink boards, comment out DUE_EDGE_CONNECTOR and HAS_LED_MATRIX
+	#define DUE_EDGE_CONNECTOR 1
 	#define HAS_LED_MATRIX 1
 #endif
 
