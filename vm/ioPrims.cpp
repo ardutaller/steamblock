@@ -1027,7 +1027,11 @@ void hardwareInit() {
 	#define DIGITAL_PINS 29
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
-	#define PIN_LED -1 // no user LED
+	#if defined(HAS_LED_MATRIX)
+		#define PIN_LED -1 // no user LED
+	#else
+		#define PIN_LED 15
+	#endif
 	#define PIN_BUTTON_A 28 // edge pin 5
 	#define PIN_BUTTON_B 27 // edge pin 11
 	#undef BUTTON_PRESSED
