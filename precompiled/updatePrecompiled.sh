@@ -39,6 +39,8 @@ pio run -e steam-maker
 cp .pio/build/steam-maker/firmware.bin precompiled/vm_micro_steamakers.bin
 pio run -e kids-iot
 cp .pio/build/kids-iot/firmware.bin precompiled/vm_kids_iot.bin
+pio run -e foxbit
+cp .pio/build/foxbit/firmware.bin precompiled/vm_foxbit.bin
 pio run -e makerportV3
 python precompiled/uf2conv.py -c .pio/build/makerportV3/firmware.bin -o precompiled/vm_makerport.uf2
 
