@@ -1,0 +1,59 @@
+module Waves 'cat;Operators'
+author MicroBlocks
+version 1 0 
+description ''
+
+  spec 'r' 'wvs envelope' 'envelope amplitude _ attack _ hold _ release _ start time _' 'num num num num num' 200 10 150 200 0
+  spec 'r' 'wvs tri' 'tri wave frequency _ amplitude _' 'num num' 440 200
+  spec 'r' 'wvs square' 'square wave frequency _ amplitude _' 'num num' 392 100
+  spec 'r' 'wvs sin' 'sin wave frequency _ amplitude _' 'num num' 440 200
+  spec 'r' 'wvs saw' 'sawtooth wave frequency _ amplitude _' 'num num' 440 200
+  spec 'r' 'wvs noise' 'noise amplitude _' 'num' 100
+
+to 'wvs envelope' amp att hold release 'start time' {
+  if ((millisOp) < (v 'start time')) {
+    return 0
+  } ((millisOp) > (((v 'start time') + att) + (hold + release))) {
+    comment 'all done, no sound'
+    return 0
+  } ((millisOp) > (((v 'start time') + att) + hold)) {
+    comment 'release time'
+    return (amp - ((amp * ((millisOp) - (((v 'start time') + att) + hold))) / release))
+  } ((millisOp) > ((v 'start time') + att)) {
+    comment 'hold time'
+    return amp
+  } else {
+    comment 'attack time'
+    return ((amp * ((millisOp) - (v 'start time'))) / att)
+  }
+}
+
+to 'wvs noise' amp {
+  if (amp < 1) {return 0}
+  return (random 1 amp)
+}
+
+to 'wvs saw' freq amp {
+  if (amp < 1) {return 0}
+  return ((((microsOp) * amp) / (1000000 / freq)) % amp)
+}
+
+to 'wvs sin' freq amp {
+  if (amp < 1) {return 0}
+  return ((amp / 2) + (((amp / 2) * ('[misc:sin]' (9 * ((microsOp) % (1000000 / freq))))) >> 14))
+}
+
+to 'wvs square' freq amp {
+  if (amp < 1) {return 0}
+  local 'ms' (1000000 / freq)
+  return (('[data:convertType]' (((microsOp) % ms) > (ms / 2)) 'number') * amp)
+}
+
+to 'wvs tri' freq amp {
+  comment (absoluteValue ((i % ms) - (ms / 2)))
+  if (amp < 1) {
+    return 0
+  }
+  return (amp - (absoluteValue (amp - (2 * ((((microsOp) * amp) / (1000000 / freq)) % amp)))))
+}
+
