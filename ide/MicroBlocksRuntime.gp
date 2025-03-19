@@ -1346,6 +1346,9 @@ method installBoardSpecificBlocks SmallRuntime {
 	} ('KidsIOT' == boardType) {
 		importEmbeddedLibrary scripter 'LED Display'
 		importEmbeddedLibrary scripter 'KidsIoT'
+	} ('Foxbit' == boardType) {
+		importEmbeddedLibrary scripter 'Basic Sensors'
+		importEmbeddedLibrary scripter 'LED Display'
 	}
 }
 

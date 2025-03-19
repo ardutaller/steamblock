@@ -486,6 +486,7 @@ method vmNameForBoard ESPTool boardName {
 	} ('Citilab ED1' == boardName) { return 'vm_citilab-ed1.bin'
 	} ('micro:STEAMakers' == boardName) { return 'vm_micro_steamakers.bin'
 	} ('KidsIOT' == boardName) { return 'vm_kids_iot.bin'
+	} ('Foxbit' == boardName) { return 'vm_foxbit.bin'
 	} ('CoCube' == boardName) { return 'vm_cocube.bin'
 	} ('M5Stack-Core' == boardName) { return 'vm_m5stack.bin'
 	} ('M5StickC' == boardName) { return 'vm_m5stick.bin'
