@@ -1,6 +1,6 @@
 module KidsIOT
 author 'Josep Ferràndiz'
-version 1 1 
+version 1 2 
 depends Tone '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' 
 choices kiot_twoPins '1' '3' '4' '6' '7' '8' '9' 
 choices kiot_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 
@@ -27,7 +27,7 @@ variables _kiot_buzzer_init
   spec ' ' 'kiot set digital' '#SVG#square11#0070ff set _ _ port _' 'menu.kiot_digitalActuators bool menu.kiot_allPorts' 'kiot;LED' true 1
   space
   spec 'r' 'kiot digitalSensors' '#SVG#square11#0070ff digital _ port _' 'menu.kiot_digitalSensors menu.kiot_allPorts' 'kiot;button pressed?' 1
-  spec 'r' 'kiot temperature (DS18B20)' '#SVG#square11#0070ff temperature (DS18B20) _ (x10) port _' 'menu.kiot_tempUnits menu.kiot_allPorts' '°C' 1
+  spec 'r' 'kiot temperature (DS18B20)' '#SVG#square11#0070ff temperature (DS18B20) _ port _ : scale (x10) _' 'menu.kiot_tempUnits menu.kiot_allPorts bool' '°C' 1 false
   spec 'r' 'kiot analogSensors' '#SVG#square11#ff0000 analog _ port _' 'menu.kiot_analogSensors menu.kiot_analogPins' 'kiot;microphone' 3
   space
   spec ' ' 'kiot set motor' '#SVG#square11#fff000 set motor _ port _' 'menu.kiot_rotation menu.kiot_motor' 'kiot;clockwise' 1
@@ -242,13 +242,14 @@ to 'kiot set motor' rotation port {
   }
 }
 
-to 'kiot temperature (DS18B20)' unit port {
+to 'kiot temperature (DS18B20)' unit port scale {
   if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
     local 'raw' ('_kiot_raw_temperature' (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18)))
+    local 'factor' (ifExpression (and ((pushArgCount) > 1) (not scale)) 5 0)
     if ('°F' == unit) {
-      return ((((10 * 9) * raw) / (16 * 5)) + 320)
+      return ((((((10 * 9) * raw) / (16 * 5)) + 320) + factor) / (maximum 1 (factor * 2)))
     } else {
-      return ((10 * raw) / 16)
+      return ((((10 * raw) / 16) + factor) / (maximum 1 (factor * 2)))
     }
   } else {
     sayIt 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
