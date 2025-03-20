@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-03-12 14:08+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-03-21 03:01+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -28,7 +28,7 @@ msgstr "Entrada"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Library"
-msgstr "Librería"
+msgstr "Biblioteca"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Palette"
@@ -380,7 +380,7 @@ msgstr "revierte"
 
 #. Library label right click context menu option
 msgid "delete library"
-msgstr "elimina esta librería"
+msgstr "elimina biblioteca"
 
 #. File upload process information
 msgid "uploaded"
@@ -469,7 +469,7 @@ msgstr "Casilla booleana"
 
 #. String in file picker and library dialogs
 msgid "New library name?"
-msgstr "¿Nombre de la nueva librería?"
+msgstr "¿Nombre de la nueva biblioteca?"
 
 #. Text right-click context menu option
 msgid "paste"
@@ -2293,7 +2293,7 @@ msgstr "versión del firmware"
 
 #. Settings menu option
 msgid "export functions as library"
-msgstr "exporta funciones como librería"
+msgstr "exporta funciones como biblioteca"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
@@ -2352,7 +2352,7 @@ msgstr "actualiza firmware de la placa"
 
 #. String in file picker and library dialogs
 msgid "library information"
-msgstr "información de la librería"
+msgstr "información de la biblioteca"
 
 #. Scripting area right-click context menu
 msgid "make blocks bigger or smaller"
@@ -2678,12 +2678,12 @@ msgstr "Robots"
 #. String in file picker and library dialogs
 msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
 msgstr ""
-"Si quieres añadir una librería interna de MicroBlocks, simplemente introduce "
-"su nombre."
+"Si quieres añadir una biblioteca interna de MicroBlocks, simplemente "
+"introduce su nombre."
 
 #. String in file picker and library dialogs
 msgid "If the library is hosted online, please input its full URL."
-msgstr "Si la librería está hospedada en Internet, introduce su URL completa."
+msgstr "Si la biblioteca está hospedada en Internet, introduce su URL completa."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Pulse width modulate (PWM) a pin with the given duty cycle (0 - 1023)."
@@ -3290,7 +3290,7 @@ msgstr "Etiquetas:"
 
 #. String in file picker and library dialogs
 msgid "Path, name or URL for library?"
-msgstr "¿Ruta, nombre o URL de la librería?"
+msgstr "¿Ruta, nombre o URL de la biblioteca?"
 
 #. String in file picker and library dialogs
 msgid "Tag name?"
@@ -3546,7 +3546,7 @@ msgstr "muestra el gráfico de datos"
 
 #. Settings menu option
 msgid "disable autoloading board libraries"
-msgstr "desactivar autocarga de librerías de placa"
+msgstr "desactivar carga automática de bibliotecas de placa"
 
 #. Settings menu option
 msgid "show implementation blocks"
@@ -3580,7 +3580,7 @@ msgstr "modo oscuro"
 
 #. String in file picker and library dialogs
 msgid "Could not fetch library."
-msgstr "No se pudo obtener la librería."
+msgstr "No se pudo obtener la biblioteca."
 
 #. String in file picker and library dialogs
 msgid "Host does not exist or is currently down."
@@ -5229,15 +5229,15 @@ msgstr "oculta la definición de este bloque"
 
 #. Library folder
 msgid "LIBRARIES"
-msgstr "LIBRERÍAS"
+msgstr "BIBLIOTECAS"
 
 #. Library label right click context menu option
 msgid "export this library"
-msgstr "exporta esta librería"
+msgstr "exporta esta biblioteca"
 
 #. Library folder
 msgid "folder;Libraries"
-msgstr "Librerías"
+msgstr "Bibliotecas"
 
 #. Library folder
 msgid "folder;Network"
@@ -5269,7 +5269,7 @@ msgstr "El servidor requiere HTTPS, y MicroBlocks no lo soporta."
 
 #. String in file picker and library dialogs
 msgid "built-in library"
-msgstr "librería integrada"
+msgstr "biblioteca integrada"
 
 #. String in file picker and library dialogs
 msgid "Dependency path, name or URL?"
@@ -5278,16 +5278,16 @@ msgstr "¿Ruta, nombre o URL de la dependencia?"
 #. String in file picker and library dialogs
 msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
 msgstr ""
-"Si tu librería está en la carpeta \"Libraries\" de tu carpeta local de "
+"Si la biblioteca está en la carpeta \"Libraries\" de tu carpeta local de "
 "MicroBlocks, deberás prefijarla con una barra (/)."
 
 #. String in file picker and library dialogs
 msgid "user library"
-msgstr "librería de usuario"
+msgstr "biblioteca de usuario"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "Añadir librería"
+msgstr "Añadir biblioteca"
 
 #. Block size button tooltip
 msgid "Decrease block size"
@@ -5340,7 +5340,7 @@ msgstr "Arrástralo para modificar la anchura del área."
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to show the blocks in this library. [r] menu."
-msgstr "[l] para mostrar los bloques de esta librería. [r] menú."
+msgstr "[l] para mostrar los bloques de esta biblioteca. [r] menú."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
