@@ -2,7 +2,7 @@ module main
 author 'Roger Wagner'
 version 1 0 
 description ''
-variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NeoPixelsOn NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived MyFolder50Present FairyLightsPin SoundLevel SoundLevelMax LightLevel MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed 
+variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NeoPixelsOn NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived MyFolder50Present FairyLightsPin SoundLevel SoundLevelMax LightLevel step MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold skamps PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed 
 
   spec ' ' 'Initialize lists' 'Initialize lists'
   spec ' ' 'MenuAction5' 'MenuActionAccelerometer'
@@ -54,9 +54,9 @@ to DefinePinNumbers {
 
 to DefineVariables {
   LCDWaitTime = 1500
-  comment 'ms to wait after displaying each status update 
+  comment 'ms to wait after displaying each status update
 during startup when the LCD is attached.
-There is also a "Time Threshold" for the maximum 
+There is also a "Time Threshold" for the maximum
 amount of time to wait when looking for a folder.'
   TimeThreshold = 1600
   ReadyForTasks = (booleanConstant false)
@@ -71,7 +71,7 @@ amount of time to wait when looking for a folder.'
   comment 'MyFolder 01 is used to initiate auto-play'
   FilesSwitch = (booleanConstant false)
   NumberOfNeopixels = 64
-  comment 'Folder 50 is additional sounds 1 to 12, 
+  comment 'Folder 50 is additional sounds 1 to 12,
 Folder 51 is default 1st folder for "piano" playback'
   folder = 51
   MyFolder50Present = (booleanConstant false)
@@ -87,7 +87,7 @@ Folder 51 is default 1st folder for "piano" playback'
   comment 'temporarily set right after Mr. Happy-Sad changes orientation'
   comment 'Folder 76 is Mr. Happy-Sad files '
   Folder99Present = (booleanConstant false)
-  comment 'Folder 99 is MakerPort welcome sounds and is used 
+  comment 'Folder 99 is MakerPort welcome sounds and is used
 to test for presence of the MakerPort flash drive files '
   MicroSDPresent = (booleanConstant false)
   ThingIsRunning = (booleanConstant false)
@@ -691,8 +691,8 @@ DefineVariables
 LCD1602_clear
 sayIt ('IsThere Track' 1 1)
 comment 'observed times for track 1 in folders:
-100 - switch=code - 
-         switch=files - 
+100 - switch=code -
+         switch=files -
 99 - 496
 76 - 793
 75 - 668
@@ -718,7 +718,7 @@ to 'MakerPort Setup' {}
 
 script 56 512 {
 whenStarted
-Comment = 'MakerPort Startup v03.13.25 - Animatronics'
+Comment = 'MakerPort Startup v03.18.25 - Animatronics'
 Comment = 'Uses timed playback to detect microSD card, not the  "mp3 player has flashcard" block (MakerPort)'
 DevelopmentBuild = (booleanConstant false)
 Comment = 'Set "DevelopmentBuild" to true during development, false for production startup program'
@@ -754,7 +754,7 @@ forever {
   for i ('[data:range]' 1 12) {
     analogWriteOp i LightLevel
     comment 'Only LEDs 3, 4, 5, 7, 8, 9, 10, 11 & 12 have variable brightness
-LEDS 1, 2, 6 do not have variable brightness, but will quickly 
+LEDS 1, 2, 6 do not have variable brightness, but will quickly
 turn on/off in response to the sound volume level.'
   }
   setNeoPixelColor (random 1 NumberOfNeopixels) (color_withBrightness (randomColor) 50)
@@ -782,7 +782,7 @@ is being touched'
       sendBroadcast 'WatchForRelease'
     } else {
       if (or MyFolderPresent Folder75Present) {
-        comment 'Cancel demo program if a touchpoint is touched 
+        comment 'Cancel demo program if a touchpoint is touched
 AND a demo is running (01 or 75)'
         stopAll
         MyFolderPresent = (booleanConstant false)
@@ -1898,7 +1898,7 @@ to neoPanel_fillRectangle x y width height color {
 
 module NeoPixel Output
 author MicroBlocks
-version 1 11 
+version 1 12 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
 variables _np_pixels 
@@ -1956,6 +1956,8 @@ to '_NeoPixel_ensureInitialized' {
   } ((boardType) == 'D1-Mini') {
     comment 'D1 mini kit'
     neoPixelAttach 7 15 false
+  } ((boardType) == 'FOXBIT') {
+    neoPixelAttach 35 '' false
   } else {
     neoPixelAttach 10 '' false
   }}
