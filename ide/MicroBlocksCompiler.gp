@@ -93,6 +93,9 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' '[serial:writeBytes]'	'serial write _ starting at _' 'auto num' 'aStringListOrByteArray' 1)
 		'-'
 		(array ' ' '[io:softWriteByte]'		'soft serial write byte _ pin _ baud _' 'num num num' '85' 2 9600)
+		'-'
+		(array 'r' '[serial:dueRecv]'		'duelink receive')
+		(array 'r' '[serial:dueSend]'		'duelink send _ starting at _' 'auto num' 'aStringListOrByteArray' 1)
 	'cat;Control'
 		(array 'h' 'whenStarted'		'when started')
 		(array 'h' 'whenButtonPressed'	'when button _ pressed' 'menu.buttonMenu' 'A')

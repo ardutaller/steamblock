@@ -488,6 +488,70 @@ static OBJ primMIDIRecv(int argCount, OBJ *args) { return falseObj; }
 
 #endif // USB_MIDI
 
+// DUELink Downlink Primitives
+
+#if defined(DUELink)
+
+HardwareSerial DOWNLINK(PA2, PA3);  //or (PA3,P2) not sure!
+static int downlinkInitialized = false;
+
+static void initDownlink() {
+	if (downlinkInitialized) return; // already open
+	DOWNLINK.begin(115200);
+	downlinkInitialized = true;
+}
+
+static OBJ primDUELinkSend(int argCount, OBJ *args) {
+	// Send up to 63 bytes to the DUELink downstream link and return the number of bytes sent.
+
+	initDownlink();
+	if (argCount < 2) return fail(notEnoughArguments);
+	if (!isInt(args[1])) return fail(needsIntegerIndexError);
+
+	OBJ buf = args[0];
+	int bufType = objType(buf);
+	if (!((bufType == StringType) || (bufType == ByteArrayType))) return fail(needsByteArray);
+
+	int startIndex = obj2int(args[1]) - 1; // convert to 0-based index
+	if (startIndex < 0) return fail(indexOutOfRangeError);
+
+	uint32 bytesToWrite = 0;
+	uint32 bytesWritten = 0;
+
+	// Note: startIndex is 0-based
+	int srcLen = (bufType == StringType) ? strlen(obj2str(buf)) : BYTES(buf);
+	if (startIndex >= srcLen) return fail(indexOutOfRangeError);
+	bytesToWrite = srcLen - startIndex;
+	uint8 *src = ((uint8 *) &FIELD(buf, 0)) + startIndex;
+	bytesWritten = DOWNLINK.write(src, bytesToWrite);
+
+	taskSleep(-1);
+	return int2obj(bytesWritten);
+}
+
+static OBJ primDUELinkRecv(int argCount, OBJ *args) {
+	initDownlink();
+
+	int byteCount = DOWNLINK.available();
+	if (byteCount <= 0) return (OBJ) &emptyByteArray;
+
+	int wordCount = (byteCount + 3) / 4;
+	OBJ result = newObj(ByteArrayType, wordCount, falseObj);
+	if (!result) return fail(insufficientMemoryError);
+	DOWNLINK.readBytes((uint8 *) &FIELD(result, 0), byteCount);
+	setByteCountAdjust(result, byteCount);
+
+	taskSleep(-1);
+	return result;
+}
+
+#else
+
+static OBJ primDUELinkSend(int argCount, OBJ *args) { return falseObj; }
+static OBJ primDUELinkRecv(int argCount, OBJ *args) { return falseObj; }
+
+#endif
+
 // Primitives
 
 static PrimEntry entries[] = {
@@ -500,6 +564,8 @@ static PrimEntry entries[] = {
 	{"writeBytes", primSerialWriteBytes},
 	{"midiSend", primMIDISend},
 	{"midiRecv", primMIDIRecv},
+	{"dueSend", primDUELinkSend},
+	{"dueRecv", primDUELinkRecv},
 };
 
 void addSerialPrims() {
