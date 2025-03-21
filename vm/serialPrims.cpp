@@ -492,7 +492,7 @@ static OBJ primMIDIRecv(int argCount, OBJ *args) { return falseObj; }
 
 #if defined(DUELink)
 
-HardwareSerial DOWNLINK(PA2, PA3);  //or (PA3,P2) not sure!
+HardwareSerial DOWNLINK(PA3, PA2);
 static int downlinkInitialized = false;
 
 static void initDownlink() {
@@ -515,18 +515,20 @@ static OBJ primDUELinkSend(int argCount, OBJ *args) {
 	int startIndex = obj2int(args[1]) - 1; // convert to 0-based index
 	if (startIndex < 0) return fail(indexOutOfRangeError);
 
-	uint32 bytesToWrite = 0;
-	uint32 bytesWritten = 0;
-
 	// Note: startIndex is 0-based
 	int srcLen = (bufType == StringType) ? strlen(obj2str(buf)) : BYTES(buf);
 	if (startIndex >= srcLen) return fail(indexOutOfRangeError);
-	bytesToWrite = srcLen - startIndex;
+
+	int bytesToWrite = srcLen - startIndex;
+	int spaceAvailable = DOWNLINK.availableForWrite();
+	if (bytesToWrite > spaceAvailable) bytesToWrite = spaceAvailable;
+	if (bytesToWrite == 0) return zeroObj;
+
 	uint8 *src = ((uint8 *) &FIELD(buf, 0)) + startIndex;
-	bytesWritten = DOWNLINK.write(src, bytesToWrite);
+	DOWNLINK.write(src, bytesToWrite);
 
 	taskSleep(-1);
-	return int2obj(bytesWritten);
+	return int2obj(bytesToWrite);
 }
 
 static OBJ primDUELinkRecv(int argCount, OBJ *args) {
