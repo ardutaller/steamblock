@@ -1,6 +1,6 @@
 module 'Calliope Servoboard'
 author 'Ralf Krause'
-version 1 1 
+version 1 2 
 depends Servo 
 choices csb_servoType '180°' '270°' '360°' 
 choices csb_motorPort M0 M1 'M0+M1' 
@@ -19,7 +19,7 @@ MotorPorts M0, M1
   spec ' ' 'csb_SetMotor' 'Calliope set motor _ to speed _ (-100~100)' 'menu.csb_motorPort num' 'M0' 100
   spec ' ' 'csb_StopMotor' 'Calliope stop motor _' 'menu.csb_motorPort' 'M0'
   space
-  spec ' ' 'csb_StopAll' 'Calliope stop all'
+  spec ' ' 'csb_StopAll' 'Calliope stop all motors and servos'
 
 to csb_AngelServo servoType servoPort angel {
   comment 'angle range maps from -servoType/2 to +servoType/2'
