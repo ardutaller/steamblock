@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-03-10 16:18+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-03-21 03:01+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -4651,7 +4651,7 @@ msgstr "El servidor HTTP de MicroBlocks està actiu al port 6473"
 
 #. Settings menu option
 msgid "disable autoloading board libraries"
-msgstr "no carreguis llibreries de placa automàticament"
+msgstr "no carreguis biblioteques de placa automàticament"
 
 #. Settings menu option
 msgid "compact code store"
@@ -4659,7 +4659,7 @@ msgstr "compacta el codi emmagatzemat"
 
 #. Settings menu option
 msgid "autoload board libraries"
-msgstr "auto-carrega llibreries de placa"
+msgstr "carrega biblioteques de placa automàticament"
 
 #. Settings menu option
 msgid "PlugShare when project empty"
@@ -4671,7 +4671,9 @@ msgstr "amaga els blocs d'implementació"
 
 #. Settings menu tooltip
 msgid "do not show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
-msgstr "no mostris blocs i variables que siguin interns a les llibreries (aquells que el seu nom comença amb guió baix)"
+msgstr ""
+"no mostris blocs i variables que siguin interns a les biblioteques (aquells "
+"que el seu nom comença amb guió baix)"
 
 #. Settings menu option
 msgid "show implementation blocks"
@@ -4679,7 +4681,9 @@ msgstr "mostra els blocs d'implementació"
 
 #. Settings menu tooltip
 msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
-msgstr "mostra els blocs i variables que siguin interns a les llibreries (aquells que el nom comença amb guió baix)"
+msgstr ""
+"mostra els blocs i variables que siguin interns a les biblioteques (aquells "
+"que el nom comença amb guió baix)"
 
 #. Settings menu tooltip
 msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
@@ -4776,7 +4780,7 @@ msgstr "mostra els blocs avançats"
 
 #. Settings menu option
 msgid "export functions as library"
-msgstr "exporta funcions com a llibreria"
+msgstr "exporta funcions com a biblioteca"
 
 #. Settings menu option
 msgid "hide advanced blocks"
@@ -5096,11 +5100,11 @@ msgstr "Confirmació"
 
 #. Library folder
 msgid "LIBRARIES"
-msgstr "LLIBRERIES"
+msgstr "BIBLIOTEQUES"
 
 #. Library folder
 msgid "folder;Libraries"
-msgstr "Llibreries"
+msgstr "Biblioteques"
 
 #. Library folder
 msgid "folder;AI"
@@ -5148,7 +5152,7 @@ msgstr "En construcció"
 
 #. String in file picker and library dialogs
 msgid "New library name?"
-msgstr "Nom de la nova llibreria?"
+msgstr "Nom de la biblioteca nova?"
 
 #. Scripting area right-click context menu
 msgid "show all block definitions"
@@ -5160,11 +5164,11 @@ msgstr "amaga les definicions de tots els blocs"
 
 #. Library label right click context menu option
 msgid "export this library"
-msgstr "exporta aquesta llibreria"
+msgstr "exporta aquesta biblioteca"
 
 #. Library label right click context menu option
 msgid "delete library"
-msgstr "elimina aquesta llibreria"
+msgstr "suprimeix la biblioteca"
 
 #. Project source folder
 msgid "Examples"
@@ -5218,7 +5222,7 @@ msgstr "Etiquetes:"
 
 #. String in file picker and library dialogs
 msgid "Path, name or URL for library?"
-msgstr "Camí, nom o URL de la llibreria?"
+msgstr "Camí, nom o URL de la biblioteca?"
 
 #. String in file picker and library dialogs
 msgid "Invalid URL"
@@ -5226,7 +5230,7 @@ msgstr "URL invàlida"
 
 #. String in file picker and library dialogs
 msgid "Could not fetch library."
-msgstr "No s'ha pogut obtenir la llibreria."
+msgstr "No s'ha pogut obtenir la biblioteca."
 
 #. String in file picker and library dialogs
 msgid "Host does not exist or is currently down."
@@ -5242,11 +5246,11 @@ msgstr "El servidor requereix HTTPS, però MicroBlocks no en suporta."
 
 #. String in file picker and library dialogs
 msgid "library information"
-msgstr "informació de la llibreria"
+msgstr "informació de la biblioteca"
 
 #. String in file picker and library dialogs
 msgid "built-in library"
-msgstr "llibreria integrada"
+msgstr "biblioteca integrada"
 
 #. String in file picker and library dialogs
 msgid "Dependency path, name or URL?"
@@ -5254,15 +5258,20 @@ msgstr "Camí, nom o URL de la dependència?"
 
 #. String in file picker and library dialogs
 msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
-msgstr "Si vols afegir una llibreria interna de MicroBlocks, només cal que n'escriguis el nom."
+msgstr ""
+"Si vols afegir una biblioteca interna de MicroBlocks, només cal que "
+"n'escriguis el nom."
 
 #. String in file picker and library dialogs
 msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
-msgstr "Si la teva llibreria està al directori \"Libraries\" del teu directori local de projectes de MicroBlocks, l'has de prefixar amb una barra (/)."
+msgstr ""
+"Si la teva biblioteca està al directori \"Libraries\" del teu directori "
+"local de projectes de MicroBlocks, l'has de prefixar amb una barra (/)."
 
 #. String in file picker and library dialogs
 msgid "If the library is hosted online, please input its full URL."
-msgstr "Si la llibreria està hostatjada a Internet, introdueix la seva URL completa."
+msgstr ""
+"Si la biblioteca està hostatjada a Internet, introdueix la seva URL completa."
 
 #. String in file picker and library dialogs
 msgid "Tag name?"
@@ -5270,11 +5279,11 @@ msgstr "Nom de l'etiqueta?"
 
 #. String in file picker and library dialogs
 msgid "user library"
-msgstr "llibreria d'usuari"
+msgstr "biblioteca d'usuari"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "Afegir llibreria"
+msgstr "Afegeix una biblioteca"
 
 #. the %1 tag should be kept intact. Seconds remaining for a process to finish.
 msgid "%1 seconds remaining"
@@ -5376,13 +5385,13 @@ msgstr "Arrossega'l per canviar l'amplada de l'àrea."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Library"
-msgstr "Llibreria"
+msgstr "Biblioteca"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to show the blocks in this library. [r] menu."
-msgstr "[l] per mostrar els blocs d'aquesta llibreria. [r] menú."
+msgstr "[l] per mostrar els blocs d'aquesta biblioteca. [r] menú."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Block Category"
