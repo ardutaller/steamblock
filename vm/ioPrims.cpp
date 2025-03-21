@@ -1024,30 +1024,23 @@ void hardwareInit() {
 #elif defined(DUELink)
 
 	#define BOARD_TYPE "DUELink"
-	#define DIGITAL_PINS 29
+	#define DIGITAL_PINS 30
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
-	#if defined(HAS_LED_MATRIX)
-		#define PIN_LED -1 // no user LED
-	#else
-		#define PIN_LED 15
-	#endif
+	#define PIN_LED 15
 	#define PIN_BUTTON_A 28 // edge pin 5
 	#define PIN_BUTTON_B 27 // edge pin 11
 	#undef BUTTON_PRESSED
 	#define BUTTON_PRESSED HIGH
 	#define DEFAULT_TONE_PIN 26
-	#ifdef DUE_EDGE_CONNECTOR
-		static const char duePin[] = {
-			16, 17, 18, 14, 29, 28,  8,  10, 37, 19,
-			 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
-			 1,  7, 12, 15, 54, 11, 13,  52, 47};
-	#else
-		static const char duePin[] = {
-			15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
-			33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
-			28,  8,  2, 27, 32, 52, 47, 42};
-	#endif
+	static const char dueEdgePin[DIGITAL_PINS] = {
+		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
+		 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
+		 1,  7, 12, 15, 54, 11, 13,  52,  47, 42};
+	static const char dueStandardPin[DIGITAL_PINS] = {
+		15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
+		33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
+		28,  8,  2, 27, 32, 52, 47, 42, 255, 255};
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14};
 
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
@@ -1171,7 +1164,13 @@ int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return digitalPin[pinNum];
 	#elif defined(DUELink)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return duePin[pinNum];
+		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
+			if (DUE_HAS_EDGE_CONNECTOR) {
+				return dueEdgePin[pinNum];
+			} else {
+				return dueStandardPin[pinNum];
+			}
+		}
 		return -1; // out of range
 	#endif
 	#if defined(ARDUINO_CITILAB_ED1)
@@ -1549,6 +1548,14 @@ void primDigitalSet(int pinNum, int flag) {
 
 void primSetUserLED(OBJ *args) {
 	#if defined(HAS_LED_MATRIX)
+		#if defined(DUELink)
+			if (!IS_DUE_CINCO) {
+				// only the Cinco has an LED matrix; set the user LED on other DUELink boards
+				pinMode(PIN_LED, OUTPUT);
+				digitalWrite(PIN_LED, (PinStatus) (trueObj == args[0]));
+				return;
+			}
+		#endif
 		// Special case: Plot or unplot one LED in the LED matrix.
 		OBJ coords[2] = { int2obj(3), int2obj(1) };
 		if (trueObj == args[0]) {

@@ -425,16 +425,6 @@ static OBJ primI2cSetPins(int argCount, OBJ *args) {
 	#define PIN_SPI_MISO PIN_SPI0_MISO
 	#define PIN_SPI_MOSI PIN_SPI0_MOSI
 	#define PIN_SPI_SCK  PIN_SPI0_SCK
-#elif defined(DUELink)
-	#if defined(DUE_EDGE_CONNECTOR)
-		#define PIN_SPI_SCK		13   // edge pin 13
-		#define PIN_SPI_MISO	14   // edge pin 14
-		#define PIN_SPI_MOSI	15   // edge pin 15
-	#else
-		#define PIN_SPI_SCK		12
-		#define PIN_SPI_MISO	13
-		#define PIN_SPI_MOSI	14
-	#endif
 #endif
 
 #if defined(ESP8266) || defined(ESP32) || defined(ARDUINO_TEENSY40) || defined(ARDUINO_TEENSY41)
@@ -462,9 +452,15 @@ static void initSPI() {
 		SPI.setSCK(PIN_SPI_SCK);
 		SPI.setTX(PIN_SPI_MOSI);
 	#elif defined(DUELink)
-		SPI.setSCLK(mapDigitalPinNum(PIN_SPI_SCK));
-		SPI.setMISO(mapDigitalPinNum(PIN_SPI_MISO));
-		SPI.setMOSI(mapDigitalPinNum(PIN_SPI_MOSI));
+		if (DUE_HAS_EDGE_CONNECTOR) {
+			SPI.setSCLK(mapDigitalPinNum(13));
+			SPI.setMISO(mapDigitalPinNum(14));
+			SPI.setMOSI(mapDigitalPinNum(15));
+		} else {
+			SPI.setSCLK(mapDigitalPinNum(12));
+			SPI.setMISO(mapDigitalPinNum(13));
+			SPI.setMOSI(mapDigitalPinNum(14));
+		}
 	#endif
 	SPI.begin();
 	SPI.beginTransaction(SPISettings(spiSpeed, spiBitOrder, spiMode));

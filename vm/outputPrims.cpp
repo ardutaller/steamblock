@@ -377,7 +377,7 @@ void updateMicrobitDisplay() {
 	displayCycle = (displayCycle + 1) % 5;
 }
 
-#elif defined(DUELink) && defined(HAS_LED_MATRIX)  // CincoBit
+#elif defined(DUELink)
 
 #define ROW1 7
 #define ROW2 12
@@ -399,6 +399,8 @@ static int columnPins[5] = {COL1, COL2, COL3, COL4, COL5};
 #define DISPLAY_BIT(n) (((displaySnapshot >> n) & 1) ? LOW : HIGH)
 
 static void turnDisplayOn() {
+	if (!IS_DUE_CINCO) return;
+
 	for (int i = 0; i < 5; i++) {
 		setPinMode(rowPins[i], INPUT);
 		setPinMode(columnPins[i], OUTPUT);
@@ -406,6 +408,8 @@ static void turnDisplayOn() {
 }
 
 static void turnDisplayOff() {
+	if (!IS_DUE_CINCO) return;
+
 	for (int i = 0; i < 5; i++) {
 		setPinMode(columnPins[i], INPUT);
 		setPinMode(rowPins[i], INPUT);
@@ -413,6 +417,8 @@ static void turnDisplayOff() {
 }
 
 static int updateLightLevel() { // placeholder
+	if (!IS_DUE_CINCO) return true;
+
 	lightReadingRequested = false;
 	return true;
 }
@@ -422,6 +428,7 @@ void updateMicrobitDisplay() {
 	// for each column. To minimize display artifacts, the display bits are snapshot
 	// at the start of each cycle and the snapshot is not changed during the cycle.
 
+	if (!IS_DUE_CINCO) return;
 	if (disableLEDDisplay) return;
 
 	if (!microBitDisplayBits && !displaySnapshot) { // display is off
