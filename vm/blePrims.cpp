@@ -730,44 +730,59 @@ static OBJ primStartBLEKeyboard(int argCount, OBJ *args) {
 
 #include <WifiEspNowBroadcast.h>
 
-static char receiveBuffer[1000];
-static bool EspNoWInitialized = false;
-static bool hasEspNowMessage = false;
+static uint32 emptyMBString[2] = { HEADER(StringType, 1), 0 };
+
+#define ESP_NOW_MAX 1000
+static char receiveBuffer[ESP_NOW_MAX];
+static uint16 espNowByteCount = 0;
+static bool espNowInitialized = false;
 
 static void processRx(const uint8_t mac[WIFIESPNOW_ALEN], const uint8_t* buf, size_t count, void* arg) {
-	char* data = (char*) buf;
-	int len = strlen(data);
-	if (len > 999) len = 999;
-	memcpy(receiveBuffer, data, len);
-	receiveBuffer[len] = '\0';
-	hasEspNowMessage = true;
+	if ((espNowByteCount + count + 1) < ESP_NOW_MAX) {
+		memcpy(&receiveBuffer[espNowByteCount], buf, count);
+		espNowByteCount += count;
+		receiveBuffer[espNowByteCount] = '\n';
+		espNowByteCount++;
+	}
 }
 
-static void initializeEspNoW() {
-	if (EspNoWInitialized) return;
+static void initializeEspNow() {
+	if (espNowInitialized) return;
 
 	WiFi.persistent(false);
 	bool ok = WifiEspNowBroadcast.begin("ESPNOW", 3);
-	if (!ok) {
-		// outputString("WifiEspNowBroadcast.begin() failed");
-		ESP.restart(); //
-	 }
-	// outputString("WifiEspNowBroadcast.begin() success");
+	if (!ok) return;
+
 	WifiEspNowBroadcast.onReceive(processRx, nullptr);
-	EspNoWInitialized = true;
+	espNowInitialized = true;
+}
+
+static OBJ primEspNowReceive(int argCount, OBJ *args) {
+	initializeEspNow();
+
+	WifiEspNowBroadcast.loop();
+	taskSleep(10);
+
+	if (espNowByteCount > 0) {
+		OBJ result = newStringFromBytes(receiveBuffer, espNowByteCount);
+		espNowByteCount = 0;
+		return result;
+	} else {
+		return (OBJ) &emptyMBString;
+	}
 }
 
 static OBJ primEspNowLastEvent(int argCount, OBJ *args) {
-	if (!EspNoWInitialized) initializeEspNoW();
+	initializeEspNow();
 
 	WifiEspNowBroadcast.loop();
-	delay(10);
+	taskSleep(10);
 
-	if (hasEspNowMessage) {
+	if (espNowByteCount > 0) {
 		OBJ event = newObj(ListType, 2, zeroObj);
 		FIELD(event, 0) = int2obj(1); //list size
-		FIELD(event, 1) = newStringFromBytes(receiveBuffer, strlen(receiveBuffer));
-		hasEspNowMessage = false;
+		FIELD(event, 1) = newStringFromBytes(receiveBuffer, espNowByteCount);
+		espNowByteCount = 0;
 		return event;
 	} else {
 		return falseObj;
@@ -775,7 +790,7 @@ static OBJ primEspNowLastEvent(int argCount, OBJ *args) {
 }
 
 static OBJ primEspNowBroadcast(int argCount, OBJ *args) {
-	if (!EspNoWInitialized) initializeEspNoW();
+	initializeEspNow();
 
 	char* message = obj2str(args[0]);
 	WifiEspNowBroadcast.send(reinterpret_cast<const uint8_t*>(message), strlen(message));
@@ -816,8 +831,9 @@ static PrimEntry entries[] = {
 	#endif
 
 	#if defined(ESP_NOW_PRIMS)
-		{"EspNowLastEvent", primEspNowLastEvent},
 		{"EspNowBroadcast", primEspNowBroadcast},
+		{"EspNowReceive", primEspNowReceive},
+		{"EspNowLastEvent", primEspNowLastEvent},
 	#endif
 
 };
