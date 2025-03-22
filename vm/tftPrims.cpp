@@ -552,6 +552,7 @@ static int deferUpdates = false;
 
 	#elif defined(OLED_128_64)
 		#undef BLACK // defined in SSD1306 header
+		#undef WHITE // defined in SSD1306 header
 		#include "Adafruit_GFX.h"
 		#include "Adafruit_SSD1306.h"
 
