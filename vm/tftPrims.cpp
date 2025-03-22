@@ -563,16 +563,28 @@ static int deferUpdates = false;
 
 		Adafruit_SSD1306 tft = Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT, &Wire, -1, 400000, 400000);
 
+		int is1106 = false;
+
+		static void oledCmd(uint8 cmd) {
+			Wire.beginTransmission(TFT_ADDR);
+			Wire.write(0x80);
+			Wire.write(cmd);
+			Wire.endTransmission(true);
+		}
+
 		void tftInit() {
 			delay(5); // need 2 msecs minimum for micro:bit PicoBricks board power up I2C pullups
 			if (!hasI2CPullups()) return; // no OLED connected and no I2C pullups
 			int response = readI2CReg(TFT_ADDR, 0); // test if OLED responds at TFT_ADDR
 			if (response < 0) return; // no OLED display detected
+			is1106 = (8 == (response & 15));
 
 			tft.begin(SSD1306_SWITCHCAPVCC, TFT_ADDR);
-			// set to max OLED brightness
-			writeI2CReg(TFT_ADDR, 0x80, 0x81);
-			writeI2CReg(TFT_ADDR, 0x80, 0xFF);
+
+			// set to medium brightness
+			oledCmd(0x81);
+			oledCmd(0x80);
+
 			useTFT = true;
 			tftClear();
 		}
@@ -586,30 +598,31 @@ static int deferUpdates = false;
 		static void oledUpdate() {
 			// Send the entire OLED buffer to the display via i2c. Takes about 30 msecs.
 			// Periodically update the LED display to avoid flicker.
-			uint8 oneLine[33];
 			uint8 setupCmds[] = {
 				0x20, 0,		// Horizontal mode
-				0x22, 0, 7,		// Page start and end address
-				0x21, 0, 0x7F	// Column start and end address
+				0x21, 0, 0x7F,	// Column start and end address
+				0x22, 0, 7		// Page start and end address
 			};
 			i2cWriteBytes(setupCmds, sizeof(setupCmds));
-			oneLine[0] = 0x40;
-			uint8 *displayBuffer = tft.getBuffer();
-			uint8 *src = displayBuffer;
-			for (int i = 0; i <= 1024; i++) {
-				if ((i % 16) == 0) {
-					captureIncomingBytes();
-				}
-				if ((i % 64) == 0) {
-					// do time-sensitive background tasks
-					updateMicrobitDisplay();
-				}
-				int col = i % 32;
-				if ((col == 0) && (i != 0)) {
-					i2cWriteBytes(oneLine, sizeof(oneLine));
-					captureIncomingBytes();
-				}
-				oneLine[col + 1] = *src++;
+			uint8 buffer[65];
+			buffer[0] = 0x40;
+			uint8 *src = tft.getBuffer();
+			for (int i = 0; i < 8; i++) {
+				// do time-sensitive background tasks
+				captureIncomingBytes();
+				updateMicrobitDisplay();
+
+				oledCmd(0x10);
+				oledCmd(is1106 ? 0x02 : 0);  // column offset
+				oledCmd(0xB0 + i);
+
+				// write 128 bytes of data in two i2c writes
+				memcpy(&buffer[1], src, 64);
+				i2cWriteBytes(buffer, 65);
+				src += 64;
+				memcpy(&buffer[1], src, 64);
+				i2cWriteBytes(buffer, 65);
+				src += 64;
 			}
 		}
 
