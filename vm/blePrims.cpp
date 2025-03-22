@@ -35,6 +35,10 @@
 	#define BLE_UART 1
 #endif
 
+// Empty byte array and string constants
+static uint32 emptyByteArray = HEADER(ByteArrayType, 0);
+static uint32 emptyMBString[2] = { HEADER(StringType, 1), 0 };
+
 static OBJ primBLE_connected(int argCount, OBJ *args) {
 	// BLE_connected_to_IDE is true if *any* BLE client is connected to the board,
 	// regardless of which service they are using.
@@ -558,10 +562,6 @@ static OBJ primRadioReceive(int argCount, OBJ *args) {
 // available for connection as a BLE UART (except in Chrome/Edge, which
 // seems to share a single BLE connection between tabs).
 
-// Empty byte array and string constants
-static uint32 emptyByteArray = HEADER(ByteArrayType, 0);
-static uint32 emptyMBString[2] = { HEADER(StringType, 1), 0 };
-
 // Receive buffer
 static uint8 uartRecvBuf[256];
 static int uartBytesReceived = 0;
@@ -729,8 +729,6 @@ static OBJ primStartBLEKeyboard(int argCount, OBJ *args) {
 //https://registry.platformio.org/libraries/yoursunny/WifiEspNow/examples/EspNowBroadcast/EspNowBroadcast.ino
 
 #include <WifiEspNowBroadcast.h>
-
-static uint32 emptyMBString[2] = { HEADER(StringType, 1), 0 };
 
 #define ESP_NOW_MAX 1000
 static char receiveBuffer[ESP_NOW_MAX];
