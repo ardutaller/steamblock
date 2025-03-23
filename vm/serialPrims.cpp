@@ -549,8 +549,21 @@ static OBJ primDUELinkRecv(int argCount, OBJ *args) {
 
 #else
 
-static OBJ primDUELinkSend(int argCount, OBJ *args) { return falseObj; }
-static OBJ primDUELinkRecv(int argCount, OBJ *args) { return falseObj; }
+static void initDownlink() {
+	if (isOpen) return;
+	serialOpen(115200);
+	delay(5); // leave a litte time for things to settle
+}
+
+static OBJ primDUELinkSend(int argCount, OBJ *args) {
+	initDownlink();
+	return primSerialWriteBytes(argCount, args);
+}
+
+static OBJ primDUELinkRecv(int argCount, OBJ *args) {
+	initDownlink();
+	return primSerialRead(0, NULL);
+}
 
 #endif
 
