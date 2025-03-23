@@ -899,7 +899,7 @@ void hardwareInit() {
 		#define PIN_BUTTON_A 15
 		#define PIN_BUTTON_B 14
 	#elif defined(KIDS_IOT)
-		#define BOARD_TYPE "KidsIOT"
+		#define BOARD_TYPE "KidsBits"
 	#else
 		#define BOARD_TYPE "ESP32"
 	#endif
@@ -1066,7 +1066,16 @@ void hardwareInit() {
 
 // Board Type
 
-const char * boardType() { return BOARD_TYPE; }
+const char * boardType() {
+	if (0 == strcmp("KidsBits", BOARD_TYPE)) {
+		if (isOLED1106) {
+			return "CodingBox";
+		} else {
+			return "KidsIOT";
+		}
+	}
+	return BOARD_TYPE;
+}
 
 // Pin Modes
 
