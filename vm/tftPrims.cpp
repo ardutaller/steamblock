@@ -17,6 +17,8 @@
 #include "interp.h"
 
 int useTFT = false;
+int isOLED1106 = false;
+
 static int touchEnabled = false;
 static int deferUpdates = false;
 
@@ -563,8 +565,6 @@ static int deferUpdates = false;
 
 		Adafruit_SSD1306 tft = Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT, &Wire, -1, 400000, 400000);
 
-		int is1106 = false;
-
 		static void oledCmd(uint8 cmd) {
 			Wire.beginTransmission(TFT_ADDR);
 			Wire.write(0x80);
@@ -577,7 +577,7 @@ static int deferUpdates = false;
 			if (!hasI2CPullups()) return; // no OLED connected and no I2C pullups
 			int response = readI2CReg(TFT_ADDR, 0); // test if OLED responds at TFT_ADDR
 			if (response < 0) return; // no OLED display detected
-			is1106 = (8 == (response & 15));
+			isOLED1106 = (8 == (response & 15));
 
 			tft.begin(SSD1306_SWITCHCAPVCC, TFT_ADDR);
 
@@ -613,7 +613,7 @@ static int deferUpdates = false;
 				updateMicrobitDisplay();
 
 				oledCmd(0x10);
-				oledCmd(is1106 ? 0x02 : 0);  // column offset
+				oledCmd(isOLED1106 ? 0x02 : 0);  // column offset
 				oledCmd(0xB0 + i);
 
 				// write 128 bytes of data in two i2c writes

@@ -360,6 +360,7 @@ OBJ primResumeUpdates(int argCount, OBJ *args);
 // TFT Support
 
 extern int useTFT;
+extern int isOLED1106;
 
 void tftInit();
 void tftClear();
