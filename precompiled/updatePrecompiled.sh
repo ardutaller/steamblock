@@ -37,8 +37,8 @@ pio run -e databot
 cp .pio/build/databot/firmware.bin precompiled/vm_databot.bin
 pio run -e steam-maker
 cp .pio/build/steam-maker/firmware.bin precompiled/vm_micro_steamakers.bin
-pio run -e kids-iot
-cp .pio/build/kids-iot/firmware.bin precompiled/vm_kids_iot.bin
+pio run -e kids-bits
+cp .pio/build/kids-bits/firmware.bin precompiled/vm_kids_bits.bin
 pio run -e foxbit
 cp .pio/build/foxbit/firmware.bin precompiled/vm_foxbit.bin
 pio run -e makerportV3
