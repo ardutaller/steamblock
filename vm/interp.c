@@ -57,7 +57,7 @@ int failure() {
 	void taskSleep(int msecs) {
 		// Make the current task sleep for the given number of milliseconds to free up cycles.
 		taskSleepMSecs = msecs;
-		errorCode = sleepSignal;
+		if (noError == errorCode) errorCode = sleepSignal;
 	}
 #endif
 
