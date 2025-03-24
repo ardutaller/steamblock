@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-01-01 18:45+0200\n"
-"PO-Revision-Date: 2025-03-23 06:38+0000\n"
+"PO-Revision-Date: 2025-03-25 19:01+0000\n"
 "Last-Translator: mu22le <muzzle@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/microblocks/ide/"
 "it/>\n"
@@ -825,7 +825,7 @@ msgstr "ha il bianco _"
 
 #. NeoPixel library block
 msgid "PIR"
-msgstr ""
+msgstr "PIR"
 
 #. NeoPixel library block
 msgid "PIR at pin _ detected movement"
@@ -833,71 +833,71 @@ msgstr "PIR al pin _ rileva movimento"
 
 #. NeoPanel library label
 msgid "NeoPanel"
-msgstr ""
+msgstr "NeoPanel"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
-msgstr ""
+msgstr "connetti pannello NeoPixel largo _ alto _ al pin _"
 
 #. NeoPanel library block
 msgid "NeoPanel set x _ y _ color _"
-msgstr ""
+msgstr "NeoPanel imposta x _ y _ colore _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
-msgstr ""
+msgstr "NeoPanel riempi colonna _ colore _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill row _ color _"
-msgstr ""
+msgstr "NeoPanel riempi riga _ colore _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
-msgstr ""
+msgstr "NeoPanel riempi rettangolo x _ y _ largo _ alto _ colore _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
-msgstr ""
+msgstr "NeoPanel scrivi _ a x _ y _ colore _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr ""
+msgstr "NeoPanel mostra file BMP _ a x _ y _"
 
 #. Microphone library label
 msgid "Microphone"
-msgstr ""
+msgstr "Microfono"
 
 #. Microphone library block
 msgid "microphone"
-msgstr ""
+msgstr "microfono"
 
 #. Microphone library block
 msgid "turn on microphone"
-msgstr ""
+msgstr "accendi microfono"
 
 #. Microphone library block
 msgid "loudness"
-msgstr ""
+msgstr "volume"
 
 #. Microphone library block
 msgid "clap count"
-msgstr ""
+msgstr "conto battiti"
 
 #. Microphone library block
 msgid "set clap threshold _"
-msgstr ""
+msgstr "imposta soglia battito _"
 
 #. Microphone library block
 msgid "estimate clap threshold"
-msgstr ""
+msgstr "rileva soglia battito"
 
 #. Citilab ED1 Stepper Motor library label
 msgid "ED1 Stepper Motor"
-msgstr ""
+msgstr "ED1 Motore passo-passo"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ steps _"
-msgstr ""
+msgstr "muovi motore _ _ passi _"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor 1 _ and motor 2 _ _ steps"
