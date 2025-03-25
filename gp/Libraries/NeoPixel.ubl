@@ -3,7 +3,7 @@ author MicroBlocks
 version 1 13 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
-variables _np_pixels 
+variables _np_pixels _np_pin _np_haswhite 
 
   spec ' ' 'neoPixelAttach' 'attach _ LED NeoPixel strip to pin _ : has white _' 'num auto bool' 10 '' false
   spec ' ' 'setNeoPixelColors10' 'set NeoPixels _ _ _ _ _ _ _ _ _ _' 'color color color color color color color color color color'
@@ -109,6 +109,8 @@ to '_NeoPixel_shift_hue' i delta {
 }
 
 to '_NeoPixel_update' {
+  comment 'NeoPixel pin and hasWhite may have been changed by another library.'
+  '[display:neoPixelSetPin]' _np_pin _np_hasWhite
   '[display:neoPixelSend]' _np_pixels
   waitMicros 300
 }
@@ -127,15 +129,16 @@ to colorFromRGB r g b {
 }
 
 to neoPixelAttach number pinNumber optionalHasWhite {
-  hasWhite = false
+  _np_pin = pinNumber
+  _np_hasWhite = false
   if ((pushArgCount) > 2) {
-    hasWhite = optionalHasWhite
+    _np_hasWhite = optionalHasWhite
   }
   if (or (_np_pixels == 0) (number != (size _np_pixels))) {
     _np_pixels = (newList number)
   }
   atPut 'all' _np_pixels 0
-  '[display:neoPixelSetPin]' pinNumber hasWhite
+  '[display:neoPixelSetPin]' _np_pin _np_hasWhite
 }
 
 to neoPixelSetAllToColor color {
@@ -162,8 +165,12 @@ to randomColor {
 
 to rotateNeoPixelsBy n {
   '_NeoPixel_ensureInitialized'
+  local 'rotateLeft' (n < 0)
+  if (or ((boardType) == 'CircuitPlayground') ((boardType) == 'CircuitPlayground Bluefruit')) {
+    rotateLeft = (n > 0)
+  }
   repeat (absoluteValue n) {
-    '_NeoPixel_rotate' (n > 0)
+    '_NeoPixel_rotate' rotateLeft
   }
   '_NeoPixel_update'
 }
