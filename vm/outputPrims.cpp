@@ -507,7 +507,7 @@ OBJ primMBDisplay(int argCount, OBJ *args) {
 
 OBJ primMBDisplayOff(int argCount, OBJ *args) {
 	microBitDisplayBits = 0;
-	#if !defined(OLED_128_64) || defined(OLED_BUILT_IN)
+	#if !defined(OLED_128_64) || defined(BUILT_IN_DISPLAY)
 		if (useTFT) tftClear();
 	#endif
 	return falseObj;
