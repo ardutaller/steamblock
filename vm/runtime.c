@@ -226,6 +226,7 @@ static void stopAllTasks() {
 		}
 	}
 	initTasks();
+	fail(0); // clear error flag
 }
 
 void startAll() {
