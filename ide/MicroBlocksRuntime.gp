@@ -1345,9 +1345,13 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'microSTEAMakers'
 	} ('CodingBox' == boardType) {
 		importEmbeddedLibrary scripter 'LED Display'
+		importEmbeddedLibrary scripter 'NeoPixel'
+		importEmbeddedLibrary scripter 'Tone'
+		importEmbeddedLibrary scripter 'TFT'
 	} ('KidsIOT' == boardType) {
 		importEmbeddedLibrary scripter 'LED Display'
 		importEmbeddedLibrary scripter 'KidsIoT'
+		importEmbeddedLibrary scripter 'TFT'
 	} ('Foxbit' == boardType) {
 		importEmbeddedLibrary scripter 'Basic Sensors'
 		importEmbeddedLibrary scripter 'LED Display'
@@ -3019,7 +3023,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 		if eraseFlashFlag {
 			addItem menu 'Citilab ED1'
 			addItem menu 'micro:STEAMakers'
-			addItem menu 'KidsIOT'
+			addItem menu 'KidsBits'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
 			addItem menu 'M5Stack-Core'
@@ -3031,7 +3035,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addLine menu
 			addItem menu 'Citilab ED1'
 			addItem menu 'micro:STEAMakers'
-			addItem menu 'KidsIOT'
+			addItem menu 'KidsBits'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
 			addLine menu

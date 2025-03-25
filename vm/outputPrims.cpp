@@ -870,6 +870,8 @@ static void initNeoPixelPin(int pinNum) { // ESP32
 			pinNum = 35;
 		#elif defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
 			pinNum = 13; // internal NeoPixel pin
+		#elif defined(KIDS_BITS)
+			pinNum = 16; // internal NeoPixel pin on Coding Box 2.0
 		#elif defined(DATABOT)
 			pinNum = 2; // internal NeoPixel pin
 		#elif defined(ESP32_S3)
@@ -1117,6 +1119,8 @@ void turnOffInternalNeoPixels() {
 		count = 10;
 	#elif defined(FOXBIT)
 		count = 35;
+	#elif defined(KIDS_BITS)
+		count = 12;
 	#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 		count = 25;
 		// sending neopixel data twice on the Atom Matrix eliminates green pixel at startup

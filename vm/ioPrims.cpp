@@ -898,7 +898,7 @@ void hardwareInit() {
 		#define BOARD_TYPE "IOT-BUS"
 		#define PIN_BUTTON_A 15
 		#define PIN_BUTTON_B 14
-	#elif defined(KIDS_IOT)
+	#elif defined(KIDS_BITS)
 		#define BOARD_TYPE "KidsBits"
 	#else
 		#define BOARD_TYPE "ESP32"
