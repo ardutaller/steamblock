@@ -1,0 +1,89 @@
+module 'MP3 Player (DF1201S)' Output
+author 'José García Yeste'
+version 1 0 
+description 'Support for MP3 DFPlayer Pro
+Dual chanel, integrated amplifier regulable by software and 128MbB storage.
+
+https://wiki.dfrobot.com/DFPlayer_PRO_SKU_DFR0768
+'
+variables _mp3df_isPlaying 
+
+  spec ' ' 'mp3df_setup' 'mp3 setup'
+  spec ' ' 'mp3df_play' 'mp3 play _' 'auto' 1
+  spec ' ' 'mp3df_pause' 'mp3 pause'
+  spec ' ' 'mp3df_resume' 'mp3 resume'
+  space
+  spec ' ' 'mp3df_set_volume' 'mp3 set volume _' 'auto' 15
+  spec 'r' 'mp3df_get_volume' 'mp3 get volume'
+  spec 'r' 'mp3df_playing' 'mp3 playing'
+  space
+  spec ' ' '_mp3df_writeATCommand' '_mp3df_writeATCommand _ _' 'str str' 'LED' 'OFF'
+
+to '_mp3df_writeATCommand' cmd param {
+  local 'atcmd' ('[serial:read]')
+  local 'atcmd' 'AT'
+  if (cmd != '') {
+    atcmd = ('[data:join]' atcmd '+' cmd)
+  }
+  if (param != '') {
+    atcmd = ('[data:join]' atcmd '=' param)
+  }
+  atcmd = ('[data:join]' atcmd ('[data:unicodeString]' 13) ('[data:unicodeString]' 10))
+  '[serial:write]' atcmd
+  waitMillis 40
+}
+
+to mp3df_get_volume {
+  comment 'VOL = [15]'
+  '_mp3df_writeATCommand' 'VOL' '?'
+  local 'vol' ('[data:convertType]' ('[serial:read]') 'string')
+  return ('[data:convertType]' ('[data:copyFromTo]' vol 8 ((size vol) - 3)) 'number')
+}
+
+to mp3df_pause {
+  if _mp3df_isPlaying {
+    '_mp3df_writeATCommand' 'PLAY' 'PP'
+    _mp3df_isPlaying = (booleanConstant false)
+  }
+}
+
+to mp3df_play song {
+  if (isType song 'number') {
+    '_mp3df_writeATCommand' 'PLAYNUM' song
+  } else {
+    '_mp3df_writeATCommand' 'PLAYFILE' ('[data:join]' '/' song)
+  }
+  _mp3df_isPlaying = (booleanConstant true)
+}
+
+to mp3df_playing {
+  '_mp3df_writeATCommand' 'QUERY' '3'
+  local 'time1' ('[data:convertType]' ('[serial:read]') 'string')
+  time1 = ('[data:convertType]' ('[data:copyFromTo]' time1 1 ((size time1) - 2)) 'number')
+  waitMillis 1000
+  '_mp3df_writeATCommand' 'QUERY' '3'
+  local 'time2' ('[data:convertType]' ('[serial:read]') 'string')
+  time2 = ('[data:convertType]' ('[data:copyFromTo]' time2 1 ((size time2) - 2)) 'number')
+  _mp3df_isPlaying = (time2 > time1)
+  return _mp3df_isPlaying
+}
+
+to mp3df_resume {
+  if (not _mp3df_isPlaying) {
+    '_mp3df_writeATCommand' 'PLAY' 'PP'
+    _mp3df_isPlaying = (booleanConstant true)
+  }
+}
+
+to mp3df_set_volume volume {
+  '_mp3df_writeATCommand' 'VOL' volume
+}
+
+to mp3df_setup {
+  '[serial:open]' 115200
+  '_mp3df_writeATCommand' 'PROMPT' 'OFF'
+  '_mp3df_writeATCommand' '' ''
+  '_mp3df_writeATCommand' 'PLAYMODE' '3'
+  comment 'SINGLE MODE'
+}
+
