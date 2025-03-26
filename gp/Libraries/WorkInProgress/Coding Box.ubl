@@ -1,9 +1,10 @@
 module 'Coding Box'
 author MicroBlocks
-version 1 0
-depends 'Distance (HC-SR04)' NeoPixel Tone TFT
-choices cbox_ledOrButton red yellow green
-choices cbox_axis x y
+version 1 0 
+depends '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT 
+choices cbox_joystick x y 
+choices cbox_compass x y z total 
+choices cbox_ledOrButton red yellow green 
 description ''
 
   spec ' ' 'cbox_setLED' 'cb set _ LED to _' 'menu.cbox_ledOrButton bool' 'red' true
@@ -14,14 +15,18 @@ description ''
   spec ' ' 'cbox_stopFan' 'cb stop fan'
   space
   spec ' ' 'cbox_setNeoPixelColors' 'cb set NeoPixels #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _' 'color color color color color color color color color color color color'
-  spec ' ' 'cbox_setAllNeoPixels' 'cbox set all NeoPixels _' 'color'
-  spec ' ' 'cbox_clearNeoPixels' 'cbox clear NeoPixels'
+  spec ' ' 'cbox_setAllNeoPixels' 'cb set all NeoPixels _' 'color'
+  spec ' ' 'cbox_clearNeoPixels' 'cb clear NeoPixels'
   space
   spec 'r' 'cbox_adkey' 'cb _ ADKey pressed?' 'menu.cbox_ledOrButton' 'red'
-  spec 'r' 'cbox_joystick' 'cb joystick _' 'menu.cbox_axis' 'x'
+  spec 'r' 'cbox_joystick' 'cb joystick _' 'menu.cbox_joystick' 'x'
   space
   spec 'r' 'cbox_distance' 'cb distance'
   spec 'r' 'cbox_light' 'cb light level'
+  spec 'r' 'cbox_compass' 'cb compass _' 'menu.cbox_compass' 'x'
+  space
+  spec 'r' 'cbox_temperature' 'cb temperature'
+  spec 'r' 'cbox_humidity' 'cb humidity'
   space
   spec 'r' 'cbox_loudness' 'cb loudness'
   spec 'r' 'cbox_motion' 'cb motion detected?'
@@ -44,8 +49,27 @@ to cbox_beep msecs {
   'play tone' 'nt;c' 0 msecs
 }
 
+to cbox_clearNeoPixels color {
+  neoPixelSetAllToColor 0
+}
+
+to cbox_compass axis {
+  if ('x' == axis) {
+    return (ak9575_mag_x)
+  } ('y' == axis) {
+    return (ak9575_mag_y)
+  } ('z' == axis) {
+    return (ak9575_mag_z)
+  }
+  return (ak9575_mag_total)
+}
+
 to cbox_distance {
   return ('distance (cm)' 5 4)
+}
+
+to cbox_humidity {
+  return (aht20_humidity)
 }
 
 to cbox_joystick axis {
@@ -80,10 +104,6 @@ to cbox_setAllNeoPixels color {
   neoPixelSetAllToColor color
 }
 
-to cbox_clearNeoPixels color {
-  neoPixelSetAllToColor 0
-}
-
 to cbox_setFan power {
   if (power > 0) {
     digitalWriteOp 17 false
@@ -95,10 +115,6 @@ to cbox_setFan power {
     digitalWriteOp 17 false
     digitalWriteOp 18 false
   }
-}
-
-to cbox_stopFan {
-  cbox_setFan 0
 }
 
 to cbox_setLED led onOff {
@@ -127,5 +143,13 @@ to cbox_setServo degrees {
   degrees = (maximum 0 (minimum degrees 180))
   local 'pulseWidth' (500 + ((2100 * degrees) / 180))
   '[io:setServo]' 25 pulseWidth
+}
+
+to cbox_stopFan {
+  cbox_setFan 0
+}
+
+to cbox_temperature {
+  return (aht20_temperature)
 }
 

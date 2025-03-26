@@ -36,7 +36,7 @@ to ak9575_mag_total {
   local 'magX' ('_ak9575_int16' (at 2 data) (at 1 data))
   local 'magY' ('_ak9575_int16' (at 4 data) (at 3 data))
   local 'magZ' ('_ak9575_int16' (at 6 data) (at 5 data))
-  return ('misc:sqrt' (((magX * magX) + (magY * magY)) + (magZ * magZ)))
+  return ('[misc:sqrt]' (((magX * magX) + (magY * magY)) + (magZ * magZ)))
 }
 
 to ak9575_mag_x {
