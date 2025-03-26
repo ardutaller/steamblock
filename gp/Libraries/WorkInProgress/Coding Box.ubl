@@ -1,0 +1,131 @@
+module 'Coding Box'
+author MicroBlocks
+version 1 0
+depends 'Distance (HC-SR04)' NeoPixel Tone TFT
+choices cbox_ledOrButton red yellow green
+choices cbox_axis x y
+description ''
+
+  spec ' ' 'cbox_setLED' 'cb set _ LED to _' 'menu.cbox_ledOrButton bool' 'red' true
+  spec ' ' 'cbox_beep' 'cb beep for _ millisecs' 'auto' 100
+  space
+  spec ' ' 'cbox_setServo' 'cb set servo to _ degrees (0 to 180)' 'num' 90
+  spec ' ' 'cbox_setFan' 'cb set fan power _ (-100 to 100)' 'num' 50
+  spec ' ' 'cbox_stopFan' 'cb stop fan'
+  space
+  spec ' ' 'cbox_setNeoPixelColors' 'cb set NeoPixels #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _' 'color color color color color color color color color color color color'
+  spec ' ' 'cbox_setAllNeoPixels' 'cbox set all NeoPixels _' 'color'
+  spec ' ' 'cbox_clearNeoPixels' 'cbox clear NeoPixels'
+  space
+  spec 'r' 'cbox_adkey' 'cb _ ADKey pressed?' 'menu.cbox_ledOrButton' 'red'
+  spec 'r' 'cbox_joystick' 'cb joystick _' 'menu.cbox_axis' 'x'
+  space
+  spec 'r' 'cbox_distance' 'cb distance'
+  spec 'r' 'cbox_light' 'cb light level'
+  space
+  spec 'r' 'cbox_loudness' 'cb loudness'
+  spec 'r' 'cbox_motion' 'cb motion detected?'
+
+to cbox_adkey key {
+  local 'analogValue' (analogReadOp 33)
+  if (analogValue == 0) {
+    return (booleanConstant false)
+  } (analogValue < 500) {
+    return (key == 'green')
+  } (analogValue < 850) {
+    return (key == 'yellow')
+  } else {
+    return (key == 'red')
+  }
+}
+
+to cbox_beep msecs {
+  'attach buzzer to pin' 32
+  'play tone' 'nt;c' 0 msecs
+}
+
+to cbox_distance {
+  return ('distance (cm)' 5 4)
+}
+
+to cbox_joystick axis {
+  local 'result' 0
+  if ('x' == axis) {
+    result = ((analogReadOp 35) - 495)
+  } else {
+    result = ((analogReadOp 39) - 495)
+  }
+  if ((absoluteValue result) < 10) {
+    comment 'Suppress noise close to the home position'
+    result = 0
+  }
+  result = 0
+  result = (maximum -500 (minimum result 500))
+  return (result / 5)
+}
+
+to cbox_light {
+  return (analogReadOp 36)
+}
+
+to cbox_loudness {
+  return (analogReadOp 34)
+}
+
+to cbox_motion {
+  return (digitalReadOp 19)
+}
+
+to cbox_setAllNeoPixels color {
+  neoPixelSetAllToColor color
+}
+
+to cbox_clearNeoPixels color {
+  neoPixelSetAllToColor 0
+}
+
+to cbox_setFan power {
+  if (power > 0) {
+    digitalWriteOp 17 false
+    analogWriteOp 18 (10 * (minimum power 100))
+  } (power < 0) {
+    analogWriteOp 17 (10 * (minimum (absoluteValue power) 100))
+    digitalWriteOp 18 false
+  } else {
+    digitalWriteOp 17 false
+    digitalWriteOp 18 false
+  }
+}
+
+to cbox_stopFan {
+  cbox_setFan 0
+}
+
+to cbox_setLED led onOff {
+  if ('red' == led) {
+    digitalWriteOp 23 onOff
+  } ('yellow' == led) {
+    digitalWriteOp 26 onOff
+  } ('green' == led) {
+    digitalWriteOp 27 onOff
+  } ('all' == led) {
+    digitalWriteOp 23 onOff
+    digitalWriteOp 26 onOff
+    digitalWriteOp 27 onOff
+  }
+}
+
+to cbox_setNeoPixelColors c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 {
+  neoPixelAttach 12 16
+  for i 12 {
+    atPut i _np_pixels (argOrDefault i (neoPixel_colorSwatch (colorSwatch 35 190 30 255)))
+  }
+  '_NeoPixel_update'
+}
+
+to cbox_setServo degrees {
+  degrees = (maximum 0 (minimum degrees 180))
+  local 'pulseWidth' (500 + ((2100 * degrees) / 180))
+  '[io:setServo]' 25 pulseWidth
+}
+

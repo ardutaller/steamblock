@@ -1,0 +1,56 @@
+module 'Magnetometer (AK8975)' Input
+author MicroBlocks
+version 1 0 
+description 'Support for AK8975 magnetometer.
+https://www.robotpark.com/image/data/PRO/91462/AK8975.pdf
+'
+
+  spec 'r' 'ak9575_mag_x' 'mag x'
+  spec 'r' 'ak9575_mag_y' 'mag y'
+  spec 'r' 'ak9575_mag_z' 'mag z'
+  space
+  spec 'r' 'ak9575_mag_total' 'magnetic field strength'
+  space
+  spec 'r' '_ak9575_readData' '_ak9575_readData'
+  spec 'r' '_ak9575_int16' '_ak9575_int16 _ _' 'num num'
+
+to '_ak9575_int16' highByte lowByte {
+  local 'n' (((highByte << 8) | lowByte) & 8191)
+  if (n > 4095) {
+    n = (n - 8192)
+  }
+  return n
+}
+
+to '_ak9575_readData' {
+  i2cSet 14 10 1
+  waitMillis 10
+  '[sensors:i2cWrite]' 14 ('[data:makeList]' 3)
+  local 'data' ('[data:newByteArray]' 7)
+  '[sensors:i2cRead]' 14 data
+  return data
+}
+
+to ak9575_mag_total {
+  local 'data' ('_ak9575_readData')
+  local 'magX' ('_ak9575_int16' (at 2 data) (at 1 data))
+  local 'magY' ('_ak9575_int16' (at 4 data) (at 3 data))
+  local 'magZ' ('_ak9575_int16' (at 6 data) (at 5 data))
+  return ('misc:sqrt' (((magX * magX) + (magY * magY)) + (magZ * magZ)))
+}
+
+to ak9575_mag_x {
+  local 'data' ('_ak9575_readData')
+  return ('_ak9575_int16' (at 2 data) (at 1 data))
+}
+
+to ak9575_mag_y {
+  local 'data' ('_ak9575_readData')
+  return ('_ak9575_int16' (at 4 data) (at 3 data))
+}
+
+to ak9575_mag_z {
+  local 'data' ('_ak9575_readData')
+  return ('_ak9575_int16' (at 6 data) (at 5 data))
+}
+
