@@ -1344,7 +1344,7 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'HTTP client'
 		importEmbeddedLibrary scripter 'microSTEAMakers'
 	} ('CodingBox' == boardType) {
-		importEmbeddedLibrary scripter 'LED Display'
+		importEmbeddedLibrary scripter 'Coding Box'
 		importEmbeddedLibrary scripter 'NeoPixel'
 		importEmbeddedLibrary scripter 'Tone'
 		importEmbeddedLibrary scripter 'TFT'
