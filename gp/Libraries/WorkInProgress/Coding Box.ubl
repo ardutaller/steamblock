@@ -75,17 +75,16 @@ to cbox_humidity {
 to cbox_joystick axis {
   local 'result' 0
   if ('x' == axis) {
-    result = ((analogReadOp 35) - 495)
+    result = (((analogReadOp 35) - 500) / 5)
   } else {
-    result = ((analogReadOp 39) - 495)
+    result = (((analogReadOp 39) - 500) / 5)
   }
-  if ((absoluteValue result) < 10) {
+  if ((absoluteValue result) < 2) {
     comment 'Suppress noise close to the home position'
     result = 0
   }
-  result = 0
-  result = (maximum -500 (minimum result 500))
-  return (result / 5)
+  result = (maximum -100 (minimum result 100))
+  return result
 }
 
 to cbox_light {
