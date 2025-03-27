@@ -1448,7 +1448,8 @@ method importLibraryFromString MicroBlocksScripter data libName fileName asImple
 method updateLibraryList MicroBlocksScripter {
 	if (not (showHiddenBlocksEnabled projectEditor)) {
 		libNames = (list)
-		for lib (sorted (values (libraries mbProject))) {
+		for libName (sorted (keys (libraries mbProject))) {
+			lib = (at (libraries mbProject) libName)
 			if (not (isImplementationLib lib)) {
 				add libNames (moduleName lib)
 			}
