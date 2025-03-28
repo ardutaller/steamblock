@@ -1,10 +1,10 @@
 module 'Coding Box'
 author MicroBlocks
-version 1 0 
-depends '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT 
+version 1 1 
+depends '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT 
 choices cbox_joystick x y 
 choices cbox_compass x y z total 
-choices cbox_ledOrButton red yellow green 
+choices cbox_ledOrButton red yellow green all 
 description ''
 
   spec ' ' 'cbox_setLED' 'cb set _ LED to _' 'menu.cbox_ledOrButton bool' 'red' true
@@ -27,6 +27,8 @@ description ''
   space
   spec 'r' 'cbox_temperature' 'cb temperature'
   spec 'r' 'cbox_humidity' 'cb humidity'
+  space
+  spec 'r' 'cbox_rfid' 'cb RFID'
   space
   spec 'r' 'cbox_loudness' 'cb loudness'
   spec 'r' 'cbox_motion' 'cb motion detected?'
@@ -97,6 +99,19 @@ to cbox_loudness {
 
 to cbox_motion {
   return (digitalReadOp 19)
+}
+
+to cbox_rfid {
+  rc522_initialize_I2C 40
+  if (rc522_card_present) {
+    '_rc522_write_reg' (hexToInt '0D') 0
+    local 'res' ('_rc522_send_to_card' (hexToInt '0C') ('[data:makeList]' (hexToInt '93') (hexToInt '20')))
+    '[data:delete]' 1 res
+    '[data:delete]' 'last' res
+    return ('[data:joinStrings]' res '.')
+  } else {
+    return ''
+  }
 }
 
 to cbox_setAllNeoPixels color {
