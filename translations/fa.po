@@ -2,110 +2,111 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
-"POT-Creation-Date: 2025-01-01 18:45+0200\n"
-"PO-Revision-Date: 2025-03-25 19:01+0000\n"
-"Last-Translator: mu22le <muzzle@gmail.com>\n"
-"Language-Team: Italian <https://hosted.weblate.org/projects/microblocks/ide/"
-"it/>\n"
-"Language: it\n"
+"POT-Creation-Date: 2025-03-28 20:58+0200\n"
+"PO-Revision-Date: 2025-03-29 20:01+0000\n"
+"Last-Translator: amir dashtian <amir.dash76@gmail.com>\n"
+"Language-Team: Persian <https://hosted.weblate.org/projects/microblocks/ide/"
+"fa/>\n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.11-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr "Risultato"
+msgstr "‎‏خروجی"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr "Accendi LED utente _"
+msgstr "LED روی برد را به حالت_ تنظیم کن"
 
 #. Block in Output category
 msgid "say _"
-msgstr "dici _"
+msgstr "نمایش بده _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr "grafico _"
+msgstr "نمودار _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr "Ingresso"
+msgstr "ورودی"
 
 #. Block in Input category
 msgid "button A"
-msgstr "Tasto A"
+msgstr "کلید A"
 
 #. Block in Input category
 msgid "button B"
-msgstr "Tasto B"
+msgstr "کلید B"
 
 #. Block in Input category
 msgid "timer"
-msgstr "cronometro"
+msgstr "زمان سنج"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr "azzera il timer"
+msgstr "صفر کردن زمان سنج"
 
 #. Block in Input category
 msgid "seconds"
-msgstr "secondi"
+msgstr "ثانیه"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr "microsecondi"
+msgstr "میکرو ثانیه"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr "millisecondi"
+msgstr "میلی ثانیه"
 
 #. Block in Input category
 msgid "board type"
-msgstr "tipo di scheda"
+msgstr "نوع برد الکترونیکی"
 
 #. Block in Input category
 msgid "version"
-msgstr "versione"
+msgstr "نسخه"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr "millisecondi a partire da _"
+msgstr "شمارش میلی ثانیه از _"
 
 #. Block in Input category
 msgid "end time _"
-msgstr "tempo finale _"
+msgstr "تا _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr "microsecondi a partire da _"
-
-#. Block in Input category
-msgid "BLE id"
-msgstr "numero di identificazione BLE"
-
-#. Block in Input category
-msgid "BLE connected"
-msgstr "BLE connesso"
+msgstr "شمارش میکروثانیه از _"
 
 #. Block in Input category
 #, fuzzy
+msgid "BLE id"
+msgstr "BLE id"
+
+#. Block in Input category
+#, fuzzy
+msgid "BLE connected"
+msgstr "BLE connected"
+
+#. Block in Input category
 msgid "connected to IDE"
-msgstr "connesso all'IDE"
+msgstr "متصل شد"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr "pins"
+msgstr "پایه"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr "leggi pin digitale _"
+msgstr "مقدار پایه دیجیتال شماره_ دریافت کن"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr "leggi pin analogico _"
+msgstr "مقدار پایه آنالوگ_دریافت کن"
 
 #. Block in Pins category
 #, fuzzy
@@ -114,666 +115,659 @@ msgstr "pullup _"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr "set pin digitale _ a _"
+msgstr ""
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr "set pin _ a _"
+msgstr ""
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr "pin analogici"
+msgstr ""
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr "pin digitali"
+msgstr ""
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr "Controllo"
+msgstr ""
 
 #. Block in Control category
 msgid "when started"
-msgstr "all'avvio"
+msgstr ""
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr "quando tasto _ è premuto"
+msgstr ""
 
 #. Block in Control category
 msgid "forever _"
-msgstr "all'infinito _"
+msgstr ""
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr "ripeti _ _"
+msgstr ""
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr "attendi _ millisecondi"
+msgstr ""
 
 #. Block in Control category
 msgid "if _ _"
-msgstr "se _ _"
+msgstr ""
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr "se _ _ altrimenti _"
+msgstr ""
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr "altrimenti se _ _"
+msgstr ""
 
 #. Block in Control category
 msgid "else"
-msgstr "altrimenti"
+msgstr ""
 
 #. Block in Control category
 msgid "when _"
-msgstr "quando _"
+msgstr ""
 
 #. Block in Control category
 msgid "wait until _"
-msgstr "attendi fino a _"
+msgstr ""
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr "attendi _ microsecondi"
+msgstr ""
 
 #. Block in Control category
 msgid "return _"
-msgstr "ritorna _"
+msgstr ""
 
 #. Block in Control category
 msgid "when _ received"
-msgstr "quando _ ricevuto"
+msgstr ""
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr "vai!"
+msgstr ""
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr "trasmetti _"
+msgstr ""
 
 #. Block in Control category
 msgid "comment _"
-msgstr "commento _"
+msgstr ""
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr "Come funziona..."
+msgstr ""
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr "intervallo da _ a _"
+msgstr ""
 
 #. Block in Control category
 msgid "by _"
-msgstr "da _"
+msgstr ""
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr "per ogni _ in _ _"
+msgstr ""
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr "ripeti fino a _ _"
+msgstr ""
 
 #. Block in Control category
 msgid "stop this task"
-msgstr "arresta questo compito"
+msgstr ""
 
 #. Block in Control category
 msgid "stop other tasks"
-msgstr "arresta altri compiti"
+msgstr ""
 
 #. Block in Control category
 msgid "stop all"
-msgstr "arresta tutto"
+msgstr ""
 
 #. Block in Control category
 msgid "last message"
-msgstr "ultimo messaggio"
+msgstr ""
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr "argomento _ default _"
+msgstr ""
 
 #. Block in Control category
 msgid "exit loop"
-msgstr "esci dal ciclo"
+msgstr ""
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr "predefinito"
+msgstr ""
 
 #. Block in Control category
 msgid "call _"
-msgstr "invoca _"
+msgstr ""
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr "nome funzione"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr "lista dei parametri"
+msgstr ""
 
 #. Block in Control category
 msgid "with _"
-msgstr "con _"
+msgstr ""
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr "Operatori"
+msgstr ""
 
 #. Block in Operators category
 msgid "_ mod _"
-msgstr "_ modulo _"
+msgstr ""
 
 #. Block in Operators category
 msgid "abs _"
-msgstr "valore assoluto _"
+msgstr ""
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr "minimo _"
+msgstr ""
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr "massimo _"
+msgstr ""
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr "casuale da _ a _"
+msgstr ""
 
 #. Block in Operators category
 msgid "not _"
-msgstr "nega _"
+msgstr ""
 
 #. Block in Operators category
 msgid "_ and _"
-msgstr "_ e _"
+msgstr ""
 
 #. Block in Operators category
 msgid "and _"
-msgstr "e _"
+msgstr ""
 
 #. Block in Operators category
 msgid "_ or _"
-msgstr "_ o _"
+msgstr ""
 
 #. Block in Operators category
 msgid "or _"
-msgstr "o _"
+msgstr ""
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr "_ é un _"
+msgstr ""
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr "converti _ a _"
+msgstr ""
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr "se _ allora _ altrimenti _"
+msgstr ""
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "boolean"
-msgstr "booleano"
+msgstr ""
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
-msgstr "numero"
+msgstr ""
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr "stringa"
+msgstr ""
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 #. Also label of ( list < > ) block in Data category
 msgid "list"
-msgstr "lista"
+msgstr ""
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
-msgstr "arraz di byte"
+msgstr ""
 
 #. "Advanced" label for advanced blocks in the palette
 msgid "cat;Advanced:"
-msgstr "Avanzato:"
+msgstr ""
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr "rescala _ da ( _ , _ ) a ( _ , _ )"
+msgstr ""
 
 #. Block in Operators category
 msgid "hex _"
-msgstr "esadecimale _"
+msgstr ""
 
 #. Block in Operators category
 msgid "sqrt _"
-msgstr "radice _"
+msgstr ""
 
 #. "Variables" blocks category label
 msgid "cat;Variables"
-msgstr "Variabili"
+msgstr ""
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr "Aggiungi una variabile"
+msgstr ""
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr "Cancella una variabile"
+msgstr ""
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr "Nome della nuova variabile?"
+msgstr ""
 
 #. Block in Variables category
 msgid "set _ to _"
-msgstr "applica a _ il valore _"
+msgstr ""
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr "cambia _ di _"
+msgstr ""
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr "inizializza variabile locale _ a _"
+msgstr ""
 
 #. "Data" blocks category label
 msgid "cat;Data"
-msgstr "Data"
+msgstr ""
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr "gatto"
+msgstr ""
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr "cane"
+msgstr ""
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr "uccello"
+msgstr ""
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr "pesce"
+msgstr ""
 
 #. Block in Data category
 msgid "length of _"
-msgstr "lunghezza di _"
+msgstr ""
 
 #. Block in Data category
 msgid "item _ of _"
-msgstr "elemento _ di _"
+msgstr ""
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr "sostituisce elemento _ della lista _ con _"
+msgstr ""
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr "rimuovi elemento _ della lista _"
+msgstr ""
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr "aggiungi _ alla lista _"
+msgstr ""
 
 #. Block in Data category
 msgid "join _ _"
-msgstr "unisci _ _"
+msgstr ""
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr "copia _ da _"
+msgstr ""
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr "porto"
+msgstr ""
 
 #. Block in Data category
-#, fuzzy
 msgid "to _"
-msgstr "in _"
+msgstr ""
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr "trova _ in _"
+msgstr ""
 
 #. Block in Data category
 msgid "starting at _"
-msgstr "partendo da _"
+msgstr ""
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr "unisci elementi della lista _"
+msgstr ""
 
 #. Block in Data category
 msgid "separator _"
-msgstr "separatore _"
+msgstr ""
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr "unicode _ di _"
+msgstr ""
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr "stringa da unicode _"
+msgstr ""
 
 #. Block in Data category
 msgid "new list length _"
-msgstr "nuova lista con lunghezza _"
+msgstr ""
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr "nuovo matrice byte _"
+msgstr ""
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr "trasforma in matrice byte _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr "unaListaByteOppureStringa"
+msgstr ""
 
 #. Block in Data category
 msgid "with all _"
-msgstr "con tutti _"
+msgstr ""
 
 #. Block in Data category
 msgid "free memory"
-msgstr "libera memoria"
+msgstr ""
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr "tutto"
+msgstr ""
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr "ultimo"
+msgstr ""
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
-#, fuzzy
 msgid "random"
-msgstr "casuale"
+msgstr ""
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr "separa _ con _"
+msgstr ""
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr "I Miei Blocchi"
+msgstr ""
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr "Generico"
+msgstr ""
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr "Aggiungi un blocco commento"
+msgstr ""
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr "Aggiungi un blocco reporter"
+msgstr ""
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr "Inserisci il nome della funzione:"
+msgstr ""
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
-msgstr "Comunicazione"
+msgstr ""
 
 #. Block in Comm category
-#, fuzzy
 msgid "i2c get device _ register _"
-msgstr "i2c leggi dispositivo _ registro _"
+msgstr ""
 
 #. Block in Comm category
-#, fuzzy
 msgid "i2c set device _ register _ to _"
-msgstr "i2c scrivi dispositivo _ registro _ valore _"
+msgstr ""
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
-msgstr "i2c dispositivo _ leggi lista _"
+msgstr ""
 
 #. Block in Comm category
 msgid "i2c device _ write list _"
-msgstr "i2c dispositivo _ scrivi lista _"
+msgstr ""
 
 #. Block in Comm category
 msgid "i2c device _ exists?"
-msgstr "i2c dispositivo _ esiste?"
+msgstr ""
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr "spi invia _"
+msgstr ""
 
 #. Block in Comm category
 msgid "spi receive"
-msgstr "spi ricevi"
+msgstr ""
 
 #. Block in Comm category
 msgid "spi setup speed _"
-msgstr "spi configurazione velocità _"
+msgstr ""
 
 #. Block in Comm category
 msgid "mode _"
-msgstr "modo _"
+msgstr ""
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr "rpi canale _"
+msgstr ""
 
 #. Block in Comm category
 msgid "spi exchange bytes _"
-msgstr "spi scambia bytes _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr "unaMatriceByte"
+msgstr ""
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr "seriale apri _ baud"
+msgstr ""
 
 #. Block in Comm category
 msgid "serial close"
-msgstr "seriale chiudi"
+msgstr ""
 
 #. Block in Comm category
 msgid "serial read"
-msgstr "seriale leggi"
+msgstr ""
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr "seriale scrivi _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
-msgstr "unInteroStringaListaOppureMatriceByte"
+msgstr ""
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
-msgstr "seriale scrivi _ partendo da _"
+msgstr ""
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 msgid "aStringListOrByteArray"
-msgstr "unaStringaListaOppureMatriceByte"
+msgstr ""
 
 #. Block in Comm category
-#, fuzzy
 msgid "soft serial write byte _ pin _ baud _"
-msgstr "soft seriale scrivi byte _ pin _ baud _"
+msgstr ""
 
 #. Block in Comm category
 msgid "print _"
-msgstr "stampa _"
+msgstr ""
 
 #. Block in Comm category
 msgid "no op"
-msgstr "no op"
+msgstr ""
 
 #. Block in Comm category
 msgid "ignore"
-msgstr "ignora"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "draw shape _ at x _ y _"
-msgstr "disegna forma _ a x _ y _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
-msgstr "forma per lettera _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "send NeoPixel rgb _"
-msgstr "invia NeoPixel rgb _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has tone support"
-msgstr "ha supporto suono"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
-#, fuzzy
 msgid "play tone pin _ frequency _"
-msgstr "suona pin _ frequenza _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has WiFi support"
-msgstr "ha supporto WiFi"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
-#, fuzzy
 msgid "start WiFi _ password _"
-msgstr "attiva WiFi _ password _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "stop WiFi"
-msgstr "arresta WiFi"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "WiFi status"
-msgstr "WiFi stato"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "my IP address"
-msgstr "mio indirizzo IP"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send number _"
-msgstr "radio invia numero _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send string _"
-msgstr "radio invia stringa _"
+msgstr ""
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "Hello!"
-msgstr "Ciao!"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send pair _ = _"
-msgstr "radio invia coppia _ = _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "light"
-msgstr "luce"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio message received?"
-msgstr "radio messaggio ricevuto?"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last number"
-msgstr "radio ultimo numero"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last string"
-msgstr "radio ultima stringa"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last message type"
-msgstr "radio tipo ultimo messaggio"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set group _ (0-255)"
-msgstr "gruppo radio _ (0-255)"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set channel (0-83) _"
-msgstr "canale radio _ (0-83)"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio set power (0-7) _"
-msgstr "potenza radio _ (0-7)"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last signal strength"
-msgstr "radio intensità ultimo segnale"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio receive packet _"
-msgstr "radio ricevi pacchetto _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send packet _"
-msgstr "radio invia pacchetto _"
+msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
-msgstr "disabilita radio"
+msgstr ""
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr "Sensori Base"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "tilt x"
-msgstr "inclinazione x"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "tilt y"
-msgstr "inclinazione y"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "tilt z"
-msgstr "inclinazione z"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "acceleration"
-msgstr "accelerazione"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "light level"
-msgstr "intensità della luce"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
-msgstr "temperatura (°C)"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
-msgstr "campo magnetico"
+msgstr ""
 
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
-msgstr "imposta intervallo accelerazione _ g = 100"
+msgstr ""
 
 #. NeoPixel library label
 msgid "NeoPixel"
@@ -781,123 +775,123 @@ msgstr ""
 
 #. NeoPixel library block
 msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
-msgstr "imposta NeoPixels _ _ _ _ _ _ _ _ _ _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "clear NeoPixels"
-msgstr "spegni NeoPixels"
+msgstr ""
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
-msgstr "imposta NeoPixel _ colore _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
-msgstr "colore di tutti i NeoPixels _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "rotate NeoPixels by _"
-msgstr "ruota NeoPixels di _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "brighten NeoPixel _ by _"
-msgstr "aumenta luminosità NeoPixel _ di _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "brighten all NeoPixels by _"
-msgstr "aumenta luminosità tutti i NeoPixel di _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
-msgstr "cambia il colore del NeoPixel _ di _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
-msgstr "cambia colore di tutti i NeoPixel di _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "attach _ LED NeoPixel strip to pin _"
-msgstr "connetti _ LED NeoPixel al pin _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "has white _"
-msgstr "ha il bianco _"
+msgstr ""
 
 #. NeoPixel library block
 msgid "PIR"
-msgstr "PIR"
+msgstr ""
 
 #. NeoPixel library block
 msgid "PIR at pin _ detected movement"
-msgstr "PIR al pin _ rileva movimento"
+msgstr ""
 
 #. NeoPanel library label
 msgid "NeoPanel"
-msgstr "NeoPanel"
+msgstr ""
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
-msgstr "connetti pannello NeoPixel largo _ alto _ al pin _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel set x _ y _ color _"
-msgstr "NeoPanel imposta x _ y _ colore _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
-msgstr "NeoPanel riempi colonna _ colore _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel fill row _ color _"
-msgstr "NeoPanel riempi riga _ colore _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
-msgstr "NeoPanel riempi rettangolo x _ y _ largo _ alto _ colore _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
-msgstr "NeoPanel scrivi _ a x _ y _ colore _"
+msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr "NeoPanel mostra file BMP _ a x _ y _"
+msgstr ""
 
 #. Microphone library label
 msgid "Microphone"
-msgstr "Microfono"
+msgstr ""
 
 #. Microphone library block
 msgid "microphone"
-msgstr "microfono"
+msgstr ""
 
 #. Microphone library block
 msgid "turn on microphone"
-msgstr "accendi microfono"
+msgstr ""
 
 #. Microphone library block
 msgid "loudness"
-msgstr "volume"
+msgstr ""
 
 #. Microphone library block
 msgid "clap count"
-msgstr "conto battiti"
+msgstr ""
 
 #. Microphone library block
 msgid "set clap threshold _"
-msgstr "imposta soglia battito _"
+msgstr ""
 
 #. Microphone library block
 msgid "estimate clap threshold"
-msgstr "rileva soglia battito"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library label
 msgid "ED1 Stepper Motor"
-msgstr "ED1 Motore passo-passo"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ steps _"
-msgstr "muovi motore _ _ passi _"
+msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor 1 _ and motor 2 _ _ steps"
@@ -1304,6 +1298,10 @@ msgstr ""
 msgid "most"
 msgstr ""
 
+#. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
+msgid "_ with _ items replaced by _"
+msgstr ""
+
 #. Lists library block
 msgid "reverse _"
 msgstr ""
@@ -1440,43 +1438,43 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "heart"
-msgstr "cuore"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "small heart"
-msgstr "cuore piccolo"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "yes"
-msgstr "si"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "no"
-msgstr "no"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "happy"
-msgstr "felice"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "sad"
-msgstr "triste"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "confused"
-msgstr "confuso"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "angry"
-msgstr "arrabbiato"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "asleep"
-msgstr "addormentato"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "surprised"
-msgstr "sorpreso"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "silly"
@@ -1492,27 +1490,27 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "t-shirt"
-msgstr "t-shift"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "roller skate"
-msgstr "pattino a rotelle"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "duck"
-msgstr "anatra"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "house"
-msgstr "casa"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "tortoise"
-msgstr "tartaruga"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "butterfly"
-msgstr "farfalla"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "stick figure"
@@ -1520,43 +1518,43 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "ghost"
-msgstr "fantasma"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "sword"
-msgstr "spada"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "giraffe"
-msgstr "giraffa"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "skull"
-msgstr "teschio"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "umbrella"
-msgstr "ombrello"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "snake"
-msgstr "serpente"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "rabbit"
-msgstr "coniglio"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "cow"
-msgstr "mucca"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "quarter note"
-msgstr "quarto di nota"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "eight note"
-msgstr "ottavo di nota"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "pitchfork"
@@ -1564,7 +1562,7 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "target"
-msgstr "bersaglio"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "triangle"
@@ -1576,27 +1574,27 @@ msgstr ""
 
 #. Image name for the "display image" block
 msgid "chess board"
-msgstr "scacchiera"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "diamond"
-msgstr "diamante"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "small diamond"
-msgstr "diamante piccolo"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "square"
-msgstr "quadrato"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "small square"
-msgstr "quadrato piccolo"
+msgstr ""
 
 #. Image name for the "display image" block
 msgid "scissors"
-msgstr "forbici"
+msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
@@ -1744,6 +1742,10 @@ msgstr ""
 
 #. TFT Display library block
 msgid "set TFT backlight _ (0-10)"
+msgstr ""
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
 msgstr ""
 
 #. TFT Display library and Color library block
@@ -2700,6 +2702,18 @@ msgid "append bytes _ to file _"
 msgstr ""
 
 #. File System library block
+msgid "read position of file _"
+msgstr ""
+
+#. File System library block
+msgid "set read position _ of file _"
+msgstr ""
+
+#. File System library block
+msgid "skip _ bytes of file _"
+msgstr ""
+
+#. File System library block
 msgid "end of file _"
 msgstr ""
 
@@ -2939,6 +2953,38 @@ msgstr ""
 
 #. DotStar LED library block
 msgid "set DotStar brightness _"
+msgstr ""
+
+#. Barometer (LPS331AP) library
+msgid "Barometer (LPS331AP)"
+msgstr ""
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºC"
+msgstr ""
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºF"
+msgstr ""
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;hPa"
+msgstr ""
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;inHg"
+msgstr ""
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP pressure _"
+msgstr ""
+
+#. Barometer (LPS331AP) library block
+msgid "numeric (x100) _"
+msgstr ""
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP temperature _"
 msgstr ""
 
 #. BME280 environmental sensor library block
@@ -3796,6 +3842,14 @@ msgstr ""
 msgid "Home _ button pressed?"
 msgstr ""
 
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr ""
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr ""
+
 #. Keyestudio Smart Home library block
 msgid "Home gas detected?"
 msgstr ""
@@ -4227,6 +4281,14 @@ msgid "Wukong set servo _ to _ degrees (-90 to 90)"
 msgstr ""
 
 #. Wukong robot library block
+msgid "Wukong set _ servo _ to _ degrees"
+msgstr ""
+
+#. Wukong robot library menu option, as in "both motors"
+msgid "wukong;both"
+msgstr ""
+
+#. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
 msgstr ""
 
@@ -4542,6 +4604,150 @@ msgstr ""
 msgid "Y pressed"
 msgstr ""
 
+#. CoCube library block
+msgid "cocube;left"
+msgstr ""
+
+#. CoCube library block
+msgid "cocube;right"
+msgstr ""
+
+#. CoCube library block
+msgid "cocube;forward"
+msgstr ""
+
+#. CoCube library block
+msgid "cocube;backward"
+msgstr ""
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) for _ msecs"
+msgstr ""
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) for _ msecs"
+msgstr ""
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50)"
+msgstr ""
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50)"
+msgstr ""
+
+#. CoCube library block
+msgid "set wheel left _ right _ (-50 to 50)"
+msgstr ""
+
+#. CoCube library block
+msgid "wheels stop"
+msgstr ""
+
+#. CoCube library block
+msgid "wheels break"
+msgstr ""
+
+#. CoCube library block
+msgid "X position"
+msgstr ""
+
+#. CoCube library block
+msgid "Y position"
+msgstr ""
+
+#. CoCube library block
+msgid "direction"
+msgstr ""
+
+#. CoCube library block
+msgid "move _ at _ speed (0-50) by _ steps"
+msgstr ""
+
+#. CoCube library block
+msgid "rotate _ at _ speed (0-50) by _ degrees"
+msgstr ""
+
+#. CoCube library block
+msgid "rotate to angle _ at _ speed (0-50)"
+msgstr ""
+
+#. CoCube library block
+msgid "point towards X _ Y _ at _ speed (0-50)"
+msgstr ""
+
+#. CoCube library block
+msgid "move to X _ Y _ at _ speed (0-50)"
+msgstr ""
+
+#. CoCube library block
+msgid "on the mat"
+msgstr ""
+
+#. CoCube library block
+msgid "card ID"
+msgstr ""
+
+#. CoCube library block
+msgid "draw ArUco marker on TFT _"
+msgstr ""
+
+#. CoCube library block
+msgid "draw AprilTag on TFT _"
+msgstr ""
+
+#. CoCube library block
+msgid "set TFT backlight _"
+msgstr ""
+
+#. CoCube library block
+msgid "battery percentage"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper close"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr ""
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr ""
+
+#. CoCube Module library block
+msgid "3D gesture connected"
+msgstr ""
+
+#. CoCube Module library block
+msgid "3D gesture read"
+msgstr ""
+
+#. CoCube Module library block
+msgid "power on module"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ultrasonic distance (mm)"
+msgstr ""
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr ""
@@ -4590,7 +4796,7 @@ msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "Save"
-msgstr "Salva"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
@@ -4601,40 +4807,44 @@ msgid "connect"
 msgstr ""
 
 #. In MicroBlocks IDE connection menu
+msgid "connect (USB)"
+msgstr ""
+
+#. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
-msgstr "connetti (BLE)"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "open Boardie"
-msgstr "apri Boardie"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "disconnect"
-msgstr "disconnetti"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "Serial port:"
-msgstr "Porta seriale:"
+msgstr ""
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr "Connetti la scheda e prova nuovamente"
+msgstr ""
 
 #. In MicroBlocks IDE connection menu. Select "other..." serial port
 msgid "other..."
-msgstr "altro..."
+msgstr ""
 
 #. In MicroBlocks IDE connection menu. Select "no" serial port
 msgid "none"
-msgstr "nessuno"
+msgstr ""
 
 #. In MicroBlocks IDE connection window. Serial port name to connect to.
 msgid "Port name?"
-msgstr "Nome porta?"
+msgstr ""
 
 #. In MicroBlocks IDE firmware update widgets. Board type to update.
 msgid "Board type:"
-msgstr "Tipo scheda:"
+msgstr ""
 
 #. In MicroBlocks IDE firmware update widgets. Board to update.
 msgid "Select board:"
@@ -4808,6 +5018,14 @@ msgstr ""
 
 #. Settings menu option
 msgid "virtual machine version"
+msgstr ""
+
+#. Settings menu option
+msgid "inform of new versions"
+msgstr ""
+
+#. Settings menu option
+msgid "when opening the IDE, show a notification if a new version of MicroBlocks has been released"
 msgstr ""
 
 #. Settings menu option
@@ -6110,7 +6328,3 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
 msgstr ""
-
-#. In MicroBlocks IDE connection menu
-msgid "connect (USB)"
-msgstr "connetti (USB)"
