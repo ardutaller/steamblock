@@ -1,21 +1,51 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 0 
-description ''
+version 1 1 
+description 'Generate analog waves that you can output on a DAC pin to produce sound.
+
+You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will.'
 variables _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases 
 
-  spec 'r' 'asynth sin' 'sin wave gate _' 'menu.range:1-20' 1
-  spec 'r' 'asynth square' 'square wave gate _' 'menu.range:1-20' 1
-  spec 'r' 'asynth tri' 'tri wave gate _' 'menu.range:1-20' 1
-  spec 'r' 'asynth saw' 'sawtooth wave gate _' 'menu.range:1-20' 1
-  spec 'r' 'asynth noise' 'noise gate _' 'menu.range:1-20' 1
+  spec 'r' 'asynth sin' 'sin wave frequency _ amplitude _' 'num num' 440 200
+  spec 'r' 'asynth square' 'square wave frequency _ amplitude _' 'num num' 185 220
+  spec 'r' 'asynth tri' 'tri wave frequency _ amplitude _' 'num num' 392 150
+  spec 'r' 'asynth saw' 'sawtooth wave frequency _ amplitude _' 'num num' 196 180
+  spec 'r' 'asynth noise' 'noise amplitude _' 'num' 50
   space
-  spec ' ' 'asynth envelope' 'set amplitude _ attack _ hold _ release _ for gate _' 'num num num num menu.range:1-20' 200 10 250 100 1
-  spec ' ' 'asynth trigger gate' 'trigger gate _ MIDI key _' 'menu.range:1-20 num' 1 60
+  spec 'r' 'asynth sin gate' 'sin wave gate _' 'menu.range:1-16' 1
+  spec 'r' 'asynth square gate' 'square wave gate _' 'menu.range:1-16' 1
+  spec 'r' 'asynth tri gate' 'tri wave gate _' 'menu.range:1-16' 1
+  spec 'r' 'asynth saw gate' 'sawtooth wave gate _' 'menu.range:1-16' 1
+  spec 'r' 'asynth noise gate' 'noise gate _' 'menu.range:1-16' 1
+  space
+  spec ' ' 'asynth envelope' 'set amplitude _ attack _ hold _ release _ for gate _' 'num num num num menu.range:1-16' 200 10 250 100 1
+  spec ' ' 'asynth trigger gate' 'trigger gate _ MIDI key _' 'menu.range:1-16 num' 1 60
   space
   spec ' ' '_asynth init' '_asynth init'
-  spec 'r' '_asynth amplitude' '_asynth amplitude for gate _' 'menu.range:1-20' 1
+  spec 'r' '_asynth amplitude' '_asynth amplitude for gate _' 'menu.range:1-16' 1
   spec 'r' '_asynth MIDI to freq' '_asynth MIDI note _ to frequency' 'auto' 60
+
+to '_asynth MIDI to freq' key {
+  local 'semitone' ((key % 12) + 1)
+  local 'octave' ((key / 12) - 5)
+  if (_asynth_frequency_table == 0) {
+    _asynth_frequency_table = ('[data:makeList]' 261626 277183 293665 311127 329628 349228 369994 391995 415305 440000 466164 493883 246942 277183 277183 311127 311127 349228 329628 369994 369994 415305 415305 466164 466164 523252)
+  }
+  if (and (1 <= semitone) (semitone <= (size _asynth_frequency_table))) {
+    local 'freq' (at semitone _asynth_frequency_table)
+    if (octave < 0) {
+      repeat (absoluteValue octave) {
+        freq = (freq / 2)
+      }
+    }
+    repeat octave {
+      freq = (freq * 2)
+    }
+    return (freq / 1000)
+  } else {
+    return 10000
+  }
+}
 
 to '_asynth amplitude' gate {
   '_asynth init'
@@ -42,34 +72,12 @@ to '_asynth amplitude' gate {
 }
 
 to '_asynth init' {
-  if (_asynth_trigger_times == 0) {_asynth_trigger_times = (newList 20)}
-  if (_asynth_frequencies == 0) {_asynth_frequencies = (newList 20)}
-  if (_asynth_amplitudes == 0) {_asynth_amplitudes = (newList 20)}
-  if (_asynth_attacks == 0) {_asynth_attacks = (newList 20)}
-  if (_asynth_holds == 0) {_asynth_holds = (newList 20)}
-  if (_asynth_releases == 0) {_asynth_releases = (newList 20)}
-}
-
-to '_asynth MIDI to freq' key {
-  local 'semitone' ((key % 12) + 1)
-  local 'octave' ((key / 12) - 5)
-  if (_asynth_frequency_table == 0) {
-    _asynth_frequency_table = ('[data:makeList]' 261626 277183 293665 311127 329628 349228 369994 391995 415305 440000 466164 493883 246942 277183 277183 311127 311127 349228 329628 369994 369994 415305 415305 466164 466164 523252)
-  }
-  if (and (1 <= semitone) (semitone <= (size _asynth_frequency_table))) {
-    local 'freq' (at semitone _asynth_frequency_table)
-    if (octave < 0) {
-      repeat (absoluteValue octave) {
-        freq = (freq / 2)
-      }
-    }
-    repeat octave {
-      freq = (freq * 2)
-    }
-    return (freq / 1000)
-  } else {
-    return 10000
-  }
+  if (_asynth_trigger_times == 0) {_asynth_trigger_times = (newList 16)}
+  if (_asynth_frequencies == 0) {_asynth_frequencies = (newList 16)}
+  if (_asynth_amplitudes == 0) {_asynth_amplitudes = (newList 16)}
+  if (_asynth_attacks == 0) {_asynth_attacks = (newList 16)}
+  if (_asynth_holds == 0) {_asynth_holds = (newList 16)}
+  if (_asynth_releases == 0) {_asynth_releases = (newList 16)}
 }
 
 to 'asynth envelope' amp att hold release gate {
@@ -80,50 +88,51 @@ to 'asynth envelope' amp att hold release gate {
   atPut gate _asynth_releases release
 }
 
-to 'asynth noise' gate {
-  local 'amp' ('_asynth amplitude' gate)
-  if (amp < 1) {
-    return 0
-  }
+to 'asynth noise' amp {
+  if (amp < 1) {return 0}
   return (random 1 amp)
 }
 
-to 'asynth saw' gate {
-  local 'amp' ('_asynth amplitude' gate)
-  local 'freq' (at gate _asynth_frequencies)
-  if (amp < 1) {
-    return 0
-  }
+to 'asynth noise gate' gate {
+  return (random 1 ('_asynth amplitude' gate))
+}
+
+to 'asynth saw' freq amp {
+  if (amp < 1) {return 0}
   return ((((microsOp) * amp) / (1000000 / freq)) % amp)
 }
 
-to 'asynth sin' gate {
-  local 'amp' ('_asynth amplitude' gate)
-  local 'freq' (at gate _asynth_frequencies)
-  if (amp < 1) {
-    return 0
-  }
-  return ((amp / 2) + (((amp / 2) * ('[misc:sin]' (9 * ((microsOp) % (1000000 / freq))))) >> 14))
+to 'asynth saw gate' gate {
+  return ('asynth saw' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
 }
 
-to 'asynth square' gate {
-  local 'amp' ('_asynth amplitude' gate)
-  local 'freq' (at gate _asynth_frequencies)
-  if (amp < 1) {
-    return 0
-  }
+to 'asynth sin' freq amp {
+  if (amp < 1) {return 0}
+  local 'period' (1000000 / freq)
+  return ((amp / 2) + (((amp / 2) * ('[misc:sin]' ((3600 * ((microsOp) % period)) / (period / 10)))) >> 14))
+}
+
+to 'asynth sin gate' gate {
+  return ('asynth sin' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
+}
+
+to 'asynth square' freq amp {
+  if (amp < 1) {return 0}
   local 'ms' (1000000 / freq)
   return (('[data:convertType]' (((microsOp) % ms) > (ms / 2)) 'number') * amp)
 }
 
-to 'asynth tri' gate {
-  local 'amp' ('_asynth amplitude' gate)
-  local 'freq' (at gate _asynth_frequencies)
-  comment (absoluteValue ((i % ms) - (ms / 2)))
-  if (amp < 1) {
-    return 0
-  }
+to 'asynth square gate' gate {
+  return ('asynth square' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
+}
+
+to 'asynth tri' freq amp {
+  if (amp < 1) {return 0}
   return (amp - (absoluteValue (amp - (2 * ((((microsOp) * amp) / (1000000 / freq)) % amp)))))
+}
+
+to 'asynth tri gate' gate {
+  return ('asynth tri' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
 }
 
 to 'asynth trigger gate' index key {
