@@ -481,7 +481,6 @@ to replaceLocaleParams aString params {
 }
 
 
-
 // country codes
 
 method languageCodeForName AuthoringSpecs langName {
@@ -512,6 +511,7 @@ method languageCodeList AuthoringSpecs {
 		(array 'Deutsch' 'de')
 		(array 'English' 'en')
 		(array 'Euskara' 'eu')
+		(array 'فارسی' 'fa')
 		(array 'Français' 'fr')
 		(array 'Galego' 'gl')
 		(array 'Italiano' 'it')
@@ -530,6 +530,14 @@ method languageCodeList AuthoringSpecs {
 		(array 'Русский' 'ru')
 		(array '简体中文' 'zh-chs')
 		(array '繁體中文' 'zh-cht')
+	)
+}
+
+method isRTL AuthoringSpecs {
+	langCode = (languageCode this)
+	return (or
+		(langCode == 'ar')
+		(langCode == 'fa')
 	)
 }
 

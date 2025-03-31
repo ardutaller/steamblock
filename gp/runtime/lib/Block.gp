@@ -320,7 +320,7 @@ method fixLayout Block {
 		setHeight (bounds morph) (+ blockHeight (* scale border 4) extraSpace)
 	}
 
-	if ((localized 'RTL') == 'true') { fixLayoutRTL this }
+	if (isRTL (authoringSpecs)) { fixLayoutRTL this }
 
 	nb = (next this)
 	if (notNil nb) {
