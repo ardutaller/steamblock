@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-11 15:48+0200\n"
-"PO-Revision-Date: 2025-02-20 23:22+0000\n"
+"PO-Revision-Date: 2025-04-02 00:11+0000\n"
 "Last-Translator: brainspark_kr <admin@brainspark.co.kr>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/microblocks/ide/"
 "ko/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.1-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -72,15 +72,15 @@ msgstr "버전"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr ""
+msgstr "_ 밀리초 이후"
 
 #. Block in Input category
 msgid "end time _"
-msgstr ""
+msgstr "_ 끝나는 시간"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr ""
+msgstr "_ 마이크로초 이후"
 
 #. Block in Input category
 msgid "BLE id"
@@ -260,7 +260,7 @@ msgstr "매개변수 목록"
 
 #. Block in Control category
 msgid "with _"
-msgstr ""
+msgstr "_ 와"
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
@@ -308,7 +308,7 @@ msgstr "또는_"
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr ""
+msgstr "_은(는)_이(가)"
 
 #. Block in Operators category
 msgid "convert _ to _"
@@ -345,7 +345,7 @@ msgstr "고급 기능:"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr ""
+msgstr "_를 (_,_)에서 (_,_)로 리스케일"
 
 #. Block in Operators category
 msgid "hex _"
@@ -438,7 +438,7 @@ msgstr "미소"
 
 #. Block in Data category
 msgid "to _"
-msgstr ""
+msgstr "_로(으로)"
 
 #. Block in Data category
 msgid "find _ in _"
@@ -474,7 +474,7 @@ msgstr "_ 새로운 바이트어레이"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr ""
+msgstr "_을(를) 바이트 배열로 변환"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
@@ -482,7 +482,7 @@ msgstr "바이트리스트또는문자열입력"
 
 #. Block in Data category
 msgid "with all _"
-msgstr ""
+msgstr "모든 _ 포함"
 
 #. Block in Data category
 msgid "free memory"
@@ -492,14 +492,14 @@ msgstr "잔여 메모리"
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr ""
+msgstr "모두"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr ""
+msgstr "마지막"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
@@ -508,7 +508,7 @@ msgstr "랜덤"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr ""
+msgstr "_을(를) _ 기준으로 나누기"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
@@ -516,7 +516,7 @@ msgstr "내 블록"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr ""
+msgstr "일반"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
@@ -524,7 +524,7 @@ msgstr "명령어 블록 추가하기"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr ""
+msgstr "리포터 블록 추가"
 
 #. Make a block dialog
 msgid "Enter function name:"
@@ -532,67 +532,67 @@ msgstr "함수 이름을 입력하세요:"
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
-msgstr ""
+msgstr "통신"
 
 #. Block in Comm category
 msgid "i2c get device _ register _"
-msgstr ""
+msgstr "I2C 장치 _의 레지스터 _ 읽기"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
-msgstr ""
+msgstr "I2C 장치 _의 레지스터 _을(를) _으로 설정하기"
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
-msgstr ""
+msgstr "I2C 장치 _에서 목록 _ 읽기"
 
 #. Block in Comm category
 msgid "i2c device _ write list _"
-msgstr ""
+msgstr "I2C 장치 _에 목록 _ 쓰기"
 
 #. Block in Comm category
 msgid "i2c device _ exists?"
-msgstr ""
+msgstr "I2C 장치 _이(가) 존재하나요?"
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr ""
+msgstr "SPI로 _ 보내기"
 
 #. Block in Comm category
 msgid "spi receive"
-msgstr ""
+msgstr "SPI로 받기"
 
 #. Block in Comm category
 msgid "spi setup speed _"
-msgstr ""
+msgstr "SPI 속도 _으로 설정하기"
 
 #. Block in Comm category
 msgid "mode _"
-msgstr ""
+msgstr "모드 _"
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr ""
+msgstr "RPI채널 _"
 
 #. Block in Comm category
 msgid "spi exchange bytes _"
-msgstr ""
+msgstr "SPI 바이트 교환 _"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr ""
+msgstr "바이트 배열 입력값"
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr ""
+msgstr "시리얼 _ 포트 열기"
 
 #. Block in Comm category
 msgid "serial close"
-msgstr ""
+msgstr "시리얼 포트 닫기"
 
 #. Block in Comm category
 msgid "serial read"
-msgstr ""
+msgstr "시리얼에서 읽기"
 
 #. Block in Comm category
 msgid "serial write _"
