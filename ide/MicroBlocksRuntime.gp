@@ -3092,7 +3092,7 @@ method flashVMInBrowser SmallRuntime boardName eraseFlashFlag downloadLatestFlag
 }
 
 method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boardName {
-	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot' 'CodingBox' 'KidsIOT' 'KidsBits') {
+	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT' 'KidsBits') {
 		flashVM this boardName eraseFlashFlag downloadLatestFlag
 		return
 	}
