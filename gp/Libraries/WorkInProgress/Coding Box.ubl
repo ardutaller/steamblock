@@ -1,10 +1,10 @@
 module 'Coding Box'
 author MicroBlocks
-version 1 1 
-depends '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT 
-choices cbox_joystick x y 
-choices cbox_compass x y z total 
-choices cbox_ledOrButton red yellow green all 
+version 1 1
+depends '_Air Pressure (BMP388)' '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT
+choices cbox_joystick x y
+choices cbox_compass x y z total
+choices cbox_ledOrButton red yellow green all
 description ''
 
   spec ' ' 'cbox_setLED' 'cb set _ LED to _' 'menu.cbox_ledOrButton bool' 'red' true
@@ -32,6 +32,22 @@ description ''
   space
   spec 'r' 'cbox_loudness' 'cb loudness'
   spec 'r' 'cbox_motion' 'cb motion detected?'
+  space
+  spec 'r' 'cbox_airPressureMbar' 'cb air pressure (mBar)'
+  spec ' ' 'cbox_setCurrentAltitude' 'cb set current altitude _ meters' 'num' 0
+  spec 'r' 'cbox_altitudeCentimeters' 'cb altitude (cm)'
+
+to cbox_airPressureMbar {
+  return (bmp388_airPressureMbar)
+}
+
+to cbox_altitudeCentimeters {
+  return (bmp388_altitudeCentimeters)
+}
+
+to cbox_setCurrentAltitude meters {
+  bmp388_setCurrentAltitude meters
+}
 
 to cbox_adkey key {
   local 'analogValue' (analogReadOp 33)
