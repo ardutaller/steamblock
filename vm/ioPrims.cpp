@@ -1115,6 +1115,8 @@ static void initPins(void) {
 		// The analog write primitve takes a 10-bit value, as it does on all MicroBlocks boards,
 		// but on NRF52 only the 8 most signifcant bits are used.
 		analogWriteResolution(8);
+	#elif defined(ARDUINO_SAM_DUE)
+		analogWriteResolution(12);
 	#elif !defined(ESP8266) && !defined(ARDUINO_ARCH_ESP32) && !defined(__ZEPHYR__)
 		analogWriteResolution(10); // 0-1023; low-order bits ignored on boards with lower resolution
 	#endif
@@ -1374,7 +1376,11 @@ void primAnalogWrite(OBJ *args) {
 	#endif
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
+	#if defined(ARDUINO_SAM_DUE)
+	if (value > 4095) value = 4095;
+	#else
 	if (value > 1023) value = 1023;
+	#endif
 	if ((pinNum < 0) || (pinNum >= TOTAL_PINS)) return;
 	#if defined(ARDUINO_ARCH_SAMD) && defined(PIN_DAC0)
 		#if defined(ADAFRUIT_GEMMA_M0)

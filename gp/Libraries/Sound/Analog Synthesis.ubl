@@ -1,9 +1,10 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 1 
+version 1 2 
 description 'Generate analog waves that you can output on a DAC pin to produce sound.
 
-You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will.'
+You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will.
+'
 variables _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases 
 
   spec 'r' 'asynth sin' 'sin wave frequency _ amplitude _' 'num num' 440 200
@@ -21,8 +22,10 @@ variables _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asy
   spec ' ' 'asynth envelope' 'set amplitude _ attack _ hold _ release _ for gate _' 'num num num num menu.range:1-16' 200 10 250 100 1
   spec ' ' 'asynth trigger gate' 'trigger gate _ MIDI key _' 'menu.range:1-16 num' 1 60
   space
+  spec 'r' 'asynth gate amplitude' 'amplitude for gate _' 'menu.range:1-16' 1
+  spec 'r' 'asynth gate frequency' 'frequency for gate _' 'menu.range:1-16' 1
+  space
   spec ' ' '_asynth init' '_asynth init'
-  spec 'r' '_asynth amplitude' '_asynth amplitude for gate _' 'menu.range:1-16' 1
   spec 'r' '_asynth MIDI to freq' '_asynth MIDI note _ to frequency' 'auto' 60
 
 to '_asynth MIDI to freq' key {
@@ -47,30 +50,6 @@ to '_asynth MIDI to freq' key {
   }
 }
 
-to '_asynth amplitude' gate {
-  '_asynth init'
-  local 'start time' (at gate _asynth_trigger_times)
-  local 'amp' (at gate _asynth_amplitudes)
-  local 'att' (at gate _asynth_attacks)
-  local 'hold' (at gate _asynth_holds)
-  local 'release' (at gate _asynth_releases)
-  if ((millisOp) < (v 'start time')) {
-    return 0
-  } ((millisOp) > (((v 'start time') + att) + (hold + release))) {
-    comment 'all done, no sound'
-    return 0
-  } ((millisOp) > (((v 'start time') + att) + hold)) {
-    comment 'release time'
-    return (amp - ((amp * ((millisOp) - (((v 'start time') + att) + hold))) / release))
-  } ((millisOp) > ((v 'start time') + att)) {
-    comment 'hold time'
-    return amp
-  } else {
-    comment 'attack time'
-    return ((amp * ((millisOp) - (v 'start time'))) / att)
-  }
-}
-
 to '_asynth init' {
   if (_asynth_trigger_times == 0) {_asynth_trigger_times = (newList 16)}
   if (_asynth_frequencies == 0) {_asynth_frequencies = (newList 16)}
@@ -88,51 +67,82 @@ to 'asynth envelope' amp att hold release gate {
   atPut gate _asynth_releases release
 }
 
+to 'asynth gate amplitude' gate {
+  '_asynth init'
+  local 'start time' (at gate _asynth_trigger_times)
+  local 'amp' (at gate _asynth_amplitudes)
+  local 'att' (maximum 1 (at gate _asynth_attacks))
+  local 'hold' (at gate _asynth_holds)
+  local 'release' (maximum 1 (at gate _asynth_releases))
+  if ((millisOp) < (v 'start time')) {
+    return 0
+  } ((millisOp) > (((v 'start time') + att) + (hold + release))) {
+    comment 'all done, no sound'
+    return 0
+  } ((millisOp) > (((v 'start time') + att) + hold)) {
+    comment 'release time'
+    return (amp - ((amp * ((millisOp) - (((v 'start time') + att) + hold))) / release))
+  } ((millisOp) > ((v 'start time') + att)) {
+    comment 'hold time'
+    return amp
+  } else {
+    comment 'attack time'
+    return ((amp * ((millisOp) - (v 'start time'))) / att)
+  }
+}
+
+to 'asynth gate frequency' gate {
+  '_asynth init'
+  return (at gate _asynth_frequencies)
+}
+
 to 'asynth noise' amp {
   if (amp < 1) {return 0}
   return (random 1 amp)
 }
 
 to 'asynth noise gate' gate {
-  return (random 1 ('_asynth amplitude' gate))
+  return (random 1 ('asynth gate amplitude' gate))
 }
 
 to 'asynth saw' freq amp {
-  if (amp < 1) {return 0}
-  return ((((microsOp) * amp) / (1000000 / freq)) % amp)
+  if (or (amp < 1) (freq < 1)) {return 0}
+  local 'ms' (1000000 / freq)
+  return ((amp * ((microsOp) % ms)) / ms)
 }
 
 to 'asynth saw gate' gate {
-  return ('asynth saw' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
+  return ('asynth saw' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
 }
 
 to 'asynth sin' freq amp {
-  if (amp < 1) {return 0}
-  local 'period' (1000000 / freq)
-  return ((amp / 2) + (((amp / 2) * ('[misc:sin]' ((3600 * ((microsOp) % period)) / (period / 10)))) >> 14))
+  if (or (amp < 1) (freq < 1)) {return 0}
+  local 'ms' (1000000 / freq)
+  return ((amp / 2) + ((amp * ('[misc:sin]' ((3600 * ((microsOp) % ms)) / (ms / 10)))) >> 15))
 }
 
 to 'asynth sin gate' gate {
-  return ('asynth sin' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
+  return ('asynth sin' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
 }
 
 to 'asynth square' freq amp {
-  if (amp < 1) {return 0}
+  if (or (amp < 1) (freq < 1)) {return 0}
   local 'ms' (1000000 / freq)
   return (('[data:convertType]' (((microsOp) % ms) > (ms / 2)) 'number') * amp)
 }
 
 to 'asynth square gate' gate {
-  return ('asynth square' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
+  return ('asynth square' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
 }
 
 to 'asynth tri' freq amp {
-  if (amp < 1) {return 0}
-  return (amp - (absoluteValue (amp - (2 * ((((microsOp) * amp) / (1000000 / freq)) % amp)))))
+  if (or (amp < 1) (freq < 1)) {return 0}
+  local 'ms' (1000000 / freq)
+  return (((amp * 2) * (absoluteValue (((microsOp) % ms) - (ms / 2)))) / ms)
 }
 
 to 'asynth tri gate' gate {
-  return ('asynth tri' (at gate _asynth_frequencies) ('_asynth amplitude' gate))
+  return ('asynth tri' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
 }
 
 to 'asynth trigger gate' index key {
