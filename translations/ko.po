@@ -76,7 +76,7 @@ msgstr "밀리초 이후 _"
 
 #. Block in Input category
 msgid "end time _"
-msgstr "_ 끝나는 시간"
+msgstr "종료시간 _"
 
 #. Block in Input category
 msgid "microseconds since _"
