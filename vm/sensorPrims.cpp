@@ -1497,9 +1497,13 @@ static int databotMageneticField() {
 #define QMI8658_ACCEL_XOUT 53
 
 static void startQMI8658() {
-	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL7, 3);	// enable accel + gyro
+	if (!wireStarted) startWire();
+	if (!wireStarted) return;
+
 	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL2, (0 << 4) | 3);	// accel range +/- 2G, ODR = 1000
 	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL3, (5 << 4) | 3);	// gyro range = 512 deg/sec, ODR = 1000
+	writeI2CReg(QMI8658_ADDR, QMI8658_CTRL7, 3);	// enable accel + gyro
+	taskSleep(150); // wait for accelerometer to start up
 	accelStarted = true;
 }
 
@@ -1529,7 +1533,10 @@ static void setAccelRange(int range) {
 }
 
 static int readTemperature() {
-	int fudgeFactor = -3;
+	if (!accelStarted) startQMI8658();
+	if (!accelStarted) return 0;
+
+	int fudgeFactor = -5;
 	return (qmi8658Read16Bit(QMI8658_TEMP) >> 8) + fudgeFactor;
 }
 
