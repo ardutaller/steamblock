@@ -49,3 +49,6 @@ python3 -m esptool --chip ESP32-S3 merge_bin -o extraVMs/vm_s3_matrix.bin --flas
 
 pio run -e freenoveCamera
 cp .pio/build/freenoveCamera/firmware.bin extraVMs/vm_freenoveCamera.bin
+
+pio run -e rp2350
+cp .pio/build/rp2350/firmware.uf2 extraVMs/vm_rp2350.uf2
