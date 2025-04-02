@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-11 15:48+0200\n"
 "PO-Revision-Date: 2025-04-02 00:11+0000\n"
-"Last-Translator: brainspark_kr <admin@brainspark.co.kr>\n"
+"Last-Translator: 이신영 <bearrhee@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/microblocks/ide/"
 "ko/>\n"
 "Language: ko\n"
@@ -72,7 +72,7 @@ msgstr "버전"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr "_ 밀리초 이후"
+msgstr "밀리초 이후 _"
 
 #. Block in Input category
 msgid "end time _"
