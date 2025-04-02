@@ -1882,22 +1882,23 @@ static int __not_in_flash_func(readDHTData)(int pin) {
 
 	// read the start pulse
 	setPinMode(pin, INPUT_PULLUP);
-	int pulseWidth = pulseIn(pin, HIGH, 2000);
-	if (!pulseWidth) {
-		setPinMode(pin, INPUT);
-		return false; // timeout
+	int startT = micros();
+	while (!digitalRead(pin)) { // wait for pin to go high
+		if ((micros() - startT) > 500) return false; // failed; no start pulse
+	}
+	while (digitalRead(pin)) { // wait for pin to go low
+		if ((micros() - startT) > 500) return false; // failed; no start pulse
 	}
 
 	for (int i = 0; i < 5; i++) {
 		int byte = 0;
 		for (int shift = 7; shift >= 0; shift--) {
-			pulseWidth = pulseIn(pin, HIGH, 1000);
+			int pulseWidth = pulseIn(pin, HIGH, 1000);
 			if (!pulseWidth) return false; // timeout
 			if (pulseWidth > 40) byte |= (1 << shift);
 		}
 		dhtData[i] = byte;
 	}
-
 	setPinMode(pin, INPUT);
 	return true;
 }
