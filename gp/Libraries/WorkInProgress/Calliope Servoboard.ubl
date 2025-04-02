@@ -1,4 +1,4 @@
-module 'Calliope Servoboard'
+module 'Calliope Servoboard' Output
 author 'Ralf Krause'
 version 1 2 
 depends Servo 
