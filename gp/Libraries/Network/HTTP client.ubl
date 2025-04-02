@@ -1,6 +1,6 @@
 module 'HTTP client' Comm
 author MicroBlocks
-version 1 4 
+version 1 5 
 depends WiFi 
 tags http network get post put delete 
 choices requestTypes GET POST PUT DELETE
@@ -104,7 +104,7 @@ to '_request_url' url method body optionalPort {
   if (not ('[net:httpIsConnected]')) {
     return ('[data:join]' '0 Could not connect to server' ('_line_end'))
   }
-  '[net:httpRequest]' method host path
+  '[net:httpRequest]' method host path body
   return ('_readHTTPResponse')
 }
 
