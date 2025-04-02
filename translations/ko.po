@@ -80,7 +80,7 @@ msgstr "종료시간 _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr "_ 마이크로초 이후"
+msgstr "마이크로초 이후 _"
 
 #. Block in Input category
 msgid "BLE id"
