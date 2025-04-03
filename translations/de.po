@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-03-10 14:54+0000\n"
+"PO-Revision-Date: 2025-04-03 00:23+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -1168,7 +1168,7 @@ msgstr "_ in Großbuchstaben"
 #. Ringtone library label
 #. Can play Nokring-formatted music. Also known as RTTTL.
 msgid "Ringtone"
-msgstr "Klingelton"
+msgstr "Klingeltöne"
 
 #. DHT11 environmental sensor library block
 msgid "humidity DHT11 pin _"
@@ -1180,7 +1180,7 @@ msgstr "verbinde _ DotStar LEDs an Daten-Pin _ Uhr-Pin _"
 
 #. Rhythm library block
 msgid "wait until beat _"
-msgstr "warte bis Schlag _"
+msgstr "warte bis zum Schlag _"
 
 #. Scrolling library block
 msgid "pausing _ ms"
@@ -2557,7 +2557,7 @@ msgstr "Roboter"
 
 #. Library folder
 msgid "folder;Sound"
-msgstr "Klang"
+msgstr "Sound"
 
 #. Library folder
 msgid "folder;System"
@@ -2679,7 +2679,7 @@ msgstr "MODULE"
 
 #. Library folder
 msgid "folder;Kits and Boards"
-msgstr "Boards & Kits"
+msgstr "Kits & Boards"
 
 #. String in file picker and library dialogs
 msgid "Dependency path, name or URL?"
@@ -3489,7 +3489,7 @@ msgstr "bild.bmp"
 #. Tone library label
 #. Generates music tones on buzzers
 msgid "Tone"
-msgstr "Klang"
+msgstr "Töne"
 
 #. Strings library block
 msgid "_ is uppercase"
@@ -4382,7 +4382,7 @@ msgstr "Sättigung _"
 
 #. Rhythm library block
 msgid "wait until next _ duration"
-msgstr "warte bis nächste _ Dauer"
+msgstr "warte bis zur nächsten _ Dauer"
 
 #. General MIDI control change
 msgid "expression"
