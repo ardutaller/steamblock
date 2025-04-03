@@ -1013,6 +1013,9 @@ void hardwareInit() {
 		#elif defined(GIZMO_MECHATRONICS)
 			#undef BOARD_TYPE
 			#define BOARD_TYPE "RP2040 Gizmo"
+		#elif defined(RP2350)
+			#undef BOARD_TYPE
+			#define BOARD_TYPE "RP2350"
 		#endif
 		#define DEFAULT_TONE_PIN 20 // speaker pin on PicoBricks board
 		static const char reservedPin[TOTAL_PINS] = {
