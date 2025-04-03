@@ -163,15 +163,54 @@ OBJ primColorBrightness(int argCount, OBJ *args) {
 	return int2obj((int) (100.0 * v));
 }
 
-static OBJ primSine(int argCount, OBJ *args) {
+static int16 sineTable[91] = {
+	0, 286, 572, 857, 1143, 1428, 1713, 1997, 2280, 2563, 2845,
+	3126, 3406, 3686, 3964, 4240, 4516, 4790, 5063, 5334, 5604,
+	5872, 6138, 6402, 6664, 6924, 7182, 7438, 7692, 7943, 8192,
+	8438, 8682, 8923, 9162, 9397, 9630, 9860, 10087, 10311, 10531,
+	10749, 10963, 11174, 11381, 11585, 11786, 11982, 12176, 12365, 12551,
+	12733, 12911, 13085, 13255, 13421, 13583, 13741, 13894, 14044, 14189,
+	14330, 14466, 14598, 14726, 14849, 14968, 15082, 15191, 15296, 15396,
+	15491, 15582, 15668, 15749, 15826, 15897, 15964, 16026, 16083, 16135,
+	16182, 16225, 16262, 16294, 16322, 16344, 16362, 16374, 16382, 16384};
+
+static OBJ primIntSine(int argCount, OBJ *args) {
 	// Returns the sine of the given angle * 2^14 (i.e. a fixed point integer with 13 bits of
 	// fraction). The input is the angle in hundreths of a degree (e.g. 4500 means 45 degrees).
+	// This version uses table lookup with interpolation and uses int integer math, no floats.
 
-	const float hundrethsToRadians = 6.2831853071795864769 / 36000.0;
-	return int2obj((int) round(16384.0 * sin(evalInt(args[0]) * hundrethsToRadians)));
+	// This version using floats is 3x to 4x slower:
+	//	const float hundrethsToRadians = 6.2831853071795864769 / 36000.0;
+	//	return int2obj((int) round(16384.0 * sin(evalInt(args[0]) * hundrethsToRadians)));
+
+	int angle = evalInt(args[0]) % 36000;
+	if (angle < 0) angle += 36000;  // positive angle in hundreds of a degree [0..35999]
+
+	int sign = 1;
+	if (angle < 9000) {
+		// first quarter; use angle directly
+	} else if (angle < 18000) {
+		angle = 18000 - angle; // second quarter: reverse of first quarter
+	} else if (angle < 27000) {
+		sign = -1;
+		angle = angle - 18000; // third quarter; like first quarter but invert sign of output
+	} else {
+		sign = -1;
+		angle = 36000 - angle; // fourth quarter; like second quarter but invert sign of output
+	}
+
+	int i = angle / 100; // sineTable index
+	int frac = angle % 100; // fraction (0-99)
+
+	int result = sineTable[i];
+	if (frac) {
+		result = (((100 - frac) * result) + (frac * sineTable[i + 1])) / 100;
+	}
+
+	return int2obj(sign * result);
 }
 
-static OBJ primSqrt(int argCount, OBJ *args) {
+static OBJ primIntSqrt(int argCount, OBJ *args) {
 	// Returns the integer square root of a given number rounded to the nearest integer.
 	// For example, sqrt(9) = 3. To get more precision, you can pre-multiply by a scaling
 	// factor squared. For example, to get two digits of precision you can multiple by
@@ -179,7 +218,31 @@ static OBJ primSqrt(int argCount, OBJ *args) {
 
 	int n = evalInt(args[0]);
 	if (n < 0) n = -n; // xxx should we give an error here?
-	return int2obj((int) round(sqrt(n)));
+
+	// The following code generates same values as:
+	//		round(sqrt(n)))
+	// without using floats using Heron's method, a special case of Newton's method.
+	// https://en.wikipedia.org/wiki/Integer_square_root
+
+	if (n < 2) return int2obj(n); // 0 and 1 return themselves
+
+	// compute the initial estimate: first power of 2 > logBase2(n) (reduces iterations)
+	int hiBit = 0;
+	while (!(n >> hiBit)) hiBit += 1;
+	int x0 = 1 << ((hiBit / 2) + 1);
+
+	int x1 = (x0 + (n / x0)) / 2;
+	while (x0 > x1) {
+		x0 = x1;
+		x1 = (x0 + (n / x0)) / 2;
+	}
+
+	// choose the closer square root between x0 and x0 + 1
+	int next = x0 + 1;
+	if (((next * next) - n) < (n - (x0 * x0))) {
+		x0 = next;
+	}
+	return int2obj(x0);
 }
 
 static OBJ primArctan(int argCount, OBJ *args) {
@@ -351,28 +414,28 @@ static OBJ primBMP680GasResistance(int argCount, OBJ *args) {
 // Primitives
 
 static PrimEntry entries[] = {
+	{"sqrt", primIntSqrt},
+	{"sin", primIntSine},
 	{"version", primVersion},
 	{"bleID", primBLE_ID},
 	{"hexToInt", primHexToInt},
 	{"rescale", primRescale},
+	{"connectedToIDE", primConnectedToIDE},
+	{"broadcastToIDE", primBroadcastToIDEOnly},
+	{"bme680GasResistance", primBMP680GasResistance},
 #if !defined(DUELink)
 	{"hsvColor", primHSVColor},
 	{"hue", primColorHue},
 	{"saturation", primColorSaturation},
 	{"brightness", primColorBrightness},
-	{"sin", primSine},
-	{"sqrt", primSqrt},
 	{"atan2", primArctan},
 	{"pressureToAltitude", primPressureToAltitude},
 #endif
-	{"bme680GasResistance", primBMP680GasResistance},
-	{"connectedToIDE", primConnectedToIDE},
-	{"broadcastToIDE", primBroadcastToIDEOnly},
-	{"scriptTooLarge", primScriptTooLarge},
 	{"jsonGet", primJSONGet},
 	{"jsonCount", primJSONCount},
 	{"jsonValueAt", primJSONValueAt},
 	{"jsonKeyAt", primJSONKeyAt},
+	{"scriptTooLarge", primScriptTooLarge},
 };
 
 void addMiscPrims() {
