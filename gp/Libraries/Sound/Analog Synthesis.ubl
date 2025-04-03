@@ -1,6 +1,6 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 2 
+version 1 3 
 description 'Generate analog waves that you can output on a DAC pin to produce sound.
 
 You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will.
@@ -128,7 +128,7 @@ to 'asynth sin gate' gate {
 to 'asynth square' freq amp {
   if (or (amp < 1) (freq < 1)) {return 0}
   local 'ms' (1000000 / freq)
-  return (('[data:convertType]' (((microsOp) % ms) > (ms / 2)) 'number') * amp)
+  return (ifExpression (((microsOp) % ms) > (ms / 2)) amp 0)
 }
 
 to 'asynth square gate' gate {
