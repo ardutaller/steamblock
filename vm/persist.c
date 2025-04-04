@@ -18,9 +18,9 @@
 //
 // and implement the platform-specific Flash functions:
 //
-//		void flashErase(int *startAddr, int *endAddr)
-//		void flashWriteData(int *dst, int wordCount, uint8 *src)
-//		void flashWriteWord(int *addr, int value)
+//		static void flashErase(int *startAddr, int *endAddr)
+//		static void flashWriteData(int *dst, int wordCount, uint8 *src)
+//		static void flashWriteWord(int *addr, int value)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,14 +80,14 @@ void delay(unsigned long); // Arduino delay function
 		NRF_NVMC->CONFIG = 0; // disable Flash erase
 	}
 
-	void flashWriteWord(int *addr, int value) {
+	static void flashWriteWord(int *addr, int value) {
 		NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen; // enable Flash write
 		while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
 		*addr = value;
 		NRF_NVMC->CONFIG = 0; // disable Flash write
 	}
 
-	void flashWriteData(int *dst, int wordCount, uint8 *src) {
+	static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 		NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen; // enable Flash write
 		for ( ; wordCount > 0; wordCount--) {
 			int n = *src++;
@@ -132,13 +132,13 @@ void delay(unsigned long); // Arduino delay function
 		}
 	}
 
-	void flashWriteWord(int *addr, int value) {
+	static void flashWriteWord(int *addr, int value) {
 		while (!(*NVMC_INTFLAG & READY_BIT)){} // wait for previous operation to complete
 		*addr = value;
 		*NVMC_CTRLA = CMD_WRITE_PAGE;
 	}
 
-	void flashWriteData(int *dst, int wordCount, uint8 *src) {
+	static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 		while (!(*NVMC_INTFLAG & READY_BIT)){} // wait for previous operation to complete
 
 		*NVMC_CTRLB = *NVMC_CTRLB & ~MANW; // automatically write pages at page boundaries
@@ -181,13 +181,13 @@ void delay(unsigned long); // Arduino delay function
 		}
 	}
 
-	void flashWriteWord(int *dst, int value) {
+	static void flashWriteWord(int *dst, int value) {
 		*dst = value;
 		*EFC1_CMD = KEY | ((int) dst & 0xFFFF00) | WRITE_PAGE;
 		while (!(*EFC1_STATUS & READY_BIT)){} // wait for operation to complete
 	}
 
-	void flashWriteData(int *dst, int wordCount, uint8 *src) {
+	static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 		// Copy wordCount words into Flash memory starting at dst.
 		// The destination address must be word-aligned, but the source need not be.
 
@@ -226,7 +226,7 @@ static void flashErase(int *startAddr, int *endAddr) {
 	}
 }
 
-void flashWriteData(int *dst, int wordCount, uint8_t *src) {
+static void flashWriteData(int *dst, int wordCount, uint8_t *src) {
 	uint32_t addr = (uint32_t)dst & 0xFFFFFFFC;
 	uint16_t cmd[] = {0x2380, 0x7003, 0x7803, 0xb25b, 0x2b00, 0xdafb, 0x4770};
 	if (!(FTFL_FCNFG & FTFL_FCNFG_RAMRDY)) return;
@@ -245,7 +245,7 @@ void flashWriteData(int *dst, int wordCount, uint8_t *src) {
 	}
 }
 
-void flashWriteWord(int *addr, int value) {
+static void flashWriteWord(int *addr, int value) {
 	flashWriteData(addr, 1, (uint8_t *)&value);
 }
 
@@ -374,7 +374,7 @@ static void flashErase(int *startAddr, int *endAddr) {
 	}
 }
 
-void flashWriteData(int *dst, int wordCount, uint8_t *src) {
+static void flashWriteData(int *dst, int wordCount, uint8_t *src) {
 	uint32_t n, count, addr = (uint32_t)dst;
 
 	if (wordCount < 1) return;
@@ -395,7 +395,7 @@ void flashWriteData(int *dst, int wordCount, uint8_t *src) {
 	}
 }
 
-void flashWriteWord(int *addr, int value) {
+static void flashWriteWord(int *addr, int value) {
 	flashWriteData(addr, 1, (uint8_t *)&value);
 }
 
@@ -418,11 +418,11 @@ void flashWriteWord(int *addr, int value) {
 		spi_flash_erase_range(flashAddr(startAddr), byteCount);
 	}
 
-	void flashWriteWord(int *addr, int value) {
+	static void flashWriteWord(int *addr, int value) {
 		spi_flash_write(flashAddr(addr), &value, 4);
 	}
 
-	void flashWriteData(int *dst, int wordCount, uint8 *src) {
+	static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 		spi_flash_write(flashAddr(dst), src, 4 * wordCount);
 	}
 
@@ -442,11 +442,11 @@ static void flashErase(int *startAddr, int *endAddr) {
 	flash_erase(flash_dev, (uintptr_t)startAddr, bytes);
 }
 
-void flashWriteWord(int *addr, int value) {
+static void flashWriteWord(int *addr, int value) {
 	flash_write(flash_dev, (uintptr_t)addr, &value, sizeof(value));
 }
 
-void flashWriteData(int *dst, int wordCount, uint8 *src) {
+static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 	flash_write(flash_dev, (uintptr_t)dst, src, wordCount * sizeof(int));
 }
 
@@ -484,11 +484,11 @@ void flashWriteData(int *dst, int wordCount, uint8 *src) {
 		while (dst < endAddr) { *dst++ = -1; }
 	}
 
-	void flashWriteWord(int *addr, int value) {
+	static void flashWriteWord(int *addr, int value) {
 		*addr = value;
 	}
 
-	void flashWriteData(int *dst, int wordCount, uint8 *src) {
+	static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 		for ( ; wordCount > 0; wordCount--) {
 			int n = *src++;
 			n |= *src++ << 8;
