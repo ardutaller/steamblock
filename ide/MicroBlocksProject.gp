@@ -1176,6 +1176,45 @@ method functionsEqual MicroBlocksModule f1 f2 {
 	return true
 }
 
+// translation template export
+
+to templateStringForLibrary libName {
+	// setClipboard (templateStringForLibrary 'CoCube')
+	project = (project (first (allInstances 'MicroBlocksEditor')))
+	lib = (libraryNamed project libName)
+	if (isNil lib) { return '' }
+	return (join (choiceTemplates lib) (blockTemplates lib))
+}
+
+method templateString MicroBlocksModule {
+	return (join (choiceTemplates this) (blockTemplates this))
+}
+
+method choiceTemplates MicroBlocksModule {
+	result = (list)
+	for choiceList (values choices) {
+		for c choiceList {
+			add result (join '#. ' moduleName ' library block')
+			add result (join 'msgid "' c '"')
+			add result 'msgstr ""'
+			add result ''
+		}
+	}
+	return (joinStrings result (newline))
+}
+
+method blockTemplates MicroBlocksModule {
+	result = (list)
+	for spec (values blockSpecs) {
+		blockLabel = (first (specs spec))
+		add result (join '#. ' moduleName ' library block')
+		add result (join 'msgid "' blockLabel '"')
+		add result 'msgstr ""'
+		add result ''
+	}
+	return (joinStrings result (newline))
+}
+
 // localization
 
 method setTranslations MicroBlocksModule translationsDict {
