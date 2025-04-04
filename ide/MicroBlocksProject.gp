@@ -878,7 +878,7 @@ method loadModuleNameAndCategory MicroBlocksModule cmdList {
 			if ((count (argList cmd)) > 1) {
 				cat = (at (argList cmd) 2)
 				if (isClass cat 'Reporter') { cat = (first (argList cat)) } // unquoted var (see above)
- 				if (beginsWith cat 'cat;') {
+				if (beginsWith cat 'cat;') {
 					cat = (substring cat 5) // remove leading 'cat;' prefix used for translation
 				}
 				moduleCategory = cat
