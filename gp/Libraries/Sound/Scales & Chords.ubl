@@ -106,7 +106,7 @@ to scales_arpeggiate 'note list' order duration volume destination channel {
     if ((boardType) == 'Boardie') {
       _scales_delay = 12
     } (destination == 'gate trigger') {
-      _scales_delay = 4
+      _scales_delay = 2
     }
   }
   if (isType (v 'note list') 'string') {'note list' = ('_scales parsed shorthand' (v 'note list'))}
