@@ -1,7 +1,7 @@
 module 'Calliope NeoPixel' Output
 author 'Ralf Krause'
-version 1 0 
-depends _Color 
+version 1 1 
+depends Color 
 description 'Calliope NeoPixel
 Control the three onboard multicolor LEDs independent from any external NeoPixels.
 '
@@ -21,6 +21,7 @@ variables _calliope_neopixels _calliope_neopixels_brightness
   spec ' ' '_calliope_neopixels_rotate' '_calliope_neopixels_rotate _' 'bool' true
 
 to '_calliope_neopixels_rotate' right {
+  comment 'rotate without showing the result.'
   '_calliope_neopixels_setup'
   if right {
     local 'c' (at 3 _calliope_neopixels)
@@ -33,18 +34,19 @@ to '_calliope_neopixels_rotate' right {
     atPut 2 _calliope_neopixels (at 3 _calliope_neopixels)
     atPut 3 _calliope_neopixels c
   }
-  '_calliope_neopixels_update'
 }
 
 to '_calliope_neopixels_setup' {
-  if (_calliope_neopixels == 0) {_calliope_neopixels = (newList 3 0)}
-  _calliope_neopixels_brightness = 100
+  if (_calliope_neopixels == 0) {
+    _calliope_neopixels = (newList 3 0)
+    _calliope_neopixels_brightness = 100
+  }
 }
 
 to '_calliope_neopixels_update' {
-  comment 'always set the NeoPixel pin; it may have been changed by another library.'
+  comment 'NeoPixel pin may have been changed by another library.'
   '[display:neoPixelSetPin]' ' ' false
-  if (100 == _calliope_neopixels_brightness) {
+  if (_calliope_neopixels_brightness == 100) {
     '[display:neoPixelSend]' _calliope_neopixels
   } else {
     local 'currentPixels' (newList 3)
@@ -61,6 +63,7 @@ to '_calliope_neopixels_update' {
 to calliope_clear_all_neopixels {
   '_calliope_neopixels_setup'
   atPut 'all' _calliope_neopixels 0
+  _calliope_neopixels_brightness = 100
   '_calliope_neopixels_update'
 }
 
@@ -84,18 +87,18 @@ to calliope_set_brightness scale {
   '_calliope_neopixels_update'
 }
 
-to calliope_set_neopixel_color i c {
+to calliope_set_neopixel_color pix c {
   '_calliope_neopixels_setup'
-  if (and (1 <= i) (i <= 3)) {
-    atPut i _calliope_neopixels c
+  if (and (1 <= pix) (pix <= 3)) {
+    atPut pix _calliope_neopixels c
   }
   '_calliope_neopixels_update'
 }
 
 to calliope_set_neopixels c1 c2 c3 {
   '_calliope_neopixels_setup'
-  for i 3 {
-    atPut i _calliope_neopixels (argOrDefault i 0)
+  for pix 3 {
+    atPut pix _calliope_neopixels (argOrDefault pix 0)
   }
   '_calliope_neopixels_update'
 }
