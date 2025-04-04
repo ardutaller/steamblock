@@ -225,7 +225,7 @@ to scales_improv scale 'bar count' 'possible durations' destination channel volu
         if (isType volume 'list') {'next vol' = (random (at 1 volume) (at 2 volume))}
         'MIDI_play MIDI note' (v 'next note') (v 'next duration') channel (v 'next vol')
       } (destination == 'gate trigger') {
-        'asynth trigger envelope' channel (v 'next note')
+        'asynth trigger gate' channel (v 'next note')
       } else {
         if (channel != '') {_tonePin = channel}
         playMIDIKey (v 'next note') (v 'next duration')
