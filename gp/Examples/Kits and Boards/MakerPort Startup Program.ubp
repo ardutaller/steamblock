@@ -1898,10 +1898,10 @@ to neoPanel_fillRectangle x y width height color {
 
 module NeoPixel Output
 author MicroBlocks
-version 1 12 
+version 1 13 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
-variables _np_pixels 
+variables _np_pixels _np_pin _np_haswhite 
 
   spec ' ' 'neoPixelAttach' 'attach _ LED NeoPixel strip to pin _ : has white _' 'num auto bool' 10 '' false
   spec ' ' 'setNeoPixelColors10' 'set NeoPixels _ _ _ _ _ _ _ _ _ _' 'color color color color color color color color color color'
@@ -1958,6 +1958,8 @@ to '_NeoPixel_ensureInitialized' {
     neoPixelAttach 7 15 false
   } ((boardType) == 'FOXBIT') {
     neoPixelAttach 35 '' false
+  } ((boardType) == 'CodingBox') {
+    neoPixelAttach 35 '' false
   } else {
     neoPixelAttach 10 '' false
   }}
@@ -2005,6 +2007,8 @@ to '_NeoPixel_shift_hue' i delta {
 }
 
 to '_NeoPixel_update' {
+  comment 'NeoPixel pin and hasWhite may have been changed by another library.'
+  '[display:neoPixelSetPin]' _np_pin _np_hasWhite
   '[display:neoPixelSend]' _np_pixels
   waitMicros 300
 }
@@ -2023,15 +2027,16 @@ to colorFromRGB r g b {
 }
 
 to neoPixelAttach number pinNumber optionalHasWhite {
-  hasWhite = false
+  _np_pin = pinNumber
+  _np_hasWhite = false
   if ((pushArgCount) > 2) {
-    hasWhite = optionalHasWhite
+    _np_hasWhite = optionalHasWhite
   }
   if (or (_np_pixels == 0) (number != (size _np_pixels))) {
     _np_pixels = (newList number)
   }
   atPut 'all' _np_pixels 0
-  '[display:neoPixelSetPin]' pinNumber hasWhite
+  '[display:neoPixelSetPin]' _np_pin _np_hasWhite
 }
 
 to neoPixelSetAllToColor color {
@@ -2058,8 +2063,12 @@ to randomColor {
 
 to rotateNeoPixelsBy n {
   '_NeoPixel_ensureInitialized'
+  local 'rotateLeft' (n < 0)
+  if (or ((boardType) == 'CircuitPlayground') ((boardType) == 'CircuitPlayground Bluefruit')) {
+    rotateLeft = (n > 0)
+  }
   repeat (absoluteValue n) {
-    '_NeoPixel_rotate' (n > 0)
+    '_NeoPixel_rotate' rotateLeft
   }
   '_NeoPixel_update'
 }
@@ -2323,7 +2332,7 @@ to stopServo which {
 
 module Tone Output
 author MicroBlocks
-version 1 9 
+version 1 10 
 tags tone sound music audio note speaker 
 choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 
 description 'Audio tone generation. Make music with MicroBlocks!
@@ -2440,6 +2449,8 @@ to 'attach buzzer to pin' pinNumber {
       _tonePin = 25
     } ((boardType) == 'D1-Mini') {
       _tonePin = 12
+    } ((boardType) == 'CodingBox') {
+      _tonePin = 32
     } else {
       _tonePin = -1
     }
@@ -2496,10 +2507,11 @@ to stopTone {
 
 
 module Touch Input
-author MicroBlocks
-version 1 11 
+author 'per MicroBlocks'
+version 1 12 
 description 'Support for one or two MPR121 12-channel i2c touch sensors.
-Detects MPR121 chips at I2C addresses 90 and, optionally, 92 to handle up to 24 touch pins.'
+Detects MPR121 chips at I2C addresses 90 and, optionally, 92 to handle up to 24 touch pins.
+'
 variables _touch_pinCount _touch_state _touch_isTouched _touch_eventPending _touch_last_touched_pin _touch_last_released_pin 
 
   spec 'r' 'touch_isTouched' 'is pin _ touched?' 'menu.range:1-24' 1
@@ -2565,9 +2577,10 @@ to '_touch_init' {
 }
 
 to '_touch_readState' addr {
-  local 'lowByte' (i2cGet addr 0)
-  local 'highBits' ((i2cGet addr 1) & 15)
-  return ((highBits << 8) | lowByte)
+  '[sensors:i2cWrite]' addr ('[data:makeList]' 0)
+  local 'bytes' (newList 2)
+  '[sensors:i2cRead]' addr bytes
+  return (((at 2 bytes) << 8) | (at 1 bytes))
 }
 
 to '_touch_setRegister' reg value {
