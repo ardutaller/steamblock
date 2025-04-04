@@ -1018,6 +1018,9 @@ void hardwareInit() {
 		#elif defined(GIZMO_MECHATRONICS)
 			#undef BOARD_TYPE
 			#define BOARD_TYPE "RP2040 Gizmo"
+		#elif defined(RP2350)
+			#undef BOARD_TYPE
+			#define BOARD_TYPE "RP2350"
 		#endif
 		#define DEFAULT_TONE_PIN 20 // speaker pin on PicoBricks board
 		static const char reservedPin[TOTAL_PINS] = {
@@ -1032,21 +1035,25 @@ void hardwareInit() {
 	#define DIGITAL_PINS 30
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
-	#define PIN_LED 15
-	#define PIN_BUTTON_A 28 // edge pin 5
-	#define PIN_BUTTON_B 27 // edge pin 11
+	#define PIN_LED 15 // PA_6 (unmapped)
+	#define PIN_BUTTON_A 28 // (unmapped) edge pin 5
+	#define PIN_BUTTON_B 27 // (unmapped) edge pin 11
 	#undef BUTTON_PRESSED
 	#define BUTTON_PRESSED HIGH
-	#define DEFAULT_TONE_PIN 26
-	static const char dueEdgePin[DIGITAL_PINS] = {
+	#define DEFAULT_TONE_PIN 21
+	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
-		 1,  7, 12, 15, 54, 11, 13,  52,  47, 42};
+		 1, 13, 12, 15,  7, 11,  54, 42,  47, 52};
+	static const char pixoEdgePin[DIGITAL_PINS] = {
+		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
+		 2, 27,  7,  9,  5,  4, 33, 255, 255, 0,
+		 1, 13, 12, 15, 14, 29,  32, 42,  47, 52};
 	static const char dueStandardPin[DIGITAL_PINS] = {
 		15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
 		33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
 		28,  8,  2, 27, 32, 52, 47, 42, 255, 255};
-	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14};
+	static const int analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
 
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
 
@@ -1182,7 +1189,7 @@ int mapDigitalPinNum(int pinNum) {
 	#elif defined(DUELink)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
 			if (DUE_HAS_EDGE_CONNECTOR) {
-				return dueEdgePin[pinNum];
+				return (IS_DUE_CINCO) ? cincoEdgePin[pinNum] : pixoEdgePin[pinNum];
 			} else {
 				return dueStandardPin[pinNum];
 			}
@@ -1241,6 +1248,7 @@ OBJ primDigitalPins(OBJ *args) { return int2obj(DIGITAL_PINS); }
 OBJ primAnalogRead(int argCount, OBJ *args) {
 	if (!isInt(args[0])) { fail(needsIntegerError); return int2obj(0); }
 	int pinNum = obj2int(args[0]);
+	int mode = (argCount > 1) ? inputModeFor(args[1]) : INPUT;
 
 	#if defined(ARDUINO_BBC_MICROBIT)
 		if (10 == pinNum) pinNum = 5; // map pin 10 to A5
@@ -1276,6 +1284,16 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 	#elif defined(ARDUINO_SAM_ZERO) // M0
 		if ((pinNum == 14) || (pinNum == 15) ||
 			((18 <= pinNum) && (pinNum <= 23))) return int2obj(0);
+
+	#elif defined(DUELink)
+		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS) && (pinNum != 17) && (pinNum != 18)) {
+			pinNum = mapDigitalPinNum(pinNum); // map edge connector pin number to pin number
+			if (pinNum < 0) return falseObj;
+			SET_MODE(pinNum, mode);
+			return int2obj(analogRead(pinNum));
+		} else {
+			return zeroObj;
+		}
 	#endif
 	#if defined(ARDUINO_ARCH_RP2040) && !defined(PICO_ED)
 		if ((pinNum < 26) || (pinNum > 29)) return int2obj(0);
@@ -1292,7 +1310,6 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 
 	if ((pinNum < 0) || (pinNum >= ANALOG_PINS)) return int2obj(0);
 	int pin = analogPin[pinNum];
-	int mode = (argCount > 1) ? inputModeFor(args[1]) : INPUT;
 	SET_MODE(pin, mode);
 	return int2obj(analogRead(pin));
 }
