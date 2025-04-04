@@ -42,7 +42,7 @@ OBJ vars[MAX_VARS];
 // The VM stops the task and records the error code and IP where the error occurred.
 
 static uint8 errorCode = noError;
-static int taskSleepMSecs = 0;
+static int taskSleepUSecs = 0;
 
 OBJ fail(uint8 errCode) {
 	errorCode = errCode;
@@ -56,7 +56,13 @@ int failure() {
 #ifndef EMSCRIPTEN
 	void taskSleep(int msecs) {
 		// Make the current task sleep for the given number of milliseconds to free up cycles.
-		taskSleepMSecs = msecs;
+		taskSleepUSecs = msecs * 1000;
+		if (noError == errorCode) errorCode = sleepSignal;
+	}
+
+	void taskSleepMicros(int usecs) {
+		// Make the current task sleep for the given number of microseconds to free up cycles.
+		taskSleepUSecs = usecs;
 		if (noError == errorCode) errorCode = sleepSignal;
 	}
 #endif
@@ -611,9 +617,9 @@ static void runTask(Task *task) {
 		// sleepSignal is not a actual error; it just suspends the current task
 		if (sleepSignal == errorCode) {
 			errorCode = noError; // clear the error
-			if (taskSleepMSecs > 0) {
+			if (taskSleepUSecs > 0) {
 				task->status = waiting_micros;
-				task->wakeTime = microsecs() + (taskSleepMSecs * 1000);
+				task->wakeTime = microsecs() + (taskSleepUSecs);
 			}
 			goto suspend;
 		}
@@ -1377,10 +1383,10 @@ void vmLoop() {
 				}
 			}
 		}
-		if (taskSleepMSecs) {
+		if (taskSleepUSecs) {
 			// if any task called taskSleep(), do VM background tasks sooner
-			taskSleepMSecs = 0;
-			count = (count < 5) ? count : 5;
+			taskSleepUSecs = 0;
+			count = (count < 5000) ? count : 5000;
 		}
 
 #ifdef GNUBLOCKS

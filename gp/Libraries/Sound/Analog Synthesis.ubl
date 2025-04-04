@@ -13,17 +13,17 @@ variables _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asy
   spec 'r' 'asynth saw' 'sawtooth wave frequency _ amplitude _' 'num num' 196 180
   spec 'r' 'asynth noise' 'noise amplitude _' 'num' 50
   space
-  spec 'r' 'asynth sin gate' 'sin wave gate _' 'menu.range:1-16' 1
-  spec 'r' 'asynth square gate' 'square wave gate _' 'menu.range:1-16' 1
-  spec 'r' 'asynth tri gate' 'tri wave gate _' 'menu.range:1-16' 1
-  spec 'r' 'asynth saw gate' 'sawtooth wave gate _' 'menu.range:1-16' 1
-  spec 'r' 'asynth noise gate' 'noise gate _' 'menu.range:1-16' 1
+  spec 'r' 'asynth sin gate' 'sin wave gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth square gate' 'square wave gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth tri gate' 'tri wave gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth saw gate' 'sawtooth wave gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth noise gate' 'noise gate _' 'menu.range:1-8' 1
   space
-  spec ' ' 'asynth envelope' 'set amplitude _ attack _ hold _ release _ for gate _' 'num num num num menu.range:1-16' 200 10 250 100 1
-  spec ' ' 'asynth trigger gate' 'trigger gate _ MIDI key _' 'menu.range:1-16 num' 1 60
+  spec ' ' 'asynth envelope' 'set amplitude _ attack _ hold _ release _ for gate _' 'num num num num menu.range:1-8' 200 10 250 100 1
+  spec ' ' 'asynth trigger gate' 'trigger gate _ MIDI key _' 'menu.range:1-8 num' 1 60
   space
-  spec 'r' 'asynth gate amplitude' 'amplitude for gate _' 'menu.range:1-16' 1
-  spec 'r' 'asynth gate frequency' 'frequency for gate _' 'menu.range:1-16' 1
+  spec 'r' 'asynth gate amplitude' 'amplitude for gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth gate frequency' 'frequency for gate _' 'menu.range:1-8' 1
   space
   spec ' ' '_asynth init' '_asynth init'
   spec 'r' '_asynth MIDI to freq' '_asynth MIDI note _ to frequency' 'auto' 60
@@ -51,12 +51,12 @@ to '_asynth MIDI to freq' key {
 }
 
 to '_asynth init' {
-  if (_asynth_trigger_times == 0) {_asynth_trigger_times = (newList 16)}
-  if (_asynth_frequencies == 0) {_asynth_frequencies = (newList 16)}
-  if (_asynth_amplitudes == 0) {_asynth_amplitudes = (newList 16)}
-  if (_asynth_attacks == 0) {_asynth_attacks = (newList 16)}
-  if (_asynth_holds == 0) {_asynth_holds = (newList 16)}
-  if (_asynth_releases == 0) {_asynth_releases = (newList 16)}
+  if (_asynth_trigger_times == 0) {_asynth_trigger_times = (newList 8)}
+  if (_asynth_frequencies == 0) {_asynth_frequencies = (newList 8)}
+  if (_asynth_amplitudes == 0) {_asynth_amplitudes = (newList 8)}
+  if (_asynth_attacks == 0) {_asynth_attacks = (newList 8)}
+  if (_asynth_holds == 0) {_asynth_holds = (newList 8)}
+  if (_asynth_releases == 0) {_asynth_releases = (newList 8)}
 }
 
 to 'asynth envelope' amp att hold release gate {
