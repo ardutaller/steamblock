@@ -35,9 +35,10 @@ static void initPins(void); // forward reference
 static void initRandomSeed(void); // forward reference
 static void stopRF(); // forward reference
 
-#if defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)
-#include <I2S.h>
-int I2SsampleRate = 16000;
+#if (defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)) && !defined(ESP32_C3)
+	#include <I2S.h>
+	int I2SsampleRate = 16000;
+	#define HAS_I2S 1
 #endif
 
 // Timing Functions and Hardware Initialization
@@ -2111,7 +2112,8 @@ void stopTone() {
 
 #endif // tone
 
-#if defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)
+#if defined(HAS_I2S)
+
 OBJ primI2SInit(int argCount, OBJ *args) {
 	// I2S needs 3 pins:
 	// args[0]: BCK / SCK / CLK
@@ -2145,8 +2147,10 @@ OBJ primI2SWrite(int argCount, OBJ *args) {
 }
 
 #else
+
 OBJ primI2SInit(int argCount, OBJ *args) { return falseObj; }
 OBJ primI2SWrite(int argCount, OBJ *args) { return falseObj; }
+
 #endif
 
 // DAC (digital to analog converter) Support
