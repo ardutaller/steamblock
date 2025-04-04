@@ -35,6 +35,11 @@ static void initPins(void); // forward reference
 static void initRandomSeed(void); // forward reference
 static void stopRF(); // forward reference
 
+#if defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)
+#include <I2S.h>
+int I2SsampleRate = 16000;
+#endif
+
 // Timing Functions and Hardware Initialization
 
 #if defined(NRF51) || defined(NRF52)
@@ -2089,6 +2094,44 @@ void stopTone() {
 
 #endif // tone
 
+#if defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)
+OBJ primI2SInit(int argCount, OBJ *args) {
+	// I2S needs 3 pins:
+	// args[0]: BCK / SCK / CLK
+	// args[1]: DATA / SD
+	// args[2]: LRCK / WS
+	// args[3]: sample rate
+	// args[4]: bits per sample
+	I2SsampleRate = obj2int(args[3]);
+
+#ifdef ESP32
+	I2S.end();
+	I2S.setSckPin(obj2int(args[0]));
+	I2S.setDataPin(obj2int(args[1]));
+	I2S.setFsPin(obj2int(args[2]));
+#elif defined(ARDUINO_SAMD_MKR1000)
+	outputString("Pins in the MKR1000 are preset to\nCLK: 2\nLRC: 3\nDATA: A6");
+#endif
+	I2S.begin(I2S_PHILIPS_MODE, I2SsampleRate, obj2int(args[4]));
+	return falseObj;
+}
+
+OBJ primI2SWrite(int argCount, OBJ *args) {
+	int startTime = microsecs();
+	int timePerSample = (1000000 / I2SsampleRate);
+	int wakeTime = timePerSample * (startTime / timePerSample);
+	int sample = obj2int(args[0]);
+	I2S.write(sample);
+	I2S.write(sample);
+	taskSleepMicros((wakeTime - microsecs()) % timePerSample);
+	return falseObj;
+}
+
+#else
+OBJ primI2SInit(int argCount, OBJ *args) { return falseObj; }
+OBJ primI2SWrite(int argCount, OBJ *args) { return falseObj; }
+#endif
+
 // DAC (digital to analog converter) Support
 
 #if defined(ESP32) && !defined(ESP32_S3) && !defined(ESP32_C3)
@@ -2611,6 +2654,8 @@ static PrimEntry entries[] = {
 	{"playTone", primPlayTone},
 	{"hasServo", primHasServo},
 	{"setServo", primSetServo},
+	{"i2sInit", primI2SInit},
+	{"i2sWrite", primI2SWrite},
 	{"dacInit", primDACInit},
 	{"dacWrite", primDACWrite},
 	{"softWriteByte", primSoftwareSerialWriteByte},

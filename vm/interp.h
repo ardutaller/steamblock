@@ -232,6 +232,7 @@ void sendSayForChunk(char *s, int len, uint8 chunkIndex);
 void vmLoop(void);
 void interpretStep();
 void taskSleep(int msecs);
+void taskSleepMicros(int usecs);
 void vmPanic(const char *s);
 int indexOfVarNamed(const char *varName);
 void processFileMessage(int msgType, int dataSize, char *data);
