@@ -4729,6 +4729,94 @@ msgstr ""
 msgid "ultrasonic distance (mm)"
 msgstr ""
 
+#. Calliope NeoPixel library block
+msgid "Calliope set all NeoPixels to _"
+msgstr ""
+
+#. Calliope NeoPixel library block
+msgid "Calliope set NeoPixels _ _ _"
+msgstr ""
+
+#. Calliope NeoPixel library block
+msgid "Calliope clear all NeoPixels"
+msgstr ""
+
+#. Calliope NeoPixel library block
+msgid "Calliope rotate NeoPixels by _"
+msgstr ""
+
+#. Calliope NeoPixel library block
+msgid "Calliope set NeoPixel _ to _"
+msgstr ""
+
+#. Calliope NeoPixel library block
+msgid "Calliope set brightness to _ %"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "180°"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "270°"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "360°"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "M0"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "M1"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "M0+M1"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "C8"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "C9"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "C14"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "C15"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "Calliope stop motor _"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "Calliope set motor _ to speed _ (-100~100)"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "Calliope set _ servo _ to angle _ °"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "Calliope stop all motors and servos"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "Calliope set continous servo _ to speed _ (-100~100)"
+msgstr ""
+
+#. Calliope Servoboard library block
+msgid "Calliope stop servo _"
+msgstr ""
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr ""
