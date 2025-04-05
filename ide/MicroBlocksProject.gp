@@ -1179,38 +1179,42 @@ method functionsEqual MicroBlocksModule f1 f2 {
 // translation template export
 
 to templateStringForLibrary libName {
-	// setClipboard (templateStringForLibrary 'CoCube')
+	// setClipboard (templateStringForLibrary 'Calliope NeoPixel')
 	project = (project (first (allInstances 'MicroBlocksEditor')))
 	lib = (libraryNamed project libName)
 	if (isNil lib) { return '' }
-	return (join (choiceTemplates lib) (blockTemplates lib))
-}
-
-method templateString MicroBlocksModule {
-	return (join (choiceTemplates this) (blockTemplates this))
+	return (join (choiceTemplates lib) (newline) (blockTemplates lib))
 }
 
 method choiceTemplates MicroBlocksModule {
+	seen = (dictionary) // used to avoid duplicate entries
 	result = (list)
 	for choiceList (values choices) {
 		for c choiceList {
-			add result (join '#. ' moduleName ' library block')
-			add result (join 'msgid "' c '"')
-			add result 'msgstr ""'
-			add result ''
+			if (not (or (representsAnInteger c) (contains seen c))) {
+				add seen c
+				add result (join '#. ' moduleName ' library block')
+				add result (join 'msgid "' c '"')
+				add result 'msgstr ""'
+				add result ''
+			}
 		}
 	}
 	return (joinStrings result (newline))
 }
 
 method blockTemplates MicroBlocksModule {
+	seen = (dictionary) // used to avoid duplicate entries
 	result = (list)
 	for spec (values blockSpecs) {
 		blockLabel = (first (specs spec))
-		add result (join '#. ' moduleName ' library block')
-		add result (join 'msgid "' blockLabel '"')
-		add result 'msgstr ""'
-		add result ''
+		if (not (or (beginsWith blockLabel '_') (contains seen blockLabel))) {
+			add seen blockLabel
+			add result (join '#. ' moduleName ' library block')
+			add result (join 'msgid "' blockLabel '"')
+			add result 'msgstr ""'
+			add result ''
+		}
 	}
 	return (joinStrings result (newline))
 }
