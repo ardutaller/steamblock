@@ -415,8 +415,8 @@ static void storeCodeChunk(uint8 chunkIndex, int byteCount, uint8 *data) {
 	if (chunkIndex >= MAX_CHUNKS) return;
 	stopTaskForChunk(chunkIndex);
 	int chunkType = data[0]; // first byte is the chunk type
-	int *persistenChunk = appendPersistentRecord(chunkCode, chunkIndex, chunkType, byteCount - 1, &data[1]);
-	chunks[chunkIndex].code = persistenChunk;
+	int *persistentChunk = appendPersistentRecord(chunkCode, chunkIndex, chunkType, byteCount - 1, &data[1]);
+	chunks[chunkIndex].code = persistentChunk;
 	chunks[chunkIndex].chunkType = chunkType;
 }
 
