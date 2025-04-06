@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-04-03 00:23+0000\n"
+"PO-Revision-Date: 2025-04-07 09:20+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -877,7 +877,7 @@ msgstr "zum Ursprung"
 
 #. Generic stop block
 msgid "stop"
-msgstr "stop"
+msgstr "stopp"
 
 #. Generic robot "both sensors" input for a ( read ( both sensors ) ) block
 msgid "both sensors"
@@ -1432,7 +1432,7 @@ msgstr "Bruch _ / _"
 
 #. DrawBot Library block
 msgid "plotter stop"
-msgstr "Plotter stop"
+msgstr "stoppe Plotter"
 
 #. BMP library block
 msgid "display BMP file _ at x _ y _"
@@ -1460,7 +1460,7 @@ msgstr "lösche Schrittzahl"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Stop"
-msgstr "Finch Stoppen"
+msgstr "Finch stoppen"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Light"
@@ -1851,7 +1851,7 @@ msgstr "normal (65%)"
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr "Eigene Sprachdatei"
+msgstr "Nutzerdefiniert ..."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
@@ -5628,7 +5628,7 @@ msgstr "ms _ Energiemesser"
 
 #. micro:STEAMakers library block
 msgid "ms;stop"
-msgstr "anhalten"
+msgstr "stoppen"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR clear RGB LED"
