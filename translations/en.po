@@ -4754,46 +4754,6 @@ msgid "Calliope set brightness to _ %"
 msgstr "Calliope set brightness to _ %"
 
 #. Calliope Servoboard library block
-msgid "180°"
-msgstr "180°"
-
-#. Calliope Servoboard library block
-msgid "270°"
-msgstr "270°"
-
-#. Calliope Servoboard library block
-msgid "360°"
-msgstr "360°"
-
-#. Calliope Servoboard library block
-msgid "M0"
-msgstr "M0"
-
-#. Calliope Servoboard library block
-msgid "M1"
-msgstr "M1"
-
-#. Calliope Servoboard library block
-msgid "M0+M1"
-msgstr "M0+M1"
-
-#. Calliope Servoboard library block
-msgid "C8"
-msgstr "C8"
-
-#. Calliope Servoboard library block
-msgid "C9"
-msgstr "C9"
-
-#. Calliope Servoboard library block
-msgid "C14"
-msgstr "C14"
-
-#. Calliope Servoboard library block
-msgid "C15"
-msgstr "C15"
-
-#. Calliope Servoboard library block
 msgid "Calliope stop motor _"
 msgstr "Calliope stop motor _"
 
