@@ -716,7 +716,7 @@ void hardwareInit() {
 #elif defined(FOXBIT)
 	#define BOARD_TYPE "Foxbit"
 	#define PIN_BUTTON_A 0
-	#define PIN_BUTTON_B 15
+	#define PIN_BUTTON_B 4
 	#define DIGITAL_PINS 25
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 40
