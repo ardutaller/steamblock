@@ -37,6 +37,14 @@ void delay(unsigned long); // Arduino delay function
 	#define ESP32_FLASH_CODESTORE true
 #endif
 
+// Half-space header
+
+#if defined(DUELink)
+	#define CYCLE_COUNT_WORDS 2
+#else
+	#define CYCLE_COUNT_WORDS 1
+#endif
+
 // flash operations for supported platforms
 
 #if defined(NRF51) || defined(NRF52) || defined(ARDUINO_NRF52_PRIMO)
@@ -450,6 +458,62 @@ static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 	flash_write(flash_dev, (uintptr_t)dst, src, wordCount * sizeof(int));
 }
 
+#elif defined(DUELink)
+
+#include <Arduino.h>
+#include <stm32c0xx_hal_flash.h>
+
+#define STM32_FLASH_START 0x08000000
+#define STM32_PAGE_SIZE 0x800 // 2k bytes
+
+#define START (STM32_FLASH_START + (92 * 1024))
+#define HALF_SPACE (18 * 1024)
+
+static void flashErase(int *startAddr, int *endAddr) {
+	int startPage = ((int) startAddr - STM32_FLASH_START) / STM32_PAGE_SIZE;
+	int pageCount = ((endAddr - startAddr) * 4) / STM32_PAGE_SIZE;
+	FLASH_EraseInitTypeDef eraseParams = {FLASH_TYPEERASE_PAGES, startPage, pageCount};
+	uint32_t err = 0;
+
+	HAL_FLASH_Unlock();
+	HAL_FLASHEx_Erase(&eraseParams, &err);
+	HAL_FLASH_Lock();
+}
+
+static void flashWriteTwoWords(int *addr, uint32_t word1, uint32_t word2) {
+	// STM32 only supports writing 64-bit double words. Address must be double word aligned.
+
+	uint32_t err = 0;
+	uint32_t words[2] = {word1, word2};
+	HAL_FLASH_Unlock();
+	err = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, (uint32_t) addr, *((uint64_t *) &words[0]));
+	HAL_FLASH_Lock();
+}
+
+static void flashWriteData(int *dst, int wordCount, uint8 *src) {
+	// Write the given number of 32-bit words of data from src to flash starting at dst.
+	// If wordCount is odd, pad the final 64-bit write with a zero word.
+	// Note: The STM32 flash system can only write 64-bit double words, double-word aligned.
+
+	uint32_t dstAddr = (uint32_t) dst;
+	uint8 buf[8];
+
+	HAL_FLASH_Unlock();
+	for (int i = 0; i < wordCount / 2; i++) {
+		memcpy(buf, src + (8 * i), sizeof(buf));
+		int err = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, dstAddr, *((uint64_t *) &buf));
+		dstAddr += 8;
+	}
+	if (wordCount & 1) { // wordCount is odd
+		// write the final 64-bit double word padded with a zero word
+		memset(buf, 0, sizeof(buf));
+		memcpy(buf, src + (4 * (wordCount - 1)), 4);
+		int err = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, dstAddr, *((uint64_t *) &buf));
+		dstAddr += 8;
+	}
+	HAL_FLASH_Lock();
+}
+
 #else
 	// Simulate Flash operations using a RAM code store; allows MicroBlocks to run in RAM
 	// on platforms that do not support Flash-based persistent memory. On systems with
@@ -469,9 +533,6 @@ static void flashWriteData(int *dst, int wordCount, uint8 *src) {
 	#elif defined(ARDUINO_ARCH_RP2040)
 		#define USE_CODE_FILE RP2040_PHILHOWER
 		#define HALF_SPACE (40 * 1024)
-	#elif defined(DUELink)
-		// temporary, until Flash code store is implemented
-		#define HALF_SPACE (4 * 1024)
 	#else
 		#define HALF_SPACE (40 * 1024)
 	#endif
@@ -558,7 +619,11 @@ static void setCycleCount(int halfSpace, int cycleCount) {
 	// Store the given cycle count at the given address.
 
 	int *p = (0 == halfSpace) ? start0 : start1;
-	flashWriteWord(p, ('S' << 24) | (cycleCount & 0xFFFFFF));
+	#if defined(DUELink)
+		flashWriteTwoWords(p, ('S' << 24) | (cycleCount & 0xFFFFFF), 0);
+	#else
+		flashWriteWord(p, ('S' << 24) | (cycleCount & 0xFFFFFF));
+	#endif
 }
 
 static void initPersistentMemory() {
@@ -583,18 +648,18 @@ static void initPersistentMemory() {
 		flashErase(start0, end1);
 		setCycleCount(0, 1);
 		current = 0;
-		freeStart = start0 + 1;
+		freeStart = start0 + CYCLE_COUNT_WORDS;
 		return;
 	}
 
 	int *end;
 	if (c0 > c1) {
 		current = 0;
-		freeStart = start0 + 1;
+		freeStart = start0 + CYCLE_COUNT_WORDS;
 		end = end0;
 	} else {
 		current = 1;
-		freeStart = start1 + 1;
+		freeStart = start1 + CYCLE_COUNT_WORDS;
 		end = end1;
 	}
 
@@ -605,7 +670,11 @@ static void initPersistentMemory() {
 			clearPersistentMemory();
 			return;
 		}
-		freeStart += *(freeStart + 1) + 2; // increment by the record length plus 2-word header
+		int wordCount = *(freeStart + 1); // size word of header
+		freeStart += wordCount + 2; // increment by the record length plus 2-word header
+		#if defined(DUELink)
+			if (wordCount & 1) freeStart++; // wordCount is odd; round up to double-word boundary
+		#endif
 	}
 	if (freeStart >= end) freeStart = end;
 }
@@ -624,11 +693,15 @@ int * recordAfter(int *lastRecord) {
 	}
 	int *p = lastRecord;
 	if (NULL == lastRecord) { // return the first record
-		p = (start + 1);
+		p = start + CYCLE_COUNT_WORDS;
 		return ('R' == ((*p >> 24) & 0xFF)) ? p : NULL;
 	}
 	if ((p >= end) || ('R' != ((*p >> 24) & 0xFF))) return NULL; // should not happen
-	p += *(p + 1) + 2; // increment by the record length plus 2-word header
+	int wordCount = *(p + 1);
+	p += wordCount + 2; // increment by wordCount plus 2-word header
+	#if defined(DUELink)
+		if (wordCount & 1) p++; // wordCount is odd; round up to double-word boundary
+	#endif
 	if ((p >= end) || 'R' != ((*p >> 24) & 0xFF)) return NULL; // bad header; probably start of free space
 	return p;
 }
@@ -722,6 +795,9 @@ static int * copyChunk(int *dst, int *src) {
 
 	int wordCount = *(src + 1) + 2;
 	flashWriteData(dst, wordCount, (uint8 *) src);
+	#if defined(DUELink)
+		if (wordCount & 1) wordCount++; // wordCount is odd; round up to double-word boundary
+	#endif
 	return dst + wordCount;
 }
 
@@ -840,7 +916,7 @@ static void compactFlash() {
 
 	// clear the destination half-space and init dst pointer
 	clearHalfSpace(!current);
-	int *dst = ((0 == !current) ? start0 : start1) + 1;
+	int *dst = ((0 == !current) ? start0 : start1) + CYCLE_COUNT_WORDS;
 
 	int *src = compactionStartRecord();
 	while (src) {
@@ -988,7 +1064,7 @@ void clearPersistentMemory() {
 	int count = (c0 > c1) ? c0 : c1;
 	current = !current;
 	clearHalfSpace(current);
-	freeStart = (0 == current) ? start0 + 1 : start1 + 1;
+	freeStart = ((0 == current) ? start0 : start1) + CYCLE_COUNT_WORDS;
 	setCycleCount(current, count + 1);
 }
 
@@ -1029,9 +1105,17 @@ int * appendPersistentRecord(int recordType, int id, int extra, int byteCount, u
 	#endif
 
 	int *result = freeStart;
-	flashWriteWord(freeStart++, header);
-	flashWriteWord(freeStart++, wordCount);
+	#if defined(DUELink)
+		flashWriteTwoWords(freeStart, header, wordCount);
+		freeStart += 2;
+	#else
+		flashWriteWord(freeStart++, header);
+		flashWriteWord(freeStart++, wordCount);
+	#endif
 	if (wordCount) flashWriteData(freeStart, wordCount, data);
+	#if defined(DUELink)
+		if (wordCount & 1) wordCount++; // wordCount is odd; round up to double-word boundary
+	#endif
 	freeStart += wordCount;
 	return result;
 }
@@ -1139,6 +1223,7 @@ void basicTest() {
 	flashErase(PAGE, PAGE + 100);
 	dumpWords(0, 35);
 	outputString("-----");
+#if !defined(DUELink)
 	flashWriteData(PAGE, 10, (uint8 *) testData);
 	flashWriteWord(PAGE + 13, 13);
 	flashWriteWord(PAGE + 15, 42);
@@ -1146,6 +1231,7 @@ void basicTest() {
 	flashWriteData(PAGE + 19, 3, charData);
 	flashWriteData(PAGE + 23, 3, &charData[1]);
 	flashWriteData(PAGE + 27, 3, &charData[2]);
+#endif
 	dumpWords(0, 35);
 	flashErase(PAGE, PAGE + 100);
 	dumpWords(0, 20);
