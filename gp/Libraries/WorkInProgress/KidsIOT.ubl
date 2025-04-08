@@ -16,7 +16,7 @@ choices kiot_digitalSensors 'kiot;button pressed?' 'kiot;humidity' 'kiot;magnet 
 choices kiot_side 'kiot;left' 'kiot;right' 
 description 'KidsIoT easy plug connection system (Keyestudio)
 '
-variables _kiot_buzzer_init 
+variables _kiot_buzzer_init _kiot_avg_loudness 
 
   spec ' ' 'kiot play note' '#SVG#square11#0070ff play note _ octave _ for _ port _' 'menu.tone_NoteName num num menu.kiot_allPorts' 'nt;c' 0 500 1
   space
@@ -103,6 +103,10 @@ to 'kiot analogSensors' sensor port {
     local 'value' (analogReadOp (at ('[data:convertType]' port 'number') ('[data:makeList]' '' '' 4 39 '' 36 35 34)))
     if (or (sensor == 'kiot;film pressure') (sensor == 'kiot;flame')) {
       return (1023 - value)
+    } (sensor == 'kiot;microphone') {
+      comment 'Simple low-pass filter to smooth some of the noise.'
+      _kiot_avg_loudness = (((4 * _kiot_avg_loudness) + value) / 5)
+      return _kiot_avg_loudness
     } (sensor == 'kiot;AD key') {
       if (and (value > 0) (value < 250)) {
         return 1
