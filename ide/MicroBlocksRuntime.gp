@@ -1350,6 +1350,7 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'Tone'
 		importEmbeddedLibrary scripter 'TFT'
 	} ('Foxbit' == boardType) {
+		importEmbeddedLibrary scripter 'Foxbit'
 		importEmbeddedLibrary scripter 'Basic Sensors'
 		importEmbeddedLibrary scripter 'LED Display'
 	} ('KidsIOT' == boardType) {
