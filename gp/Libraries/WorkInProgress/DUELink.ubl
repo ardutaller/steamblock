@@ -5,6 +5,9 @@ description 'Standard DUELink Library (partial).
 See https://www.duelink.com/docs/engine/stdlib'
 variables _dueUseI2C 
 
+  spec ' ' 'due_useI2C' 'DUELink useI2C _' 'bool' true
+  spec 'r' 'due_connected' 'DUELink connected?'
+  space
   spec ' ' 'due_led' 'led high _ low _ count _' 'num num num' 100 100 5
   spec ' ' 'due_beep' 'beep pin _ freq _ dur _' 'num num num' 3 440 100
   space
@@ -23,11 +26,10 @@ variables _dueUseI2C
   spec 'r' 'due_readvcc' 'readvcc'
   space
   spec ' ' 'due_sel' 'sel _' 'num' 1
-  spec 'r' 'due_connected' 'connected?'
   spec 'r' 'due_info' 'info _' 'num' 1
   space
-  spec ' ' 'due_run' 'due run _' 'str' 'statled(100,100,5)'
-  spec 'r' 'due_runWithResult' 'due run _ with result' 'str' 'version()'
+  spec ' ' 'due_run' 'run _' 'str' 'statled(100,100,5)'
+  spec 'r' 'due_runWithResult' 'run _ with result' 'str' 'version()'
   space
   spec ' ' '_due_send' '_due send _' 'str'
   spec 'r' '_due_awaitResult' '_due await result'
@@ -184,6 +186,10 @@ to due_tickms {
 
 to due_tickus {
   return (due_runWithResult 'tickus()')
+}
+
+to due_useI2C useI2C {
+  _dueUseI2C = useI2C
 }
 
 to due_vread pin {
