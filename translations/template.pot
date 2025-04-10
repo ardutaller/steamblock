@@ -2900,18 +2900,6 @@ msgstr ""
 msgid "button _ pressed"
 msgstr ""
 
-#. Calliope board library block
-msgid "Calliope set LED red _ green _ blue _"
-msgstr ""
-
-#. Calliope board library block
-msgid "Calliope set speaker _"
-msgstr ""
-
-#. Calliope board library block
-msgid "Calliope loudness"
-msgstr ""
-
 #. Circuit Playground Express board library block
 msgid "Circuit Playground set speaker _"
 msgstr ""
