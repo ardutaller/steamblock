@@ -1255,7 +1255,7 @@ method checkVmVersion SmallRuntime {
 	if ((latestVmVersion this) > vmVersion) {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
-			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040'))
+			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'DUELink'))
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
 			// then requires the user to put the board into boot mode.
