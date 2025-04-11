@@ -1,6 +1,6 @@
 module 'MP3 Player (DF1201S)' Output
-author 'per José García Yeste'
-version 1 1 
+author 'José García Yeste'
+version 1 2 
 description 'Support for MP3 DFPlayer Pro
 Dual chanel, integrated amplifier regulable by software and 128MbB storage.
 
@@ -15,10 +15,11 @@ variables _mp3df_isPlaying
   space
   spec ' ' 'mp3df_volume' 'mp3 volume _' 'auto' 15
   spec 'r' 'mp3df_get_volume' 'mp3 volume'
+  space
   spec ' ' 'mp3df_play_time' 'mp3 play time _' 'auto' '10'
   spec 'r' 'mp3df_get_time' 'mp3 play time'
   spec 'r' 'mp3df_total_time' 'mp3 total time'
-  spec 'r' 'mp3df_playing' 'mp3 playing'
+  spec 'r' 'mp3df_playing' 'mp3 is playing?'
   space
   spec 'r' 'mp3df_files' 'mp3 files'
   space
