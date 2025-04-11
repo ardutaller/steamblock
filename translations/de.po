@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-04-03 00:23+0000\n"
+"PO-Revision-Date: 2025-04-10 14:14+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -877,7 +877,7 @@ msgstr "zum Ursprung"
 
 #. Generic stop block
 msgid "stop"
-msgstr "stop"
+msgstr "stopp"
 
 #. Generic robot "both sensors" input for a ( read ( both sensors ) ) block
 msgid "both sensors"
@@ -1432,7 +1432,7 @@ msgstr "Bruch _ / _"
 
 #. DrawBot Library block
 msgid "plotter stop"
-msgstr "Plotter stop"
+msgstr "stoppe Plotter"
 
 #. BMP library block
 msgid "display BMP file _ at x _ y _"
@@ -1460,7 +1460,7 @@ msgstr "lösche Schrittzahl"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Stop"
-msgstr "Finch Stoppen"
+msgstr "Finch stoppen"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Light"
@@ -1851,7 +1851,7 @@ msgstr "normal (65%)"
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr "Eigene Sprachdatei"
+msgstr "Nutzerdefiniert ..."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
@@ -2679,7 +2679,7 @@ msgstr "MODULE"
 
 #. Library folder
 msgid "folder;Kits and Boards"
-msgstr "Kits & Boards"
+msgstr "Boards & Kits"
 
 #. String in file picker and library dialogs
 msgid "Dependency path, name or URL?"
@@ -5628,7 +5628,7 @@ msgstr "ms _ Energiemesser"
 
 #. micro:STEAMakers library block
 msgid "ms;stop"
-msgstr "anhalten"
+msgstr "stoppen"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR clear RGB LED"
@@ -5738,7 +5738,7 @@ msgstr "Effekt 2"
 
 #. General MIDI drum instrument name
 msgid "Mute Triangle"
-msgstr "Triangel stumm schalten"
+msgstr "Mute Triangle"
 
 #. General MIDI drum set
 msgid "TR-808"
@@ -5750,11 +5750,11 @@ msgstr "Effekt 1"
 
 #. General MIDI drum instrument name
 msgid "Open Triangle"
-msgstr "Triangel öffnen"
+msgstr "Open Triangle"
 
 #. General MIDI instrument category
 msgid "chromatic percussion"
-msgstr "chromatisches Schlagzeug"
+msgstr "chromatic Percussion"
 
 #. MQTT library block
 msgid "MQTT set will topic _ payload _"
@@ -6462,3 +6462,51 @@ msgstr "LPS331AP Temperatur _"
 #. Barometer (LPS331AP) library
 msgid "Barometer (LPS331AP)"
 msgstr "Barometer (LPS331AP)"
+
+#. Calliope NeoPixel library block
+msgid "Calliope set all NeoPixels to _"
+msgstr "Calliope setze alle NeoPixel auf _"
+
+#. Calliope NeoPixel library block
+msgid "Calliope clear all NeoPixels"
+msgstr "Calliope lösche alle NeoPixel"
+
+#. Calliope NeoPixel library block
+msgid "Calliope rotate NeoPixels by _"
+msgstr "Calliope rotiere NeoPixel um _"
+
+#. Calliope NeoPixel library block
+msgid "Calliope set NeoPixel _ to _"
+msgstr "Calliope setze NeoPixel _ auf _"
+
+#. Calliope NeoPixel library block
+msgid "Calliope set brightness to _ %"
+msgstr "Calliope setze NeoPixel auf Helligkeit _ %"
+
+#. Calliope Servoboard library block
+msgid "Calliope set motor _ to speed _ (-100~100)"
+msgstr "Calliope drehe Motor _ mit_ (-100~100)"
+
+#. Calliope Servoboard library block
+msgid "Calliope stop motor _"
+msgstr "Calliope stoppe Motor _"
+
+#. Calliope Servoboard library block
+msgid "Calliope set _ servo _ to angle _ °"
+msgstr "Calliope setze _ Servo _ auf Winkel _ °"
+
+#. Calliope Servoboard library block
+msgid "Calliope set continous servo _ to speed _ (-100~100)"
+msgstr "Calliope drehe Rotationsservo _ mit _ (-100~100)"
+
+#. Calliope Servoboard library block
+msgid "Calliope stop servo _"
+msgstr "Calliope stoppe Servo _"
+
+#. Calliope Servoboard library block
+msgid "Calliope stop all motors and servos"
+msgstr "Calliope stoppe alle Motoren und Servos"
+
+#. Calliope NeoPixel library block
+msgid "Calliope set NeoPixels _ _ _"
+msgstr "Calliope setze NeoPixel _ _ _"
