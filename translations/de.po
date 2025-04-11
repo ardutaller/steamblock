@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-04-10 14:14+0000\n"
+"PO-Revision-Date: 2025-04-12 22:10+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -6485,7 +6485,7 @@ msgstr "Calliope setze NeoPixel auf Helligkeit _ %"
 
 #. Calliope Servoboard library block
 msgid "Calliope set motor _ to speed _ (-100~100)"
-msgstr "Calliope drehe Motor _ mit_ (-100~100)"
+msgstr "Calliope drehe Motor _ mit _ (-100~100)"
 
 #. Calliope Servoboard library block
 msgid "Calliope stop motor _"
@@ -6510,3 +6510,15 @@ msgstr "Calliope stoppe alle Motoren und Servos"
 #. Calliope NeoPixel library block
 msgid "Calliope set NeoPixels _ _ _"
 msgstr "Calliope setze NeoPixel _ _ _"
+
+#. Radio library block
+msgid "radio my ID"
+msgstr "Radio meine ID"
+
+#. 5x5 LED Display library block
+msgid "led image _"
+msgstr "LED-Bild _"
+
+#. Radio library block
+msgid "radio last sender ID"
+msgstr "Radio letzte Sender-ID"
