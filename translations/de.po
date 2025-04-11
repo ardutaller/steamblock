@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-04-09 13:34+0000\n"
+"PO-Revision-Date: 2025-04-10 14:14+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -5738,7 +5738,7 @@ msgstr "Effekt 2"
 
 #. General MIDI drum instrument name
 msgid "Mute Triangle"
-msgstr "Triangel stumm schalten"
+msgstr "Mute Triangle"
 
 #. General MIDI drum set
 msgid "TR-808"
@@ -5750,11 +5750,11 @@ msgstr "Effekt 1"
 
 #. General MIDI drum instrument name
 msgid "Open Triangle"
-msgstr "Triangel öffnen"
+msgstr "Open Triangle"
 
 #. General MIDI instrument category
 msgid "chromatic percussion"
-msgstr "chromatisches Schlagzeug"
+msgstr "chromatic Percussion"
 
 #. MQTT library block
 msgid "MQTT set will topic _ payload _"
@@ -6473,7 +6473,7 @@ msgstr "Calliope lösche alle NeoPixel"
 
 #. Calliope NeoPixel library block
 msgid "Calliope rotate NeoPixels by _"
-msgstr "Calliope rotiere NeoPixel mit _"
+msgstr "Calliope rotiere NeoPixel um _"
 
 #. Calliope NeoPixel library block
 msgid "Calliope set NeoPixel _ to _"
