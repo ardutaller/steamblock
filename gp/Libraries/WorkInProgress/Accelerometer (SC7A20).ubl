@@ -1,7 +1,7 @@
 module 'Accelerometer (SC7A20)' Input
 author MicroBlocks
 version 1 0 
-choices sc7a20_accel 'sc7a20;tilt x' 'sc7a20;tilt y' 'sc7a20;tilt z' 'sc7a20;acceleration' 
+choices sc7a20_accel 'tilt x' 'tilt y' 'tilt z' acceleration 
 description 'Library for tilt and acceleration based on the SC7A20 accelerometer.
 
 https://www.compel.ru/pdf-items/silan/pn/sc7a20tr/5969b6fe68464f2f6df6196ab215ac18
@@ -9,7 +9,7 @@ https://www.compel.ru/pdf-items/silan/pn/sc7a20tr/5969b6fe68464f2f6df6196ab215ac
 '
 variables _sc7a20_addr 
 
-  spec 'r' 'sc7a20_accelerometer' '#SVG#square11#00c612 sc7a20 accelerometer _' 'menu.sc7a20_accel' 'sc7a20;tilt x'
+  spec 'r' 'sc7a20_accelerometer' '#SVG#square11#00c612 sc7a20 accelerometer _' 'menu.sc7a20_accel' 'tilt x'
   space
   spec 'r' '_sc7a20_signed12bit' '_sc7a20_signed12bit msb _ lsb _' 'num num'
   spec ' ' '_sc7a20_read_into' '_sc7a20_read_into _' 'auto'
@@ -56,13 +56,13 @@ A value of 100 is approximately one G.'
     local 'x' ('_sc7a20_signed12bit' (at 2 buf) (at 1 buf))
     local 'y' ('_sc7a20_signed12bit' (at 4 buf) (at 3 buf))
     local 'z' ('_sc7a20_signed12bit' (at 6 buf) (at 5 buf))
-    if (option == 'sc7a20;tilt x') {
+    if (option == 'tilt x') {
       value = x
-    } (option == 'sc7a20;tilt y') {
+    } (option == 'tilt y') {
       value = y
-    } (option == 'sc7a20;tilt z') {
+    } (option == 'tilt z') {
       value = z
-    } (option == 'sc7a20;acceleration') {
+    } (option == 'acceleration') {
       value = ('[misc:sqrt]' (((x * x) + (y * y)) + (z * z)))
     } else {
       return 'Option not supported'

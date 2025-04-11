@@ -8,7 +8,7 @@ variables _bmp388_addr _bmp388_basePressure _bmp388_baseAltitude
   spec 'r' 'bmp388_temperature' 'bmp388 temperature (°C)'
   space
   spec 'r' 'bmp388_altitudeCentimeters' 'bmp388 altitude (cm)'
-  spec ' ' 'bmp388_setCurrentAltitude' 'set current altitude _ meters' 'num' 0
+  spec ' ' 'bmp388_setCurrentAltitude' 'bmp388 set current altitude _ meters' 'num' 0
   space
   spec ' ' '_bmp388_init' '_bmp388_init'
   spec 'r' '_bmp388_altitudeMillimeters' '_bmp388_altitudeMillimeters'
