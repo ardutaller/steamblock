@@ -651,66 +651,6 @@ msgid "my IP address"
 msgstr "my IP address"
 
 #. Primitive block. Mostly hidden from end users.
-msgid "radio send number _"
-msgstr "radio send number _"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio send string _"
-msgstr "radio send string _"
-
-#. Example string for blocks that send a message via some communication channel.
-msgid "Hello!"
-msgstr "Hello!"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio send pair _ = _"
-msgstr "radio send pair _ = _"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "light"
-msgstr "light"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio message received?"
-msgstr "radio message received?"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio last number"
-msgstr "radio last number"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio last string"
-msgstr "radio last string"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio last message type"
-msgstr "radio last message type"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio set group _ (0-255)"
-msgstr "radio set group _ (0-255)"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio set channel (0-83) _"
-msgstr "radio set channel (0-83) _"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio set power (0-7) _"
-msgstr "radio set power (0-7) _"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio last signal strength"
-msgstr "radio last signal strength"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio receive packet _"
-msgstr "radio receive packet _"
-
-#. Primitive block. Mostly hidden from end users.
-msgid "radio send packet _"
-msgstr "radio send packet _"
-
-#. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
 msgstr "disable radio"
 
@@ -1342,6 +1282,74 @@ msgstr "start BLE Keyboard"
 msgid "Radio"
 msgstr "Radio"
 
+#. Radio library block
+msgid "radio send number _"
+msgstr "radio send number _"
+
+#. Radio library block
+msgid "radio send string _"
+msgstr "radio send string _"
+
+#. Example string for blocks that send a message via some communication channel.
+msgid "Hello!"
+msgstr "Hello!"
+
+#. Radio library block
+msgid "radio send pair _ = _"
+msgstr "radio send pair _ = _"
+
+#. Example string for blocks that send a message via some communication channel.
+msgid "light"
+msgstr "light"
+
+#. Radio library block
+msgid "radio message received?"
+msgstr "radio message received?"
+
+#. Radio library block
+msgid "radio last number"
+msgstr "radio last number"
+
+#. Radio library block
+msgid "radio last string"
+msgstr "radio last string"
+
+#. Radio library block
+msgid "radio last message type"
+msgstr "radio last message type"
+
+#. Radio library block
+msgid "radio set group _ (0-255)"
+msgstr "radio set group _ (0-255)"
+
+#. Radio library block
+msgid "radio set channel (0-83) _"
+msgstr "radio set channel (0-83) _"
+
+#. Radio library block
+msgid "radio set power (0-7) _"
+msgstr "radio set power (0-7) _"
+
+#. Radio library block
+msgid "radio last signal strength"
+msgstr "radio last signal strength"
+
+#. Radio library block
+msgid "radio send packet _"
+msgstr "radio send packet _"
+
+#. Radio library block
+msgid "radio receive packet _"
+msgstr "radio receive packet _"
+
+#. Radio library block
+msgid "radio last sender ID"
+msgstr "radio last sender ID"
+
+#. Radio library block
+msgid "radio my ID"
+msgstr "radio my ID"
+
 #. Text scrolling library label
 #. Scrolls text on 5x5 LED displays and simulated ones
 msgid "Scrolling"
@@ -1404,6 +1412,10 @@ msgstr "clear display"
 #. 5x5 LED Display library block
 msgid "set display color _"
 msgstr "set display color _"
+
+#. 5x5 LED Display library block
+msgid "led image _"
+msgstr "led image _"
 
 #. 5x5 LED Display library block
 msgid "plot x _ y _"
