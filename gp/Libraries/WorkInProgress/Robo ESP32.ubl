@@ -21,7 +21,7 @@ description 'Cytron Robo ESP32: Simplifying Robotics with ESP32
   spec ' ' 'roboESP32_set_motor' 'roboESP32 set motor _ power _ (-100 to 100)' 'menu.roboesp32motor num' 'M1' 100
   spec ' ' 'roboESP32_stop_motor' 'roboESP32 stop motor _' 'menu.roboesp32motor' 'M1'
   space
-  spec ' ' 'roboESP32_set_servo' 'roboESP32 set servo pin _ angle as _ degrees (-90 to 90)' 'menu.roboesp32servo auto' 'D4' 0
+  spec ' ' 'roboESP32_set_servo' 'roboESP32 set servo _ to _ degrees (-90 to 90)' 'menu.roboesp32servo auto' 'D4' 0
   space
   spec ' ' 'roboESP32_play_song' 'roboESP32 play Happy Birthday!'
   space
