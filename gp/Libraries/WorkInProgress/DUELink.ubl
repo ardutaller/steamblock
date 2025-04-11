@@ -84,7 +84,10 @@ to '_due_awaitResultI2C' {
 
 to '_due_endsWithPrompt' buffer {
   local 'end' (size buffer)
-  return (and (and (end >= 3) ((at end buffer) == 62)) (and ((at (end - 1) buffer) == 10) ((at (end - 2) buffer) == 13)))
+  if (end < 3) {
+    return (booleanConstant false)
+  }
+  return (and (or ((at end buffer) == 62) ((at end buffer) == 36)) (and ((at (end - 1) buffer) == 10) ((at (end - 2) buffer) == 13)))
 }
 
 to '_due_send' s {
