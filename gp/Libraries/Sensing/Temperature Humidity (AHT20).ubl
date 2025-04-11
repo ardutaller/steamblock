@@ -5,8 +5,9 @@ description 'Support for AHT20 temperature and relative humidity sensor.
 
 https://files.seeedstudio.com/wiki/Grove-AHT20_I2C_Industrial_Grade_Temperature_and_Humidity_Sensor/AHT20-datasheet-2020-4-16.pdf'
 
-  spec 'r' 'aht20_temperature' 'aht20_temperature'
-  spec 'r' 'aht20_humidity' 'aht20_humidity'
+  spec 'r' 'aht20_temperature' 'aht20 temperature (°C)'
+  spec 'r' 'aht20_humidity' 'aht20 humidity (%)'
+  space
   spec 'r' '_aht20_read_data' '_aht20_read_data'
 
 to '_aht20_read_data' {
