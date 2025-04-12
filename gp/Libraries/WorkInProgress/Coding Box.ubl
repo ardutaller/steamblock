@@ -1,39 +1,43 @@
 module 'Coding Box'
 author MicroBlocks
-version 1 1
+version 1 2
 depends '_Air Pressure (BMP388)' '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT
 choices cbox_joystick x y
 choices cbox_compass x y z total
 choices cbox_ledOrButton red yellow green all
 description ''
 
-  spec ' ' 'cbox_setLED' 'cb set _ LED to _' 'menu.cbox_ledOrButton bool' 'red' true
-  spec ' ' 'cbox_beep' 'cb beep for _ millisecs' 'auto' 100
+  spec ' ' 'cbox_setNeoPixelColors' 'cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _' 'color color color color color color color color color color color color'
+  spec ' ' 'cbox_setAllNeoPixels' 'cb set all rainbow colors to _' 'color'
+  spec ' ' 'cbox_clearNeoPixels' 'cb clear rainbow colors'
+  space
+  spec ' ' 'cbox_oledWrite' 'cb oled write _ at x _ y _ big _' 'auto num num bool' 'Welcome!' 20 20 true
+  spec ' ' 'cbox_oledClear' 'cb clear oled'
   space
   spec ' ' 'cbox_setServo' 'cb set servo to _ degrees (0 to 180)' 'num' 90
+  space
   spec ' ' 'cbox_setFan' 'cb set fan power _ (-100 to 100)' 'num' 50
   spec ' ' 'cbox_stopFan' 'cb stop fan'
   space
-  spec ' ' 'cbox_setNeoPixelColors' 'cb set NeoPixels #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _' 'color color color color color color color color color color color color'
-  spec ' ' 'cbox_setAllNeoPixels' 'cb set all NeoPixels _' 'color'
-  spec ' ' 'cbox_clearNeoPixels' 'cb clear NeoPixels'
+  spec ' ' 'cbox_beep' 'cb speaker beep for _ millisecs' 'auto' 100
+  spec ' ' 'cbox_setLED' 'cb set _ LED to _' 'menu.cbox_ledOrButton bool' 'red' true
   space
-  spec 'r' 'cbox_adkey' 'cb _ ADKey pressed?' 'menu.cbox_ledOrButton' 'red'
+  spec 'r' 'cbox_light' 'cb light'
+  spec 'r' 'cbox_loudness' 'cb sound'
+  spec 'r' 'cbox_motion' 'cb PIR motion detected?'
+  space
+  spec 'r' 'cbox_rfid' 'cb RFID'
+  spec 'r' 'cbox_distance' 'cb ultrasonic distance'
+  space
   spec 'r' 'cbox_joystick' 'cb joystick _' 'menu.cbox_joystick' 'x'
-  space
-  spec 'r' 'cbox_distance' 'cb distance'
-  spec 'r' 'cbox_light' 'cb light level'
-  spec 'r' 'cbox_compass' 'cb compass _' 'menu.cbox_compass' 'x'
+  spec 'r' 'cbox_adkey' 'cb _ ADKey pressed?' 'menu.cbox_ledOrButton' 'red'
   space
   spec 'r' 'cbox_temperature' 'cb temperature'
   spec 'r' 'cbox_humidity' 'cb humidity'
   space
-  spec 'r' 'cbox_rfid' 'cb RFID'
+  spec 'r' 'cbox_compass' 'cb compass _' 'menu.cbox_compass' 'x'
   space
-  spec 'r' 'cbox_loudness' 'cb loudness'
-  spec 'r' 'cbox_motion' 'cb motion detected?'
-  space
-  spec 'r' 'cbox_airPressureMbar' 'cb air pressure (mBar)'
+  spec 'r' 'cbox_airPressureMbar' 'cb barometric pressure (mBar)'
   spec ' ' 'cbox_setCurrentAltitude' 'cb set current altitude _ meters' 'num' 0
   spec 'r' 'cbox_altitudeCentimeters' 'cb altitude (cm)'
 
@@ -69,6 +73,16 @@ to cbox_beep msecs {
 
 to cbox_clearNeoPixels color {
   neoPixelSetAllToColor 0
+}
+
+to cbox_oledWrite text x y isBig {
+  local 'scale' (ifExpression isBig 2 1)
+  '[tft:text]' text x y (colorSwatch 255 255 255 255) scale true
+  waitMillis 10
+}
+
+to cbox_oledClear {
+  '[tft:clear]'
 }
 
 to cbox_compass axis {
