@@ -1046,8 +1046,6 @@ method createFunction MicroBlocksScripter isReporter {
 	recordBlockSpec mbProject opName spec
 	addToBottom this (scriptForFunction func)
 	updateBlocks this
-	saveScripts this
-	restoreScripts this
 }
 
 method copyFunction MicroBlocksScripter definition {

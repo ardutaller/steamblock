@@ -559,7 +559,6 @@ method defineFunctionInModule MicroBlocksModule funcName funcParams funcBody {
 		}
 	}
 	functions = (copyWith functions f)
-	recompileNeeded (smallRuntime)
 	return f
 }
 
