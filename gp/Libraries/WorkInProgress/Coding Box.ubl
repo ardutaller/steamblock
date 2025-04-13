@@ -1,11 +1,12 @@
 module 'Coding Box'
 author MicroBlocks
-version 1 2
-depends '_Air Pressure (BMP388)' '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT
-choices cbox_joystick x y
-choices cbox_compass x y z total
-choices cbox_ledOrButton red yellow green all
-description ''
+version 1 2 
+depends '_Air Pressure (BMP388)' '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT 
+choices cbox_joystick x y 
+choices cbox_ledOrButton red yellow green all 
+description 'KidsBits Coding Box 2.0
+https://kidsbits.cc/products/kidsbits-maker-educational-esp32-multi-purpose-coding-box-kit-v20
+'
 
   spec ' ' 'cbox_setNeoPixelColors' 'cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _' 'color color color color color color color color color color color color'
   spec ' ' 'cbox_setAllNeoPixels' 'cb set all rainbow colors to _' 'color'
@@ -35,23 +36,11 @@ description ''
   spec 'r' 'cbox_temperature' 'cb temperature'
   spec 'r' 'cbox_humidity' 'cb humidity'
   space
-  spec 'r' 'cbox_compass' 'cb compass _' 'menu.cbox_compass' 'x'
+  spec 'r' 'cbox_compass' 'cb compass direction'
   space
   spec 'r' 'cbox_airPressureMbar' 'cb barometric pressure (mBar)'
   spec ' ' 'cbox_setCurrentAltitude' 'cb set current altitude _ meters' 'num' 0
   spec 'r' 'cbox_altitudeCentimeters' 'cb altitude (cm)'
-
-to cbox_airPressureMbar {
-  return (bmp388_airPressureMbar)
-}
-
-to cbox_altitudeCentimeters {
-  return (bmp388_altitudeCentimeters)
-}
-
-to cbox_setCurrentAltitude meters {
-  bmp388_setCurrentAltitude meters
-}
 
 to cbox_adkey key {
   local 'analogValue' (analogReadOp 33)
@@ -66,6 +55,14 @@ to cbox_adkey key {
   }
 }
 
+to cbox_airPressureMbar {
+  return (bmp388_airPressureMbar)
+}
+
+to cbox_altitudeCentimeters {
+  return (bmp388_altitudeCentimeters)
+}
+
 to cbox_beep msecs {
   'attach buzzer to pin' 32
   'play tone' 'nt;c' 0 msecs
@@ -75,25 +72,8 @@ to cbox_clearNeoPixels color {
   neoPixelSetAllToColor 0
 }
 
-to cbox_oledWrite text x y isBig {
-  local 'scale' (ifExpression isBig 2 1)
-  '[tft:text]' text x y (colorSwatch 255 255 255 255) scale true
-  waitMillis 10
-}
-
-to cbox_oledClear {
-  '[tft:clear]'
-}
-
-to cbox_compass axis {
-  if ('x' == axis) {
-    return (ak9575_mag_x)
-  } ('y' == axis) {
-    return (ak9575_mag_y)
-  } ('z' == axis) {
-    return (ak9575_mag_z)
-  }
-  return (ak9575_mag_total)
+to cbox_compass {
+  return (ak9575_direction)
 }
 
 to cbox_distance {
@@ -131,6 +111,16 @@ to cbox_motion {
   return (digitalReadOp 19)
 }
 
+to cbox_oledClear {
+  '[tft:clear]'
+}
+
+to cbox_oledWrite text x y isBig {
+  local 'scale' (ifExpression isBig 2 1)
+  '[tft:text]' text x y (colorSwatch 255 255 255 255) scale true
+  waitMillis 10
+}
+
 to cbox_rfid {
   rc522_initialize_I2C 40
   if (rc522_card_present) {
@@ -146,6 +136,10 @@ to cbox_rfid {
 
 to cbox_setAllNeoPixels color {
   neoPixelSetAllToColor color
+}
+
+to cbox_setCurrentAltitude meters {
+  bmp388_setCurrentAltitude meters
 }
 
 to cbox_setFan power {
