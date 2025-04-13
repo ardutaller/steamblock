@@ -802,6 +802,7 @@ void sendBroadcastToIDE(char *s, int len) {
 		}
 	}
 	sendMessage(broadcastMsg, 0, len, s);
+	taskSleep(1); // avoid Boardie lockup
 }
 
 void sendSayForChunk(char *s, int len, uint8 chunkIndex) {
