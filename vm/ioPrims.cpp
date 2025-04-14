@@ -2283,7 +2283,8 @@ static int writeDAC(int sample) { return 0; }
 #endif
 
 OBJ primHasTone(int argCount, OBJ *args) {
-	#if defined(ARDUINO_SAM_DUE)
+	#if defined(ARDUINO_SAM_DUE) || defined(DUELink)
+		// Arduino Tone library does not work on DUELink
 		return falseObj;
 	#else
 		return trueObj;
@@ -2316,7 +2317,7 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 		pin = digitalPin[pin];
 	#elif defined(DUELink)
 		pin = mapDigitalPinNum(pin);
-		if (pin < 0) return falseObj;
+		if (pin < 0) pin = DEFAULT_TONE_PIN;
 	#endif
 
 	#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
