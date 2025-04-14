@@ -1142,6 +1142,7 @@ method blockPrototypeChanged MicroBlocksScripter aBlock {
 		updateCallsInScriptingArea this op
 	}
 	updateSliders scriptsFrame
+	syncScripts (smallRuntime)
 }
 
 method updateCallsOf MicroBlocksScripter op {
