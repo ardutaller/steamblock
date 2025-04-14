@@ -34,6 +34,8 @@ static int deferUpdates = false;
 	#define BLACK 0
 	#define WHITE 65535
 
+	#include "glcdfont.c" // Adafruit font
+
 	#if defined(ARDUINO_CITILAB_ED1)
 		#include "Adafruit_GFX.h"
 		#include "Adafruit_ST7735.h"
@@ -1576,6 +1578,35 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+static OBJ primShapeforChar(int argCount, OBJ *args) {
+	// Return a byte array with the columns (left to right) of a character from
+	// the built-in the font (max 8 pixels tall). Character set is 0 to 255.
+
+	int fontWidth = 5;
+
+	int ascii = -1;
+	OBJ arg = args[0];
+	if (isInt(arg)) {
+		// argument is an integer
+		ascii = evalInt(arg);
+	} else if (IS_TYPE(arg, StringType) && (objWords(arg) > 0)) {
+		// argument is a non-empty string; use its first (and usually only) byte
+		ascii = *((uint8 *) &FIELD(arg, 0));
+	}
+	if ((ascii < 0) || (ascii > 255)) return zeroObj; // out of range
+
+	// create byte array
+	OBJ result = newObj(ByteArrayType, 2, falseObj); // two words, up to 8 bytes
+	if (result) setByteCountAdjust(result, fontWidth); // font width
+
+	// copy bytes, one byte per column
+	char *dst = (char *) &FIELD(result, 0);
+	for (int i = 0; i < fontWidth; i++) {
+		*dst++ = font[(ascii * 5) + i];
+	}
+	return result;
+}
+
 #else // stubs
 
 void tftInit() { }
@@ -1605,6 +1636,8 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) { return falseObj; }
 
 static OBJ primAruco(int argCount, OBJ *args) { return falseObj; }
 static OBJ primAprilTag(int argCount, OBJ *args) { return falseObj; }
+
+static OBJ primShapeforChar(int argCount, OBJ *args) { return falseObj; }
 
 #endif
 
@@ -1667,6 +1700,8 @@ static PrimEntry entries[] = {
 
 	{"aruco", primAruco},
 	{"aprilTag", primAprilTag},
+
+	{"shapeforChar", primShapeforChar},
 };
 
 void addTFTPrims() {
