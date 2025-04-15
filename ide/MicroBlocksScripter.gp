@@ -1142,7 +1142,6 @@ method blockPrototypeChanged MicroBlocksScripter aBlock {
 		updateCallsInScriptingArea this op
 	}
 	updateSliders scriptsFrame
-	syncScripts (smallRuntime)
 }
 
 method updateCallsOf MicroBlocksScripter op {
@@ -1251,23 +1250,20 @@ method fixedCmd MicroBlocksScripter oldCmd minArgs argTypes argDefaults isReport
 method updateCallsInScriptingArea MicroBlocksScripter op {
 	// Update scripts in the scripting pane that contain calls to the give op.
 
-	// Workaround for recursive structure crash bug:
-	offsetX = (left (morph (contents scriptsFrame)))
-	offsetY = (top (morph (contents scriptsFrame)))
-	restoreScripts this
-	setLeft (morph (contents scriptsFrame)) offsetX
-	setTop (morph (contents scriptsFrame)) offsetY
-	return
-
-// Caution: the following code can create recursive structure that crash!
 	scriptsPane = (contents scriptsFrame)
 	affected = (list)
 	for m (parts (morph scriptsPane)) {
 		b = (handler m)
-		if (and (isClass b 'Block') (containsPrim b op)) {
-			add affected b
+		if (isClass b 'Block') {
+			if (containsPrim b op) {
+				add affected b
+			}
+			if ('to' == (primName (expression b))) {
+				add affected b
+			}
 		}
 	}
+
 	for each affected {
 		expr = (expression each)
 		if ('to' == (primName expr)) {
@@ -1277,12 +1273,16 @@ method updateCallsInScriptingArea MicroBlocksScripter op {
 			block = (toBlock expr)
 			setNext block (next each)
 		}
+
+		// update the function definition block and any calls in the scripting area
+		wasHighlighted = (notNil (getHighlight (morph each)))
 		x = (left (morph each))
 		y = (top (morph each))
 		destroy (morph each)
 		setPosition (morph block) x y
 		addPart (morph scriptsPane) (morph block)
 		fixBlockColor block
+		if wasHighlighted { addHighlight (morph block) }
 	}
 }
 
