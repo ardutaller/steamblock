@@ -1415,13 +1415,13 @@ static OBJ primAprilTag(int argCount, OBJ *args) {
 // display update control
 
 OBJ primDeferUpdates(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 	deferUpdates = true;
 	return falseObj;
 }
 
 OBJ primResumeUpdates(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 	deferUpdates = false;
 	UPDATE_DISPLAY();
 	return falseObj;
