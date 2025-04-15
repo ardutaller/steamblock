@@ -2009,6 +2009,67 @@ msgstr "wait until beat _"
 msgid "wait until bar _"
 msgstr "wait until bar _"
 
+#. Analog Synthesis library label
+#. Generate synthesized sound waves to play on a DAC, over PWM, or any other analog means
+msgid "Analog Synthesis"
+msgstr "Analog Synthesis"
+
+#. Analog Synthesis library block
+msgid "sin wave frequency _ amplitude _"
+msgstr "sin wave frequency _ amplitude _"
+
+#. Analog Synthesis library block
+msgid "square wave frequency _ amplitude _"
+msgstr "square wave frequency _ amplitude _"
+
+#. Analog Synthesis library block
+msgid "tri wave frequency _ amplitude _"
+msgstr "tri wave frequency _ amplitude _"
+
+#. Analog Synthesis library block
+msgid "sawtooth wave frequency _ amplitude _"
+msgstr "sawtooth wave frequency _ amplitude _"
+
+#. Analog Synthesis library block
+msgid "noise amplitude _"
+msgstr "noise amplitude _"
+
+#. Analog Synthesis library block
+msgid "sin wave gate _"
+msgstr "sin wave gate _"
+
+#. Analog Synthesis library block
+msgid "square wave gate _"
+msgstr "square wave gate _"
+
+#. Analog Synthesis library block
+msgid "tri wave gate _"
+msgstr "tri wave gate _"
+
+#. Analog Synthesis library block
+msgid "sawtooth wave gate _"
+msgstr "sawtooth wave gate _"
+
+#. Analog Synthesis library block
+msgid "noise gate _"
+msgstr "noise gate _"
+
+#. Analog Synthesis library block
+msgid "set amplitude _ attack _ hold _ release _ for gate _"
+msgstr "set amplitude _ attack _ hold _ release _ for gate _"
+
+#. Analog Synthesis library block
+msgid "trigger gate _ MIDI key _"
+msgstr "trigger gate _ MIDI key _"
+
+#. Analog Synthesis library block
+msgid "amplitude for gate _"
+msgstr "amplitude for gate _"
+
+#. Analog Synthesis library block
+msgid "frequency for gate _"
+msgstr "frequency for gate _"
+
 #. General MIDI drum instrument name
 msgid "Acoustic Bass Drum"
 msgstr "Acoustic Bass Drum"
