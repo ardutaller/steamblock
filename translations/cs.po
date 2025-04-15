@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-03-07 19:02+0000\n"
-"Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
+"PO-Revision-Date: 2025-04-15 09:10+0000\n"
+"Last-Translator: Pythom1234 <tom.fucik@email.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
 "Language: cs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -28,7 +28,7 @@ msgstr "ukaž _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr "Graf _"
+msgstr "graf _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
@@ -60,7 +60,7 @@ msgstr "milisekundy"
 
 #. Block in Input category
 msgid "board type"
-msgstr "Typ desky"
+msgstr "typ desky"
 
 #. Block in Input category
 msgid "milliseconds since _"
@@ -4475,7 +4475,7 @@ msgstr "Skript je příliš velký aby mohl být odeslán do mikropočítače."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Použijte tlačítko \"Připojit\" pro připojení zařízeni s MicroBlocks."
+msgstr "Použijte tlačítko \"Připojit\" pro připojení zařízení k MicroBlocks."
 
 #. MicroBlocks IDE error message.
 msgid "No boards found; is your board plugged in?"
@@ -5940,7 +5940,7 @@ msgstr "BLE id"
 
 #. Block in Input category
 msgid "seconds"
-msgstr "vteřiny"
+msgstr "sekundy"
 
 #. Settings menu option
 msgid "advanced mode"
