@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-03-21 03:01+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
+"PO-Revision-Date: 2025-04-15 09:20+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -6354,3 +6354,76 @@ msgstr ""
 #. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
 msgid "_ with _ items replaced by _"
 msgstr "_ amb _ elements substituïts per _"
+
+#. Analog Synthesis library block
+msgid "tri wave gate _"
+msgstr "ona triangular a la porta _"
+
+#. Analog Synthesis library block
+msgid "sin wave gate _"
+msgstr "ona sinusoidal a la porta _"
+
+#. Analog Synthesis library block
+msgid "set amplitude _ attack _ hold _ release _ for gate _"
+msgstr "fixa amplitud _ atac _ sosteniment _ extinció _ per a porta _"
+
+#. Analog Synthesis library block
+msgid "trigger gate _ MIDI key _"
+msgstr "dispara porta _ amb tecla MIDI _"
+
+#. Analog Synthesis library block
+msgid "amplitude for gate _"
+msgstr "amplitud per a porta _"
+
+#. Analog Synthesis library block
+msgid "frequency for gate _"
+msgstr "freqüència per a porta _"
+
+#. Analog Synthesis library block
+msgid "sin wave frequency _ amplitude _"
+msgstr "ona sinusoidal de freqüència _ i amplitud _"
+
+#. Analog Synthesis library block
+msgid "square wave frequency _ amplitude _"
+msgstr "ona quadrada de freqüència _ i amplitud _"
+
+#. Analog Synthesis library block
+msgid "tri wave frequency _ amplitude _"
+msgstr "ona triangular de freqüència _ i amplitud _"
+
+#. Analog Synthesis library block
+msgid "sawtooth wave frequency _ amplitude _"
+msgstr "ona de serra de freqüència _ i amplitud _"
+
+#. Analog Synthesis library block
+msgid "noise amplitude _"
+msgstr "soroll d'amplitud _"
+
+#. Analog Synthesis library block
+msgid "sawtooth wave gate _"
+msgstr "ona de serra a la porta _"
+
+#. Analog Synthesis library block
+msgid "noise gate _"
+msgstr "soroll a la porta _"
+
+#. Analog Synthesis library label
+#. Generate synthesized sound waves to play on a DAC, over PWM, or any other analog means
+msgid "Analog Synthesis"
+msgstr "Síntesi analògica"
+
+#. Analog Synthesis library block
+msgid "square wave gate _"
+msgstr "ona quadrada a la porta _"
+
+#. Radio library block
+msgid "radio last sender ID"
+msgstr "ID de l'últim remitent"
+
+#. Radio library block
+msgid "radio my ID"
+msgstr "el meu ID de ràdio"
+
+#. 5x5 LED Display library block
+msgid "led image _"
+msgstr "imatge LED _"
