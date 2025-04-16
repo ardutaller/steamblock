@@ -4838,6 +4838,42 @@ msgstr "Calliope set continous servo _ to speed _ (-100~100)"
 msgid "Calliope stop servo _"
 msgstr "Calliope stop servo _"
 
+#. Robo ESP32 library block
+msgid "roboESP32 clear RGB"
+msgstr "roboESP32 clear RGB"
+
+#. Robo ESP32 library block
+msgid "roboESP32 set motor _ power _ (-100 to 100)"
+msgstr "roboESP32 set motor _ power _ (-100 to 100)"
+
+#. Robo ESP32 library block
+msgid "roboESP32 stop motor _"
+msgstr "roboESP32 stop motor _"
+
+#. Robo ESP32 library block
+msgid "roboESP32 play Happy Birthday!"
+msgstr "roboESP32 play Happy Birthday!"
+
+#. Robo ESP32 library block
+msgid "roboESP32 button _ is pressed"
+msgstr "roboESP32 button _ is pressed"
+
+#. Robo ESP32 library block
+msgid "roboESP32 increase RGB brightness by _ %"
+msgstr "roboESP32 increase RGB brightness by _ %"
+
+#. Robo ESP32 library block
+msgid "roboESP32 set servo _ to _ degrees (-90 to 90)"
+msgstr "roboESP32 set servo _ to _ degrees (-90 to 90)"
+
+#. Robo ESP32 library block
+msgid "roboESP32 set RGB _ color _"
+msgstr "roboESP32 set RGB _ color _"
+
+#. Robo ESP32 library block
+msgid "roboESP32 set GPIO _ _"
+msgstr "roboESP32 set GPIO _ _"
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr "New"
