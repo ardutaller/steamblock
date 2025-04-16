@@ -1,11 +1,11 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 3 
+version 1 4 
 description 'Generate analog waves that you can output on a DAC pin to produce sound.
 
 You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will.
 '
-variables _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases 
+variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases 
 
   spec 'r' 'asynth sin' 'sin wave frequency _ amplitude _' 'num num' 440 200
   spec 'r' 'asynth square' 'square wave frequency _ amplitude _' 'num num' 185 220
@@ -51,12 +51,14 @@ to '_asynth MIDI to freq' key {
 }
 
 to '_asynth init' {
-  if (_asynth_trigger_times == 0) {_asynth_trigger_times = (newList 8)}
-  if (_asynth_frequencies == 0) {_asynth_frequencies = (newList 8)}
-  if (_asynth_amplitudes == 0) {_asynth_amplitudes = (newList 8)}
-  if (_asynth_attacks == 0) {_asynth_attacks = (newList 8)}
-  if (_asynth_holds == 0) {_asynth_holds = (newList 8)}
-  if (_asynth_releases == 0) {_asynth_releases = (newList 8)}
+  if (_asynth_trigger_times != 0) {return 0}
+  _asynth_trigger_active = (newList 8 (booleanConstant false))
+  _asynth_trigger_times = (newList 8)
+  _asynth_frequencies = (newList 8)
+  _asynth_amplitudes = (newList 8)
+  _asynth_attacks = (newList 8)
+  _asynth_holds = (newList 8)
+  _asynth_releases = (newList 8)
 }
 
 to 'asynth envelope' amp att hold release gate {
@@ -68,7 +70,7 @@ to 'asynth envelope' amp att hold release gate {
 }
 
 to 'asynth gate amplitude' gate {
-  '_asynth init'
+  if (not (at gate _asynth_trigger_active)) {return 0}
   local 'start time' (at gate _asynth_trigger_times)
   local 'amp' (at gate _asynth_amplitudes)
   local 'att' (maximum 1 (at gate _asynth_attacks))
@@ -78,6 +80,7 @@ to 'asynth gate amplitude' gate {
     return 0
   } ((millisOp) > (((v 'start time') + att) + (hold + release))) {
     comment 'all done, no sound'
+    atPut gate _asynth_trigger_active (booleanConstant false)
     return 0
   } ((millisOp) > (((v 'start time') + att) + hold)) {
     comment 'release time'
@@ -102,7 +105,8 @@ to 'asynth noise' amp {
 }
 
 to 'asynth noise gate' gate {
-  return (random 1 ('asynth gate amplitude' gate))
+  if (at gate _asynth_trigger_active) {return (random 1 ('asynth gate amplitude' gate))}
+  return 0
 }
 
 to 'asynth saw' freq amp {
@@ -112,7 +116,8 @@ to 'asynth saw' freq amp {
 }
 
 to 'asynth saw gate' gate {
-  return ('asynth saw' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
+  if (at gate _asynth_trigger_active) {return ('asynth saw' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))}
+  return 0
 }
 
 to 'asynth sin' freq amp {
@@ -122,7 +127,8 @@ to 'asynth sin' freq amp {
 }
 
 to 'asynth sin gate' gate {
-  return ('asynth sin' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
+  if (at gate _asynth_trigger_active) {return ('asynth sin' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))}
+  return 0
 }
 
 to 'asynth square' freq amp {
@@ -132,7 +138,8 @@ to 'asynth square' freq amp {
 }
 
 to 'asynth square gate' gate {
-  return ('asynth square' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
+  if (at gate _asynth_trigger_active) {return ('asynth square' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))}
+  return 0
 }
 
 to 'asynth tri' freq amp {
@@ -142,12 +149,14 @@ to 'asynth tri' freq amp {
 }
 
 to 'asynth tri gate' gate {
-  return ('asynth tri' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))
+  if (at gate _asynth_trigger_active) {return ('asynth tri' (at gate _asynth_frequencies) ('asynth gate amplitude' gate))}
+  return 0
 }
 
 to 'asynth trigger gate' index key {
   atPut index _asynth_trigger_times (millisOp)
   atPut index _asynth_frequencies ('_asynth MIDI to freq' key)
+  atPut index _asynth_trigger_active (booleanConstant true)
   comment 'Force a yield'
   waitMillis 1
 }
