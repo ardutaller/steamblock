@@ -2,7 +2,7 @@ module main
 author 'Roger Wagner'
 version 1 0 
 description ''
-variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NeoPixelsOn NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived MyFolder50Present FairyLightsPin SoundLevel SoundLevelMax LightLevel step MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold skamps PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed 
+variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NeoPixelsOn NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived MyFolder50Present FairyLightsPin SoundLevel SoundLevelMax LightLevel step MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed 
 
   spec ' ' 'Initialize lists' 'Initialize lists'
   spec ' ' 'MenuAction5' 'MenuActionAccelerometer'
@@ -54,9 +54,9 @@ to DefinePinNumbers {
 
 to DefineVariables {
   LCDWaitTime = 1500
-  comment 'ms to wait after displaying each status update
+  comment 'ms to wait after displaying each status update 
 during startup when the LCD is attached.
-There is also a "Time Threshold" for the maximum
+There is also a "Time Threshold" for the maximum 
 amount of time to wait when looking for a folder.'
   TimeThreshold = 1600
   ReadyForTasks = (booleanConstant false)
@@ -71,7 +71,7 @@ amount of time to wait when looking for a folder.'
   comment 'MyFolder 01 is used to initiate auto-play'
   FilesSwitch = (booleanConstant false)
   NumberOfNeopixels = 64
-  comment 'Folder 50 is additional sounds 1 to 12,
+  comment 'Folder 50 is additional sounds 1 to 12, 
 Folder 51 is default 1st folder for "piano" playback'
   folder = 51
   MyFolder50Present = (booleanConstant false)
@@ -87,7 +87,7 @@ Folder 51 is default 1st folder for "piano" playback'
   comment 'temporarily set right after Mr. Happy-Sad changes orientation'
   comment 'Folder 76 is Mr. Happy-Sad files '
   Folder99Present = (booleanConstant false)
-  comment 'Folder 99 is MakerPort welcome sounds and is used
+  comment 'Folder 99 is MakerPort welcome sounds and is used 
 to test for presence of the MakerPort flash drive files '
   MicroSDPresent = (booleanConstant false)
   ThingIsRunning = (booleanConstant false)
@@ -162,11 +162,11 @@ to DoServeLeft {
     waitMillis Delay
     neoPanel_drawPixel (i - 1) 3 (colorSwatch 0 0 0 255)
     neoPanel_drawPixel i 3 (color_withBrightness (colorSwatch 255 0 0 255) 50)
-    if (and (or (i == 7) (i == 8)) RightPaddleVisible) {
+    if (and (or (i == 7) (i == 8)) LeftPaddleVisible) {
       makerport_beep 440 50 5
-      ScoreRight = (ScoreRight + 1)
-      neoPanel_fillRectangle 8 (9 - ScoreRight) 1 ScoreRight (color_withBrightness (colorSwatch 72 218 233 255) 50)
-      if (ScoreRight == 4) {
+      ScoreLeft = (ScoreLeft + 1)
+      neoPanel_fillRectangle 8 (9 - ScoreLeft) 1 ScoreLeft (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      if (ScoreLeft == 4) {
         'play ringtone' 'Pacman:d=16,o=6,b=140:
 b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
         NewGame
@@ -184,11 +184,11 @@ to DoServeRight {
     waitMillis Delay
     neoPanel_drawPixel (i + 1) 3 (colorSwatch 0 0 0 255)
     neoPanel_drawPixel i 3 (color_withBrightness (colorSwatch 255 0 0 255) 50)
-    if (and (or (i == 2) (i == 1)) LeftPaddleVisible) {
+    if (and (or (i == 2) (i == 1)) RightPaddleVisible) {
       makerport_beep 440 50
-      ScoreLeft = (ScoreLeft + 1)
-      neoPanel_fillRectangle 1 (9 - ScoreLeft) 1 ScoreLeft (color_withBrightness (colorSwatch 72 218 233 255) 50)
-      if (ScoreLeft == 4) {
+      ScoreRight = (ScoreRight + 1)
+      neoPanel_fillRectangle 1 (9 - ScoreRight) 1 ScoreRight (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      if (ScoreRight == 4) {
         'play ringtone' 'Pacman:d=16,o=6,b=140:
 b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
         NewGame
@@ -517,8 +517,8 @@ to PinKeyTouched2 {
     if (TPin != 12) {
       if (TPin == 1) {
         setServoAngle Servo1 90
-        if (and PlayingPong (not ServeLeft)) {
-          sendBroadcast 'ShowLeftPaddle'
+        if (and PlayingPong ServeLeft) {
+          sendBroadcast 'ShowLefttPaddle'
         }
         if (and (not PlayingPong) NewGameAllowed) {
           NewGame
@@ -534,7 +534,7 @@ to PinKeyTouched2 {
     } else {
       IncrementFolderP12
       LCD1602_write_field ('[data:join]' 'Folder:' folder) 2 8 16
-      if (and PlayingPong ServeLeft) {
+      if (and PlayingPong (not ServeLeft)) {
         sendBroadcast 'ShowRightPaddle'
       }
       if (and (not PlayingPong) NewGameAllowed) {
@@ -674,16 +674,16 @@ to myBlock {
   }
 }
 
-script 573 50 {
+script 589 66 {
 stopAll
 mp3_pause
 }
 
-script 425 54 {
+script 441 70 {
 QATestSimple
 }
 
-script 58 60 {
+script 74 76 {
 makerport_initialize
 DefinePinNumbers
 DefineVariables
@@ -691,8 +691,8 @@ DefineVariables
 LCD1602_clear
 sayIt ('IsThere Track' 1 1)
 comment 'observed times for track 1 in folders:
-100 - switch=code -
-         switch=files -
+100 - switch=code - 
+         switch=files - 
 99 - 496
 76 - 793
 75 - 668
@@ -708,17 +708,17 @@ observed times for track 99 in folders:
 '
 }
 
-script 575 141 {
+script 591 157 {
 mp3_pause
 }
 
-script 762 331 {
+script 778 347 {
 to 'MakerPort Setup' {}
 }
 
-script 56 512 {
+script 72 528 {
 whenStarted
-Comment = 'MakerPort Startup v03.18.25 - Animatronics'
+Comment = 'MakerPort Startup v04.09.25 - Animatronics'
 Comment = 'Uses timed playback to detect microSD card, not the  "mp3 player has flashcard" block (MakerPort)'
 DevelopmentBuild = (booleanConstant false)
 Comment = 'Set "DevelopmentBuild" to true during development, false for production startup program'
@@ -737,7 +737,7 @@ if MicroSDPresent {
 }
 }
 
-script 58 1259 {
+script 74 1275 {
 whenBroadcastReceived 'Servo+LightShow'
 makerport_setAllLEDs true
 neoPixelAttach NumberOfNeopixels LightShowNeoPixPin
@@ -754,7 +754,7 @@ forever {
   for i ('[data:range]' 1 12) {
     analogWriteOp i LightLevel
     comment 'Only LEDs 3, 4, 5, 7, 8, 9, 10, 11 & 12 have variable brightness
-LEDS 1, 2, 6 do not have variable brightness, but will quickly
+LEDS 1, 2, 6 do not have variable brightness, but will quickly 
 turn on/off in response to the sound volume level.'
   }
   setNeoPixelColor (random 1 NumberOfNeopixels) (color_withBrightness (randomColor) 50)
@@ -762,15 +762,15 @@ turn on/off in response to the sound volume level.'
 }
 }
 
-script 1514 1435 {
+script 1530 1451 {
 to DoNoCard {}
 }
 
-script 762 1787 {
+script 778 1803 {
 to SystemSetup2 {}
 }
 
-script 62 2194 {
+script 78 2210 {
 whenBroadcastReceived 'WatchForTouch'
 forever {
   if (and (touch_touch_event) ReadyForTasks) {
@@ -782,7 +782,7 @@ is being touched'
       sendBroadcast 'WatchForRelease'
     } else {
       if (or MyFolderPresent Folder75Present) {
-        comment 'Cancel demo program if a touchpoint is touched
+        comment 'Cancel demo program if a touchpoint is touched 
 AND a demo is running (01 or 75)'
         stopAll
         MyFolderPresent = (booleanConstant false)
@@ -818,7 +818,7 @@ AND a demo is running (01 or 75)'
 }
 }
 
-script 1309 3146 {
+script 1325 3162 {
 whenBroadcastReceived 'WatchForIRCommand'
 forever {
   if (and (ir_code_received) ReadyForTasks) {
@@ -857,14 +857,14 @@ forever {
 }
 }
 
-script 755 3529 {
+script 771 3545 {
 whenBroadcastReceived 'PlayTrack'
 LCD1602_write_field ('[data:join]' '       Folder:' folder) 2 1 16
 mp3_playTrackUntilDone TPin folder
 makerport_setAllLEDs false
 }
 
-script 61 3662 {
+script 77 3678 {
 whenBroadcastReceived 'WatchForRelease'
 forever {
   if (and (touch_release_event) ReadyForTasks) {
@@ -890,7 +890,7 @@ forever {
 }
 }
 
-script 599 3771 {
+script 615 3787 {
 whenBroadcastReceived 'PortTest'
 forever {
   digitalWriteOp 13 true
@@ -907,39 +907,39 @@ forever {
 }
 }
 
-script 696 4321 {
+script 712 4337 {
 to IsThereFolder75 {}
 }
 
-script 1270 4449 {
+script 1286 4465 {
 to IsThereFolder76 {}
 }
 
-script 63 4482 {
+script 79 4498 {
 to IsThereMyFolder99 {}
 }
 
-script 151 5041 {
+script 167 5057 {
 to IsThereMyFolder50 {}
 }
 
-script 701 5126 {
+script 717 5142 {
 to IsThereMyFolder {}
 }
 
-script 189 6018 {
+script 205 6034 {
 to DefinePinNumbers {}
 }
 
-script 718 6027 {
+script 734 6043 {
 to DefineVariables {}
 }
 
-script 50 6743 {
+script 66 6759 {
 to 'IsThere Track' {}
 }
 
-script 712 7597 {
+script 728 7613 {
 whenBroadcastReceived 'PlayPong!'
 neoPanel_attach 8 8 Extra1
 clearNeoPixels
@@ -954,30 +954,34 @@ forever {
 }
 }
 
-script 62 7756 {
+script 78 7772 {
 to PinKeyTouched2 {}
 }
 
-script 710 7978 {
-whenBroadcastReceived 'ShowLeftPaddle'
-LeftPaddleVisible = (booleanConstant true)
+script 726 7994 {
+whenBroadcastReceived 'ShowRightPaddle'
+RightPaddleVisible = (booleanConstant true)
 neoPanel_fillRectangle 1 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
 waitMillis (Delay * (3 / 2))
-LeftPaddleVisible = (booleanConstant false)
+RightPaddleVisible = (booleanConstant false)
 neoPanel_fillRectangle 1 2 1 3 (colorSwatch 0 0 0 255)
 }
 
-script 717 8277 {
-whenBroadcastReceived 'ShowRightPaddle'
-RightPaddleVisible = (booleanConstant true)
+script 733 8293 {
+whenBroadcastReceived 'ShowLefttPaddle'
+LeftPaddleVisible = (booleanConstant true)
 neoPanel_fillRectangle 8 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
 waitMillis (Delay * (3 / 2))
-RightPaddleVisible = (booleanConstant false)
+LeftPaddleVisible = (booleanConstant false)
 neoPanel_fillRectangle 8 2 1 3 (colorSwatch 0 0 0 255)
 }
 
-script 66 9011 {
+script 79 9043 {
 to DoServeLeft {}
+}
+
+script 78 9762 {
+to DoServeRight {}
 }
 
 
