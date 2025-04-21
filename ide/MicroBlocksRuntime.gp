@@ -1299,7 +1299,7 @@ method installBoardSpecificBlocks SmallRuntime {
 	} (isOneOf boardType 'Calliope' 'Calliope v3') {
 		importEmbeddedLibrary scripter 'Basic Sensors'
 		importEmbeddedLibrary scripter 'LED Display'
-		importEmbeddedLibrary scripter 'NeoPixel'
+		importEmbeddedLibrary scripter 'Calliope NeoPixel'
 		importEmbeddedLibrary scripter 'Tone'
 	} ('CircuitPlayground' == boardType) {
 		importEmbeddedLibrary scripter 'Circuit Playground'
