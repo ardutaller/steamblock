@@ -489,7 +489,7 @@ void updateMicrobitDisplay() {
 // Display Primitives for micro:bit/Calliope (noops on other boards)
 
 OBJ primMBSetColor(int argCount, OBJ *args) {
-	mbDisplayColor = obj2int(args[0]);
+	mbDisplayColor = evalInt(args[0]);
 #if defined(HAS_LED_MATRIX)
 	displaySnapshot = 0; // update the display on the next cycle
 #else
