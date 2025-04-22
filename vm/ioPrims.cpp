@@ -1291,6 +1291,14 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 			pinNum = mapDigitalPinNum(pinNum); // map edge connector pin number to pin number
 			if (pinNum < 0) return falseObj;
 			SET_MODE(pinNum, mode);
+
+			// find the analog pin number for the given digital pin
+			for (int i = 0; i < NUM_ANALOG_INPUTS; i++) {
+				if (analogInputPin[i] == pinNum) {
+					pinNum = i;
+					break;
+				}
+			}
 			return int2obj(analogRead(pinNum));
 		} else {
 			return zeroObj;
