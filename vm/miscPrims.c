@@ -226,11 +226,7 @@ static OBJ primIntSqrt(int argCount, OBJ *args) {
 
 	if (n < 2) return int2obj(n); // 0 and 1 return themselves
 
-	// compute the initial estimate: first power of 2 > logBase2(n) (reduces iterations)
-	int hiBit = 0;
-	while (!(n >> hiBit)) hiBit += 1;
-	int x0 = 1 << ((hiBit / 2) + 1);
-
+	int x0 = n / 2; // initial estimate (must be greater than the square root
 	int x1 = (x0 + (n / x0)) / 2;
 	while (x0 > x1) {
 		x0 = x1;
