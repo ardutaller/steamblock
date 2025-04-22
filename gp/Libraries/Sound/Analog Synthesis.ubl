@@ -1,6 +1,6 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 4 
+version 1 5 
 description 'Generate analog waves that you can output on a DAC pin to produce sound.
 
 You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will.
@@ -154,8 +154,20 @@ to 'asynth tri gate' gate {
 }
 
 to 'asynth trigger gate' index key {
-  atPut index _asynth_trigger_times (millisOp)
+  if (isType key 'list') {
+    if (isType index 'list') {
+      for i (size index) {
+        'asynth trigger gate' (at i index) (at i key)
+      }
+    } else {
+      for i (size key) {
+        'asynth trigger gate' ((index + i) - 1) (at i key)
+      }
+    }
+    return 0
+  }
   atPut index _asynth_frequencies ('_asynth MIDI to freq' key)
+  atPut index _asynth_trigger_times (millisOp)
   atPut index _asynth_trigger_active (booleanConstant true)
   comment 'Force a yield'
   waitMillis 1
