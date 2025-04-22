@@ -221,7 +221,7 @@ static OBJ primIntSqrt(int argCount, OBJ *args) {
 
 	// The following code generates same values as:
 	//		round(sqrt(n)))
-	// without using floats using Heron's method, a special case of Newton's method.
+	// without using floats. It uses Heron's method, a special case of Newton's method.
 	// https://en.wikipedia.org/wiki/Integer_square_root
 
 	if (n < 2) return int2obj(n); // 0 and 1 return themselves
