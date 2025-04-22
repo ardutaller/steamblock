@@ -305,6 +305,26 @@ static OBJ primMaximum(int argCount, OBJ *args) {
 	return int2obj(result);
 }
 
+static inline OBJ primSum(int argCount, OBJ *args) {
+	int result = 0;
+	if ((1 == argCount) && IS_TYPE(args[0], ListType)) {
+		OBJ *src = &FIELD(args[0], 0);
+		int count = obj2int(*src++); // list item count
+		for (int i = 0; i < count; i++) {
+			OBJ arg = *src++;
+			if (!isInt(arg)) return fail(needsListOfIntegers);
+			result += obj2int(arg);
+		}
+	} else {
+		for (int i = 0; i < argCount; i++) {
+			OBJ arg = args[i];
+			if (!isInt(arg)) return fail(needsIntegerError);
+			result += obj2int(arg);
+		}
+	}
+	return int2obj(result);
+}
+
 static inline int compareObjects(OBJ obj1, OBJ obj2) {
 	// Compare two objects with the given operator and return one of:
 	//	-1 (<), 0 (==), 1 (>)
@@ -545,7 +565,7 @@ static void runTask(Task *task) {
 		&&greaterThan_op,
 		&&not_op,
 	&&RESERVED_op,
-	&&RESERVED_op,
+		&&sum_op,
 		&&longMultiply_op,			// 70
 		&&absoluteValue_op,
 		&&minimum_op,
@@ -1071,6 +1091,11 @@ static void runTask(Task *task) {
 		*(sp - arg) = int2obj(evalInt(*(sp - 2)) >> evalInt(*(sp - 1)));
 		POP_ARGS_REPORTER();
 		DISPATCH();
+
+	sum_op:
+		*(sp - arg) = primSum(arg, sp - arg);
+		POP_ARGS_REPORTER();
+		DISPATCH();
 	longMultiply_op:
 		{
 			long long product = (long long) (evalInt(*(sp - 3))) * (long long) (evalInt(*(sp - 2)));
@@ -1079,6 +1104,7 @@ static void runTask(Task *task) {
 		}
 		POP_ARGS_REPORTER();
 		DISPATCH();
+
 	// list operations:
 	newList_op:
 		*(sp - arg) = primNewList(arg, sp - arg);

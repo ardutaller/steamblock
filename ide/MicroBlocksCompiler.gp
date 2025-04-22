@@ -141,6 +141,7 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' 'minimum'			'min _ _ : _ : ...' 'num num num' 1 2)
 		(array 'r' 'maximum'			'max _ _ : _ : ...' 'num num num' 1 2)
 		(array 'r' 'random'				'random _ to _' 'num num' 1 10)
+		(array 'r' 'sum'				'sum _ : #BR# + _ : ...' 'num num num' 1 2 3 4 5 6 7 8 9 10)
 		'-'
 		(array 'r' '<'					'_ < _' 'num num' 3 4)
 		(array 'r' '<='					'_ <= _' 'num num' 3 4)
@@ -469,7 +470,7 @@ method initOpcodes SmallCompiler {
 		> 66
 		not 67
 	RESERVED 68
-	RESERVED 69
+		sum 69
 		longMult 70
 		absoluteValue 71
 		minimum 72
