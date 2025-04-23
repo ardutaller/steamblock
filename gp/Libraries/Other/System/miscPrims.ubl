@@ -1,6 +1,6 @@
 module 'Misc Primitives'
 author MicroBlocks
-version 1 8
+version 1 9 
 description 'Miscellaneous system primitives.
 '
 
@@ -19,6 +19,8 @@ description 'Miscellaneous system primitives.
   spec 'r' '[misc:bme680GasResistance]' 'bme680 gas resistance adc _ range _ calibration range error  _' 'num num num' 500 0 0
   space
   spec ' ' '[misc:broadcastToIDE]' 'broadcast _ to IDE only' 'str' ''
+  space
+  spec 'r' '[misc:shapeforChar]' 'shape for character _' 'num' 65
   space
   spec ' ' '[display:mbEnableDisplay]' 'enable LED display _' 'bool' false
   spec ' ' '[display:neoPixelSetMaxBrightness]' 'set NeoPixel max brightness _ (10-255)' 'num' 40
