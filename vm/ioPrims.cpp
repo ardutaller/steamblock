@@ -1408,9 +1408,9 @@ void primAnalogWrite(OBJ *args) {
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
 	#if defined(ARDUINO_SAM_DUE)
-	if (value > 4095) value = 4095;
+		if (value > 4095) value = 4095;
 	#else
-	if (value > 1023) value = 1023;
+		if (value > 1023) value = 1023;
 	#endif
 	if ((pinNum < 0) || (pinNum >= TOTAL_PINS)) return;
 	#if defined(ARDUINO_ARCH_SAMD) && defined(PIN_DAC0)
