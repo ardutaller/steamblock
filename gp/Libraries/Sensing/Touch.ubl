@@ -1,6 +1,6 @@
 module Touch Input
-author 'per MicroBlocks'
-version 1 12 
+author MicroBlocks
+version 1 13 
 description 'Support for one or two MPR121 12-channel i2c touch sensors.
 Detects MPR121 chips at I2C addresses 90 and, optionally, 92 to handle up to 24 touch pins.
 '
@@ -111,7 +111,10 @@ to '_touch_update' {
 }
 
 to touch_isTouched pin {
-  if (or (pin < 1) (pin > _touch_pinCount)) {return (booleanConstant false)}
+  '_touch_init'
+  if (or (pin < 1) (pin > _touch_pinCount)) {
+    return (booleanConstant false)
+  }
   '_touch_update'
   return ((_touch_state & (1 << (pin - 1))) != 0)
 }
