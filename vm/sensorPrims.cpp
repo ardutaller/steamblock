@@ -81,11 +81,14 @@ int hasI2CPullups() {
 }
 
 static void startWire() {
+	#if !defined(ESP8266)
+		// Ensure Wire is stopped before setting pins.
+		Wire.end();
+	#endif
 	#if defined(ARDUINO_ARCH_RP2040) || defined(DUELink)
 		Wire.setSDA(PIN_WIRE_SDA);
 		Wire.setSCL(PIN_WIRE_SCL);
 	#elif defined(ARDUINO_ARCH_ESP32)
-		Wire.end();
 		Wire.setPins(PIN_WIRE_SDA, PIN_WIRE_SCL);
 	#endif
 
