@@ -81,11 +81,11 @@ int hasI2CPullups() {
 }
 
 static void startWire() {
-	Wire.end();
 	#if defined(ARDUINO_ARCH_RP2040) || defined(DUELink)
 		Wire.setSDA(PIN_WIRE_SDA);
 		Wire.setSCL(PIN_WIRE_SCL);
 	#elif defined(ARDUINO_ARCH_ESP32)
+		Wire.end();
 		Wire.setPins(PIN_WIRE_SDA, PIN_WIRE_SCL);
 	#endif
 
