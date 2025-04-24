@@ -1,23 +1,23 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 5 
+version 1 6 
 description 'Generate analog waves that you can output on a DAC pin to produce sound.
 
 You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will.
 '
 variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases 
 
-  spec 'r' 'asynth sin' 'sin wave frequency _ amplitude _' 'num num' 440 200
-  spec 'r' 'asynth square' 'square wave frequency _ amplitude _' 'num num' 185 220
-  spec 'r' 'asynth tri' 'tri wave frequency _ amplitude _' 'num num' 392 150
-  spec 'r' 'asynth saw' 'sawtooth wave frequency _ amplitude _' 'num num' 196 180
-  spec 'r' 'asynth noise' 'noise amplitude _' 'num' 50
+  spec 'r' 'asynth sin' '#SVG#wave-sine _ Hz _ #SVG#double-arrow-v' 'num num' 440 200
+  spec 'r' 'asynth square' '#SVG#wave-square _ Hz _ #SVG#double-arrow-v' 'num num' 185 220
+  spec 'r' 'asynth tri' '#SVG#wave-triangle _ Hz _ #SVG#double-arrow-v' 'num num' 392 150
+  spec 'r' 'asynth saw' '#SVG#wave-sawtooth _ Hz _ #SVG#double-arrow-v' 'num num' 196 180
+  spec 'r' 'asynth noise' '#SVG#wave-noise _ #SVG#double-arrow-v' 'num' 50
   space
-  spec 'r' 'asynth sin gate' 'sin wave gate _' 'menu.range:1-8' 1
-  spec 'r' 'asynth square gate' 'square wave gate _' 'menu.range:1-8' 1
-  spec 'r' 'asynth tri gate' 'tri wave gate _' 'menu.range:1-8' 1
-  spec 'r' 'asynth saw gate' 'sawtooth wave gate _' 'menu.range:1-8' 1
-  spec 'r' 'asynth noise gate' 'noise gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth sin gate' '#SVG#wave-sine gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth square gate' '#SVG#wave-square gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth tri gate' '#SVG#wave-triangle gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth saw gate' '#SVG#wave-sawtooth gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth noise gate' '#SVG#wave-noise gate _' 'menu.range:1-8' 1
   space
   spec ' ' 'asynth envelope' 'set amplitude _ attack _ hold _ release _ for gate _' 'num num num num menu.range:1-8' 200 10 250 100 1
   spec ' ' 'asynth trigger gate' 'trigger gate _ MIDI key _' 'menu.range:1-8 num' 1 60
