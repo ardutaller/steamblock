@@ -1044,7 +1044,12 @@ method createFunction MicroBlocksScripter isReporter {
 	if isReporter { blockType = 'r' }
 	spec = (blockSpecFromStrings opName blockType opName '')
 	recordBlockSpec mbProject opName spec
-	addToBottom this (scriptForFunction func)
+	script = (scriptForFunction func)
+	if isReporter {
+		// append an empty return block to reporters
+		setNext script (toBlock (newReporter 'return'))
+	}
+	addToBottom this script
 	updateBlocks this
 }
 
