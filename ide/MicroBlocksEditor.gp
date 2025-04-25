@@ -262,6 +262,8 @@ method zoomOut MicroBlocksEditor {
 
 method setBlockScalePercent MicroBlocksEditor newPercent {
 	setCursor 'wait'
+	// invalidate SVG cache
+	setGlobal 'svgCache' (dictionary)
 	setBlockScalePercent (scriptEditor scripter) newPercent
 	syncScripts (smallRuntime)
 	setCursor 'default'
