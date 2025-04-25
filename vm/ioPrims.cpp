@@ -1071,20 +1071,102 @@ void hardwareInit() {
 	#define PIN_BUTTON_B 27 // (unmapped) edge pin 11
 	#undef BUTTON_PRESSED
 	#define BUTTON_PRESSED HIGH
-	#define DEFAULT_TONE_PIN 21
+	#define DEFAULT_TONE_PIN 13 // Arduino pin 13, PA_5
+	static const int8_t analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
-		 1, 13, 12, 15,  7, 11,  54, 42,  47, 52};
+		 1, 13, 12, 15, 11, 54, 7, 42,    47, 52};
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255, 0,
-		 1, 13, 12, 15, 14, 29,  32, 42,  47, 52};
+		 1, 13, 12, 15, 14, 29, 32, 42,   47, 52};
 	static const char dueStandardPin[DIGITAL_PINS] = {
-		15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
-		33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
-		28,  8,  2, 27, 32, 52, 47, 42, 255, 255};
-	static const int analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
+		15,   16, 17, 18, 13, 12, 11,  7, 54, 19,
+		33,   29,  9,  5,  4,  1,  0, 37, 14, 10,
+		255, 255, 28,  8,  2, 27, 32, 42, 47, 52};
+
+	// Analog Pin Names for PixoBit edge pins 0-16
+	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
+	#define DUE_LAST_ANALOG_PIN 17
+	static const int16_t dueEdgeAnalog[DUE_LAST_ANALOG_PIN + 1] = {
+		PA_0, PA_1, PA_4, PA_7, PB_1, PA_14, -1, -1, PB_2, PB_0, -1, PA_13, PA_8, -1, -1, -1, -1, -1};
+	static const int16_t dueStandardAnalog[DUE_LAST_ANALOG_PIN + 1] = {
+		-1, PA_0, PA_1, PA_4, PA_5, PA_6, PA_7, PA_8, PB_1, PB_0, -1, -1, -1, -1, -1,  -1,  -1, PB_2};
+
+	static int dueAnalogPin(int pinNum) {
+		int result = -1; // default - no pin
+		if ((0 <= pinNum) && (pinNum < DUE_LAST_ANALOG_PIN)) {
+			if (DUE_HAS_EDGE_CONNECTOR) {
+				result = dueEdgeAnalogPin[pinNum];
+				if (IS_DUE_CINCO) {
+					// CincoBit edge pins 3, 4, and 12 are not analog capable
+					if ((pinNum == 3) || (pinNum == 4) || (pinNum == 12)) result = -1;
+				}
+			} else {
+				result = dueStandardAnalog[pinNum];
+			}
+		}
+		return result;
+	}
+
+	// PWM pins for CincoBit edge pins 0-21 (pin 21 is buzzer)
+	// Note: Buzzer is PA_5 (TIM1_CH1) on Cinco and Pixo; not in this array
+	#define DUE_LAST_PWM_PIN 16
+	static const int16 dueEdgePWM[DUE_LAST_PWM_PIN + 1] = {
+		PA_0_ALT2,	// TIM16_CH1
+		PA_1_ALT2,	// TIM17_CH1
+		PA_4_ALT1,	// TIM14_CH1
+		-1,
+		PC_6,		// TIM2_CH3 (on PixoBit, use PB_1_ALT2 = TIM3_CH4)
+		-1,
+		-1,
+		PA_15_ALT1,	// TIM2_CH1
+		-1,
+		PB_0,		// TIM1_CH2N
+		-1,
+		-1,
+		-1,
+		PB_3_ALT1,	// TIM2_CH2
+		PB_4,		// TIM3_CH1
+		PB_5,		// TIM3_CH2
+		PC_15,		// TIM3_CH3
+	};
+	static const int16 dueStandardPWM[DUE_LAST_PWM_PIN + 1] {
+		-1,
+		PA_0_ALT1,	// TIM2_CH1
+		PA_1_ALT1,	// TIM1_CH2, *TIM2_CH2*, TIM17_CH1
+		PA_4_ALT2,	// TIM1_CH2N, TIM14_CH1, *TIM17_CH1N*
+		PA_5,		// *TIM1_CH1*, TIM1_CH3N, TIM2_CH1 // buzzer on Ghizzy
+		PA_6_ALT1,	// TIM3_CH1, *TIM16_CH1*
+		PA_7,		// *TIM1_CH1N*, TIM3_CH2, TIM14_CH1, TIM17_CH1
+		PA_8_ALT5,	// TIM1_CH1, TIM1_CH2N, TIM1_CH3N, TIM3_CH3, TIM3_CH4, *TIM14_CH1*
+		PB_1_ALT2,	// TIM1_CH2N, TIM1_CH3N, *TIM3_CH4*, TIM14_CH1
+		PB_0, 		// TIM1_CH2N*, TIM3_CH3
+		PC_15, 		// TIM3_CH3*
+		PC_6, 		// TIM2_CH3*, TIM3_CH1
+		PB_3, 		// TIM1_CH2*, TIM2_CH2, TIM3_CH2
+		PB_4, 		// *TIM3_CH1*
+		PB_5, 		// *TIM3_CH2*, TIM3_CH3
+		PB_6_ALT5,	// TIM16_CH1N*
+		PB_7 		// *TIM1_CH4*, TIM3_CH1, TIM3_CH4, TIM16_CH1, TIM17_CH1N
+	};
+
+	static int duePWMPin(int pinNum) {
+		int result = -1; // default - no pin
+		if ((0 <= pinNum) && (pinNum < DUE_LAST_PWM_PIN)) {
+			if (DUE_HAS_EDGE_CONNECTOR) {
+				result = dueEdgePWM[pinNum];
+				if (!IS_DUE_CINCO) {
+					// on PixoBit, pin 4 is PB_1_ALT2 (TIM3_CH4)
+					if (pinNum == 4) result = PB_1_ALT2;
+				}
+			} else {
+				result = dueStandardPWM[pinNum];
+			}
+		}
+		return result;
+	}
 
 #elif defined(CONFIG_BOARD_BEAGLECONNECT_FREEDOM)
 
@@ -1317,22 +1399,10 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 			((18 <= pinNum) && (pinNum <= 23))) return int2obj(0);
 
 	#elif defined(DUELink)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS) && (pinNum != 17) && (pinNum != 18)) {
-			pinNum = mapDigitalPinNum(pinNum); // map edge connector pin number to pin number
-			if (pinNum < 0) return falseObj;
-			SET_MODE(pinNum, mode);
-
-			// find the analog pin number for the given digital pin
-			for (int i = 0; i < NUM_ANALOG_INPUTS; i++) {
-				if (analogInputPin[i] == pinNum) {
-					pinNum = i;
-					break;
-				}
-			}
-			return int2obj(analogRead(pinNum));
-		} else {
-			return zeroObj;
-		}
+		int duePin = dueAnalogPin(pinNum);
+		if (duePin < 0) return zeroObj;
+		SET_MODE(pinNum, mode);
+		return int2obj(adc_read_value((PinName) duePin, 10));
 	#endif
 	#if defined(ARDUINO_ARCH_RP2040) && !defined(PICO_ED)
 		if ((pinNum < 26) || (pinNum > 29)) return int2obj(0);
