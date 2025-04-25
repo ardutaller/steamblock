@@ -113,7 +113,37 @@ void handleMicosecondClockWrap() {
 		#define Serial SERIAL_PORT_USBVIRTUAL
 	#endif
 
+#if defined(DUELink)
+
+	static void DUE_EnableBoot0() {
+		// Clear nBOOT_SEL bit to zero in the FLASH_OPTR register if necesary.
+		// This allows the board to be put in boot mode using the boot0 pin.
+		// Do nothing if the setting is already correct.
+
+		// read the current Flash options
+		FLASH_OBProgramInitTypeDef OptionsBytesStruct = { 0 };
+		OptionsBytesStruct.OptionType = OPTIONBYTE_USER;
+		HAL_FLASHEx_OBGetConfig(&OptionsBytesStruct);
+
+ 		if (OptionsBytesStruct.USERConfig & FLASH_OPTR_nBOOT_SEL) { // Boot0 is not currently enabled
+			// enable Boot0 by clearing the nBOOT_SEL bit
+			OptionsBytesStruct.USERConfig &= ~FLASH_OPTR_nBOOT_SEL;
+
+			// write the new settings
+			HAL_FLASH_Unlock();
+			HAL_FLASH_OB_Unlock();
+			HAL_FLASHEx_OBProgram(&OptionsBytesStruct);
+			HAL_FLASH_OB_Lock();
+			HAL_FLASH_Lock();
+		}
+	}
+
+#endif
+
 void hardwareInit() {
+	#if defined(DUELink)
+		DUE_EnableBoot0();
+	#endif
 	Serial.begin(115200);
 	#ifdef USE_NRF5x_CLOCK
 		initClock_NRF5x();
