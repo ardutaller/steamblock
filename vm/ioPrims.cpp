@@ -1071,7 +1071,6 @@ void hardwareInit() {
 	#define PIN_BUTTON_B 27 // (unmapped) edge pin 11
 	#undef BUTTON_PRESSED
 	#define BUTTON_PRESSED HIGH
-	#define DEFAULT_TONE_PIN 13 // Arduino pin 13, PA_5
 	static const int8_t analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
@@ -1098,7 +1097,7 @@ void hardwareInit() {
 		int result = -1; // default - no pin
 		if ((0 <= pinNum) && (pinNum < DUE_LAST_ANALOG_PIN)) {
 			if (DUE_HAS_EDGE_CONNECTOR) {
-				result = dueEdgeAnalogPin[pinNum];
+				result = dueEdgeAnalog[pinNum];
 				if (IS_DUE_CINCO) {
 					// CincoBit edge pins 3, 4, and 12 are not analog capable
 					if ((pinNum == 3) || (pinNum == 4) || (pinNum == 12)) result = -1;
@@ -1112,49 +1111,50 @@ void hardwareInit() {
 
 	// PWM pins for CincoBit edge pins 0-21 (pin 21 is buzzer)
 	// Note: Buzzer is PA_5 (TIM1_CH1) on Cinco and Pixo; not in this array
-	#define DUE_LAST_PWM_PIN 16
-	static const int16 dueEdgePWM[DUE_LAST_PWM_PIN + 1] = {
-		PA_0_ALT2,	// TIM16_CH1
-		PA_1_ALT2,	// TIM17_CH1
+	#define DUE_PWM_PIN_COUNT 17
+	static const int16 dueEdgePWM[DUE_PWM_PIN_COUNT] = {
+		PA_0_ALT1,	// TIM2_CH1
+		PA_1_ALT1,	// TIM2_CH2
 		PA_4_ALT1,	// TIM14_CH1
-		-1,
+		PB_9_ALT1,	// TIM17_CH1
 		PC_6,		// TIM2_CH3 (on PixoBit, use PB_1_ALT2 = TIM3_CH4)
 		-1,
 		-1,
-		PA_15_ALT1,	// TIM2_CH1
-		-1,
-		PB_0,		// TIM1_CH2N
 		-1,
 		-1,
 		-1,
-		PB_3_ALT1,	// TIM2_CH2
+		-1,
+		-1,
+		-1,
+		-1,
 		PB_4,		// TIM3_CH1
 		PB_5,		// TIM3_CH2
 		PC_15,		// TIM3_CH3
 	};
-	static const int16 dueStandardPWM[DUE_LAST_PWM_PIN + 1] {
+
+	static const int16 dueStandardPWM[DUE_PWM_PIN_COUNT] {
 		-1,
-		PA_0_ALT1,	// TIM2_CH1
+		PA_0,		// *TIM1_CH1*, TIM2_CH1, TIM16_CH1
 		PA_1_ALT1,	// TIM1_CH2, *TIM2_CH2*, TIM17_CH1
-		PA_4_ALT2,	// TIM1_CH2N, TIM14_CH1, *TIM17_CH1N*
-		PA_5,		// *TIM1_CH1*, TIM1_CH3N, TIM2_CH1 // buzzer on Ghizzy
+		PA_4_ALT2,	// TIM1_CH2N, TIM14_CH1, *TIM17_CH1N* (buzzer on Ghizzy)
+		PA_5_ALT1,	// TIM1_CH1, *TIM1_CH3N*, TIM2_CH1
 		PA_6_ALT1,	// TIM3_CH1, *TIM16_CH1*
-		PA_7,		// *TIM1_CH1N*, TIM3_CH2, TIM14_CH1, TIM17_CH1
+		PA_7_ALT1,	// TIM1_CH1N, *TIM3_CH2*, TIM14_CH1, TIM17_CH1
 		PA_8_ALT5,	// TIM1_CH1, TIM1_CH2N, TIM1_CH3N, TIM3_CH3, TIM3_CH4, *TIM14_CH1*
 		PB_1_ALT2,	// TIM1_CH2N, TIM1_CH3N, *TIM3_CH4*, TIM14_CH1
-		PB_0, 		// TIM1_CH2N*, TIM3_CH3
-		PC_15, 		// TIM3_CH3*
-		PC_6, 		// TIM2_CH3*, TIM3_CH1
-		PB_3, 		// TIM1_CH2*, TIM2_CH2, TIM3_CH2
-		PB_4, 		// *TIM3_CH1*
-		PB_5, 		// *TIM3_CH2*, TIM3_CH3
-		PB_6_ALT5,	// TIM16_CH1N*
-		PB_7 		// *TIM1_CH4*, TIM3_CH1, TIM3_CH4, TIM16_CH1, TIM17_CH1N
+		PB_0, 		// *TIM1_CH2N*, TIM3_CH3
+		PC_15, 		// *TIM3_CH3*
+		-1, 		// xxx TIM2_CH3, *TIM3_CH1*
+		-1,			// xxx TIM1_CH2, TIM2_CH2, TIM3_CH2
+		-1, 		// xxx TIM3_CH1
+		-1, 		// xxx TIM3_CH2, TIM3_CH3
+		-1,			// xxx TIM16_CH1N
+		PB_7		// TIM1_CH4, TIM3_CH1, TIM3_CH4, TIM16_CH1, TIM17_CH1N
 	};
 
 	static int duePWMPin(int pinNum) {
 		int result = -1; // default - no pin
-		if ((0 <= pinNum) && (pinNum < DUE_LAST_PWM_PIN)) {
+		if ((0 <= pinNum) && (pinNum < DUE_PWM_PIN_COUNT)) {
 			if (DUE_HAS_EDGE_CONNECTOR) {
 				result = dueEdgePWM[pinNum];
 				if (!IS_DUE_CINCO) {
@@ -1292,7 +1292,15 @@ void turnOffPins() {
 		#if defined(HAS_INPUT_PULLDOWN)
 			if (INPUT_PULLDOWN == currentMode[pin]) turnOffPin = true;
 		#endif
-		if (turnOffPin) SET_MODE(pin, INPUT);
+		if (turnOffPin) {
+			#if defined(DUELink)
+				if (OUTPUT == currentMode[pin]) {
+					int duePin = mapDigitalPinNum(pin);
+					if (duePin >= 0) digitalWrite(duePin, LOW);
+				}
+			#endif
+			SET_MODE(pin, INPUT);
+		}
 	}
 }
 
@@ -1300,14 +1308,16 @@ int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return digitalPin[pinNum];
 	#elif defined(DUELink)
+		int duePin = -1; // -1 means pin is out of range or undefined
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
 			if (DUE_HAS_EDGE_CONNECTOR) {
-				return (IS_DUE_CINCO) ? cincoEdgePin[pinNum] : pixoEdgePin[pinNum];
+				duePin = (IS_DUE_CINCO) ? cincoEdgePin[pinNum] : pixoEdgePin[pinNum];
 			} else {
-				return dueStandardPin[pinNum];
+				duePin = dueStandardPin[pinNum];
 			}
 		}
-		return -1; // out of range
+		if (255 == duePin) duePin = -1;
+		return duePin;
 	#endif
 	#if defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pinNum) && (pinNum <= 139)) {
@@ -1495,9 +1505,6 @@ void primAnalogWrite(OBJ *args) {
 		} else {
 			return;
 		}
-	#elif defined(DUELink)
-		pinNum = mapDigitalPinNum(pinNum);
-		if (pinNum < 0) return;
 	#elif defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
 			pinNum = digitalPin[pinNum];
@@ -1524,6 +1531,14 @@ void primAnalogWrite(OBJ *args) {
 		} else {
 			SET_MODE(pinNum, OUTPUT);
 		}
+	#elif defined(DUELink)
+		int duePin = duePWMPin(pinNum);
+		if (duePin < 0) return;
+		SET_MODE(pinNum, OUTPUT);
+		digitalWrite(mapDigitalPinNum(pinNum), LOW);
+		pwm_start((PinName) duePin, 1000, value, (TimerCompareFormat_t) 10); // 1000 Hz, 10-bit resolution
+		pwmRunning[pinNum] = true;
+		return;
 	#else
 		int modeChanged = (OUTPUT != currentMode[pinNum]);
 		(void) (modeChanged); // reference var to suppress compiler warning
@@ -1643,8 +1658,29 @@ void primDigitalSet(int pinNum, int flag) {
 		if (22 == pinNum) return;
 		if (23 == pinNum) { digitalWrite(BUZZER, (flag ? HIGH : LOW)); return; }
 	#elif defined(DUELink)
-		pinNum = mapDigitalPinNum(pinNum);
-		if (pinNum < 0) return;
+		if ((0 <= pinNum) && (pinNum < DUE_PWM_PIN_COUNT) && pwmRunning[pinNum]) { // stop pwm if running
+			int duePin = duePWMPin(pinNum);
+			if (duePin >= 0) {
+				pwm_start((PinName) duePin, 1000, (flag ? 1023 : 0), (TimerCompareFormat_t) 10); // set to zero
+			}
+// xxx this might be made to work:
+// 			if (duePin >= 0
+// 				pwm_start((PinName) duePin, 1000, 0, (TimerCompareFormat_t) 10); // set to zero
+// 				pwm_stop((PinName) duePin);
+// 			}
+// 			if (duePin >= 0) pwm_stop((PinName) duePin);
+// 			delay(4);
+// 			digitalWrite(mapDigitalPinNum(pinNum), LOW);
+// reportNum("primDigitalSet", pinNum); // xxx
+// reportHex("  stop duePin", duePin); // xxx
+// 			pwmRunning[pinNum] = false;
+		} else {
+			pinNum = mapDigitalPinNum(pinNum);
+			if (pinNum < 0) return;
+			SET_MODE(pinNum, OUTPUT);
+			digitalWrite(pinNum, (flag ? HIGH : LOW));
+		}
+		return;
 	#elif defined(USE_DIGITAL_PIN_MAP)
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
 			pinNum = digitalPin[pinNum];
@@ -1856,6 +1892,20 @@ void stopPWM() {
 		NRF_PWM0->ENABLE = 0;
 		NRF_PWM1->ENABLE = 0;
 		NRF_PWM2->ENABLE = 0;
+	#elif defined(DUELink)
+		for (int i = 0; i < DUE_PWM_PIN_COUNT; i++) {
+			if (pwmRunning[i]) {
+				int duePin = duePWMPin(i);
+				if (duePin >= 0) {
+					pwm_start((PinName) duePin, 1000, 0, (TimerCompareFormat_t) 10); // set to zero
+					delay(1);
+					pwm_stop((PinName) duePin);
+				}
+				digitalWrite(mapDigitalPinNum(i), LOW);
+				SET_MODE(i, INPUT);
+				pwmRunning[i] = false;
+			}
+		}
 	#endif
 }
 
@@ -2091,10 +2141,9 @@ static void setServo(int pin, int usecs) {
 	}
 }
 
-#elif defined(__ZEPHYR__)
+#elif defined(__ZEPHYR__) || defined(DUELink)
 
 static void setServo(int pin, int usecs) {}
-
 void stopServos() {}
 
 #else // use Arduino Servo library
