@@ -1440,7 +1440,7 @@ method swipe Page {return true}
 
 method wantsDropOf Page aHandler {
 	return (or
-		(devMode)
+		(and (devMode) (not (isClass aHandler 'Block')))
 		(isClass aHandler 'ColorPicker')
 		(and
 			(hasField aHandler 'window')
