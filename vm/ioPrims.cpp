@@ -1071,19 +1071,24 @@ void hardwareInit() {
 	#define PIN_BUTTON_B 27 // (unmapped) edge pin 11
 	#undef BUTTON_PRESSED
 	#define BUTTON_PRESSED HIGH
+	#define DEFAULT_TONE_PIN 21
 	static const int8_t analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
+
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
-		 2, 27, 32,  9,  5,  4, 33, 255, 255, 0,
+		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
 		 1, 13, 12, 15, 11, 54, 7, 42,    47, 52};
+
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255, 0,
 		 1, 13, 12, 15, 14, 29, 32, 42,   47, 52};
+
+	// Pin 13 is repeated at index 21 (DEFAULT_TONE_PIN)
 	static const char dueStandardPin[DIGITAL_PINS] = {
-		15,   16, 17, 18, 13, 12, 11,  7, 54, 19,
-		33,   29,  9,  5,  4,  1,  0, 37, 14, 10,
-		255, 255, 28,  8,  2, 27, 32, 42, 47, 52};
+		15,  16, 17, 18, 13, 12, 11,  7, 54, 19,
+		33,  29,  9,  5,  4,  1,  0, 37, 14, 10,
+		255, 13, 28,  8,  2, 27, 32, 42, 47, 52};
 
 	// Analog Pin Names for PixoBit edge pins 0-16
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
@@ -1109,47 +1114,49 @@ void hardwareInit() {
 		return result;
 	}
 
-	// PWM pins for CincoBit edge pins 0-21 (pin 21 is buzzer)
-	// Note: Buzzer is PA_5 (TIM1_CH1) on Cinco and Pixo; not in this array
+	// PWM pins for CincoBit and PixoBit edge pins 0 to 16
+	// Note: TIM14 is used by Tone library. TIM16 is used by Servo library
 	#define DUE_PWM_PIN_COUNT 17
 	static const int16 dueEdgePWM[DUE_PWM_PIN_COUNT] = {
-		PA_0_ALT1,	// TIM2_CH1
-		PA_1_ALT1,	// TIM2_CH2
-		PA_4_ALT1,	// TIM14_CH1
-		PB_9_ALT1,	// TIM17_CH1
-		PC_6,		// TIM2_CH3 (on PixoBit, use PB_1_ALT2 = TIM3_CH4)
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		PB_4,		// TIM3_CH1
-		PB_5,		// TIM3_CH2
-		PC_15,		// TIM3_CH3
+		PA_0_ALT1,		// TIM1_CH1, *TIM2_CH1, TIM16_CH1
+		PA_1_ALT1,		// TIM1_CH2, TIM2_CH2, TIM17_CH1
+		PA_4_ALT2,		// TIM1_CH2N, TIM14_CH1, *TIM17_CH1N
+		-1, // PB_9,	// TIM3_CH2, TIM17_CH1
+		-1, // PC_6,	// TIM2_CH3, TIM3_CH1
+		PA_14,			// TIM1_CH1
+		-1,	// PA_9		// TIM1_CH2
+		-1, // PA_15,	// TIM1_CH1, TIM2_CH1
+		-1,	// PB_2		// (no PWM)
+		-1,	// PB_0		// TIM1_CH2N, TIM3_CH3
+		PA_10,			// TIM1_CH3
+		-1,	// PA_13	// (no PWM)
+		PC_14,			// *TIM3_CH2, TIM17_CH1
+		PB_3,			// TIM1_CH2, *TIM2_CH2, TIM3_CH2
+		PB_4,			// *TIM3_CH1
+		PB_5_ALT1,		// TIM3_CH2, *TIM3_CH3
+		-1, // PC_15,	// TIM3_CH3
 	};
 
+	// PWM pins for standard DUEBoards 0 to 16 (pin 17 does not have a timer)
+	// Note: TIM14 is used by Tone library. TIM16 is used by Servo library
 	static const int16 dueStandardPWM[DUE_PWM_PIN_COUNT] {
 		-1,
 		PA_0,		// *TIM1_CH1*, TIM2_CH1, TIM16_CH1
 		PA_1_ALT1,	// TIM1_CH2, *TIM2_CH2*, TIM17_CH1
 		PA_4_ALT2,	// TIM1_CH2N, TIM14_CH1, *TIM17_CH1N* (buzzer on Ghizzy)
-		PA_5_ALT1,	// TIM1_CH1, *TIM1_CH3N*, TIM2_CH1
+		PA_5_ALT2,	// TIM1_CH1, TIM1_CH3N, *TIM2_CH1
 		PA_6_ALT1,	// TIM3_CH1, *TIM16_CH1*
 		PA_7_ALT1,	// TIM1_CH1N, *TIM3_CH2*, TIM14_CH1, TIM17_CH1
-		PA_8_ALT5,	// TIM1_CH1, TIM1_CH2N, TIM1_CH3N, TIM3_CH3, TIM3_CH4, *TIM14_CH1*
+		PA_8_ALT2,	// TIM1_CH1, TIM1_CH2N, TIM1_CH3N, TIM3_CH3, TIM3_CH4, TIM14_CH1
 		PB_1_ALT2,	// TIM1_CH2N, TIM1_CH3N, *TIM3_CH4*, TIM14_CH1
 		PB_0, 		// *TIM1_CH2N*, TIM3_CH3
 		PC_15, 		// *TIM3_CH3*
-		-1, 		// xxx TIM2_CH3, *TIM3_CH1*
+		PC_6, 		// *TIM2_CH3*, TIM3_CH1
 		-1,			// xxx TIM1_CH2, TIM2_CH2, TIM3_CH2
 		-1, 		// xxx TIM3_CH1
 		-1, 		// xxx TIM3_CH2, TIM3_CH3
 		-1,			// xxx TIM16_CH1N
-		PB_7		// TIM1_CH4, TIM3_CH1, TIM3_CH4, TIM16_CH1, TIM17_CH1N
+		PB_7,		// TIM1_CH4, TIM3_CH1, TIM3_CH4, TIM16_CH1, TIM17_CH1N
 	};
 
 	static int duePWMPin(int pinNum) {
@@ -1197,6 +1204,11 @@ const char * boardType() {
 			return "CodingBox";
 		} else {
 			return "KidsIOT";
+		}
+	}
+	if (0 == strcmp("DUELink", BOARD_TYPE)) {
+		if (DUE_HAS_EDGE_CONNECTOR) {
+			return (IS_DUE_CINCO) ? "CincoBit" : "PixoBit";
 		}
 	}
 	return BOARD_TYPE;
@@ -1664,7 +1676,7 @@ void primDigitalSet(int pinNum, int flag) {
 				pwm_start((PinName) duePin, 1000, (flag ? 1023 : 0), (TimerCompareFormat_t) 10); // set to zero
 			}
 // xxx this might be made to work:
-// 			if (duePin >= 0
+// 			if (duePin >= 0) {
 // 				pwm_start((PinName) duePin, 1000, 0, (TimerCompareFormat_t) 10); // set to zero
 // 				pwm_stop((PinName) duePin);
 // 			}
@@ -2440,7 +2452,7 @@ static int writeDAC(int sample) { return 0; }
 #endif
 
 OBJ primHasTone(int argCount, OBJ *args) {
-	#if defined(ARDUINO_SAM_DUE) || defined(DUELink)
+	#if defined(ARDUINO_SAM_DUE)
 		// Arduino Tone library does not work on DUELink
 		return falseObj;
 	#else
@@ -2472,9 +2484,6 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 
 	#if defined(USE_DIGITAL_PIN_MAP)
 		pin = digitalPin[pin];
-	#elif defined(DUELink)
-		pin = mapDigitalPinNum(pin);
-		if (pin < 0) pin = DEFAULT_TONE_PIN;
 	#endif
 
 	#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
@@ -2484,6 +2493,12 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 	#endif
 
 	SET_MODE(pin, OUTPUT);
+
+	#if defined(DUELink)
+		pin = mapDigitalPinNum(pin); // use the DUE pin number
+		if (pin < 0) return trueObj;
+	#endif
+
 	int frequency = obj2int(freqArg);
 	if ((frequency < 16) || (frequency > 100000)) {
 		stopTone();
@@ -2495,7 +2510,7 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 }
 
 OBJ primHasServo(int argCount, OBJ *args) {
-	#if defined(__ZEPHYR__)
+	#if defined(__ZEPHYR__) || defined(DUELink)
 		return falseObj;
 	#else
 		return trueObj;
