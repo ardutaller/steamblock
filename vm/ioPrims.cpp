@@ -1090,17 +1090,17 @@ void hardwareInit() {
 		33,  29,  9,  5,  4,  1,  0, 37, 14, 10,
 		255, 13, 28,  8,  2, 27, 32, 42, 47, 52};
 
-	// Analog Pin Names for PixoBit edge pins 0-16
+	// Analog pin names for DUELink boards
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
-	#define DUE_LAST_ANALOG_PIN 17
-	static const int16_t dueEdgeAnalog[DUE_LAST_ANALOG_PIN + 1] = {
+	#define DUE_ANALOG_PIN_COUNT 18
+	static const int16_t dueEdgeAnalog[DUE_ANALOG_PIN_COUNT] = {
 		PA_0, PA_1, PA_4, PA_7, PB_1, PA_14, -1, -1, PB_2, PB_0, -1, PA_13, PA_8, -1, -1, -1, -1, -1};
-	static const int16_t dueStandardAnalog[DUE_LAST_ANALOG_PIN + 1] = {
+	static const int16_t dueStandardAnalog[DUE_ANALOG_PIN_COUNT] = {
 		-1, PA_0, PA_1, PA_4, PA_5, PA_6, PA_7, PA_8, PB_1, PB_0, -1, -1, -1, -1, -1,  -1,  -1, PB_2};
 
 	static int dueAnalogPin(int pinNum) {
 		int result = -1; // default - no pin
-		if ((0 <= pinNum) && (pinNum < DUE_LAST_ANALOG_PIN)) {
+		if ((0 <= pinNum) && (pinNum < DUE_ANALOG_PIN_COUNT)) {
 			if (DUE_HAS_EDGE_CONNECTOR) {
 				result = dueEdgeAnalog[pinNum];
 				if (IS_DUE_CINCO) {
