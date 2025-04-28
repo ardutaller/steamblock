@@ -1,6 +1,6 @@
 module NeoPanel Output
 author 'José García Yeste & Víctor Casado'
-version 1 6 
+version 1 8 
 depends _NeoPixel _BMP 
 description 'Draw lines, rectangles, circles, text, and images on a NeoPixel panels (e.g. 8x8, 16x16 or 32x8) in either horizontal or vertical orientation. Panels can be daisy-chained to create larger displays if there is sufficient power to drive them.
 See: https://www.btf-lighting.com/collections/led-matrix-display/products/ws2812b-panel-screen-8-8-16-16-8-32-pixel-256-pixels-digital-flexible-led-programmed-individually-addressable-full-color-dc5v#
@@ -144,16 +144,29 @@ to neoPanel_drawVerticalLine x color {
 }
 
 to neoPanel_draw_circle x0 y0 radius color optionalFilled {
+  comment 'Bresenham circle algorithm'
   local 'filled' (argOrDefault 5 (booleanConstant true))
-  for y ('[data:range]' (0 - radius) radius) {
-    local 'w' ('[misc:sqrt]' ((radius * radius) - (y * y)))
+  local 'x' (-1 * radius)
+  local 'y' 0
+  local 'error' (2 - (2 * radius))
+  repeatUntil (x >= 0) {
     if filled {
-      '_neoPanel_drawline' (x0 + w) (y0 + y) (x0 + (0 - w)) (y0 + y) color
+      '_neoPanel_drawline' (x0 - x) (y0 + y) (x0 + x) (y0 + y) color
+      '_neoPanel_drawline' (x0 + y) (y0 + x) (x0 - y) (y0 + x) color
     } else {
-      '_neoPanel_setPixel' (x0 + w) (y0 + y) color
-      '_neoPanel_setPixel' (x0 + y) (y0 + w) color
-      '_neoPanel_setPixel' (x0 + (0 - w)) (y0 + y) color
-      '_neoPanel_setPixel' (x0 + y) (y0 + (0 - w)) color
+      '_neoPanel_setPixel' (x0 - x) (y0 + y) color
+      '_neoPanel_setPixel' (x0 - y) (y0 - x) color
+      '_neoPanel_setPixel' (x0 + x) (y0 - y) color
+      '_neoPanel_setPixel' (x0 + y) (y0 + x) color
+    }
+    radius = error
+    if (radius <= y) {
+      y += 1
+      error = (error + ((y * 2) + 1))
+    }
+    if (or (radius > x) (error > y)) {
+      x += 1
+      error = (error + ((x * 2) + 1))
     }
   }
   '_NeoPixel_update'
