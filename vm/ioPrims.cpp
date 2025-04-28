@@ -1206,11 +1206,13 @@ const char * boardType() {
 			return "KidsIOT";
 		}
 	}
-	if (0 == strcmp("DUELink", BOARD_TYPE)) {
-		if (DUE_HAS_EDGE_CONNECTOR) {
-			return (IS_DUE_CINCO) ? "CincoBit" : "PixoBit";
+	#if defined(DUELink)
+		if (0 == strcmp("DUELink", BOARD_TYPE)) {
+			if (DUE_HAS_EDGE_CONNECTOR) {
+				return (IS_DUE_CINCO) ? "CincoBit" : "PixoBit";
+			}
 		}
-	}
+	#endif
 	return BOARD_TYPE;
 }
 
