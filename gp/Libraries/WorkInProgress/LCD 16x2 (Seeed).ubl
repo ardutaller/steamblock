@@ -1,16 +1,15 @@
 module 'LCD 16x2 (Seeed)' Output
 author 'Ralf Krause'
-version 1 0 
+version 1 1 
 description 'LCD 16x2 (Seeed)
-
-Seeed Studio has four LCD 16x2 displays with Grove i2c connectors. Each display has 2 lines and 16 columns. The LCD RGB display has multicolor background lights. All four LCD displays (v 5.0) are now compatible with 3.3 and 5 volts and work with Micro:bit and Calliope mini.
+Seeed Studio supplies four 16x2 LCD displays with Grove i2c connectors. Each display has 2 rows and 16 columns. The LCD RGB display has a multicolor backlight. All four v5.0 LCD displays are compatible with 3.3 and 5 volts and work seamlessly with Micro:bit and Calliope mini.
 https://wiki.seeedstudio.com/Grove-16x2_LCD_Series
 https://wiki.seeedstudio.com/Grove-LCD_RGB_Backlight/
 
 The display controller JHD1802 (with HD44780 in core) has the i2c address 0x3E (decimal 62). The LCD RGB display v5.0 uses the RGB led driver SGM31323 with the i2c address 0x30 (decimal 48).
 https://github.com/Seeed-Studio/Grove_LCD_RGB_Backlight
 
-This library allows to write the german umlauts ÄÖÜäöüß. The chars ÄÖÜ are not in the standard list of the LCDs. We are using the Character Generator RAM (CGRAM) for 8 addional characters. To generate own special characters or mini icons you should look into the eblocks _LCD_init_german_chars and _LCD_init_some_icons.
+This library allows to write the german umlauts ÄÖÜäöüß. The chars ÄÖÜ are not in the standard list of the LCDs. We are using the Character Generator RAM (CGRAM) for 8 addional characters. To generate own special characters or mini icons you should look into the blocks _LCD_init_german_chars and _LCD_init_some_icons.
 '
 variables _LCD_ADDR _LCD_LOCK_MSECS 
 
@@ -27,6 +26,7 @@ variables _LCD_ADDR _LCD_LOCK_MSECS
   spec ' ' 'LCD_generate_custom_char' 'LCD generate custom char _ _' 'num auto' 0 'pixelList'
   spec 'r' 'LCD_custom_char' 'LCD custom char _' 'num' 0
   space
+  spec ' ' '_LCD_init_some_icons' '_LCD_init_some_icons'
   spec ' ' '_LCD_init_german_chars' '_LCD_init_german_chars'
   spec 'r' '_LCD_convert_german_chars' '_LCD_convert_german_chars _' 'str' 'ÄÖÜäöüß'
   spec 'r' '_LCD_address' '_LCD_address'
@@ -35,7 +35,9 @@ variables _LCD_ADDR _LCD_LOCK_MSECS
 
 to LCD_clear_display {
   if (LCD_is_connected) {
+    '[sensors:i2cSetClockSpeed]' 100000
     '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '01'))
+    '[sensors:i2cSetClockSpeed]' 400000
     waitMicros 2000
   }
 }
@@ -66,16 +68,10 @@ each char has 8 lines with 5 pixels'
 to LCD_init_display {
   if ('[sensors:i2cExists]' ('_LCD_address')) {
     _LCD_ADDR = ('_LCD_address')
-    comment 'https://www.sparkfun.com/datasheets/LCD/HD44780.pdf'
+    comment 'https://files.seeedstudio.com/wiki/Grove-16x2_LCD_Series/res/JDH_1804_Datasheet.pdf'
     waitMicros 40000
     '[sensors:i2cSetClockSpeed]' 100000
-    comment 'init LCD display
-set 8 bit interface, 2 lines, 5x8 dot chars'
-    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '38'))
-    waitMicros 4500
-    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '38'))
-    waitMicros 150
-    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '38'))
+    comment 'init LCD display, 2 lines, 5x8 dot chars'
     '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '38'))
     waitMicros 50
     comment 'display on, cursor off, blink off'
@@ -86,8 +82,8 @@ set 8 bit interface, 2 lines, 5x8 dot chars'
     waitMicros 2000
     comment 'cursor shift from left to right'
     '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '06'))
-    '[sensors:i2cSetClockSpeed]' 400000
     waitMicros 50
+    '[sensors:i2cSetClockSpeed]' 400000
     comment 'add german umlauts ÄÖÜ'
     '_LCD_init_german_chars'
     comment 'for RGB displays set the backlight to grey'
@@ -115,35 +111,35 @@ to LCD_is_connected {
 }
 
 to LCD_set_RGB_background color {
-  if (LCD_is_connected) {
+  if (LCD_is_connected) {if ('[sensors:i2cExists]' ('_LCD_RGB_address')) {
     local '_LCD_RGB_ADDR' ('_LCD_RGB_address')
-    if ('[sensors:i2cExists]' _LCD_RGB_ADDR) {
-      comment 'https://uploadcdn.oneyac.com/attachments/files/brand_pdf/sgmicro/BA/89/1640876883.pdf'
-      '[sensors:i2cSetClockSpeed]' 100000
-      comment 'reset RGB chip - reg0 = 0b00000111'
-      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '00') (hexToInt '07'))
-      waitMicros 100
-      if (color == 0) {
-        comment 'switch off all leds - reg4 = 0b00000000'
-        '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '04') (hexToInt '00'))
-      } else {
-        comment 'switch on all leds - reg4 = 0b00010101'
-        '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '04') (hexToInt '15'))
-      }
-      waitMicros 100
-      comment 'split the background color and set up reg6 (red), reg7 (green), and reg8 (blue)'
-      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '06') ((color >> 16) & (hexToInt 'FF')))
-      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '07') ((color >> 8) & (hexToInt 'FF')))
-      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '08') ((color >> 0) & (hexToInt 'FF')))
-      '[sensors:i2cSetClockSpeed]' 400000
+    comment 'https://uploadcdn.oneyac.com/attachments/files/brand_pdf/sgmicro/BA/89/1640876883.pdf'
+    comment 'reset RGB chip - reg0 = 0b00000111'
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '00') (hexToInt '07'))
+    waitMicros 100
+    if (color == 0) {
+      comment 'switch off all leds - reg4 = 0b00000000'
+      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '04') (hexToInt '00'))
+    } else {
+      comment 'switch on all leds - reg4 = 0b00010101'
+      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '04') (hexToInt '15'))
     }
-  }
+    waitMicros 100
+    comment 'split the background color and set up reg6 (red), reg7 (green), and reg8 (blue)'
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '06') ((color >> 16) & (hexToInt 'FF')))
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '07') ((color >> 8) & (hexToInt 'FF')))
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '08') ((color >> 0) & (hexToInt 'FF')))
+    '[sensors:i2cSetClockSpeed]' 400000
+  }}
 }
 
 to LCD_set_display_on on {
   if (LCD_is_connected) {
     comment 'display on 1100, cursor on 1110, blink on 1101'
+    '[sensors:i2cSetClockSpeed]' 100000
     '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') ((hexToInt '08') | (('[data:convertType]' on 'number') << 2)))
+    '[sensors:i2cSetClockSpeed]' 400000
   }
 }
 
@@ -154,8 +150,8 @@ to LCD_write_field text line start end {
     text = ('[data:copyFromTo]' text 1 ((end - start) + 1))
     waitUntil (((millisOp) - _LCD_LOCK_MSECS) > 200)
     _LCD_LOCK_MSECS = (millisOp)
-    '[sensors:i2cSetClockSpeed]' 100000
     comment 'set cursor position'
+    '[sensors:i2cSetClockSpeed]' 100000
     '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (((hexToInt '80') | ((line - 1) << 6)) | (start - 1)))
     comment 'write text'
     '[sensors:i2cWrite]' _LCD_ADDR ('[data:asByteArray]' ('[data:join]' ('[data:unicodeString]' (hexToInt '40')) text))
@@ -232,6 +228,6 @@ to '_LCD_init_some_icons' {
 }
 
 to '_LCD_name' {
-  return 'LCD 16x2 Seeed'
+  return 'LCD16x2 (Seeed)'
 }
 
