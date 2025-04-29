@@ -1147,7 +1147,7 @@ void hardwareInit() {
 		PA_5_ALT2,	// TIM1_CH1, TIM1_CH3N, *TIM2_CH1
 		PA_6_ALT1,	// TIM3_CH1, *TIM16_CH1*
 		PA_7_ALT1,	// TIM1_CH1N, *TIM3_CH2*, TIM14_CH1, TIM17_CH1
-		PA_8_ALT2,	// TIM1_CH1, TIM1_CH2N, TIM1_CH3N, TIM3_CH3, TIM3_CH4, TIM14_CH1
+		PA_8_ALT2,	// TIM1_CH1, TIM1_CH2N, *TIM1_CH3N, TIM3_CH3, TIM3_CH4, TIM14_CH1
 		PB_1_ALT2,	// TIM1_CH2N, TIM1_CH3N, *TIM3_CH4*, TIM14_CH1
 		PB_0, 		// *TIM1_CH2N*, TIM3_CH3
 		PC_15, 		// *TIM3_CH3*
@@ -1207,10 +1207,8 @@ const char * boardType() {
 		}
 	}
 	#if defined(DUELink)
-		if (0 == strcmp("DUELink", BOARD_TYPE)) {
-			if (DUE_HAS_EDGE_CONNECTOR) {
-				return (IS_DUE_CINCO) ? "CincoBit" : "PixoBit";
-			}
+		if (DUE_HAS_EDGE_CONNECTOR) {
+			return (IS_DUE_CINCO) ? "CincoBit" : "PixoBit";
 		}
 	#endif
 	return BOARD_TYPE;
@@ -1546,11 +1544,11 @@ void primAnalogWrite(OBJ *args) {
 			SET_MODE(pinNum, OUTPUT);
 		}
 	#elif defined(DUELink)
-		int duePin = duePWMPin(pinNum);
-		if (duePin < 0) return;
-		SET_MODE(pinNum, OUTPUT);
-		digitalWrite(mapDigitalPinNum(pinNum), LOW);
-		pwm_start((PinName) duePin, 1000, value, (TimerCompareFormat_t) 10); // 1000 Hz, 10-bit resolution
+		int pwmPin = duePWMPin(pinNum);
+		if (pwmPin < 0) return;
+		SET_MODE(mapDigitalPinNum(pinNum), OUTPUT);
+		pwm_stop((PinName) pwmPin); // force restart in case PWM was stopped by reading the pin
+		pwm_start((PinName) pwmPin, 1000, value, (TimerCompareFormat_t) 10); // 1000 Hz, 10-bit resolution
 		pwmRunning[pinNum] = true;
 		return;
 	#else
@@ -1672,27 +1670,17 @@ void primDigitalSet(int pinNum, int flag) {
 		if (22 == pinNum) return;
 		if (23 == pinNum) { digitalWrite(BUZZER, (flag ? HIGH : LOW)); return; }
 	#elif defined(DUELink)
-		if ((0 <= pinNum) && (pinNum < DUE_PWM_PIN_COUNT) && pwmRunning[pinNum]) { // stop pwm if running
-			int duePin = duePWMPin(pinNum);
-			if (duePin >= 0) {
-				pwm_start((PinName) duePin, 1000, (flag ? 1023 : 0), (TimerCompareFormat_t) 10); // set to zero
-			}
-// xxx this might be made to work:
-// 			if (duePin >= 0) {
-// 				pwm_start((PinName) duePin, 1000, 0, (TimerCompareFormat_t) 10); // set to zero
-// 				pwm_stop((PinName) duePin);
-// 			}
-// 			if (duePin >= 0) pwm_stop((PinName) duePin);
-// 			delay(4);
-// 			digitalWrite(mapDigitalPinNum(pinNum), LOW);
-// reportNum("primDigitalSet", pinNum); // xxx
-// reportHex("  stop duePin", duePin); // xxx
-// 			pwmRunning[pinNum] = false;
+		if ((0 <= pinNum) && (pinNum < DUE_PWM_PIN_COUNT) && pwmRunning[pinNum]) {
+			// pwm is running, so set duty cycle to 0% or 100% based on flag
+			int pwmPin = duePWMPin(pinNum);
+			pwm_stop((PinName) pwmPin); // force restart in case PWM was stopped by reading the pin
+			pwm_start((PinName) pwmPin, 1000, (flag ? 1023 : 0), (TimerCompareFormat_t) 10); // 1000 Hz, 10-bit resolution
 		} else {
-			pinNum = mapDigitalPinNum(pinNum);
-			if (pinNum < 0) return;
-			SET_MODE(pinNum, OUTPUT);
-			digitalWrite(pinNum, (flag ? HIGH : LOW));
+			// normal digital write
+			int duePin = mapDigitalPinNum(pinNum);
+			if (duePin < 0) return;
+			SET_MODE(duePin, OUTPUT);
+			digitalWrite(duePin, (flag ? HIGH : LOW));
 		}
 		return;
 	#elif defined(USE_DIGITAL_PIN_MAP)
@@ -1909,14 +1897,10 @@ void stopPWM() {
 	#elif defined(DUELink)
 		for (int i = 0; i < DUE_PWM_PIN_COUNT; i++) {
 			if (pwmRunning[i]) {
-				int duePin = duePWMPin(i);
-				if (duePin >= 0) {
-					pwm_start((PinName) duePin, 1000, 0, (TimerCompareFormat_t) 10); // set to zero
-					delay(1);
-					pwm_stop((PinName) duePin);
-				}
-				digitalWrite(mapDigitalPinNum(i), LOW);
-				SET_MODE(i, INPUT);
+				int pwmPin = duePWMPin(i);
+				if (pwmPin >= 0) pwm_stop((PinName) pwmPin);
+				int duePin = mapDigitalPinNum(i);
+				if (duePin >= 0) SET_MODE(duePin, INPUT);
 				pwmRunning[i] = false;
 			}
 		}
