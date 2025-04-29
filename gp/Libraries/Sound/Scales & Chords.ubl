@@ -1,6 +1,6 @@
 module 'Scales & Chords' Data
 author MicroBlocks
-version 2 10 
+version 2 11 
 depends MIDI Rhythm Tone 'Analog Synthesis' 
 choices sound_dst 'MIDI channel' 'tone pin' 'gate trigger' 
 choices scales ionian dorian phrygian lydian mixolydian aeolian locrian chromatic tonal 
@@ -105,6 +105,8 @@ to scales_arpeggiate 'note list' order duration volume destination channel {
   if (_scales_delay == 0) {
     if ((boardType) == 'Boardie') {
       _scales_delay = 12
+    } ((boardType) == 'micro:bit v2') {
+      _scales_delay = 5
     } (destination == 'gate trigger') {
       _scales_delay = 2
     }
