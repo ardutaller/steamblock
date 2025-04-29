@@ -36,10 +36,10 @@ extern "C" {
  	// HAS_LED_MATRIX is defined for all boards but display operations ignored if not CincoBit
  	#define HAS_LED_MATRIX 1
 
-	// These macros read the product ID fromt the OTP area.
-	// CincoBit = 1, PixoBit = 2
-	#define DUE_HAS_EDGE_CONNECTOR (*((uint16 *) 0x1FFF7004) < 3) // either CincoBit or PixoBit
-	#define IS_DUE_CINCO (*((uint16 *) 0x1FFF7004) == 1)
+	// These macros read the 24-bit product ID fromt the OTP area.
+	// CincoBit = 1, PixoBit = 2; ID's 3-15 are reserved for future boards with edge connectors
+	#define DUE_HAS_EDGE_CONNECTOR ((*((uint32 *) 0x1FFF7004) & 0xFFFFFF) < 16)
+	#define IS_DUE_CINCO ((*((uint32 *) 0x1FFF7004) & 0xFFFFFF) == 1)
 #endif
 
 #if defined(ESP32) && !(defined(ESP32_S2) || defined(ESP32_S3) || defined(ESP32_C3) || defined(ESP32_C6))
