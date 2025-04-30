@@ -489,9 +489,9 @@ void hardwareInit() {
 
 	#define BOARD_TYPE "MakerPort"
 	#define DIGITAL_PINS 28
-	#define ANALOG_PINS 9
+	#define ANALOG_PINS 11
 	#define TOTAL_PINS 28
-	static const int analogPin[] = {0, 1, 2, 3, 4, 5, 6, 13, 15};
+	static const int analogPin[] = {0, 1, 2, 3, 4, 5, 6, 13, 14, 15, 16};
 
 #elif defined(ADAFRUIT_METRO_M0_EXPRESS) // must come before Zero
 
@@ -1431,12 +1431,16 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		pinNum -= 26; // map pins 26-29 to A0-A3
 	#endif
 	#if defined(MAKERPORT) || defined(MAKERPORT_V2)
+		if ((6 < pinNum) && (pinNum < ANALOG_PINS)) pinNum = -1; // not an analog pin
 		if (13 == pinNum) pinNum = 7; // map pin 13 to A7
 		if (14 == pinNum) pinNum = 8; // map pin 14 to A8
 	#endif
 	#if defined(MAKERPORT_V3)
+		if ((6 < pinNum) && (pinNum < ANALOG_PINS)) pinNum = -1; // not an analog pin
 		if (13 == pinNum) pinNum = 7; // map pin 13 to A7
-		if (15 == pinNum) pinNum = 8; // map pin 15 to A8
+		if (14 == pinNum) pinNum = 8; // map pin 14 to A8
+		if (15 == pinNum) pinNum = 9; // map pin 15 to A9
+		if (16 == pinNum) pinNum = 10; // map pin 16 to A10
 	#endif
 
 	if ((pinNum < 0) || (pinNum >= ANALOG_PINS)) return int2obj(0);
