@@ -2272,7 +2272,13 @@ int pulsePin = -1;
 int pulseIndex = 0;
 uint32 lastEdgeTime = 0;
 
-void pinChangeInterrupt() {
+#ifdef ESP8266
+  #define INTERRUPT IRAM_ATTR
+#else
+  #define INTERRUPT
+#endif
+
+INTERRUPT void pinChangeInterrupt() {
 	if (pulseIndex < MAX_PULSE_TIMES) {
 		uint32 now = microsecs();
 		int usecs = now - lastEdgeTime;
