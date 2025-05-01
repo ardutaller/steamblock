@@ -4838,6 +4838,74 @@ msgstr ""
 msgid "Calliope stop servo _"
 msgstr ""
 
+#. LCD 16x2 (Seeed) library block
+msgid "LCD init display"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set RGB background _"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD is connected?"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write text _ to line _"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD generate custom char _ _"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD custom char _"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD clear display"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set display on _"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write field _ to line _ from _ to _"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "°C"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "°F"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "SCD40 init sensor"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "SCD40 carbon dioxide (ppm)"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "SCD40 CO2 (ppm)"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "SCD40 temperature _"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "SCD40 relative humidity (%)"
+msgstr ""
+
+#. Gas (SCD40) library block
+msgid "SCD40 is connected?"
+msgstr ""
+
 #. Robo ESP32 library block
 msgid "roboESP32 clear RGB"
 msgstr ""
@@ -5287,8 +5355,12 @@ msgstr ""
 msgid "Wiping board..."
 msgstr ""
 
-#. Process cancellation tip
+#. Firmware install instruction
 msgid "(press ESC to cancel)"
+msgstr ""
+
+#. Firmware install instruction
+msgid "Do not switch browser tabs!"
 msgstr ""
 
 #. Process finished information

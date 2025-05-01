@@ -4838,6 +4838,74 @@ msgstr "Calliope set continous servo _ to speed _ (-100~100)"
 msgid "Calliope stop servo _"
 msgstr "Calliope stop servo _"
 
+#. LCD 16x2 (Seeed) library block
+msgid "LCD init display"
+msgstr "LCD init display"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set RGB background _"
+msgstr "LCD set RGB background _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD is connected?"
+msgstr "LCD is connected?"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write text _ to line _"
+msgstr "LCD write text _ to line _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD generate custom char _ _"
+msgstr "LCD generate custom char _ _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD custom char _"
+msgstr "LCD custom char _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD clear display"
+msgstr "LCD clear display"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set display on _"
+msgstr "LCD set display on _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write field _ to line _ from _ to _"
+msgstr "LCD write field _ to line _ from _ to _"
+
+#. Gas (SCD40) library block
+msgid "°C"
+msgstr "°C"
+
+#. Gas (SCD40) library block
+msgid "°F"
+msgstr "°F"
+
+#. Gas (SCD40) library block
+msgid "SCD40 init sensor"
+msgstr "SCD40 init sensor"
+
+#. Gas (SCD40) library block
+msgid "SCD40 carbon dioxide (ppm)"
+msgstr "SCD40 carbon dioxide (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 CO2 (ppm)"
+msgstr "SCD40 CO2 (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 temperature _"
+msgstr "SCD40 temperature _"
+
+#. Gas (SCD40) library block
+msgid "SCD40 relative humidity (%)"
+msgstr "SCD40 relative humidity (%)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 is connected?"
+msgstr "SCD40 is connected?"
+
 #. Robo ESP32 library block
 msgid "roboESP32 clear RGB"
 msgstr "roboESP32 clear RGB"
@@ -5287,9 +5355,13 @@ msgstr "Board not connected"
 msgid "Wiping board..."
 msgstr "Wiping board..."
 
-#. Process cancellation tip
+#. Firmware install instruction
 msgid "(press ESC to cancel)"
 msgstr "(press ESC to cancel)"
+
+#. Firmware install instruction
+msgid "Do not switch browser tabs!"
+msgstr "Do not switch browser tabs!"
 
 #. Process finished information
 msgid "Done!"
