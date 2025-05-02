@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-04-17 20:20+0000\n"
+"PO-Revision-Date: 2025-05-02 18:02+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.1-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -426,7 +426,7 @@ msgstr "Radio sende Zahl _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send pair _ = _"
-msgstr "Radio sende Wertepaar _ = _"
+msgstr "Radio sende Paar _ = _"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
@@ -3042,7 +3042,7 @@ msgstr "WiFi sende Text _"
 
 #. WiFi Radio library block
 msgid "wifi send pair _ = _"
-msgstr "WiFi sende Wertepaar _ = _"
+msgstr "WiFi sende Paar _ = _"
 
 #. WiFi Radio library block
 msgid "wifi last number"
@@ -4703,7 +4703,7 @@ msgstr "BLE setze Gruppe _ (0-255)"
 
 #. BLE Radio library block
 msgid "ble send pair _ = _"
-msgstr "BLE send Wertepaar _ = _"
+msgstr "BLE send Paar _ = _"
 
 #. BLE Radio library block
 msgid "ble message received?"
@@ -6619,3 +6619,75 @@ msgstr "Rauschen Gate _"
 #. Analog Synthesis library block
 msgid "frequency for gate _"
 msgstr "Frequenz für Gate _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD generate custom char _ _"
+msgstr "LCD generiere eigenes Zeichen _ _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD clear display"
+msgstr "LCD lösche Display"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set display on _"
+msgstr "LCD schalte Display an _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write field _ to line _ from _ to _"
+msgstr "LCD schreibe Feld _ in Zeile _ von _ bis _"
+
+#. Gas (SCD40) library block
+msgid "SCD40 carbon dioxide (ppm)"
+msgstr "SCD40 Kohlendioxid (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 temperature _"
+msgstr "SCD40 Temperatur _"
+
+#. Gas (SCD40) library block
+msgid "SCD40 is connected?"
+msgstr "SCD40 ist verbunden?"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD init display"
+msgstr "LCD initialisiere Display"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set RGB background _"
+msgstr "LCD setze RGB-Hintergrundfarbe _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD is connected?"
+msgstr "LCD ist verbunden?"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD custom char _"
+msgstr "LCD eigenes Zeichen _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write text _ to line _"
+msgstr "LCD schreibe Text _ in Zeile _"
+
+#. Gas (SCD40) library block
+msgid "°C"
+msgstr "°C"
+
+#. Gas (SCD40) library block
+msgid "SCD40 init sensor"
+msgstr "SCD40 initialisiere Sensor"
+
+#. Gas (SCD40) library block
+msgid "SCD40 CO2 (ppm)"
+msgstr "SCD40 CO2 (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 relative humidity (%)"
+msgstr "SCD40 relative Luftfeuchtigkeit (%)"
+
+#. Firmware install instruction
+msgid "Do not switch browser tabs!"
+msgstr "Wechsle keine Browser-Tabs!"
+
+#. Gas (SCD40) library block
+msgid "°F"
+msgstr "°F"
