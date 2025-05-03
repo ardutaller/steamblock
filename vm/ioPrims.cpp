@@ -1088,7 +1088,7 @@ void hardwareInit() {
 	static const char dueStandardPin[DIGITAL_PINS] = {
 		 15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
 		 33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
-		255, 13, 28,  8,  2, 27, 32, 42, 47, 52};
+		255,  8,  2, 13, 28, 27, 32, 42, 47, 52};
 
 	// Analog pin names for DUELink boards
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
