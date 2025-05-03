@@ -94,8 +94,9 @@ PrimitiveFunction findPrimitive(char *primName) {
 	opName[count] = 0;
 
 	for (int i = 0; i < PrimitiveSetCount; i++) {
-		if (0 == strcmp(primSets[i].setName, setName)) {
+		if ((primSets[i].setName != NULL) && (0 == strcmp(primSets[i].setName, setName))) {
 			PrimEntry *entries = primSets[i].entries;
+			if (!entries) continue; // uninitialized primitive set
 			int entryCount = primSets[i].entryCount;
 			for (int j = 0; j < entryCount; j++) {
 				if (0 == strcmp(entries[j].primName, opName)) {
@@ -110,26 +111,29 @@ PrimitiveFunction findPrimitive(char *primName) {
 OBJ doPrimitiveCall(PrimitiveSetIndex setIndex, const char *primName, int argCount, OBJ *args) {
 	// Call a named primitive with the given primitive set index and name.
 
+	if ((setIndex < 0) || (setIndex >= PrimitiveSetCount)) {
+		return fail(primitiveNotImplemented);
+	}
+
 	PrimEntry *entries = primSets[setIndex].entries;
 	int entryCount = primSets[setIndex].entryCount;
 	for (int i = 0; i < entryCount; i++) {
-		if (0 == strcmp(entries[i].primName, primName)) {
+		if ((entries[i].primName != NULL) && (0 == strcmp(entries[i].primName, primName))) {
 			OBJ result = (entries[i].primFunc)(argCount, args); // call the primitive
 			tempGCRoot = NULL; // clear tempGCRoot in case it was used
 			return result;
 		}
 	}
-
 	char s[200];
-	snprintf(s, sizeof(s), "Unknown primitive [%s:%s]", primSets[setIndex].setName, primName);
+	snprintf(s, sizeof(s), "Unknown primitive %d:%s", setIndex, primName);
 	outputString(s);
 	return fail(primitiveNotImplemented);
-
-	return falseObj;
 }
 
 void primsInit() {
 	// Called at startup to call functions to add named primitive sets.
+
+	memset(primSets, 0, sizeof(primSets));
 
 #if defined(DUELink)
 	addDataPrims();
@@ -148,6 +152,7 @@ void primsInit() {
  	addOneWirePrims();
 // 	addCameraPrims();
  	addEncoderPrims();
+//	addSDCardPrims();
 #else
 	addDataPrims();
 	addDisplayPrims();
@@ -165,6 +170,7 @@ void primsInit() {
 	addOneWirePrims();
 	addCameraPrims();
 	addEncoderPrims();
+	addSDCardPrims();
 #endif
 }
 
@@ -725,7 +731,7 @@ void outputString(const char *s) {
 	sendMessage(outputValueMsg, 255, (byteCount + 1), data);
 
 	// when debugging VM crashes, it can be helpful to uncomment the following:
-	// while (outBufStart != outBufEnd) sendData(); // wait for string to be sent
+while (outBufStart != outBufEnd) sendData(); // wait for string to be sent
 }
 
 void sendTaskDone(uint8 chunkIndex) {
