@@ -1077,17 +1077,17 @@ void hardwareInit() {
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13, 12, 15, 11, 54, 7, 42,    47, 52};
+		 1, 13, 12, 15, 11, 54,  7,  42,  47, 52};
 
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
-		 2, 27,  7,  9,  5,  4, 33, 255, 255, 0,
-		 1, 13, 12, 15, 14, 29, 32, 42,   47, 52};
+		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
+		 1, 13, 12, 15, 14, 29, 32,  42,  47, 52};
 
 	// Pin 13 is repeated at index 21 (DEFAULT_TONE_PIN)
 	static const char dueStandardPin[DIGITAL_PINS] = {
-		15,  16, 17, 18, 13, 12, 11,  7, 54, 19,
-		33,  29,  9,  5,  4,  1,  0, 37, 14, 10,
+		 15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
+		 33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
 		255, 13, 28,  8,  2, 27, 32, 42, 47, 52};
 
 	// Analog pin names for DUELink boards
