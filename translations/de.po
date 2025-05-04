@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-05-02 18:02+0000\n"
+"PO-Revision-Date: 2025-05-05 11:33+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -3187,8 +3187,8 @@ msgstr "Okay"
 #. String in file picker and library dialogs
 msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
 msgstr ""
-"Wenn sich dein Modul im Ordner \"Libraries\" im lokalen MicroBlocks-"
-"Projektordner befindet, dann muss du ihm einen Schrägstrich (/) voranstellen."
+"Wenn sich das Modul im Ordner \"Libraries\" im lokalen MicroBlocks-"
+"Projektordner befindet, muss du einen Schrägstrich (/) voranstellen."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -3868,7 +3868,7 @@ msgstr ""
 #. String in file picker and library dialogs
 msgid "If the library is hosted online, please input its full URL."
 msgstr ""
-"Wenn das Modul online bereitgestellt wird, must du die vollständige URL "
+"Wenn das Modul online bereitgestellt ist, musst du die vollständige URL "
 "eingeben."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
