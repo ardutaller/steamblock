@@ -15,9 +15,9 @@
 #include "interp.h"
 
 #ifdef ESP8266
-  #define INTERRUPT IRAM_ATTR
+  #define IS_INTERRUPT IRAM_ATTR
 #else
-  #define INTERRUPT
+  #define IS_INTERRUPT
 #endif
 
 /*
@@ -33,8 +33,8 @@
 #define NUM_ENCODERS 4
 
 typedef void (*interruptHandler)(void);
-static INTERRUPT interruptHandler encoderInterruptHandlerFor(int encoderIndex); // forward reference
-static INTERRUPT interruptHandler pulseInterruptHandlerFor(int encoderIndex);  // forward reference
+static IS_INTERRUPT interruptHandler encoderInterruptHandlerFor(int encoderIndex); // forward reference
+static IS_INTERRUPT interruptHandler pulseInterruptHandlerFor(int encoderIndex);  // forward reference
 
 class Encoder {
 public:
@@ -157,7 +157,7 @@ static void interruptHandler_1() { encoders[1].updateCount(); }
 static void interruptHandler_2() { encoders[2].updateCount(); }
 static void interruptHandler_3() { encoders[3].updateCount(); }
 
-static INTERRUPT interruptHandler encoderInterruptHandlerFor(int encoderIndex) {
+static IS_INTERRUPT interruptHandler encoderInterruptHandlerFor(int encoderIndex) {
 	switch(encoderIndex) {
 		case 0: return interruptHandler_0; break;
 		case 1: return interruptHandler_1; break;
@@ -173,7 +173,7 @@ static void pulseInterruptHandler_1() { encoders[1].count++; }
 static void pulseInterruptHandler_2() { encoders[2].count++; }
 static void pulseInterruptHandler_3() { encoders[3].count++; }
 
-static INTERRUPT interruptHandler pulseInterruptHandlerFor(int encoderIndex) {
+static IS_INTERRUPT interruptHandler pulseInterruptHandlerFor(int encoderIndex) {
 	switch(encoderIndex) {
 		case 0: return pulseInterruptHandler_0; break;
 		case 1: return pulseInterruptHandler_1; break;
