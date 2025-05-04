@@ -1047,7 +1047,7 @@ method createFunction MicroBlocksScripter isReporter {
 	script = (scriptForFunction func)
 	if isReporter {
 		// append an empty return block to reporters
-		setNext script (toBlock (newReporter 'return'))
+		setNext script (toBlock (newReporter 'return' 0))
 	}
 	addToBottom this script
 	updateBlocks this
