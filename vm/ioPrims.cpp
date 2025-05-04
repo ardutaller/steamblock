@@ -1063,7 +1063,7 @@ void hardwareInit() {
 #elif defined(DUELink)
 
 	#define BOARD_TYPE "DUELink"
-	#define DIGITAL_PINS 27
+	#define DIGITAL_PINS 22
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
 	#define PIN_LED 15 // PA_6 (unmapped)
@@ -1081,18 +1081,18 @@ void hardwareInit() {
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13, 12, 15, 11, 54,  7};
+		 1, 13}; // unused pins: 12, 15, 11, 54, 7};
 
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13, 12, 15, 14, 29, 32};
+		 1, 13}; // unused pins: 12, 15, 14, 29, 32};
 
 	// Pin 13 is repeated at index 21 (DEFAULT_TONE_PIN)
 	static const char dueStandardPin[DIGITAL_PINS] = {
 		15, 16, 17, 18, 13,  12, 11,  7, 54, 19,
 		33, 29,  9,  5,  4,   1,  0, 37, 14, 10,
-		28,  8,  2, 27, 32, 255, 255};
+		28, 32}; // unused pins: 8, 2, 27, 32
 
 	// Analog pin names for DUELink boards
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
