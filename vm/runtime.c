@@ -87,7 +87,7 @@ PrimitiveFunction findPrimitive(char *primName) {
 	strncpy(setName, primName + 1, count);
 	setName[count] = 0;
 
-	// extract primitive  name
+	// extract primitive name
 	count = (primName + len - 1) - (colon + 1);
 	if (count < 1) return NULL;
 	strncpy(opName, colon + 1, count);
@@ -607,7 +607,7 @@ static void sendValueMessage(uint8 msgType, uint8 chunkOrVarIndex, OBJ value) {
 	char data[801];
 
 	if (isInt(value)) { // 32-bit integer, little endian
-		data[0] = 1;  // data type (1 is integer)
+		data[0] = 1; // data type (1 is integer)
 		int n = obj2int(value);
 		data[1] = (n & 0xFF);
 		data[2] = ((n >> 8) & 0xFF);
@@ -894,7 +894,7 @@ void sendAllCRCs() {
 
 	// send CRC records for chunks in use
 	// each record is 5 bytes: chunkID (one byte) + the CRC for that chunk (four bytes)
-	int delayPerCRC = extraByteDelay / 250;  // msec delay for 4 bytes (extraByteDelay is in usecs)
+	int delayPerCRC = extraByteDelay / 250; // msec delay for 4 bytes (extraByteDelay is in usecs)
 	for (int i = 0; i < MAX_CHUNKS; i++) {
 		if (chunks[i].code) {
 			OBJ code = chunks[i].code;
