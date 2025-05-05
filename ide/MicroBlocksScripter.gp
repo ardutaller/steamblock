@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle undoStack
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -23,6 +23,7 @@ method setSelection MicroBlocksScripter aSelection { selection = aSelection }
 method initialize MicroBlocksScripter aProjectEditor {
 	mbProject = (newMicroBlocksProject)
 	projectEditor = aProjectEditor
+	undoStack = (list)
 	scale = (global 'scale')
 	morph = (newMorph this)
 	listColor = (gray 240)
@@ -865,6 +866,26 @@ method saveScripts MicroBlocksScripter oldScale {
 		}
 	}
 	setScripts (main mbProject) scriptsCopy
+	storeUndoState this
+}
+
+method storeUndoState MicroBlocksScripter {
+	if (count undoStack > 100) { removeFirst undoStack }
+	add undoStack (codeString mbProject)
+}
+
+method undo MicroBlocksScripter {
+	if (notEmpty undoStack) {
+		projectString = (removeLast undoStack)
+		if (notNil projectString) {
+			saveNeeded = false // don't save scripts while project is loading
+			loadFromString mbProject projectString false
+			restoreScripts this
+		}
+	} else {
+		removeAllParts (morph scriptsPane)
+		restoreScripts this false
+	}
 }
 
 method updateFunctionOrMethod MicroBlocksScripter script {
