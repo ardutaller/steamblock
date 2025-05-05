@@ -558,7 +558,8 @@ method initPrimsets SmallCompiler {
 		hid
 		camera
 		1wire
-		encoder'
+		encoder
+		sd'
 
 	primsets = (dictionary)
 	primSetIndex = 0
