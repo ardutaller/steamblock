@@ -235,6 +235,7 @@ void addEncoderPrims() {}
 void addHIDPrims() {}
 void addOneWirePrims() {}
 void addRadioPrims() {}
+void addSDCardPrims() {}
 
 void delay(int msecs) {}
 void processFileMessage(int msgType, int dataSize, char *data) {}
