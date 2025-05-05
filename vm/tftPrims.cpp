@@ -613,7 +613,7 @@ static int deferUpdates = false;
 				updateMicrobitDisplay();
 
 				oledCmd(0x10);
-				oledCmd(isOLED1106 ? 0x02 : 0);  // column offset
+				oledCmd(isOLED1106 ? 0x02 : 0); // column offset
 				oledCmd(0xB0 + i);
 
 				// write 128 bytes of data in two i2c writes

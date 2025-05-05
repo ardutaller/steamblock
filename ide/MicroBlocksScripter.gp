@@ -162,9 +162,9 @@ method darkModeChanged MicroBlocksScripter {
 	setAlpha (color scriptingActionsContainer) 200
 	setBorderColor scriptingActionsContainer scriptingActionsContainerBorderColor
 	if libWasSelected {
-	    librarySelected this
+		librarySelected this
 	} else {
-	    categorySelected this
+		categorySelected this
 	}
 
 	removePart morph trashcanIcon
@@ -1569,9 +1569,9 @@ method extractLibraryName MicroBlocksScripter libData {
 	if (isNil libData) { return nil }
 	for line (lines libData) {
 		if (beginsWith line 'module') {
-		    libName = (at (words line) 2)
-		    if ('''' == (at libName 1)) { // quoted library name
-			    i = (findFirst line '''')
+			libName = (at (words line) 2)
+			if ('''' == (at libName 1)) { // quoted library name
+				i = (findFirst line '''')
 				j = (findLast line '''')
 				libName = (substring line (i + 1) (j - 1))
 			}
@@ -1659,7 +1659,7 @@ method scriptsBottom MicroBlocksScripter {
 method exportPNGsForBuiltinBlocks MicroBlocksScripter {
 	// Exports PNG's for all built-in blocks at 100% and 50% in one folder per blocks category.
 	// To run:
-	//   exportPNGsForBuiltinBlocks (scripter (first (allInstances 'MicroBlocksEditor')))
+	//		exportPNGsForBuiltinBlocks (scripter (first (allInstances 'MicroBlocksEditor')))
 
 	allCategories = (list 'Output' 'Input' 'Pins' 'Comm' 'Control' 'Operators' 'Variables' 'Data')
 	for category allCategories {

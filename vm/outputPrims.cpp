@@ -678,7 +678,7 @@ static void initNeoPixelPin(int pinNum) {
 	// use port0 by default
 	neoPixelPinSet = &NRF_P0->OUTSET; // (int *) GPIO_SET;
 	neoPixelPinClr = &NRF_P0->OUTCLR; // (int *) GPIO_CLR;
-	volatile uint32_t *neoPixelPinSetDir = &NRF_P0->DIRSET; //  (int *) GPIO_SET_DIR;
+	volatile uint32_t *neoPixelPinSetDir = &NRF_P0->DIRSET; // (int *) GPIO_SET_DIR;
 
 	#if defined(ARDUINO_NRF52_PRIMO)
 		neoPixelPinMask = digitalPinToBitMask(pinNum);
