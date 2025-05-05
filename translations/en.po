@@ -5720,6 +5720,10 @@ msgid "folder; by board"
 msgstr " by board"
 
 #. Examples folder
+msgid "folder;CoCube"
+msgstr "CoCube"
+
+#. Examples folder
 msgid "folder;Art"
 msgstr "Art"
 
