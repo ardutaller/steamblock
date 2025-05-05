@@ -1255,28 +1255,29 @@ method fixedCmd MicroBlocksScripter oldCmd minArgs argTypes argDefaults isReport
 method updateCallsInScriptingArea MicroBlocksScripter op {
 	// Update scripts in the scripting pane that contain calls to the give op.
 
+	// collect top-level scripts that call the given function
 	scriptsPane = (contents scriptsFrame)
-	affected = (list)
+	affectedScripts = (list)
 	for m (parts (morph scriptsPane)) {
 		b = (handler m)
 		if (isClass b 'Block') {
 			if (containsPrim b op) {
-				add affected b
+				add affectedScripts b
 			}
 			if ('to' == (primName (expression b))) {
-				add affected b
+				add affectedScripts b
 			}
 		}
 	}
 
-	for each affected {
+	// update each top-level script that is affected
+	for each affectedScripts {
 		expr = (expression each)
 		if ('to' == (primName expr)) {
 			func = (functionNamed mbProject (first (argList expr)))
-			block = (scriptForFunction func)
+			newScript = (scriptForFunction func)
 		} else {
-			block = (toBlock expr)
-			setNext block (next each)
+			newScript = (toBlock expr)
 		}
 
 		// update the function definition block and any calls in the scripting area
@@ -1284,10 +1285,10 @@ method updateCallsInScriptingArea MicroBlocksScripter op {
 		x = (left (morph each))
 		y = (top (morph each))
 		destroy (morph each)
-		setPosition (morph block) x y
-		addPart (morph scriptsPane) (morph block)
-		fixBlockColor block
-		if wasHighlighted { addHighlight (morph block) }
+		setPosition (morph newScript) x y
+		addPart (morph scriptsPane) (morph newScript)
+		fixBlockColor newScript
+		if wasHighlighted { addHighlight (morph newScript) }
 	}
 }
 
