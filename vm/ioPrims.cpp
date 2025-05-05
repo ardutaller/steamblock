@@ -1834,6 +1834,7 @@ OBJ primButtonB(OBJ *args) {
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
 		#elif defined(DUELink)
+			setPinMode(PIN_BUTTON_B, INPUT); // workaround: force button back to digital mode if light sensor was read
 			setPinMode(PIN_BUTTON_B, INPUT_PULLDOWN); // Arduino pin number not edge pin
 		#else
 			SET_MODE(PIN_BUTTON_B, INPUT);
