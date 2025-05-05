@@ -59,7 +59,7 @@ static void serialOpen(int baudRate) {
 	MBSerial.begin(baudRate);
 
 	// enable UART and send zero bytes to initialize
- 	NRF_UARTE1->ENABLE = UARTE_ENABLE_ENABLE_Enabled;
+	NRF_UARTE1->ENABLE = UARTE_ENABLE_ENABLE_Enabled;
 	NRF_UARTE1->TXD.PTR = (uint32_t) txBuf;
 	NRF_UARTE1->TXD.MAXCNT = 0;
 	NRF_UARTE1->TASKS_STARTTX = 1;

@@ -33,8 +33,8 @@ extern "C" {
 #if defined(ARDUINO_NUCLEO_C071RB)
 	#define DUELink 1
 
- 	// HAS_LED_MATRIX is defined for all boards but display operations ignored if not CincoBit
- 	#define HAS_LED_MATRIX 1
+	// HAS_LED_MATRIX is defined for all boards but display operations ignored if not CincoBit
+	#define HAS_LED_MATRIX 1
 
 	// These macros read the 24-bit product ID fromt the OTP area.
 	// CincoBit = 1, PixoBit = 2; ID's 3-15 are reserved for future boards with edge connectors

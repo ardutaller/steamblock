@@ -125,7 +125,7 @@ void handleMicosecondClockWrap() {
 		OptionsBytesStruct.OptionType = OPTIONBYTE_USER;
 		HAL_FLASHEx_OBGetConfig(&OptionsBytesStruct);
 
- 		if (OptionsBytesStruct.USERConfig & FLASH_OPTR_nBOOT_SEL) { // Boot0 is not currently enabled
+		if (OptionsBytesStruct.USERConfig & FLASH_OPTR_nBOOT_SEL) { // Boot0 is not currently enabled
 			// enable Boot0 by clearing the nBOOT_SEL bit
 			OptionsBytesStruct.USERConfig &= ~FLASH_OPTR_nBOOT_SEL;
 
@@ -1829,7 +1829,7 @@ OBJ primButtonB(OBJ *args) {
 	#ifdef PIN_BUTTON_B
 		#if defined(ARDUINO_CITILAB_ED1)
 			return (buttonReadings[3] < CAP_THRESHOLD) ? trueObj : falseObj;
- 		#elif defined(FOXBIT)
+		#elif defined(FOXBIT)
 			setPinMode(PIN_BUTTON_B, INPUT_PULLUP); // ESP32 pin number not edge pin
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);

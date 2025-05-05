@@ -70,7 +70,7 @@ method installFromURL MicroBlocksFlasher serialPortID url {
 }
 
 method installFromData MicroBlocksFlasher serialPortID fileNameOrURL data {
- 	if ((byteCount data) == 0) { return }
+	if ((byteCount data) == 0) { return }
 
 	if (and ('Browser' == (platform)) (isNil serialPortID)) {
 		// must request a user gesture to open port in browser after long download

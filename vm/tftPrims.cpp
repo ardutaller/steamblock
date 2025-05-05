@@ -151,7 +151,7 @@ static int deferUpdates = false;
 		void tftInit() {
 			#ifdef ARDUINO_M5Stick_Plus
 				tft.init(TFT_HEIGHT, TFT_WIDTH);
- 				tft.setRotation(3);
+				tft.setRotation(3);
 			#else
 				tft.initR(INITR_MINI160x80);
 				tft.setOffsets(26, 1);
@@ -1035,7 +1035,7 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 	#elif defined(ARDUINO_NRF52840_CLUE)
 		pinMode(34, OUTPUT);
 		digitalWrite(34, (brightness > 0) ? HIGH : LOW);
- 	#elif defined(TTGO_RP2040)
+	#elif defined(TTGO_RP2040)
 		pinMode(TFT_BL, OUTPUT);
 		if (brightness < 0) brightness = 0;
 		if (brightness > 10) brightness = 10;

@@ -1680,7 +1680,7 @@ method exportBlockPNGsForCategory MicroBlocksScripter cat scale {
 			removePart morph (morph block)
 		}
 	}
-    setGlobal 'blockExportScale' oldExportScale
+	setGlobal 'blockExportScale' oldExportScale
 }
 
 // dropping
@@ -1690,9 +1690,9 @@ method wantsDropOf MicroBlocksScripter aHandler {
 }
 
 method justReceivedDrop MicroBlocksScripter aHandler {
-    // let blockPalette handle this drop
-    justReceivedDrop (blockPalette this) aHandler
-    return
+	// let blockPalette handle this drop
+	justReceivedDrop (blockPalette this) aHandler
+	return
 }
 
 // gradient bitmap

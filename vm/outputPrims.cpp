@@ -938,7 +938,7 @@ static void __not_in_flash_func(sendNeoPixelData)(int val) { // RP2040 Philhower
 	if (neoPixelPin < 0) return;
 
 	noInterrupts();
- 	gpio_put(neoPixelPin, LOW);
+	gpio_put(neoPixelPin, LOW);
 	for (unsigned int mask = (1 << 23); mask > 0; mask >>= 1) {
 		if (val & mask) { // one bit; timing goal: high 900 nsecs, low 500 nsecs
 			gpio_put(neoPixelPin, HIGH);

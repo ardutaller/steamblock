@@ -2273,9 +2273,9 @@ int pulseIndex = 0;
 uint32 lastEdgeTime = 0;
 
 #ifdef ESP8266
-  #define IS_INTERRUPT IRAM_ATTR
+	#define IS_INTERRUPT IRAM_ATTR
 #else
-  #define IS_INTERRUPT
+	#define IS_INTERRUPT
 #endif
 
 IS_INTERRUPT void pinChangeInterrupt() {
