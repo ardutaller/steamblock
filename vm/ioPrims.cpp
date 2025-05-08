@@ -1081,12 +1081,12 @@ void hardwareInit() {
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13}; // unused pins: 12, 15, 11, 54, 7};
+		 1, 13}; // LED rows: 7, 12, 15, 54, 11
 
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13}; // unused pins: 12, 15, 14, 29, 32};
+		 1, 13}; // unused pins: 12, 15, 14, 29, 32
 
 	// Pin 13 is repeated at index 21 (DEFAULT_TONE_PIN)
 	static const char dueStandardPin[DIGITAL_PINS] = {
