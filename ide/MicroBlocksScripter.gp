@@ -175,6 +175,13 @@ method languageChanged MicroBlocksScripter {
 	changed categorySelector
 	updateLibraryHeader this
 	computeLibraryButtonSize this
+	// make sure the "Add library" button fits into the category pane
+	setExtent (morph categorySelector)
+		(max
+			(+ (data libAddButton) (32 * (global 'scale')))
+			(width (morph categorySelector)))
+		(height (morph categorySelector))
+	fixLayout this
 	updateLibraryButton this true // force redrawing button label
 
 	// update the scripts
