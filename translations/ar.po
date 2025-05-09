@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-04-10 14:14+0000\n"
+"PO-Revision-Date: 2025-05-07 17:04+0000\n"
 "Last-Translator: Abdallah Alqudah <emranabdallah11@gmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/microblocks/ide/"
 "ar/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.11-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #. Block in Input category
 msgid "button B"
@@ -708,3 +708,71 @@ msgstr "ثواني"
 #. Block in Input category
 msgid "version"
 msgstr "إصدار"
+
+#. Block in Control category
+msgid "last message"
+msgstr "الرسالة الأخيرة"
+
+#. Block in Input category
+msgid "timer"
+msgstr "مؤقت"
+
+#. Block in Operators category
+msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
+msgstr "إعادة تحديد النطاق_من(_,_)الى(_,_)"
+
+#. Block in Data category
+msgid "copy _ from _"
+msgstr "انسخ_من_"
+
+#. Example value for the ( list < > ) block
+msgid "fish"
+msgstr "سمكة"
+
+#. Example value for the ( list < > ) block
+msgid "bird"
+msgstr "طائر"
+
+#. Example value for the ( list < > ) block
+msgid "dog"
+msgstr "كلب"
+
+#. Block in Operators category
+msgid "sqrt _"
+msgstr "الجذر التربيعي_"
+
+#. Block in Output category
+msgid "graph _"
+msgstr "مخطط_"
+
+#. Block in Input category
+msgid "connected to IDE"
+msgstr "متصل ببيئة التطوير المتكاملة"
+
+#. Block in Control category
+msgid "stop other tasks"
+msgstr "أوقف المهام الأخرى"
+
+#. Block in Operators category
+msgid "min _ _"
+msgstr "الحد الأدنى__"
+
+#. Block in Operators category
+msgid "max _ _"
+msgstr "الحد الأقصى__"
+
+#. Block in Operators category
+msgid "convert _ to _"
+msgstr "تحويل_ إلى_"
+
+#. Example message for [ when _ received ] and [ broadcast _ ] blocks
+msgid "go!"
+msgstr "ابدأ!"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "number"
+msgstr "رقم"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Library"
+msgstr "مكتبة"
