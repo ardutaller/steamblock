@@ -951,7 +951,7 @@ static void writeAccelReg(int regID, int value) {
 static char is6886 = false;
 
 static void startAccelerometer() {
-	#ifdef ARDUINO_M5Atom_Matrix_ESP32 
+	#ifdef ARDUINO_M5Atom_Matrix_ESP32
 		Wire1.begin(25, 21);
 	#elif defined(ARDUINO_M5Atom_S3)
 		Wire1.begin(38, 39);
