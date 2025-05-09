@@ -1,24 +1,27 @@
 module 'LED Matrix 8x8' Output
 author 'José García Yeste'
-version 1 2 
+version 1 4 
+choices rotationMenu '0' '90' '180' '270' 
 description 'Suport for Keystudio KS0396 8x8 LED Matrix
 It''s possible to use up to 8 modules
 
 https://wiki.keyestudio.com/KS0396_keyestudio_8x8_LED_Matrix_Module_Address_Select
 '
-variables _lm8x8buf 
+variables _lm8x8_buf _lm8x8_rotation _lm8x8_flip 
 
   spec ' ' 'lm8x8 clear' 'LED Matrix 8x8 _ clear' 'menu.range:1-8' 1
   spec ' ' 'lm8x8 plot' 'LED Matrix 8x8 _ plot x _ y _' 'menu.range:1-8 num num' 1 1 1
   spec ' ' 'lm8x8 unplot' 'LED Matrix 8x8 _ unplot x _ y _' 'menu.range:1-8 num num' 1 1 1
   spec ' ' 'lm8x8_display_char' 'LED Matrix 8x8 _ display character _' 'menu.range:1-8 auto' 1 'A'
-  spec ' ' 'lm8x8_display_ascii' 'LED Matrix 8x8 _ display Ascii _' 'menu.range:1-8 num' 1 3
+  spec ' ' 'lm8x8_display_ascii' 'LED Matrix 8x8 _ display Ascii _' 'menu.range:1-8 num' 1 65
   space
   spec ' ' 'lm8x8_draw_line' 'LED Matrix 8x8 _ draw line from x _ y _ to x _ y _' 'menu.range:1-8 num num num num' 1 1 1 8 8
-  spec ' ' 'lm8x8_draw_rect' 'LED Matrix 8x8 _ draw rectangle at x _ y _ width _ height _ filled _' 'menu.range:1-8 num num num num bool' 1 1 1 8 8 true
+  spec ' ' 'lm8x8_draw_rect' 'LED Matrix 8x8 _ draw rectangle at x _ y _ width _ height _ filled _' 'menu.range:1-8 num num num num bool' 1 2 2 6 6 true
   spec ' ' 'lm8x8_draw_circle' 'LED Matrix 8x8 _ draw circle at x _ y _ radius _ filled _' 'menu.range:1-8 num num num bool' 1 4 4 3 true
   space
-  spec ' ' 'lm8x8 brightness' 'LED Matrix 8x8 _ brightness _' 'menu.range:1-8 num' 1 10
+  spec ' ' 'lm8x8 brightness' 'LED Matrix 8x8 _ brightness _ (1-16)' 'menu.range:1-8 num' 1 10
+  spec ' ' 'lm8x8_set_rotation' 'LED Matrix 8x8 rotation _' 'menu.rotationMenu' 0
+  spec ' ' 'lm8x8_set_flip' 'LED Matrix 8x8 flip _' 'bool' false
   space
   spec ' ' '_lm8x8 setup' '_LED Matrix 8x8 _ setup' 'menu.range:1-8' 1
   spec ' ' '_lm8x8 write' '_LED Matrix 8x8 _ write _' 'menu.range:1-8 auto' 1 0
@@ -26,11 +29,11 @@ variables _lm8x8buf
   spec ' ' '_lm8x8_set_pixel' '_LED Matrix 8x8 _ set pixel x _ y _ to _' 'menu.range:1-8 num num bool' 1 1 1 true
 
 to '_lm8x8 setup' i2c {
-  if (_lm8x8buf == 0) {_lm8x8buf = (newList 8 0)}
-  if ((at i2c _lm8x8buf) == 0) {
+  if (_lm8x8_buf == 0) {_lm8x8_buf = (newList 8 0)}
+  if ((at i2c _lm8x8_buf) == 0) {
     '_lm8x8 write' i2c (hexToInt '21')
     'lm8x8 brightness' i2c 10
-    atPut i2c _lm8x8buf ('[data:newByteArray]' 8)
+    atPut i2c _lm8x8_buf ('[data:newByteArray]' 8)
     '_lm8x8 update' i2c
     '_lm8x8 write' i2c (hexToInt '81')
   }
@@ -40,8 +43,8 @@ to '_lm8x8 update' i2c {
   local 'buf' ('[data:newByteArray]' 17)
   comment 'Item 1  must be 0'
   for i 8 {
-    atPut (i * 2) buf (at i (at i2c _lm8x8buf))
-    atPut ((i * 2) + 1) buf (at i (at i2c _lm8x8buf))
+    atPut (i * 2) buf (at i (at i2c _lm8x8_buf))
+    atPut ((i * 2) + 1) buf (at i (at i2c _lm8x8_buf))
   }
   '_lm8x8 write' i2c buf
 }
@@ -52,24 +55,45 @@ to '_lm8x8 write' i2c data {
 }
 
 to '_lm8x8_set_pixel' i2c x y on {
+  if (_lm8x8_flip == 0) {_lm8x8_flip = ((boardType) == 'KidsIOT')}
   if (and (x > 0) (and (y > 0) (and (x < 9) (y < 9)))) {
-    local 'value' (at y (at i2c _lm8x8buf))
-    if on {
-      value = (ifExpression (x == 1) (value | 128) (value | (1 << (x - 2))))
-    } else {
-      value = (ifExpression (x == 1) (value & ('~' 128)) (value & ('~' (1 << (x - 2)))))
+    if (_lm8x8_rotation == 180) {
+      y = (9 - y)
+      x = (9 - x)
+    } (_lm8x8_rotation == 270) {
+      local 'save' x
+      x = y
+      y = (9 - save)
+    } (_lm8x8_rotation == 90) {
+      local 'save' x
+      x = (9 - y)
+      y = save
     }
-    atPut y (at i2c _lm8x8buf) value
+    if _lm8x8_flip {
+      local 'value' (at y (at i2c _lm8x8_buf))
+    } else {
+      local 'value' (at (9 - y) (at i2c _lm8x8_buf))
+    }
+    if on {
+      value = (value | (1 << (x - 1)))
+    } else {
+      value = (value & ('~' (1 << (x - 1))))
+    }
+    if _lm8x8_flip {
+      atPut y (at i2c _lm8x8_buf) value
+    } else {
+      atPut (9 - y) (at i2c _lm8x8_buf) value
+    }
   }
 }
 
 to 'lm8x8 brightness' i2c brightness {
-  '_lm8x8 write' i2c ((hexToInt 'E0') | brightness)
+  if (brightness > 0) {'_lm8x8 write' i2c ((hexToInt 'E0') | (brightness - 1))}
 }
 
 to 'lm8x8 clear' i2c {
   '_lm8x8 setup' i2c
-  atPut 'all' (at i2c _lm8x8buf) 0
+  atPut 'all' (at i2c _lm8x8_buf) 0
   '_lm8x8 update' i2c
 }
 
@@ -89,11 +113,11 @@ to lm8x8_display_ascii i2c char {
   '_lm8x8 setup' i2c
   local 'shape' ('[misc:shapeforChar]' char)
   if (shape != 0) {
-    atPut 'all' (at i2c _lm8x8buf) 0
+    atPut 'all' (at i2c _lm8x8_buf) 0
     for x 5 {
       local 'mask' 1
       for y 8 {
-        if (((at x shape) & mask) != 0) {atPut y (at i2c _lm8x8buf) ((at y (at i2c _lm8x8buf)) | (1 << (x - 1)))}
+        if (((at x shape) & mask) != 0) {'_lm8x8_set_pixel' i2c (x + 1) y true}
         mask = (mask << 1)
       }
     }
@@ -166,5 +190,13 @@ to lm8x8_draw_rect i2c x y width height filled {
       lm8x8_draw_line i2c x y (x + (width - 1)) y
     }
   }
+}
+
+to lm8x8_set_flip flip {
+  _lm8x8_flip = flip
+}
+
+to lm8x8_set_rotation rotation {
+  _lm8x8_rotation = ('[data:convertType]' rotation 'number')
 }
 
