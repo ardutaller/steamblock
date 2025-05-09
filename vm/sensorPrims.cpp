@@ -1971,7 +1971,7 @@ static int readDigitalMicrophone() {
 	return ((int) mic_sample) >> 3; // scale result
 }
 
-#elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS_DISABLED)
+#elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
 // Note: Disable for now; PlatformIO is no longer able to install the AdaFruit ZeroPDM library.
 
 #define USE_DIGITAL_MICROPHONE 1
