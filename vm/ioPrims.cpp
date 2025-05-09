@@ -659,7 +659,23 @@ void hardwareInit() {
 		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
 		1, 1, 0, 0, 1, 1, 1, 1, 1, 0};
 
-#elif defined(ARDUINO_M5Atom_Lite_S3)
+#elif defined(ARDUINO_M5Atom_S3)
+
+	#define BOARD_TYPE "M5AtomS3"
+	#define DIGITAL_PINS 42
+	#define ANALOG_PINS 6
+	#define TOTAL_PINS 42
+	#define PIN_LED 0
+	static const int analogPin[] = {};
+	#define PIN_BUTTON_A 41
+	static const char reservedPin[TOTAL_PINS] = {
+		1, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+		1, 0};
+
+#elif defined(ARDUINO_M5Atom_S3_Lite)
 
 	#define BOARD_TYPE "M5AtomS3-Lite"
 	#define DIGITAL_PINS 42
@@ -1081,12 +1097,12 @@ void hardwareInit() {
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13}; // LED rows: 7, 12, 15, 54, 11
+		 1, 13}; // unused pins: 12, 15, 11, 54, 7};
 
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13}; // unused pins: 12, 15, 14, 29, 32
+		 1, 13}; // unused pins: 12, 15, 14, 29, 32};
 
 	// Pin 13 is repeated at index 21 (DEFAULT_TONE_PIN)
 	static const char dueStandardPin[DIGITAL_PINS] = {
@@ -1778,7 +1794,7 @@ void primSetUserLED(OBJ *args) {
 		#ifdef INVERT_USER_LED
 			output = !output;
 		#endif
-		#if defined(M5STAMP) || defined(ARDUINO_M5Atom_Lite_ESP32) || defined(ARDUINO_M5Atom_Lite_S3)
+		#if defined(M5STAMP) || defined(ARDUINO_M5Atom_Lite_ESP32) || defined(ARDUINO_M5Atom_S3_Lite)
 			int color = (output == HIGH) ? 255 : 0; // blue when on
 			setAllNeoPixels(PIN_LED, 1, color);
 			taskSleep(1);
