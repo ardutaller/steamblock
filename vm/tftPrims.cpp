@@ -29,7 +29,8 @@ static int deferUpdates = false;
 	defined(ARDUINO_M5Stick_C) || defined(ARDUINO_ESP8266_WEMOS_D1MINI) || \
 	defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_IOT_BUS) || defined(SCOUT_MAKES_AZUL) || \
 	defined(TTGO_RP2040) || defined(TTGO_DISPLAY) || defined(ARDUINO_M5STACK_Core2) || \
-	defined(GAMEPAD_DISPLAY) || defined(PICO_ED) || defined(OLED_128_64) || defined(COCUBE)
+	defined(GAMEPAD_DISPLAY) || defined(PICO_ED) || defined(OLED_128_64) || defined(COCUBE) || \ 
+	defined(ARDUINO_M5Atom_S3)
 
 	#define BLACK 0
 	#define WHITE 65535
@@ -897,6 +898,43 @@ static int deferUpdates = false;
 			delay(800);
 		}
 
+	#elif defined(ARDUINO_M5Atom_S3)
+		#include "Adafruit_GFX.h"
+		#include "Adafruit_ST7789.h"
+		#define TFT_MOSI 21
+		#define TFT_SCLK 17
+		#define TFT_CS   15  
+		#define TFT_DC   33 
+		#define TFT_RST  34
+		#define TFT_BL   16 
+ 		#define TFT_WIDTH 128
+		#define TFT_HEIGHT 128
+		// make a subclass so we can adjust the x/y offsets
+		class AtomS3LCD : public Adafruit_ST7789 {
+		public:
+			AtomS3LCD(int8_t cs, int8_t dc, int8_t mosi, int8_t sclk, int8_t rst) : Adafruit_ST7789(cs, dc, mosi, sclk, rst) {}
+			void setOffsets(int colOffset, int rowOffset) {
+				_xstart = _colstart = colOffset;
+				_ystart = _rowstart = rowOffset;
+			}
+		};
+		AtomS3LCD tft = AtomS3LCD(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+
+
+		void tftInit() {
+
+    			//tft.init(TFT_HEIGHT, TFT_WIDTH, SPI_MODE2);
+ 			//tft.setSPISpeed(40000000);
+			tft.init(TFT_HEIGHT, TFT_WIDTH);
+			tft.setOffsets(2,1);
+			tft.setRotation(0);	
+			tftClear();
+			pinMode(TFT_BL, OUTPUT);
+			digitalWrite(TFT_BL, HIGH);
+			useTFT = true;
+		
+		}
+
 #endif // end of board-specific sections
 
 static int hasTFT() {
@@ -932,7 +970,7 @@ static int color24to16b(int color24b) {
 	r = (color24b >> 19) & 0x1F; // 5 bits
 	g = (color24b >> 10) & 0x3F; // 6 bits
 	b = (color24b >> 3) & 0x1F; // 5 bits
-	#if defined(ARDUINO_M5Stick_C) && !defined(ARDUINO_M5Stick_Plus)
+	#if defined(ARDUINO_M5Stick_C) || defined(ARDUINO_M5Atom_S3) && !defined(ARDUINO_M5Stick_Plus) 
 		return (b << 11) | (g << 5) | r; // color order: BGR
 	#else
 		return (r << 11) | (g << 5) | b; // color order: RGB
