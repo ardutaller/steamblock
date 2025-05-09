@@ -15,6 +15,10 @@
 #define TX_BUF_SIZE 128
 static int isOpen = false;
 
+#if defined(ARDUINO_WEACT)
+HardwareSerial Serial2(PC_11, PC_10);
+#endif
+
 #if defined(NRF51) // not implemented (has only one UART)
 
 static OBJ setNRF52SerialPins(uint8 rxPin, uint8 txPin) { return fail(primitiveNotImplemented); }
@@ -193,9 +197,7 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 #else // use Serial1 or Serial2
 
 // Use Serial2 on original ESP32 and Pico:ed boards, Serial1 on others
-#if (ESP32_ORIGINAL) || defined(PICO_ED) || defined(COCUBE)
-	#define SERIAL_PORT Serial2
-#elif defined(DUELink)
+#if (ESP32_ORIGINAL) || defined(PICO_ED) || defined(COCUBE) || defined(DUELink) || defined(ARDUINO_WEACT)
 	#define SERIAL_PORT Serial2
 #else
 	#define SERIAL_PORT Serial1

@@ -1189,6 +1189,14 @@ void hardwareInit() {
 	#define PIN_LED LED_BUILTIN
 	#define DEFAULT_TONE_PIN 6 // buzzer on backpack board
 
+#elif defined(ARDUINO_WEACT)
+	#define BOARD_TYPE "WeAct STM32H743"
+	#define DIGITAL_PINS 82
+	#define ANALOG_PINS 16
+	#define TOTAL_PINS 82
+	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};
+	#define PIN_LED LED_BUILTIN
+
 #else // unknown board
 
 	#define BOARD_TYPE "Unknown Board"
@@ -1256,10 +1264,10 @@ static void initPins(void) {
 		// The analog write primitve takes a 10-bit value, as it does on all MicroBlocks boards,
 		// but on NRF52 only the 8 most signifcant bits are used.
 		analogWriteResolution(8);
-	#elif defined(ARDUINO_SAM_DUE)
-		analogWriteResolution(12);
 	#elif !defined(ESP8266) && !defined(ARDUINO_ARCH_ESP32) && !defined(__ZEPHYR__)
 		analogWriteResolution(10); // 0-1023; low-order bits ignored on boards with lower resolution
+	#elif defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
+		analogWriteResolution(12);
 	#endif
 
 	for (int i = 0; i < TOTAL_PINS; i++) {

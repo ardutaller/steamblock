@@ -1362,7 +1362,7 @@ method addLanguangeMenuEntry MicroBlocksEditor langCode menu {
 	language = (languageNameForCode (authoringSpecs) langCode)
 	if (language == (language (authoringSpecs))) {
 		addItem menu language (action 'setLanguage' this langCode) nil (newCheckmark this true)
-	} else {
+	} (notNil language) {
 		addItem menu language (action 'setLanguage' this langCode)
 	}
 }
