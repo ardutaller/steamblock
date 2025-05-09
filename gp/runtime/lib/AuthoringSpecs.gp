@@ -493,13 +493,13 @@ method languageCodeForName AuthoringSpecs langName {
 }
 
 method languageNameForCode AuthoringSpecs langCode {
-	// Return the language name for the given languag codee or the argument if no match found.
+	// Return the language name for the given language code or nil if no match found.
 	// The language name is the file name of the translation file.
 
 	for pair (languageCodeList this) {
 		if (langCode == (at pair 2)) { return (first pair) }
 	}
-	return langCode
+	return nil
 }
 
 method languageCodeList AuthoringSpecs {
