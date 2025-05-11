@@ -916,13 +916,14 @@ static int readTemperature() {
 
 #elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5Stick_C) || \
 	defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_M5STACK_Core2) || \
-	defined(ARDUINO_M5Atom_Lite_ESP32)
+	defined(ARDUINO_M5Atom_S3)
 
 #ifdef ARDUINO_M5Stack_Core_ESP32
 	#define Wire1 Wire
 #endif
 
-#define MPU6886_ID			0x68
+
+#define MPU6886_ID		0x68
 #define MPU6886_SMPLRT_DIV	0x19
 #define MPU6886_CONFIG		0x1A
 #define MPU6886_ACCEL_CONFIG	0x1C
@@ -952,6 +953,8 @@ static char is6886 = false;
 static void startAccelerometer() {
 	#ifdef ARDUINO_M5Atom_Matrix_ESP32
 		Wire1.begin(25, 21);
+	#elif defined(ARDUINO_M5Atom_S3)
+		Wire1.begin(38, 39);
 	#else
 		Wire1.begin(); // use internal I2C bus with default pins
 	#endif
@@ -1643,7 +1646,7 @@ OBJ primAcceleration(int argCount, OBJ *args) {
 	#elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) || defined(ARDUINO_NRF52840_CIRCUITPLAY)
 		deviceID = LIS3DH_ID;
 		reg = 0x29 | 0x80; // address + auto-increment flag
-	#elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_M5Stick_C) || defined(ARDUINO_M5Atom_Matrix_ESP32)
+	#elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_M5Stick_C) || defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_M5Atom_S3)
 		deviceID = MPU6886_ID;
 		reg = 0x3B;
 	#endif
