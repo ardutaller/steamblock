@@ -899,7 +899,7 @@ static void IRAM_ATTR sendNeoPixelData(int val) { // ESP32
 			(rmt_item32_t) {{{T0H, 1, T0L, 0}}};
 		mask >>= 1;
 	}
-	rmt_write_items(RMT_CHANNEL_0, rmt_buffer, neoPixelBits, true);
+	rmt_write_items(RMT_CHANNEL_0, rmt_buffer, neoPixelBits, false);
 }
 
 #elif defined(ARDUINO_ARCH_RP2040) && !defined(__MBED__) // Philhower framework (PicoSDK)
