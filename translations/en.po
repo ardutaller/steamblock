@@ -5768,6 +5768,10 @@ msgstr "Citilab ED1 and M5Stack"
 msgid "LIBRARIES"
 msgstr "LIBRARIES"
 
+#. Library button, abbreviated
+msgid "LIBS"
+msgstr "LIBS"
+
 #. Library folder
 msgid "folder;Libraries"
 msgstr "Libraries"

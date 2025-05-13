@@ -5768,6 +5768,10 @@ msgstr ""
 msgid "LIBRARIES"
 msgstr ""
 
+#. Library button, abbreviated
+msgid "LIBS"
+msgstr ""
+
 #. Library folder
 msgid "folder;Libraries"
 msgstr ""
