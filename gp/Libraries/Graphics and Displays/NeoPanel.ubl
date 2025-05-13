@@ -1,11 +1,11 @@
 module NeoPanel Output
 author 'José García Yeste & Víctor Casado'
-version 1 8 
+version 1 9 
 depends _NeoPixel _BMP 
 description 'Draw lines, rectangles, circles, text, and images on a NeoPixel panels (e.g. 8x8, 16x16 or 32x8) in either horizontal or vertical orientation. Panels can be daisy-chained to create larger displays if there is sufficient power to drive them.
 See: https://www.btf-lighting.com/collections/led-matrix-display/products/ws2812b-panel-screen-8-8-16-16-8-32-pixel-256-pixels-digital-flexible-led-programmed-individually-addressable-full-color-dc5v#
 '
-variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal _neoPanel_minimizeSpacing 
+variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal _neoPanel_minimizeSpacing _neoPanel_zizag 
 
   spec ' ' 'neoPanel_attach' 'attach NeoPixel panel width _ height _ at pin _' 'num num num' 8 8 1
   space
@@ -57,17 +57,25 @@ to '_neoPanel_drawline' x0 y0 x1 y1 color {
 }
 
 to '_neoPanel_setPixel' x y color {
-  if (and (and (x > 0) (y > 0)) (and (x <= _neoPanel_width) (y <= _neoPanel_height))) {if _neoPanel_isHorizontal {
-    if ((x & 1) == 0) {
-      atPut (((x - 1) * _neoPanel_height) + ((_neoPanel_height - y) + 1)) _np_pixels color
+  if (and (and (x > 0) (y > 0)) (and (x <= _neoPanel_width) (y <= _neoPanel_height))) {if _neoPanel_zizag {
+    if _neoPanel_isHorizontal {
+      if ((x & 1) == 0) {
+        atPut (((x - 1) * _neoPanel_height) + ((_neoPanel_height - y) + 1)) _np_pixels color
+      } else {
+        atPut (((x - 1) * _neoPanel_height) + y) _np_pixels color
+      }
     } else {
-      atPut (((x - 1) * _neoPanel_height) + y) _np_pixels color
+      if ((y & 1) == 0) {
+        atPut (((y - 1) * _neoPanel_width) + x) _np_pixels color
+      } else {
+        atPut (((y - 1) * _neoPanel_width) + ((_neoPanel_width - x) + 1)) _np_pixels color
+      }
     }
   } else {
-    if ((y & 1) == 0) {
+    if _neoPanel_isHorizontal {
       atPut (((y - 1) * _neoPanel_width) + x) _np_pixels color
     } else {
-      atPut (((y - 1) * _neoPanel_width) + ((_neoPanel_width - x) + 1)) _np_pixels color
+      atPut (((x - 1) * _neoPanel_height) + ((_neoPanel_height - y) + 1)) _np_pixels color
     }
   }}
 }
@@ -78,6 +86,16 @@ to neoPanel_attach width height pin {
   _neoPanel_isHorizontal = (width >= height)
   if (_neoPanel_minimizeSpacing == 0) {
     _neoPanel_minimizeSpacing = (booleanConstant true)
+  }
+  if ((boardType) == 'CoCube') {
+    digitalWriteOp 13 true
+    waitMillis 10
+    if (pin == 1) {
+      pin = 22
+    }
+  }
+  if (_neoPanel_zizag == 0) {
+    _neoPanel_zizag = ((boardType) != 'CoCube')
   }
   neoPixelAttach (_neoPanel_width * _neoPanel_height) pin
 }
