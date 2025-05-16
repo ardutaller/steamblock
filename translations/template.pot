@@ -5332,7 +5332,7 @@ msgid "Firmware Installed"
 msgstr ""
 
 #. MicroBlocks IDE information
-msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
+msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
 
 #. MicroBlocks IDE information
