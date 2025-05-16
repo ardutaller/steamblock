@@ -4920,40 +4920,40 @@ msgid "SCD40 is connected?"
 msgstr "SCD40 is connected?"
 
 #. Robo ESP32 library block
-msgid "roboESP32 clear RGB"
-msgstr "roboESP32 clear RGB"
+msgid "RoboESP32 clear RGB"
+msgstr "RoboESP32 clear RGB"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set motor _ power _ (-100 to 100)"
-msgstr "roboESP32 set motor _ power _ (-100 to 100)"
+msgid "RoboESP32 set motor _ power _ (-100 to 100)"
+msgstr "RoboESP32 set motor _ power _ (-100 to 100)"
 
 #. Robo ESP32 library block
-msgid "roboESP32 stop motor _"
-msgstr "roboESP32 stop motor _"
+msgid "RoboESP32 stop motor _"
+msgstr "RoboESP32 stop motor _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 play Happy Birthday!"
-msgstr "roboESP32 play Happy Birthday!"
+msgid "RoboESP32 play Happy Birthday!"
+msgstr "RoboESP32 play Happy Birthday!"
 
 #. Robo ESP32 library block
-msgid "roboESP32 button _ is pressed"
-msgstr "roboESP32 button _ is pressed"
+msgid "RoboESP32 button _ is pressed"
+msgstr "RoboESP32 button _ is pressed"
 
 #. Robo ESP32 library block
-msgid "roboESP32 increase RGB brightness by _ %"
-msgstr "roboESP32 increase RGB brightness by _ %"
+msgid "RoboESP32 increase RGB brightness by _ %"
+msgstr "RoboESP32 increase RGB brightness by _ %"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set servo _ to _ degrees (-90 to 90)"
-msgstr "roboESP32 set servo _ to _ degrees (-90 to 90)"
+msgid "RoboESP32 set servo _ to _ degrees (-90 to 90)"
+msgstr "RoboESP32 set servo _ to _ degrees (-90 to 90)"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set RGB _ color _"
-msgstr "roboESP32 set RGB _ color _"
+msgid "RoboESP32 set RGB _ color _"
+msgstr "RoboESP32 set RGB _ color _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set GPIO _ _"
-msgstr "roboESP32 set GPIO _ _"
+msgid "RoboESP32 set GPIO _ _"
+msgstr "RoboESP32 set GPIO _ _"
 
 #. In MicroBlocks IDE project menu
 msgid "New"

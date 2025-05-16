@@ -6524,32 +6524,32 @@ msgid "radio last sender ID"
 msgstr "Radio letzte Sender-ID"
 
 #. Robo ESP32 library block
-msgid "roboESP32 clear RGB"
-msgstr "roboESP32 lösche RGB"
+msgid "RoboESP32 clear RGB"
+msgstr "RoboESP32 lösche RGB"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set motor _ power _ (-100 to 100)"
-msgstr "roboESP32 drehe Motor _ mit _ (-100 to 100)"
+msgid "RoboESP32 set motor _ power _ (-100 to 100)"
+msgstr "RoboESP32 drehe Motor _ mit _ (-100 to 100)"
 
 #. Robo ESP32 library block
-msgid "roboESP32 stop motor _"
-msgstr "roboESP32 stoppe Motor _"
+msgid "RoboESP32 stop motor _"
+msgstr "RoboESP32 stoppe Motor _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 button _ is pressed"
-msgstr "roboESP32 Knopf _ ist gedrückt"
+msgid "RoboESP32 button _ is pressed"
+msgstr "RoboESP32 Knopf _ ist gedrückt"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set servo _ to _ degrees (-90 to 90)"
-msgstr "roboESP32 setze Servo _ auf Winkel _ ° (-90 to 90)"
+msgid "RoboESP32 set servo _ to _ degrees (-90 to 90)"
+msgstr "RoboESP32 setze Servo _ auf Winkel _ ° (-90 to 90)"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set RGB _ color _"
-msgstr "roboESP32 setze RGB _ auf Farbe _"
+msgid "RoboESP32 set RGB _ color _"
+msgstr "RoboESP32 setze RGB _ auf Farbe _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 play Happy Birthday!"
-msgstr "roboESP32 spiele Happy Birthday!"
+msgid "RoboESP32 play Happy Birthday!"
+msgstr "RoboESP32 spiele Happy Birthday!"
 
 #. Analog Synthesis library block
 msgid "set amplitude _ attack _ hold _ release _ for gate _"
@@ -6576,16 +6576,16 @@ msgid "square wave frequency _ amplitude _"
 msgstr "Rechteckwelle mit Frequenz _ und Amplitude _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set GPIO _ _"
-msgstr "roboESP32 setze GPIO _ _"
+msgid "RoboESP32 set GPIO _ _"
+msgstr "RoboESP32 setze GPIO _ _"
 
 #. Analog Synthesis library block
 msgid "amplitude for gate _"
 msgstr "Amplitude für Gate _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 increase RGB brightness by _ %"
-msgstr "roboESP32 erhöhe RGB-Helligkeit um _ %"
+msgid "RoboESP32 increase RGB brightness by _ %"
+msgstr "RoboESP32 erhöhe RGB-Helligkeit um _ %"
 
 #. Analog Synthesis library label
 #. Generate synthesized sound waves to play on a DAC, over PWM, or any other analog means
