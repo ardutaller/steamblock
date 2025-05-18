@@ -1,7 +1,8 @@
 module Foxbit
 author MicroBlocks
-version 1 0 
+version 1 1 
 depends '_Temperature Humidity (AHT20)' NeoPixel Tone 
+choices foxbit_touchPin '0' '1' '2' '4' '6' '12' logo 
 description 'Library for the KidsBits Foxbit.
 '
 variables _fb_avg_current _fb_avg_loudness 
@@ -11,6 +12,8 @@ variables _fb_avg_current _fb_avg_loudness
   spec ' ' 'foxbit_setNeoPixelColors' 'fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _' 'color color color color color color color color color color color color color color color color color color color color color color color color color color color color color color color color color color color'
   spec ' ' 'foxbit_setAllNeoPixels' 'fb set all NeoPixels _' 'color'
   spec ' ' 'foxbit_clearNeoPixels' 'fb clear NeoPixels'
+  space
+  spec 'r' 'foxbit_isTouched' 'fb pin _ touched?' 'menu.foxbit_touchPin' 'logo'
   space
   spec 'r' 'foxbit_temperature' 'fb temperature'
   spec 'r' 'foxbit_humidity' 'fb humidity'
@@ -37,6 +40,11 @@ to foxbit_current {
 
 to foxbit_humidity {
   return (aht20_humidity)
+}
+
+to foxbit_isTouched edgePinOrLogo {
+  if ('logo' == edgePinOrLogo) {edgePinOrLogo = 27}
+  return (('[sensors:touchRead]' (0 + edgePinOrLogo)) < 35)
 }
 
 to foxbit_light {
