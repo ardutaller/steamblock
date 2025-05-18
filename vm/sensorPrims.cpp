@@ -1864,7 +1864,14 @@ static OBJ primTouchRead(int argCount, OBJ *args) {
 #else
 
 static OBJ primTouchRead(int argCount, OBJ *args) {
-	return int2obj(touchRead(obj2int(args[0])));
+	uint8 esp32TouchPins[10] = {0, 2, 4, 12, 13, 14, 15, 27, 32, 33};
+	int gpioPin = mapDigitalPinNum(obj2int(args[0]));
+	for (int i = 0; i < sizeof(esp32TouchPins); i++) {
+		if (gpioPin == esp32TouchPins[i]) {
+			return int2obj(touchRead(gpioPin));
+		}
+	}
+	return zeroObj; // gpioPin is not an ESP32 touch pin
 }
 
 #endif
