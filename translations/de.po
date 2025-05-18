@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-05-16 06:02+0000\n"
+"PO-Revision-Date: 2025-05-18 15:11+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -5575,7 +5575,7 @@ msgstr "sb setze Pin S- _ (1-8) auf _ %"
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "ms display #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
 msgstr ""
-"ms anzeigen #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# "
+"ms Anzeige #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# "
 "_ _ _ _ _"
 
 #. micro:STEAMakers library block
@@ -5705,7 +5705,7 @@ msgstr "ms Energieverbrauch (µWh)"
 #. micro:STEAMakers library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "ms display #BR# _ #BR# with color _"
-msgstr "ms anzeigen #BR# _ #BR# mit Farbe _"
+msgstr "ms Anzeige #BR# _ #BR# mit Farbe _"
 
 #. Pluck library label
 #. Generate music with plucked-string resembling sounds
