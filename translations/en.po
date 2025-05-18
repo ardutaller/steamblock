@@ -3487,7 +3487,7 @@ msgstr "ms button _ ?"
 
 #. micro:STEAMakers library block
 msgid "ms touching ?"
-msgstr "ms touching ?"
+msgstr "ms logo touched?"
 
 #. micro:STEAMakers library block
 msgid "ms light"
