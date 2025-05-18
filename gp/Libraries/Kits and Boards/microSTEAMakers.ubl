@@ -1,13 +1,14 @@
 module microSTEAMakers
 author 'Joan Guillén'
-version 1 6 
+version 1 7 
 depends Tone Color 
 tags keyestudio steam 
-choices ms_energyMeter 'ms;start' 'ms;stop' 'ms;reset' 
-choices ms_inclination 'ms;down' 'x' 'y' 
+choices ms_led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors 
+choices ms_inclination 'ms;down' x y 
 choices ms_accel x y z 
 choices ms_energy mA mV mW 
-choices ms_led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors 
+choices ms_touchPin '0' '1' '2' '4' '6' '8' '12' 
+choices ms_energyMeter 'ms;start' 'ms;stop' 'ms;reset' 
 description 'Provides custom blocks for the micro:STEAMakers, an ESP32 board with WiFi, BLE, 5x5 RGB LED matrix, 2 buttons, touch, light, sound, temperature and humidity sensors, six-axis accelerometer/gyroscope, energy control, and GPIO and I2C pins for additional extensions.
 '
 variables _ms_neoPixels _ms_neoPixels_scale _ms_scrolling_stopped _ms_energyReading _ms_energySum _ms_aht20_on _ms_aht20_reading _ms_aht20_data _ms_MPU6050_on _ms_MPU6050_add 
@@ -19,6 +20,7 @@ variables _ms_neoPixels _ms_neoPixels_scale _ms_scrolling_stopped _ms_energyRead
   spec ' ' 'ms_unplot' 'ms unplot x _ y _' 'num num' 3 3
   space
   spec 'r' 'ms_touching' 'ms touching ?'
+  spec 'r' 'ms_touching_pin' 'ms pin _ touched?' 'menu.ms_touchPin' 0
   spec 'r' 'ms_light' 'ms light'
   spec 'r' 'ms_sound' 'ms sound'
   spec 'r' 'ms_temperature' 'ms temperature ºC'
@@ -274,6 +276,10 @@ to ms_temperature {
 
 to ms_touching {
   return (('[sensors:touchRead]' 27) < 35)
+}
+
+to ms_touching_pin edgePin {
+  return (('[sensors:touchRead]' (0 + edgePin)) < 35)
 }
 
 to ms_unplot x y {
