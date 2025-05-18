@@ -118,6 +118,29 @@ static uint8 * appendUTF8(uint8 *s, int unicode) {
 	return s;
 }
 
+static int substringIsInteger(char *start, char *end) {
+	// Return true if the substring from start up to end represents an integer.
+
+	if ((start < end) && ('-' == *start)) start++; // skip leading minus sign, if any
+	if (start >= end) return false; // no digits; not an integer
+	while (start < end) {
+		int ch = *start++;
+		if ((ch < '0') || (ch > '9')) return false; // non-digit found
+	}
+	return true;
+}
+
+static int substringToInteger(char *start, char *end) {
+	// Return the integer represented by the substring from start up to end.
+
+	char s[20];
+	int count = end - start;
+	if (count > 19) count = 19;
+	strncpy(s, start, count);
+	s[count] = 0;
+	return strtol(s, NULL, 10);
+}
+
 // Growable Lists:
 // First field is the item count (N). Items are stored in fields 2..N.
 // Fields N+1..end are available for adding additional items without growing.
@@ -548,7 +571,7 @@ OBJ primSplit(int argCount, OBJ *args) {
 
 	// add substrings to the result list
 	if (delimLen == 0) {
-		// return a list containing the characters of s
+		// no delimiter provided; return a list containing the characters of s
 		char *last = s;
 		char *next = nextUTF8(last);
 		for (int i = 0; i < resultCount; i++) {
@@ -560,26 +583,26 @@ OBJ primSplit(int argCount, OBJ *args) {
 			last = next;
 			next = nextUTF8(last);
 		}
+	} else if (1 == resultCount) { // no delimiter found; return list with unsplit source string
+		FIELD(tempGCRoot, 1) = args[0];
 	} else {
-		if (1 == resultCount) { // no delimiters found; return unsplit source string
-			FIELD(tempGCRoot, 1) = args[0];
-			return tempGCRoot;
-		}
 		int i = 1;
 		char *last = s;
+		char *end = s + strlen(s);
 		char *next = strstr(last, delim);
 		while (next && (i <= resultCount)) {
+			OBJ item;
 			int byteCount = next - last;
-			OBJ item = newStringFromBytes(last, byteCount);
-			if (!item) return falseObj; // allocation failed
+			if (substringIsInteger(last, next)) {
+				item = int2obj(substringToInteger(last, next));
+			} else {
+				item = newStringFromBytes(last, byteCount);
+				if (!item) return falseObj; // allocation failed
+			}
 			FIELD(tempGCRoot, i++) = item;
 			last = next + delimLen;
 			next = strstr(last, delim);
-		}
-		if (i <= resultCount) { //
-			OBJ item = newStringFromBytes(last, strlen(last));
-			if (!item) return falseObj; // allocation failed
-			FIELD(tempGCRoot, i++) = item;
+			if (!next) next = end; // handle string after final delimiter
 		}
 	}
 	return tempGCRoot;
