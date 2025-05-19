@@ -1,6 +1,6 @@
 module KidsIOT
 author 'Josep Ferràndiz'
-version 1 4 
+version 1 5 
 depends Tone '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' 
 choices kiot_rotarySensor 'kiot;rotation' 'kiot;button pressed?' 
 choices kiot_twoPins '1' '3' '4' '6' '7' '8' '9' 
@@ -15,7 +15,11 @@ choices kiot_threePins '1' '9'
 choices kiot_joystick X Y 'kiot;button pressed?' 
 choices kiot_digitalSensors 'kiot;button pressed?' 'kiot;humidity' 'kiot;magnet detected?' 'kiot;movement detected?' 'kiot;obstacle?' 'kiot;photo sensor interrupted?' 'kiot;receive IR code' 'kiot;temperature (Celsius)' 'kiot;tilt?' 'kiot;touching?' 
 choices kiot_side 'kiot;left' 'kiot;right' 
-description 'KidsIoT easy plug connection system (Keyestudio)
+description 'KidsIoT for ESP32 easy plug connection system from KidsBits.
+Large selection of modules.
+
+https://www.kidsbits.cc/products/kidsbits-stem-electronic-building-blocks-development-board-for-esp32?VariantsId=10124
+
 '
 variables _kiot_buzzer_init _kiot_avg_loudness _kiot_encoder_port1 _kiot_encoder_port9 
 
@@ -226,7 +230,7 @@ to 'kiot rotarySensor' sensor port {
     rawCount = ('[encoder:count]' _kiot_encoder_port1)
   } (9 == port) {
     if (_kiot_encoder_port9 == 0) {
-      _kiot_encoder_port9 = 3
+      _kiot_encoder_port9 = 4
       '[encoder:start]' _kiot_encoder_port9 17 18 true
     }
     rawCount = ('[encoder:count]' _kiot_encoder_port9)
