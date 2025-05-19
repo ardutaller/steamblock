@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-05-18 22:05+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-05-19 09:12+0000\n"
+"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -678,7 +678,7 @@ msgstr "Kommunikation"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr "neue Liste Länge _"
+msgstr "neue Liste _"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
@@ -1118,7 +1118,7 @@ msgstr "Liste oder Text"
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
-msgstr "Farbe _ Name"
+msgstr "Farbname _"
 
 #. Fractions library block
 msgid "fract _ = _"
@@ -2379,7 +2379,9 @@ msgstr "Projekt wird vom Board gelesen..."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Klicke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
+msgstr ""
+"Klicke auf die Taste \"verbinden\", um dein Board mit MicroBlocks zu "
+"verbinden."
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
@@ -5595,9 +5597,8 @@ msgid "ms button _ ?"
 msgstr "ms Knopf _ ?"
 
 #. micro:STEAMakers library block
-#, fuzzy
 msgid "ms touching ?"
-msgstr "ms Berührung?"
+msgstr "ms Logo berührt?"
 
 #. micro:STEAMakers library block
 msgid "ms light"
@@ -6687,7 +6688,7 @@ msgstr "SCD40 relative Luftfeuchtigkeit (%)"
 
 #. Firmware install instruction
 msgid "Do not switch browser tabs!"
-msgstr "Wechsle keine Browser-Tabs!"
+msgstr "Wechsle keinen Tab im Browser!"
 
 #. Gas (SCD40) library block
 msgid "°F"
@@ -6753,3 +6754,7 @@ msgstr "#SVG#wave-sawtooth Gate _"
 #. only translate "gate _" as in a synthesizer sound gate that can be triggered
 msgid "#SVG#wave-noise gate _"
 msgstr "#SVG#wave-noise Gate _"
+
+#. MicroBlocks IDE information
+msgid "Reconnect to the board by clicking the \"Connect\" button."
+msgstr "Verbinde dich neu mit dem Board. Klicke auf die Taste \"verbinden\"."
