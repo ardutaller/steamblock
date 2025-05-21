@@ -1060,8 +1060,13 @@ void hardwareInit() {
 	#else
 		#if defined(XRP)
 			#undef BOARD_TYPE
-			#define BOARD_TYPE "RP2040 XRP"
-			#define PIN_BUTTON_A 22
+			#if defined(RP2350)
+				#define BOARD_TYPE "RP2350 XRP"
+				#define PIN_BUTTON_A 22
+			#else
+				#define BOARD_TYPE "RP2040 XRP"
+				#define PIN_BUTTON_A 22
+			#endif
 		#elif defined(GIZMO_MECHATRONICS)
 			#undef BOARD_TYPE
 			#define BOARD_TYPE "RP2040 Gizmo"
