@@ -549,6 +549,7 @@ OBJ primSplit(int argCount, OBJ *args) {
 	char *s = obj2str(args[0]);
 	char *delim = obj2str(args[1]);
 	int delimLen = strlen(delim);
+	int convertNums = ((argCount > 2) && (trueObj == args[2]));
 
 	// count substrings for result list
 	int resultCount = 0;
@@ -593,7 +594,7 @@ OBJ primSplit(int argCount, OBJ *args) {
 		while (next && (i <= resultCount)) {
 			OBJ item;
 			int byteCount = next - last;
-			if (substringIsInteger(last, next)) {
+			if (convertNums && (substringIsInteger(last, next))) {
 				item = int2obj(substringToInteger(last, next));
 			} else {
 				item = newStringFromBytes(last, byteCount);
