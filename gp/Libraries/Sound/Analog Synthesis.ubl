@@ -8,7 +8,7 @@ You can create your own instruments by adding waves together, and you can define
 
 Amplitude range: -32768 to 32767 (16 bits signed)
 '
-variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases '_mcp4725 out' 
+variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends '_mcp4725 out' 
 
   spec ' ' 'asynth output' 'output _ to _ : number/address _ : asynth;resolution _' 'num menu.outputTypes num num' 1024 'asy;pin' 25 10
   space
