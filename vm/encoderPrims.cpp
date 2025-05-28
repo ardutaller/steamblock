@@ -68,7 +68,7 @@ public:
 		}
 
 		setPinMode(pinA, INPUT);
-		if (fullRes) setPinMode(pinB, INPUT);
+		setPinMode(pinB, INPUT);
 
 		interruptHandler handler = encoderInterruptHandlerFor(encoderIndex);
 		attachInterrupt(interruptA, handler, CHANGE);
