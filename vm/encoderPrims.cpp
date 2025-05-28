@@ -67,6 +67,9 @@ public:
 			return -2; // a pin does not support interrupts
 		}
 
+		setPinMode(pinA, INPUT);
+		if (fullRes) setPinMode(pinB, INPUT);
+
 		interruptHandler handler = encoderInterruptHandlerFor(encoderIndex);
 		attachInterrupt(interruptA, handler, CHANGE);
 		if (fullRes) attachInterrupt(interruptB, handler, CHANGE);
