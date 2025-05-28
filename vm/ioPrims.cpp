@@ -1443,6 +1443,10 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		if (16 == pinNum) pinNum = 6; // map pin 16 to A6
 		if (18 == pinNum) pinNum = 3; // map pin 18 to A3
 		if (29 == pinNum) return int2obj(readAnalogMicrophone());
+	#elif defined(XRP_2350)
+		if ((pinNum < 40) || (pinNum >= TOTAL_PINS)) return int2obj(0);
+		SET_MODE(pinNum, mode);
+		return int2obj(analogRead(pinNum));
 	#endif
 	#ifdef ARDUINO_CITILAB_ED1
 		if ((100 <= pinNum) && (pinNum <= 139)) {
