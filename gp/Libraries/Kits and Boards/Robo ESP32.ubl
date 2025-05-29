@@ -1,6 +1,6 @@
 module 'Robo ESP32' Input
 author 'Cytron Technologies'
-version 1 0 
+version 1 1 
 depends Servo NeoPixel Tone 
 choices roboesp32motor M1 M2 both 
 choices roboesp32motorrotation CW CCW 
@@ -10,22 +10,23 @@ choices roboesp32gpio D16 D17 D21 D22 D25 D26 D32 D33 all
 choices roboesp32userbutton D34 D35 
 description 'Cytron Robo ESP32: Simplifying Robotics with ESP32
 
+Robo ESP32 is a beginner-friendly robot controller with built-in motor drivers, WiFi, Bluetooth, and easy connectors for DC motors, servos, and Grove modules. Find out more: https://my.cytron.io/p-robo-esp32
 '
 
-  spec ' ' 'roboESP32_set_GPIO' 'roboESP32 set GPIO _ _' 'menu.roboesp32gpio bool' 'D16' true
+  spec ' ' 'roboESP32_set_GPIO' 'RoboESP32 set GPIO _ _' 'menu.roboesp32gpio bool' 'D16' true
   space
-  spec ' ' 'roboESP32_set_RGB' 'roboESP32 set RGB _ color _' 'menu.roboesp32rgb color' '0'
-  spec ' ' 'roboESP32_clear_RGB' 'roboESP32 clear RGB'
-  spec ' ' 'roboESP32_increase_RGB _brightness' 'roboESP32 increase RGB brightness by _ %' 'num' 100
+  spec ' ' 'roboESP32_set_RGB' 'RoboESP32 set RGB _ color _' 'menu.roboesp32rgb color' '0'
+  spec ' ' 'roboESP32_clear_RGB' 'RoboESP32 clear RGB'
+  spec ' ' 'roboESP32_increase_RGB _brightness' 'RoboESP32 increase RGB brightness by _ %' 'num' 100
   space
-  spec ' ' 'roboESP32_set_motor' 'roboESP32 set motor _ power _ (-100 to 100)' 'menu.roboesp32motor num' 'M1' 100
-  spec ' ' 'roboESP32_stop_motor' 'roboESP32 stop motor _' 'menu.roboesp32motor' 'M1'
+  spec ' ' 'roboESP32_set_motor' 'RoboESP32 set motor _ power _ (-100 to 100)' 'menu.roboesp32motor num' 'M1' 100
+  spec ' ' 'roboESP32_stop_motor' 'RoboESP32 stop motor _' 'menu.roboesp32motor' 'M1'
   space
-  spec ' ' 'roboESP32_set_servo' 'roboESP32 set servo _ to _ degrees (-90 to 90)' 'menu.roboesp32servo auto' 'D4' 0
+  spec ' ' 'roboESP32_set_servo' 'RoboESP32 set servo _ to _ degrees (-90 to 90)' 'menu.roboesp32servo auto' 'D4' 0
   space
-  spec ' ' 'roboESP32_play_song' 'roboESP32 play Happy Birthday!'
+  spec ' ' 'roboESP32_play_song' 'RoboESP32 play Happy Birthday!'
   space
-  spec 'r' 'roboESP32_button' 'roboESP32 button _ is pressed' 'menu.roboesp32userbutton' 'D34'
+  spec 'r' 'roboESP32_button' 'RoboESP32 button _ is pressed' 'menu.roboesp32userbutton' 'D34'
   space
   spec ' ' '_roboESP32_motor1' '_roboESP32_motor1 power _ (-100 to 100)' 'num' 100
   spec ' ' '_roboESP32_motor2' '_roboESP32_motor2 power _ (-100 to 100)' 'num' 100

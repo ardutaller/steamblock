@@ -3203,7 +3203,7 @@ method adaFruitResetMessage SmallRuntime {
 method adaFruitReconnectMessage SmallRuntime {
 	msg = (join
 		(localized 'When the NeoPixels turn off') ', '
-		(localized 'reconnect to the board by clicking the "Connect" button (USB icon).'))
+		(localized 'reconnect to the board by clicking the "Connect" button.'))
 	inform msg
 }
 
@@ -3213,7 +3213,7 @@ method rp2040ResetMessage SmallRuntime {
 
 method otherReconnectMessage SmallRuntime {
 	title = (localized 'Firmware Installed')
-	msg = (localized 'Reconnect to the board by clicking the "Connect" button (USB icon).')
+	msg = (localized 'Reconnect to the board by clicking the "Connect" button.')
 	inform (global 'page') msg title nil true
 }
 

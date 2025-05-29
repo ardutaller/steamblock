@@ -1,7 +1,8 @@
 module KidsIOT
 author 'Josep Ferràndiz'
-version 1 3 
+version 1 5 
 depends Tone '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' 
+choices kiot_rotarySensor 'kiot;rotation' 'kiot;button pressed?' 
 choices kiot_twoPins '1' '3' '4' '6' '7' '8' '9' 
 choices kiot_digitalActuators 'kiot;active buzzer' 'kiot;LED' 'kiot;laser' 'kiot;relay' 
 choices kiot_analogSensors 'kiot;AD key' 'kiot;gas (MQ-135)' 'kiot;film pressure' 'kiot;flame' 'kiot;light' 'kiot;microphone' 'kiot;potentiometer' 'kiot;steam' 'kiot;UV light' 
@@ -14,9 +15,13 @@ choices kiot_threePins '1' '9'
 choices kiot_joystick X Y 'kiot;button pressed?' 
 choices kiot_digitalSensors 'kiot;button pressed?' 'kiot;humidity' 'kiot;magnet detected?' 'kiot;movement detected?' 'kiot;obstacle?' 'kiot;photo sensor interrupted?' 'kiot;receive IR code' 'kiot;temperature (Celsius)' 'kiot;tilt?' 'kiot;touching?' 
 choices kiot_side 'kiot;left' 'kiot;right' 
-description 'KidsIoT easy plug connection system (Keyestudio)
+description 'KidsIoT for ESP32 easy plug connection system from KidsBits.
+Large selection of modules.
+
+https://www.kidsbits.cc/products/kidsbits-stem-electronic-building-blocks-development-board-for-esp32?VariantsId=10124
+
 '
-variables _kiot_buzzer_init _kiot_avg_loudness 
+variables _kiot_buzzer_init _kiot_avg_loudness _kiot_encoder_port1 _kiot_encoder_port9 
 
   spec ' ' 'kiot play note' '#SVG#square11#0070ff play note _ octave _ for _ port _' 'menu.tone_NoteName num num menu.kiot_allPorts' 'nt;c' 0 500 1
   space
@@ -28,6 +33,8 @@ variables _kiot_buzzer_init _kiot_avg_loudness
   spec 'r' 'kiot digitalSensors' '#SVG#square11#0070ff digital _ port _' 'menu.kiot_digitalSensors menu.kiot_allPorts' 'kiot;button pressed?' 1
   spec 'r' 'kiot temperature (DS18B20)' '#SVG#square11#0070ff temperature (DS18B20) _ port _ : scale (x10) _' 'menu.kiot_tempUnits menu.kiot_allPorts bool' '°C' 1 false
   spec 'r' 'kiot analogSensors' '#SVG#square11#ff0000 analog _ port _' 'menu.kiot_analogSensors menu.kiot_analogPins' 'kiot;microphone' 3
+  space
+  spec 'r' 'kiot rotarySensor' '#SVG#square11#ffffff rotary encoder _ port _' 'menu.kiot_rotarySensor menu.kiot_threePins' 'kiot;rotation' 1
   space
   spec ' ' 'kiot set motor' '#SVG#square11#fff000 set motor _ port _' 'menu.kiot_rotation menu.kiot_motor' 'kiot;clockwise' 1
   spec 'r' 'kiot doubleLineTracker' '#SVG#square11#fff000 line sensor _ port _' 'menu.kiot_side menu.kiot_twoPins' 'kiot;left' 1
@@ -202,6 +209,34 @@ to 'kiot play note' note octave time port {
   } else {
     sayIt 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
   }
+}
+
+to 'kiot rotarySensor' sensor port {
+  port = ('[data:convertType]' port 'number')
+  if ('kiot;button pressed?' == sensor) {
+    if (1 == port) {
+      return (not (digitalReadOp 14 'up'))
+    } (9 == port) {
+      return (not (digitalReadOp 19 'up'))
+    }
+    return (booleanConstant false)
+  }
+  local 'rawCount' 0
+  if (1 == port) {
+    if (_kiot_encoder_port1 == 0) {
+      _kiot_encoder_port1 = 3
+      '[encoder:start]' _kiot_encoder_port1 12 13 true
+    }
+    rawCount = ('[encoder:count]' _kiot_encoder_port1)
+  } (9 == port) {
+    if (_kiot_encoder_port9 == 0) {
+      _kiot_encoder_port9 = 4
+      '[encoder:start]' _kiot_encoder_port9 17 18 true
+    }
+    rawCount = ('[encoder:count]' _kiot_encoder_port9)
+  }
+  comment 'Divide count by 4 since one click is (usually) four pulses.'
+  return (rawCount / 4)
 }
 
 to 'kiot set Neopixels' c1 c2 c3 c4 port {
