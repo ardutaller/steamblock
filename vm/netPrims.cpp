@@ -31,6 +31,7 @@
 	#include <WiFiUdp.h>
 #elif defined(ARDUINO_ARCH_ESP32)
 	#include <WiFi.h>
+//	#include <WiFiClientSecure.h>
 	#include <WebSocketsServer.h>
 #elif defined(PICO_WIFI)
 	#include <WiFi.h>
@@ -426,6 +427,9 @@ static OBJ primRespondToHttpRequest(int argCount, OBJ *args) {
 
 // HTTP Client
 
+// Attempt to enable HTTPS, but it crashes VM so reverted to generic HTTP (WiFiClient):
+// WiFiClientSecure httpClient;
+
 WiFiClient httpClient;
 
 static OBJ primHttpConnect(int argCount, OBJ *args) {
@@ -438,7 +442,10 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 	uint32 start = millisecs();
 	const int timeout = 3000;
 	int ok;
+
 	#ifdef ARDUINO_ARCH_ESP32
+		// Following was part of failed attempt to use WiFiClientSecure:
+		// httpClient.setInsecure();
 		ok = httpClient.connect(host, port, timeout);
 	#else
 		httpClient.setTimeout(timeout);
@@ -489,17 +496,17 @@ Accept: */*\r\n",
 			path,
 			host);
 	if ((argCount > 3) && IS_TYPE(args[3], StringType)) {
-		httpClient.write(request, strlen(request));
+		httpClient.write((const uint8_t *) request, strlen(request));
 		char length_str[50];
 		char* body = obj2str(args[3]);
 		int content_length = strlen(body);
-		httpClient.write("Content-Type: text/plain\r\n", 26);
+		httpClient.write((const uint8_t *) "Content-Type: text/plain\r\n", 26);
 		sprintf(length_str, "Content-Length: %i\r\n\r\n", content_length);
-		httpClient.write(length_str, strlen(length_str));
-		httpClient.write(body, content_length);
+		httpClient.write((const uint8_t *) length_str, strlen(length_str));
+		httpClient.write((const uint8_t *) body, content_length);
 	} else {
 		strcat(request, "\r\n");
-		httpClient.write(request, strlen(request));
+		httpClient.write((const uint8_t *) request, strlen(request));
 	}
 	return falseObj;
 }

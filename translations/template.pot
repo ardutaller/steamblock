@@ -2048,7 +2048,7 @@ msgid "trigger gate _ MIDI key _"
 msgstr ""
 
 #. Analog Synthesis library block
-msgid "ramp gate _ from _ Hz to _ Hz"
+msgid "set frequency ramp from _ % to _ % for gate _"
 msgstr ""
 
 #. Analog Synthesis library block
@@ -4920,39 +4920,39 @@ msgid "SCD40 is connected?"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 clear RGB"
+msgid "RoboESP32 clear RGB"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 set motor _ power _ (-100 to 100)"
+msgid "RoboESP32 set motor _ power _ (-100 to 100)"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 stop motor _"
+msgid "RoboESP32 stop motor _"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 play Happy Birthday!"
+msgid "RoboESP32 play Happy Birthday!"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 button _ is pressed"
+msgid "RoboESP32 button _ is pressed"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 increase RGB brightness by _ %"
+msgid "RoboESP32 increase RGB brightness by _ %"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 set servo _ to _ degrees (-90 to 90)"
+msgid "RoboESP32 set servo _ to _ degrees (-90 to 90)"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 set RGB _ color _"
+msgid "RoboESP32 set RGB _ color _"
 msgstr ""
 
 #. Robo ESP32 library block
-msgid "roboESP32 set GPIO _ _"
+msgid "RoboESP32 set GPIO _ _"
 msgstr ""
 
 #. In MicroBlocks IDE project menu
@@ -5332,7 +5332,7 @@ msgid "Firmware Installed"
 msgstr ""
 
 #. MicroBlocks IDE information
-msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
+msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
 
 #. MicroBlocks IDE information
@@ -5766,6 +5766,10 @@ msgstr ""
 
 #. Library folder
 msgid "LIBRARIES"
+msgstr ""
+
+#. Library button, abbreviated
+msgid "LIBS"
 msgstr ""
 
 #. Library folder

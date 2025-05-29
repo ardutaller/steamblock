@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-05-07 17:04+0000\n"
+"PO-Revision-Date: 2025-05-22 11:05+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -106,7 +106,7 @@ msgstr "gehe zu x _ y _"
 
 #. Example string for ( (prefix) begins with (pre) )
 msgid "prefix"
-msgstr "Prefix"
+msgstr "prefix"
 
 #. Example text for lowercase and uppercase Strings library block
 msgid "THIS is a String! :)"
@@ -678,7 +678,7 @@ msgstr "Kommunikation"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr "neue Liste Länge _"
+msgstr "neue Liste _"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
@@ -687,7 +687,7 @@ msgstr "setze NeoPixel _ auf Farbe _"
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr "lächeln"
+msgstr "smiles"
 
 #. Block in Data category
 msgid "item _ of _"
@@ -1118,7 +1118,7 @@ msgstr "Liste oder Text"
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
-msgstr "Farbe _ Name"
+msgstr "Farbname _"
 
 #. Fractions library block
 msgid "fract _ = _"
@@ -2379,7 +2379,9 @@ msgstr "Projekt wird vom Board gelesen..."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
-msgstr "Klicke auf \"Verbinden\", um dein Board mit MicroBlocks zu verbinden."
+msgstr ""
+"Klicke auf die Taste \"verbinden\", um dein Board mit MicroBlocks zu "
+"verbinden."
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
@@ -5575,7 +5577,7 @@ msgstr "sb setze Pin S- _ (1-8) auf _ %"
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "ms display #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
 msgstr ""
-"ms anzeigen #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# "
+"ms Anzeige #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# "
 "_ _ _ _ _"
 
 #. micro:STEAMakers library block
@@ -5596,7 +5598,7 @@ msgstr "ms Knopf _ ?"
 
 #. micro:STEAMakers library block
 msgid "ms touching ?"
-msgstr "ms Berührung?"
+msgstr "ms Logo berührt?"
 
 #. micro:STEAMakers library block
 msgid "ms light"
@@ -5705,7 +5707,7 @@ msgstr "ms Energieverbrauch (µWh)"
 #. micro:STEAMakers library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "ms display #BR# _ #BR# with color _"
-msgstr "ms anzeigen #BR# _ #BR# mit Farbe _"
+msgstr "ms Anzeige #BR# _ #BR# mit Farbe _"
 
 #. Pluck library label
 #. Generate music with plucked-string resembling sounds
@@ -6524,32 +6526,32 @@ msgid "radio last sender ID"
 msgstr "Radio letzte Sender-ID"
 
 #. Robo ESP32 library block
-msgid "roboESP32 clear RGB"
-msgstr "roboESP32 lösche RGB"
+msgid "RoboESP32 clear RGB"
+msgstr "RoboESP32 lösche RGB"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set motor _ power _ (-100 to 100)"
-msgstr "roboESP32 drehe Motor _ mit _ (-100 to 100)"
+msgid "RoboESP32 set motor _ power _ (-100 to 100)"
+msgstr "RoboESP32 drehe Motor _ mit _ (-100 to 100)"
 
 #. Robo ESP32 library block
-msgid "roboESP32 stop motor _"
-msgstr "roboESP32 stoppe Motor _"
+msgid "RoboESP32 stop motor _"
+msgstr "RoboESP32 stoppe Motor _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 button _ is pressed"
-msgstr "roboESP32 Knopf _ ist gedrückt"
+msgid "RoboESP32 button _ is pressed"
+msgstr "RoboESP32 Knopf _ ist gedrückt"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set servo _ to _ degrees (-90 to 90)"
-msgstr "roboESP32 setze Servo _ auf Winkel _ ° (-90 to 90)"
+msgid "RoboESP32 set servo _ to _ degrees (-90 to 90)"
+msgstr "RoboESP32 setze Servo _ auf Winkel _ ° (-90 to 90)"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set RGB _ color _"
-msgstr "roboESP32 setze RGB _ auf Farbe _"
+msgid "RoboESP32 set RGB _ color _"
+msgstr "RoboESP32 setze RGB _ auf Farbe _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 play Happy Birthday!"
-msgstr "roboESP32 spiele Happy Birthday!"
+msgid "RoboESP32 play Happy Birthday!"
+msgstr "RoboESP32 spiele Happy Birthday!"
 
 #. Analog Synthesis library block
 msgid "set amplitude _ attack _ hold _ release _ for gate _"
@@ -6576,16 +6578,16 @@ msgid "square wave frequency _ amplitude _"
 msgstr "Rechteckwelle mit Frequenz _ und Amplitude _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 set GPIO _ _"
-msgstr "roboESP32 setze GPIO _ _"
+msgid "RoboESP32 set GPIO _ _"
+msgstr "RoboESP32 setze GPIO _ _"
 
 #. Analog Synthesis library block
 msgid "amplitude for gate _"
 msgstr "Amplitude für Gate _"
 
 #. Robo ESP32 library block
-msgid "roboESP32 increase RGB brightness by _ %"
-msgstr "roboESP32 erhöhe RGB-Helligkeit um _ %"
+msgid "RoboESP32 increase RGB brightness by _ %"
+msgstr "RoboESP32 erhöhe RGB-Helligkeit um _ %"
 
 #. Analog Synthesis library label
 #. Generate synthesized sound waves to play on a DAC, over PWM, or any other analog means
@@ -6686,7 +6688,7 @@ msgstr "SCD40 relative Luftfeuchtigkeit (%)"
 
 #. Firmware install instruction
 msgid "Do not switch browser tabs!"
-msgstr "Wechsle keine Browser-Tabs!"
+msgstr "Wechsle keinen Tab im Browser!"
 
 #. Gas (SCD40) library block
 msgid "°F"
@@ -6695,3 +6697,65 @@ msgstr "°F"
 #. Examples folder
 msgid "folder;CoCube"
 msgstr "CoCube"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sine gate _"
+msgstr "#SVG#wave-sine Gate _"
+
+#. Analog Synthesis library block
+msgid "ramp gate _ from _ Hz to _ Hz"
+msgstr "ramp Gate _ von _ Hz bis _ Hz"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-square gate _"
+msgstr "#SVG#wave-square Gate _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-triangle gate _"
+msgstr "#SVG#wave-triangle Gate _"
+
+#. Analog Synthesis library block
+#. example: output [16320] to [analog pin]
+#. example: output [16320] to [MCP4725 DAC]
+msgid "output _ to _"
+msgstr "Ausgabe _ nach _"
+
+#. Analog Synthesis library block
+#. as in pin number or i2c address
+msgid "number/address _"
+msgstr "Nummer/Adresse _"
+
+#. Analog Synthesis library block
+#. as in digital resolution (8 bit, 16 bit...)
+msgid "asynth;resolution _"
+msgstr "Auflösung _"
+
+#. Analog Synthesis library block menu option
+msgid "asy;pin"
+msgstr "analoger Pin"
+
+#. Analog Synthesis library block menu option
+msgid "asy;MCP4725"
+msgstr "MCP4725 I2C DAC"
+
+#. Library button, abbreviated
+msgid "LIBS"
+msgstr "LIBS"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sawtooth gate _"
+msgstr "#SVG#wave-sawtooth Gate _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-noise gate _"
+msgstr "#SVG#wave-noise Gate _"
+
+#. MicroBlocks IDE information
+msgid "Reconnect to the board by clicking the \"Connect\" button."
+msgstr ""
+"Verbinde dich neu mit deinem Board. Klicke dafür auf die Taste \"verbinden\"."

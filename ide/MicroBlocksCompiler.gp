@@ -191,7 +191,7 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' '[data:find]'		'find _ in _ : starting at _' 'auto str num' 'a' 'cat' 1)
 		(array 'r' '[data:copyFromTo]'	'copy _ from _ : to _' 'str num num' 'smiles' 2 5)
 		'-'
-		(array 'r' '[data:split]'		'split _ by _' 'str str' 'A,B,C' ',')
+		(array 'r' '[data:split]'		'split _ by _ : convert numbers _' 'str str bool' 'A,B,123' ',' false)
 		(array 'r' '[data:joinStrings]'	'join items of list _ : separator _' 'auto str' 'a list of strings' ' ')
 	'cat;Data-Advanced'
 		(array 'r' 'newList'				'new list length _ : with all _' 'num auto' 10 0)
