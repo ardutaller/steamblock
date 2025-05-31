@@ -26,7 +26,10 @@
 
 // Override the default i2c pins on some boards
 
-#if defined(PICO_ED) || defined(XRP)
+#if defined(XRP_2350)
+	#define PIN_WIRE_SCL 39
+	#define PIN_WIRE_SDA 38
+#elif defined(PICO_ED) || defined(XRP)
 	#define PIN_WIRE_SCL 19
 	#define PIN_WIRE_SDA 18
 #elif defined(GIZMO_MECHATRONICS)
