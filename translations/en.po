@@ -2048,8 +2048,8 @@ msgid "trigger gate _ MIDI key _"
 msgstr "trigger gate _ MIDI key _"
 
 #. Analog Synthesis library block
-msgid "ramp gate _ from _ Hz to _ Hz"
-msgstr "ramp gate _ from _ Hz to _ Hz"
+msgid "set frequency ramp from _ % to _ % for gate _"
+msgstr "set frequency ramp from _ % to _ % for gate _"
 
 #. Analog Synthesis library block
 msgid "amplitude for gate _"
