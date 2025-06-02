@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-05-26 17:03+0000\n"
-"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
+"PO-Revision-Date: 2025-05-28 14:02+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -3344,9 +3344,8 @@ msgid "ms button _ ?"
 msgstr "ms botó _ ?"
 
 #. micro:STEAMakers library block
-#, fuzzy
 msgid "ms touching ?"
-msgstr "ms tàctil ?"
+msgstr "logo ms tocat?"
 
 #. micro:STEAMakers library block
 msgid "ms light"
@@ -6580,3 +6579,72 @@ msgstr "RoboESP32 RGB _ color _"
 #. Robo ESP32 library block
 msgid "RoboESP32 set GPIO _ _"
 msgstr "RoboESP32 posa GPIO _ a _"
+
+#. Analog Synthesis library block menu option
+msgid "asy;pin"
+msgstr "pin analògic"
+
+#. MicroBlocks IDE information
+msgid "Reconnect to the board by clicking the \"Connect\" button."
+msgstr "Torna a connectar-te a la placa clicant el botó \"Connectar\"."
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-triangle gate _"
+msgstr "#SVG#wave-triangle porta _"
+
+#. Analog Synthesis library block
+msgid "set frequency ramp from _ % to _ % for gate _"
+msgstr "aplica rampa de freqüència de _ % a % _ a la porta _"
+
+#. Analog Synthesis library block
+#. as in digital resolution (8 bit, 16 bit...)
+msgid "asynth;resolution _"
+msgstr "resolució _"
+
+#. Firmware install instruction
+msgid "Do not switch browser tabs!"
+msgstr "No canviïs de pestanya al navegador!"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sine gate _"
+msgstr "#SVG#wave-sine porta _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-square gate _"
+msgstr "#SVG#wave-square porta _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sawtooth gate _"
+msgstr "#SVG#wave-sawtooth porta _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-noise gate _"
+msgstr "#SVG#wave-noise porta _"
+
+#. Analog Synthesis library block
+#. as in pin number or i2c address
+msgid "number/address _"
+msgstr "número/adreça _"
+
+#. Analog Synthesis library block
+#. example: output [16320] to [analog pin]
+#. example: output [16320] to [MCP4725 DAC]
+msgid "output _ to _"
+msgstr "escriu _ a _"
+
+#. Analog Synthesis library block menu option
+msgid "asy;MCP4725"
+msgstr "DAC I2C MCP4725"
+
+#. Examples folder
+msgid "folder;CoCube"
+msgstr "CoCube"
+
+#. Library button, abbreviated
+msgid "LIBS"
+msgstr "BIBS"
