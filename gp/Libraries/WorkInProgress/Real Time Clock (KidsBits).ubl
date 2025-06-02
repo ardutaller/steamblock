@@ -9,7 +9,7 @@ With a 3V coin cell battery intalled, the clock will maintain the time and date 
 
 Currently supports the DS1307 chip but this library may be extended to support other RTC chips in the future.
 
-(Many thanks to Ralf Kraus.)
+(Many thanks to Ralf Krause.)
 '
 
   spec 'r' 'rtc_getTimeOrDate' '#SVG#square11#00c612 get _' 'menu.rtc_timeOrDate' 'rtc;time'
@@ -48,7 +48,7 @@ to rtc_getTimeOrDate which {
     local 'day' ('_rtc_bcd2dec' (i2cGet i2cAddr 4))
     local 'month' ('_rtc_bcd2dec' (i2cGet i2cAddr 5))
     local 'year' (('_rtc_bcd2dec' (i2cGet i2cAddr 6)) + 2000)
-    return ('[data:join]' ('_rtc_twoDigit' day) '.' ('_rtc_twoDigit' month) '.' year)
+    return ('[data:join]' ('_rtc_twoDigit' day) '-' ('_rtc_twoDigit' month) '-' year)
   }
 }
 
