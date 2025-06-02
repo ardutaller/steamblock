@@ -76,7 +76,7 @@ to 'asynth envelope' amp att hold release gate {
   atPut gate _asynth_attacks att
   atPut gate _asynth_holds hold
   atPut gate _asynth_releases release
-  atPut gate _asynth_total_durations ((sum att hold release) * 1000)
+  atPut gate _asynth_total_durations (sum att hold release)
 }
 
 to 'asynth gate amplitude' gate {
@@ -105,9 +105,9 @@ to 'asynth gate frequency' gate {
   if ((at gate _asynth_ramp_starts) == -1) {
     return base
   }
-  local 'freq1' ((base * (at gate _asynth_ramp_starts)) / 100)
-  local 'freq2' ((base * (at gate _asynth_ramp_ends)) / 100)
-  return (((freq1 << 8) + (((freq2 - freq1) << 8) / (maximum 1 ((at gate _asynth_total_durations) / ((microsOp) - ((at gate _asynth_trigger_times) * 1000)))))) >> 8)
+  local 'freq1' (base * (at gate _asynth_ramp_starts))
+  local 'freq2' (base * (at gate _asynth_ramp_ends))
+  return ((freq1 + ((freq2 - freq1) / (maximum 1 ((at gate _asynth_total_durations) / (maximum 1 ((millisOp) - (at gate _asynth_trigger_times))))))) / 100)
 }
 
 to 'asynth noise' freq amp {
