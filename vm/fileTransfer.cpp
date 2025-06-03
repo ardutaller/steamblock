@@ -170,6 +170,8 @@ static void sendFileList() {
 			}
 		}
 	#endif
+	fileName[0] = 0; // make empty
+	sendFileInfo(fileName, 0, 0);
 }
 
 void processFileMessage(int msgType, int dataSize, char *data) {
