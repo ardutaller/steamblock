@@ -237,8 +237,14 @@ void vmPanic(const char *s);
 int indexOfVarNamed(const char *varName);
 void processFileMessage(int msgType, int dataSize, char *data);
 void waitAndSendMessage(int msgType, int chunkIndex, int dataSize, char *data);
+void deferIDEDisconnect();
 void suspendCodeFileUpdates();
 void resumeCodeFileUpdates();
+
+// Debugging
+
+void consolePrint(const char *s);
+void consoleReportNum(const char *label, int n);
 
 // Integer Evaluation
 
@@ -369,6 +375,7 @@ void tftSetHugePixel(int x, int y, int state);
 void tftSetHugePixelBits(int bits);
 
 // CoCube Sensor Support
+
 void cocubeSensorInit();
 void cocubeSensorUpdate();
 

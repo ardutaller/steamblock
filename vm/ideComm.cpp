@@ -100,6 +100,16 @@ static void flashUserLED() {
 	updateMicrobitDisplay();
 }
 
+extern "C" void consolePrint(const char *s) {
+	Serial.println(s);
+}
+
+extern "C" void consoleReportNum(const char *label, int n) {
+	Serial.print(label);
+	Serial.print(": ");
+	Serial.println(n);
+}
+
 #if defined(BLE_IDE)
 
 // BLE Communications
