@@ -1056,13 +1056,13 @@ static int receiveTimeout() {
 
 int ideConnected() {
 	// Return true if the board is connected to the MicroBlocks IDE
-	// (i.e. if it has received a message from the IDE in the past 3 seconds).
+	// (i.e. if it has received a message from the IDE in the past few seconds).
 
 	if (0 == lastRcvTime) return false; // startup - no IDE messages yet
 
 	uint32 now = microsecs();
 	uint32 elapsed = (lastRcvTime > now) ? now : (now - lastRcvTime);
-	return elapsed < 3 * 1000000; // an ide msg was received in the past N seconds
+	return elapsed < (10 * 1000000); // an ide msg was received in the past few seconds
 }
 
 #endif
