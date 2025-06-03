@@ -797,12 +797,13 @@ method webSerialConnect SmallRuntime action {
 		}
 		if (beginsWith action 'connect (BLE)') {
 			openSerialPort 'webBLE' 115200
+			portName = 'webBLE'
 		} else {
 			openSerialPort 'webserial' 115200
+			portName = 'webserial'
 		}
 		disconnected = false
 		connectionStartTime = (msecsSinceStart)
-		portName = 'webserial'
 		port = 1
 		lastPingRecvMSecs = 0
 		sendMsg this 'pingMsg'
@@ -1083,7 +1084,6 @@ method tryToConnect SmallRuntime {
 
 	if (and (isWebSerial this) ('boardie' != portName)) {
 		if (isOpenSerialPort 1) {
-			portName = 'webserial'
 			port = 1
 			if (lastPingRecvMSecs != 0) { // got a ping; we're connected!
 				justConnected this
@@ -1092,7 +1092,6 @@ method tryToConnect SmallRuntime {
 			sendMsg this 'pingMsg' // send another ping
 			return 'not connected' // don't make circle green until successful ping
 		} else {
-			portName = nil
 			port = nil
 			return 'not connected'
 		}
@@ -2147,11 +2146,11 @@ method sendMsg SmallRuntime msgName chunkID byteList {
 	}
 
 	while ((byteCount dataToSend) > 0) {
-		// Note: Adafruit USB-serial drivers on Mac OS locks up if >= 1024 bytes
-		// written in one call to writeSerialPort, so send smaller chunks
-		// Note: Maximum serial write in Chrome browser is only 64 bytes!
-		// Note: Receive buffer on micro:bit is only 63 bytes.
-		byteCount = (min 63 (byteCount dataToSend))
+		byteCount = (byteCount dataToSend)
+		if ('webBLE' != portName) {
+			// Note: Serial receive buffer is only 63 bytes on many boards so limit byteCount.
+			byteCount = (min 63 byteCount)
+		}
 		chunk = (copyFromTo dataToSend 1 byteCount)
 		bytesSent = (writeSerialPort port chunk)
 		if (not (isOpenSerialPort port)) {
