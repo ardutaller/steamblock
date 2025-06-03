@@ -351,6 +351,7 @@ static uint16_t uartTxCharacteristic = 0;
 static uint16_t uartRxCharacteristic = 0;
 static uint32 lastSendTime = 0;
 
+// BLE_BUF_MAX max size of send and receive payloads
 #define BLE_BUF_MAX 250 // 360 works, 380 fails; making both charactistics dynamic allows larger buffers
 
 // incoming BLE buffer
