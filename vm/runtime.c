@@ -30,7 +30,6 @@ static void softReset(int clearMemoryFlag);
 static void sendMessage(int msgType, int chunkIndex, int dataSize, char *data);
 static void sendChunkCRC(int chunkID);
 static void sendData();
-static void deferIDEDisconnect();
 
 // debugging
 
@@ -1068,7 +1067,7 @@ int ideConnected() {
 
 #endif
 
-static void deferIDEDisconnect() {
+void deferIDEDisconnect() {
 	lastRcvTime = microsecs();
 }
 
