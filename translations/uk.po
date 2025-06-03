@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-04-29 07:20+0000\n"
+"PO-Revision-Date: 2025-06-02 10:44+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -2030,11 +2030,11 @@ msgstr ""
 
 #. General MIDI drum instrument name
 msgid "Acoustic Bass Drum"
-msgstr ""
+msgstr "Акустичний бас-барабан"
 
 #. General MIDI drum instrument name
 msgid "Bass Drum 1"
-msgstr ""
+msgstr "Бас-барабан 1"
 
 #. General MIDI drum instrument name
 msgid "Side Stick"
@@ -6300,3 +6300,39 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
 msgstr ""
+
+#. Analog Synthesis library block
+msgid "set frequency ramp from _ % to _ % for gate _"
+msgstr "встановити рампу частоти з _% до _% для логічних ворот _"
+
+#. Analog Synthesis library block
+msgid "amplitude for gate _"
+msgstr "амплітуда для логічних воріт _"
+
+#. Analog Synthesis library block
+msgid "frequency for gate _"
+msgstr "частота для логічних воріт _"
+
+#. Analog Synthesis library block
+#. example: output [16320] to [analog pin]
+#. example: output [16320] to [MCP4725 DAC]
+msgid "output _ to _"
+msgstr "вивід _ до _"
+
+#. Analog Synthesis library block
+#. as in digital resolution (8 bit, 16 bit...)
+msgid "asynth;resolution _"
+msgstr "роздільна здатність _"
+
+#. Analog Synthesis library block menu option
+msgid "asy;pin"
+msgstr "аналоговий контакт"
+
+#. Analog Synthesis library block menu option
+msgid "asy;MCP4725"
+msgstr "MCP4725 I2C ЦАП"
+
+#. Analog Synthesis library block
+#. as in pin number or i2c address
+msgid "number/address _"
+msgstr "номер/адреса _"

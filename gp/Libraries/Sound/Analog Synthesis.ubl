@@ -1,6 +1,6 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 8 
+version 1 9 
 choices outputTypes 'asy;pin' 'asy;MCP4725' 
 description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
 
@@ -16,7 +16,7 @@ variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asyn
   spec 'r' 'asynth square' '#SVG#wave-square _ Hz _ #SVG#double-arrow-v' 'num num' 185 8000
   spec 'r' 'asynth tri' '#SVG#wave-triangle _ Hz _ #SVG#double-arrow-v' 'num num' 392 10000
   spec 'r' 'asynth saw' '#SVG#wave-sawtooth _ Hz _ #SVG#double-arrow-v' 'num num' 196 8000
-  spec 'r' 'asynth noise' '#SVG#wave-noise _ #SVG#double-arrow-v' 'num' 4000
+  spec 'r' 'asynth noise' '#SVG#wave-noise _ Hz _ #SVG#double-arrow-v' 'num num' 500 4000
   space
   spec 'r' 'asynth sin gate' '#SVG#wave-sine gate _' 'menu.range:1-8' 1
   spec 'r' 'asynth square gate' '#SVG#wave-square gate _' 'menu.range:1-8' 1
@@ -25,7 +25,7 @@ variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asyn
   spec 'r' 'asynth noise gate' '#SVG#wave-noise gate _' 'menu.range:1-8' 1
   space
   spec ' ' 'asynth envelope' 'set amplitude _ attack _ hold _ release _ for gate _' 'num num num num menu.range:1-8' 10000 10 250 100 1
-  spec ' ' 'asynth ramp' 'set frequency ramp from _ % to _ % for gate _' 'num num menu.range:1-8' 100 '10' 1
+  spec ' ' 'asynth ramp' 'set frequency ramp from _ % to _ % for gate _' 'num num menu.range:1-8' 100 10 1
   spec ' ' 'asynth trigger gate' 'trigger gate _ MIDI key _' 'menu.range:1-8 num' 1 60
   space
   spec 'r' 'asynth gate amplitude' 'amplitude for gate _' 'menu.range:1-8' 1
@@ -76,7 +76,7 @@ to 'asynth envelope' amp att hold release gate {
   atPut gate _asynth_attacks att
   atPut gate _asynth_holds hold
   atPut gate _asynth_releases release
-  atPut gate _asynth_total_durations ((sum att hold release) * 1000)
+  atPut gate _asynth_total_durations (sum att hold release)
 }
 
 to 'asynth gate amplitude' gate {
@@ -105,13 +105,15 @@ to 'asynth gate frequency' gate {
   if ((at gate _asynth_ramp_starts) == -1) {
     return base
   }
-  local 'freq1' ((base * (at gate _asynth_ramp_starts)) / 100)
-  local 'freq2' ((base * (at gate _asynth_ramp_ends)) / 100)
-  return (((freq1 << 8) + (((freq2 - freq1) << 8) / (maximum 1 ((at gate _asynth_total_durations) / ((microsOp) - ((at gate _asynth_trigger_times) * 1000)))))) >> 8)
+  local 'freq1' (base * (at gate _asynth_ramp_starts))
+  local 'freq2' (base * (at gate _asynth_ramp_ends))
+  return ((freq1 + ((freq2 - freq1) / (maximum 1 ((at gate _asynth_total_durations) / (maximum 1 ((millisOp) - (at gate _asynth_trigger_times))))))) / 100)
 }
 
-to 'asynth noise' amp {
+to 'asynth noise' freq amp {
   if (amp < 1) {return 0}
+  local 'ms' (1000000 / freq)
+  waitMicros ms
   return (random (0 - amp) amp)
 }
 
