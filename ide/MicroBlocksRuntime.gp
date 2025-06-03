@@ -2450,8 +2450,9 @@ method getFileFromBoard SmallRuntime {
 method getAndSaveFile SmallRuntime remoteFileName {
 	data = (readFileFromBoard this remoteFileName)
 	if ('Browser' == (platform)) {
-		(confirm (global 'page') nil 'Save file?')
-		browserWriteFile data remoteFileName 'fileFromBoard'
+		if (confirm (global 'page') nil 'Save file?') {
+			browserWriteFile data remoteFileName 'fileFromBoard'
+		}
 	} else {
 		fName = (fileToWrite remoteFileName)
 		if ('' != fName) { writeFile fName data }
