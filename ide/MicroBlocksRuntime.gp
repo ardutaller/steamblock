@@ -2196,7 +2196,7 @@ method waitForResponse SmallRuntime {
 	// previous operation has completed. Return true if a response was received.
 
 	sendMsg this 'pingMsg'
-	timeout = 3000 // must be less than ping timeout
+	timeout = 10000 // must be less than ping timeout
 	iter = 1
 	start = (msecsSinceStart)
 	while (((msecsSinceStart) - start) < timeout) {
