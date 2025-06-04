@@ -2471,7 +2471,7 @@ method readFileFromBoard SmallRuntime remoteFileName remoteFileSize {
 	}
 
 	fileTransferProgress = 0
-	spinner = (newSpinner (action 'fileTransferProgress' this 'downloaded') (action 'fileTransferCompleted' this))
+	spinner = (newSpinner (action 'fileTransferProgress' this '') (action 'fileTransferCompleted' this))
 	setStopAction spinner (action 'abortFileTransfer' this)
 	addPart (global 'page') spinner
 
@@ -2512,13 +2512,15 @@ method putFileOnBoard SmallRuntime {
 	}
 }
 
-method writeFileToBoard SmallRuntime srcFileName {
+method writeFileToBoard SmallRuntime srcFileName fileData {
 	if (notNil (findMorph 'MicroBlocksFilePicker')) {
 		destroy (findMorph 'MicroBlocksFilePicker')
 	}
 
-	fileData = (readFile srcFileName true)
-	if (isNil fileData) { return }
+	if (isNil fileData) {
+		fileData = (readFile srcFileName true)
+		if (isNil fileData) { return }
+	}
 
 	targetFileName = (filePart srcFileName)
 	if ((count targetFileName) > 30) {
@@ -2526,7 +2528,7 @@ method writeFileToBoard SmallRuntime srcFileName {
 	}
 
 	fileTransferProgress = 0
-	spinner = (newSpinner (action 'fileTransferProgress' this 'uploaded') (action 'fileTransferCompleted' this))
+	spinner = (newSpinner (action 'fileTransferProgress' this '') (action 'fileTransferCompleted' this))
 	setStopAction spinner (action 'abortFileTransfer' this)
 	addPart (global 'page') spinner
 
@@ -2574,7 +2576,7 @@ method sendFileData SmallRuntime fileName fileData {
 		msg = (list)
 		appendInt32 this msg id
 		appendInt32 this msg bytesSent
-		chunkByteCount = (min 960 (totalBytes - bytesSent))
+		chunkByteCount = (min 950 (totalBytes - bytesSent))
 		repeat chunkByteCount {
 			bytesSent += 1
 			add msg (byteAt fileData bytesSent)
