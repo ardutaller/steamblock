@@ -1,8 +1,8 @@
-module XRP Output
+module 'XRP Beta' Output
 author 'Russell Owen'
 version 1 0 
 depends 'Encoded DC Motors' _Servo '_Distance (HC-SR04)' 
-description 'Drive the WPI XRP robot (with the RP2350 CPU).'
+description 'Drive the WPI XRP Beta robot (with the RP2040 CPU)'
 variables _xrp__imuAddress 
 
   spec ' ' 'xrp_driveAtSpeed' 'drive at speed left _ right _ (mm/sec)' 'num num' 300 300
@@ -30,7 +30,7 @@ variables _xrp__imuAddress
 to '_edcmotors_checkSystem' {
   comment 'Check drive power to the XRP board.'
   local 'clearText' (booleanConstant false)
-  repeatUntil ((analogReadOp 46) >= 300) {
+  repeatUntil ((analogReadOp 28) >= 300) {
     sayIt 'Insufficient drive voltage; check the power switch and batteries.'
     clearText = (booleanConstant true)
   }
@@ -60,10 +60,10 @@ especially if the extra motors are not the same as the wheel motors.'
   atPut 'all' _edcmotors__maxSpeed 1800
   comment 'Acceleration for point to point moves (encoder counts/second^2)'
   atPut 'all' _edcmotors__accel 1250
-  _edcmotors__pinEncoderA = ('[data:makeList]' 30 24 22 2)
-  _edcmotors__pinEncoderB = ('[data:makeList]' 31 25 23 3)
-  _edcmotors__pinDutyCycle = ('[data:makeList]' 34 32 20 10)
-  _edcmotors__pinReverseDutyCycle = ('[data:makeList]' 35 33 21 11)
+  _edcmotors__pinEncoderA = ('[data:makeList]' 4 12 0 8)
+  _edcmotors__pinEncoderB = ('[data:makeList]' 5 13 1 9)
+  _edcmotors__pinDirection = ('[data:makeList]' 6 14 2 10)
+  _edcmotors__pinDutyCycle = ('[data:makeList]' 7 15 3 11)
 }
 
 to '_xrp_initGyroscope' {
@@ -122,11 +122,11 @@ to xrp_driveDistance distance speed {
 
 to xrp_readDistanceSensor {
   comment 'Return the distance (cm) read by the HC-SR04 distance sensor.'
-  return ('distance (cm)' 0 1)
+  return ('distance (cm)' 20 21)
 }
 
 to xrp_readLineSensors {
-  return ('[data:makeList]' (analogReadOp 44) (analogReadOp 45))
+  return ('[data:makeList]' (analogReadOp 26) (analogReadOp 27))
 }
 
 to xrp_readPitchRate {
@@ -150,15 +150,11 @@ to xrp_readYawRate {
 to xrp_setServo index angle {
   '_edcmotors_checkSystem'
   if (index == 1) {
-    setServoAngle 6 angle
+    setServoAngle 16 angle
   } (index == 2) {
-    setServoAngle 9 angle
-  } (index == 3) {
-    setServoAngle 7 angle
-  } (index == 4) {
-    setServoAngle 8 angle
+    setServoAngle 17 angle
   } else {
-    sayIt 'Invalid servo index ' index 'must be 1, 2, 3, or 4'
+    sayIt 'Invalid servo index' index 'must be 1 or 2'
   }
 }
 
