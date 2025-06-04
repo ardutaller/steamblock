@@ -313,7 +313,14 @@ static OBJ primSerialOpen(int argCount, OBJ *args) {
 	if (!isInt(args[0])) return fail(needsIntegerError);
 	int baudRate = obj2int(args[0]);
 	serialOpen(baudRate);
-	taskSleep(5); // leave a litte time for things to settle
+
+	// wait a bit, then discard any initial garbage byte(s)
+	delayMicroseconds(250);
+	uint8 trash[16];
+	int garbageByteCount = serialAvailable();
+	if (garbageByteCount > sizeof(trash)) garbageByteCount = sizeof(trash);
+	serialReadBytes(trash, garbageByteCount);
+
 	return falseObj;
 }
 
