@@ -104,7 +104,7 @@ static void receiveFile(int id, char *fileName) {
 }
 
 static void sendFile(int id, char *fileName) {
-	const int chunkSize = 960;
+	const int chunkSize = 935;
 	int byteIndex = 0;
 	char buf[1024];
 
