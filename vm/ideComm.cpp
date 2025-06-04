@@ -352,7 +352,7 @@ static uint16_t uartRxCharacteristic = 0;
 static uint32 lastSendTime = 0;
 
 // BLE_BUF_MAX max size of send and receive payloads
-#define BLE_BUF_MAX 250 // 360 works, 380 fails; making both charactistics dynamic allows larger buffers
+#define BLE_BUF_MAX 240 // 360 works, 380 fails; making both charactistics dynamic allows larger buffers
 
 // incoming BLE buffer
 #define RECV_BUF_SIZE 1024
@@ -500,7 +500,15 @@ static void updateConnectionState() {
 	}
 }
 
+#define INTER_SEND_TIME 35
+
 static int bleSendData(uint8_t *data, int byteCount) {
+	// do not send more often than INTER_SEND_TIME msecs
+	uint32 now = millisecs();
+	if (lastSendTime > now) lastSendTime = 0; // clock wrap
+	if ((now - lastSendTime) < INTER_SEND_TIME) return 0;
+	lastSendTime = now;
+
 	if (byteCount <= 0) return 0;
 	if (byteCount > BLE_BUF_MAX) byteCount = BLE_BUF_MAX;
 
