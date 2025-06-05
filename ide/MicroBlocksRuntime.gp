@@ -797,12 +797,13 @@ method webSerialConnect SmallRuntime action {
 		}
 		if (beginsWith action 'connect (BLE)') {
 			openSerialPort 'webBLE' 115200
+			portName = 'webBLE'
 		} else {
 			openSerialPort 'webserial' 115200
+			portName = 'webserial'
 		}
 		disconnected = false
 		connectionStartTime = (msecsSinceStart)
-		portName = 'webserial'
 		port = 1
 		lastPingRecvMSecs = 0
 		sendMsg this 'pingMsg'
@@ -1083,7 +1084,6 @@ method tryToConnect SmallRuntime {
 
 	if (and (isWebSerial this) ('boardie' != portName)) {
 		if (isOpenSerialPort 1) {
-			portName = 'webserial'
 			port = 1
 			if (lastPingRecvMSecs != 0) { // got a ping; we're connected!
 				justConnected this
@@ -1092,7 +1092,6 @@ method tryToConnect SmallRuntime {
 			sendMsg this 'pingMsg' // send another ping
 			return 'not connected' // don't make circle green until successful ping
 		} else {
-			portName = nil
 			port = nil
 			return 'not connected'
 		}
@@ -2147,11 +2146,11 @@ method sendMsg SmallRuntime msgName chunkID byteList {
 	}
 
 	while ((byteCount dataToSend) > 0) {
-		// Note: Adafruit USB-serial drivers on Mac OS locks up if >= 1024 bytes
-		// written in one call to writeSerialPort, so send smaller chunks
-		// Note: Maximum serial write in Chrome browser is only 64 bytes!
-		// Note: Receive buffer on micro:bit is only 63 bytes.
-		byteCount = (min 63 (byteCount dataToSend))
+		byteCount = (byteCount dataToSend)
+		if ('webBLE' != portName) {
+			// Note: Serial receive buffer is only 63 bytes on many boards so limit byteCount.
+			byteCount = (min 63 byteCount)
+		}
 		chunk = (copyFromTo dataToSend 1 byteCount)
 		bytesSent = (writeSerialPort port chunk)
 		if (not (isOpenSerialPort port)) {
@@ -2197,7 +2196,7 @@ method waitForResponse SmallRuntime {
 	// previous operation has completed. Return true if a response was received.
 
 	sendMsg this 'pingMsg'
-	timeout = 3000 // must be less than ping timeout
+	timeout = 10000 // must be less than ping timeout
 	iter = 1
 	start = (msecsSinceStart)
 	while (((msecsSinceStart) - start) < timeout) {
@@ -2415,57 +2414,64 @@ method deleteFileOnBoard SmallRuntime fileName {
 }
 
 method getFileListFromBoard SmallRuntime {
+	// Return a dictionary mapping remote file names to their sizes.
+
+	result = (dictionary)
 	if ('boardie' == portName) {
-		return (boardieFileList)
+		// Create dictionary with zero file sizes for Boardie (Boardie does not use the file sizes.)
+		for fileName (boardieFileList) {
+			atPut result fileName 0
+		}
+		return result
 	}
 
 	sendMsg this 'listFiles'
-	collectFileTransferResponses this
+	collectFileTransferResponses this nil
 
-	result = (list)
 	for msg fileTransferMsgs {
-		fileNum = (readInt32 this msg 1)
 		fileSize = (readInt32 this msg 5)
 		fileName = (toString (copyFromTo msg 9))
-		add result fileName
+		atPut result fileName fileSize
 	}
 	return result
 }
 
 method getFileFromBoard SmallRuntime {
 	setCursor 'wait'
-	fileNames = (sorted (toArray (getFileListFromBoard this)))
+	fileList = (getFileListFromBoard this)
+	fileNames = (sorted (keys fileList))
 	fileNames = (copyWithout fileNames 'ublockscode')
 	setCursor 'default'
 	if (isEmpty fileNames) {
 		inform 'No files on board.'
 		return
 	}
-	menu = (menu 'File to read from board:' (action 'getAndSaveFile' this) true)
+	menu = (menu 'File to read from board:' this)
 	for fn fileNames {
-		addItem menu fn
+		addItem menu fn (action 'getAndSaveFile' this fn (at fileList fn))
 	}
 	popUpAtHand menu (global 'page')
 }
 
-method getAndSaveFile SmallRuntime remoteFileName {
-	data = (readFileFromBoard this remoteFileName)
+method getAndSaveFile SmallRuntime remoteFileName remoteFileSize {
+	data = (readFileFromBoard this remoteFileName remoteFileSize)
 	if ('Browser' == (platform)) {
-		(confirm (global 'page') nil 'Save file?')
-		browserWriteFile data remoteFileName 'fileFromBoard'
+		if (confirm (global 'page') nil 'Save file?') {
+			browserWriteFile data remoteFileName 'fileFromBoard'
+		}
 	} else {
 		fName = (fileToWrite remoteFileName)
 		if ('' != fName) { writeFile fName data }
 	}
 }
 
-method readFileFromBoard SmallRuntime remoteFileName {
+method readFileFromBoard SmallRuntime remoteFileName remoteFileSize {
 	if ('boardie' == portName) {
 		return (boardieGetFile remoteFileName)
 	}
 
 	fileTransferProgress = 0
-	spinner = (newSpinner (action 'fileTransferProgress' this 'downloaded') (action 'fileTransferCompleted' this))
+	spinner = (newSpinner (action 'fileTransferProgress' this '') (action 'fileTransferCompleted' this))
 	setStopAction spinner (action 'abortFileTransfer' this)
 	addPart (global 'page') spinner
 
@@ -2474,19 +2480,13 @@ method readFileFromBoard SmallRuntime remoteFileName {
 	appendInt32 this msg id
 	addAll msg (toArray (toBinaryData remoteFileName))
 	sendMsg this 'startReadingFile' 0 msg
-	collectFileTransferResponses this
+	collectFileTransferResponses this remoteFileSize
 
 	totalBytes = 0
 	for msg fileTransferMsgs {
 		// format: <transfer ID (4 byte int)><byte offset (4 byte int)><data...>
-		transferID = (readInt32 this msg 1)
-		offset = (readInt32 this msg 5)
 		byteCount = ((byteCount msg) - 8)
 		totalBytes += byteCount
-		if (totalBytes > 0) {
-			fileTransferProgress = (100 - (round (100 * (byteCount / totalBytes))))
-			doOneCycle (global 'page')
-		}
 	}
 
 	result = (newBinaryData totalBytes)
@@ -2512,13 +2512,15 @@ method putFileOnBoard SmallRuntime {
 	}
 }
 
-method writeFileToBoard SmallRuntime srcFileName {
+method writeFileToBoard SmallRuntime srcFileName fileData {
 	if (notNil (findMorph 'MicroBlocksFilePicker')) {
 		destroy (findMorph 'MicroBlocksFilePicker')
 	}
 
-	fileData = (readFile srcFileName true)
-	if (isNil fileData) { return }
+	if (isNil fileData) {
+		fileData = (readFile srcFileName true)
+		if (isNil fileData) { return }
+	}
 
 	targetFileName = (filePart srcFileName)
 	if ((count targetFileName) > 30) {
@@ -2526,7 +2528,7 @@ method writeFileToBoard SmallRuntime srcFileName {
 	}
 
 	fileTransferProgress = 0
-	spinner = (newSpinner (action 'fileTransferProgress' this 'uploaded') (action 'fileTransferCompleted' this))
+	spinner = (newSpinner (action 'fileTransferProgress' this '') (action 'fileTransferCompleted' this))
 	setStopAction spinner (action 'abortFileTransfer' this)
 	addPart (global 'page') spinner
 
@@ -2574,7 +2576,7 @@ method sendFileData SmallRuntime fileName fileData {
 		msg = (list)
 		appendInt32 this msg id
 		appendInt32 this msg bytesSent
-		chunkByteCount = (min 960 (totalBytes - bytesSent))
+		chunkByteCount = (min 950 (totalBytes - bytesSent))
 		repeat chunkByteCount {
 			bytesSent += 1
 			add msg (byteAt fileData bytesSent)
@@ -2610,23 +2612,48 @@ method readInt32 SmallRuntime msg i {
 	return result
 }
 
-method collectFileTransferResponses SmallRuntime {
+method collectFileTransferResponses SmallRuntime remoteFileSize {
+	// Collect file transfer response messages until a message with a zero byte count arrives.
+	// If remoteFileSize is not nil, this is update the file transfer progress percent.
+
+	fileTransferProgress = 0
 	fileTransferMsgs = (list)
-	timeout = 1000
+	lastMsgCount = 0
+	timeout = 5000
 	lastRcvMSecs = (msecsSinceStart)
 	while (((msecsSinceStart) - lastRcvMSecs) < timeout) {
-		if (notEmpty fileTransferMsgs) { timeout = 500 } // decrease timeout after first response
 		processMessages this
+		if (isNil fileTransferProgress) { return } // user aborted
+		if (lastMsgCount != (count fileTransferMsgs)) {
+			// message format: <transfer ID (4 byte int)><byte offset (4 byte int)><data...>
+			lastMsg = (last fileTransferMsgs)
+			offset = (readInt32 this lastMsg 5)
+			if (notNil remoteFileSize) {
+				fileTransferProgress = (round ((100 * offset) / remoteFileSize))
+			}
+			if (((byteCount lastMsg) - 8) == 0) { // final message (no data bytes)
+				removeLast fileTransferMsgs // remove final message
+				fileTransferProgress = nil
+				return
+			}
+			lastMsgCount = (count fileTransferMsgs)
+		}
+		// Keep IDE from closing connection
+		lastRcvMSecs = (msecsSinceStart)
+		lastPingRecvMSecs = lastRcvMSecs
+
 		doOneCycle (global 'page')
-		waitMSecs 10
 	}
+	fileTransferProgress = nil
 }
 
 method recordFileTransferMsg SmallRuntime msg {
 	// Record a file transfer message sent by board.
+	// message format: <transfer ID (4 byte int)><byte offset (4 byte int)><data...>
 
 	if (notNil fileTransferMsgs) { add fileTransferMsgs msg }
 	lastRcvMSecs = (msecsSinceStart)
+	lastPingRecvMSecs = (msecsSinceStart) // xxx needed?
 }
 
 // Script Highlighting

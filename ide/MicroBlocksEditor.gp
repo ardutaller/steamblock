@@ -675,7 +675,7 @@ method processBrowserDroppedFile MicroBlocksEditor {
 	data = (last pair)
 	if putNextDroppedFileOnBoard {
 		putNextDroppedFileOnBoard = false // clear flag
-		sendFileData (smallRuntime) fName data
+		writeFileToBoard (smallRuntime) fName data
 	} else {
 		processDroppedFile this fName data
 	}

@@ -1216,36 +1216,30 @@ class NimBLESerial {
 
 	write_data(data) {
 		// Write the given data (a Uint8Array) and return the number of bytes written.
-		// Detail: if not busy, start write_loop with as much data as we can send.
 
-		if (this.rx_char == undefined) {
-			throw TypeError("Not connected");
+		if ((this.rx_char == undefined) || !this.connected) {
+			console.log("Not connected");
+			return 0;
 		}
-		if (this.sendInProgress || !this.connected) {
+		if (this.sendInProgress) {
+			console.log("Send in progress in gpSupport.js write_data()");
 			return 0;
 		}
 		let byteCount = (data.length > BLE_PACKET_LEN) ? BLE_PACKET_LEN : data.length;
-		this.write_loop(data.subarray(0, byteCount));
+		this.async_write_data(data.subarray(0, byteCount));
 		return byteCount;
  	}
 
-	async write_loop(data) {
+	async async_write_data(data) {
+		if (this.rx_char == undefined) return;
 		this.sendInProgress = true;
-		while (true) {
-			// try to send the given data until success
-			try {
-				await this.rx_char.writeValueWithoutResponse(data);
-				this.sendInProgress = false;
-				return;
-			} catch (error) {
-				// print the error; give up if BLE has been disconnected
-				console.log("BLE write failed:\n ", error);
-				if (!this.isConnected()) {
-					this.sendInProgress = false;
-					return;
-				}
-			}
+		try {
+			await this.rx_char.writeValueWithoutResponse(data);
+		} catch (error) {
+			// print the error; give up if BLE has been disconnected
+			console.log("BLE write failed:\n ", error);
 		}
+		this.sendInProgress = false;
 	}
 }
 
