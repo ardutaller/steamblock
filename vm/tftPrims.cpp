@@ -920,19 +920,16 @@ static int deferUpdates = false;
 		};
 		AtomS3LCD tft = AtomS3LCD(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
-
 		void tftInit() {
-
 			//tft.init(TFT_HEIGHT, TFT_WIDTH, SPI_MODE2);
 			//tft.setSPISpeed(40000000);
 			tft.init(TFT_HEIGHT, TFT_WIDTH);
-			tft.setOffsets(2,1);
-			tft.setRotation(0);	
+			tft.setOffsets(2, 1);
+			tft.setRotation(0);
 			tftClear();
 			pinMode(TFT_BL, OUTPUT);
 			digitalWrite(TFT_BL, HIGH);
 			useTFT = true;
-		
 		}
 
 #endif // end of board-specific sections
