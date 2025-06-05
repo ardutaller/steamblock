@@ -45,6 +45,9 @@
 #elif defined(COCUBE)
 	#define PIN_WIRE_SCL 22
 	#define PIN_WIRE_SDA 21
+#elif defined(M5Atom_Matrix) || defined(M5Atom_Lite)
+	#define PIN_WIRE_SCL 21
+	#define PIN_WIRE_SDA 25
 #elif defined(DUELink)
 	// 0 and 1 are edge connector pins 19 and 20 or DUELink standard pins 16 and 15
 	#define PIN_WIRE_SCL 1
@@ -920,7 +923,7 @@ static int readTemperature() {
 #elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5Stick_C) || \
 	defined(M5Atom_Matrix) || defined(ARDUINO_M5STACK_Core2) || defined(M5Atom_S3_TFT)
 
-#ifdef ARDUINO_M5Stack_Core_ESP32
+#ifdef ARDUINO_M5Stack_Core_ESP32 || defined(M5Atom_Matrix)
 	#define Wire1 Wire
 #endif
 
