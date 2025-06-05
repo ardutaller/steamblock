@@ -53,6 +53,9 @@
 	#if defined(PIN_WIRE0_SCL)
 		#define PIN_WIRE_SCL PIN_WIRE0_SCL
 		#define PIN_WIRE_SDA PIN_WIRE0_SDA
+	#elif defined(ARDUINO_M5Atom_S3_Lite)
+		#define PIN_WIRE_SCL 39
+		#define PIN_WIRE_SDA 38
 	#elif defined(ARDUINO_ARCH_ESP32)
 		#define PIN_WIRE_SCL SCL
 		#define PIN_WIRE_SDA SDA
@@ -956,7 +959,7 @@ static char is6886 = false;
 static void startAccelerometer() {
 	#ifdef ARDUINO_M5Atom_Matrix_ESP32
 		Wire1.begin(25, 21);
-	#elif defined(ARDUINO_M5Atom_S3)
+	#elif defined(ARDUINO_M5Atom_S3) || defined(ARDUINO_M5Atom_S3_Lite)
 		Wire1.begin(38, 39);
 	#else
 		Wire1.begin(); // use internal I2C bus with default pins
