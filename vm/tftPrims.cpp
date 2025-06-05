@@ -30,7 +30,7 @@ static int deferUpdates = false;
 	defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_IOT_BUS) || defined(SCOUT_MAKES_AZUL) || \
 	defined(TTGO_RP2040) || defined(TTGO_DISPLAY) || defined(ARDUINO_M5STACK_Core2) || \
 	defined(GAMEPAD_DISPLAY) || defined(PICO_ED) || defined(OLED_128_64) || defined(COCUBE) || \
-	defined(ARDUINO_M5Atom_S3)
+	defined(M5Atom_S3_TFT)
 
 	#define BLACK 0
 	#define WHITE 65535
@@ -898,7 +898,7 @@ static int deferUpdates = false;
 			delay(800);
 		}
 
-	#elif defined(ARDUINO_M5Atom_S3)
+	#elif defined(M5Atom_S3_TFT)
 		#include "Adafruit_GFX.h"
 		#include "Adafruit_ST7789.h"
 		#define TFT_MOSI 21
@@ -970,7 +970,7 @@ static int color24to16b(int color24b) {
 	r = (color24b >> 19) & 0x1F; // 5 bits
 	g = (color24b >> 10) & 0x3F; // 6 bits
 	b = (color24b >> 3) & 0x1F; // 5 bits
-	#if defined(ARDUINO_M5Stick_C) || defined(ARDUINO_M5Atom_S3) && !defined(ARDUINO_M5Stick_Plus)
+	#if defined(ARDUINO_M5Stick_C) || defined(M5Atom_S3_TFT) && !defined(ARDUINO_M5Stick_Plus)
 		return (b << 11) | (g << 5) | r; // color order: BGR
 	#else
 		return (r << 11) | (g << 5) | b; // color order: RGB

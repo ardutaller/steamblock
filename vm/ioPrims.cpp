@@ -630,7 +630,7 @@ void hardwareInit() {
 		1, 1, 1, 1, 1, 1, 0, 1, 1, 1,
 		1, 1, 0, 0, 0, 1, 0, 0, 1, 0};
 
-#elif defined(ARDUINO_M5Atom_Matrix_ESP32)
+#elif defined(M5Atom_Matrix)
 
 	#define BOARD_TYPE "M5Atom-Matrix"
 	#define DIGITAL_PINS 40
@@ -644,12 +644,13 @@ void hardwareInit() {
 		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
 		1, 1, 0, 0, 1, 1, 1, 1, 1, 0};
 
-#elif defined(ARDUINO_M5Atom_Lite_ESP32)
+#elif defined(M5Atom_Lite)
 
 	#define BOARD_TYPE "M5Atom-Lite"
 	#define DIGITAL_PINS 40
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 40
+	#define NEOPIXEL_PIN_LED true
 	#define PIN_LED 27
 	static const int analogPin[] = {};
 	#define PIN_BUTTON_A 39
@@ -659,29 +660,20 @@ void hardwareInit() {
 		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
 		1, 1, 0, 0, 1, 1, 1, 1, 1, 0};
 
-#elif defined(ARDUINO_M5Atom_S3)
+#elif defined(ARDUINO_M5Stack_ATOMS3)
 
-	#define BOARD_TYPE "M5AtomS3"
+	#if defined(M5Atom_S3_TFT)
+		#define BOARD_TYPE "M5AtomS3"
+		#define PIN_LED 0
+	#else
+		#define BOARD_TYPE "M5AtomS3-Lite"
+		#define NEOPIXEL_PIN_LED true
+		#define PIN_LED 35
+	#endif
+
 	#define DIGITAL_PINS 42
 	#define ANALOG_PINS 6
 	#define TOTAL_PINS 42
-	#define PIN_LED 0
-	static const int analogPin[] = {};
-	#define PIN_BUTTON_A 41
-	static const char reservedPin[TOTAL_PINS] = {
-		1, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-		1, 0};
-
-#elif defined(ARDUINO_M5Atom_S3_Lite)
-
-	#define BOARD_TYPE "M5AtomS3-Lite"
-	#define DIGITAL_PINS 42
-	#define ANALOG_PINS 6
-	#define TOTAL_PINS 42
-	#define PIN_LED 35
 	static const int analogPin[] = {};
 	#define PIN_BUTTON_A 41
 	static const char reservedPin[TOTAL_PINS] = {
@@ -804,6 +796,7 @@ void hardwareInit() {
 	#define ANALOG_PINS 8
 	#define TOTAL_PINS 22
 	static const int analogPin[] = {};
+	#define NEOPIXEL_PIN_LED true
 	#define PIN_LED 2
 	#define PIN_BUTTON_A 3
 	static const char reservedPin[TOTAL_PINS] = {
@@ -1815,7 +1808,7 @@ void primSetUserLED(OBJ *args) {
 		#ifdef INVERT_USER_LED
 			output = !output;
 		#endif
-		#if defined(M5STAMP) || defined(ARDUINO_M5Atom_Lite_ESP32) || defined(ARDUINO_M5Atom_S3_Lite)
+		#if defined(NEOPIXEL_PIN_LED)
 			int color = (output == HIGH) ? 255 : 0; // blue when on
 			setAllNeoPixels(PIN_LED, 1, color);
 			taskSleep(1);
