@@ -53,9 +53,6 @@
 	#if defined(PIN_WIRE0_SCL)
 		#define PIN_WIRE_SCL PIN_WIRE0_SCL
 		#define PIN_WIRE_SDA PIN_WIRE0_SDA
-	#elif defined(ARDUINO_M5Atom_S3_Lite)
-		#define PIN_WIRE_SCL 39
-		#define PIN_WIRE_SDA 38
 	#elif defined(ARDUINO_ARCH_ESP32)
 		#define PIN_WIRE_SCL SCL
 		#define PIN_WIRE_SDA SDA
