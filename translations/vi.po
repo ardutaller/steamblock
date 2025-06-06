@@ -1,21 +1,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-06-06 09:00+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-06-06 07:02+0000\n"
+"Last-Translator: Huy Pham <skywalker1881990@gmail.com>\n"
+"Language-Team: Vietnamese <https://hosted.weblate.org/projects/microblocks/"
+"ide/vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Translate Toolkit 3.15.2\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Đầu ra"
 
 #. Block in Output category
 msgid "set user LED _"
