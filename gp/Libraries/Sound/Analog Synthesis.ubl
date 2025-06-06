@@ -1,6 +1,6 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 9 
+version 1 10 
 choices outputTypes 'asy;pin' 'asy;MCP4725' 
 description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
 
@@ -120,7 +120,7 @@ to 'asynth noise' freq amp {
 to 'asynth noise gate' gate {
   '_asynth init'
   if (at gate _asynth_trigger_active) {
-    return (random 1 ('asynth gate amplitude' gate))
+    return ('asynth noise' ('asynth gate frequency' gate) ('asynth gate amplitude' gate))
   }
   return 0
 }
