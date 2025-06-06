@@ -864,9 +864,9 @@ static void initRMT(int pinNum) {
 
 static void initNeoPixelPin(int pinNum) { // ESP32
 	if ((pinNum < 0) || (pinNum >= pinCount())) {
-		#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_M5Atom_Lite_ESP32)
+		#if defined(M5Atom_Matrix) || defined(M5Atom_Lite)
 			pinNum = 27; // internal NeoPixel pin
-		#elif defined(ARDUINO_M5Atom_S3_Lite)
+		#elif defined(ARDUINO_M5Stack_ATOMS3)
 			pinNum = 35;
 		#elif defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
 			pinNum = 13; // internal NeoPixel pin
@@ -1121,7 +1121,7 @@ void turnOffInternalNeoPixels() {
 		count = 35;
 	#elif defined(KIDS_BITS)
 		count = 12;
-	#elif defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
+	#elif defined(M5Atom_Matrix) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 		count = 25;
 		// sending neopixel data twice on the Atom Matrix eliminates green pixel at startup
 		for (int i = 0; i < count; i++) sendNeoPixelData(0);
@@ -1142,11 +1142,11 @@ void turnOffInternalNeoPixels() {
 
 // Simulate the micro:bit 5x5 LED display on 5x5 NeoPixel display
 
-#if defined(ARDUINO_M5Atom_Matrix_ESP32) || defined(ARDUINO_Mbits) || defined(STEAMaker)
+#if defined(M5Atom_Matrix) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 
 	static void updateNeoPixelDisplay() {
 		int oldPinMask = neoPixelPinMask;
-#if defined(ARDUINO_M5Atom_Matrix_ESP32)
+#if defined(M5Atom_Matrix)
 		initNeoPixelPin(27); // use internal NeoPixels
 #elif defined(ARDUINO_Mbits) || defined(STEAMaker)
 		initNeoPixelPin(13); // use internal NeoPixels

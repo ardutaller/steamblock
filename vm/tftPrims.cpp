@@ -30,7 +30,7 @@ static int deferUpdates = false;
 	defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_IOT_BUS) || defined(SCOUT_MAKES_AZUL) || \
 	defined(TTGO_RP2040) || defined(TTGO_DISPLAY) || defined(ARDUINO_M5STACK_Core2) || \
 	defined(GAMEPAD_DISPLAY) || defined(PICO_ED) || defined(OLED_128_64) || defined(COCUBE) || \
-	defined(ARDUINO_M5Atom_S3)
+	defined(M5Atom_S3_TFT)
 
 	#define BLACK 0
 	#define WHITE 65535
@@ -898,7 +898,7 @@ static int deferUpdates = false;
 			delay(800);
 		}
 
-	#elif defined(ARDUINO_M5Atom_S3)
+	#elif defined(M5Atom_S3_TFT)
 		#include "Adafruit_GFX.h"
 		#include "Adafruit_ST7789.h"
 		#define TFT_MOSI 21
@@ -920,19 +920,16 @@ static int deferUpdates = false;
 		};
 		AtomS3LCD tft = AtomS3LCD(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
-
 		void tftInit() {
-
 			//tft.init(TFT_HEIGHT, TFT_WIDTH, SPI_MODE2);
 			//tft.setSPISpeed(40000000);
 			tft.init(TFT_HEIGHT, TFT_WIDTH);
-			tft.setOffsets(2,1);
-			tft.setRotation(0);	
+			tft.setOffsets(2, 1);
+			tft.setRotation(0);
 			tftClear();
 			pinMode(TFT_BL, OUTPUT);
 			digitalWrite(TFT_BL, HIGH);
 			useTFT = true;
-		
 		}
 
 #endif // end of board-specific sections
@@ -970,7 +967,7 @@ static int color24to16b(int color24b) {
 	r = (color24b >> 19) & 0x1F; // 5 bits
 	g = (color24b >> 10) & 0x3F; // 6 bits
 	b = (color24b >> 3) & 0x1F; // 5 bits
-	#if defined(ARDUINO_M5Stick_C) || defined(ARDUINO_M5Atom_S3) && !defined(ARDUINO_M5Stick_Plus)
+	#if defined(ARDUINO_M5Stick_C) || defined(M5Atom_S3_TFT) && !defined(ARDUINO_M5Stick_Plus)
 		return (b << 11) | (g << 5) | r; // color order: BGR
 	#else
 		return (r << 11) | (g << 5) | b; // color order: RGB
