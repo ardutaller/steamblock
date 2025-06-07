@@ -1,12 +1,12 @@
 module LogicLinks
 author 'Divya Gopinath'
-version 1 0 
-depends 'Temperature Humidity (DHT11, DHT22)' 'IR Remote' Servo 'OLED Graphics' 
+version 1 1 
+depends Servo 'OLED Graphics' '_Temperature Humidity (DHT11, DHT22)' '_IR Remote' 
 description 'LogicLinks Library'
-variables _ll_initialized _ll_pin_RedLED _ll_pin_Button _ll_pin_DHT _ll_pin_IRrecv _ll_pin_Relay _ll_pin_Pot _ll_pin_LDR _ll_pin_Buzzer _ll_pin_RGB_LED _ll_pin_TX _ll_pin_RX 
+variables _ll_pin_RGB_LED 
 
   spec ' ' 'll_set_rgb_color' 'LogicLinks set RGB LED color _' 'color'
-  spec 'r' 'll_rgb_color' 'LogicLinks color r _ g _ b _ (0-255)' 'auto auto auto' 0 0 0
+  spec 'r' 'll_rgb_color' 'LogicLinks color r _ g _ b _ (0-255)' 'num num num' 0 0 0
   spec 'r' 'll_random_color' 'LogicLinks random color'
   spec ' ' 'll_turn_off_RGB' 'LogicLinks turn off RGB LED'
   space
@@ -22,7 +22,7 @@ variables _ll_initialized _ll_pin_RedLED _ll_pin_Button _ll_pin_DHT _ll_pin_IRre
   spec 'r' 'll_ir_code' 'LogicLinks IR Code'
   spec 'r' 'll_ir_recv_code' 'LogicLinks receive IR code'
   space
-  spec ' ' 'll_beep' 'LogicLinks beep _ ms' 'auto' 100
+  spec ' ' 'll_beep' 'LogicLinks beep _ ms' 'num' 100
   space
   spec 'r' 'll_light_sensor' 'LogicLinks light sensor (0-100) %'
   space
@@ -31,38 +31,38 @@ variables _ll_initialized _ll_pin_RedLED _ll_pin_Button _ll_pin_DHT _ll_pin_IRre
   spec ' ' '_ll_init_pins' '_ll_init_pins'
 
 to '_ll_init_pins' {
-  if _ll_initialized {return}
+  comment 'LogicLink Pins:
+  IR receive = 1
+  RGB LED = 6
+  Red LED = 7
+  Button = 10
+  DHT = 11
+  Relay = 12
+  Buzzer = 20
+  Potentiometer = 26
+  LDR = 27'
+  if (_ll_pin_RGB_LED != 0) {
+    return
+  }
   _ll_pin_RGB_LED = 6
-  _ll_pin_RedLED = 7
-  _ll_pin_Button = 10
-  _ll_pin_DHT = 11
-  _ll_pin_Relay = 12
-  _ll_pin_Buzzer = 20
-  _ll_pin_IRrecv = 1
-  attachIR _ll_pin_IRrecv
-  _ll_pin_Pot = 26
-  _ll_pin_LDR = 27
-  _ll_pin_TX = 0
-  _ll_pin_RX = 1
-  _ll_initialized = (booleanConstant true)
+  attachIR 1
 }
 
 to ll_beep duration {
-  local 'buzzer pin' 20
-  '[io:playTone]' (v 'buzzer pin') 300
+  local 'pin_buzzer' 20
+  '[io:playTone]' pin_buzzer 300
   waitMillis duration
-  '[io:playTone]' (v 'buzzer pin') 0
+  '[io:playTone]' pin_buzzer 0
 }
 
 to ll_button {
-  local 'status' (digitalReadOp _ll_pin_Button)
-  '_ll_init_pins'
-  return (not status)
+  local 'pin_button' 10
+  return (not (digitalReadOp pin_button))
 }
 
 to ll_humidity {
-  '_ll_init_pins'
-  return (humidity_DHT11 _ll_pin_DHT)
+  local 'pin_DHT' 11
+  return (humidity_DHT11 pin_DHT)
 }
 
 to ll_ir_code {
@@ -81,15 +81,15 @@ to ll_ir_recv_code {
 }
 
 to ll_light_sensor {
-  comment 'Returns Light Values s a percentage:
-0: dark,  100: light'
-  '_ll_init_pins'
-  return ('[misc:rescale]' (analogReadOp _ll_pin_LDR) 0 1023 0 100)
+  comment 'Returns light value as a percentage:
+0: dark, 100: light'
+  local 'pin_LDR' 27
+  return ('[misc:rescale]' (analogReadOp pin_LDR) 0 1023 0 100)
 }
 
 to ll_potentiometer {
-  '_ll_init_pins'
-  return (analogReadOp _ll_pin_Pot)
+  local 'pin_pot' 26
+  return (analogReadOp pin_pot)
 }
 
 to ll_random_color {
@@ -112,13 +112,13 @@ to ll_rgb_color r g b {
 }
 
 to ll_set_red_LED aBoolean {
-  '_ll_init_pins'
-  digitalWriteOp _ll_pin_RedLED aBoolean
+  local 'pin_red_LED' 7
+  digitalWriteOp pin_red_LED aBoolean
 }
 
 to ll_set_relay aBoolean {
-  '_ll_init_pins'
-  digitalWriteOp _ll_pin_Relay aBoolean
+  local 'pin_relay' 12
+  digitalWriteOp pin_relay aBoolean
 }
 
 to ll_set_rgb_color color {
@@ -129,8 +129,8 @@ to ll_set_rgb_color color {
 }
 
 to ll_temperature {
-  '_ll_init_pins'
-  return (temperature_DHT11 _ll_pin_DHT)
+  local 'pin_DHT' 11
+  return (temperature_DHT11 pin_DHT)
 }
 
 to ll_turn_off_RGB {
