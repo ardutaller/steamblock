@@ -1,7 +1,8 @@
 module 'Real Time Clock (KidsBits)' Input
 author MicroBlocks
 version 1 0 
-choices rtc_timeOrDate 'rtc;time' 'rtc;date' 
+choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (D-M-Y)' 
+choices rtc_dayOfWeek 'rtc;Monday' 'rtc;Tuesday' 'rtc;Wednesday' 'rtc;Thursday' 'rtc;Friday' 'rtc;Saturday' 'rtc;Sunday' 
 description 'Real time clock (RTC).
 
 Simple functions to set and read the current time and date of a real-time clock module.
@@ -12,9 +13,12 @@ Currently supports the DS1307 chip but this library may be extended to support o
 (Many thanks to Ralf Krause.)
 '
 
-  spec 'r' 'rtc_getTimeOrDate' '#SVG#square11#00c612 get _' 'menu.rtc_timeOrDate' 'rtc;time'
+  spec 'r' 'rtc_getTimeOrDate' '#SVG#square11#00c612 get _' 'menu.rtc_timeOrDate' 'rtc;time (H:M:S)'
   spec ' ' 'rtc_setTime' '#SVG#square11#00c612 set hours _ minutes _ seconds _' 'num num num' 9 30 0
   spec ' ' 'rtc_setDate' '#SVG#square11#00c612 set day _ month _ year _' 'num num num' 1 1 2025
+  space
+  spec 'r' 'rtc_getDayOfWeek' '#SVG#square11#00c612 get day of week'
+  spec ' ' 'rtc_setDayOfWeek' '#SVG#square11#00c612 set day of week _' 'menu.rtc_dayOfWeek' 'rtc;Monday'
   space
   spec 'r' '_rtc_bcd2dec' '_rtc_bcd2dec _' 'num'
   spec 'r' '_rtc_dec2bcd' '_rtc_dec2bcd _' 'num'
@@ -37,9 +41,17 @@ to '_rtc_twoDigit' n {
   return ('[data:join]' (ifExpression (n < 10) '0' '') n)
 }
 
+to rtc_getDayOfWeek {
+  '[sensors:i2cSetClockSpeed]' 100000
+  local 'dayOfWeek' ('_rtc_bcd2dec' (i2cGet (hexToInt '68') 3))
+  '[sensors:i2cSetClockSpeed]' 400000
+  return dayOfWeek
+}
+
 to rtc_getTimeOrDate which {
   local 'i2cAddr' (hexToInt '68')
-  if ('rtc;time' == which) {
+  '[sensors:i2cSetClockSpeed]' 100000
+  if ('rtc;time (H:M:S)' == which) {
     local 'hour' ('_rtc_bcd2dec' (i2cGet i2cAddr 2))
     local 'minute' ('_rtc_bcd2dec' (i2cGet i2cAddr 1))
     local 'second' ('_rtc_bcd2dec' ((i2cGet i2cAddr 0) & 127))
@@ -48,8 +60,9 @@ to rtc_getTimeOrDate which {
     local 'day' ('_rtc_bcd2dec' (i2cGet i2cAddr 4))
     local 'month' ('_rtc_bcd2dec' (i2cGet i2cAddr 5))
     local 'year' (('_rtc_bcd2dec' (i2cGet i2cAddr 6)) + 2000)
-    return ('[data:join]' ('_rtc_twoDigit' day) '-' ('_rtc_twoDigit' month) '-' year)
+    return ('[data:join]' ('_rtc_twoDigit' day) '.' ('_rtc_twoDigit' month) '.' year)
   }
+  '[sensors:i2cSetClockSpeed]' 400000
 }
 
 to rtc_setDate day month year {
@@ -60,6 +73,13 @@ to rtc_setDate day month year {
   i2cSet i2cAddr 4 ('_rtc_dec2bcd' day)
   i2cSet i2cAddr 5 ('_rtc_dec2bcd' month)
   i2cSet i2cAddr 6 ('_rtc_dec2bcd' year)
+}
+
+to rtc_setDayOfWeek weekday {
+  local 'i2cAddr' (hexToInt '68')
+  local 'names' ('[data:makeList]' 'rtc;Monday' 'rtc;Tuesday' 'rtc;Wednesday' 'rtc;Thursday' 'rtc;Friday' 'rtc;Saturday' 'rtc;Sunday')
+  local 'n' ('[data:find]' weekday names)
+  i2cSet i2cAddr (hexToInt '3') ('_rtc_dec2bcd' (n % 8))
 }
 
 to rtc_setTime hours minutes seconds {
