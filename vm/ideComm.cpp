@@ -118,8 +118,8 @@ extern "C" void consoleReportNum(const char *label, int n) {
 
 // BLE_SEND_MAX - maximum bytes to send in a single attribute write (max is 512)
 // INTER_SEND_TIME - don't send data more often than this to avoid NimBLE error & disconnect
-#define BLE_SEND_MAX 250
-#define INTER_SEND_TIME 20
+#define BLE_SEND_MAX 240
+#define INTER_SEND_TIME 40
 
 static NimBLEServer *pServer = NULL;
 static NimBLEService *pService = NULL;
