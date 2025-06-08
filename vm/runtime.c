@@ -729,8 +729,10 @@ void outputString(const char *s) {
 	waitForOutbufBytes(byteCount + 50);
 	sendMessage(outputValueMsg, 255, (byteCount + 1), data);
 
-	// when debugging VM crashes, it can be helpful to uncomment the following:
-while (outBufStart != outBufEnd) sendData(); // wait for string to be sent
+	// wait for string to be sent:
+	while (ideConnected() && (OUTBUF_BYTES() > 0)) {
+		sendData(); // should eventually create enough room for bytesNeeded
+	}
 }
 
 void sendTaskDone(uint8 chunkIndex) {
@@ -1062,7 +1064,7 @@ int ideConnected() {
 
 	uint32 now = microsecs();
 	uint32 elapsed = (lastRcvTime > now) ? now : (now - lastRcvTime);
-	return elapsed < (10 * 1000000); // an ide msg was received in the past few seconds
+	return elapsed < (5 * 1000000); // an ide msg was received in the past few seconds
 }
 
 #endif
