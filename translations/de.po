@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-06-02 10:44+0000\n"
+"PO-Revision-Date: 2025-06-09 19:38+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -398,7 +398,7 @@ msgstr "verteile _ von ( _ , _ ) auf ( _ , _ )"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr "trenne _ nach _"
+msgstr "trenne _ bei _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "play tone pin _ frequency _"
