@@ -87,7 +87,7 @@ int hasI2CPullups() {
 }
 
 static void startWire() {
-	#if !defined(ESP8266)
+	#if !defined(ESP8266) && !defined(DUELink)
 		// Ensure Wire is stopped before setting pins.
 		Wire.end();
 	#endif
