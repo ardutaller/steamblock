@@ -16,14 +16,14 @@ python precompiled/uf2conv.py -c .pio/build/makerportV1/firmware.bin -o extraVMs
 pio run -e gizmo-mechatronics
 cp .pio/build/gizmo-mechatronics/firmware.uf2 extraVMs/vm_gizmo_mechatronics.uf2
 pio run -e wukong2040-w
-cp .pio/build/wukong2040-w/firmware.uf2 extraVMs/vm_wukong2040-w.uf2
+cp .pio/build/wukong2040-w/firmware.uf2 extraVMs/vm_wukong2040_w.uf2
 
 pio run -e m5atom
 cp .pio/build/m5atom/firmware.bin extraVMs/vm_m5atom.bin
 pio run -e m5atom-lite
 cp .pio/build/m5atom-lite/firmware.bin extraVMs/vm_m5atom_lite.bin
-pio run -e esp32-atom-s3
-cp .pio/build/esp32-atom-s3/firmware.bin extraVMs/vm_m5atom_lite_s3.bin
+pio run -e m5atom-s3-lite
+cp .pio/build/m5atom-s3-lite/firmware.bin extraVMs/vm_m5atom_s3_lite.bin
 
 pio run -e m5stick
 cp .pio/build/m5stick/firmware.bin extraVMs/vm_m5stick.bin
@@ -42,13 +42,16 @@ cp .pio/build/esp32-c3/firmware.bin extraVMs/vm_esp32-c3.bin
 pio run -e esp32-c3-usb
 cp .pio/build/esp32-c3-usb/firmware.bin extraVMs/vm_esp32-c3-usb.bin
 
-pio run -e esp32-s3-matrix
-esptool.py --chip ESP32-S3 merge_bin -o extraVMs/vm_s3_matrix.bin --flash_mode dio --flash_size 4MB 0 .pio/build/esp32-s3-matrix/bootloader.bin 0x8000 esp32/partitionsMicroBlocks.bin 0xe000 esp32/boot_app0.bin 0x10000 .pio/build/esp32-s3-matrix/firmware.bin
+pio run -e m5atom-s3-tft
+esptool.py --chip ESP32-S3 merge_bin -o extraVMs/vm_m5atom_s3_tft.bin --flash_mode dio --flash_size 4MB 0 .pio/build/m5atom-s3-tft/bootloader.bin 0x8000 esp32/partitionsMicroBlocks.bin 0xe000 esp32/boot_app0.bin 0x10000 .pio/build/m5atom-s3-tft/firmware.bin
 // the following runs on the server during the release process:
-python3 -m esptool --chip ESP32-S3 merge_bin -o extraVMs/vm_s3_matrix.bin --flash_mode dio --flash_size 4MB 0 .pio/build/esp32-s3-matrix/bootloader.bin 0x8000 esp32/partitionsMicroBlocks.bin 0xe000 esp32/boot_app0.bin 0x10000 .pio/build/esp32-s3-matrix/firmware.bin
+python3 -m esptool --chip ESP32-S3 merge_bin -o extraVMs/vm_m5atom_s3_tft.bin --flash_mode dio --flash_size 4MB 0 .pio/build/m5atom-s3-tft/bootloader.bin 0x8000 esp32/partitionsMicroBlocks.bin 0xe000 esp32/boot_app0.bin 0x10000 .pio/build/m5atom-s3-tft/firmware.bin
 
 pio run -e freenoveCamera
 cp .pio/build/freenoveCamera/firmware.bin extraVMs/vm_freenoveCamera.bin
 
 pio run -e rp2350
 cp .pio/build/rp2350/firmware.uf2 extraVMs/vm_rp2350.uf2
+
+pio run -e rp2350-w
+cp .pio/build/rp2350-w/firmware.uf2 extraVMs/vm_rp2350_w.uf2

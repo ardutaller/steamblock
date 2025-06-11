@@ -479,11 +479,6 @@ static int deferUpdates = false;
 		#define TOUCH_CS_PIN 16
 		XPT2046_Touchscreen ts(TOUCH_CS_PIN);
 
-		#define X_MIN 256
-		#define X_MAX 3632
-		#define Y_MIN 274
-		#define Y_MAX 3579
-
 		#define TFT_CS	5
 		#define TFT_DC	27
 
@@ -505,7 +500,6 @@ static int deferUpdates = false;
 
 		static void touchInit() {
 			ts.begin();
-			ts.setCalibration(X_MIN, X_MAX, Y_MIN, Y_MAX);
 			ts.setRotation(1);
 			touchEnabled = true;
 		}
@@ -518,19 +512,34 @@ static int deferUpdates = false;
 		static int screenTouchX() {
 			if (!touchEnabled) touchInit();
 			if (!ts.touched()) { return -1; }
-			return ts.getMappedPoint().x;
+			uint16_t x, y;
+			uint8_t pressure;
+			ts.readData(&x, &y, &pressure);
+			x = (320 * (x - 256)) / 10;
+			if (x < 0) x = 0;
+			if (x > 320) x = 320;
+			return x;
 		}
 
 		static int screenTouchY() {
 			if (!touchEnabled) touchInit();
 			if (!ts.touched()) { return -1; }
-			return ts.getMappedPoint().y;
+			uint16_t x, y;
+			uint8_t pressure;
+			ts.readData(&x, &y, &pressure);
+			y = (240 * (y - 274)) / 14;
+			if (y < 0) y = 0;
+			if (y > 240) y = 240;
+			return y;
 		}
 
 		static int screenTouchPressure() {
 			if (!touchEnabled) touchInit();
 			if (!ts.touched()) { return -1; }
-			return ts.getMappedPoint().z;
+			uint16_t x, y;
+			uint8_t pressure;
+			ts.readData(&x, &y, &pressure);
+			return pressure;
 		}
 
 	#elif defined(SCOUT_MAKES_AZUL)

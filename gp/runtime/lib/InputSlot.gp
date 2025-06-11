@@ -76,7 +76,7 @@ method setContents InputSlot data fixStringOnlyNum {
 			setTextFont this
 		}
 	}
-	if (and (notNil menuSelector) (not (isVarSlot this)) (isClass data 'String')) {
+	if (and (notNil menuSelector) (not (isVarOrBroadcastSlot this)) (isClass data 'String')) {
 		setText text (localized data)
 	} else {
 		setText text (toString data)
@@ -103,11 +103,11 @@ method setTextFont InputSlot {
 	setFont text fontName (fontSize * (blockScale))
 }
 
-method isVarSlot InputSlot {
+method isVarOrBroadcastSlot InputSlot {
 	if (isNil (owner morph)) { return false }
 	owner = (handler (owner morph))
 	if (or (not (isClass owner 'Block')) (isNil (expression owner))) { return false }
-	return (isOneOf (primName (expression owner)) '=' '+=')
+	return (isOneOf (primName (expression owner)) '=' '+=' 'whenBroadcastReceived' 'sendBroadcast')
 }
 
 method fixLayout InputSlot {
@@ -652,9 +652,9 @@ method broadcastMenu InputSlot {
 		msgList = (allBroadcasts (project (handler scripter)))
 
 		// special case for default broadcast string
-		defaultBroadcast = 'go!'
+		defaultBroadcast = (localized 'go!')
 		remove msgList defaultBroadcast
-		addItemNonlocalized menu (localized defaultBroadcast) (action 'setContents' this defaultBroadcast)
+		addItemNonlocalized menu defaultBroadcast (action 'setContents' this defaultBroadcast)
 		addLine menu
 
 		for s msgList {

@@ -521,14 +521,16 @@ method readCodeFromBoard SmallRuntime {
 	sendMsg this 'getAllCodeMsg' 1
 	lastRcvMSecs = (msecsSinceStart)
 	while (((msecsSinceStart) - lastRcvMSecs) < 2000) {
+		sendMsg this 'pingMsg'
 		processMessages this
 		doOneCycle (global 'page')
-		waitMSecs 10
+		waitMSecs 50
 	}
 	if (isNil decompiler) { return } // decompilation was aborted
 
 print 'Read' (count (getField decompiler 'vars')) 'vars' (count (getField decompiler 'chunks')) 'chunks'
 	proj = (decompileProject decompiler)
+	sendMsg this 'pingMsg'
 	decompilerStatus = (localized 'Loading project...')
 	doOneCycle (global 'page')
 	installDecompiledProject this proj
@@ -2619,7 +2621,7 @@ method collectFileTransferResponses SmallRuntime remoteFileSize {
 	fileTransferProgress = 0
 	fileTransferMsgs = (list)
 	lastMsgCount = 0
-	timeout = 5000
+	timeout = 2000
 	lastRcvMSecs = (msecsSinceStart)
 	while (((msecsSinceStart) - lastRcvMSecs) < timeout) {
 		processMessages this

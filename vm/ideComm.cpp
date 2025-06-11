@@ -30,6 +30,10 @@
 int BLE_connected_to_IDE = false;
 int USB_connected_to_IDE = false;
 
+// Other Variables
+
+static uint32 lastSendTime = 0;
+
 char BLE_ThreeLetterID[4];
 static char bleDeviceName[32];
 
@@ -118,8 +122,8 @@ extern "C" void consoleReportNum(const char *label, int n) {
 
 // BLE_SEND_MAX - maximum bytes to send in a single attribute write (max is 512)
 // INTER_SEND_TIME - don't send data more often than this to avoid NimBLE error & disconnect
-#define BLE_SEND_MAX 250
-#define INTER_SEND_TIME 20
+#define BLE_SEND_MAX 240
+#define INTER_SEND_TIME 40
 
 static NimBLEServer *pServer = NULL;
 static NimBLEService *pService = NULL;
@@ -131,7 +135,6 @@ static NimBLECharacteristic *pUARTRxCharacteristic;
 
 static bool bleRunning = false;
 static uint16_t connID = -1;
-static uint32 lastSendTime = 0;
 static int lastRC = 0;
 
 // incoming BLE buffer
@@ -349,7 +352,6 @@ static uint16_t txCharacteristic = 0;
 static uint16_t rxCharacteristic = 0;
 static uint16_t uartTxCharacteristic = 0;
 static uint16_t uartRxCharacteristic = 0;
-static uint32 lastSendTime = 0;
 
 // BLE_BUF_MAX max size of send and receive payloads
 #define BLE_BUF_MAX 240 // 360 works, 380 fails; making both charactistics dynamic allows larger buffers
@@ -605,6 +607,12 @@ int sendBytes(uint8 *buf, int start, int end) {
 	// Send bytes buf[start] through buf[end - 1] and return the number of bytes sent.
 
 	if (!BLE_connected_to_IDE) { // no BLE connection; use Serial
+		// don't send serial data too often (needed on boards with USB serial)
+		uint32 now = millisecs();
+		if (lastSendTime > now) lastSendTime = 0; // clock wrap
+		if ((now - lastSendTime) < 15) return 0;
+		lastSendTime = now;
+
 		return Serial.write(&buf[start], end - start);
 	}
 
