@@ -1,16 +1,16 @@
 module LogicLinks
 author 'Divya Gopinath'
-version 1 1 
+version 1 2 
 depends Servo 'OLED Graphics' '_Temperature Humidity (DHT11, DHT22)' '_IR Remote' 
 description 'LogicLinks Library'
 variables _ll_pin_RGB_LED 
 
-  spec ' ' 'll_set_rgb_color' 'LogicLinks set RGB LED color _' 'color'
+  spec ' ' 'll_set_rgb_color' 'LogicLinks set RGB LED _' 'color'
   spec 'r' 'll_rgb_color' 'LogicLinks color r _ g _ b _ (0-255)' 'num num num' 0 0 0
   spec 'r' 'll_random_color' 'LogicLinks random color'
   spec ' ' 'll_turn_off_RGB' 'LogicLinks turn off RGB LED'
   space
-  spec 'r' 'll_button' 'LogicLinks button pressed?'
+  spec 'r' 'll_button' 'LogicLinks button'
   spec ' ' 'll_set_red_LED' 'LogicLinks set red LED _' 'bool' true
   space
   spec 'r' 'll_humidity' 'LogicLinks humidity'
@@ -24,7 +24,7 @@ variables _ll_pin_RGB_LED
   space
   spec ' ' 'll_beep' 'LogicLinks beep _ ms' 'num' 100
   space
-  spec 'r' 'll_light_sensor' 'LogicLinks light sensor (0-100) %'
+  spec 'r' 'll_light_sensor' 'LogicLinks light (0-100)'
   space
   spec 'r' 'll_potentiometer' 'LogicLinks potentiometer'
   space

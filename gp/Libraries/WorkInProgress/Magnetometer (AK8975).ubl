@@ -1,10 +1,10 @@
 module 'Magnetometer (AK8975)' Input
 author MicroBlocks
-version 1 1 
+version 1 2 
 description 'Support for AK8975 magnetometer.
 https://www.robotpark.com/image/data/PRO/91462/AK8975.pdf
 '
-variables ak9575_scale 
+variables _ak9575_scale 
 
   spec 'r' 'ak9575_direction' 'compass direction'
   space
@@ -18,7 +18,7 @@ variables ak9575_scale
   spec 'r' '_ak9575_int16' '_ak9575_int16 _ _' 'num num'
 
 to '_ak9575_init' {
-  if (0 == ak9575_scale) {
+  if (0 == _ak9575_scale) {
     comment 'Initialize the sensitive scale factors'
     i2cSet 14 10 15
     waitMillis 10
@@ -30,9 +30,9 @@ to '_ak9575_init' {
       local 'n' (1024 + (8 * ((at i data) - 128)))
       atPut i data n
     }
-    ak9575_scale = data
+    _ak9575_scale = data
   }
-  return ak9575_scale
+  return _ak9575_scale
 }
 
 to '_ak9575_int16' highByte lowByte {
@@ -71,16 +71,16 @@ to ak9575_mag_total {
 
 to ak9575_mag_x {
   local 'data' ('_ak9575_readData')
-  return (((at 1 ak9575_scale) * ('_ak9575_int16' (at 2 data) (at 1 data))) / 1024)
+  return (((at 1 _ak9575_scale) * ('_ak9575_int16' (at 2 data) (at 1 data))) / 1024)
 }
 
 to ak9575_mag_y {
   local 'data' ('_ak9575_readData')
-  return (((at 2 ak9575_scale) * ('_ak9575_int16' (at 4 data) (at 3 data))) / 1024)
+  return (((at 2 _ak9575_scale) * ('_ak9575_int16' (at 4 data) (at 3 data))) / 1024)
 }
 
 to ak9575_mag_z {
   local 'data' ('_ak9575_readData')
-  return (((at 3 ak9575_scale) * ('_ak9575_int16' (at 6 data) (at 5 data))) / 1024)
+  return (((at 3 _ak9575_scale) * ('_ak9575_int16' (at 6 data) (at 5 data))) / 1024)
 }
 
