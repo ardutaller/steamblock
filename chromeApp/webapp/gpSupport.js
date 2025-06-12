@@ -950,12 +950,7 @@ async function webSerialConnect() {
 		{ usbVendorId: 0x1B4F},		// XRP
 	];
 	webSerialDisconnect();
-	if (isElectron()) {
-		// TODO implement webserial for Electron
-		console.log('TO BE IMPLEMENTED');
-	} else {
-		GP_webSerialPort = await navigator.serial.requestPort({filters: vendorIDs}).catch((e) => { console.log(e); });
-	}
+	GP_webSerialPort = await navigator.serial.requestPort({filters: vendorIDs}).catch((e) => { console.log(e); });
 	if (!GP_webSerialPort) return; // no serial port selected
 	await GP_webSerialPort.open({ baudRate: 115200 });
 	GP_webSerialReader = await GP_webSerialPort.readable.getReader();

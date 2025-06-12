@@ -16,6 +16,32 @@ const createWindow = () => {
 		},
 	});
 
+	mainWindow.webContents.session.setPermissionCheckHandler(
+		(webContents, permission, requestingOrigin, details) => {
+			return (permission === 'serial');
+		}
+	);
+
+	mainWindow.webContents.session.setDevicePermissionHandler((details) => {
+		return (details.deviceType === 'serial');
+	});
+	
+
+	mainWindow.webContents.session.on(
+		'select-serial-port',
+		(event, portList, webContents, callback) => {
+			event.preventDefault();
+			console.log(portList);
+			const selectedPort = portList.find((device) => {
+				return device;
+			})
+			if (!selectedPort) {
+				callback('');
+			} else {
+				callback(selectedPort.portId);
+			}
+	});
+
 	// open devTools when in dev mode
 	if (!app.isPackaged) { mainWindow.webContents.openDevTools(); }
 
