@@ -1099,8 +1099,10 @@ void hardwareInit() {
 
 	// Reserved C071R pins:
 	// 42 (PF_2) - reset
-	// 47 (PA_3) - USB RX
-	// 52 (PA_2) - USB TX
+	// 49 (PA_12) - USB P
+	// 50 (PA_11) - USB N
+	// 47 (PA_3) - Downlink RX
+	// 52 (PA_2) - Downlink TX
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,

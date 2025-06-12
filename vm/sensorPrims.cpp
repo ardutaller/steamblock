@@ -147,9 +147,14 @@ void writeI2CReg(int deviceID, int reg, int value) {
 	Wire.endTransmission();
 }
 
-#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) || defined(ARDUINO_M5STACK_Core2)
+#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) // || defined(ARDUINO_M5STACK_Core2) || defined(DUELink)
 
 #define HAS_INTERNAL_I2C 1
+
+#if defined(DUELink)
+	// DUELink pins 52 and 47 are the downlink connector
+	TwoWire Wire1 = TwoWire(PA2, PA3);
+#endif
 
 static int internalWireStarted = false;
 
