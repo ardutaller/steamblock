@@ -1,6 +1,6 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 10 
+version 1 11 
 choices outputTypes 'asy;pin' 'asy;MCP4725' 
 description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
 
@@ -8,7 +8,7 @@ You can create your own instruments by adding waves together, and you can define
 
 Amplitude range: -32768 to 32767 (16 bits signed)
 '
-variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends '_mcp4725 out' 
+variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends '_mcp4725 out' _asynth_ramp_frequencies 
 
   spec ' ' 'asynth output' 'output _ to _ : number/address _ : asynth;resolution _' 'num menu.outputTypes num num' 1024 'asy;pin' 25 10
   space
@@ -68,6 +68,7 @@ to '_asynth init' {
   _asynth_total_durations = (newList 8)
   _asynth_ramp_starts = (newList 8 -1)
   _asynth_ramp_ends = (newList 8)
+  _asynth_ramp_frequencies = (newList 8)
 }
 
 to 'asynth envelope' amp att hold release gate {
@@ -107,7 +108,13 @@ to 'asynth gate frequency' gate {
   }
   local 'freq1' (base * (at gate _asynth_ramp_starts))
   local 'freq2' (base * (at gate _asynth_ramp_ends))
-  return ((freq1 + ((freq2 - freq1) / (maximum 1 ((at gate _asynth_total_durations) / (maximum 1 ((millisOp) - (at gate _asynth_trigger_times))))))) / 100)
+  local 'freq' (at gate _asynth_ramp_frequencies)
+  local 'new freq' ((freq1 + (((freq2 - freq1) * ((millisOp) - (at gate _asynth_trigger_times))) / (maximum 1 (at gate _asynth_total_durations)))) / 100)
+  if ((absoluteValue (((microsOp) % (1000000 / freq)) - ((microsOp) % (1000000 / (v 'new freq'))))) < 250) {
+    freq = (v 'new freq')
+    atPut gate _asynth_ramp_frequencies (v 'new freq')
+  }
+  return freq
 }
 
 to 'asynth noise' freq amp {
@@ -202,8 +209,10 @@ to 'asynth tri gate' gate {
 
 to 'asynth trigger gate' index key {
   '_asynth init'
-  atPut index _asynth_frequencies ('_asynth MIDI to freq' key)
+  local 'base' ('_asynth MIDI to freq' key)
+  atPut index _asynth_frequencies base
   atPut index _asynth_trigger_times (millisOp)
   atPut index _asynth_trigger_active (booleanConstant true)
+  atPut index _asynth_ramp_frequencies ((base * (at index _asynth_ramp_starts)) / 100)
 }
 
