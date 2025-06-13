@@ -1,27 +1,49 @@
 module 'Real Time Clock (KidsBits)' Input
 author MicroBlocks
-version 1 0 
-choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (D-M-Y)' 
+version 1 1 
+choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)' 
+choices rtc_component second minute hour day month year 'day of week' 
 description 'Real time clock (RTC).
 
 Simple functions to set and read the current time and date of a real-time clock module.
 With a 3V coin cell battery intalled, the clock will maintain the time and date while powered off.
 
-Currently supports the DS1307 chip but this library may be extended to support other RTC chips in the future.
+Currently supports both DS1307 and PCF85063 RTC chips; may be extended to support others in the future.
+
+https://www.analog.com/media/en/technical-documentation/data-sheets/ds1307.pdf
+https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf
+https://files.seeedstudio.com/wiki/Grove-High_Precision_RTC/res/PCF85063TP.pdf
 
 (Many thanks to Ralf Krause.)
 '
+variables rtc_i2cAddr 
 
-  spec 'r' 'rtc_getTimeOrDate' '#SVG#square11#00c612 get _' 'menu.rtc_timeOrDate' 'rtc;time (H:M:S)'
-  spec ' ' 'rtc_setTime' '#SVG#square11#00c612 set hours _ minutes _ seconds _' 'num num num' 9 30 0
-  spec ' ' 'rtc_setDate' '#SVG#square11#00c612 set day _ month _ year _' 'num num num' 1 1 2025
+  spec 'r' 'rtc_getTimeOrDate' '#SVG#square11#00c612 clock _' 'menu.rtc_timeOrDate' 'rtc;time (H:M:S)'
+  spec 'r' 'rtc_getComponent' '#SVG#square11#00c612 clock _' 'menu.rtc_component' 'second'
   space
-  spec 'r' 'rtc_getDayOfWeek' '#SVG#square11#00c612 get day of week'
+  spec ' ' 'rtc_setTime' '#SVG#square11#00c612 set hours _ minutes _ seconds _' 'num num num' 9 30 0
+  spec ' ' 'rtc_setDate' '#SVG#square11#00c612 set year _ month _ day _' 'num num num' 2025 1 1
   spec ' ' 'rtc_setDayOfWeek' '#SVG#square11#00c612 set day of week _ (1-7)' 'num' 1
   space
   spec 'r' '_rtc_bcd2dec' '_rtc_bcd2dec _' 'num'
   spec 'r' '_rtc_dec2bcd' '_rtc_dec2bcd _' 'num'
   spec 'r' '_rtc_twoDigit' '_rtc_twoDigit _' 'num'
+  spec ' ' '_rtcInit' '_rtcInit'
+  spec 'r' '_rtc_getReg' '_rtc_getReg register _' 'num' 3
+  spec ' ' '_rtc_setReg' '_rtc_setReg register _ value _' 'num num' 3 3
+  spec 'r' '_rtc_mapRegNum' '_rtc_mapRegNum _' 'num' 0
+
+to '_rtcInit' {
+  if (rtc_i2cAddr != 0) {return}
+  if ('[sensors:i2cExists]' (hexToInt '68')) {
+    rtc_i2cAddr = (hexToInt '68')
+  } ('[sensors:i2cExists]' (hexToInt '51')) {
+    rtc_i2cAddr = (hexToInt '51')
+  } else {
+    rtc_i2cAddr = 0
+    sayIt 'No RTC found.'
+  }
+}
 
 to '_rtc_bcd2dec' bcd {
   comment 'Convert an 8-bit "binary-coded decimal" number to a decimal number in range 0-99'
@@ -34,17 +56,50 @@ to '_rtc_dec2bcd' decimal {
   return (((decimal / 10) * 16) + (decimal % 10))
 }
 
+to '_rtc_getReg' reg {
+  '_rtcInit'
+  if (rtc_i2cAddr == 0) {
+    return
+  }
+  '[sensors:i2cSetClockSpeed]' 100000
+  result = (i2cGet rtc_i2cAddr ('_rtc_mapRegNum' reg))
+  '[sensors:i2cSetClockSpeed]' 400000
+  return result
+}
+
+to '_rtc_mapRegNum' reg {
+  if ((hexToInt '51') == rtc_i2cAddr) {
+    comment 'Map DS1307 register to equivalent PCF85063 register.
+Order of DS1307 registers is: second minute hour dayOfWeek day month year'
+    reg = (hexToInt (at (reg + 1) '456879A'))
+  }
+  return reg
+}
+
+to '_rtc_setReg' reg value {
+  '_rtcInit'
+  if (rtc_i2cAddr == 0) {
+    return
+  }
+  '[sensors:i2cSetClockSpeed]' 100000
+  i2cSet rtc_i2cAddr ('_rtc_mapRegNum' reg) value
+  '[sensors:i2cSetClockSpeed]' 400000
+}
+
 to '_rtc_twoDigit' n {
   comment 'Return a two-digit decimal representation for n (range 0-99).'
   decimal = (maximum 0 (minimum n 99))
   return ('[data:join]' (ifExpression (n < 10) '0' '') n)
 }
 
-to rtc_getDayOfWeek {
-  '[sensors:i2cSetClockSpeed]' 100000
-  local 'weekdayNum' ('_rtc_bcd2dec' (i2cGet (hexToInt '68') 3))
-  '[sensors:i2cSetClockSpeed]' 400000
-  return weekdayNum
+to rtc_getComponent which {
+  local 'component' ('[data:makeList]' 'second' 'minute' 'hour' 'day of week' 'day' 'month' 'year')
+  local 'reg' (('[data:find]' which component) - 1)
+  if (reg < 0) {
+    return 0
+  }
+  local 'result' ('_rtc_bcd2dec' ('_rtc_getReg' reg))
+  return (ifExpression ('year' == which) (2000 + result) result)
 }
 
 to rtc_getTimeOrDate which {
@@ -59,35 +114,31 @@ to rtc_getTimeOrDate which {
     local 'day' ('_rtc_bcd2dec' (i2cGet i2cAddr 4))
     local 'month' ('_rtc_bcd2dec' (i2cGet i2cAddr 5))
     local 'year' (('_rtc_bcd2dec' (i2cGet i2cAddr 6)) + 2000)
-    return ('[data:join]' ('_rtc_twoDigit' day) '.' ('_rtc_twoDigit' month) '-' year)
+    return ('[data:join]' year '-' ('_rtc_twoDigit' month) '-' ('_rtc_twoDigit' day))
   }
-  '[sensors:i2cSetClockSpeed]' 400000
 }
 
-to rtc_setDate day month year {
-  local 'i2cAddr' (hexToInt '68')
+to rtc_setDate year month day {
   day = (maximum 1 (minimum day 31))
   month = (maximum 1 (minimum month 12))
   year = (maximum 0 (minimum (year - 2000) 99))
-  i2cSet i2cAddr 4 ('_rtc_dec2bcd' day)
-  i2cSet i2cAddr 5 ('_rtc_dec2bcd' month)
-  i2cSet i2cAddr 6 ('_rtc_dec2bcd' year)
+  '_rtc_setReg' 4 ('_rtc_dec2bcd' day)
+  '_rtc_setReg' 5 ('_rtc_dec2bcd' month)
+  '_rtc_setReg' 6 ('_rtc_dec2bcd' year)
 }
 
 to rtc_setDayOfWeek weekdayNum {
-  local 'i2cAddr' (hexToInt '68')
-  weekdayNum = (max 1 (min weekdayNum 7))
-  i2cSet i2cAddr (hexToInt '3') ('_rtc_dec2bcd' weekdayNum)
+  weekdayNum = (maximum 1 (minimum weekdayNum 7))
+  '_rtc_setReg' 3 ('_rtc_dec2bcd' weekdayNum)
 }
 
 to rtc_setTime hours minutes seconds {
   comment 'Clock is running (bit 7 of seconds = 0) using 24-hour time (bit 6 of hours = 0). '
-  local 'i2cAddr' (hexToInt '68')
   hours = (maximum 0 (minimum hours 23))
   minutes = (maximum 0 (minimum minutes 59))
   seconds = (maximum 0 (minimum seconds 59))
-  i2cSet i2cAddr 0 ('_rtc_dec2bcd' seconds)
-  i2cSet i2cAddr 1 ('_rtc_dec2bcd' minutes)
-  i2cSet i2cAddr 2 ('_rtc_dec2bcd' hours)
+  '_rtc_setReg' 0 ('_rtc_dec2bcd' seconds)
+  '_rtc_setReg' 1 ('_rtc_dec2bcd' minutes)
+  '_rtc_setReg' 2 ('_rtc_dec2bcd' hours)
 }
 
