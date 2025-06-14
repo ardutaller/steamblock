@@ -4955,6 +4955,138 @@ msgstr ""
 msgid "RoboESP32 set GPIO _ _"
 msgstr ""
 
+#. Foxbit library block
+msgid "logo"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb loudness"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb light level"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb set all NeoPixels _"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb pin _ touched?"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb temperature"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb beep for _ millisecs"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb humidity"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb current"
+msgstr ""
+
+#. Foxbit library block
+msgid "fb clear NeoPixels"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb stop fan"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb clear oled"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb PIR motion detected?"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb set _ LED to _"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb _ ADKey pressed?"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb ultrasonic distance"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb RFID"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb compass direction"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb barometric pressure (mBar)"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb altitude (cm)"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb speaker beep for _ millisecs"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb clear rainbow colors"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb temperature"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb sound"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb joystick _"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb set all rainbow colors to _"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb set servo to _ degrees (0 to 180)"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb set fan power _ (-100 to 100)"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb humidity"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb oled write _ at x _ y _ big _"
+msgstr ""
+
+#. Coding Box library block
+msgid "cb light"
+msgstr ""
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr ""
