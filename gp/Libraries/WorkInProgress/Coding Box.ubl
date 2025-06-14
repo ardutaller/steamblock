@@ -1,6 +1,6 @@
 module 'Coding Box'
 author MicroBlocks
-version 1 2 
+version 1 3 
 depends '_Air Pressure (BMP388)' '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT 
 choices cbox_joystick x y 
 choices cbox_ledOrButton red yellow green all 
@@ -39,7 +39,6 @@ https://kidsbits.cc/products/kidsbits-maker-educational-esp32-multi-purpose-codi
   spec 'r' 'cbox_compass' 'cb compass direction'
   space
   spec 'r' 'cbox_airPressureMbar' 'cb barometric pressure (mBar)'
-  spec ' ' 'cbox_setCurrentAltitude' 'cb set current altitude _ meters' 'num' 0
   spec 'r' 'cbox_altitudeCentimeters' 'cb altitude (cm)'
 
 to cbox_adkey key {
@@ -136,10 +135,6 @@ to cbox_rfid {
 
 to cbox_setAllNeoPixels color {
   neoPixelSetAllToColor color
-}
-
-to cbox_setCurrentAltitude meters {
-  bmp388_setCurrentAltitude meters
 }
 
 to cbox_setFan power {
