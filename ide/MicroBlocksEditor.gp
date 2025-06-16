@@ -134,9 +134,9 @@ method addTopBarParts MicroBlocksEditor {
 	leftItems = (list)
 	add leftItems (175 * scale)
 	add leftItems (addSVGIconButtonOldStyle this 'icon-globe' 'languageMenu' 'Language')
-	add leftItems (12 * scale)
+	add leftItems (8 * scale)
 	add leftItems (addSVGIconButtonOldStyle this 'icon-gear' 'settingsMenu' 'MicroBlocks')
-	add leftItems (12 * scale)
+	add leftItems (8 * scale)
 	add leftItems (addSVGIconButtonOldStyle this 'icon-file' 'projectMenu' 'File')
 
 	if (isNil title) {
@@ -151,7 +151,7 @@ method addTopBarParts MicroBlocksEditor {
 	progressIndicator = (newImageBox (newBitmap progressW progressW))
 	addPart morph (morph progressIndicator)
 	add rightItems progressIndicator
-	add rightItems (12 * scale)
+	add rightItems (24 * scale)
 
 	addFrameRate = (contains (commandLine) '--allowMorphMenu')
 	if addFrameRate {
@@ -165,17 +165,17 @@ method addTopBarParts MicroBlocksEditor {
 	addPart morph (morph connectionWidget)
 
 	add rightItems (addTwoStateSVGIconButton this 'icon-graph' 'showGraph' 'Graph')
-	add rightItems (12 * scale)
+	add rightItems (24 * scale)
 	add rightItems (vSeparator this)
-	add rightItems (12 * scale)
+	add rightItems (24 * scale)
 	add rightItems connectionWidget
-	add rightItems (12 * scale)
+	add rightItems (24 * scale)
 	add rightItems (vSeparator this)
-	add rightItems (12 * scale)
+	add rightItems (24 * scale)
 	add rightItems (addSVGIconButton this 'icon-start' 'startAll' 'Start')
-	add rightItems (12 * scale)
+	add rightItems (8 * scale)
 	add rightItems (addSVGIconButton this 'icon-stop' 'stopAndSyncScripts' 'Stop')
-	add rightItems (7 * scale)
+	add rightItems (24 * scale)
 }
 
 method vSeparator MicroBlocksEditor {
