@@ -119,7 +119,7 @@ to 'asynth gate frequency' gate {
 
 to 'asynth noise' freq amp {
   if (amp < 1) {return 0}
-  return (ifExpression (((microsOp) % (1000000 / freq)) < 100) (random (0 - amp) amp) 0)
+  return (ifExpression (((microsOp) % (1000000 / (maximum 1 freq))) < 100) (random (0 - amp) amp) 0)
 }
 
 to 'asynth noise gate' gate {
