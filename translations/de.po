@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-06-02 10:44+0000\n"
+"PO-Revision-Date: 2025-06-16 11:55+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -398,7 +398,7 @@ msgstr "verteile _ von ( _ , _ ) auf ( _ , _ )"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr "trenne _ nach _"
+msgstr "trenne _ bei _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "play tone pin _ frequency _"
@@ -5163,7 +5163,7 @@ msgstr "Gitarre"
 
 #. micro:STEAMakers library block
 msgid "ms;start"
-msgstr "starten"
+msgstr "starte"
 
 #. General MIDI drum set
 msgid "jazz"
@@ -5247,7 +5247,7 @@ msgstr "MiKe Robot Geschwindigkeit_ %"
 
 #. micro:STEAMakers library block
 msgid "ms;reset"
-msgstr "zurücksetzen"
+msgstr "setze zurück"
 
 #. General MIDI drum set
 msgid "room"
@@ -5618,7 +5618,7 @@ msgstr "ms Luftfeuchtigkeit %"
 
 #. micro:STEAMakers library block
 msgid "ms inclination towards _ º"
-msgstr "ms neigen auf _ º"
+msgstr "ms Neigung auf _ º"
 
 #. micro:STEAMakers library block
 msgid "ms energy _"
@@ -5630,7 +5630,7 @@ msgstr "ms _ Energiemesser"
 
 #. micro:STEAMakers library block
 msgid "ms;stop"
-msgstr "stoppen"
+msgstr "stoppe"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR clear RGB LED"
