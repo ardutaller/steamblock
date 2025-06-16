@@ -1,6 +1,6 @@
 module 'Real Time Clock (KidsBits)' Input
 author MicroBlocks
-version 1 1 
+version 1 2 
 choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)' 
 choices rtc_component second minute hour day month year 'day of week' 
 description 'Real time clock (RTC).
@@ -29,6 +29,7 @@ variables rtc_i2cAddr
   spec 'r' '_rtc_dec2bcd' '_rtc_dec2bcd _' 'num'
   spec 'r' '_rtc_twoDigit' '_rtc_twoDigit _' 'num'
   spec ' ' '_rtcInit' '_rtcInit'
+  spec 'r' '_rtc_isPCF85063' '_rtc_isPCF85063'
   spec 'r' '_rtc_getReg' '_rtc_getReg register _' 'num' 3
   spec ' ' '_rtc_setReg' '_rtc_setReg register _ value _' 'num num' 3 3
   spec 'r' '_rtc_mapRegNum' '_rtc_mapRegNum _' 'num' 0
@@ -67,6 +68,11 @@ to '_rtc_getReg' reg {
   return result
 }
 
+to '_rtc_isPCF85063' {
+  '_rtcInit'
+  return (rtc_i2cAddr == (hexToInt '51'))
+}
+
 to '_rtc_mapRegNum' reg {
   if ((hexToInt '51') == rtc_i2cAddr) {
     comment 'Map DS1307 register to equivalent PCF85063 register.
@@ -99,21 +105,25 @@ to rtc_getComponent which {
     return 0
   }
   local 'result' ('_rtc_bcd2dec' ('_rtc_getReg' reg))
-  return (ifExpression ('year' == which) (2000 + result) result)
+  if ('year' == which) {
+    result += 2000
+  } ('_rtc_isPCF85063') {
+    comment 'PCF85063 weekday range is 0-6.'
+    weekdayNum += 1
+  }
+  return result
 }
 
 to rtc_getTimeOrDate which {
-  local 'i2cAddr' (hexToInt '68')
-  '[sensors:i2cSetClockSpeed]' 100000
   if ('rtc;time (H:M:S)' == which) {
-    local 'hour' ('_rtc_bcd2dec' (i2cGet i2cAddr 2))
-    local 'minute' ('_rtc_bcd2dec' (i2cGet i2cAddr 1))
-    local 'second' ('_rtc_bcd2dec' ((i2cGet i2cAddr 0) & 127))
+    local 'hour' ('_rtc_bcd2dec' ('_rtc_getReg' 2))
+    local 'minute' ('_rtc_bcd2dec' ('_rtc_getReg' 1))
+    local 'second' ('_rtc_bcd2dec' (('_rtc_getReg' 0) & 127))
     return ('[data:join]' ('_rtc_twoDigit' hour) ':' ('_rtc_twoDigit' minute) ':' ('_rtc_twoDigit' second))
   } else {
-    local 'day' ('_rtc_bcd2dec' (i2cGet i2cAddr 4))
-    local 'month' ('_rtc_bcd2dec' (i2cGet i2cAddr 5))
-    local 'year' (('_rtc_bcd2dec' (i2cGet i2cAddr 6)) + 2000)
+    local 'day' ('_rtc_bcd2dec' ('_rtc_getReg' 4))
+    local 'month' ('_rtc_bcd2dec' ('_rtc_getReg' 5))
+    local 'year' (('_rtc_bcd2dec' ('_rtc_getReg' 6)) + 2000)
     return ('[data:join]' year '-' ('_rtc_twoDigit' month) '-' ('_rtc_twoDigit' day))
   }
 }
@@ -129,6 +139,10 @@ to rtc_setDate year month day {
 
 to rtc_setDayOfWeek weekdayNum {
   weekdayNum = (maximum 1 (minimum weekdayNum 7))
+  if ('_rtc_isPCF85063') {
+    comment 'PCF85063 weekday range is 0-6.'
+    weekdayNum += -1
+  }
   '_rtc_setReg' 3 ('_rtc_dec2bcd' weekdayNum)
 }
 
