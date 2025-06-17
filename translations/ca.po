@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-05-28 14:02+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-06-18 10:01+0000\n"
+"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -6648,3 +6648,137 @@ msgstr "CoCube"
 #. Library button, abbreviated
 msgid "LIBS"
 msgstr "BIBS"
+
+#. Foxbit library block
+msgid "fb light level"
+msgstr "fb nivell de llum"
+
+#. Foxbit library block
+msgid "fb pin _ touched?"
+msgstr "fb pin _ tocat?"
+
+#. Foxbit library block
+msgid "fb beep for _ millisecs"
+msgstr "fb beep durant _ mil·lisegons"
+
+#. Foxbit library block
+msgid "fb humidity"
+msgstr "fb humitat"
+
+#. Foxbit library block
+msgid "fb current"
+msgstr "fb corrent"
+
+#. Foxbit library block
+msgid "fb clear NeoPixels"
+msgstr "fb apaga NeoPíxels"
+
+#. Coding Box library block
+msgid "cb stop fan"
+msgstr "cb atura el ventilador"
+
+#. Coding Box library block
+msgid "cb clear oled"
+msgstr "cb neteja pantalla"
+
+#. Coding Box library block
+msgid "cb set _ LED to _"
+msgstr "cb posa el led _ a _"
+
+#. Coding Box library block
+msgid "cb ultrasonic distance"
+msgstr "cb distància"
+
+#. Coding Box library block
+msgid "cb RFID"
+msgstr "cb RFID"
+
+#. Coding Box library block
+msgid "cb compass direction"
+msgstr "cb direcció bruíxola"
+
+#. Coding Box library block
+msgid "cb barometric pressure (mBar)"
+msgstr "cb pressió baromètrica (mBar)"
+
+#. Coding Box library block
+msgid "cb altitude (cm)"
+msgstr "cb altitud (cm)"
+
+#. Coding Box library block
+msgid "cb speaker beep for _ millisecs"
+msgstr "cb beep durant _ mil·lisegons"
+
+#. Coding Box library block
+msgid "cb temperature"
+msgstr "cb temperatura"
+
+#. Coding Box library block
+msgid "cb sound"
+msgstr "cb nivell de so"
+
+#. Coding Box library block
+msgid "cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+msgstr "cb cercle de leds #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+
+#. Coding Box library block
+msgid "cb set servo to _ degrees (0 to 180)"
+msgstr "cb posa el servo a _ graus (0 a 180)"
+
+#. Coding Box library block
+msgid "cb set fan power _ (-100 to 100)"
+msgstr "cb potència del ventilador _ (-100 a 100)"
+
+#. Coding Box library block
+msgid "cb humidity"
+msgstr "cb humitat"
+
+#. Coding Box library block
+msgid "cb light"
+msgstr "cb nivell de llum"
+
+#. Foxbit library block
+msgid "fb temperature"
+msgstr "fb temperatura"
+
+#. Coding Box library block
+msgid "cb PIR motion detected?"
+msgstr "cb PIR moviment detectat?"
+
+#. Coding Box library block
+msgid "cb set all rainbow colors to _"
+msgstr "cb tots els leds del cercle de color _"
+
+#. Foxbit library block
+msgid "logo"
+msgstr "logo"
+
+#. Coding Box library block
+msgid "cb clear rainbow colors"
+msgstr "cb apaga cercle de leds"
+
+#. Coding Box library block
+msgid "cb oled write _ at x _ y _ big _"
+msgstr "cb pantalla escriu _ a x _ y _ gran _"
+
+#. Foxbit library block
+msgid "fb loudness"
+msgstr "fb nivell de so"
+
+#. Foxbit library block
+msgid "fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+msgstr ""
+"fb posa NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ "
+"#BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+
+#. Foxbit library block
+msgid "fb set all NeoPixels _"
+msgstr "fb tots els NeoPíxels de color _"
+
+#. Coding Box library block
+msgid "cb _ ADKey pressed?"
+msgstr "cb ADKey _ premut?"
+
+#. Coding Box library block
+msgid "cb joystick _"
+msgstr "cb joystick _"
