@@ -1,6 +1,6 @@
 module WebPanel Data
 author MicroBlocks
-version 1 0 
+version 1 1 
 depends '_HTTP server' _Strings WiFi 
 description 'Quickly create a web panel that shows auto-updating readouts of sensor values and buttons to trigger actions.'
 variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _webpnl_css_style 
@@ -18,14 +18,34 @@ variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _web
   spec 'r' '_webpnl unescape URL part' '_webpnl unescape URL part _' 'auto' 'an%20escaped%3Cpart%3E'
   spec ' ' '_webpnl update page cache' '_webpnl update page cache'
   spec ' ' '_webpnl webserver loop' '_webpnl webserver loop'
-  spec 'r' '_webpnl html tag' 'tag _ contents _ : #BR# _ → _   : ...' 'auto auto auto auto' 'body' '' 'width' '100%'
+  spec 'r' '_webpnl html tag' '_webpnl tag _ contents _ : #BR# _ → _  : ...' 'auto auto auto auto' 'body' '' 'width' '100%'
+  spec 'r' '_webpnl escaped call params' '_webpnl escaped call params _' 'auto' ''
+  spec 'r' '_webpnl escaped URL part' '_webpnl escaped URL part _' 'auto' ''
 
-to 'webpnl set title' title {
-  _webpnl_title = title
-  '_webpnl update page cache'
+to '_webpnl escaped URL part' part {
+  local 'escaped' ''
+  local 'escape codes' ('[data:makeList]' '%20' '%3C' '%3E' '%91' '%93' '%58')
+  local 'unescaped chars' ('[data:makeList]' ' ' '<' '>' '[' ']' ':')
+  for c part {
+    local 'index' ('[data:find]' c (v 'unescaped chars'))
+    if (index > 0) {
+      escaped = ('[data:join]' escaped (at index (v 'escape codes')))
+    } else {
+      escaped = ('[data:join]' escaped c)
+    }
+  }
+  return escaped
 }
 
-to '_webpnl html tag' {
+to '_webpnl escaped call params' params {
+  local 'escaped' ''
+  for param params {
+    escaped = ('[data:join]' escaped '/' ('_webpnl escaped URL part' param))
+  }
+  return ('[data:copyFromTo]' escaped 1 ((size escaped) - 1))
+}
+
+to '_webpnl html tag' args args args args {
   local 'tag' (getArg 1)
   local 'contents' (getArg 2)
   local 'html' ('[data:join]' '<' tag)
@@ -147,13 +167,13 @@ to '_webpnl webserver loop' {
     local 'request' ('[net:httpServerGetRequest]')
     if (request != '') {
       local 'path' ('path of request' request)
-      local 'path parts' ('[data:split]' ('[data:copyFromTo]' path 2) '/')
+      local 'path parts' ('[data:split]' ('_webpnl unescape URL part' ('[data:copyFromTo]' path 2)) '/')
       if (path == '/') {
         '[net:respondToHttpRequest]' '200 OK' _webpnl_page_cache
       } ((at 1 (v 'path parts')) == 'get') {
-        '[net:respondToHttpRequest]' '200 OK' ('[data:convertType]' (callCustomReporter ('_webpnl unescape URL part' (at 2 (v 'path parts'))) ('_webpnl sanitized call params' ('[data:copyFromTo]' (v 'path parts') 3))) 'string')
+        '[net:respondToHttpRequest]' '200 OK' ('[data:convertType]' (callCustomReporter (at 2 (v 'path parts')) ('_webpnl sanitized call params' ('[data:copyFromTo]' (v 'path parts') 3))) 'string')
       } ((at 1 (v 'path parts')) == 'set') {
-        callCustomCommand ('_webpnl unescape URL part' (at 2 (v 'path parts'))) ('_webpnl sanitized call params' ('[data:copyFromTo]' (v 'path parts') 3))
+        callCustomCommand (at 2 (v 'path parts')) ('_webpnl sanitized call params' ('[data:copyFromTo]' (v 'path parts') 3))
         '[net:respondToHttpRequest]' '200 OK'
       } else {
         '[net:respondToHttpRequest]' '404 Not Found' ('[data:join]' 'Path not found: ' ('path of request' request))
@@ -165,21 +185,27 @@ to '_webpnl webserver loop' {
 to 'webpnl add button' label selector params {
   '_webpnl init'
   local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' 'fetch(''/set/' selector (ifExpression (isType params 'list') ('[data:join]' '/' (joinWith params '/')) '') ''');')) 'class' 'line') _webpnl_buttons
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' 'fetch(encodeURIComponent(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') '''));')) 'class' 'line') _webpnl_buttons
   '_webpnl update page cache'
 }
 
 to 'webpnl add readout' label selector params {
   '_webpnl init'
   local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' '(()=>{let e = document.querySelector(''#' id '''); setInterval(()=>{ fetch(''/get/' selector (ifExpression (isType params 'list') ('[data:join]' '/' (joinWith params '/')) '') ''').then(response=>{ if (response.ok) { response.text().then( text => { e.innerHTML = text; } ); } }) }, 100);})()'))) 'class' 'line') _webpnl_readouts
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' '(()=>{let e = document.querySelector(''#' id '''); setInterval(()=>{ fetch(''get/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''').then(response=>{ if (response.ok) { response.text().then( text => { e.innerHTML = text; } ); } }) }, 100);})()'))) 'class' 'line') _webpnl_readouts
   '_webpnl update page cache'
 }
 
 to 'webpnl add toggle' label selector params {
   '_webpnl init'
   local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); e.disabled=true; fetch(''/set/' selector (ifExpression (isType params 'list') ('[data:join]' '/' (joinWith params '/')) '') ''').then(response=>{ if (response.ok) { e.classList.toggle(''pressed''); e.disabled=false; }});})()')) 'class' 'line') _webpnl_buttons
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); e.disabled=true; fetch(encodeURIComponent(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''')).then(response=>{ if (response.ok) { e.classList.toggle(''pressed''); e.disabled=false; }});})()')) 'class' 'line') _webpnl_buttons
+  '_webpnl update page cache'
+}
+
+to 'webpnl set title' title {
+  '_webpnl init'
+  _webpnl_title = title
   '_webpnl update page cache'
 }
 
