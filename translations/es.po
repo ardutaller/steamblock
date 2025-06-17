@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-06-15 09:01+0000\n"
+"PO-Revision-Date: 2025-06-18 10:01+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -1418,7 +1418,7 @@ msgstr "fija velocidad del plotter a _ %"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm light level"
-msgstr "Farm nivell de luz ambiental"
+msgstr "Farm nivel de luz ambiental"
 
 #. OLED Graphics library block
 msgid "clear"
@@ -3097,7 +3097,7 @@ msgstr "TdR botón 2"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm water level"
-msgstr "Farm nivell de agua"
+msgstr "Farm nivel de agua"
 
 #. Keyestudio Smart Home library block
 msgid "Home play _ octave _ for _ ms"
@@ -6705,3 +6705,137 @@ msgstr "BIBS"
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr "Reconecta la placa haciendo clic en el botón \"Conectar\"."
+
+#. Foxbit library block
+msgid "fb loudness"
+msgstr "fb nivel de ruido"
+
+#. Foxbit library block
+msgid "fb light level"
+msgstr "fb nivel de luz"
+
+#. Foxbit library block
+msgid "fb temperature"
+msgstr "fb temperatura"
+
+#. Foxbit library block
+msgid "fb set all NeoPixels _"
+msgstr "fb todos los NeoPíxeles de color _"
+
+#. Foxbit library block
+msgid "fb beep for _ millisecs"
+msgstr "fb beep durante _ milisegundos"
+
+#. Foxbit library block
+msgid "fb humidity"
+msgstr "fb humedad"
+
+#. Foxbit library block
+msgid "fb current"
+msgstr "fb corriente"
+
+#. Foxbit library block
+msgid "fb clear NeoPixels"
+msgstr "fb apaga NeoPíxeles"
+
+#. Coding Box library block
+msgid "cb stop fan"
+msgstr "fb para el ventilador"
+
+#. Coding Box library block
+msgid "cb clear oled"
+msgstr "cb borra pantalla"
+
+#. Coding Box library block
+msgid "cb set _ LED to _"
+msgstr "cb pon el led _ a _"
+
+#. Coding Box library block
+msgid "cb _ ADKey pressed?"
+msgstr "cb ¿ADKey _ presionado?"
+
+#. Coding Box library block
+msgid "cb compass direction"
+msgstr "cb dirección brújula"
+
+#. Coding Box library block
+msgid "cb barometric pressure (mBar)"
+msgstr "cb presión barométrica (mBar)"
+
+#. Coding Box library block
+msgid "cb altitude (cm)"
+msgstr "cb altitud (cm)"
+
+#. Coding Box library block
+msgid "cb speaker beep for _ millisecs"
+msgstr "cb beep durante _ milisegundos"
+
+#. Coding Box library block
+msgid "cb clear rainbow colors"
+msgstr "cb apaga el círculo de leds"
+
+#. Coding Box library block
+msgid "cb temperature"
+msgstr "cb temperatura"
+
+#. Coding Box library block
+msgid "cb sound"
+msgstr "cb nivel de sonido"
+
+#. Coding Box library block
+msgid "cb joystick _"
+msgstr "cb joystick _"
+
+#. Coding Box library block
+msgid "cb set all rainbow colors to _"
+msgstr "cb todos los leds del círculo de colores _"
+
+#. Coding Box library block
+msgid "cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+msgstr "cb círculo de colores #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+
+#. Coding Box library block
+msgid "cb set fan power _ (-100 to 100)"
+msgstr "cb potencia del ventilador _ (-100 a 100)"
+
+#. Coding Box library block
+msgid "cb oled write _ at x _ y _ big _"
+msgstr "cb pantalla escribe _ en x _ y _ grande _"
+
+#. Coding Box library block
+msgid "cb light"
+msgstr "cb nivel de luz"
+
+#. Coding Box library block
+msgid "cb RFID"
+msgstr "cb RFID"
+
+#. Coding Box library block
+msgid "cb PIR motion detected?"
+msgstr "cb PIR ¿movimiento detectado?"
+
+#. Foxbit library block
+msgid "logo"
+msgstr "logo"
+
+#. Foxbit library block
+msgid "fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+msgstr ""
+"fb pon NeoPíxeles #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ "
+"#BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+
+#. Coding Box library block
+msgid "cb ultrasonic distance"
+msgstr "cb distancia"
+
+#. Foxbit library block
+msgid "fb pin _ touched?"
+msgstr "fb ¿pin_ tocado?"
+
+#. Coding Box library block
+msgid "cb humidity"
+msgstr "cb humedad"
+
+#. Coding Box library block
+msgid "cb set servo to _ degrees (0 to 180)"
+msgstr "cb pon el servo a _ grados (0 a 180)"
