@@ -1029,6 +1029,10 @@ method contextMenu Block {
 	}
 	if (devMode) {
 		addLine menu
+		if (isCallable this) {
+			addItem menu 'copy callable name' 'copyCallableName' 'copy this block''s name for use in a "call" block'
+			addLine menu
+		}
 		addItem menu 'show instructions' (action 'showInstructions' (smallRuntime) this)
 		addItem menu 'show compiled bytes' (action 'showCompiledBytes' (smallRuntime) this)
 		if (and isInPalette (notNil (functionNamed (project pe) (primName expression)))) {
@@ -1206,6 +1210,17 @@ method extractBlock Block whileGrabbing {
 		}
 	}
 	if (not whileGrabbing) { grabTopLeft morph }
+}
+
+method isCallable Block {
+	primName = (primName expression)
+	return (or
+		(notNil (functionNamed (project (findProjectEditor)) primName))
+		(and (beginsWith primName '[') (endsWith primName ']')))
+}
+
+method copyCallableName Block {
+	setClipboard (primName expression)
 }
 
 method copyToClipboard Block {
