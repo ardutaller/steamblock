@@ -31,6 +31,7 @@
 	#include <WiFiUdp.h>
 #elif defined(ARDUINO_ARCH_ESP32)
 	#include <WiFi.h>
+	#include <ESPmDNS.h>
 //	#include <WiFiClientSecure.h>
 	#include <WebSocketsServer.h>
 #elif defined(PICO_WIFI)
@@ -268,6 +269,15 @@ static OBJ primGetMAC(int argCount, OBJ *args) {
 	#else
 		return newStringFromBytes(WiFi.macAddress().c_str(), 18);
 	#endif
+}
+
+static OBJ primSetDomainName(int argCount, OBJ *args) {
+	if (!isConnectedToWiFi()) return fail(wifiNotConnected);
+	#ifdef ARDUINO_ARCH_ESP32
+	MDNS.end();
+	MDNS.begin(obj2str(args[0]));
+	#endif
+	return falseObj;
 }
 
 // HTTP Server
@@ -731,6 +741,7 @@ static OBJ primGetIP(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primStartSSIDscan(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primGetSSID(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primGetMAC(int argCount, OBJ *args) { return fail(noWiFi); }
+static OBJ primSetDomainName(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpServerGetRequest(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primRespondToHttpRequest(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpConnect(int argCount, OBJ *args) { return fail(noWiFi); }
@@ -1006,6 +1017,7 @@ static PrimEntry entries[] = {
 	{"allowWiFiAndBLE", primAllowWiFiAndBLE},
 	{"startWiFi", primStartWiFi},
 	{"stopWiFi", primStopWiFi},
+	{"setDomainName", primSetDomainName},
 	{"wifiStatus", primWiFiStatus},
 	{"myIPAddress", primGetIP},
 	{"startSSIDscan", primStartSSIDscan},
