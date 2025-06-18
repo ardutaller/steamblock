@@ -31,6 +31,7 @@
 	#include <WiFiUdp.h>
 #elif defined(ARDUINO_ARCH_ESP32)
 	#include <WiFi.h>
+	#include <ESPmDNS.h>
 //	#include <WiFiClientSecure.h>
 	#include <WebSocketsServer.h>
 #elif defined(PICO_WIFI)
@@ -284,6 +285,9 @@ static void startHttpServer() {
 			server.begin(serverPort);
 		#endif
 		serverStarted = true;
+		#ifdef ARDUINO_ARCH_ESP32
+		MDNS.begin("microblocks");
+		#endif
 	}
 }
 
