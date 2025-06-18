@@ -2929,6 +2929,10 @@ msgstr ""
 msgid "wifi create hotspot _ password _"
 msgstr ""
 
+#. WiFi library block
+msgid "wifi set local domain name _ .local"
+msgstr ""
+
 #. Example WiFi network password
 msgid "Network_Password"
 msgstr ""

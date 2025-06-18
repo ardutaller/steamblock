@@ -271,6 +271,15 @@ static OBJ primGetMAC(int argCount, OBJ *args) {
 	#endif
 }
 
+static OBJ primSetDomainName(int argCount, OBJ *args) {
+	if (!isConnectedToWiFi()) return fail(wifiNotConnected);
+	#ifdef ARDUINO_ARCH_ESP32
+	MDNS.end();
+	MDNS.begin(obj2str(args[0]));
+	#endif
+	return falseObj;
+}
+
 // HTTP Server
 
 static void startHttpServer() {
@@ -285,9 +294,6 @@ static void startHttpServer() {
 			server.begin(serverPort);
 		#endif
 		serverStarted = true;
-		#ifdef ARDUINO_ARCH_ESP32
-		MDNS.begin("microblocks");
-		#endif
 	}
 }
 
@@ -735,6 +741,7 @@ static OBJ primGetIP(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primStartSSIDscan(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primGetSSID(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primGetMAC(int argCount, OBJ *args) { return fail(noWiFi); }
+static OBJ primSetDomainName(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpServerGetRequest(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primRespondToHttpRequest(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpConnect(int argCount, OBJ *args) { return fail(noWiFi); }
@@ -1010,6 +1017,7 @@ static PrimEntry entries[] = {
 	{"allowWiFiAndBLE", primAllowWiFiAndBLE},
 	{"startWiFi", primStartWiFi},
 	{"stopWiFi", primStopWiFi},
+	{"setDomainName", primSetDomainName},
 	{"wifiStatus", primWiFiStatus},
 	{"myIPAddress", primGetIP},
 	{"startSSIDscan", primStartSSIDscan},
