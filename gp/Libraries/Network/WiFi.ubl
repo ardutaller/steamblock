@@ -1,6 +1,6 @@
 module WiFi Comm
 author MicroBlocks
-version 1 8 
+version 1 9 
 tags communication network 
 description 'Connect to a WiFi network. Used in conjunction with other network libraries, such as HTTP client, HTTP server or Web Thing.
 '
@@ -47,6 +47,7 @@ to wifiConnect ssid password fixedIP gatewayIP subnetIP {
     setUserLED false
     waitMillis 50
   }
+  '[net:setDomainName]' 'microblocks'
   sayIt 'My IP address is:' ('[net:myIPAddress]')
 }
 
@@ -68,6 +69,7 @@ to wifiCreateHotspot ssid password {
     setUserLED false
     waitMillis 50
   }
+  '[net:setDomainName]' 'microblocks'
   sayIt 'My IP address is:' ('[net:myIPAddress]')
 }
 
