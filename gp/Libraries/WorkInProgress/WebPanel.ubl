@@ -1,8 +1,9 @@
 module WebPanel Data
 author MicroBlocks
-version 1 1 
+version 1 2 
 depends '_HTTP server' _Strings WiFi 
-description 'Quickly create a web panel that shows auto-updating readouts of sensor values and buttons to trigger actions.'
+description 'Quickly create a web panel that shows auto-updating readouts of sensor values and buttons to trigger actions.
+'
 variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _webpnl_css_style 
 
   spec ' ' 'webpnl set title' 'set web panel title _' 'auto' 'MicroBlocks Web Panel'
@@ -18,15 +19,16 @@ variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _web
   spec 'r' '_webpnl unescape URL part' '_webpnl unescape URL part _' 'auto' 'an%20escaped%3Cpart%3E'
   spec ' ' '_webpnl update page cache' '_webpnl update page cache'
   spec ' ' '_webpnl webserver loop' '_webpnl webserver loop'
-  spec 'r' '_webpnl html tag' '_webpnl tag _ contents _ : #BR# _ → _  : ...' 'auto auto auto auto' 'body' '' 'width' '100%'
+  spec 'r' '_webpnl html tag' '_webpnl tag _ contents _ : #BR# _ → _   : ...' 'auto auto auto auto' 'body' '' 'width' '100%'
   spec 'r' '_webpnl escaped call params' '_webpnl escaped call params _' 'auto' ''
   spec 'r' '_webpnl escaped URL part' '_webpnl escaped URL part _' 'auto' ''
+  spec 'r' '_webpnl javascript' '_webpnl javascript'
 
 to '_webpnl escaped URL part' part {
   local 'escaped' ''
   local 'escape codes' ('[data:makeList]' '%20' '%3C' '%3E' '%91' '%93' '%58')
   local 'unescaped chars' ('[data:makeList]' ' ' '<' '>' '[' ']' ':')
-  for c part {
+  for c ('[data:convertType]' part 'string') {
     local 'index' ('[data:find]' c (v 'unescaped chars'))
     if (index > 0) {
       escaped = ('[data:join]' escaped (at index (v 'escape codes')))
@@ -38,11 +40,13 @@ to '_webpnl escaped URL part' part {
 }
 
 to '_webpnl escaped call params' params {
-  local 'escaped' ''
+  if (not (isType params 'list')) {return ''}
+  local 'escaped' ('[data:makeList]' '/')
   for param params {
-    escaped = ('[data:join]' escaped '/' ('_webpnl escaped URL part' param))
+    '[data:addLast]' ('_webpnl escaped URL part' param) escaped
+    '[data:addLast]' '/' escaped
   }
-  return ('[data:copyFromTo]' escaped 1 ((size escaped) - 1))
+  return ('[data:joinStrings]' escaped)
 }
 
 to '_webpnl html tag' args args args args {
@@ -124,11 +128,28 @@ to '_webpnl init' {
   sendBroadcast '_webpnl webserver loop'
 }
 
+to '_webpnl javascript' {
+  return 'function toggleBtn(b, selectorAndParams) {
+  b.value = (b.value == ''true'') ? ''false'' : ''true'';
+  b.style.backgroundColor = (b.value == ''true'') ? "DarkGray" : "#ededed";
+  fetch(''set/'' + selectorAndParams + b.value);
+  console.log("toggleBtn", selectorAndParams + b.value);
+}
+
+function actionBtn(b, selectorAndParams) {
+  fetch(''set/'' + selectorAndParams);
+  console.log("actionBtn", selectorAndParams);
+}
+'
+}
+
 to '_webpnl sanitized call params' params {
   local 'sanitized' ('[data:makeList]')
   for param params {
-    if (isDigit param) {
+    if (and ((size param) > 0) (isDigit param)) {
       '[data:addLast]' ('[data:convertType]' param 'number') sanitized
+    } (or ('true' == param) ('false' == param)) {
+      '[data:addLast]' ('true' == param) sanitized
     } else {
       '[data:addLast]' ('_webpnl unescape URL part' param) sanitized
     }
@@ -158,7 +179,7 @@ to '_webpnl unescape URL part' part {
 }
 
 to '_webpnl update page cache' {
-  _webpnl_page_cache = ('[data:join]' '<!DOCTYPE html>' ('_webpnl html tag' 'html' ('[data:makeList]' ('_webpnl html tag' 'head' ('_webpnl html tag' 'title' _webpnl_title)) ('_webpnl html tag' 'body' ('[data:makeList]' ('_webpnl html tag' 'h2' _webpnl_title 'id' 'title') ('_webpnl html tag' 'div' ('[data:makeList]' ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_readouts) 'id' 'readouts') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_buttons) 'id' 'buttons')) 'id' 'panel'))) ('_webpnl html tag' 'style' _webpnl_css_style))))
+  _webpnl_page_cache = ('[data:join]' '<!DOCTYPE html>' ('_webpnl html tag' 'html' ('[data:makeList]' ('_webpnl html tag' 'head' ('_webpnl html tag' 'title' _webpnl_title)) ('_webpnl html tag' 'body' ('[data:makeList]' ('_webpnl html tag' 'h2' _webpnl_title 'id' 'title') ('_webpnl html tag' 'div' ('[data:makeList]' ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_readouts) 'id' 'readouts') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_buttons) 'id' 'buttons')) 'id' 'panel'))) ('_webpnl html tag' 'style' _webpnl_css_style) ('_webpnl html tag' 'script' ('_webpnl javascript')))))
 }
 
 to '_webpnl webserver loop' {
@@ -185,27 +206,29 @@ to '_webpnl webserver loop' {
 to 'webpnl add button' label selector params {
   '_webpnl init'
   local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' 'fetch(encodeURIComponent(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') '''));')) 'class' 'line') _webpnl_buttons
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' 'actionBtn(this, ''' ('_webpnl escaped URL part' selector) ('_webpnl escaped call params' params) ''');')) 'class' 'line') _webpnl_buttons
   '_webpnl update page cache'
 }
 
 to 'webpnl add readout' label selector params {
   '_webpnl init'
   local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' '(()=>{let e = document.querySelector(''#' id '''); setInterval(()=>{ fetch(''get/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''').then(response=>{ if (response.ok) { response.text().then( text => { e.innerHTML = text; } ); } }) }, 100);})()'))) 'class' 'line') _webpnl_readouts
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' '(()=>{let e = document.querySelector(''#' id '''); setInterval(()=>{ fetch(''get/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''').then(response=>{ if (response.ok) { response.text().then( text => { e.innerHTML = text; } ); } }) }, 1000);})()'))) 'class' 'line') _webpnl_readouts
   '_webpnl update page cache'
 }
 
 to 'webpnl add toggle' label selector params {
   '_webpnl init'
   local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); e.disabled=true; fetch(encodeURIComponent(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''')).then(response=>{ if (response.ok) { e.classList.toggle(''pressed''); e.disabled=false; }});})()')) 'class' 'line') _webpnl_buttons
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' 'toggleBtn(this, ''' ('_webpnl escaped URL part' selector) ('_webpnl escaped call params' params) ''');')) 'class' 'line') _webpnl_buttons
   '_webpnl update page cache'
 }
 
 to 'webpnl set title' title {
   '_webpnl init'
   _webpnl_title = title
+  _webpnl_readouts = ('[data:makeList]')
+  _webpnl_buttons = ('[data:makeList]')
   '_webpnl update page cache'
 }
 
