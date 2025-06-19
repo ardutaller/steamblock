@@ -6,14 +6,15 @@ description 'Quickly create a web panel that shows auto-updating readouts of sen
 '
 variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _webpnl_css_style 
 
+  spec ' ' 'webpnl reset web panel' 'reset web panel'
+  space
   spec ' ' 'webpnl set title' 'set web panel title _' 'auto' 'MicroBlocks Web Panel'
+  space
+  spec ' ' 'webpnl add readout' 'create readout labelled _ with selector _ : and params _' 'auto auto auto' 'Temperature' 'get temperature' ''
   space
   spec ' ' 'webpnl add button' 'create button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'start motor' ''
   spec ' ' 'webpnl add toggle' 'create toggle button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'toggle motor' ''
   space
-  spec ' ' 'webpnl add readout' 'create readout labelled _ with selector _ : and params _' 'auto auto auto' 'Temperature' 'get temperature' ''
-  space
-  spec 'r' '_webpnl id for selector' '_webpnl id for selector _' 'auto' 'get current humidity'
   spec ' ' '_webpnl init' '_webpnl init'
   spec 'r' '_webpnl sanitized call params' '_webpnl sanitized call params _' 'auto' ''
   spec 'r' '_webpnl unescape URL part' '_webpnl unescape URL part _' 'auto' 'an%20escaped%3Cpart%3E'
@@ -22,7 +23,7 @@ variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _web
   spec 'r' '_webpnl html tag' '_webpnl tag _ contents _ : #BR# _ → _   : ...' 'auto auto auto auto' 'body' '' 'width' '100%'
   spec 'r' '_webpnl escaped call params' '_webpnl escaped call params _' 'auto' ''
   spec 'r' '_webpnl escaped URL part' '_webpnl escaped URL part _' 'auto' ''
-  spec 'r' '_webpnl javascript' '_webpnl javascript'
+  spec 'r' '_webpnl style' '_webpnl style'
 
 to '_webpnl escaped URL part' part {
   local 'escaped' ''
@@ -70,77 +71,12 @@ to '_webpnl html tag' args args args args {
   return html
 }
 
-to '_webpnl id for selector' selector {
-  local 'id' ''
-  local 'suffix' 0
-  for char (lowercase selector) {
-    if (('[data:find]' char 'qwertyuiopasdfghjklzxcvbnm') > 0) {
-      id = ('[data:join]' id char)
-    } else {
-      suffix += 1
-    }
-  }
-  return ('[data:join]' id '-' (size selector) suffix)
-}
-
 to '_webpnl init' {
   if (_webpnl_title == 0) {_webpnl_title = 'MicroBlocks Web Panel'}
   if (_webpnl_readouts == 0) {_webpnl_readouts = ('[data:makeList]')}
   if (_webpnl_buttons == 0) {_webpnl_buttons = ('[data:makeList]')}
-  if (_webpnl_css_style == 0) {_webpnl_css_style = 'body { background: #f0f0f0; }
-#title {
-  display: block;
-  width: 800px;
-  margin: 0 auto;
-}
-#panel {
-  width: 800px;
-  background: #fefefe;
-  padding: 1em;
-  margin: 1em auto;
-  border-radius: 5px;
-  box-shadow: 0 0 10px 0 #0005;
-}
-#readouts, #buttons {
-  margin-bottom: 1em;
-  display: table;
-}
-.line {
-  display: table-row;
-}
-.label {
-  display: table-cell;
-  padding-right: 1em;
-}
-.button {
-  cursor: pointer;
-  background: #ededed;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 0.1em 0.5em;
-  color: #333;
-}
-.button.pressed {
-  background: #e5e5e5;
-  box-shadow: inset 0 0 5px #c1c1c1;
-  color: #666;
-}'}
+  if (_webpnl_css_style == 0) {_webpnl_css_style = ('_webpnl style')}
   sendBroadcast '_webpnl webserver loop'
-}
-
-to '_webpnl javascript' {
-  return 'function toggleBtn(b, selectorAndParams) {
-  b.value = (b.value == ''true'') ? ''false'' : ''true'';
-  b.style.backgroundColor = (b.value == ''true'') ? "DarkGray" : "#ededed";
-  fetch(''set/'' + selectorAndParams + b.value);
-  console.log("toggleBtn", selectorAndParams + b.value);
-}
-
-function actionBtn(b, selectorAndParams) {
-  fetch(''set/'' + selectorAndParams);
-  console.log("actionBtn", selectorAndParams);
-}
-'
 }
 
 to '_webpnl sanitized call params' params {
@@ -155,6 +91,55 @@ to '_webpnl sanitized call params' params {
     }
   }
   return sanitized
+}
+
+to '_webpnl style' {
+  return 'body {background: #eee;}
+#title{
+display: block;
+width: 800px;
+margin: 0 auto;
+}
+#panel{
+width: 800px;
+background: #fff;
+padding: 1em;
+margin: 1em auto;
+border-radius: 5px;
+box-shadow: 0 0 10px 0 #0005;
+}
+#readouts, #buttons{
+margin-bottom: 1em;
+display: table;
+}
+.line{
+display: table-row;
+}
+.label{
+display: table-cell;
+padding-right: 1em;
+}
+.button{
+cursor: pointer;
+background: #ededed;
+border: 1px solid #ccc;
+border-top: 1px solid #0000;
+border-left: 1px solid #0000;
+padding: 0.1em 0.5em;
+color: #333;
+border-radius: 2px;
+}
+.button[disabled]{
+opacity: 0.6;
+}
+.pressed{
+background: #e5e5e5;
+box-shadow: inset 0 0 5px #ccc;
+border: 1px solid #aaa;
+border-right: 1px solid #0000;
+border-bottom: 1px solid #0000;
+color: #777;
+}'
 }
 
 to '_webpnl unescape URL part' part {
@@ -179,7 +164,7 @@ to '_webpnl unescape URL part' part {
 }
 
 to '_webpnl update page cache' {
-  _webpnl_page_cache = ('[data:join]' '<!DOCTYPE html>' ('_webpnl html tag' 'html' ('[data:makeList]' ('_webpnl html tag' 'head' ('_webpnl html tag' 'title' _webpnl_title)) ('_webpnl html tag' 'body' ('[data:makeList]' ('_webpnl html tag' 'h2' _webpnl_title 'id' 'title') ('_webpnl html tag' 'div' ('[data:makeList]' ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_readouts) 'id' 'readouts') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_buttons) 'id' 'buttons')) 'id' 'panel'))) ('_webpnl html tag' 'style' _webpnl_css_style) ('_webpnl html tag' 'script' ('_webpnl javascript')))))
+  _webpnl_page_cache = ('[data:join]' '<!DOCTYPE html>' ('_webpnl html tag' 'html' ('[data:makeList]' ('_webpnl html tag' 'head' ('_webpnl html tag' 'title' _webpnl_title)) ('_webpnl html tag' 'body' ('[data:makeList]' ('_webpnl html tag' 'h2' _webpnl_title 'id' 'title') ('_webpnl html tag' 'div' ('[data:makeList]' ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_readouts) 'id' 'readouts') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_buttons) 'id' 'buttons')) 'id' 'panel'))) ('_webpnl html tag' 'style' _webpnl_css_style))))
 }
 
 to '_webpnl webserver loop' {
@@ -200,35 +185,41 @@ to '_webpnl webserver loop' {
         '[net:respondToHttpRequest]' '404 Not Found' ('[data:join]' 'Path not found: ' ('path of request' request))
       }
     }
+    waitMillis 10
   }
 }
 
 to 'webpnl add button' label selector params {
   '_webpnl init'
-  local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' 'actionBtn(this, ''' ('_webpnl escaped URL part' selector) ('_webpnl escaped call params' params) ''');')) 'class' 'line') _webpnl_buttons
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); e.disabled = true; e.classList.add(''pressed''); fetch(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''').then(response=>{ if (response.ok) { e.classList.remove(''pressed'');  e.disabled = false; }});})()')) 'class' 'line') _webpnl_buttons
   '_webpnl update page cache'
 }
 
 to 'webpnl add readout' label selector params {
   '_webpnl init'
-  local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' '(()=>{let e = document.querySelector(''#' id '''); setInterval(()=>{ fetch(''get/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''').then(response=>{ if (response.ok) { response.text().then( text => { e.innerHTML = text; } ); } }) }, 1000);})()'))) 'class' 'line') _webpnl_readouts
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' '(()=>{let e = document.querySelector(''#' id '''); setInterval(()=>{ fetch(''get/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''').then(response=>{ if (response.ok) { response.text().then( text => { e.innerHTML = text; } ); } }) }, 500 + Math.floor(Math.random()*500));})()'))) 'class' 'line') _webpnl_readouts
   '_webpnl update page cache'
 }
 
 to 'webpnl add toggle' label selector params {
   '_webpnl init'
-  local 'id' ('_webpnl id for selector' selector)
-  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' 'toggleBtn(this, ''' ('_webpnl escaped URL part' selector) ('_webpnl escaped call params' params) ''');')) 'class' 'line') _webpnl_buttons
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); e.disabled=true; fetch(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') '/'' + !e.classList.contains(''pressed'')).then(response=>{ if (response.ok) { e.classList.toggle(''pressed''); e.disabled=false; }});})()')) 'class' 'line') _webpnl_buttons
   '_webpnl update page cache'
+}
+
+to 'webpnl reset web panel' {
+  _webpnl_readouts = 0
+  _webpnl_buttons = 0
+  _webpnl_title = 0
+  '_webpnl init'
 }
 
 to 'webpnl set title' title {
   '_webpnl init'
   _webpnl_title = title
-  _webpnl_readouts = ('[data:makeList]')
-  _webpnl_buttons = ('[data:makeList]')
   '_webpnl update page cache'
 }
 
