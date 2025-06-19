@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-06-18 10:01+0000\n"
+"PO-Revision-Date: 2025-06-19 10:32+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -6839,3 +6839,7 @@ msgstr "cb humedad"
 #. Coding Box library block
 msgid "cb set servo to _ degrees (0 to 180)"
 msgstr "cb pon el servo a _ grados (0 a 180)"
+
+#. WiFi library block
+msgid "wifi set local domain name _ .local"
+msgstr "wifi nombre de dominio local _.local"
