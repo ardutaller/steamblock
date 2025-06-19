@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-06-16 11:55+0000\n"
+"PO-Revision-Date: 2025-06-19 07:59+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -2976,7 +2976,7 @@ msgstr "str2num _"
 
 #. WiFi library block
 msgid "wifi create hotspot _ password _"
-msgstr "WiFi erzeuge Hotspot _ mit Kennwort _"
+msgstr "WiFi erstelle Hotspot _ mit Kennwort _"
 
 #. WiFi library block
 msgid "MAC address"
@@ -6763,3 +6763,141 @@ msgstr ""
 #. Analog Synthesis library block
 msgid "set frequency ramp from _ % to _ % for gate _"
 msgstr "setze Frequenzrampe von _ % auf _ % für Gate _"
+
+#. Foxbit library block
+msgid "logo"
+msgstr "Logo"
+
+#. Foxbit library block
+msgid "fb pin _ touched?"
+msgstr "fb Pin _ berührt?"
+
+#. Foxbit library block
+msgid "fb current"
+msgstr "fb Spannung"
+
+#. Foxbit library block
+msgid "fb clear NeoPixels"
+msgstr "fb lösche alle NeoPixel"
+
+#. Coding Box library block
+msgid "cb stop fan"
+msgstr "cb stoppe Ventilator"
+
+#. Coding Box library block
+msgid "cb clear oled"
+msgstr "cb lösche OLED"
+
+#. Coding Box library block
+msgid "cb RFID"
+msgstr "cb RFID"
+
+#. Coding Box library block
+msgid "cb barometric pressure (mBar)"
+msgstr "cb Luftdruck (mBar)"
+
+#. Coding Box library block
+msgid "cb altitude (cm)"
+msgstr "cb Höhe (cm)"
+
+#. Coding Box library block
+msgid "cb clear rainbow colors"
+msgstr "cb lösche RGB-Farben"
+
+#. Coding Box library block
+msgid "cb humidity"
+msgstr "cb Luftfeuchtigkeit"
+
+#. Coding Box library block
+msgid "cb light"
+msgstr "cd Lichtsträrke"
+
+#. WiFi library block
+msgid "wifi set local domain name _ .local"
+msgstr "WiFi setze lokalen Domain Name _ .local"
+
+#. Foxbit library block
+msgid "fb loudness"
+msgstr "fb Lautstärke"
+
+#. Foxbit library block
+msgid "fb light level"
+msgstr "fb Helligkeit"
+
+#. Foxbit library block
+msgid "fb set all NeoPixels _"
+msgstr "fb setze alle NeoPixel _"
+
+#. Foxbit library block
+msgid "fb temperature"
+msgstr "fb Temperatur"
+
+#. Foxbit library block
+msgid "fb humidity"
+msgstr "fb Luftfeuchtigkeit"
+
+#. Foxbit library block
+msgid "fb beep for _ millisecs"
+msgstr "fb Pieps mit _ Millisekunden"
+
+#. Coding Box library block
+msgid "cb PIR motion detected?"
+msgstr "cb PIR Bewegung entdeckt?"
+
+#. Coding Box library block
+msgid "cb compass direction"
+msgstr "cb Kompass-Richtung"
+
+#. Coding Box library block
+msgid "cb _ ADKey pressed?"
+msgstr "cb Knopf _ gedrückt?"
+
+#. Coding Box library block
+msgid "cb ultrasonic distance"
+msgstr "cb Ultrasonic-Entfernung"
+
+#. Coding Box library block
+msgid "cb speaker beep for _ millisecs"
+msgstr "cb Pieps mit _ Millisekunden"
+
+#. Coding Box library block
+msgid "cb set _ LED to _"
+msgstr "cb setze LED _ auf _"
+
+#. Coding Box library block
+msgid "cb temperature"
+msgstr "cb Temperatur"
+
+#. Coding Box library block
+msgid "cb sound"
+msgstr "cb Sound"
+
+#. Coding Box library block
+msgid "cb joystick _"
+msgstr "cb Joystick _"
+
+#. Coding Box library block
+msgid "cb set all rainbow colors to _"
+msgstr "cb setze alle RGB-Farben auf _"
+
+#. Coding Box library block
+msgid "cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+msgstr "cb setze RGB-Farben #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+
+#. Coding Box library block
+msgid "cb set servo to _ degrees (0 to 180)"
+msgstr "cb setze Servo auf Winkel _ ° (0~180)"
+
+#. Coding Box library block
+msgid "cb oled write _ at x _ y _ big _"
+msgstr "cb OLED schreibe _ bei x _ y _ Größe _"
+
+#. Coding Box library block
+msgid "cb set fan power _ (-100 to 100)"
+msgstr "cb setze Ventilator auf _ (-100~100)"
+
+#. Foxbit library block
+msgid "fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+msgstr ""
+"fb setze NeoPixel #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ "
+"#BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
