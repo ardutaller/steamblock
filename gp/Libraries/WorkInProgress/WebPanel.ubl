@@ -1,7 +1,7 @@
 module WebPanel Data
 author MicroBlocks
 version 1 2 
-depends '_HTTP server' _Strings WiFi 
+depends '_HTTP server' _Strings WiFi '_WebSocket server' 
 description 'Quickly create a web panel that shows auto-updating readouts of sensor values and buttons to trigger actions.
 '
 variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _webpnl_css_style 
@@ -10,10 +10,11 @@ variables _webpnl_readouts _webpnl_buttons _webpnl_title _webpnl_page_cache _web
   space
   spec ' ' 'webpnl set title' 'set web panel title _' 'auto' 'MicroBlocks Web Panel'
   space
-  spec ' ' 'webpnl add readout' 'create readout labelled _ with selector _ : and params _' 'auto auto auto' 'Temperature' 'get temperature' ''
+  spec ' ' 'webpnl add readout' 'add readout labelled _ with selector _ : and params _' 'auto auto auto' 'Temperature' 'get temperature' ''
   space
-  spec ' ' 'webpnl add button' 'create button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'start motor' ''
-  spec ' ' 'webpnl add toggle' 'create toggle button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'toggle motor' ''
+  spec ' ' 'webpnl add button' 'add button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'start motor' ''
+  spec ' ' 'webpnl add toggle' 'add toggle button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'toggle motor' ''
+  spec ' ' 'webpnl add slider' 'add slider labelled _ ranged _ to _ with selector _' 'auto auto auto auto' 'Servo' 0 180 'set servo'
   space
   spec ' ' '_webpnl init' '_webpnl init'
   spec 'r' '_webpnl sanitized call params' '_webpnl sanitized call params _' 'auto' ''
@@ -220,6 +221,13 @@ to 'webpnl add readout' label selector params {
   '_webpnl init'
   local 'id' ('[data:join]' 'mb-' (microsOp))
   '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' 'setInterval(()=>{if (ws.readyState == 1) {ws.send(''' id '/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('[data:join]' '/' ('[data:joinStrings]' params '/')) '') ''')}}, 100);'))) 'class' 'line') _webpnl_readouts
+  '_webpnl update page cache'
+}
+
+to 'webpnl add slider' label min max selector {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'input' '' 'id' id 'class' 'slider' 'type' 'range' 'min' min 'max' max 'value' (((max - min) / 2) + min) 'onchange' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); fetch(''set/' ('_webpnl escaped URL part' selector) '/''+e.value);})()'))) 'class' 'line') _webpnl_buttons
   '_webpnl update page cache'
 }
 
