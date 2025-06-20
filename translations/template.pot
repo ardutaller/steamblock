@@ -5505,6 +5505,10 @@ msgid "Wiping board..."
 msgstr ""
 
 #. Firmware install instruction
+msgid "Connecting..."
+msgstr ""
+
+#. Firmware install instruction
 msgid "(press ESC to cancel)"
 msgstr ""
 
