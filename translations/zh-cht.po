@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-06 13:02+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-06-21 14:01+0000\n"
+"Last-Translator: alex chair <chairalex59@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hant/>\n"
 "Language: zh-cht\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #. WebSocket Server library example data to send to a client
 msgid "Hello, Client!"
@@ -4260,3 +4260,31 @@ msgstr "用輸入的分隔符分割輸入的字符串，並報告結果（一個
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new list of the given length filled with zero or the optional value."
 msgstr "報告一個新的列表，其長度為輸入值，列表元素為 0 或可選數值"
+
+#. Block in Input category
+msgid "seconds"
+msgstr "秒"
+
+#. Block in Input category
+msgid "version"
+msgstr "版本"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "已連接 BLE"
+
+#. Block in Operators category
+msgid "if _ then _ else _"
+msgstr "如果_那麼_否則_"
+
+#. Example value for the ( list < > ) block
+msgid "cat"
+msgstr ""
+
+#. Example value for the ( list < > ) block
+msgid "dog"
+msgstr ""
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "退出循環"
