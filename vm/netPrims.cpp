@@ -29,6 +29,7 @@
 #if defined(ESP8266)
 	#include <ESP8266WiFi.h>
 	#include <WiFiUdp.h>
+	#include <ESP8266mDNS.h>
 #elif defined(ARDUINO_ARCH_ESP32)
 	#include <WiFi.h>
 	#include <ESPmDNS.h>
@@ -37,6 +38,7 @@
 #elif defined(PICO_WIFI)
 	#include <WiFi.h>
 	#include <WebSocketsServer.h>
+	#include "lwip/apps/mdns.h"
 	extern bool __isPicoW;
 	#undef NO_WIFI
 	#define NO_WIFI() (!__isPicoW)
@@ -271,11 +273,24 @@ static OBJ primGetMAC(int argCount, OBJ *args) {
 	#endif
 }
 
+#if PICO_WIFI
+	static int mdnsInitialized = false;
+#endif
+
 static OBJ primSetDomainName(int argCount, OBJ *args) {
 	if (!isConnectedToWiFi()) return fail(wifiNotConnected);
-	#ifdef ARDUINO_ARCH_ESP32
-	MDNS.end();
-	MDNS.begin(obj2str(args[0]));
+
+	#if PICO_WIFI
+	if (!mdnsInitialized) { // initialize before first use
+			mdnsInitialized = true;
+			mdns_resp_init();
+			mdns_resp_add_netif(netif_default, obj2str(args[0]));
+		} else {
+			mdns_resp_rename_netif(netif_default, obj2str(args[0]));
+		}
+	#else
+		MDNS.end();
+		MDNS.begin(obj2str(args[0]));
 	#endif
 	return falseObj;
 }
@@ -344,6 +359,12 @@ static OBJ primHttpServerGetRequest(int argCount, OBJ *args) {
 			serverPort = port;
 		}
 	}
+
+	#if defined(ESP8266)
+		// MDNS.update() must be called periodically on ESP 8266
+		// This takes care of that when running a MicroBlocks HTTP server.
+		MDNS.update();
+	#endif
 
 	if (!serverHasClient()) return noData; // no client connection
 
