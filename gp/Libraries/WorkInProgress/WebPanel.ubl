@@ -4,7 +4,7 @@ version 1 3
 depends '_HTTP server' _Strings WiFi '_WebSocket server' 
 description 'Quickly create a web panel that shows auto-updating readouts of sensor values and buttons to trigger actions.
 '
-variables _webpnl_readouts _webpnl_sliders _webpnl_buttons _webpnl_title _webpnl_page_cache _webpnl_css_style 
+variables _webpnl_readouts _webpnl_sliders _webpnl_buttons _webpnl_title _webpnl_colors _webpnl_page_cache _webpnl_css_style 
 
   spec ' ' 'webpnl reset web panel' 'reset web panel'
   space
@@ -13,6 +13,8 @@ variables _webpnl_readouts _webpnl_sliders _webpnl_buttons _webpnl_title _webpnl
   spec ' ' 'webpnl add readout' 'add readout labelled _ with selector _ : and params _' 'auto auto auto' 'Temperature' 'get temperature' ''
   space
   spec ' ' 'webpnl add slider' 'add slider labelled _ ranged _ to _ with selector _' 'auto auto auto auto' 'Servo' 0 180 'set servo'
+  space
+  spec ' ' 'webpnl add color picker' 'add color picker labelled _ with selector _' 'auto auto' 'NeoPixels' 'neoPixelSetAllToColor'
   space
   spec ' ' 'webpnl add button' 'add button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'start motor' ''
   spec ' ' 'webpnl add toggle' 'add toggle button labelled _ with selector _ : and params _' 'auto auto auto' 'Motor' 'toggle motor' ''
@@ -79,6 +81,7 @@ to '_webpnl init' {
   if (_webpnl_title == 0) {_webpnl_title = 'MicroBlocks Web Panel'}
   if (_webpnl_readouts == 0) {_webpnl_readouts = ('[data:makeList]')}
   if (_webpnl_buttons == 0) {_webpnl_buttons = ('[data:makeList]')}
+  if (_webpnl_colors == 0) {_webpnl_colors = ('[data:makeList]')}
   if (_webpnl_sliders == 0) {_webpnl_sliders = ('[data:makeList]')}
   if (_webpnl_css_style == 0) {_webpnl_css_style = ('_webpnl style')}
   sendBroadcast '_webpnl webserver loop'
@@ -114,7 +117,7 @@ margin: 1em auto;
 border-radius: 5px;
 box-shadow: 0 0 10px 0 #0005;
 }
-#readouts, #buttons, #sliders{
+#readouts, #buttons, #sliders, #colors{
 margin-bottom: 1em;
 display: flex;
 flex-wrap: wrap;
@@ -124,6 +127,7 @@ gap: 0.5em 1em;
 display: flex;
 gap: 1em;
 padding-left: 1em;
+align-items: center;
 }
 #readouts .line{flex: 1 0 40%;}
 .button{
@@ -144,6 +148,13 @@ border: 1px solid #aaa;
 border-right: 1px solid #0000;
 border-bottom: 1px solid #0000;
 color: #777;
+}
+input[type="color"] {
+border: 1px solid black;
+border-radius: 50%;
+width: 20px;
+height: 20px;
+padding: 0;
 }'
 }
 
@@ -173,7 +184,7 @@ to '_webpnl update page cache' {
 ws.onmessage = (e) => {
   var parts = e.data.split(''/'');
   document.querySelector(''#''+parts[0]).innerHTML = parts[1];
-};')))) ('_webpnl html tag' 'body' ('[data:makeList]' ('_webpnl html tag' 'h2' _webpnl_title 'id' 'title') ('_webpnl html tag' 'div' ('[data:makeList]' ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_readouts) 'id' 'readouts') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_sliders) 'id' 'sliders') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_buttons) 'id' 'buttons')) 'id' 'panel'))) ('_webpnl html tag' 'style' _webpnl_css_style))))
+};')))) ('_webpnl html tag' 'body' ('[data:makeList]' ('_webpnl html tag' 'h2' _webpnl_title 'id' 'title') ('_webpnl html tag' 'div' ('[data:makeList]' ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_readouts) 'id' 'readouts') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_sliders) 'id' 'sliders') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_colors) 'id' 'colors') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_buttons) 'id' 'buttons')) 'id' 'panel'))) ('_webpnl html tag' 'style' _webpnl_css_style))))
 }
 
 to '_webpnl webserver loop' {
@@ -218,6 +229,18 @@ to 'webpnl add button' label selector params {
   '_webpnl update page cache'
 }
 
+to 'webpnl add color picker' label selector {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'input' '' 'id' id 'class' 'color' 'type' 'color' 'onchange' ('[data:join]' '(()=>{const e = document.querySelector(''#' id ''');
+var hc = e.value.substr(1),
+  r = parseInt(hc.substr(0,2),16),
+  g = parseInt(hc.substr(2,2),16),
+  b = parseInt(hc.substr(4,2),16);
+fetch(''set/' ('_webpnl escaped URL part' selector) '/''+(r<<16|g<<8|b));})()') 'value' '#ff00ff')) 'class' 'line') _webpnl_colors
+  '_webpnl update page cache'
+}
+
 to 'webpnl add readout' label selector params {
   '_webpnl init'
   local 'id' ('[data:join]' 'mb-' (microsOp))
@@ -242,6 +265,9 @@ to 'webpnl add toggle' label selector params {
 to 'webpnl reset web panel' {
   _webpnl_readouts = 0
   _webpnl_buttons = 0
+  _webpnl_sliders = 0
+  _webpnl_colors = 0
+  _webpnl_css_style = 0
   _webpnl_title = 0
   '_webpnl init'
 }
