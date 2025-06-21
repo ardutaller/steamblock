@@ -799,24 +799,23 @@ static OBJ primWebSocketSendToClient(int argCount, OBJ *args) { return fail(noWi
 
 #if defined(ESP_NOW)
 
+// reserve 10 bytes of the 250 payload bytes for future use
 #define ESP_NOW_MAX_MSG 240
 
 static bool esp_now_started = false;
-static int esp_now_last_received_bytecount = 0;
 static volatile int esp_now_send_buffers = 10;
 static uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
-// ESP Now send callback
+static int esp_now_msg_bytecount = 0;
+static char esp_now_msg[250];
 
-static int sendCount = 0; // xxx
-static int rcvCount = 0; // xxx
+// ESP Now send callback
 
 #if defined(ARDUINO_ARCH_ESP32)
 	void espNow_sendComplete(const uint8_t* mac_addr, esp_now_send_status_t status) {
 #else
 	void espNow_sendComplete(uint8_t* mac_addr, uint8_t status) {
 #endif
-	sendCount++;
 	esp_now_send_buffers++;
 }
 
@@ -827,10 +826,42 @@ static int rcvCount = 0; // xxx
 #else
 	void espNow_receivedData(uint8_t* mac_addr, uint8_t* data, uint8_t length) {
 #endif
-	rcvCount++;
+	if (esp_now_msg_bytecount == 0) {
+		esp_now_msg_bytecount = (length > ESP_NOW_MAX_MSG) ? ESP_NOW_MAX_MSG : length;
+		memcpy(esp_now_msg, data, esp_now_msg_bytecount);
+	}
 }
 
-static void startESPNow(int channel) {
+static void setWiFiChannel(int channel) {
+	// Set the WiFi channel. Assumes that ESP Now has been started.
+
+	// ensure WiFi is on
+	if (WiFi.status() == 255) {
+		WiFi.mode(WIFI_STA);	// start the WiFi radio
+		WiFi.disconnect();		// ... but do not connect to an access point
+	}
+
+	#if defined(ESP8266)
+		wifi_set_channel(channel);
+	#else
+		esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
+	#endif
+
+	// update the broadcast peer with the new channel
+	esp_now_del_peer(broadcastAddress);
+	#if defined(ESP8266)
+		esp_now_add_peer(broadcastAddress, ESP_NOW_ROLE_SLAVE, channel, NULL, 0);
+	#elif defined(ARDUINO_ARCH_ESP32)
+		esp_now_peer_info_t peerInfo;
+		memset(&peerInfo, 0, sizeof(peerInfo));
+		memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+		peerInfo.ifidx = (WIFI_AP == WiFi.getMode()) ? WIFI_IF_AP : WIFI_IF_STA;
+		peerInfo.channel = channel;
+		esp_now_add_peer(&peerInfo);
+	#endif
+}
+
+static void startESPNow() {
 	if (esp_now_started) return;
 
 	// ensure that the WiFi radio is on (must be turned on before calling esp_now_init())
@@ -845,16 +876,8 @@ static void startESPNow(int channel) {
 		return;
 	}
 
-	if (WL_CONNECTED == WiFi.status()) {
-		channel = WiFi.channel(); // use the existing WiFi channel
-	} else {
-		// use the specified channel
-		#if defined(ESP8266)
-			wifi_set_channel(channel);
-		#else
-			esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
-		#endif
-	}
+	// get the WiFi channel (default to channel 1)
+	int channel = (WL_CONNECTED == WiFi.status()) ? WiFi.channel() : 1;
 
 	// add broadcast peer
 	#if defined(ESP8266)
@@ -877,22 +900,13 @@ static void startESPNow(int channel) {
 	reportNum("ESP Now started, channel", channel);
 }
 
-static OBJ primESPNowStart(int argCount, OBJ *args) {
-	int channel = ((argCount > 0) && isInt(args[0])) ? obj2int(args[0]) : 1;
-	if (channel < 1) channel = 1;
-	if (channel > 11) channel = 11;
-
-	startESPNow(channel);
-	return falseObj;
-}
-
 static OBJ primESPNowSend(int argCount, OBJ *args) {
 	if ((argCount < 1) || !IS_TYPE(args[0], StringType)) return falseObj;
 	char *msg = obj2str(args[0]);
 	int byteCount = strlen(msg);
 	if (byteCount > ESP_NOW_MAX_MSG) byteCount = ESP_NOW_MAX_MSG;
 
-	if (!esp_now_started) startESPNow(1);
+	if (!esp_now_started) startESPNow();
 
 	if (esp_now_send_buffers < 1) {
 		return falseObj;
@@ -909,10 +923,28 @@ static OBJ primESPNowSend(int argCount, OBJ *args) {
 }
 
 static OBJ primESPNowReceive(int argCount, OBJ *args) {
-	// xxx to do...
-	if (!esp_now_started) startESPNow(1);
+	if (!esp_now_started) startESPNow();
 
-	return (OBJ) &emptyMBString;
+	if (esp_now_msg_bytecount == 0) return (OBJ) &emptyMBString; // no msg received
+
+	OBJ result = newStringFromBytes(esp_now_msg, esp_now_msg_bytecount);
+	esp_now_msg_bytecount = 0;
+	return result;
+}
+
+static OBJ primESPNowChannel(int argCount, OBJ *args) {
+	if (!esp_now_started) startESPNow();
+	return int2obj(WiFi.channel());
+}
+
+static OBJ primESPNowSetChannel(int argCount, OBJ *args) {
+	int channel = ((argCount > 0) && isInt(args[0])) ? obj2int(args[0]) : 1;
+	if (channel < 1) channel = 1;
+	if (channel > 11) channel = 11;
+
+	if (!esp_now_started) startESPNow();
+	setWiFiChannel(channel);
+	return falseObj;
 }
 
 #endif
@@ -1193,9 +1225,10 @@ static PrimEntry entries[] = {
 	{"webSocketSendToClient", primWebSocketSendToClient},
 
 	#if defined(ESP_NOW)
-	{"ESPNowStart", primESPNowStart},
 	{"ESPNowSend", primESPNowSend},
 	{"ESPNowReceive", primESPNowReceive},
+	{"ESPNowChannel", primESPNowChannel},
+	{"ESPNowSetChannel", primESPNowSetChannel},
 	#endif
 
 	{"MQTTConnect", primMQTTConnect},
