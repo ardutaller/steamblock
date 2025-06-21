@@ -28,13 +28,16 @@
 
 #if defined(ESP8266)
 	#include <ESP8266WiFi.h>
-	#include <WiFiUdp.h>
 	#include <ESP8266mDNS.h>
+	#include <WiFiUdp.h>
+	#include <espnow.h>
 #elif defined(ARDUINO_ARCH_ESP32)
 	#include <WiFi.h>
 	#include <ESPmDNS.h>
 //	#include <WiFiClientSecure.h>
 	#include <WebSocketsServer.h>
+	#include <esp_now.h>
+	#include <esp_wifi.h> // only for esp_wifi_set_channel()
 #elif defined(PICO_WIFI)
 	#include <WiFi.h>
 	#include <WebSocketsServer.h>
@@ -51,6 +54,10 @@
 #endif
 
 #include "interp.h" // must be included *after* ESP8266WiFi.h
+
+#if (defined(ESP8266) || defined(ARDUINO_ARCH_ESP32)) // && !defined(BLE_IDE)
+	#define ESP_NOW 1
+#endif
 
 #if defined(ESP8266) || defined(ARDUINO_ARCH_ESP32) || defined(USE_WIFI101) || defined(PICO_WIFI)
 
@@ -85,8 +92,9 @@ STRING_OBJ_CONST("Failed; bad password?") statusFailed;
 STRING_OBJ_CONST("Unknown network") statusUnknownNetwork;
 STRING_OBJ_CONST("") noDataString;
 
-// Empty byte array constant
-uint32 emptyByteArray = HEADER(ByteArrayType, 0);
+// Empty byte array and string constants
+static uint32 emptyByteArray = HEADER(ByteArrayType, 0);
+static uint32 emptyMBString[2] = { HEADER(StringType, 1), 0 };
 
 static OBJ primHasWiFi(int argCount, OBJ *args) {
 	return NO_WIFI() ? falseObj : trueObj;
@@ -787,6 +795,128 @@ static OBJ primWebSocketSendToClient(int argCount, OBJ *args) { return fail(noWi
 
 #endif
 
+// ESP Now primitives
+
+#if defined(ESP_NOW)
+
+#define ESP_NOW_MAX_MSG 240
+
+static bool esp_now_started = false;
+static int esp_now_last_received_bytecount = 0;
+static volatile int esp_now_send_buffers = 10;
+static uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+// ESP Now send callback
+
+static int sendCount = 0; // xxx
+static int rcvCount = 0; // xxx
+
+#if defined(ARDUINO_ARCH_ESP32)
+	void espNow_sendComplete(const uint8_t* mac_addr, esp_now_send_status_t status) {
+#else
+	void espNow_sendComplete(uint8_t* mac_addr, uint8_t status) {
+#endif
+	sendCount++;
+	esp_now_send_buffers++;
+}
+
+// ESP Now receive callback
+
+#if defined(ARDUINO_ARCH_ESP32)
+	void espNow_receivedData(const uint8_t* mac_addr, const uint8_t* data, int length) {
+#else
+	void espNow_receivedData(uint8_t* mac_addr, uint8_t* data, uint8_t length) {
+#endif
+	rcvCount++;
+}
+
+static void startESPNow(int channel) {
+	if (esp_now_started) return;
+
+	// ensure that the WiFi radio is on (must be turned on before calling esp_now_init())
+	if (WiFi.status() == 255) {
+		WiFi.mode(WIFI_STA);	// start the WiFi radio
+		WiFi.disconnect();		// ... but do not connect to an access point
+	}
+
+	// initialize ESP-NOW
+	if (esp_now_init() != 0) {
+		outputString("Failed to initialize ESP-NOW");
+		return;
+	}
+
+	if (WL_CONNECTED == WiFi.status()) {
+		channel = WiFi.channel(); // use the existing WiFi channel
+	} else {
+		// use the specified channel
+		#if defined(ESP8266)
+			wifi_set_channel(channel);
+		#else
+			esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
+		#endif
+	}
+
+	// add broadcast peer
+	#if defined(ESP8266)
+		esp_now_set_self_role(ESP_NOW_ROLE_COMBO);
+		esp_now_add_peer(broadcastAddress, ESP_NOW_ROLE_SLAVE, channel, NULL, 0);
+	#elif defined(ARDUINO_ARCH_ESP32)
+		esp_now_peer_info_t peerInfo;
+		memset(&peerInfo, 0, sizeof(peerInfo));
+		memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+		peerInfo.ifidx = (WIFI_AP == WiFi.getMode()) ? WIFI_IF_AP : WIFI_IF_STA;
+		peerInfo.channel = channel;
+		esp_now_add_peer(&peerInfo);
+	#endif
+
+	// add callbacks
+	esp_now_register_send_cb(espNow_sendComplete);
+	esp_now_register_recv_cb(espNow_receivedData);
+
+	esp_now_started = true;
+	reportNum("ESP Now started, channel", channel);
+}
+
+static OBJ primESPNowStart(int argCount, OBJ *args) {
+	int channel = ((argCount > 0) && isInt(args[0])) ? obj2int(args[0]) : 1;
+	if (channel < 1) channel = 1;
+	if (channel > 11) channel = 11;
+
+	startESPNow(channel);
+	return falseObj;
+}
+
+static OBJ primESPNowSend(int argCount, OBJ *args) {
+	if ((argCount < 1) || !IS_TYPE(args[0], StringType)) return falseObj;
+	char *msg = obj2str(args[0]);
+	int byteCount = strlen(msg);
+	if (byteCount > ESP_NOW_MAX_MSG) byteCount = ESP_NOW_MAX_MSG;
+
+	if (!esp_now_started) startESPNow(1);
+
+	if (esp_now_send_buffers < 1) {
+		return falseObj;
+	}
+	esp_now_send_buffers--;
+
+	#if defined(ESP8266)
+		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, strlen(msg));
+	#elif defined(ARDUINO_ARCH_ESP32)
+		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, strlen(msg));
+	#endif
+
+	return trueObj;
+}
+
+static OBJ primESPNowReceive(int argCount, OBJ *args) {
+	// xxx to do...
+	if (!esp_now_started) startESPNow(1);
+
+	return (OBJ) &emptyMBString;
+}
+
+#endif
+
 #if defined(ESP8266) || defined(ARDUINO_ARCH_ESP32) || defined(PICO_WIFI)
 
 // MQTT support for ESP32 and ESP8266
@@ -1061,6 +1191,12 @@ static PrimEntry entries[] = {
 	{"webSocketStart", primWebSocketStart},
 	{"webSocketLastEvent", primWebSocketLastEvent},
 	{"webSocketSendToClient", primWebSocketSendToClient},
+
+	#if defined(ESP_NOW)
+	{"ESPNowStart", primESPNowStart},
+	{"ESPNowSend", primESPNowSend},
+	{"ESPNowReceive", primESPNowReceive},
+	#endif
 
 	{"MQTTConnect", primMQTTConnect},
 	{"MQTTIsConnected", primMQTTIsConnected},
