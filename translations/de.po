@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-06-21 14:01+0000\n"
+"PO-Revision-Date: 2025-06-23 02:30+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -6850,7 +6850,7 @@ msgstr "cb Kompass-Richtung"
 
 #. Coding Box library block
 msgid "cb _ ADKey pressed?"
-msgstr "cb Knopf _ gedrückt?"
+msgstr "cb ADKey Knopf _ gedrückt?"
 
 #. Coding Box library block
 msgid "cb ultrasonic distance"
