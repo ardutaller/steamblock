@@ -1,40 +1,40 @@
 module 'Real Time Clock' Input
 author MicroBlocks
-version 1 2 
-choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)' 
-choices rtc_component second minute hour day month year 'day of week' 
+version 1 2
+choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)'
+choices rtc_component second minute hour day month year 'day of week'
 description 'Real time clock (RTC).
 
 Simple functions to set and read the current time and date of a real-time clock module.
 With a 3V coin cell battery intalled, the clock will maintain the time and date while powered off.
 
-Currently supports both DS1307 and PCF85063 RTC chips; may be extended to support others in the future.
+Currently supports the following RTC chips: DS1307, PCF85063; may be extended to support others in the future.
 
 https://www.analog.com/media/en/technical-documentation/data-sheets/ds1307.pdf
 https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf
 https://files.seeedstudio.com/wiki/Grove-High_Precision_RTC/res/PCF85063TP.pdf
 
-(Many thanks to Ralf Krause.)
+(Many thanks to Ralf Krause)
 '
-variables rtc_i2cAddr 
+variables rtc_i2cAddr
 
-  spec 'r' 'rtc_getTimeOrDate' '#SVG#square11#00c612 clock _' 'menu.rtc_timeOrDate' 'rtc;time (H:M:S)'
-  spec 'r' 'rtc_getComponent' '#SVG#square11#00c612 clock _' 'menu.rtc_component' 'second'
+  spec 'r' 'rtc_getTimeOrDate' 'clock _' 'menu.rtc_timeOrDate' 'rtc;time (H:M:S)'
+  spec 'r' 'rtc_getComponent' 'clock _' 'menu.rtc_component' 'second'
   space
-  spec ' ' 'rtc_setTime' '#SVG#square11#00c612 set hours _ minutes _ seconds _' 'num num num' 9 30 0
-  spec ' ' 'rtc_setDate' '#SVG#square11#00c612 set year _ month _ day _' 'num num num' 2025 1 1
-  spec ' ' 'rtc_setDayOfWeek' '#SVG#square11#00c612 set day of week _ (1-7)' 'num' 1
+  spec ' ' 'rtc_setTime' 'set hours _ minutes _ seconds _' 'num num num' 9 30 0
+  spec ' ' 'rtc_setDate' 'set year _ month _ day _' 'num num num' 2025 1 1
+  spec ' ' 'rtc_setDayOfWeek' 'set day of week _ (1-7)' 'num' 1
   space
   spec 'r' '_rtc_bcd2dec' '_rtc_bcd2dec _' 'num'
   spec 'r' '_rtc_dec2bcd' '_rtc_dec2bcd _' 'num'
   spec 'r' '_rtc_twoDigit' '_rtc_twoDigit _' 'num'
-  spec ' ' '_rtcInit' '_rtcInit'
+  spec ' ' '_rtc_init' '_rtc_init'
   spec 'r' '_rtc_isPCF85063' '_rtc_isPCF85063'
   spec 'r' '_rtc_getReg' '_rtc_getReg register _' 'num' 3
   spec ' ' '_rtc_setReg' '_rtc_setReg register _ value _' 'num num' 3 3
   spec 'r' '_rtc_mapRegNum' '_rtc_mapRegNum _' 'num' 0
 
-to '_rtcInit' {
+to '_rtc_init' {
   if (rtc_i2cAddr != 0) {return}
   if ('[sensors:i2cExists]' (hexToInt '68')) {
     rtc_i2cAddr = (hexToInt '68')
@@ -58,7 +58,7 @@ to '_rtc_dec2bcd' decimal {
 }
 
 to '_rtc_getReg' reg {
-  '_rtcInit'
+  '_rtc_init'
   if (rtc_i2cAddr == 0) {
     return
   }
@@ -69,7 +69,7 @@ to '_rtc_getReg' reg {
 }
 
 to '_rtc_isPCF85063' {
-  '_rtcInit'
+  '_rtc_init'
   return (rtc_i2cAddr == (hexToInt '51'))
 }
 
@@ -83,7 +83,7 @@ Order of DS1307 registers is: second minute hour dayOfWeek day month year'
 }
 
 to '_rtc_setReg' reg value {
-  '_rtcInit'
+  '_rtc_init'
   if (rtc_i2cAddr == 0) {
     return
   }
