@@ -839,7 +839,7 @@ static void setWiFiChannel(int channel) {
 	// Set the WiFi channel. Assumes that ESP Now has been started.
 
 	// ensure WiFi is on
-	if (WiFi.status() == 255) {
+	if (WiFi.status() != WL_CONNECTED) {
 		WiFi.mode(WIFI_STA);	// start the WiFi radio
 		WiFi.disconnect();		// ... but do not connect to an access point
 	}
@@ -868,7 +868,7 @@ static void startESPNow() {
 	if (esp_now_started) return;
 
 	// ensure that the WiFi radio is on (must be turned on before calling esp_now_init())
-	if (WiFi.status() == 255) {
+	if (WiFi.status() != WL_CONNECTED) {
 		WiFi.mode(WIFI_STA);	// start the WiFi radio
 		WiFi.disconnect();		// ... but do not connect to an access point
 	}
@@ -917,11 +917,12 @@ static OBJ primESPNowSend(int argCount, OBJ *args) {
 	esp_now_send_buffers--;
 
 	#if defined(ESP8266)
-		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, strlen(msg));
+		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, byteCount);
 	#elif defined(ARDUINO_ARCH_ESP32)
-		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, strlen(msg));
+		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, byteCount);
 	#endif
 
+	taskSleep(10);
 	return trueObj;
 }
 
