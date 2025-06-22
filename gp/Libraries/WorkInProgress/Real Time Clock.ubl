@@ -1,4 +1,4 @@
-module 'Real Time Clock (KidsBits)' Input
+module 'Real Time Clock' Input
 author MicroBlocks
 version 1 2 
 choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)' 
