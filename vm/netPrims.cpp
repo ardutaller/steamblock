@@ -64,6 +64,7 @@
 static char connecting = false;
 static char serverStarted = false;
 static char allowBLE_and_WiFi = true;
+static char esp_now_started = false;
 
 int serverPort = 80;
 WiFiServer server(serverPort);
@@ -160,6 +161,7 @@ static OBJ primStartWiFi(int argCount, OBJ *args) {
 	#endif
 
 	connecting = true;
+	esp_now_started = false;
 	return falseObj;
 }
 
@@ -171,6 +173,7 @@ static OBJ primStopWiFi(int argCount, OBJ *args) {
 		WiFi.mode(WIFI_OFF);
 	#endif
 	connecting = false;
+	esp_now_started = false;
 	return falseObj;
 }
 
@@ -805,7 +808,6 @@ static OBJ primWebSocketSendToClient(int argCount, OBJ *args) { return fail(noWi
 // reserve 10 bytes of the 250 payload bytes for future use
 #define ESP_NOW_MAX_MSG 240
 
-static bool esp_now_started = false;
 static volatile int esp_now_send_buffers = 10;
 static uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
@@ -874,6 +876,7 @@ static void startESPNow() {
 	}
 
 	// initialize ESP-NOW
+	esp_now_deinit(); // in case it was already running...
 	if (esp_now_init() != 0) {
 		outputString("Failed to initialize ESP-NOW");
 		return;
