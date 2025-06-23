@@ -5020,8 +5020,8 @@ msgid "cb set _ LED to _"
 msgstr "cb set _ LED to _"
 
 #. Coding Box library block
-msgid "cb _ ADKey pressed?"
-msgstr "cb _ ADKey pressed?"
+msgid "cb _ ADKey button pressed?"
+msgstr "cb _ ADKey button pressed?"
 
 #. Coding Box library block
 msgid "cb ultrasonic distance"

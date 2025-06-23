@@ -6492,7 +6492,7 @@ msgid "cb clear oled"
 msgstr "சிபி தெளிவான OLED"
 
 #. Coding Box library block
-msgid "cb _ ADKey pressed?"
+msgid "cb _ ADKey button pressed?"
 msgstr "சிபி _ அட்கி அழுத்தியதா?"
 
 #. Coding Box library block

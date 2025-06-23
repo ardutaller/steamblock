@@ -31,7 +31,7 @@ https://kidsbits.cc/products/kidsbits-maker-educational-esp32-multi-purpose-codi
   spec 'r' 'cbox_distance' 'cb ultrasonic distance'
   space
   spec 'r' 'cbox_joystick' 'cb joystick _' 'menu.cbox_joystick' 'x'
-  spec 'r' 'cbox_adkey' 'cb _ ADKey pressed?' 'menu.cbox_ledOrButton' 'red'
+  spec 'r' 'cbox_adkey' 'cb _ ADKey button pressed?' 'menu.cbox_ledOrButton' 'red'
   space
   spec 'r' 'cbox_temperature' 'cb temperature'
   spec 'r' 'cbox_humidity' 'cb humidity'

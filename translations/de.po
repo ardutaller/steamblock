@@ -6849,7 +6849,7 @@ msgid "cb compass direction"
 msgstr "cb Kompass-Richtung"
 
 #. Coding Box library block
-msgid "cb _ ADKey pressed?"
+msgid "cb _ ADKey button pressed?"
 msgstr "cb ADKey Knopf _ gedrückt?"
 
 #. Coding Box library block
