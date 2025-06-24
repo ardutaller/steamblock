@@ -947,7 +947,7 @@ static OBJ primESPNowChannel(int argCount, OBJ *args) {
 static OBJ primESPNowSetChannel(int argCount, OBJ *args) {
 	int channel = ((argCount > 0) && isInt(args[0])) ? obj2int(args[0]) : 1;
 	if (channel < 1) channel = 1;
-	if (channel > 11) channel = 11;
+	if (channel > 13) channel = 13;
 
 	if (!esp_now_started) startESPNow();
 	setWiFiChannel(channel);
