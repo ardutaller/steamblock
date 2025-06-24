@@ -54,9 +54,9 @@
 #elif defined(ARDUINO_ARCH_ESP32)
 	// object store is allocated from heap on ESP32
 	#if defined(USE_NIMBLE)
-		#define OBJSTORE_BYTES 46000 // max that allows both BLE and WiFi is 59000
+		#define OBJSTORE_BYTES 38000 // max that allows both BLE and WiFi is 59000; drops to 38000 w/ ESP Now
 	#else
-		#define OBJSTORE_BYTES 78000
+		#define OBJSTORE_BYTES 70000
 	#endif
 #elif defined(GNUBLOCKS)
 	#define OBJSTORE_BYTES 262100 // max number of bytes that we can allocate for now
