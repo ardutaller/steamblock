@@ -1,15 +1,17 @@
 module 'ESP Now' Comm
 author MicroBlocks
-version 1 0 
-description 'Support for ESP Now peer-to-peer messaging for ESP boards. Unencrypted messagse are boadcast to all peers within range, so pariing is not necessary and there is no limit to the number of peers.
+version 1 1 
+description 'Support for ESP Now peer-to-peer messaging for ESP boards. Unencrypted messages are broadcast to all peers within range, so pairing is not necessary and there is no limit to the number of peers.
 
-Delivery is unreliable; messages will be lost, especially when there is a lot of other WiFi and Bluetooth traffic in the 2.4 GHz band.
+Delivery is unreliable; messages may be lost, especially when there is a lot of other WiFi and Bluetooth traffic in the 2.4 GHz band. The best channel is one without much traffic.
+
+When using WiFi and ESP Now at the same time, the ESP32 forces ESP Now to use the same channel as WiFi. The ESP8266 allows ESP Now and WiFi to use different channels.
 '
 
   spec ' ' 'espNow_send' 'espNow send _' 'str' 'Hello, ESP Now!'
   spec 'r' '[net:ESPNowReceive]' 'espNow receive'
   space
-  spec ' ' '[net:ESPNowSetChannel]' 'espNow set channel _ (1-11)' 'num' 1
+  spec ' ' '[net:ESPNowSetChannel]' 'espNow set channel _' 'menu.range:1-13' 1
   spec 'r' '[net:ESPNowChannel]' 'espNow channel'
 
 to espNow_send msg {
