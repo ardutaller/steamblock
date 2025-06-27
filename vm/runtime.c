@@ -1189,7 +1189,7 @@ static void processLongMessage() {
 	case chunkCode16Msg: // code chunk from 16-bit IDE
 		sendPingNow(chunkIndex); // send a ping to acknowledge receipt
 		#if defined(ESP32_S3)
-			delay(5); // avoid chunk save glitches on m5atom-lite; less than 5 msecs fails
+			delay(10); // avoid chunk save glitches on m5atom-lite; less than 5 msecs fails
 		#endif
 		storeCodeChunk(chunkIndex, bodyBytes, &rcvBuf[5]);
 		sendChunkCRC(chunkIndex);
