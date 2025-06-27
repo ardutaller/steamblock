@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-02-06 13:01+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-06-24 04:01+0000\n"
+"Last-Translator: Turgut Guneysu <t.g.alph@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/microblocks/ide/"
 "tr/>\n"
 "Language: tr\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #. Block in Output category
 msgid "set user LED _"
@@ -3151,3 +3151,270 @@ msgstr "BLE bağlandı"
 #. Block in Control category
 msgid "exit loop"
 msgstr "döngüden çık"
+
+#. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
+msgid "_ with _ items replaced by _"
+msgstr "_ listesi _ öğeleri _ ile değiştirildi"
+
+#. Lists library block
+msgid "sort _"
+msgstr "_ listesini düzenle"
+
+#. Lists library block
+msgid "shuffled _"
+msgstr "karıştırılmış _"
+
+#. Lists library block
+msgid "sorted _"
+msgstr "düzenlenmiş _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Logo / ⌘"
+msgstr "Logo / ⌘"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;AltGr"
+msgstr "AltGr"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;tab"
+msgstr "sekme tuşu"
+
+#. Microphone library block
+msgid "estimate clap threshold"
+msgstr "alkış limitini tahmin et"
+
+#. Lists library label
+#. Extra utilities for list manipulation and access
+msgid "Lists"
+msgstr "Listeler"
+
+#. Keyboard and Mouse library block
+msgid "release mouse buttons"
+msgstr "fare düğmelerini serbest bırakın"
+
+#. Option in ( pick (a few) from (aList) ) block in Lists library
+msgid "a few"
+msgstr "birkaç"
+
+#. Microphone library block
+msgid "microphone"
+msgstr "Mikrofon kütüphane bloğu"
+
+#. Microphone library block
+msgid "clap count"
+msgstr "alkış sayısı"
+
+#. Lists library block
+msgid "reversed _"
+msgstr "tersi _"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;right"
+msgstr "sağ"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;end"
+msgstr "bitiş tuşu"
+
+#. Lists library block
+msgid "map _ over _"
+msgstr "_ uygula _ üzerine"
+
+#. Keyboard and Mouse library block
+msgid "_ mouse click"
+msgstr "_ fare tıklaması"
+
+#. Pseudorandomness library label
+#. Creates pseudorandom numbers and lists of numbers given a particular seed
+msgid "Pseudorandomness"
+msgstr "Sözde rastgelelik"
+
+#. Keyboard and Mouse library label
+msgid "Keyboard and Mouse"
+msgstr "Klavye ve Fare"
+
+#. NeoPanel library block
+msgid "NeoPanel fill column _ color _"
+msgstr "NeoPanel  kolon _ renkle _  doldur"
+
+#. Lists library block
+msgid "filter _ with _"
+msgstr "_ listesini _ ile filtrele"
+
+#. Keyboard and Mouse library block
+msgid "press key _"
+msgstr "_ tuşuna basın"
+
+#. NeoPanel library block
+msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
+msgstr "NeoPanel  dikdörtgen x _ y _ genislik _ yükseklik _renkle _  doldur"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgDown"
+msgstr "PgDown (aşağı sayfa) tuşu"
+
+#. Lists library block
+msgid "pick _ from _"
+msgstr "_listeden _ seç"
+
+#. Lists library block
+msgid "shuffle _"
+msgstr "_ listesini karıştır"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;left"
+msgstr "sol"
+
+#. Option in ( pick (most) from (aList) ) block in Lists library
+msgid "most"
+msgstr "çoğu"
+
+#. NeoPanel library block
+msgid "attach NeoPixel panel width _ height _ at pin _"
+msgstr "NeoPaneli ekle genişlik _ yükseklik _ pin _"
+
+#. Keyboard and Mouse library block
+msgid "scroll mouse by _"
+msgstr "fareyi _ kaydır"
+
+#. Microphone library block
+msgid "set clap threshold _"
+msgstr "alkış limitini _ yap"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;enter"
+msgstr "enter (gir) tuşu"
+
+#. Lists library block
+msgid "uniqued _"
+msgstr "özgün _"
+
+#. NeoPanel library block
+msgid "NeoPanel set x _ y _ color _"
+msgstr "NeoPanel renk ayarla x _ y_ renk _"
+
+#. Keyboard and Mouse library block
+msgid "release all keys"
+msgstr "tüm tuşları serbest bırak"
+
+#. Microphone library label
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Alt / ⌥"
+msgstr "Alt / ⌥"
+
+#. Option in ( pick (some) from (aList) ) block in Lists library
+msgid "some"
+msgstr "bazı"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;CapsLock"
+msgstr "Büyük harf kilidi"
+
+#. Lists library block
+msgid "list _ contains _"
+msgstr "liste _ içerir _"
+
+#. Example string. Tells the user this input accepts a function name
+msgid "aFunction"
+msgstr "bir işlev"
+
+#. Microphone library block
+msgid "loudness"
+msgstr "ses yüksekliği"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgUp"
+msgstr "PgUp (yukarı sayfa) tuşu"
+
+#. Keyboard and Mouse library block
+msgid "release key _"
+msgstr "_ tuşu serbest bırak"
+
+#. Microphone library block
+msgid "turn on microphone"
+msgstr "mikrofonu aç"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PrintScreen"
+msgstr "Ekranı bastır tuşu"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;both"
+msgstr "ikisi birden"
+
+#. NeoPanel library block
+msgid "NeoPanel draw text _ at x _ y _ color _"
+msgstr "NeoPanel metin _ yaz x _ y _ renk _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw BMP file _ at x _ y _"
+msgstr "NeoPanel BMP göster dosya _ x _ y _"
+
+#. Keyboard and Mouse library block
+msgid "hold key _"
+msgstr "_ tuşu basılı tutun"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Shift"
+msgstr "Shift tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ScrollLock"
+msgstr "Kaydırma Kilidi tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ESC"
+msgstr "ESC tuşu"
+
+#. Infrared Remote library block
+msgid "IR transmit device _ command _"
+msgstr "IR yolla cihaz _ kumanda _"
+
+#. Keyboard and Mouse library block
+msgid "move mouse pointer by _ , _"
+msgstr "fare işaretçisini _ , _ hareket ettir"
+
+#. Lists library block
+#, fuzzy
+msgid "unique _"
+msgstr "özgün _"
+
+#. Keyboard and Mouse library block
+msgid "hold _ mouse button"
+msgstr "_ fare düğmesini basılı tutun"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;middle"
+msgstr "orta"
+
+#. NeoPanel library block
+msgid "NeoPanel fill row _ color _"
+msgstr "NeoPanel  satır _ renkle _ doldur"
+
+#. Keyboard and Mouse library block
+msgid "while holding _"
+msgstr "_ tuşunu basılı tutarken"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;return"
+msgstr "Return (dönüş) tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;backspace"
+msgstr "geri tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;NumLock"
+msgstr "numara kilidi"
+
+#. Lists library block
+msgid "reverse _"
+msgstr "_ listenin tersi"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;insert"
+msgstr "ekle tuşu"

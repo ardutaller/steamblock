@@ -501,6 +501,15 @@ void hardwareInit() {
 	#define TOTAL_PINS 20
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5};
 
+#elif defined(ARDUINO_SEEED_XIAO_M0) // must come before Zero
+
+	#define BOARD_TYPE "Xiao SAMD21"
+	#define DIGITAL_PINS 14
+	#define ANALOG_PINS 11
+	#define INVERT_USER_LED true
+	#define TOTAL_PINS 14
+	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10};
+
 #elif defined(ARDUINO_SAMD_ZERO)
 
 	#define BOARD_TYPE "Zero"
@@ -1072,7 +1081,7 @@ void hardwareInit() {
 		#elif defined(GIZMO_MECHATRONICS)
 			#undef BOARD_TYPE
 			#define BOARD_TYPE "RP2040 Gizmo"
-		#elif defined(RP2350)
+		#elif defined(RP2350) || defined(PICO_RP2350)
 			#undef BOARD_TYPE
 			#define BOARD_TYPE "RP2350"
 		#endif
