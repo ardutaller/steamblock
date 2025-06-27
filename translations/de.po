@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-06-23 02:30+0000\n"
-"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
+"PO-Revision-Date: 2025-06-24 04:01+0000\n"
+"Last-Translator: jadga h <jadga.h@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -1551,7 +1551,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Call the function with the given name and optional parameter list."
 msgstr ""
-"ruft die Funktion mit dem angegebenen Namen und den optionalen Parametern "
+"Ruft die Funktion mit dem angegebenen Namen und den optionalen Parametern "
 "auf."
 
 #. BirdBrain Technologies Hummingbird kit library block
@@ -2844,7 +2844,7 @@ msgstr "stoppe alles"
 
 #. Block in Control category
 msgid "call _"
-msgstr "rufe _"
+msgstr "rufe _ auf"
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
