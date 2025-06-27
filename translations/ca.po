@@ -6776,7 +6776,7 @@ msgid "fb set all NeoPixels _"
 msgstr "fb tots els NeoPíxels de color _"
 
 #. Coding Box library block
-msgid "cb _ ADKey pressed?"
+msgid "cb _ ADKey button pressed?"
 msgstr "cb ADKey botó _ premut?"
 
 #. Coding Box library block

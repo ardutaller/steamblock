@@ -6751,7 +6751,7 @@ msgid "cb set _ LED to _"
 msgstr "cb pon el led _ a _"
 
 #. Coding Box library block
-msgid "cb _ ADKey pressed?"
+msgid "cb _ ADKey button pressed?"
 msgstr "cb ADKey ¿botón _ presionado?"
 
 #. Coding Box library block
