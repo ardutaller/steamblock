@@ -3589,12 +3589,27 @@ msgstr ""
 msgid "green"
 msgstr ""
 
-#. Robot direction input. Used in robot libraries
+#. Generic robot direction input. Used in robot libraries
 msgid "forward"
 msgstr ""
 
-#. Robot direction input. Used in robot libraries
+#. Generic robot direction input. Used in robot libraries
 msgid "backward"
+msgstr ""
+
+#. Generic robot side input. Used in robot libraries
+#. as in "left" side
+msgid "left"
+msgstr ""
+
+#. Generic robot side input. Used in robot libraries
+#. as in "right" side
+msgid "right"
+msgstr ""
+
+#. Generic robot side input. Used in robot libraries
+#. as in "both" sides
+msgid "both"
 msgstr ""
 
 #. Generic robot turn block
