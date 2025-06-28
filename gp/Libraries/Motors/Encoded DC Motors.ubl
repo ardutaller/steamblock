@@ -9,7 +9,7 @@ variables _edcmotors__initialized _edcmotors__running _edcmotors__numMotors _edc
   spec ' ' 'edcmotors_moveMotorDistance' 'move motor _ distance _ (encoder counts) at max speed _ (counts/sec)' 'num num num' 1 100 500
   spec ' ' 'edcmotors_moveMotorWithEffort' 'move motor _ with effort _ (-1023 to 1023)' 'num num' 1 500
   spec ' ' 'edcmotors_resetMotorEncoders' 'reset motor encoders _ : _ : ...' 'num num num num' 1 2 3 4
-  spec 'r' 'edcmotors_motorEncoderCount' 'motor encoder count  _' 'num' 1
+  spec 'r' 'edcmotors_motorEncoderCount' 'motor encoder count _' 'num' 1
   spec ' ' 'edcmotors_stopAllMotors' 'stop all motors'
   spec ' ' 'edcmotors_stopMotors' 'stop motors _ : _ : ...' 'num num num num' 1 2 3 4
   spec ' ' 'edcmotors_waitForMotorsToStop' 'wait for motors to stop _ : _ : ...' 'num num num num' 1 2 3 4
