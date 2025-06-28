@@ -396,6 +396,14 @@ void hardwareInit() {
 	static const int analogPin[6] = {A0, A1, A2, A3, A4, A5};
 	// Note: pins 0 and 1 are reserved for primary UART
 
+#elif defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+
+	#define BOARD_TYPE "Xiao NRF52840"
+	#define DIGITAL_PINS 15
+	#define ANALOG_PINS 7
+	#define TOTAL_PINS 48
+	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, PIN_VBAT};
+
 #elif defined(ARDUINO_TEENSY31)
 	#define BOARD_TYPE "Teensy 3.1"
 	#define DIGITAL_PINS 24
@@ -1057,6 +1065,30 @@ void hardwareInit() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 1, 1, 1, 0, 0, 0};
+
+#elif defined(ARDUINO_SEEED_XIAO_RP2040)
+
+	#define BOARD_TYPE "Xiao RP2040"
+	#define DIGITAL_PINS 30
+	#define ANALOG_PINS 4
+	#define TOTAL_PINS DIGITAL_PINS
+	static const int analogPin[] = {A0, A1, A2, A3};
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 1, 1, 0, 0, 0, 0};
+
+#elif defined(ARDUINO_SEEED_XIAO_RP2350)
+
+	#define BOARD_TYPE "Xiao RP2350"
+	#define DIGITAL_PINS 30
+	#define ANALOG_PINS 3
+	#define TOTAL_PINS 30
+	static const int analogPin[] = {A0, A1, A2};
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 1, 1, 0, 0, 0, 0};
 
 #elif defined(ARDUINO_ARCH_RP2040)
 
