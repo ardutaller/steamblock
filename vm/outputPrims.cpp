@@ -916,6 +916,11 @@ static int neoPixelPin = -1;
 static void initNeoPixelPin(int pinNum) {
 	#if defined(WUKONG2040)
 		if ((pinNum < 0) || (pinNum > 29)) pinNum = 22;
+	#elif defined(ARDUINO_SEEED_XIAO_RP2040)
+		if ((pinNum < 0) || (pinNum > 14)) pinNum = PIN_NEOPIXEL;
+		// turn on NeoPixel power
+		setPinMode(NEOPIXEL_POWER, OUTPUT);
+		digitalWrite(NEOPIXEL_POWER, 1);
 	#endif
 	// Note: Do not default to pin 0; that pin is used by pico:ed v2 for internal i2c
 	if ((pinNum < 0) || (pinNum > 29)) return;

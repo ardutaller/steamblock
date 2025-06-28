@@ -1370,6 +1370,12 @@ static void initPins(void) {
 		pinMode(PIN_BUTTON_A, INPUT_PULLUP); // BUTTON A
 		pinMode(PIN_BUTTON_B, INPUT_PULLUP); // BUTTON B
 	#endif
+
+	#ifdef ARDUINO_SEEED_XIAO_M0
+		// put TX/RX LED into input mode to suppress flashing
+		SET_MODE(PIN_LED_RXL, INPUT);
+		SET_MODE(PIN_LED_TXL, INPUT);
+	#endif
 }
 
 #if !defined(ARDUINO_SAM_DUE) && !defined(ESP8266) && !defined(PICO_RP2350)
