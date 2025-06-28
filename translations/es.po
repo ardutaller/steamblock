@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-06-26 23:56+0000\n"
+"PO-Revision-Date: 2025-06-29 16:01+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -6847,3 +6847,18 @@ msgstr "wifi nombre de dominio local _.local"
 #. Firmware install instruction
 msgid "Connecting..."
 msgstr "Conectando..."
+
+#. Generic robot side input. Used in robot libraries
+#. as in "left" side
+msgid "left"
+msgstr "izquierda"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "right" side
+msgid "right"
+msgstr "derecha"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "both" sides
+msgid "both"
+msgstr "ambos"
