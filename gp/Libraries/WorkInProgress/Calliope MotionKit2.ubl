@@ -1,0 +1,197 @@
+module 'Calliope MotionKit2'
+author 'Michael Klein kleinswelt'
+version 1 6 
+choices mk2_PosMenu left right 
+choices mk2_DirMenu forward backward 
+choices mk2_ServMenu 'mk2;S1' 'mk2;S2' both 
+choices mk2_LRBMenu left right both 
+choices mk2_LineMenu 'mk2;bright' 'mk2;dark' 
+choices mk2_IRMenu '1' '2' '3' '4' '5' '6' '7' '8' '9' '0' '*' '#' 'mk2;ok' 'mk2;up' 'mk2;down' left right 
+description 'Calliope MotionKit2
+These are blocks for driving the fully I2C controlled Calliope MotionKit2.
+- 2 motors
+- 2 servos (optional)
+- 2 linesensors
+- 4 NeoPixels on bottom
+- ultrasonic distance sensor
+- infrared receiver
+
+https://webshop.calliope.cc/MotionKit-20-fuer-Calliope-mini
+'
+variables _mk2_i2cAddr _mk2_lastIRcode 
+
+  spec ' ' 'mk2_setMotor' 'MotionKit motor _ dir _ speed _ (0~255)' 'menu.mk2_LRBMenu menu.mk2_DirMenu num' 'both' 'forward' 255
+  spec ' ' 'mk2_stopMotor' 'MotionKit stop motor _' 'menu.mk2_LRBMenu' 'both'
+  spec ' ' 'mk2_setServo' 'MotionKit set servo _ to _ ° (0~180)' 'menu.mk2_ServMenu auto' 'mk2;S1' '90'
+  space
+  spec 'r' 'mk2_distance' 'MotionKit distance (cm)'
+  spec 'r' 'mk2_lineSensor' 'MotionKit linesensor _ _' 'menu.mk2_PosMenu menu.mk2_LineMenu' 'left' 'mk2;dark'
+  space
+  spec ' ' 'mk2_setLED' 'MotionKit LED _ _' 'menu.mk2_LRBMenu bool' 'both' true
+  spec ' ' 'mk2_setNeoPixels' 'MotionKit set neopixels _' 'color' 255
+  spec ' ' 'mk2_clearNeoPixels' 'MotionKit clear NeoPixels'
+  spec 'r' 'mk2_colorFromRGB' 'color r _ g _ b _ (0~255)' 'num num num' 0 100 100
+  spec 'r' 'mk2_colorRed' '_' 'color' 16711680
+  spec 'r' 'mk2_colorYellow' '_' 'color' 16776960
+  spec 'r' 'mk2_colorGreen' '_' 'color' 1171215
+  space
+  spec 'r' 'mk2_IRreceived' 'IR code received?'
+  spec 'r' 'mk2_IRkey' 'IR key _ pressed?' 'menu.mk2_IRMenu' 'mk2;up'
+  space
+  spec 'r' '_mk2_initialized' '_mk2_initialized'
+  spec 'r' '_mk2_i2cRead' '_mk2_i2cRead reg _' 'num'
+  spec ' ' '_mk2_i2cWrite' '_mk2_i2cWrite reg _ data _' 'num auto'
+
+to '_mk2_i2cRead' regAddr {
+  comment 'Read four registers starting at the given address and eturn a list of their values.'
+  local 'result' (newList 4)
+  if ('_mk2_initialized') {
+    i2cSet _mk2_i2cAddr regAddr 0
+    '[sensors:i2cRead]' _mk2_i2cAddr result
+  }
+  '[sensors:i2cSetClockSpeed]' 400000
+  return result
+}
+
+to '_mk2_i2cWrite' writeBuffer {
+  comment 'Write data. The first byte of writeBuffer is the destination register followed by the bytes to be written.'
+  if ('_mk2_initialized') {
+    '[sensors:i2cWrite]' _mk2_i2cAddr writeBuffer
+  }
+  '[sensors:i2cSetClockSpeed]' 400000
+}
+
+to '_mk2_initialized' {
+  '[sensors:i2cSetClockSpeed]' 100000
+  _mk2_i2cAddr = (hexToInt '10')
+  return ('[sensors:i2cExists]' _mk2_i2cAddr)
+}
+
+to mk2_IRkey key {
+  if (and (_mk2_lastIRcode == 93) (key == 1)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 157) (key == 2)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 29) (key == 3)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 221) (key == 4)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 253) (key == 5)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 61) (key == 6)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 31) (key == 7)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 87) (key == 8)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 111) (key == 9)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 103) (key == 0)) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 79) (key == '#')) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 151) (key == '*')) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 199) (key == 'mk2;ok')) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 231) (key == 'mk2;up')) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 181) (key == 'mk2;down')) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 239) (key == 'left')) {return (booleanConstant true)}
+  if (and (_mk2_lastIRcode == 165) (key == 'right')) {return (booleanConstant true)}
+  return (booleanConstant false)
+}
+
+to mk2_IRreceived {
+  local 'buffer' ('_mk2_i2cRead' (hexToInt '2B'))
+  _mk2_lastIRcode = (at 4 buffer)
+  return (_mk2_lastIRcode != 0)
+}
+
+to mk2_clearNeoPixels {
+  mk2_setNeoPixels 0
+}
+
+to mk2_colorFromRGB r g b {
+  r = (maximum 0 (minimum r 255))
+  g = (maximum 0 (minimum g 255))
+  b = (maximum 0 (minimum b 255))
+  return (((r << 16) | (g << 8)) | b)
+}
+
+to mk2_colorGreen color {
+  return color
+}
+
+to mk2_colorRed color {
+  return color
+}
+
+to mk2_colorYellow color {
+  return color
+}
+
+to mk2_distance {
+  local 'buffer' ('_mk2_i2cRead' (hexToInt '28'))
+  distance = (((at 1 buffer) << 8) | (at 2 buffer))
+  if (distance > 399) {
+    distance = 400
+    comment 'Returns maximum value'
+  }
+  if (distance < 1) {
+    distance = -1
+    comment 'Returns -1 if distance is invalid'
+  }
+  return distance
+}
+
+to mk2_lineSensor lr brightdark {
+  local 'patrol' (at 1 ('_mk2_i2cRead' (hexToInt '1D')))
+  if (lr == 'left') {
+    local 'sensorvalue' ((patrol & 1) != 0)
+  } else {
+    local 'sensorvalue' ((patrol & 2) != 0)
+  }
+  if (brightdark == 'mk2;bright') {
+    sensorvalue = (not sensorvalue)
+  }
+  return sensorvalue
+}
+
+to mk2_setLED lrb on {
+  on = ('[data:convertType]' on 'number')
+  if (lrb == 'left') {
+    '_mk2_i2cWrite' (hexToInt '0B') ('[data:makeList]' on)
+  } (lrb == 'right') {
+    '_mk2_i2cWrite' (hexToInt '0C') ('[data:makeList]' on)
+  } else {
+    '_mk2_i2cWrite' (hexToInt '0B') ('[data:makeList]' on on)
+  }
+}
+
+to mk2_setMotor lrb fb speed {
+  speed = (maximum 0 (minimum speed 255))
+  fb = ('[data:convertType]' (fb != 'forward') 'number')
+  if (lrb == 'left') {
+    '_mk2_i2cWrite' 0 ('[data:makeList]' fb speed)
+  } (lrb == 'right') {
+    '_mk2_i2cWrite' 2 ('[data:makeList]' fb speed)
+  } else {
+    '_mk2_i2cWrite' 0 ('[data:makeList]' fb speed fb speed)
+  }
+}
+
+to mk2_setNeoPixels pixelcolor {
+  local 'r' ((pixelcolor >> 16) & 255)
+  local 'g' ((pixelcolor >> 8) & 255)
+  local 'b' (pixelcolor& 255)
+  '_mk2_i2cWrite' (hexToInt '18') ('[data:makeList]' r g b)
+}
+
+to mk2_setServo servonumber degrees {
+  degrees = (maximum 0 (minimum degrees 180))
+  if (servonumber == 'mk2;S1') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '14') degrees)
+  } (servonumber == 'mk2;S2') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '15') degrees)
+  } else {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '14') degrees degrees)
+  }
+}
+
+to mk2_stopMotor lrb {
+  if (lrb == 'left') {
+    '_mk2_i2cWrite' ('[data:makeList]' 0 0 0)
+  } (lrb == 'right') {
+    '_mk2_i2cWrite' ('[data:makeList]' 2 0 0)
+  } else {
+    '_mk2_i2cWrite' ('[data:makeList]' 0 0 0 0 0)
+  }
+}
+
