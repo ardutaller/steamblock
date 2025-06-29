@@ -1,12 +1,12 @@
 module 'Calliope MotionKit2'
 author 'Michael Klein kleinswelt'
-version 1 6 
-choices mk2_PosMenu left right 
-choices mk2_DirMenu forward backward 
-choices mk2_ServMenu 'mk2;S1' 'mk2;S2' both 
-choices mk2_LRBMenu left right both 
-choices mk2_LineMenu 'mk2;bright' 'mk2;dark' 
-choices mk2_IRMenu '1' '2' '3' '4' '5' '6' '7' '8' '9' '0' '*' '#' 'mk2;ok' 'mk2;up' 'mk2;down' left right 
+version 1 7 
+choices mk2_line 'mk2;bright' 'mk2;dark' 
+choices mk2_position left right 
+choices mk2_motor left right both 
+choices mk2_IR '1' '2' '3' '4' '5' '6' '7' '8' '9' '0' '*' '#' 'mk2;ok' 'mk2;up' 'mk2;down' left right 
+choices mk2_direction forward backward 
+choices mk2_servo 'mk2;S1' 'mk2;S2' both 
 description 'Calliope MotionKit2
 These are blocks for driving the fully I2C controlled Calliope MotionKit2.
 - 2 motors
@@ -20,30 +20,30 @@ https://webshop.calliope.cc/MotionKit-20-fuer-Calliope-mini
 '
 variables _mk2_i2cAddr _mk2_lastIRcode 
 
-  spec ' ' 'mk2_setMotor' 'MotionKit motor _ dir _ speed _ (0~255)' 'menu.mk2_LRBMenu menu.mk2_DirMenu num' 'both' 'forward' 255
-  spec ' ' 'mk2_stopMotor' 'MotionKit stop motor _' 'menu.mk2_LRBMenu' 'both'
-  spec ' ' 'mk2_setServo' 'MotionKit set servo _ to _ ° (0~180)' 'menu.mk2_ServMenu auto' 'mk2;S1' '90'
+  spec ' ' 'mk2_setMotor' 'MotionKit motor _ dir _ speed _ (0~255)' 'menu.mk2_motor menu.mk2_direction num' 'both' 'forward' 255
+  spec ' ' 'mk2_stopMotor' 'MotionKit stop motor _' 'menu.mk2_motor' 'both'
+  spec ' ' 'mk2_setServo' 'MotionKit set servo _ to _ ° (0~180)' 'menu.mk2_servo auto' 'mk2;S1' '90'
   space
   spec 'r' 'mk2_distance' 'MotionKit distance (cm)'
-  spec 'r' 'mk2_lineSensor' 'MotionKit linesensor _ _' 'menu.mk2_PosMenu menu.mk2_LineMenu' 'left' 'mk2;dark'
+  spec 'r' 'mk2_lineSensor' 'MotionKit line sensor _ _' 'menu.mk2_position menu.mk2_line' 'left' 'mk2;dark'
   space
-  spec ' ' 'mk2_setLED' 'MotionKit LED _ _' 'menu.mk2_LRBMenu bool' 'both' true
-  spec ' ' 'mk2_setNeoPixels' 'MotionKit set neopixels _' 'color' 255
+  spec ' ' 'mk2_setLED' 'MotionKit LED _ _' 'menu.mk2_motor bool' 'both' true
+  spec ' ' 'mk2_setNeoPixels' 'MotionKit set NeoPixels _' 'color' 255
   spec ' ' 'mk2_clearNeoPixels' 'MotionKit clear NeoPixels'
-  spec 'r' 'mk2_colorFromRGB' 'color r _ g _ b _ (0~255)' 'num num num' 0 100 100
+  spec 'r' 'mk2_colorRGB' 'color r _ g _ b _ (0~255)' 'num num num' 0 100 100
   spec 'r' 'mk2_colorRed' '_' 'color' 16711680
   spec 'r' 'mk2_colorYellow' '_' 'color' 16776960
   spec 'r' 'mk2_colorGreen' '_' 'color' 1171215
   space
   spec 'r' 'mk2_IRreceived' 'IR code received?'
-  spec 'r' 'mk2_IRkey' 'IR key _ pressed?' 'menu.mk2_IRMenu' 'mk2;up'
+  spec 'r' 'mk2_IRkey' 'IR key _ pressed?' 'menu.mk2_IR' 'mk2;up'
   space
   spec 'r' '_mk2_initialized' '_mk2_initialized'
   spec 'r' '_mk2_i2cRead' '_mk2_i2cRead reg _' 'num'
-  spec ' ' '_mk2_i2cWrite' '_mk2_i2cWrite reg _ data _' 'num auto'
+  spec ' ' '_mk2_i2cWrite' '_mk2_i2cWrite list _' 'num'
 
 to '_mk2_i2cRead' regAddr {
-  comment 'Read four registers starting at the given address and eturn a list of their values.'
+  comment 'Read four registers starting at the given address and return a list of their values.'
   local 'result' (newList 4)
   if ('_mk2_initialized') {
     i2cSet _mk2_i2cAddr regAddr 0
@@ -98,15 +98,15 @@ to mk2_clearNeoPixels {
   mk2_setNeoPixels 0
 }
 
-to mk2_colorFromRGB r g b {
+to mk2_colorGreen color {
+  return color
+}
+
+to mk2_colorRGB r g b {
   r = (maximum 0 (minimum r 255))
   g = (maximum 0 (minimum g 255))
   b = (maximum 0 (minimum b 255))
   return (((r << 16) | (g << 8)) | b)
-}
-
-to mk2_colorGreen color {
-  return color
 }
 
 to mk2_colorRed color {
@@ -121,19 +121,19 @@ to mk2_distance {
   local 'buffer' ('_mk2_i2cRead' (hexToInt '28'))
   distance = (((at 1 buffer) << 8) | (at 2 buffer))
   if (distance > 399) {
+    comment 'Return maximum value'
     distance = 400
-    comment 'Returns maximum value'
   }
   if (distance < 1) {
+    comment 'Return -1 if distance is invalid'
     distance = -1
-    comment 'Returns -1 if distance is invalid'
   }
   return distance
 }
 
-to mk2_lineSensor lr brightdark {
+to mk2_lineSensor which brightdark {
   local 'patrol' (at 1 ('_mk2_i2cRead' (hexToInt '1D')))
-  if (lr == 'left') {
+  if (which == 'left') {
     local 'sensorvalue' ((patrol & 1) != 0)
   } else {
     local 'sensorvalue' ((patrol & 2) != 0)
@@ -144,54 +144,54 @@ to mk2_lineSensor lr brightdark {
   return sensorvalue
 }
 
-to mk2_setLED lrb on {
+to mk2_setLED which on {
   on = ('[data:convertType]' on 'number')
-  if (lrb == 'left') {
-    '_mk2_i2cWrite' (hexToInt '0B') ('[data:makeList]' on)
-  } (lrb == 'right') {
-    '_mk2_i2cWrite' (hexToInt '0C') ('[data:makeList]' on)
+  if (which == 'left') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0B') on)
+  } (which == 'right') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0C') on)
   } else {
-    '_mk2_i2cWrite' (hexToInt '0B') ('[data:makeList]' on on)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0B') on on)
   }
 }
 
-to mk2_setMotor lrb fb speed {
+to mk2_setMotor motor dir speed {
   speed = (maximum 0 (minimum speed 255))
-  fb = ('[data:convertType]' (fb != 'forward') 'number')
-  if (lrb == 'left') {
-    '_mk2_i2cWrite' 0 ('[data:makeList]' fb speed)
-  } (lrb == 'right') {
-    '_mk2_i2cWrite' 2 ('[data:makeList]' fb speed)
+  dir = ('[data:convertType]' (dir != 'forward') 'number')
+  if (motor == 'left') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') dir speed)
+  } (motor == 'right') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '02') dir speed)
   } else {
-    '_mk2_i2cWrite' 0 ('[data:makeList]' fb speed fb speed)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') dir speed dir speed)
   }
 }
 
 to mk2_setNeoPixels pixelcolor {
   local 'r' ((pixelcolor >> 16) & 255)
   local 'g' ((pixelcolor >> 8) & 255)
-  local 'b' (pixelcolor& 255)
-  '_mk2_i2cWrite' (hexToInt '18') ('[data:makeList]' r g b)
+  local 'b' (pixelcolor & 255)
+  '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '18') r g b)
 }
 
-to mk2_setServo servonumber degrees {
+to mk2_setServo servo degrees {
   degrees = (maximum 0 (minimum degrees 180))
-  if (servonumber == 'mk2;S1') {
+  if (servo == 'mk2;S1') {
     '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '14') degrees)
-  } (servonumber == 'mk2;S2') {
+  } (servo == 'mk2;S2') {
     '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '15') degrees)
   } else {
     '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '14') degrees degrees)
   }
 }
 
-to mk2_stopMotor lrb {
-  if (lrb == 'left') {
-    '_mk2_i2cWrite' ('[data:makeList]' 0 0 0)
-  } (lrb == 'right') {
-    '_mk2_i2cWrite' ('[data:makeList]' 2 0 0)
+to mk2_stopMotor motor {
+  if (motor == 'left') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') 0 0)
+  } (motor == 'right') {
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '02') 0 0)
   } else {
-    '_mk2_i2cWrite' ('[data:makeList]' 0 0 0 0 0)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') 0 0 0 0)
   }
 }
 
