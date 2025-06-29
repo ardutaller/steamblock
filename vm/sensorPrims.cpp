@@ -147,7 +147,7 @@ void writeI2CReg(int deviceID, int reg, int value) {
 	Wire.endTransmission();
 }
 
-#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) // || defined(ARDUINO_M5STACK_Core2) || defined(DUELink)
+#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) || defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE) // || defined(ARDUINO_M5STACK_Core2) || defined(DUELink)
 
 #define HAS_INTERNAL_I2C 1
 
@@ -870,7 +870,7 @@ static int readTemperature() {
 	return (int) round(result);
 }
 
-#elif defined(ARDUINO_NRF52840_CLUE) || defined(XRP)
+#elif defined(ARDUINO_NRF52840_CLUE) || defined(XRP) || defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
 
 #if defined(XRP)
 	#define LSM6DS 107
@@ -878,8 +878,25 @@ static int readTemperature() {
 	#define LSM6DS 106
 #endif
 
+#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+	static void setHighDrive(int pin) {
+		if ((pin < 0) || (pin >= PINS_COUNT)) return;
+		pin = g_ADigitalPinMap[pin];
+		NRF_GPIO_Type* port = (NRF_GPIO_Type*) ((pin < 32) ? 0x50000000 : 0x50000300);
+		port->PIN_CNF[pin & 0x1F] |= (3 << 8); // high drive 1 and 0
+	}
+#endif
+
 static void startAccelerometer() {
-	writeI2CReg(LSM6DS, 0x10, 0x80); // enable accelerometer, 1660 Hz sample rate
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		pinMode(PIN_LSM6DS3TR_C_POWER, OUTPUT);
+		setHighDrive(PIN_LSM6DS3TR_C_POWER);
+		digitalWrite(PIN_LSM6DS3TR_C_POWER, HIGH);
+		delay(10); // leave time for accelerometer power up
+		writeInternalI2CReg(LSM6DS, 0x10, 0x80); // enable accelerometer, 1660 Hz sample rate
+	#else
+		writeI2CReg(LSM6DS, 0x10, 0x80); // enable accelerometer, 1660 Hz sample rate
+	#endif
 	delay(2);
 	accelStarted = true;
 }
@@ -887,9 +904,15 @@ static void startAccelerometer() {
 static int readAcceleration(int registerID) {
 	if (!accelStarted) startAccelerometer();
 	int val = 0;
-	if (1 == registerID) val = readI2CReg(LSM6DS, 0x29); // x-axis
-	if (3 == registerID) val = readI2CReg(LSM6DS, 0x2B); // y-axis
-	if (5 == registerID) val = readI2CReg(LSM6DS, 0x2D); // z-axis
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		if (1 == registerID) val = readInternalI2CReg(LSM6DS, 0x2B); // x-axis
+		if (3 == registerID) val = readInternalI2CReg(LSM6DS, 0x29); // y-axis
+		if (5 == registerID) val = readInternalI2CReg(LSM6DS, 0x2D); // z-axis
+	#else
+		if (1 == registerID) val = readI2CReg(LSM6DS, 0x29); // x-axis
+		if (3 == registerID) val = readI2CReg(LSM6DS, 0x2B); // y-axis
+		if (5 == registerID) val = readI2CReg(LSM6DS, 0x2D); // z-axis
+	#endif
 
 	val = (val >= 128) ? (val - 256) : val; // value is a signed byte
 	if (val < -127) val = -127; // keep in range -127 to 127
@@ -915,14 +938,24 @@ static void setAccelRange(int range) {
 	default: break;
 	}
 	int sampleRate = 8; // 1660 Hz
-	writeI2CReg(LSM6DS, 0x10, (sampleRate << 4) | (rangeBits << 2));
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		writeInternalI2CReg(LSM6DS, 0x10, (sampleRate << 4) | (rangeBits << 2));
+	#else
+		writeI2CReg(LSM6DS, 0x10, (sampleRate << 4) | (rangeBits << 2));
+	#endif
 }
 
 static int readTemperature() {
 	if (!accelStarted) startAccelerometer();
-	int temp = (readI2CReg(LSM6DS, 0x21) << 8) | readI2CReg(LSM6DS, 0x20);
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		int temp = (readInternalI2CReg(LSM6DS, 0x21) << 8) | readInternalI2CReg(LSM6DS, 0x20);
+		int shift = 8; // LSM6dS3-C has 8 bits of fraction
+	#else
+		int temp = (readI2CReg(LSM6DS, 0x21) << 8) | readI2CReg(LSM6DS, 0x20);
+		int shift = 4;
+	#endif
 	if (temp >= 32768) temp = temp - 65536; // negative
-	return 25 + (temp / 16);
+	return 25 + (temp >> shift);
 }
 
 #elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5Stick_C) || \
@@ -931,7 +964,6 @@ static int readTemperature() {
 #ifdef ARDUINO_M5Stack_Core_ESP32 || defined(M5Atom_Matrix)
 	#define Wire1 Wire
 #endif
-
 
 #define MPU6886_ID		0x68
 #define MPU6886_SMPLRT_DIV	0x19
@@ -1946,7 +1978,7 @@ static OBJ primReadDHT(int argCount, OBJ *args) {
 
 // Microphone Support
 
-#if defined(ARDUINO_NRF52840_CIRCUITPLAY) || defined(ARDUINO_NRF52840_CLUE)
+#if defined(ARDUINO_NRF52840_CIRCUITPLAY) || defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
 
 #define USE_DIGITAL_MICROPHONE 1
 
@@ -1958,6 +1990,11 @@ static int16_t mic_sample;
 static void initPDM() {
 	if (mic_initialized) return;
 	mic_initialized = true;
+
+	#if defined(PIN_PDM_PWR)
+		pinMode(PIN_PDM_PWR, OUTPUT);
+		digitalWrite(PIN_PDM_PWR, HIGH);
+	#endif
 
 	pinMode(PIN_PDM_CLK, OUTPUT);
 	digitalWrite(PIN_PDM_CLK, LOW);

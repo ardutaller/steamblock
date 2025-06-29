@@ -399,10 +399,11 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
 
 	#define BOARD_TYPE "Xiao NRF52840"
-	#define DIGITAL_PINS 15
-	#define ANALOG_PINS 7
-	#define TOTAL_PINS 48
-	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, PIN_VBAT};
+	#define DIGITAL_PINS 14
+	#define ANALOG_PINS 6
+	#define TOTAL_PINS 33
+	#define INVERT_USER_LED true
+	static const int analogPin[] = {A0, A1, A2, A3, A4, A5};
 
 #elif defined(ARDUINO_TEENSY31)
 	#define BOARD_TYPE "Teensy 3.1"
