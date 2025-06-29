@@ -69,7 +69,7 @@
 #elif defined(DUELink)
 	#define OBJSTORE_BYTES 7200
 #else
-	#define OBJSTORE_BYTES 4000
+	#define OBJSTORE_BYTES 3600
 	// max that works on Wemos D1 mini (ESP8266) is 11000
 	// however, WiFi is unreliable for 4 concurrent requestions even down to 7200
 	// 5000 seems stable for up to 10 concurrent requests
