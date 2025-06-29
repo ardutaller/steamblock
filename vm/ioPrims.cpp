@@ -1069,26 +1069,42 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_RP2040)
 
 	#define BOARD_TYPE "Xiao RP2040"
-	#define DIGITAL_PINS 30
+	#define DIGITAL_PINS 16
 	#define ANALOG_PINS 4
-	#define TOTAL_PINS DIGITAL_PINS
+	#define TOTAL_PINS 30
+	#define INVERT_USER_LED true
+	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {A0, A1, A2, A3};
+	static const char digitalPin[DIGITAL_PINS] = {
+		D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10,
+		PIN_LED_R, PIN_LED_G, PIN_LED_B, PIN_NEOPIXEL, NEOPIXEL_POWER};
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 1, 1, 1, 0, 0, 0, 0};
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #elif defined(ARDUINO_SEEED_XIAO_RP2350)
 
 	#define BOARD_TYPE "Xiao RP2350"
-	#define DIGITAL_PINS 30
-	#define ANALOG_PINS 3
+	#define DIGITAL_PINS 22
+	#define ANALOG_PINS 4
 	#define TOTAL_PINS 30
-	static const int analogPin[] = {A0, A1, A2};
+	#define INVERT_USER_LED true
+	#define USE_DIGITAL_PIN_MAP true
+
+	#define A3 29 // A3 was omitted from pins_arduino.h
+	#define PIN_NEOPIXEL 22
+	#define NEOPIXEL_POWER 23
+
+	static const int analogPin[] = {A0, A1, A2, A3};
+	static const char digitalPin[DIGITAL_PINS] = {
+		D0, D1, D2, D3, D4, D5, D6, D7, D8, D9,
+		D10, D11, D12, D13, D14, D15, D16, D17, D18, PIN_LED,
+		PIN_NEOPIXEL, NEOPIXEL_POWER};
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 1, 1, 1, 0, 0, 0, 0};
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #elif defined(ARDUINO_ARCH_RP2040)
 
@@ -1376,6 +1392,12 @@ static void initPins(void) {
 		SET_MODE(PIN_LED_RXL, INPUT);
 		SET_MODE(PIN_LED_TXL, INPUT);
 	#endif
+
+	#ifdef ARDUINO_SEEED_XIAO_RP2040
+		SET_MODE(PIN_LED_R, INPUT);
+		SET_MODE(PIN_LED_G, INPUT);
+		SET_MODE(PIN_LED_B, INPUT);
+	#endif
 }
 
 #if !defined(ARDUINO_SAM_DUE) && !defined(ESP8266) && !defined(PICO_RP2350)
@@ -1397,6 +1419,12 @@ void turnOffPins() {
 					int duePin = mapDigitalPinNum(pin);
 					if (duePin >= 0) digitalWrite(duePin, LOW);
 				}
+			#endif
+			#if defined(PICO_RP2350)
+				pinMode(pin, OUTPUT);
+				digitalWrite(pin, LOW); // workaround for RP2350 chip bug; set low before switching to input
+				delayMicroseconds(10);
+				pinMode(pin, INPUT);
 			#endif
 			SET_MODE(pin, INPUT);
 		}
@@ -1517,7 +1545,9 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		SET_MODE(pinNum, mode);
 		return int2obj(adc_read_value((PinName) duePin, 10));
 	#endif
-	#if defined(ARDUINO_ARCH_RP2040) && !defined(PICO_ED)
+	#if defined(ARDUINO_SEEED_XIAO_RP2040) || defined(ARDUINO_SEEED_XIAO_RP2350)
+		if ((26 <= pinNum) && (pinNum <= 29)) pinNum -= 26; // map pins 26-29 are aliases for A0-A3
+	#elif defined(ARDUINO_ARCH_RP2040) && !defined(PICO_ED)
 		if ((pinNum < 26) || (pinNum > 29)) return int2obj(0);
 		pinNum -= 26; // map pins 26-29 to A0-A3
 	#endif
