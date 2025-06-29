@@ -514,8 +514,8 @@ void hardwareInit() {
 	#define BOARD_TYPE "Xiao SAMD21"
 	#define DIGITAL_PINS 14
 	#define ANALOG_PINS 11
-	#define INVERT_USER_LED true
 	#define TOTAL_PINS 14
+	#define INVERT_USER_LED true
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10};
 
 #elif defined(ARDUINO_SAMD_ZERO)
@@ -540,12 +540,12 @@ void hardwareInit() {
 	#define DIGITAL_PINS 9
 	#define ANALOG_PINS 1
 	#define TOTAL_PINS 18 // A0 is pin 17
+	#define INVERT_USER_LED true
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {A0};
 	static const char digitalPin[9] = {16, 5, 4, 0, 2, 14, 12, 13, 15};
 	#define PIN_LED LED_BUILTIN
 	#define PIN_BUTTON_A 0
-	#define INVERT_USER_LED true
 
 #elif defined(ARDUINO_CITILAB_ED1)
 
