@@ -5,8 +5,8 @@ cd ..
 
 pio run -e xiao-samd21
 python precompiled/uf2conv.py -c .pio/build/xiao-samd21/firmware.bin -o extraVMs/vm_xiao_samd21.uf2
-pio run -e xiao-nf52840
-python precompiled/uf2conv.py -c .pio/build/xiao-nf52840/firmware.hex -f 0xADA52840 -o extraVMs/vm_xiao_nf52840.uf2
+pio run -e xiao-nrf52840
+python precompiled/uf2conv.py -c .pio/build/xiao-nrf52840/firmware.hex -f 0xADA52840 -o extraVMs/vm_xiao_nrf52840.uf2
 pio run -e xiao-rp2040
 cp .pio/build/xiao-rp2040/firmware.uf2 extraVMs/vm_xiao_rp2040.uf2
 pio run -e xiao-rp2350
