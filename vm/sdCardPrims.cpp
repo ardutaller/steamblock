@@ -4,7 +4,7 @@
 
 // Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
 
-// filePrims.c - File system primitives.
+// sdCardPrims.c - SD Card file system.
 // John Maloney, May 2025
 
 // #include <stdlib.h>
@@ -15,17 +15,23 @@
 
 #if defined(SD_CARD)
 
-#include "SD.h"
+#include <SD.h>
+
+#if defined(ARDUINO_ARCH_RP2040)
+	#define DEFAULT_CS_PIN PIN_SPI0_SS
+#else
+	#define DEFAULT_CS_PIN SS
+#endif
 
 // Variables
 
-static int sdCardInitialized = false;
-
+// Current chip select pin; -1 if not yet initialized
+static int sdCardCSPin = -1;
 static char fullPath[32]; // used to prefix "/" to file names
 
 typedef struct {
 	char fileName[32];
-	SDFile file;
+	File file;
 } FileEntry;
 
 #define FILE_ENTRIES 8
@@ -33,11 +39,19 @@ static FileEntry fileEntry[FILE_ENTRIES]; // fileEntry[] records open files
 
 // Helper functions
 
-static void initSDCard() {
-	if (!sdCardInitialized) {
-//		SD.end();
-		SD.begin();
-		sdCardInitialized = true;
+static void initSDCard(int chipSelectPin) {
+	if (sdCardCSPin != chipSelectPin) {
+		if (sdCardCSPin != -1) SD.end();
+		if (chipSelectPin < 0) chipSelectPin = DEFAULT_CS_PIN;
+		int ok = SD.begin(chipSelectPin);
+		if (!ok) {
+			outputString("Could not open SD Card.");
+			outputString("Check wiring, chip select pin, and that card is inserted.");
+			sdCardCSPin = -1;
+			return;
+		}
+		outputString("SD Card opened");
+		sdCardCSPin = chipSelectPin;
 	}
 }
 
@@ -58,7 +72,7 @@ static int entryFor(char *fileName) {
 	// Return the index of a file entry for the file with the given path.
 	// Return -1 if fileName doesn't match any entry.
 
-	initSDCard();
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
 	if (!fileName[0]) return -1; // empty string is not a valid file name
 	for (int i = 0; i < FILE_ENTRIES; i++) {
 		if (0 == strcmp(fileName, fileEntry[i].fileName)) return i;
@@ -91,9 +105,17 @@ static void closeAndDeleteFile(char *fileName) {
 	closeIfOpen(fileName);
 
 	// to avoid a LittleFS error message, must ensure that the file exists before removing it
-	File tempFile = SDFileSystem.open(fileName, "w");
+	File tempFile = SD.open(fileName, "w");
 	tempFile.close();
-	SDFileSystem.remove(fileName);
+	SD.remove(fileName);
+}
+
+// Initialize
+
+static OBJ primInit(int argCount, OBJ *args) {
+	int csPin = ((argCount > 0) && isInt(args[0])) ? obj2int(args[0]) : -1;
+	initSDCard(csPin);
+	return falseObj;
 }
 
 // Open, Close, Delete
@@ -113,7 +135,7 @@ static OBJ primOpen(int argCount, OBJ *args) {
 	if (i >= 0) { // initialize new entry
 		fileEntry[i].fileName[0] = '\0';
 		strncat(fileEntry[i].fileName, fileName, 31);
-		fileEntry[i].file = SDFileSystem.open(fileName, "a+");
+		fileEntry[i].file = SD.open(fileName, "a+");
 		fileEntry[i].file.seek(0, SeekSet); // read from start of file
 	}
 	return falseObj;
@@ -322,7 +344,7 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 static File listDir;
 
 static OBJ primStartFileList(int argCount, OBJ *args) {
-	listDir = SDFileSystem.open("/");
+	listDir = SD.open("/");
 	return falseObj;
 }
 
@@ -331,14 +353,10 @@ static void nextFileName(char *fileName) {
 	// Argument must have room for at least 32 bytes.
 
 	fileName[0] = '\0'; // clear string
-	#if defined(ESP32)
-		if (listDir) {
-			File file = listDir.openNextFile();
-			if (file) strncat(fileName, file.name(), 31);
-		}
-	#else
-		if (listDir.next()) strncat(fileName, listDir.fileName().c_str(), 31);
-	#endif
+	if (listDir) {
+		File file = listDir.openNextFile();
+		if (file) strncat(fileName, file.name(), 31);
+	}
 }
 
 static OBJ primNextFileInList(int argCount, OBJ *args) {
@@ -359,7 +377,7 @@ static OBJ primFileSize(int argCount, OBJ *args) {
 	char *fileName = extractFilename(args[0]);
 	if (!fileName[0]) return int2obj(-1);
 
-	File file = SDFileSystem.open(fileName, "r");
+	File file = SD.open(fileName, "r");
 	if (!file) return int2obj(-1);
 	int size = file.size();
 	file.close();
@@ -372,14 +390,13 @@ static OBJ primSystemInfo(int argCount, OBJ *args) {
 	size_t totalBytes = 0;
 	size_t usedBytes = 0;
 
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
 	#if defined(ESP32)
-		initSDCard();
-outputString("initialized!");
-		totalBytes = SDFileSystem.totalBytes();
-		usedBytes = SDFileSystem.usedBytes();
+		totalBytes = SD.totalBytes();
+		usedBytes = SD.usedBytes();
 	#else
 		FSInfo info;
-		SDFileSystem.info(info);
+		SDFS.info(info);
 		totalBytes = info.totalBytes;
 		usedBytes = info.usedBytes;
 	#endif
@@ -394,23 +411,24 @@ outputString("initialized!");
 // Primitives
 
 static PrimEntry entries[] = {
-#if defined(SD_CARD)
-	{"open", primOpen},
-	{"close", primClose},
-	{"delete", primDelete},
-	{"endOfFile", primEndOfFile},
-	{"readLine", primReadLine},
-	{"readBytes", primReadBytes},
-	{"readInto", primReadInto},
-	{"readPosition", primReadPosition},
-	{"setReadPosition", primSetReadPosition},
-	{"appendLine", primAppendLine},
-	{"appendBytes", primAppendBytes},
-	{"fileSize", primFileSize},
-	{"startList", primStartFileList},
-	{"nextInList", primNextFileInList},
-	{"systemInfo", primSystemInfo},
-#endif
+	#if defined(SD_CARD)
+		{"init", primInit},
+		{"open", primOpen},
+		{"close", primClose},
+		{"delete", primDelete},
+		{"endOfFile", primEndOfFile},
+		{"readLine", primReadLine},
+		{"readBytes", primReadBytes},
+		{"readInto", primReadInto},
+		{"readPosition", primReadPosition},
+		{"setReadPosition", primSetReadPosition},
+		{"appendLine", primAppendLine},
+		{"appendBytes", primAppendBytes},
+		{"fileSize", primFileSize},
+		{"startList", primStartFileList},
+		{"nextInList", primNextFileInList},
+		{"systemInfo", primSystemInfo},
+	#endif
 };
 
 void addSDCardPrims() {
