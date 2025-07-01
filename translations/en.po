@@ -791,6 +791,10 @@ msgid "turn on microphone"
 msgstr "turn on microphone"
 
 #. Microphone library block
+msgid "turn off microphone"
+msgstr "turn off microphone"
+
+#. Microphone library block
 msgid "loudness"
 msgstr "loudness"
 
