@@ -719,85 +719,6 @@ static OBJ primStartBLEKeyboard(int argCount, OBJ *args) {
 	return falseObj;
 }
 
-#endif // BLE_KEYBOARD
-
-#if defined(ESP_NOW_PRIMS)
-
-// Experimental! Optional ESP Now support (compile with -D ESP_NOW_PRIMS)
-// Code provided by Wenji Wu
-
-//https://registry.platformio.org/libraries/yoursunny/WifiEspNow/examples/EspNowBroadcast/EspNowBroadcast.ino
-
-#include <WifiEspNowBroadcast.h>
-
-#define ESP_NOW_MAX 1000
-static char receiveBuffer[ESP_NOW_MAX];
-static uint16 espNowByteCount = 0;
-static bool espNowInitialized = false;
-
-static void processRx(const uint8_t mac[WIFIESPNOW_ALEN], const uint8_t* buf, size_t count, void* arg) {
-	if ((espNowByteCount + count + 1) < ESP_NOW_MAX) {
-		memcpy(&receiveBuffer[espNowByteCount], buf, count);
-		espNowByteCount += count;
-		receiveBuffer[espNowByteCount] = '\n';
-		espNowByteCount++;
-	}
-}
-
-static void initializeEspNow() {
-	if (espNowInitialized) return;
-
-	WiFi.persistent(false);
-	bool ok = WifiEspNowBroadcast.begin("ESPNOW", 3);
-	if (!ok) return;
-
-	WifiEspNowBroadcast.onReceive(processRx, nullptr);
-	espNowInitialized = true;
-}
-
-static OBJ primEspNowReceive(int argCount, OBJ *args) {
-	initializeEspNow();
-
-	WifiEspNowBroadcast.loop();
-	taskSleep(10);
-
-	if (espNowByteCount > 0) {
-		OBJ result = newStringFromBytes(receiveBuffer, espNowByteCount);
-		espNowByteCount = 0;
-		return result;
-	} else {
-		return (OBJ) &emptyMBString;
-	}
-}
-
-static OBJ primEspNowLastEvent(int argCount, OBJ *args) {
-	initializeEspNow();
-
-	WifiEspNowBroadcast.loop();
-	taskSleep(10);
-
-	if (espNowByteCount > 0) {
-		OBJ event = newObj(ListType, 2, zeroObj);
-		FIELD(event, 0) = int2obj(1); //list size
-		FIELD(event, 1) = newStringFromBytes(receiveBuffer, espNowByteCount);
-		espNowByteCount = 0;
-		return event;
-	} else {
-		return falseObj;
-	}
-}
-
-static OBJ primEspNowBroadcast(int argCount, OBJ *args) {
-	initializeEspNow();
-
-	char* message = obj2str(args[0]);
-	WifiEspNowBroadcast.send(reinterpret_cast<const uint8_t*>(message), strlen(message));
-	WifiEspNowBroadcast.loop();
-	return falseObj;
-}
-
-#endif // ESP_NOW_PRIMS
-
 static PrimEntry entries[] = {
 
 	{"bleConnected", primBLE_connected},
@@ -826,12 +747,6 @@ static PrimEntry entries[] = {
 		{"holdKey", primBLEHoldKey},
 		{"releaseKey", primBLEReleaseKey},
 		{"releaseKeys", primBLEReleaseAllKeys},
-	#endif
-
-	#if defined(ESP_NOW_PRIMS)
-		{"EspNowBroadcast", primEspNowBroadcast},
-		{"EspNowReceive", primEspNowReceive},
-		{"EspNowLastEvent", primEspNowLastEvent},
 	#endif
 
 };
