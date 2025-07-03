@@ -55,7 +55,7 @@
 
 #include "interp.h" // must be included *after* ESP8266WiFi.h
 
-#if (defined(ESP8266) || defined(ARDUINO_ARCH_ESP32)) // && !defined(BLE_IDE)
+#if (defined(ESP8266) || defined(ARDUINO_ARCH_ESP32))
 	#define ESP_NOW 1
 #endif
 
