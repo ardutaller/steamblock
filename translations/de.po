@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-02 14:01+0000\n"
+"PO-Revision-Date: 2025-07-04 00:06+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -727,7 +727,7 @@ msgstr "ByteListe oder Text"
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr "entferne Element _ aus Liste _"
+msgstr "lösche Element _ aus Liste _"
 
 #. Block in Variables category
 msgid "set _ to _"
@@ -6688,7 +6688,7 @@ msgstr "SCD40 relative Luftfeuchtigkeit (%)"
 
 #. Firmware install instruction
 msgid "Do not switch browser tabs!"
-msgstr "Wechsle keinen Tab im Browser!"
+msgstr "Wechsle keine Browser-Tabs!"
 
 #. Gas (SCD40) library block
 msgid "°F"
