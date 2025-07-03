@@ -719,6 +719,8 @@ static OBJ primStartBLEKeyboard(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+#endif // BLE_KEYBOARD
+
 static PrimEntry entries[] = {
 
 	{"bleConnected", primBLE_connected},
