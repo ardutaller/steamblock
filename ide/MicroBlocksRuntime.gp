@@ -3426,3 +3426,18 @@ method installESPFirmwareFromFile SmallRuntime fileName data {
 	flasher = (newFlasher fileName portName false false)
 	installFromData flasher flasherPort fileName data
 }
+
+defineClass MicroBlocksAPI
+
+method processLastCall MicroBlocksAPI {
+	doCall this (primLastAPIRequest)
+}
+
+method doCall MicroBlocksAPI callObject {
+	id = (at callObject 1)
+	endPoint = (at callObject 2)
+	args = (copyFromTo callObject 3)
+	if (endPoint == 'greet') {
+		primRespondAPIRequest id 42
+	}
+}

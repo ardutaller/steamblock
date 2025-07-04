@@ -53,6 +53,19 @@ var GP = {
 	audioInReady: false,
 	audioInSource: null,
 	audioInCapture: null,
+
+	callQueue = []
+};
+
+GP.greet = function () {
+	var id = currentMicrosecondsInJS();
+	var call = [
+		id,
+		'greet',
+		new Promise(whatever),
+		aSourceString
+	];
+	callQueue.push(call);
 };
 
 // Add the following to the meta tags in the header to suppress scaling of the GP canvas

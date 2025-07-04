@@ -1468,6 +1468,54 @@ OBJ primSetCursor(int nargs, OBJ args[]) {
 	return nilObj;
 }
 
+OBJ primLastAPIRequest(int nargs, OBJ args[]) {
+	int index = EM_ASM_INT({ return GP.callQueue.length; }, null);
+	int idLength = EM_ASM_INT({ return GP.callQueue[$0][0].length; }, index);
+	int endPointLength = EM_ASM_INT({ return GP.callQueue[$0][1].length; }, index);
+	int paramLength = EM_ASM_INT({ return GP.callQueue[$0][2].length; }, index);
+
+	OBJ id = allocateString(idLength);
+	OBJ endPoint = allocateString(endPointLength);
+	OBJ param = allocateString(paramLength);
+
+	EM_ASM_({
+			for (var i = 0; i < $1; i++) { Module.HEAPU8[$0++] = src[i]; }
+			for (var i = 0; i < $3; i++) { Module.HEAPU8[$2++] = src[i]; }
+			for (var i = 0; i < $5; i++) { Module.HEAPU8[$4++] = src[i]; }
+		},
+		&FIELD(id, 0),
+		idLength,
+		&FIELD(endPoint, 0),
+		endPointLength,
+		&FIELD(param, 0),
+		paramLength
+	);
+
+	OBJ callObject = newObj(ArrayClass, 3, nilObj);
+	FIELD(callObject, 0) = id;
+	FIELD(callObject, 1) = endPoint;
+	FIELD(callObject, 2) = param;
+
+	return callObject;
+}
+
+OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
+	int index = EM_ASM_INT({
+			for (var i = 0, i < GP.callQueue.length, i++) {
+				if (GP.callQueue[i] == $0) {
+					return GP.callQueue[i].id;
+				}
+			}
+			return -1;
+		},
+		obj2int(args[0])
+	);
+
+	EM_ASM_({
+		GP.callQueue[$0][2].resolve($1);
+	}, index, obj2int(args[1]));
+};
+
 static PrimEntry browserPrimList[] = {
 	{"-----", NULL, "Browser Support"},
 	{"browserURL",						primBrowserURL,							"Return the full URL of the current browser page."},
