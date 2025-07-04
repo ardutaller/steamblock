@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-07-02 14:01+0000\n"
+"PO-Revision-Date: 2025-07-05 06:01+0000\n"
 "Last-Translator: José García <jogaye@e-citilab.eu>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -5928,7 +5928,7 @@ msgstr "Octopus"
 
 #. Settings menu option
 msgid "autoload board libraries"
-msgstr "carga bibliotecas de placa automaticamente"
+msgstr "carga bibliotecas de placa automáticamente"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop all motors"
