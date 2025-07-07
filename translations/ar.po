@@ -895,4 +895,8 @@ msgstr "حذف العنصر _ من القائمة_"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr "ميلي ثانية منذ"
+msgstr "ميلي-ثانية منذ"
+
+#. Block in Input category
+msgid "end time _"
+msgstr "وقت النهاية"
