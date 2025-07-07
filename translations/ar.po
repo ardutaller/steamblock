@@ -899,4 +899,12 @@ msgstr "ميلي-ثانية منذ"
 
 #. Block in Input category
 msgid "end time _"
-msgstr "وقت النهاية"
+msgstr "وقت_النهاية"
+
+#. Block in Input category
+msgid "microseconds since _"
+msgstr "ميلي_ثانية_منذ"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "تم_شبك_BLE"
