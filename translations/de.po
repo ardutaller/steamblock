@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-05 06:01+0000\n"
+"PO-Revision-Date: 2025-07-08 14:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -110,11 +110,11 @@ msgstr "prefix"
 
 #. Example text for lowercase and uppercase Strings library block
 msgid "THIS is a String! :)"
-msgstr "DAS ist ein Text! :)"
+msgstr "DAS ist ein Text! :-)"
 
 #. Example text for Strings library block
 msgid "Hello, world!"
-msgstr "Hallo, Welt!"
+msgstr "Hallo Welt!"
 
 #. WiFi library block
 msgid "IP address"
@@ -1681,7 +1681,7 @@ msgstr "zeige Bild _"
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "suffix"
-msgstr "Suffix"
+msgstr "suffix"
 
 #. Image name for the "display image" block
 msgid "happy"
@@ -6688,7 +6688,7 @@ msgstr "SCD40 relative Luftfeuchtigkeit (%)"
 
 #. Firmware install instruction
 msgid "Do not switch browser tabs!"
-msgstr "Wechsle keine Browser-Tabs!"
+msgstr "Wechsle nicht den Browser-Tab!"
 
 #. Gas (SCD40) library block
 msgid "°F"
