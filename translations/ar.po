@@ -919,4 +919,16 @@ msgstr "مدى_إلى"
 
 #. Block in Control category
 msgid "exit loop"
-msgstr "الخروج_من_الحلقة"
+msgstr "الخروج-من_الحلقة"
+
+#. Example default value for the ( arg _ default _ ) block
+msgid "default"
+msgstr "تلقائي"
+
+#. Block in Control category
+msgid "call _"
+msgstr "اتصال_"
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr "اسم_الدالة"
