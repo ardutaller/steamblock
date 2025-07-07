@@ -895,7 +895,7 @@ msgstr "حذف العنصر _ من القائمة_"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr "ميلي-ثانية منذ"
+msgstr "ميلي_ثانية_منذ"
 
 #. Block in Input category
 msgid "end time _"
@@ -907,4 +907,16 @@ msgstr "ميلي_ثانية_منذ"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr "تم_شبك_BLE"
+msgstr "تم_شبكBLE"
+
+#. Block in Pins category
+msgid "pullup _"
+msgstr "سحب_لأعلى"
+
+#. Block in Control category
+msgid "range _ to _"
+msgstr "مدى_إلى"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "الخروج_من_الحلقة"
