@@ -931,4 +931,4 @@ msgstr "اتصال_"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr "اسم_الدالة"
+msgstr "اسم الدالة"
