@@ -923,9 +923,6 @@ static void initNeoPixelPin(int pinNum) {
 		#endif
 		if (pinNum < 0) {
 			pinNum = PIN_NEOPIXEL; // use built-in NeoPixel
-		} else {
-			pinNum = mapDigitalPinNum(pinNum);
-			if (pinNum < 0) return;
 		}
 		if (pinNum == PIN_NEOPIXEL) {
 			// built-in NeoPixel; turn on power
