@@ -6267,4 +6267,27 @@ msgstr "Calliope smaž všechny NeoPixely"
 
 #. Microphone library block
 msgid "turn off microphone"
-msgstr "Vypni mikrofon"
+msgstr "vypni mikrofon"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "left" side
+msgid "left"
+msgstr "levá"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "right" side
+msgid "right"
+msgstr "pravá"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "both" sides
+msgid "both"
+msgstr "obě"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD init display"
+msgstr "inicializuj LCD displej"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set RGB background _"
+msgstr "LCD Nastav RGB pozadí _"
