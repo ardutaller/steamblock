@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-04-16 10:35+0000\n"
+"PO-Revision-Date: 2025-07-13 20:03+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.11.1-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -6166,9 +6166,8 @@ msgid "Calliope set NeoPixels _ _ _"
 msgstr "Calliope nastav NeoPixely _ _ _"
 
 #. Calliope NeoPixel library block
-#, fuzzy
 msgid "Calliope set all NeoPixels to _"
-msgstr "Calliope nastav všechny NeoPixely  na _"
+msgstr "Calliope nastav všechny NeoPixely na _"
 
 #. Calliope NeoPixel library block
 #, fuzzy
@@ -6181,7 +6180,7 @@ msgstr "Calliope zastav servo _"
 
 #. Calliope Servoboard library block
 msgid "Calliope set continous servo _ to speed _ (-100~100)"
-msgstr "Calliope  nastav kontinuální servo _ rychlost _  (-100~100)"
+msgstr "Calliope nastav kontinuální servo _ rychlost _ (-100~100)"
 
 #. Calliope Servoboard library block
 #, fuzzy
@@ -6265,3 +6264,7 @@ msgstr "LPS331AP teplota _"
 #, fuzzy
 msgid "Calliope clear all NeoPixels"
 msgstr "Calliope smaž všechny NeoPixely"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "Vypni mikrofon"
