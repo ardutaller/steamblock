@@ -6342,4 +6342,24 @@ msgstr "SCD40 CO2 (ppm)"
 
 #. Gas (SCD40) library block
 msgid "SCD40 temperature _"
-msgstr "SCD40 teplota"
+msgstr "SCD40 teplota _"
+
+#. Gas (SCD40) library block
+msgid "SCD40 relative humidity (%)"
+msgstr "SCD40 relativní vlhkost (%)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 is connected?"
+msgstr "SCD40 připojen?"
+
+#. Firmware install instruction
+msgid "Do not switch browser tabs!"
+msgstr "Nepřepínejte mezi záložkami prohlížeče !"
+
+#. Firmware install instruction
+msgid "Connecting..."
+msgstr "Připojuji..."
+
+#. MicroBlocks IDE information
+msgid "Reconnect to the board by clicking the \"Connect\" button."
+msgstr "Znovu připojte mikropočítač stiskem tlačítka \"Připojit\""
