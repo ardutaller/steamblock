@@ -6330,4 +6330,16 @@ msgstr "°F"
 
 #. Gas (SCD40) library block
 msgid "SCD40 init sensor"
-msgstr "SCD40  inicializace"
+msgstr "SCD40 inicializace"
+
+#. Gas (SCD40) library block
+msgid "SCD40 carbon dioxide (ppm)"
+msgstr "SCD40 CO2 (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 CO2 (ppm)"
+msgstr "SCD40 CO2 (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 temperature _"
+msgstr "SCD40 teplota"
