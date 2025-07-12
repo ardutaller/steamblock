@@ -200,7 +200,7 @@ msgstr "pro _ z _ _"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr "opakuj dokud není _ _"
+msgstr "opakuj dokud nenastane _ _"
 
 #. Block in Control category
 msgid "stop this task"
@@ -2945,7 +2945,7 @@ msgstr "TCS34725 RGB"
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
-msgstr "barva _ jménu"
+msgstr "barva _ jméno"
 
 #. DHT11 environmental sensor library block
 msgid "temperature (Celsius) DHT11 pin _"
@@ -4331,7 +4331,7 @@ msgstr ""
 
 #. Octostudio communication library block
 msgid "duration _ ms"
-msgstr ""
+msgstr "trvání _ ms"
 
 #. Octostudio communication library block
 msgid "Octo beam received?"
@@ -5884,7 +5884,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a copy from the given index through the end (or optional stop index) of the given list, string, or byte array."
 msgstr ""
-"Pro zadaný seznam/text/pole bajtů Vrátí kopii od daného indexu do konce ("
+"Pro zadaný seznam/text/pole bajtů vrátí kopii od daného indexu do konce ("
 "případně do zadaného koncového indexu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
@@ -5904,27 +5904,27 @@ msgstr "Vrací Unicode N-tého znaku řetězce."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a string containing the given Unicode value (\"code point\") or list of values."
-msgstr "Vrací řetězec obsahující zadanou hodnotu Unicode nebo seznamu hodnot."
+msgstr "Vrátí řetězec obsahující zadanou hodnotu Unicode nebo seznamu hodnot."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new list of the given length filled with zero or the optional value."
 msgstr ""
-"Vrací nový seznam dané délky vyplněný nulami případně zadanou volitelnou "
+"Vrátí nový seznam dané délky vyplněný nulami případně zadanou volitelnou "
 "hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new byte array of the given length filled with zero or the optional value."
 msgstr ""
-"Vrací nové pole bajtů dané délky vyplněné nulami případně zadanou volitelnou "
+"Vrátí nové pole bajtů dané délky vyplněné nulami případně zadanou volitelnou "
 "hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a byte array containing the UTF-8 bytes of the given string."
-msgstr "Vrací pole bajtů obsahující UTF-8 hodnoty znaků zadaného řetězce."
+msgstr "Vrátí pole bajtů obsahující UTF-8 hodnoty znaků zadaného řetězce."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
-msgstr "Vrací velikost dostupné paměti (words). Stop uvolňuje paměť."
+msgstr "Vrátí velikost dostupné paměti (words). Stop uvolňuje paměť."
 
 #. Block in Input category
 msgid "version"
@@ -6362,4 +6362,21 @@ msgstr "Připojuji..."
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
-msgstr "Znovu připojte mikropočítač stiskem tlačítka \"Připojit\""
+msgstr "Znovu připojte mikropočítač stiskem tlačítka \"Připojit\"."
+
+#. Analog Synthesis library block
+#. as in pin number or i2c address
+msgid "number/address _"
+msgstr "číslo/adresa _"
+
+#. WiFi library block
+msgid "wifi set local domain name _ .local"
+msgstr "WiFi nastav lokální doménu _ .local"
+
+#. NeZha2 robot library block
+msgid "Nezha distance _ (cm)"
+msgstr "Nezha vzdálenost _ (cm)"
+
+#. CoCube library block
+msgid "card ID"
+msgstr "kód karty"
