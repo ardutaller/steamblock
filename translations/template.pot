@@ -3444,6 +3444,18 @@ msgid "degrees"
 msgstr ""
 
 #. micro:STEAMakers library block
+msgid "ms pin _ touched?"
+msgstr ""
+
+#. micro:STEAMakers library block
+msgid "ms accel _ m/s2"
+msgstr ""
+
+#. micro:STEAMakers library block
+msgid "ms gyro _ deg/s"
+msgstr ""
+
+#. micro:STEAMakers library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "ms display #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
 msgstr ""
