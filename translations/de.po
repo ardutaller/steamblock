@@ -1176,7 +1176,7 @@ msgstr "DHT11 Luftfeuchtigkeit Pin _"
 
 #. DotStar LED library block
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
-msgstr "verbinde _ DotStar LEDs an Daten-Pin _ Uhr-Pin _"
+msgstr "DotStar verbinde _ LEDs an Daten-Pin _ Takt-Pin _"
 
 #. Rhythm library block
 msgid "wait until beat _"
@@ -2295,15 +2295,15 @@ msgstr "Calliope Lautstärke"
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
-msgstr "setze alle DotStar LEDs auf r _ g _ b _"
+msgstr "DotStar setze alle LEDs auf r _ g _ b _"
 
 #. DotStar LED library block
 msgid "set DotStar LED _ to r _ g _ b _"
-msgstr "setze DotStar LED _ auf r _ g _ b _"
+msgstr "DotStar setze LED _ auf r _ g _ b _"
 
 #. DotStar LED library block
 msgid "set DotStar brightness _"
-msgstr "setze DotStar Helligkeit _"
+msgstr "DotStar setze Helligkeit _"
 
 #. HTTP Server library block
 msgid "respond _ to HTTP request"
@@ -5503,7 +5503,7 @@ msgstr "ms lösche Anzeige"
 
 #. micro:STEAMakers library block
 msgid "ms scale brightness to _ %"
-msgstr "ms skaliere Helligkeit auf _ %"
+msgstr "ms setze Helligkeit auf _ %"
 
 #. micro:STEAMakers library block
 msgid "ms plot x _ y _ with _"
@@ -5582,7 +5582,7 @@ msgstr ""
 
 #. micro:STEAMakers library block
 msgid "ms display character _ with _"
-msgstr "ms zeige Buchstaben _ mit _"
+msgstr "ms zeige Zeichen _ mit _"
 
 #. micro:STEAMakers library block
 msgid "ms scroll text _ with color _ "
@@ -5606,7 +5606,7 @@ msgstr "ms Licht"
 
 #. micro:STEAMakers library block
 msgid "ms sound"
-msgstr "ms Töne"
+msgstr "ms Lautstärke"
 
 #. micro:STEAMakers library block
 msgid "ms temperature ºC"
