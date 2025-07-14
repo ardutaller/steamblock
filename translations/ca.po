@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-06-29 16:01+0000\n"
+"PO-Revision-Date: 2025-07-02 14:01+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -6805,3 +6805,7 @@ msgstr "dreta"
 #. as in "both" sides
 msgid "both"
 msgstr "ambdós"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "apaga el micròfon"

@@ -1070,15 +1070,15 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_RP2040)
 
 	#define BOARD_TYPE "Xiao RP2040"
-	#define DIGITAL_PINS 16
+	#define DIGITAL_PINS 15
 	#define ANALOG_PINS 4
 	#define TOTAL_PINS 30
 	#define INVERT_USER_LED true
 	#define USE_DIGITAL_PIN_MAP true
-	static const int analogPin[] = {A0, A1, A2, A3};
+	static const int analogPin[ANALOG_PINS] = {A0, A1, A2, A3};
 	static const char digitalPin[DIGITAL_PINS] = {
 		D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10,
-		PIN_LED_R, PIN_LED_G, PIN_LED_B, PIN_NEOPIXEL, NEOPIXEL_POWER};
+		PIN_LED_R, PIN_LED_G, PIN_LED_B, PIN_NEOPIXEL};
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1087,21 +1087,17 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_RP2350)
 
 	#define BOARD_TYPE "Xiao RP2350"
-	#define DIGITAL_PINS 22
-	#define ANALOG_PINS 4
+	#define DIGITAL_PINS 21
+	#define ANALOG_PINS 3
 	#define TOTAL_PINS 30
 	#define INVERT_USER_LED true
-	#define USE_DIGITAL_PIN_MAP true
-
-	#define A3 29 // A3 was omitted from pins_arduino.h
 	#define PIN_NEOPIXEL 22
-	#define NEOPIXEL_POWER 23
-
-	static const int analogPin[] = {A0, A1, A2, A3};
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[ANALOG_PINS] = {A0, A1, A2};
 	static const char digitalPin[DIGITAL_PINS] = {
 		D0, D1, D2, D3, D4, D5, D6, D7, D8, D9,
 		D10, D11, D12, D13, D14, D15, D16, D17, D18, PIN_LED,
-		PIN_NEOPIXEL, NEOPIXEL_POWER};
+		PIN_NEOPIXEL};
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
