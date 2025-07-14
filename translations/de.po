@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-08 14:01+0000\n"
+"PO-Revision-Date: 2025-07-14 14:14+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2295,7 +2295,7 @@ msgstr "Calliope Lautstärke"
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
-msgstr "setze alle DotStar LEDs auf R _ G _ B _"
+msgstr "setze alle DotStar LEDs auf r _ g _ b _"
 
 #. DotStar LED library block
 msgid "set DotStar LED _ to r _ g _ b _"
@@ -2936,7 +2936,7 @@ msgstr "zeichne Dreieck auf TFT bei x _ y _ , x _ y _ , x _ y _ Farbe _"
 
 #. Color library block
 msgid "color r _ g _ b _ (0-255)"
-msgstr "Farbe R _ G _ B _ (0-255)"
+msgstr "Farbe r _ g _ b _ (0-255)"
 
 #. Rhythm library block
 msgid "wait until bar _"
@@ -6924,3 +6924,63 @@ msgstr "beide"
 #. Microphone library block
 msgid "turn off microphone"
 msgstr "schalte Mikrofon aus"
+
+#. LogicLinks library block
+msgid "LogicLinks receive IR code"
+msgstr "LogicLinks empfange IR-Code"
+
+#. LogicLinks library block
+msgid "LogicLinks IR Code"
+msgstr "LogicLinks IR-Code"
+
+#. LogicLinks library block
+msgid "LogicLinks button"
+msgstr "LogicLinks Taste"
+
+#. LogicLinks library block
+msgid "LogicLinks potentiometer"
+msgstr "LogicLinks Potentiometer"
+
+#. LogicLinks library block
+msgid "LogicLinks random color"
+msgstr "LogicLinks Zufallsfarbe"
+
+#. LogicLinks library block
+msgid "LogicLinks beep _ ms"
+msgstr "LogicLinks Pieps _ ms"
+
+#. LogicLinks library block
+msgid "LogicLinks set relay _"
+msgstr "LogicLinks setze Relais _"
+
+#. LogicLinks library block
+msgid "LogicLinks IR code received?"
+msgstr "LogicLinks IR-Code empfangen?"
+
+#. LogicLinks library block
+msgid "LogicLinks color r _ g _ b _ (0-255)"
+msgstr "LogicLinks Farbe r _ g _ b _ (0-255)"
+
+#. LogicLinks library block
+msgid "LogicLinks humidity"
+msgstr "LogicLinks Luftfeuchtigkeit"
+
+#. LogicLinks library block
+msgid "LogicLinks set RGB LED _"
+msgstr "LogicLinks setze RGB LED _"
+
+#. LogicLinks library block
+msgid "LogicLinks turn off RGB LED"
+msgstr "LogicLinks schalte RGB LED aus"
+
+#. LogicLinks library block
+msgid "LogicLinks temperature (°C)"
+msgstr "LogicLinks Temperatur (°C)"
+
+#. LogicLinks library block
+msgid "LogicLinks set red LED _"
+msgstr "LogicLinks setze rote LED _"
+
+#. LogicLinks library block
+msgid "LogicLinks light (0-100)"
+msgstr "LogicLinks Lichtstärke (0-100)"
