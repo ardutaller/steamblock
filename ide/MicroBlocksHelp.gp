@@ -18,7 +18,8 @@ method initialize MicroBlocksHelp {
 		// OUTPUT
 		(array 'setUserLED' 'output#set-user-led' 'Turn the user LED on or off.')
 		(array 'sayIt' 'output#say' 'Display a bubble showing the value.')
-		(array 'printIt' 'output#graph' 'Graph the value.')
+		(array 'printIt' 'output#graph' 'Graph the value.') // used in pre-2.0 code
+		(array 'graphIt' 'output#graph' 'Graph the value(s). Multiple values can be graphed.')
 
 		// INPUT
 		(array 'buttonA' 'input#button-a' 'Report the state of button A ( (-o) or (o-) ).')
@@ -120,6 +121,8 @@ method initialize MicroBlocksHelp {
 		(array '~' 'operators#bitwise-not' 'Report bitwise inverse of the given number.')
 		(array '<<' 'operators#bitwise-left-shift' 'Report the given number shifted left by the given number of bits.')
 		(array '>>' 'operators#bitwise-right-shift' 'Report the given number shifted right by the given number of bits (arithmetic shift; sign is maintained).')
+		(array 'sum' 'operators#sum' 'Returns the sum of the inputs.')
+		(array 'toString' 'operators#tostring' 'Returns the input as a string (e.g. "123" is a three letter string not a number).')
 
 		// VARIABLES
 		(array 'v' 'variables#xxx' '')
