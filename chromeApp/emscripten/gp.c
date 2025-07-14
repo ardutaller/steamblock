@@ -105,7 +105,6 @@ static void readEvalLoop() {
 
 static void browserStep() {
 	if (currentTask) { // if there is a task, run it for a bit
-		readCallQueue();
 		stepCurrentTask();
 		return;
 	}

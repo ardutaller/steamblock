@@ -53,7 +53,21 @@ var GP = {
 	audioInReady: false,
 	audioInSource: null,
 	audioInCapture: null,
+	callQueue: []
 };
+
+GP.greet = function (number) {
+	var id = performance.now();
+	var call = [
+		id,
+		'greet',
+		function (value) { console.log(value); },
+		number
+	];
+
+	GP.callQueue.push(call);
+};
+
 
 // Add the following to the meta tags in the header to suppress scaling of the GP canvas
 // <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />

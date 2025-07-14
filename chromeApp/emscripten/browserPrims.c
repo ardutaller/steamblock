@@ -1469,40 +1469,28 @@ OBJ primSetCursor(int nargs, OBJ args[]) {
 }
 
 OBJ primLastAPIRequest(int nargs, OBJ args[]) {
-	int index = EM_ASM_INT({ return GP.callQueue.length; }, null);
-	int idLength = EM_ASM_INT({ return GP.callQueue[$0][0].length; }, index);
-	int endPointLength = EM_ASM_INT({ return GP.callQueue[$0][1].length; }, index);
-	int paramLength = EM_ASM_INT({ return GP.callQueue[$0][2].length; }, index);
-
-	OBJ id = allocateString(idLength);
+	int index = EM_ASM_INT({ return GP.callQueue.length - 1; }, NULL);
+	OBJ id = int2obj(EM_ASM_INT({ return GP.callQueue[$0][0]; }, index));
+	int endPointLength = EM_ASM_INT({ return GP.callQueue[$0][1].length + 1; }, index);
 	OBJ endPoint = allocateString(endPointLength);
-	OBJ param = allocateString(paramLength);
-
-	EM_ASM_({
-			for (var i = 0; i < $1; i++) { Module.HEAPU8[$0++] = src[i]; }
-			for (var i = 0; i < $3; i++) { Module.HEAPU8[$2++] = src[i]; }
-			for (var i = 0; i < $5; i++) { Module.HEAPU8[$4++] = src[i]; }
-		},
-		&FIELD(id, 0),
-		idLength,
+	EM_ASM_(
+		{ stringToUTF8(GP.callQueue[$0][1], $1, $2); },
+		index,
 		&FIELD(endPoint, 0),
-		endPointLength,
-		&FIELD(param, 0),
-		paramLength
+		endPointLength
 	);
 
-	OBJ callObject = newObj(ArrayClass, 3, nilObj);
+	OBJ callObject = newObj(ArrayClass, 2, nilObj);
 	FIELD(callObject, 0) = id;
 	FIELD(callObject, 1) = endPoint;
-	FIELD(callObject, 2) = param;
 
 	return callObject;
 }
 
 OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
 	int index = EM_ASM_INT({
-			for (var i = 0, i < GP.callQueue.length, i++) {
-				if (GP.callQueue[i] == $0) {
+			for (var i = 0; i < GP.callQueue.length; i++) {
+				if (GP.callQueue[i][0] == $0) {
 					return GP.callQueue[i].id;
 				}
 			}
@@ -1512,8 +1500,10 @@ OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
 	);
 
 	EM_ASM_({
-		GP.callQueue[$0][2].resolve($1);
+		GP.callQueue[$0][2]($1); // callback function in GP callQueue
 	}, index, obj2int(args[1]));
+
+	return falseObj;
 };
 
 static PrimEntry browserPrimList[] = {
@@ -1531,6 +1521,8 @@ static PrimEntry browserPrimList[] = {
 	{"browserGetDroppedText",	primBrowserGetDroppedText,	"Get last dropped or pasted text, or nil if there isn't any."},
 	{"browserGetMessage",			primBrowserGetMessage,			"Get the next message from the browser, or nil if there isn't any."},
 	{"browserPostMessage",		primBrowserPostMessage,			"Post a message to the browser using the 'postMessage' function."},
+	{"browserLastAPIRequest",		primLastAPIRequest,			""},
+	{"browserRespondAPIRequest",		primRespondAPIRequest,			""},
 	{"browserIsMobile",				primBrowserIsMobile,				"Return true if running in a mobile browser."},
 	{"browserHasLanguage",		primBrowserHasLanguage,			"Return true the given language code is in navigator.languages. Argument: language code string (e.g. 'en')."},
 	{"browserIsChromeOS",			primBrowserIsChromeOS,			"Return true if running as a Chromebook app."},
