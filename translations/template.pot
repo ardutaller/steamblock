@@ -5110,6 +5110,66 @@ msgstr ""
 msgid "cb light"
 msgstr ""
 
+#. LogicLinks library block
+msgid "LogicLinks receive IR code"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks IR Code"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks button"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks potentiometer"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks random color"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks beep _ ms"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks set relay _"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks IR code received?"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks color r _ g _ b _ (0-255)"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks humidity"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks set RGB LED _"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks turn off RGB LED"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks temperature (°C)"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks set red LED _"
+msgstr ""
+
+#. LogicLinks library block
+msgid "LogicLinks light (0-100)"
+msgstr ""
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr ""
