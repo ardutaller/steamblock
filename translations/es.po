@@ -6869,4 +6869,44 @@ msgstr "apaga el micrófono"
 
 #. NeoPanel library block
 msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
-msgstr "dibuja línea de x _ y _ a x _ y _ color _ al NeoPanel"
+msgstr "dibuja línea de x _ y _ a x _ y _ color _ en el NeoPanel"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "dibuja círculo en x _ y _ radio _ color _ en el NeoPanel"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle x _ y _ width _ height _ color _"
+msgstr "dibuja rectángulo en x _ y _ ancho _ alto _ color _ en el NeoPanel"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "círculo"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "cuadrado"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "estrella"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "corazón"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "triángulo"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "trébol"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "diamante"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "luna"
