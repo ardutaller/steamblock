@@ -4587,7 +4587,7 @@ msgstr "¡Hola, cliente!"
 
 #. HTTP Server library example response
 msgid "Welcome to the MicroBlocks HTTP server"
-msgstr "El servicor HTTP de MicroBlocks os da la bienvenida"
+msgstr "El servidor HTTP de MicroBlocks os da la bienvenida"
 
 #. HTTP Server library block
 msgid "body of request _"
