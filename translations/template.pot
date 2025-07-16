@@ -4662,6 +4662,38 @@ msgstr ""
 msgid "Octo stop"
 msgstr ""
 
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr ""
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr ""
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr ""
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr ""
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr ""
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr ""
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr ""
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr ""
+
 #. CallioGamer library block
 msgid "A pressed"
 msgstr ""
