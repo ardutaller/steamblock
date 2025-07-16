@@ -6876,7 +6876,7 @@ msgid "NeoPanel draw circle at x _ y _ radius _ color _"
 msgstr "dibuja círculo en x _ y _ radio _ color _ en el NeoPanel"
 
 #. NeoPanel library block
-msgid "NeoPanel draw rectangle x _ y _ width _ height _ color _"
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
 msgstr "dibuja rectángulo en x _ y _ ancho _ alto _ color _ en el NeoPanel"
 
 #. Octostudio shape names
