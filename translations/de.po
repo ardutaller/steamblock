@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-15 15:01+0000\n"
+"PO-Revision-Date: 2025-07-16 13:38+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -6996,3 +6996,47 @@ msgstr "ms Beschleunigung _ m/s²"
 #. micro:STEAMakers library block
 msgid "ms gyro _ deg/s"
 msgstr "ms Gyroskope _ °/s"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "NeoPanel zeichne Linie von x _ y _ nach x _ y _ Farbe _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "NeoPanel zeichne Kreis bei x _ y _ Radius _ Farbe _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle x _ y _ width _ height _ color _"
+msgstr "NeoPanel zeichne Rechteck x _ y _ Breite _ Höhe _ Farbe _"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "Kreis"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "Quadrat"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "Stern"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "Herz"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "Dreieck"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "Klee"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "Diamant"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "Mond"
