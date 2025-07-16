@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-07-02 14:01+0000\n"
-"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
+"PO-Revision-Date: 2025-07-16 10:22+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -832,7 +832,7 @@ msgstr "escriu _ a x _ y _ color _ al NeoPanell"
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr "mostra imagen BMP _ x _ y _ al NeoPanell"
+msgstr "mostra imatge BMP _ x _ y _ al NeoPanell"
 
 #. Microphone library label
 msgid "Microphone"
@@ -6809,3 +6809,47 @@ msgstr "ambdós"
 #. Microphone library block
 msgid "turn off microphone"
 msgstr "apaga el micròfon"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "dibuixa línia de x _ y _ a x _ y _ color _ al NeoPanell"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "dibuixa cercle a x _ y _ radi _ color _ al NeoPanell"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle x _ y _ width _ height _ color _"
+msgstr "dibuixa rectangle a x _ y _ amplada _ alçada _ color _ al NeoPanell"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "cercle"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "quadrat"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "estrella"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "cor"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "triangle"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "trèbol"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "diamant"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "lluna"
