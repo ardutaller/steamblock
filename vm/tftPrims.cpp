@@ -585,11 +585,6 @@ static int deferUpdates = false;
 		void tftInit() {
 			delay(5); // need 2 msecs minimum for micro:bit PicoBricks board power up I2C pullups
 			if (!hasI2CPullups()) return; // no OLED connected and no I2C pullups
-
-			// Ping the DUELink address so DUELink modules will use I2C mode
-			// (This must be the first I2C transaction after power up.)
-			readI2CReg(82, 0);
-
 			int response = readI2CReg(TFT_ADDR, 0); // test if OLED responds at TFT_ADDR
 			if (response < 0) return; // no OLED display detected
 			isOLED1106 = (8 == (response & 15));
