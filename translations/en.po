@@ -767,8 +767,16 @@ msgid "NeoPanel fill row _ color _"
 msgstr "NeoPanel fill row _ color _"
 
 #. NeoPanel library block
-msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
-msgstr "NeoPanel fill rectangle x _ y _ width _ height _ color _"
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "NeoPanel draw line from x _ y _ to x _ y _ color _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "NeoPanel draw circle at x _ y _ radius _ color _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
@@ -4661,6 +4669,38 @@ msgstr "Octo receive beam"
 #. Octostudio communication library block
 msgid "Octo stop"
 msgstr "Octo stop"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "circle"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "square"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "star"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "heart"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "triangle"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "clover"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "diamond"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "moon"
 
 #. CallioGamer library block
 msgid "A pressed"

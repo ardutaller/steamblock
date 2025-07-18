@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2025-05-12 11:01+0000\n"
-"Last-Translator: Abdallah Alqudah <emranabdallah11@gmail.com>\n"
+"PO-Revision-Date: 2025-07-08 14:01+0000\n"
+"Last-Translator: Raghad Abu Wadi <raghad.abuwadi@gmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/microblocks/ide/"
 "ar/>\n"
 "Language: ar\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #. Block in Input category
 msgid "button B"
@@ -892,3 +892,43 @@ msgstr "قائمة"
 #. Block in Data category
 msgid "delete item _ of list _"
 msgstr "حذف العنصر _ من القائمة_"
+
+#. Block in Input category
+msgid "milliseconds since _"
+msgstr "ميلي_ثانية_منذ"
+
+#. Block in Input category
+msgid "end time _"
+msgstr "وقت_النهاية"
+
+#. Block in Input category
+msgid "microseconds since _"
+msgstr "ميلي_ثانية_منذ"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "تم_شبكBLE"
+
+#. Block in Pins category
+msgid "pullup _"
+msgstr "سحب_لأعلى"
+
+#. Block in Control category
+msgid "range _ to _"
+msgstr "مدى_إلى"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "الخروج-من_الحلقة"
+
+#. Example default value for the ( arg _ default _ ) block
+msgid "default"
+msgstr "تلقائي"
+
+#. Block in Control category
+msgid "call _"
+msgstr "اتصال_"
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr "اسم الدالة"

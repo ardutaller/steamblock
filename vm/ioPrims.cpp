@@ -2675,7 +2675,7 @@ OBJ primDACInit(int argCount, OBJ *args) {
 OBJ primDACWrite(int argCount, OBJ *args) {
 	// Write sound samples to the DAC output buffer and return the number of samples written.
 	// The argument may be an integer representing a single sample or a ByteArray of samples
-	// plus an optional starting index withing that buffer.
+	// plus an optional starting index within that buffer.
 
 	if (argCount < 1) return fail(notEnoughArguments);
 	OBJ arg0 = args[0];
