@@ -124,7 +124,11 @@ int readI2CReg(int deviceID, int reg) {
 	#else
 		int error = Wire.endTransmission((bool) false);
 	#endif
-	if (error) return -error; // error; bad device ID?
+	if (error) {
+		reportNum("i2c read error", error);
+		taskSleep(5);
+		return -error; // error; bad device ID?
+	}
 
 	#if defined(NRF51)
 		noInterrupts();
@@ -144,7 +148,11 @@ void writeI2CReg(int deviceID, int reg, int value) {
 	Wire.beginTransmission(deviceID);
 	Wire.write(reg);
 	Wire.write(value);
-	Wire.endTransmission();
+	int error = Wire.endTransmission();
+	if (error) {
+		reportNum("i2c write error", error);
+		taskSleep(5);
+	}
 }
 
 #if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) || defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE) // || defined(ARDUINO_M5STACK_Core2) || defined(DUELink)
@@ -355,7 +363,10 @@ static OBJ primI2cWrite(int argCount, OBJ *args) {
 		}
 	}
 	int error = Wire.endTransmission(stop);
-	if (error) reportNum("i2c write error", error);
+	if (error) {
+		reportNum("i2c write error", error);
+		taskSleep(5);
+	}
 
 	return falseObj;
 }
@@ -1615,6 +1626,7 @@ static void i2cReadBytes(int deviceID, int reg, int *buf, int bufSize) {
 		int error = Wire1.endTransmission((bool) false);
 		if (error) {
 			reportNum("i2c read error", error);
+			taskSleep(5);
 			return;
 		}
 		Wire1.requestFrom(deviceID, bufSize);
@@ -1628,6 +1640,7 @@ static void i2cReadBytes(int deviceID, int reg, int *buf, int bufSize) {
 		int error = Wire.endTransmission((bool) false);
 		if (error) {
 			reportNum("i2c read error", error);
+			taskSleep(5);
 			return;
 		}
 
