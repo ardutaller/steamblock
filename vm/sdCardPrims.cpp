@@ -17,7 +17,6 @@
 #endif
 
 #include <SdFat.h>
-#include <FatLib/FatFile.h>
 
 SdFat SD;
 
