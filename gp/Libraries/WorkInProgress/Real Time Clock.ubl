@@ -1,8 +1,8 @@
 module 'Real Time Clock' Input
 author MicroBlocks
-version 1 2
-choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)'
-choices rtc_component second minute hour day month year 'day of week'
+version 1 3 
+choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)' 
+choices rtc_component second minute hour day month year 'day of week' 
 description 'Real time clock (RTC).
 
 Simple functions to set and read the current time and date of a real-time clock module.
@@ -16,7 +16,7 @@ https://files.seeedstudio.com/wiki/Grove-High_Precision_RTC/res/PCF85063TP.pdf
 
 (Many thanks to Ralf Krause)
 '
-variables rtc_i2cAddr
+variables rtc_i2cAddr 
 
   spec 'r' 'rtc_getTimeOrDate' 'clock _' 'menu.rtc_timeOrDate' 'rtc;time (H:M:S)'
   spec 'r' 'rtc_getComponent' 'clock _' 'menu.rtc_component' 'second'
@@ -34,18 +34,6 @@ variables rtc_i2cAddr
   spec ' ' '_rtc_setReg' '_rtc_setReg register _ value _' 'num num' 3 3
   spec 'r' '_rtc_mapRegNum' '_rtc_mapRegNum _' 'num' 0
 
-to '_rtc_init' {
-  if (rtc_i2cAddr != 0) {return}
-  if ('[sensors:i2cExists]' (hexToInt '68')) {
-    rtc_i2cAddr = (hexToInt '68')
-  } ('[sensors:i2cExists]' (hexToInt '51')) {
-    rtc_i2cAddr = (hexToInt '51')
-  } else {
-    rtc_i2cAddr = 0
-    sayIt 'No RTC found.'
-  }
-}
-
 to '_rtc_bcd2dec' bcd {
   comment 'Convert an 8-bit "binary-coded decimal" number to a decimal number in range 0-99'
   return (((bcd / 16) * 10) + (bcd % 16))
@@ -60,12 +48,24 @@ to '_rtc_dec2bcd' decimal {
 to '_rtc_getReg' reg {
   '_rtc_init'
   if (rtc_i2cAddr == 0) {
-    return
+    return 0
   }
   '[sensors:i2cSetClockSpeed]' 100000
   result = (i2cGet rtc_i2cAddr ('_rtc_mapRegNum' reg))
   '[sensors:i2cSetClockSpeed]' 400000
   return result
+}
+
+to '_rtc_init' {
+  if (rtc_i2cAddr != 0) {return}
+  if ('[sensors:i2cExists]' (hexToInt '68')) {
+    rtc_i2cAddr = (hexToInt '68')
+  } ('[sensors:i2cExists]' (hexToInt '51')) {
+    rtc_i2cAddr = (hexToInt '51')
+  } else {
+    rtc_i2cAddr = 0
+    sayIt 'No RTC found.'
+  }
 }
 
 to '_rtc_isPCF85063' {
