@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-07-16 10:22+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2025-07-23 11:06+0000\n"
+"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -6724,7 +6724,7 @@ msgstr "fb todos los NeoPíxeles de color _"
 
 #. Foxbit library block
 msgid "fb beep for _ millisecs"
-msgstr "fb beep durante _ milisegundos"
+msgstr "fb pita durante _ milisegundos"
 
 #. Foxbit library block
 msgid "fb humidity"
@@ -6910,3 +6910,75 @@ msgstr "diamante"
 #. Octostudio shape names
 msgid "octo;moon"
 msgstr "luna"
+
+#. micro:STEAMakers library block
+msgid "ms pin _ touched?"
+msgstr "ms ¿tocando el pin _?"
+
+#. micro:STEAMakers library block
+msgid "ms accel _ m/s2"
+msgstr "ms aceleración _ m/s²"
+
+#. micro:STEAMakers library block
+msgid "ms gyro _ deg/s"
+msgstr "ms giroscopio _ º/s"
+
+#. LogicLinks library block
+msgid "LogicLinks receive IR code"
+msgstr "LogicLinks recibir código IR"
+
+#. LogicLinks library block
+msgid "LogicLinks IR Code"
+msgstr "LogicLinks código IR"
+
+#. LogicLinks library block
+msgid "LogicLinks button"
+msgstr "LogicLinks botón"
+
+#. LogicLinks library block
+msgid "LogicLinks potentiometer"
+msgstr "LogicLinks potenciómetro"
+
+#. LogicLinks library block
+msgid "LogicLinks random color"
+msgstr "LogicLinks color aleatorio"
+
+#. LogicLinks library block
+msgid "LogicLinks beep _ ms"
+msgstr "LogicLinks bip _ ms"
+
+#. LogicLinks library block
+msgid "LogicLinks set relay _"
+msgstr "LogicLinks relé _"
+
+#. LogicLinks library block
+msgid "LogicLinks IR code received?"
+msgstr "LogicLinks ¿recibido código IR?"
+
+#. LogicLinks library block
+msgid "LogicLinks color r _ g _ b _ (0-255)"
+msgstr "LogicLinks color r _ g _ b _ (0-255)"
+
+#. LogicLinks library block
+msgid "LogicLinks humidity"
+msgstr "LogicLinks humedad"
+
+#. LogicLinks library block
+msgid "LogicLinks set RGB LED _"
+msgstr "LogicLinks LED RGB _"
+
+#. LogicLinks library block
+msgid "LogicLinks turn off RGB LED"
+msgstr "LogicLinks apaga LED RGB"
+
+#. LogicLinks library block
+msgid "LogicLinks temperature (°C)"
+msgstr "LogicLinks temperatura (°C)"
+
+#. LogicLinks library block
+msgid "LogicLinks set red LED _"
+msgstr "LogicLinks LED rojo _"
+
+#. LogicLinks library block
+msgid "LogicLinks light (0-100)"
+msgstr "LogicLinks luz (0-100)"
