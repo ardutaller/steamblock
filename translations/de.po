@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-22 10:10+0000\n"
+"PO-Revision-Date: 2025-07-23 11:06+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2487,7 +2487,7 @@ msgstr "Board nicht verbunden"
 
 #. Process cancellation tip
 msgid "(press ESC to cancel)"
-msgstr "(drücke ESC zum Abbrechen)"
+msgstr "drücke ESC zum Abbrechen."
 
 #. Process finished information
 msgid "Done!"
@@ -6688,7 +6688,7 @@ msgstr "SCD40 relative Luftfeuchtigkeit (%)"
 
 #. Firmware install instruction
 msgid "Do not switch browser tabs!"
-msgstr "Wechsle nicht den Browser-Tab!"
+msgstr "wechsle nicht den Browser-Tab!"
 
 #. Gas (SCD40) library block
 msgid "°F"
@@ -6758,7 +6758,8 @@ msgstr "#SVG#wave-noise Gate _"
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
-"Verbinde dich neu mit deinem Board. Klicke dafür auf die Taste \"verbinden\"."
+"Verbinde MicroBlocks neu mit deinem Board. Klicke dafür auf die Taste "
+"\"verbinden\"."
 
 #. Analog Synthesis library block
 msgid "set frequency ramp from _ % to _ % for gate _"
