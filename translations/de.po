@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-16 13:38+0000\n"
+"PO-Revision-Date: 2025-07-22 10:10+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -5203,7 +5203,7 @@ msgstr "mit _ % Geschwindigkeit"
 
 #. micro:STEAMakers library block
 msgid "start micro꞉STEAMakers audio"
-msgstr "starte micro꞉STEAMakers Audio"
+msgstr "ms starte Audio"
 
 #. InnovaDidàctic 3DBot library block
 msgid "3dBot obstacle < _ cm?"
@@ -5590,7 +5590,7 @@ msgstr "ms scrolle Text _ mit Farbe _ "
 
 #. micro:STEAMakers library block
 msgid "ms stop scrolling"
-msgstr "ms stoppe scrollen"
+msgstr "ms stoppe Scrollen"
 
 #. micro:STEAMakers library block
 msgid "ms button _ ?"
@@ -5626,7 +5626,7 @@ msgstr "ms Energie _"
 
 #. micro:STEAMakers library block
 msgid "ms _ energy meter"
-msgstr "ms _ Energiemesser"
+msgstr "ms _ Energiesensor"
 
 #. micro:STEAMakers library block
 msgid "ms;stop"
