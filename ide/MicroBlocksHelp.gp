@@ -175,6 +175,7 @@ method initialize MicroBlocksHelp {
 		// NEOPIXEL
 		(array 'neoPixelAttach' '/libraries#attach-neopixel-led-to-pin' 'Set Neopixel count and pin number.')
 		(array 'setNeoPixelColors10' '/libraries#set-neopixels' 'Set the colors of the first ten NeoPixels.')
+		(array 'setNeoPixelColors25' '/libraries#set-neopixels' 'Set the colors of the first 25 NeoPixels.')
 		(array 'clearNeoPixels' '/libraries#clear-neopixels' 'Turn off all NeoPixels.')
 		(array 'neoPixelSetAllToColor' '/libraries#set-all-neopixels-color' 'Set all NeoPixels to the given color.')
 		(array 'setNeoPixelColor' '/libraries#set-neopixel-color' 'Set the given NeoPixel to the selected color.')
