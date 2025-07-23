@@ -51,7 +51,7 @@ to '_rtc_getReg' reg {
     return 0
   }
   '[sensors:i2cSetClockSpeed]' 100000
-  result = (i2cGet rtc_i2cAddr ('_rtc_mapRegNum' reg))
+  local 'result' (i2cGet rtc_i2cAddr ('_rtc_mapRegNum' reg))
   '[sensors:i2cSetClockSpeed]' 400000
   return result
 }
@@ -109,7 +109,7 @@ to rtc_getComponent which {
     result += 2000
   } ('_rtc_isPCF85063') {
     comment 'PCF85063 weekday range is 0-6.'
-    weekdayNum += 1
+    result += 1
   }
   return result
 }
