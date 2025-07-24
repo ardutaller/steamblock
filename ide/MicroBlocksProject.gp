@@ -962,8 +962,12 @@ method loadDependencies MicroBlocksModule cmdList {
 }
 
 method importDependencies MicroBlocksModule scripter {
+	project = (project scripter)
 	for dependency dependencies {
-		importDependency this dependency scripter
+		if (isNil (libraryNamed project dependency)) {
+			// don't import a dependent library if it is already loaded
+			importDependency this dependency scripter
+		}
 	}
 }
 
