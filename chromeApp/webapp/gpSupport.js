@@ -57,7 +57,7 @@ var GP = {
 };
 
 GP.greet = function (number) {
-	var id = performance.now();
+	var id = Date.now()%100000000;
 	var call = [
 		id,
 		'greet',

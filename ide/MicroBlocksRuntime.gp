@@ -14,17 +14,19 @@ to smallRuntime aScripter {
 	return (global 'smallRuntime')
 }
 
-defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler
+defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler api
 
 method scripter SmallRuntime { return scripter }
 method serialPortOpen SmallRuntime { return (notNil port) }
 method recompileNeeded SmallRuntime { recompileAll = true }
+method api SmallRuntime { return api }
 
 method initialize SmallRuntime aScripter {
 	scripter = aScripter
 	chunkIDs = (dictionary)
 	readFromBoard = false
 	clearLoggedData this
+	api = (new 'MicroBlocksAPI')
 	return this
 }
 
@@ -3430,7 +3432,8 @@ method installESPFirmwareFromFile SmallRuntime fileName data {
 defineClass MicroBlocksAPI
 
 method processLastCall MicroBlocksAPI {
-	doCall this (browserLastAPIRequest)
+	request = (browserLastAPIRequest)
+	if (notNil request) { doCall this request }
 }
 
 method doCall MicroBlocksAPI callObject {

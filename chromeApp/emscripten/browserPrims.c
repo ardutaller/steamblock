@@ -1470,6 +1470,7 @@ OBJ primSetCursor(int nargs, OBJ args[]) {
 
 OBJ primLastAPIRequest(int nargs, OBJ args[]) {
 	int index = EM_ASM_INT({ return GP.callQueue.length - 1; }, NULL);
+	if (index < 0) { return nilObj; }
 	OBJ id = int2obj(EM_ASM_INT({ return GP.callQueue[$0][0]; }, index));
 	int endPointLength = EM_ASM_INT({ return GP.callQueue[$0][1].length + 1; }, index);
 	OBJ endPoint = allocateString(endPointLength);
@@ -1499,8 +1500,11 @@ OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
 		obj2int(args[0])
 	);
 
+	if (index < 0) { return falseObj; }
+
 	EM_ASM_({
 		GP.callQueue[$0][2]($1); // callback function in GP callQueue
+		GP.callQueue.splice($0,1); // remove call from queue else it'll run again
 	}, index, obj2int(args[1]));
 
 	return falseObj;
