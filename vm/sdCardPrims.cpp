@@ -16,6 +16,7 @@
 	#define SS 16
 #endif
 
+#define DISABLE_FS_H_WARNING 1
 #include <SdFat.h>
 
 SdFat SD;
@@ -100,7 +101,7 @@ static void closeIfOpen(char *fileName) {
 	int i = entryFor(fileName);
 	if (i >= 0) {
 		fileEntry[i].fileName[0] = '\0';
-		fileEntry[i].file.close();
+		if (fileEntry[i].file.isOpen()) fileEntry[i].file.close();
 	}
 }
 
@@ -137,7 +138,7 @@ static OBJ primOpen(int argCount, OBJ *args) {
 	if (i >= 0) { // initialize new entry
 		fileEntry[i].fileName[0] = '\0';
 		strncat(fileEntry[i].fileName, fileName, 31);
-		fileEntry[i].file = SD.open(fileName, O_APPEND);
+		fileEntry[i].file.open(fileName, O_RDWR | O_CREAT);
 		fileEntry[i].file.seekSet(0); // read from start of file
 	}
 	return falseObj;
@@ -156,6 +157,7 @@ static OBJ primDelete(int argCount, OBJ *args) {
 	char *fileName = extractFilename(args[0]);
 	if (!fileName[0]) return falseObj;
 
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
 	closeAndDeleteFile(fileName);
 	return falseObj;
 }
@@ -275,6 +277,28 @@ static OBJ primSetReadPosition(int argCount, OBJ *args) {
 
 // Writing
 
+static void writeObj(int fileEntryIndex, OBJ arg) {
+	int i = fileEntryIndex;
+	if (IS_TYPE(arg, StringType)) {
+		char *str = obj2str(arg);
+		fileEntry[i].file.write(str, strlen(str));
+	} else if (isInt(arg)) {
+		char s[16];
+		sprintf(s, "%d", obj2int(arg));
+		fileEntry[i].file.write(s, strlen(s));
+	} else if (isBoolean(arg)) {
+		if (trueObj == arg) {
+			fileEntry[i].file.write("true", 4);
+		} else {
+			fileEntry[i].file.write("false", 5);
+		}
+	} else if (IS_TYPE(arg, ListType)) {
+		fileEntry[i].file.write("<List>", 6);
+	} else if (IS_TYPE(arg, ByteArrayType)) {
+		fileEntry[i].file.write("<ByteArray>", 11);
+	}
+}
+
 static OBJ primAppendLine(int argCount, OBJ *args) {
 	// Append a String to a file followed by a newline.
 
@@ -284,34 +308,23 @@ static OBJ primAppendLine(int argCount, OBJ *args) {
 	OBJ arg = args[0];
 
 	int i = entryFor(fileName);
-	if (i >= 0) {
+
+	if ((i >= 0) && fileEntry[i].file)  {
 		int oldPos = fileEntry[i].file.position();
 		int oldSize = fileEntry[i].file.size();
 		if (oldPos != oldSize) fileEntry[i].file.seekEnd(); // seek to current end
-		if (IS_TYPE(arg, StringType)) {
-			fileEntry[i].file.print(obj2str(arg));
-		} else if (isInt(arg)) {
-			fileEntry[i].file.print(obj2int(arg));
-		} else if (isBoolean(arg)) {
-			fileEntry[i].file.print((trueObj == arg) ? "true" : "false");
-		} else if (IS_TYPE(arg, ListType)) {
-			// print list items separated by spaces
+		if (IS_TYPE(arg, ListType)) {
 			int count = obj2int(FIELD(arg, 0));
 			for (int j = 1; j <= count; j++) {
-				OBJ item = FIELD(arg, j);
-				if (IS_TYPE(item, StringType)) {
-					fileEntry[i].file.print(obj2str(item));
-				} else if (isInt(item)) {
-					fileEntry[i].file.print(obj2int(item));
-				} else if (isBoolean(item)) {
-					fileEntry[i].file.print((trueObj == item) ? "true" : "false");
-				}
-				if (j < count) fileEntry[i].file.write(32); // space
+				writeObj(i, FIELD(arg, j));
+				if (j < count) fileEntry[i].file.write(", ", 2);
 			}
+		} else {
+			writeObj(i, arg);
 		}
 		fileEntry[i].file.write(10); // newline
 		fileEntry[i].file.flush();
-		if (oldPos != oldSize) fileEntry[i].file.seekSet(oldPos); // reset position for reading
+		fileEntry[i].file.seekSet(oldPos); // reset position for reading
 	}
 	processMessage();
 	return falseObj;
@@ -379,11 +392,15 @@ static OBJ primFileSize(int argCount, OBJ *args) {
 
 static OBJ primSystemInfo(int argCount, OBJ *args) {
 	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
-	size_t totalBytes = SD.clusterCount() * SD.bytesPerCluster();
-	size_t usedBytes = totalBytes - (SD.freeClusterCount() * SD.bytesPerCluster());
+	int kBytesPerCluster = SD.bytesPerCluster() / 1024;
+	size_t capacity = SD.clusterCount() * kBytesPerCluster;
 
 	char result[100];
-	sprintf(result, "%u kbytes used of %u kbytes", usedBytes / 1024, totalBytes / 1024);
+	if (capacity < 10000) {
+		sprintf(result, "SD card capacity: %.3f MB", capacity / 1024.0);
+	} else {
+		sprintf(result, "SD card capacity: %.3f GB", capacity / (1024.0 * 1024.0));
+	}
 	return newStringFromBytes(result, strlen(result));
 }
 
