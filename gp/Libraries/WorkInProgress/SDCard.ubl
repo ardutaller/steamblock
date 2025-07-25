@@ -1,6 +1,6 @@
 module SDCard Data
 author MicroBlocks
-version 1 0 
+version 1 1 
 description 'SDCard file system operations. Similar to the File library, but for SD Cards..'
 
   spec ' ' '[sd:init]' 'set SD card chip select pin _' 'num' -1
@@ -23,7 +23,6 @@ description 'SDCard file system operations. Similar to the File library, but for
   space
   spec 'r' 'sdCard_fileNames' 'sd file names : in directory _' 'str'
   spec 'r' '[sd:fileSize]' 'size of sd file _' 'str'
-  spec 'r' '[sd:systemInfo]' 'sd file system info'
 
 to sdCard_fileNames dir {
   '[sd:startList]' dir

@@ -105,13 +105,6 @@ static void closeIfOpen(char *fileName) {
 	}
 }
 
-static void closeAndDeleteFile(char *fileName) {
-	// Called from fileTransfer.cpp.
-
-	closeIfOpen(fileName);
-	SD.remove(fileName);
-}
-
 // Initialize
 
 static OBJ primInit(int argCount, OBJ *args) {
@@ -158,7 +151,8 @@ static OBJ primDelete(int argCount, OBJ *args) {
 	if (!fileName[0]) return falseObj;
 
 	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
-	closeAndDeleteFile(fileName);
+	closeIfOpen(fileName);
+	SD.remove(fileName);
 	return falseObj;
 }
 
@@ -351,6 +345,21 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+// File size
+
+static OBJ primFileSize(int argCount, OBJ *args) {
+	if (argCount < 1) return fail(notEnoughArguments);
+	char *fileName = extractFilename(args[0]);
+	if (!fileName[0]) return int2obj(-1);
+
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
+	FsFile file = SD.open(fileName, O_RDONLY);
+	if (!file) return int2obj(-1);
+	int size = file.size();
+	file.close();
+	return int2obj(size);
+}
+
 // File list
 
 static FsFile listDir;
@@ -371,37 +380,6 @@ static OBJ primNextFileInList(int argCount, OBJ *args) {
 	char *s = fileName;
 	if ('/' == s[0]) s++; // skip leading slash
 	return newStringFromBytes(s, strlen(s));
-}
-
-// File info
-
-static OBJ primFileSize(int argCount, OBJ *args) {
-	if (argCount < 1) return fail(notEnoughArguments);
-	char *fileName = extractFilename(args[0]);
-	if (!fileName[0]) return int2obj(-1);
-
-	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
-	FsFile file = SD.open(fileName, O_RDONLY);
-	if (!file) return int2obj(-1);
-	int size = file.size();
-	file.close();
-	return int2obj(size);
-}
-
-// System info
-
-static OBJ primSystemInfo(int argCount, OBJ *args) {
-	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
-	int kBytesPerCluster = SD.bytesPerCluster() / 1024;
-	size_t capacity = SD.clusterCount() * kBytesPerCluster;
-
-	char result[100];
-	if (capacity < 10000) {
-		sprintf(result, "SD card capacity: %.3f MB", capacity / 1024.0);
-	} else {
-		sprintf(result, "SD card capacity: %.3f GB", capacity / (1024.0 * 1024.0));
-	}
-	return newStringFromBytes(result, strlen(result));
 }
 
 #endif
@@ -425,7 +403,6 @@ static PrimEntry entries[] = {
 		{"fileSize", primFileSize},
 		{"startList", primStartFileList},
 		{"nextInList", primNextFileInList},
-		{"systemInfo", primSystemInfo},
 	#endif
 };
 
