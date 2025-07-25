@@ -3437,9 +3437,16 @@ method processLastCall MicroBlocksAPI {
 }
 
 method doCall MicroBlocksAPI callObject {
+	editor = (findMicroBlocksEditor)
 	id = (at callObject 1)
 	endPoint = (at callObject 2)
 	if (endPoint == 'random') {
 		browserRespondAPIRequest id (rand 1 100)
+	} (endPoint == 'newProject') {
+		browserRespondAPIRequest id 0 // respond first so the request is deleted
+		newProject editor
+	} (endPoint == 'openProjectMenu') {
+		browserRespondAPIRequest id 0 // respond first so the request is deleted
+		openProjectMenu editor
 	}
 }
