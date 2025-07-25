@@ -767,8 +767,16 @@ msgid "NeoPanel fill row _ color _"
 msgstr "NeoPanel fill row _ color _"
 
 #. NeoPanel library block
-msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
-msgstr "NeoPanel fill rectangle x _ y _ width _ height _ color _"
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "NeoPanel draw line from x _ y _ to x _ y _ color _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "NeoPanel draw circle at x _ y _ radius _ color _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
@@ -3444,6 +3452,18 @@ msgid "degrees"
 msgstr "degrees"
 
 #. micro:STEAMakers library block
+msgid "ms pin _ touched?"
+msgstr "ms pin _ touched?"
+
+#. micro:STEAMakers library block
+msgid "ms accel _ m/s2"
+msgstr "ms accel _ m/s2"
+
+#. micro:STEAMakers library block
+msgid "ms gyro _ deg/s"
+msgstr "ms gyro _ deg/s"
+
+#. micro:STEAMakers library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "ms display #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
 msgstr "ms display #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
@@ -4650,6 +4670,38 @@ msgstr "Octo receive beam"
 msgid "Octo stop"
 msgstr "Octo stop"
 
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "circle"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "square"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "star"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "heart"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "triangle"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "clover"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "diamond"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "moon"
+
 #. CallioGamer library block
 msgid "A pressed"
 msgstr "A pressed"
@@ -5109,6 +5161,66 @@ msgstr "cb oled write _ at x _ y _ big _"
 #. Coding Box library block
 msgid "cb light"
 msgstr "cb light"
+
+#. LogicLinks library block
+msgid "LogicLinks receive IR code"
+msgstr "LogicLinks receive IR code"
+
+#. LogicLinks library block
+msgid "LogicLinks IR Code"
+msgstr "LogicLinks IR Code"
+
+#. LogicLinks library block
+msgid "LogicLinks button"
+msgstr "LogicLinks button"
+
+#. LogicLinks library block
+msgid "LogicLinks potentiometer"
+msgstr "LogicLinks potentiometer"
+
+#. LogicLinks library block
+msgid "LogicLinks random color"
+msgstr "LogicLinks random color"
+
+#. LogicLinks library block
+msgid "LogicLinks beep _ ms"
+msgstr "LogicLinks beep _ ms"
+
+#. LogicLinks library block
+msgid "LogicLinks set relay _"
+msgstr "LogicLinks set relay _"
+
+#. LogicLinks library block
+msgid "LogicLinks IR code received?"
+msgstr "LogicLinks IR code received?"
+
+#. LogicLinks library block
+msgid "LogicLinks color r _ g _ b _ (0-255)"
+msgstr "LogicLinks color r _ g _ b _ (0-255)"
+
+#. LogicLinks library block
+msgid "LogicLinks humidity"
+msgstr "LogicLinks humidity"
+
+#. LogicLinks library block
+msgid "LogicLinks set RGB LED _"
+msgstr "LogicLinks set RGB LED _"
+
+#. LogicLinks library block
+msgid "LogicLinks turn off RGB LED"
+msgstr "LogicLinks turn off RGB LED"
+
+#. LogicLinks library block
+msgid "LogicLinks temperature (°C)"
+msgstr "LogicLinks temperature (°C)"
+
+#. LogicLinks library block
+msgid "LogicLinks set red LED _"
+msgstr "LogicLinks set red LED _"
+
+#. LogicLinks library block
+msgid "LogicLinks light (0-100)"
+msgstr "LogicLinks light (0-100)"
 
 #. In MicroBlocks IDE project menu
 msgid "New"

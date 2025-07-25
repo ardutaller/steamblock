@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-04 00:06+0000\n"
+"PO-Revision-Date: 2025-07-16 13:38+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -110,11 +110,11 @@ msgstr "prefix"
 
 #. Example text for lowercase and uppercase Strings library block
 msgid "THIS is a String! :)"
-msgstr "DAS ist ein Text! :)"
+msgstr "DAS ist ein Text! :-)"
 
 #. Example text for Strings library block
 msgid "Hello, world!"
-msgstr "Hallo, Welt!"
+msgstr "Hallo Welt!"
 
 #. WiFi library block
 msgid "IP address"
@@ -1176,7 +1176,7 @@ msgstr "DHT11 Luftfeuchtigkeit Pin _"
 
 #. DotStar LED library block
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
-msgstr "verbinde _ DotStar LEDs an Daten-Pin _ Uhr-Pin _"
+msgstr "DotStar verbinde _ LEDs an Daten-Pin _ Takt-Pin _"
 
 #. Rhythm library block
 msgid "wait until beat _"
@@ -1681,7 +1681,7 @@ msgstr "zeige Bild _"
 
 #. Example string for ( (suffix) ends with (fix) )
 msgid "suffix"
-msgstr "Suffix"
+msgstr "suffix"
 
 #. Image name for the "display image" block
 msgid "happy"
@@ -2295,15 +2295,15 @@ msgstr "Calliope Lautstärke"
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
-msgstr "setze alle DotStar LEDs auf R _ G _ B _"
+msgstr "DotStar setze alle LEDs auf r _ g _ b _"
 
 #. DotStar LED library block
 msgid "set DotStar LED _ to r _ g _ b _"
-msgstr "setze DotStar LED _ auf r _ g _ b _"
+msgstr "DotStar setze LED _ auf r _ g _ b _"
 
 #. DotStar LED library block
 msgid "set DotStar brightness _"
-msgstr "setze DotStar Helligkeit _"
+msgstr "DotStar setze Helligkeit _"
 
 #. HTTP Server library block
 msgid "respond _ to HTTP request"
@@ -2936,7 +2936,7 @@ msgstr "zeichne Dreieck auf TFT bei x _ y _ , x _ y _ , x _ y _ Farbe _"
 
 #. Color library block
 msgid "color r _ g _ b _ (0-255)"
-msgstr "Farbe R _ G _ B _ (0-255)"
+msgstr "Farbe r _ g _ b _ (0-255)"
 
 #. Rhythm library block
 msgid "wait until bar _"
@@ -3799,8 +3799,8 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Replace the Nth item (or all items) of a list or byte array with the given value."
 msgstr ""
-"Ersetzt das angegebene Element (oder alle Elemente) in der Liste oder dem "
-"ByteArray durch den gegebenen Wert."
+"Setzt das angegebene Element (oder alle Elemente) in der Liste oder dem "
+"ByteArray auf den gegebenen Wert."
 
 #. Block in Input category
 msgid "button A"
@@ -5503,7 +5503,7 @@ msgstr "ms lösche Anzeige"
 
 #. micro:STEAMakers library block
 msgid "ms scale brightness to _ %"
-msgstr "ms skaliere Helligkeit auf _ %"
+msgstr "ms setze Helligkeit auf _ %"
 
 #. micro:STEAMakers library block
 msgid "ms plot x _ y _ with _"
@@ -5582,7 +5582,7 @@ msgstr ""
 
 #. micro:STEAMakers library block
 msgid "ms display character _ with _"
-msgstr "ms zeige Buchstaben _ mit _"
+msgstr "ms zeige Zeichen _ mit _"
 
 #. micro:STEAMakers library block
 msgid "ms scroll text _ with color _ "
@@ -5606,7 +5606,7 @@ msgstr "ms Licht"
 
 #. micro:STEAMakers library block
 msgid "ms sound"
-msgstr "ms Töne"
+msgstr "ms Lautstärke"
 
 #. micro:STEAMakers library block
 msgid "ms temperature ºC"
@@ -6688,7 +6688,7 @@ msgstr "SCD40 relative Luftfeuchtigkeit (%)"
 
 #. Firmware install instruction
 msgid "Do not switch browser tabs!"
-msgstr "Wechsle keine Browser-Tabs!"
+msgstr "Wechsle nicht den Browser-Tab!"
 
 #. Gas (SCD40) library block
 msgid "°F"
@@ -6924,3 +6924,119 @@ msgstr "beide"
 #. Microphone library block
 msgid "turn off microphone"
 msgstr "schalte Mikrofon aus"
+
+#. LogicLinks library block
+msgid "LogicLinks receive IR code"
+msgstr "LogicLinks empfange IR-Code"
+
+#. LogicLinks library block
+msgid "LogicLinks IR Code"
+msgstr "LogicLinks IR-Code"
+
+#. LogicLinks library block
+msgid "LogicLinks button"
+msgstr "LogicLinks Taste"
+
+#. LogicLinks library block
+msgid "LogicLinks potentiometer"
+msgstr "LogicLinks Potentiometer"
+
+#. LogicLinks library block
+msgid "LogicLinks random color"
+msgstr "LogicLinks Zufallsfarbe"
+
+#. LogicLinks library block
+msgid "LogicLinks beep _ ms"
+msgstr "LogicLinks Pieps _ ms"
+
+#. LogicLinks library block
+msgid "LogicLinks set relay _"
+msgstr "LogicLinks setze Relais _"
+
+#. LogicLinks library block
+msgid "LogicLinks IR code received?"
+msgstr "LogicLinks IR-Code empfangen?"
+
+#. LogicLinks library block
+msgid "LogicLinks color r _ g _ b _ (0-255)"
+msgstr "LogicLinks Farbe r _ g _ b _ (0-255)"
+
+#. LogicLinks library block
+msgid "LogicLinks humidity"
+msgstr "LogicLinks Luftfeuchtigkeit"
+
+#. LogicLinks library block
+msgid "LogicLinks set RGB LED _"
+msgstr "LogicLinks setze RGB LED _"
+
+#. LogicLinks library block
+msgid "LogicLinks turn off RGB LED"
+msgstr "LogicLinks schalte RGB LED aus"
+
+#. LogicLinks library block
+msgid "LogicLinks temperature (°C)"
+msgstr "LogicLinks Temperatur (°C)"
+
+#. LogicLinks library block
+msgid "LogicLinks set red LED _"
+msgstr "LogicLinks setze rote LED _"
+
+#. LogicLinks library block
+msgid "LogicLinks light (0-100)"
+msgstr "LogicLinks Lichtstärke (0-100)"
+
+#. micro:STEAMakers library block
+msgid "ms pin _ touched?"
+msgstr "ms Pin _ berührt?"
+
+#. micro:STEAMakers library block
+msgid "ms accel _ m/s2"
+msgstr "ms Beschleunigung _ m/s²"
+
+#. micro:STEAMakers library block
+msgid "ms gyro _ deg/s"
+msgstr "ms Gyroskope _ °/s"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "NeoPanel zeichne Linie von x _ y _ nach x _ y _ Farbe _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "NeoPanel zeichne Kreis bei x _ y _ Radius _ Farbe _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "NeoPanel zeichne Rechteck x _ y _ Breite _ Höhe _ Farbe _"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "Kreis"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "Quadrat"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "Stern"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "Herz"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "Dreieck"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "Klee"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "Diamant"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "Mond"

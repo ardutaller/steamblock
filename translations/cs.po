@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-04-16 10:35+0000\n"
+"PO-Revision-Date: 2025-07-13 20:03+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.11.1-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -200,7 +200,7 @@ msgstr "pro _ z _ _"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr "opakuj dokud není _ _"
+msgstr "opakuj dokud nenastane _ _"
 
 #. Block in Control category
 msgid "stop this task"
@@ -2945,7 +2945,7 @@ msgstr "TCS34725 RGB"
 
 #. TCS34725 color sensor library block
 msgid "color _ name"
-msgstr "barva _ jménu"
+msgstr "barva _ jméno"
 
 #. DHT11 environmental sensor library block
 msgid "temperature (Celsius) DHT11 pin _"
@@ -4331,7 +4331,7 @@ msgstr ""
 
 #. Octostudio communication library block
 msgid "duration _ ms"
-msgstr ""
+msgstr "trvání _ ms"
 
 #. Octostudio communication library block
 msgid "Octo beam received?"
@@ -5884,7 +5884,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a copy from the given index through the end (or optional stop index) of the given list, string, or byte array."
 msgstr ""
-"Pro zadaný seznam/text/pole bajtů Vrátí kopii od daného indexu do konce ("
+"Pro zadaný seznam/text/pole bajtů vrátí kopii od daného indexu do konce ("
 "případně do zadaného koncového indexu."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
@@ -5904,27 +5904,27 @@ msgstr "Vrací Unicode N-tého znaku řetězce."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a string containing the given Unicode value (\"code point\") or list of values."
-msgstr "Vrací řetězec obsahující zadanou hodnotu Unicode nebo seznamu hodnot."
+msgstr "Vrátí řetězec obsahující zadanou hodnotu Unicode nebo seznamu hodnot."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new list of the given length filled with zero or the optional value."
 msgstr ""
-"Vrací nový seznam dané délky vyplněný nulami případně zadanou volitelnou "
+"Vrátí nový seznam dané délky vyplněný nulami případně zadanou volitelnou "
 "hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new byte array of the given length filled with zero or the optional value."
 msgstr ""
-"Vrací nové pole bajtů dané délky vyplněné nulami případně zadanou volitelnou "
+"Vrátí nové pole bajtů dané délky vyplněné nulami případně zadanou volitelnou "
 "hodnotou."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a byte array containing the UTF-8 bytes of the given string."
-msgstr "Vrací pole bajtů obsahující UTF-8 hodnoty znaků zadaného řetězce."
+msgstr "Vrátí pole bajtů obsahující UTF-8 hodnoty znaků zadaného řetězce."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
-msgstr "Vrací velikost dostupné paměti (words). Stop uvolňuje paměť."
+msgstr "Vrátí velikost dostupné paměti (words). Stop uvolňuje paměť."
 
 #. Block in Input category
 msgid "version"
@@ -6166,9 +6166,8 @@ msgid "Calliope set NeoPixels _ _ _"
 msgstr "Calliope nastav NeoPixely _ _ _"
 
 #. Calliope NeoPixel library block
-#, fuzzy
 msgid "Calliope set all NeoPixels to _"
-msgstr "Calliope nastav všechny NeoPixely  na _"
+msgstr "Calliope nastav všechny NeoPixely na _"
 
 #. Calliope NeoPixel library block
 #, fuzzy
@@ -6181,7 +6180,7 @@ msgstr "Calliope zastav servo _"
 
 #. Calliope Servoboard library block
 msgid "Calliope set continous servo _ to speed _ (-100~100)"
-msgstr "Calliope  nastav kontinuální servo _ rychlost _  (-100~100)"
+msgstr "Calliope nastav kontinuální servo _ rychlost _ (-100~100)"
 
 #. Calliope Servoboard library block
 #, fuzzy
@@ -6265,3 +6264,119 @@ msgstr "LPS331AP teplota _"
 #, fuzzy
 msgid "Calliope clear all NeoPixels"
 msgstr "Calliope smaž všechny NeoPixely"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "vypni mikrofon"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "left" side
+msgid "left"
+msgstr "levá"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "right" side
+msgid "right"
+msgstr "pravá"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "both" sides
+msgid "both"
+msgstr "obě"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD init display"
+msgstr "LCD inicializuj displej"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set RGB background _"
+msgstr "LCD Nastav RGB pozadí _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD is connected?"
+msgstr "LCD připojen?"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write text _ to line _"
+msgstr "LCD zobraz text _ na řádek _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD generate custom char _ _"
+msgstr "LCD generuj vlastní znak _ _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD custom char _"
+msgstr "LCD vlastní znak _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD clear display"
+msgstr "LCD smaž dislplej"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD set display on _"
+msgstr "LCD displej _"
+
+#. LCD 16x2 (Seeed) library block
+msgid "LCD write field _ to line _ from _ to _"
+msgstr "LCD zobraz pole _ na řádek _ od _ do _"
+
+#. Gas (SCD40) library block
+msgid "°C"
+msgstr "°C"
+
+#. Gas (SCD40) library block
+msgid "°F"
+msgstr "°F"
+
+#. Gas (SCD40) library block
+msgid "SCD40 init sensor"
+msgstr "SCD40 inicializace"
+
+#. Gas (SCD40) library block
+msgid "SCD40 carbon dioxide (ppm)"
+msgstr "SCD40 CO2 (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 CO2 (ppm)"
+msgstr "SCD40 CO2 (ppm)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 temperature _"
+msgstr "SCD40 teplota _"
+
+#. Gas (SCD40) library block
+msgid "SCD40 relative humidity (%)"
+msgstr "SCD40 relativní vlhkost (%)"
+
+#. Gas (SCD40) library block
+msgid "SCD40 is connected?"
+msgstr "SCD40 připojen?"
+
+#. Firmware install instruction
+msgid "Do not switch browser tabs!"
+msgstr "Nepřepínejte mezi záložkami prohlížeče !"
+
+#. Firmware install instruction
+msgid "Connecting..."
+msgstr "Připojuji..."
+
+#. MicroBlocks IDE information
+msgid "Reconnect to the board by clicking the \"Connect\" button."
+msgstr "Znovu připojte mikropočítač stiskem tlačítka \"Připojit\"."
+
+#. Analog Synthesis library block
+#. as in pin number or i2c address
+msgid "number/address _"
+msgstr "číslo/adresa _"
+
+#. WiFi library block
+msgid "wifi set local domain name _ .local"
+msgstr "WiFi nastav lokální doménu _ .local"
+
+#. NeZha2 robot library block
+msgid "Nezha distance _ (cm)"
+msgstr "Nezha vzdálenost _ (cm)"
+
+#. CoCube library block
+msgid "card ID"
+msgstr "kód karty"
