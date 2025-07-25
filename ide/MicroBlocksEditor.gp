@@ -1520,8 +1520,8 @@ method fixScriptsInFolderTree MicroBlocksEditor rootPath defaultCountryCode {
 	// fixScriptsInFolderTree (first (allInstances 'MicroBlocksEditor')) '/Users/johnmaloney/Projects-2022/microblocks-learn/data'
 
 	if (isNil defaultCountryCode) { defaultCountryCode = 'en' }
-	setBlockScalePercent this 65 // scale for multiple script PNG images
-	setExportScale (scriptEditor scripter) 65 // scale for single script PNG images
+	setBlockScalePercent this 125 // scale for multiple script PNG images
+	setExportScale (scriptEditor scripter) 200 // scale for single script PNG images
 
 	for pngFilePath (allFiles rootPath '.png') {
 		if (isNil (findSubstring '/reference_manual' pngFilePath)) {
