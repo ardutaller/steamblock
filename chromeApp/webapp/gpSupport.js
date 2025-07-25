@@ -56,16 +56,17 @@ var GP = {
 	callQueue: []
 };
 
-GP.greet = function (number) {
-	var id = Date.now()%100000000;
-	var call = [
-		id,
-		'greet',
-		function (value) { console.log(value); },
-		number
-	];
 
-	GP.callQueue.push(call);
+GP.apiCall = function (endPoint, params, callback) {
+	// example:
+	// GP.apiCall('random', [], function (value) { console.log(value) });
+
+	GP.callQueue.push([
+		Date.now() % 100000000,	// reasonably unique ID
+		endPoint,								// API endpoint selector
+		callback,								// takes a param with the return value
+		...params								// call params
+	]);
 };
 
 

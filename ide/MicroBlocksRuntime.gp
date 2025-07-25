@@ -3439,7 +3439,7 @@ method processLastCall MicroBlocksAPI {
 method doCall MicroBlocksAPI callObject {
 	id = (at callObject 1)
 	endPoint = (at callObject 2)
-	if (endPoint == 'greet') {
-		browserRespondAPIRequest id 42
+	if (endPoint == 'random') {
+		browserRespondAPIRequest id (rand 1 100)
 	}
 }
