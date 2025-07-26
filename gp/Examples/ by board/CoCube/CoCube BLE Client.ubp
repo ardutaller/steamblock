@@ -570,7 +570,7 @@ to 'VL53L0X distance (mm)' {
 
 module 'Gesture (PAJ7620)' Input
 author 'José García'
-version 1 0 
+version 1 1 
 tags sensor gesture 
 description 'Support for PAJ7620 gesture sensor.
 The "read" block returns the name of the detected gesture.
@@ -973,13 +973,14 @@ to stopScrollingText {
 
 module NeoPixel Output
 author MicroBlocks
-version 1 13 
+version 1 14 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
 variables _np_pixels _np_pin _np_haswhite 
 
   spec ' ' 'neoPixelAttach' 'attach _ LED NeoPixel strip to pin _ : has white _' 'num auto bool' 10 '' false
   spec ' ' 'setNeoPixelColors10' 'set NeoPixels _ _ _ _ _ _ _ _ _ _' 'color color color color color color color color color color'
+  spec ' ' 'setNeoPixelColors25' 'set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _' 'color color color color color color color color color color color color color color color color color color color color color color color color color'
   spec ' ' 'clearNeoPixels' 'clear NeoPixels'
   spec ' ' 'neoPixelSetAllToColor' 'set all NeoPixels color _' 'color'
   spec ' ' 'setNeoPixelColor' 'set NeoPixel _ color _' 'num color' 1
@@ -1191,6 +1192,86 @@ to setNeoPixelColors10 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 {
   '_NeoPixel_update'
 }
 
+to setNeoPixelColors25 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 c16 c17 c18 c19 c20 c21 c22 c23 c24 c25 {
+  '_NeoPixel_ensureInitialized'
+  if ((size _np_pixels) >= 1) {
+    atPut 1 _np_pixels c1
+  }
+  if ((size _np_pixels) >= 2) {
+    atPut 2 _np_pixels c2
+  }
+  if ((size _np_pixels) >= 3) {
+    atPut 3 _np_pixels c3
+  }
+  if ((size _np_pixels) >= 4) {
+    atPut 4 _np_pixels c4
+  }
+  if ((size _np_pixels) >= 5) {
+    atPut 5 _np_pixels c5
+  }
+  if ((size _np_pixels) >= 6) {
+    atPut 6 _np_pixels c6
+  }
+  if ((size _np_pixels) >= 7) {
+    atPut 7 _np_pixels c7
+  }
+  if ((size _np_pixels) >= 8) {
+    atPut 8 _np_pixels c8
+  }
+  if ((size _np_pixels) >= 9) {
+    atPut 9 _np_pixels c9
+  }
+  if ((size _np_pixels) >= 10) {
+    atPut 10 _np_pixels c10
+  }
+  if ((size _np_pixels) >= 11) {
+    atPut 11 _np_pixels c11
+  }
+  if ((size _np_pixels) >= 12) {
+    atPut 12 _np_pixels c12
+  }
+  if ((size _np_pixels) >= 13) {
+    atPut 13 _np_pixels c13
+  }
+  if ((size _np_pixels) >= 14) {
+    atPut 14 _np_pixels c14
+  }
+  if ((size _np_pixels) >= 15) {
+    atPut 15 _np_pixels c15
+  }
+  if ((size _np_pixels) >= 16) {
+    atPut 16 _np_pixels c16
+  }
+  if ((size _np_pixels) >= 17) {
+    atPut 17 _np_pixels c17
+  }
+  if ((size _np_pixels) >= 18) {
+    atPut 18 _np_pixels c18
+  }
+  if ((size _np_pixels) >= 19) {
+    atPut 19 _np_pixels c19
+  }
+  if ((size _np_pixels) >= 20) {
+    atPut 20 _np_pixels c20
+  }
+  if ((size _np_pixels) >= 21) {
+    atPut 21 _np_pixels c21
+  }
+  if ((size _np_pixels) >= 22) {
+    atPut 22 _np_pixels c22
+  }
+  if ((size _np_pixels) >= 23) {
+    atPut 23 _np_pixels c23
+  }
+  if ((size _np_pixels) >= 24) {
+    atPut 24 _np_pixels c24
+  }
+  if ((size _np_pixels) >= 25) {
+    atPut 25 _np_pixels c25
+  }
+  '_NeoPixel_update'
+}
+
 
 module PID Operators
 author 'Russell Owen'
@@ -1302,7 +1383,7 @@ from the integral and derivitive terms.'
 
 module Servo Output
 author MicroBlocks
-version 1 3 
+version 1 4 
 tags servo motor angle rotation position 
 description 'Control both positional (angle) and rotational servo motors.
 '
@@ -1325,7 +1406,7 @@ to '_servoIndex' which {
   if (i < 0) {
     comment 'Add new pin'
     '[data:addLast]' which _servoPin
-    '[data:addLast]' '1500' _servoPulseWidth
+    '[data:addLast]' 1500 _servoPulseWidth
     i = (size _servoPin)
   }
   return i
@@ -1336,7 +1417,7 @@ to '_servoPulse' pin usecs {
     comment 'Servo stopped; do nothing'
     return 0
   }
-  usecs = (maximum 850 (minimum usecs 2150))
+  usecs = (maximum 500 (minimum usecs 2900))
   comment 'Split wait into a long wait followed by a wait of <= 30 usecs for greater accuracy'
   local 'endTime' ((microsOp) + usecs)
   digitalWriteOp pin true
@@ -1407,7 +1488,7 @@ to stopServo which {
 
 module TFT Output
 author MicroBlocks
-version 1 11 
+version 1 12 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -1466,6 +1547,7 @@ to tft_colorSwatch color {
 }
 
 to tft_drawText s x y color optionalScale optionalBGColor {
+  s = ('[data:convertType]' s 'string')
   local 'scale' (argOrDefault 5 2)
   local 'bgColor' (argOrDefault 6 '')
   local 'lines' ('[data:split]' s ('[data:unicodeString]' 10))
