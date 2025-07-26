@@ -1,6 +1,6 @@
 module main
 author 'Roger Wagner'
-version 1 0 
+version 1 1 
 description ''
 variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived FairyLightsPin SoundLevel SoundLevelMax LightLevel MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed Folder50Present 
 
@@ -165,7 +165,7 @@ to DoServeLeft {
     if (and (or (i == 7) (i == 8)) LeftPaddleVisible) {
       makerport_beep 440 50 5
       ScoreLeft = (ScoreLeft + 1)
-      neoPanel_fillRectangle 8 (9 - ScoreLeft) 1 ScoreLeft (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      neoPanel_draw_rectangle 8 (9 - ScoreLeft) 1 ScoreLeft (color_withBrightness (colorSwatch 72 218 233 255) 50)
       if (ScoreLeft == 4) {
         'play ringtone' 'Pacman:d=16,o=6,b=140:
 b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
@@ -187,7 +187,7 @@ to DoServeRight {
     if (and (or (i == 2) (i == 1)) RightPaddleVisible) {
       makerport_beep 440 50
       ScoreRight = (ScoreRight + 1)
-      neoPanel_fillRectangle 1 (9 - ScoreRight) 1 ScoreRight (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      neoPanel_draw_rectangle 1 (9 - ScoreRight) 1 ScoreRight (color_withBrightness (colorSwatch 72 218 233 255) 50)
       if (ScoreRight == 4) {
         'play ringtone' 'Pacman:d=16,o=6,b=140:
 b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
@@ -1039,19 +1039,19 @@ to PinKeyTouched2 {}
 script 743 8110 {
 whenBroadcastReceived 'ShowRightPaddle'
 RightPaddleVisible = (booleanConstant true)
-neoPanel_fillRectangle 1 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
+neoPanel_draw_rectangle 1 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
 waitMillis (Delay * (3 / 2))
 RightPaddleVisible = (booleanConstant false)
-neoPanel_fillRectangle 1 2 1 3 (colorSwatch 0 0 0 255)
+neoPanel_draw_rectangle 1 2 1 3 (colorSwatch 0 0 0 255)
 }
 
 script 744 8396 {
 whenBroadcastReceived 'ShowLeftPaddle'
 LeftPaddleVisible = (booleanConstant true)
-neoPanel_fillRectangle 8 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
+neoPanel_draw_rectangle 8 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
 waitMillis (Delay * (3 / 2))
 LeftPaddleVisible = (booleanConstant false)
-neoPanel_fillRectangle 8 2 1 3 (colorSwatch 0 0 0 255)
+neoPanel_draw_rectangle 8 2 1 3 (colorSwatch 0 0 0 255)
 }
 
 script 81 9159 {
