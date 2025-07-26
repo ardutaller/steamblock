@@ -33,7 +33,6 @@ description 'Provides blocks to read tilt in the three axes, acceleration, tempe
   spec 'r' '[sensors:magneticField]' 'magnetic field'
   advanced
   spec ' ' 'setAccelRange' 'set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
-  spec ' ' '_setAccelRange' 'obsolete set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
 
 to setAccelRange n {
   '[sensors:setAccelerometerRange]' (0 + n)
