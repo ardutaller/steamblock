@@ -699,6 +699,10 @@ msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
 msgstr ""
 
 #. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+
+#. NeoPixel library block
 msgid "clear NeoPixels"
 msgstr ""
 
