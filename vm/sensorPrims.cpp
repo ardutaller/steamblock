@@ -48,6 +48,9 @@
 #elif defined(M5Atom_Matrix) || defined(M5Atom_Lite)
 	#define PIN_WIRE_SCL 21
 	#define PIN_WIRE_SDA 25
+#elif defined(ARDUINO_M5Stack_ATOMS3)
+	#define PIN_WIRE_SCL 1
+	#define PIN_WIRE_SDA 2
 #elif defined(DUELink)
 	// 0 and 1 are edge connector pins 19 and 20 or DUELink standard pins 16 and 15
 	#define PIN_WIRE_SCL 1
@@ -1004,8 +1007,10 @@ static void writeAccelReg(int regID, int value) {
 static char is6886 = false;
 
 static void startAccelerometer() {
-	#ifdef M5Atom_Matrix
+	#if defined(M5Atom_Matrix)
 		Wire1.begin(25, 21);
+	#elif defined(M5Atom_S3_TFT)
+		Wire1.begin(38, 39);
 	#else
 		Wire1.begin(); // use internal I2C bus with default pins
 	#endif
