@@ -2,15 +2,14 @@ module 'PIR TMOS'
 author 'José García Yeste'
 version 1 0 
 description 'Suport for TMOS PIR STHS34PF80 sensor.
-Detects Presence and moviment
+Detects presence and movement
 
 Tested on: https://docs.m5stack.com/en/unit/UNIT-TMOS%20PIR
 May work on https://www.sparkfun.com/sparkfun-human-presence-and-motion-sensor-sths34pf80-qwiic.html
 
 Based on: https://github.com/STMicroelectronics/sths34pf80-pid
-
 '
-variables _pir_reg start 
+variables _pir_reg 
 
   spec 'r' 'PIR connected' 'PIR connected'
   spec 'r' 'PIR presence' 'PIR presence'
@@ -25,22 +24,6 @@ variables _pir_reg start
   spec 'r' '_pir func cfg read' '_pir func _ cfg read' 'auto' 32
   spec ' ' '_pir func cfg write' '_pir func _ cfg write _' 'auto auto' 32 0
   spec 'r' '_pir read word' '_pir read word _' 'auto' '10'
-
-
-to '_pir ready' {
-  '_pir setup'
-  start = (millisOp)
-  local 'status' (i2cGet _pir_reg (hexToInt '23'))
-  if (status > 0) {
-    if ((status & 4) != 0) {
-      return (booleanConstant true)
-    } else {
-      waitUntil (or (((i2cGet _pir_reg (hexToInt '23')) & 4) != 0) (((millisOp) - start) > 4000))
-      return (((millisOp) - start) < 4000)
-    }
-  }
-  return (booleanConstant false)
-}
 
 to 'PIR connected' {
   if (_pir_reg == 0) {_pir_reg = ((hexToInt 'B5') >> 1)}
@@ -82,17 +65,6 @@ to 'PIR threshold' threshold {
   '_pir func cfg write' (hexToInt '22') threshold
   comment 'default 10'
   '_pir func cfg write' (hexToInt '24') ((threshold / 200) * 10)
-}
-
-to '_pir setup' {
-  if (_pir_reg == 0) {if ('PIR connected') {
-    comment 'Global reset of the device'
-    local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
-    i2cSet _pir_reg (hexToInt '21') (ctrl2 | 128)
-    waitMillis 3
-    comment 'Set the data rate (ODR) to 4Hz'
-    '_pir odr' 5
-  }}
 }
 
 to '_pir func cfg read' func {
@@ -166,6 +138,21 @@ to '_pir read word' reg {
   return ((at 1 data) | ((at 2 data) << 8))
 }
 
+to '_pir ready' {
+  '_pir setup'
+  local 'start' (millisOp)
+  local 'status' (i2cGet _pir_reg (hexToInt '23'))
+  if (status > 0) {
+    if ((status & 4) != 0) {
+      return (booleanConstant true)
+    } else {
+      waitUntil (or (((i2cGet _pir_reg (hexToInt '23')) & 4) != 0) (((millisOp) - start) > 4000))
+      return (((millisOp) - start) < 4000)
+    }
+  }
+  return (booleanConstant false)
+}
+
 to '_pir reset algortihm' {
   comment 'Enable access to embedded functions register'
   local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
@@ -180,5 +167,16 @@ to '_pir reset algortihm' {
   i2cSet _pir_reg (hexToInt '11') 0
   comment 'Disable access to embedded functions register'
   i2cSet _pir_reg (hexToInt '21') (ctrl2 & (hexToInt 'EF'))
+}
+
+to '_pir setup' {
+  if (_pir_reg == 0) {if ('PIR connected') {
+    comment 'Global reset of the device'
+    local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
+    i2cSet _pir_reg (hexToInt '21') (ctrl2 | 128)
+    waitMillis 3
+    comment 'Set the data rate (ODR) to 4Hz'
+    '_pir odr' 5
+  }}
 }
 
