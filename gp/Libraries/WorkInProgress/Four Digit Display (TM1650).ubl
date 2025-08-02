@@ -1,95 +1,128 @@
 module 'Four Digit Display (TM1650)' Output
-author Josep
+author MicroBlocks
 version 1 0 
-description 'I2C 4 digital tube (7 segments) display (TM1650)
-Display decimal numbers from -999 to 9999. Allows decimal expressions.'
-variables _tm1650Active _tm1650Brightness _tm1650Control 
+description 'Four digit seven-segment LED display for KidsIOT.
+Displays decimal numbers from -999 to 9999 with optional decimal point.
 
-  spec ' ' 'tm1650 on_off' '#SVG#square11#00c612 tm1650 display _' 'bool' true
-  spec ' ' 'tm1650 display' '#SVG#square11#00c612 tm1650 show number _ : decimal char _' 'str str' '12.34' '.'
-  spec ' ' 'tm1650 clear' '#SVG#square11#00c612 tm1650 clear'
-  spec ' ' 'tm1650 brightness' '#SVG#square11#00c612 tm1659 brightness _' 'menu.range:1-8' 8
+I2C addresses 0x24-0x27: control registers for digits 1-4
+I2C addresses 0x34-0x37 segment bit registers for digits 1-4
 
-to '_tm1650Init' {
-  _tm1650Active = 1
-  _tm1650Brightness = 0
-  _tm1650Control = ('[data:newByteArray]' 4)
-  'tm1650 clear'
+Datasheet:
+https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/digi_clock/TM1637.pdf'
+variables _tmSegmentMap 
+
+  spec ' ' 'tm1650_show' '#SVG#square11#00c612 tm1650 show _ : decimal places _' 'auto menu.range:0-3' 3142 3
+  spec ' ' 'tm1650_clear' '#SVG#square11#00c612 tm1650 clear'
+  spec ' ' 'tm1650_setBrightness' '#SVG#square11#00c612 tm1659 brightness _' 'menu.range:1-7' 3
+  space
+  spec ' ' '_tm1650_init' '_tm1650_init'
+  spec ' ' '_tm1650_setDigit' '_tm1650_setDigit _ segments _ decimal after _' 'num num num' 1 0 0
+  spec ' ' 'showDigitString' 'showDigitString _' 'str' '10'
+
+to '_tm1650_init' {
+  if (not ('[sensors:i2cExists]' (hexToInt '24'))) {
+    sayIt 'Cannot find Four Digits Display (TM1650)'
+    stopTask
+  }
+  if (_tmSegmentMap == 0) {
+    _tmSegmentMap = ('[data:makeList]' (hexToInt '3F') (hexToInt '6') (hexToInt '5B') (hexToInt '4F') (hexToInt '66') (hexToInt '6D') (hexToInt '7C') (hexToInt '7') (hexToInt '7F') (hexToInt '6F'))
+    tm1650_setBrightness 3
+  }
 }
 
-to 'tm1650 brightness' level {
-  if ('[sensors:i2cExists]' (hexToInt '24')) {
-    if (_tm1650Control == 0) {'_tm1650Init'}
-    if (and (level > 0) (level < 9)) {
-      _tm1650Brightness = level
-      for i 4 {
-        atPut i _tm1650Control (((at i _tm1650Control) & (hexToInt '8F')) | (_tm1650Brightness << 4))
-        '[sensors:i2cWrite]' ((hexToInt '23') + i) (at i _tm1650Control)
+to '_tm1650_setDigit' digit bits decimalPos {
+  if (decimalPos == digit) {bits = (128 | bits)}
+  '[sensors:i2cWrite]' ((hexToInt '33') + digit) ('[data:makeList]' bits)
+}
+
+to showDigitString s {
+  local 'sign' 1
+  local 'decimalPos' 99
+  local 'n' 0
+  s = ('[data:convertType]' s 'string')
+  for i (size s) {
+    local 'ch' ('[data:unicodeAt]' i s)
+    if (and (i == 1) (ch == 45)) {
+      comment 'Leading minus sign'
+      sign = -1
+    } (and (48 <= ch) (ch <= 57)) {
+      n = ((10 * n) + (ch - 48))
+      if (decimalPos != 99) {
+        comment 'Move the decimal point left'
+        decimalPos += -1
       }
+    } (or (ch == 44) (ch == 46)) {
+      if (decimalPos != 99) {
+        comment 'More than one decimal point'
+        tm1650_clear
+        return 0
+      }
+      decimalPos = 4
     } else {
-      sayIt ('[data:join]' 'Brightness level (' level ') is out of range!')
+      comment 'Bad number string'
+      tm1650_clear
+      return 0
     }
-  } else {
-    sayIt 'Can''t find Four Digits Display (TM1650)'
+  }
+  tm1650_show (sign * n) decimalPos
+}
+
+to tm1650_clear {
+  '_tm1650_init'
+  for i 4 {
+    '_tm1650_setDigit' i 0 0
   }
 }
 
-to 'tm1650 clear' {
-  if ('[sensors:i2cExists]' (hexToInt '24')) {
-    if (_tm1650Control == 0) {'_tm1650Init'}
-    if (_tm1650Active == 1) {for i 4 {
-      '[sensors:i2cWrite]' ((hexToInt '33') + i) ('[data:newByteArray]' 1)
-    }
-}
-  } else {
-    sayIt 'Can''t find Four Digits Display (TM1650)'
+to tm1650_setBrightness brightness {
+  '_tm1650_init'
+  if (brightness > 7) {
+    brightness = 7
+  }
+  if (brightness < 1) {
+    brightness = 1
+  }
+  for i 4 {
+    '[sensors:i2cWrite]' ((hexToInt '23') + i) ((brightness << 4) | 1)
   }
 }
 
-to 'tm1650 display' value decChar {
-  if ('[sensors:i2cExists]' (hexToInt '24')) {
-    local 'number' ('[data:convertType]' value 'number')
-    if (isType value 'number') {
-      value = ('[data:convertType]' value 'string')
-    }
-    if (and (number > -1000) (number < 10000)) {
-      'tm1650 on_off' true
-      'tm1650 clear'
-      local 'segments' ('[data:makeList]' (hexToInt '3F') (hexToInt '6') (hexToInt '5B') (hexToInt '4F') (hexToInt '66') (hexToInt '6D') (hexToInt '7C') (hexToInt '7') (hexToInt '7F') (hexToInt '6F') (hexToInt '40'))
-      local 'dot' ('[data:find]' (ifExpression ((pushArgCount) > 1) decChar '.') value)
-      local 'digits' ('[data:split]' value '')
-      if (and (dot > 0) (dot < 5)) {
-        '[data:delete]' dot digits
-      }
-      local 'buffer' ('[data:newByteArray]' (minimum (size digits) 4))
-      for i (size buffer) {
-        if (and ((at i digits) == '-') (i == 1)) {
-          atPut i buffer (at 11 segments)
-        } else {
-          if (('[data:find]' (at i digits) '0123456789') > 0) {atPut i buffer ((at (('[data:convertType]' (at i digits) 'number') + 1) segments) | (ifExpression (and ((i + 1) == dot) (i < 4)) (hexToInt '80') 0))}
-        }
-      }
-      for i (size buffer) {
-        i2cSet (((hexToInt '37') - i) + 1) (at (((size buffer) + 1) - i) buffer) 0
-      }
-    } else {
-      sayIt 'The value must be between -999 & 9999'
-    }
-  } else {
-    sayIt 'Can''t find Four Digits Display (TM1650)'
+to tm1650_show n optionalDecimalPlaces {
+  '_tm1650_init'
+  local 'decimalPos' (argOrDefault 2 99)
+  if (decimalPos != 99) {
+    decimalPos = (4 - (maximum 0 (minimum decimalPos 3)))
   }
-}
-
-to 'tm1650 on_off' state {
-  if ('[sensors:i2cExists]' (hexToInt '24')) {
-    if (_tm1650Control == 0) {'_tm1650Init'}
-    _tm1650Active = ('[data:convertType]' state 'number')
-    for i 4 {
-      atPut i _tm1650Control (((at i _tm1650Control) & (hexToInt 'FE')) | _tm1650Active)
-      '[sensors:i2cWrite]' ((hexToInt '23') + i) ('[data:makeList]' (at i _tm1650Control))
-    }
+  if (or (n < -999) (n > 9999)) {
+    sayIt 'Value must be between -999 & 9999'
   } else {
-    sayIt 'Can''t find Four Digits Display (TM1650)'
+    local 'isNegative' (n < 0)
+    if isNegative {
+      n = (0 - n)
+    }
+    comment 'Start with the right-most digit.'
+    local 'digit' 4
+    repeatUntil (and (n == 0) (digit < 4)) {
+      comment 'Display digits. Display one digit if n is zero. '
+      '_tm1650_setDigit' digit (at ((n % 10) + 1) _tmSegmentMap) decimalPos
+      n = (n / 10)
+      digit += -1
+    }
+    repeatUntil (or (digit < (ifExpression isNegative 2 1)) (digit < decimalPos)) {
+      comment 'Add leading zeros starting with decimal point position'
+      '_tm1650_setDigit' digit (at 1 _tmSegmentMap) decimalPos
+      digit += -1
+    }
+    if (and isNegative (digit > 0)) {
+      comment 'Add leading minus sign'
+      '_tm1650_setDigit' digit 64 decimalPos
+      digit += -1
+    }
+    repeatUntil (digit < 1) {
+      comment 'Clear leading digits'
+      '_tm1650_setDigit' digit 0 decimalPos
+      digit += -1
+    }
   }
 }
 
