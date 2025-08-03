@@ -17,7 +17,7 @@ variables _tmSegmentMap
   space
   spec ' ' '_tm1650_init' '_tm1650_init'
   spec ' ' '_tm1650_setDigit' '_tm1650_setDigit _ segments _ decimal after _' 'num num num' 1 0 0
-  spec ' ' 'showDigitString' 'showDigitString _' 'str' '10'
+  spec ' ' 'tm1650_showString' 'tm1650_showString _' 'str' '10'
 
 to '_tm1650_init' {
   if (not ('[sensors:i2cExists]' (hexToInt '24'))) {
@@ -33,38 +33,6 @@ to '_tm1650_init' {
 to '_tm1650_setDigit' digit bits decimalPos {
   if (decimalPos == digit) {bits = (128 | bits)}
   '[sensors:i2cWrite]' ((hexToInt '33') + digit) ('[data:makeList]' bits)
-}
-
-to showDigitString s {
-  local 'sign' 1
-  local 'decimalPos' 99
-  local 'n' 0
-  s = ('[data:convertType]' s 'string')
-  for i (size s) {
-    local 'ch' ('[data:unicodeAt]' i s)
-    if (and (i == 1) (ch == 45)) {
-      comment 'Leading minus sign'
-      sign = -1
-    } (and (48 <= ch) (ch <= 57)) {
-      n = ((10 * n) + (ch - 48))
-      if (decimalPos != 99) {
-        comment 'Move the decimal point left'
-        decimalPos += -1
-      }
-    } (or (ch == 44) (ch == 46)) {
-      if (decimalPos != 99) {
-        comment 'More than one decimal point'
-        tm1650_clear
-        return 0
-      }
-      decimalPos = 4
-    } else {
-      comment 'Bad number string'
-      tm1650_clear
-      return 0
-    }
-  }
-  tm1650_show (sign * n) decimalPos
 }
 
 to tm1650_clear {
@@ -88,6 +56,10 @@ to tm1650_setBrightness brightness {
 }
 
 to tm1650_show n optionalDecimalPlaces {
+  if (isType n 'string') {
+    tm1650_clear
+    return (tm1650_showString n)
+  }
   '_tm1650_init'
   local 'decimalPos' (argOrDefault 2 99)
   if (decimalPos != 99) {
@@ -124,5 +96,43 @@ to tm1650_show n optionalDecimalPlaces {
       digit += -1
     }
   }
+}
+
+to tm1650_showString s {
+  local 'sign' 1
+  local 'decimalPos' 99
+  local 'n' 0
+  s = ('[data:convertType]' s 'string')
+  for i (size s) {
+    local 'ch' ('[data:unicodeAt]' i s)
+    if (and (i == 1) (ch == 45)) {
+      comment 'Leading minus sign'
+      sign = -1
+    } (and (48 <= ch) (ch <= 57)) {
+      n = ((10 * n) + (ch - 48))
+      if (decimalPos != 99) {
+        comment 'Move the decimal point left'
+        decimalPos += -1
+        if (decimalPos <= 1) {
+          exitLoop
+        }
+      }
+    } (or (ch == 44) (ch == 46)) {
+      if (decimalPos != 99) {
+        comment 'More than one decimal point'
+        tm1650_clear
+        return 0
+      }
+      decimalPos = 4
+    } else {
+      comment 'Bad number string'
+      tm1650_clear
+      return 0
+    }
+  }
+  if (decimalPos != 99) {
+    decimalPos = (4 - decimalPos)
+  }
+  tm1650_show (sign * n) decimalPos
 }
 
