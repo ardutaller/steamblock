@@ -866,6 +866,42 @@ void hardwareInit() {
 	// LDR - 24 (was 39)
 	// Unused - 34
 
+#elif defined(ARDUINO_XIAO_ESP32S3)
+	#define BOARD_TYPE "Xiao ESP32S3"
+	#define DIGITAL_PINS 13
+	#define ANALOG_PINS 13
+	#define TOTAL_PINS 49
+	#define PIN_LED 12
+	#define INVERT_USER_LED true
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[] = {};
+	static const char digitalPin[DIGITAL_PINS] = {1, 2, 3, 4, 5, 6, 43, 44, 7, 8, 9, 42, 41};
+	// See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
+	// strapping pins 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG)
+	// SPI (26-32); also 33-37 on boards with Octal SPI Flash PSRAM
+	// USB pins: 19 (USB D-), 20 (USB D+)
+	// also possibly: 39-42 (JTAG pins)
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+		0, 0, 0, 0, 0, 1, 1, 0, 0};
+
+#elif defined(ARDUINO_XIAO_ESP32C3)
+	#define BOARD_TYPE "Xiao ESP32C3"
+	#define DIGITAL_PINS 22
+	#define ANALOG_PINS 4
+	#define TOTAL_PINS 22
+	#define PIN_LED 1 // there is no user LED; use pin 1, which appears to be unconnected
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[] = {};
+	static const char digitalPin[DIGITAL_PINS] = {2, 3, 4, 5, 6, 7, 21, 20, 8, 9, 10};
+		static const char reservedPin[TOTAL_PINS] = {
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			0, 0};
+
 #elif defined(ESP32_S2)
 	#define BOARD_TYPE "ESP32-S2"
 	#define DIGITAL_PINS 48
