@@ -1,6 +1,6 @@
 module 'Real Time Clock' Input
 author MicroBlocks
-version 1 3 
+version 1 4 
 choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)' 
 choices rtc_component second minute hour day month year 'day of week' 
 description 'Real time clock (RTC).
@@ -8,11 +8,14 @@ description 'Real time clock (RTC).
 Simple functions to set and read the current time and date of a real-time clock module.
 With a 3V coin cell battery intalled, the clock will maintain the time and date while powered off.
 
-Currently supports the following RTC chips: DS1307, PCF85063; may be extended to support others in the future.
+Currently supports the following RTC chips: DS1307, DS3231, PCF8523, PCF85063, RV1805; may be extended to support others in the future.
 
 https://www.analog.com/media/en/technical-documentation/data-sheets/ds1307.pdf
+https://www.analog.com/media/en/technical-documentation/data-sheets/DS3231.pdf
+https://www.nxp.com/docs/en/data-sheet/PCF8523.pdf
 https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf
-https://files.seeedstudio.com/wiki/Grove-High_Precision_RTC/res/PCF85063TP.pdf
+https://www.nxp.com/docs/en/data-sheet/PCF85063TP.pdf
+https://cdn.sparkfun.com/assets/0/8/4/2/f/RV-1805-C3_App-Manual.pdf
 
 (Many thanks to Ralf Krause)
 '
@@ -25,14 +28,77 @@ variables rtc_i2cAddr
   spec ' ' 'rtc_setDate' 'set year _ month _ day _' 'num num num' 2025 1 1
   spec ' ' 'rtc_setDayOfWeek' 'set day of week _ (1-7)' 'num' 1
   space
+  spec ' ' '_rtc_init' '_rtc_init'
+  spec 'r' '_rtc_DS1307' '_rtc_DS1307'
+  spec 'r' '_rtc_DS3231' '_rtc_DS3231'
+  spec 'r' '_rtc_PCF8523' '_rtc_PCF8523'
+  spec 'r' '_rtc_PCF85063' '_rtc_PCF85063'
+  spec 'r' '_rtc_RV1805' '_rtc_RV1805'
+  space
   spec 'r' '_rtc_bcd2dec' '_rtc_bcd2dec _' 'num'
   spec 'r' '_rtc_dec2bcd' '_rtc_dec2bcd _' 'num'
   spec 'r' '_rtc_twoDigit' '_rtc_twoDigit _' 'num'
-  spec ' ' '_rtc_init' '_rtc_init'
-  spec 'r' '_rtc_isPCF85063' '_rtc_isPCF85063'
-  spec 'r' '_rtc_getReg' '_rtc_getReg register _' 'num' 3
-  spec ' ' '_rtc_setReg' '_rtc_setReg register _ value _' 'num num' 3 3
-  spec 'r' '_rtc_mapRegNum' '_rtc_mapRegNum _' 'num' 0
+  spec 'r' '_rtc_getReg' '_rtc_get_register _' 'num' 0
+  spec ' ' '_rtc_setReg' '_rtc_set_register _ value _' 'num num' 0 0
+  spec 'r' '_rtc_mapRegNum' '_rtc_map_register_number _' 'num' 0
+  spec 'r' '_rtc_RegWritable' '_rtc_register _ writable?' 'num' 0
+
+to '_rtc_DS1307' {
+  '_rtc_init'
+  if (rtc_i2cAddr == (hexToInt '68')) {
+    comment 'DS1307 has the i2c address 0x68 like some other modules.
+DS1307 has a writable register 0x3F and others have not.'
+    return ('_rtc_RegWritable' (hexToInt '0x3F'))
+  }
+  return (booleanConstant false)
+}
+
+to '_rtc_DS3231' {
+  '_rtc_init'
+  if (rtc_i2cAddr == (hexToInt '68')) {
+    if ('_rtc_DS1307') {return (booleanConstant false)}
+    comment 'DS3231 vs. PCF8532.
+DS3231 starts with 0 in register 0x02 bit 7 after reset.'
+    return (((i2cGet rtc_i2cAddr 2) & 128) == 0)
+  }
+  return (booleanConstant false)
+}
+
+to '_rtc_PCF85063' {
+  '_rtc_init'
+  return (rtc_i2cAddr == (hexToInt '51'))
+}
+
+to '_rtc_PCF8523' {
+  '_rtc_init'
+  if (rtc_i2cAddr == (hexToInt '68')) {
+    if ('_rtc_DS1307') {return (booleanConstant false)}
+    comment 'DS3231 vs. PCF8532.
+PCF8532 starts with 1 in register 0x02 bit 7 after reset.'
+    return (((i2cGet rtc_i2cAddr 2) & 128) == 128)
+  }
+  return (booleanConstant false)
+}
+
+to '_rtc_RV1805' {
+  '_rtc_init'
+  return (rtc_i2cAddr == (hexToInt '69'))
+}
+
+to '_rtc_RegWritable' reg {
+  comment 'Test if the register exists and is not readonly.'
+  '[sensors:i2cSetClockSpeed]' 100000
+  local 't0' (i2cGet rtc_i2cAddr reg)
+  i2cSet rtc_i2cAddr reg (hexToInt '55')
+  local 't1' ((i2cGet rtc_i2cAddr reg) == (hexToInt '55'))
+  i2cSet rtc_i2cAddr reg (hexToInt 'AA')
+  local 't2' ((i2cGet rtc_i2cAddr reg) == (hexToInt 'AA'))
+  if (and t1 t2) {
+    i2cSet rtc_i2cAddr reg t0
+  }
+  '[sensors:i2cSetClockSpeed]' 400000
+  return (and t1 t2)
+}
 
 to '_rtc_bcd2dec' bcd {
   comment 'Convert an 8-bit "binary-coded decimal" number to a decimal number in range 0-99'
@@ -62,22 +128,27 @@ to '_rtc_init' {
     rtc_i2cAddr = (hexToInt '68')
   } ('[sensors:i2cExists]' (hexToInt '51')) {
     rtc_i2cAddr = (hexToInt '51')
+  } ('[sensors:i2cExists]' (hexToInt '69')) {
+    rtc_i2cAddr = (hexToInt '69')
   } else {
     rtc_i2cAddr = 0
     sayIt 'No RTC found.'
   }
 }
 
-to '_rtc_isPCF85063' {
-  '_rtc_init'
-  return (rtc_i2cAddr == (hexToInt '51'))
-}
-
 to '_rtc_mapRegNum' reg {
-  if ((hexToInt '51') == rtc_i2cAddr) {
-    comment 'Map DS1307 register to equivalent PCF85063 register.
-Order of DS1307 registers is: second minute hour dayOfWeek day month year'
+  comment 'Order of the DS1307 registers is: second minute hour dayOfWeek day month year'
+  if ('_rtc_PCF85063') {
+    comment 'Map the DS1307 register to equivalent PCF85063 register.'
     reg = (hexToInt (at (reg + 1) '456879A'))
+  }
+  if ('_rtc_PCF8523') {
+    comment 'Map the DS1307 register to equivalent PCF8523 register.'
+    reg = (hexToInt (at (reg + 1) '3457689'))
+  }
+  if ('_rtc_RV1805') {
+    comment 'Map the DS1307 register to equivalent RV1805 register.'
+    reg = (hexToInt (at (reg + 1) '1237456'))
   }
   return reg
 }
@@ -104,12 +175,19 @@ to rtc_getComponent which {
   if (reg < 0) {
     return 0
   }
-  local 'result' ('_rtc_bcd2dec' ('_rtc_getReg' reg))
+  local 'result' ('_rtc_getReg' reg)
+  if ('second' == which) {
+    return ('_rtc_bcd2dec' (result & 127))
+  }
+  result = ('_rtc_bcd2dec' result)
   if ('year' == which) {
-    result += 2000
-  } ('_rtc_isPCF85063') {
-    comment 'PCF85063 weekday range is 0-6.'
-    result += 1
+    return (result + 2000)
+  }
+  if ('day of week' == which) {
+    if (or (or ('_rtc_PCF85063') ('_rtc_PCF8523')) ('_rtc_RV1805')) {
+      comment 'weekday range is 0-6.'
+      return (result + 1)
+    }
   }
   return result
 }
@@ -139,8 +217,8 @@ to rtc_setDate year month day {
 
 to rtc_setDayOfWeek weekdayNum {
   weekdayNum = (maximum 1 (minimum weekdayNum 7))
-  if ('_rtc_isPCF85063') {
-    comment 'PCF85063 weekday range is 0-6.'
+  if (or (or ('_rtc_PCF85063') ('_rtc_PCF8523')) ('_rtc_RV1805')) {
+    comment 'weekday range is 0-6.'
     weekdayNum += -1
   }
   '_rtc_setReg' 3 ('_rtc_dec2bcd' weekdayNum)
