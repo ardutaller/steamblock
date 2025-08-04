@@ -893,7 +893,7 @@ void hardwareInit() {
 	#define DIGITAL_PINS 22
 	#define ANALOG_PINS 4
 	#define TOTAL_PINS 22
-	#define PIN_LED 1 // there is no user LED; use pin 1, which appears to be unconnected
+	#define PIN_LED 10 // there is no user LED; use pin 10
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {};
 	static const char digitalPin[DIGITAL_PINS] = {2, 3, 4, 5, 6, 7, 21, 20, 8, 9, 10};
