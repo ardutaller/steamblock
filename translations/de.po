@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-23 11:06+0000\n"
+"PO-Revision-Date: 2025-08-05 07:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -4866,16 +4866,16 @@ msgstr "Wukong2040"
 #. Sphero-RVR robot library block
 msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
 msgstr ""
-"setze Motoren mit Linksmodus _ Geschwindigkeit _ und mit Rechtsmodus _ "
+"setze Motoren links auf Modus _ Geschwindigkeit _ und rechts auf Modus _ "
 "Geschwindigkeit _"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong drehe Rotationsservo _ mit _ (-100~100)"
+msgstr "Wukong drehe Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
-msgstr "Nezha starte Motor_ mit _ % (-100~100)"
+msgstr "Nezha drehe Motor_ mit Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong stop motor _"
@@ -4915,11 +4915,11 @@ msgstr "Wukong setze blaue LEDs auf Helligkeit _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
-msgstr "Wukong2040 starte Motor _ mit _ % (-100~100)"
+msgstr "Wukong2040 drehe Motor _ mit Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
-msgstr "Wukong setze 180°-Servo _ auf _ ° (-90~90)"
+msgstr "Wukong setze 180°-Servo _ auf Winkel _ (-90~90)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
@@ -4939,7 +4939,7 @@ msgstr "Nezha setze _ Servo _ auf Winkel _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "Nezha drehe Rotationsservo _ mit _ %"
+msgstr "Nezha drehe Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
@@ -4967,11 +4967,11 @@ msgstr "retain _ QoS _"
 
 #. Sphero-RVR robot library block
 msgid "set RGB LED _ to red _ green _ blue _"
-msgstr "setze LED _ auf Rot _ Grün_ Blau_"
+msgstr "setze LED _ auf Farbe r _ g _ b _"
 
 #. Sphero-RVR robot library block
 msgid "set all LEDs to red _ green _ blue _"
-msgstr "setze alle LEDs auf Rot _ Grün _ Blau _"
+msgstr "setze alle LEDs auf Farbe r _ g _ b _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop motor _"
@@ -5055,7 +5055,7 @@ msgstr "g#"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong drehe Motor _ mit _ % (-100~100)"
+msgstr "Wukong drehe Motor _ mit _ (-100~100)"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
@@ -5087,7 +5087,7 @@ msgstr "Octopus OLED zeichne Kreis x _ y _ Radius _"
 
 #. Sphero-RVR robot library block
 msgid "drive with speed _ and heading _"
-msgstr "mit Geschwindigkeit _ und Richtung _ fahren"
+msgstr "fahre mit Geschwindigkeit _ und Richtung _"
 
 #. Musical note name
 msgid "nt;a"
@@ -5793,7 +5793,7 @@ msgstr "Nezha spiele Ton _ Hz für _ ms"
 
 #. NeZha2 robot library block
 msgid "Nezha set motor _ speed to _ (-100-100)"
-msgstr "Nezha starte Motor _ mit Geschwindigkeit _ (-100~100)"
+msgstr "Nezha drehe Motor _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha2 robot library block
 msgid "Nezha stop motor _"
@@ -5805,7 +5805,7 @@ msgstr "Nezha stoppe alle Motoren"
 
 #. NeZha2 robot library block
 msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
-msgstr "Nezha drehe Rotationsservo _ mit _ % (-100~100)"
+msgstr "Nezha drehe Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
@@ -6273,7 +6273,7 @@ msgstr "1+2"
 
 #. Wukong robot library block
 msgid "Wukong set _ servo _ to _ degrees"
-msgstr "Wukong setze _ Servo _ auf _ °"
+msgstr "Wukong setze _ Servo _ auf Winkel _"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50) for _ msecs"
@@ -6839,7 +6839,7 @@ msgstr "fb Luftfeuchtigkeit"
 
 #. Foxbit library block
 msgid "fb beep for _ millisecs"
-msgstr "fb Pieps mit _ Millisekunden"
+msgstr "fb spiele Ton für _ ms"
 
 #. Coding Box library block
 msgid "cb PIR motion detected?"
@@ -6859,7 +6859,7 @@ msgstr "cb Ultrasonic-Entfernung"
 
 #. Coding Box library block
 msgid "cb speaker beep for _ millisecs"
-msgstr "cb Pieps mit _ Millisekunden"
+msgstr "cb spiele Ton für _ ms"
 
 #. Coding Box library block
 msgid "cb set _ LED to _"
@@ -6948,7 +6948,7 @@ msgstr "LogicLinks Zufallsfarbe"
 
 #. LogicLinks library block
 msgid "LogicLinks beep _ ms"
-msgstr "LogicLinks Pieps _ ms"
+msgstr "LogicLinks spiele Ton für _ ms"
 
 #. LogicLinks library block
 msgid "LogicLinks set relay _"
