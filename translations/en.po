@@ -5366,6 +5366,14 @@ msgstr "For AdaFruit boards, double-click reset button and try again."
 msgid "Only recent Chrome and Edge browsers support WebSerial."
 msgstr "Only recent Chrome and Edge browsers support WebSerial."
 
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr "This block is still being used in"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr "scripts or functions."
+
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
 msgstr "The board is not responding."

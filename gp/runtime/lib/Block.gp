@@ -2265,9 +2265,11 @@ method deleteObsolete Block {
 				(global 'page')
 				nil
 				(join
-					'This block is still being used in '
+					(localized 'This block is still being used in')
+					' '
 					(count (allEntries finder))
-					' scripts or functions.'
+					' '
+					(localized 'scripts or functions.')
 					(newline)
 					(newline)
 					'Are you sure you want to remove this obsolete block definition?'
@@ -2291,9 +2293,11 @@ method deleteBlockDefinition Block {
 	find finder 'users'
 	if (notEmpty (allEntries finder)) {
 		confirmation = (join
-			'This block is still being used in '
+			(localized 'This block is still being used in')
+			' '
 			(count (allEntries finder))
-			' scripts or functions.'
+			' '
+			(localized 'scripts or functions.')
 			(newline)
 			(newline)
 			confirmation

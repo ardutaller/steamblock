@@ -5366,6 +5366,14 @@ msgstr ""
 msgid "Only recent Chrome and Edge browsers support WebSerial."
 msgstr ""
 
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr ""
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr ""
+
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
 msgstr ""
