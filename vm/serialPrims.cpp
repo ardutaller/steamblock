@@ -223,7 +223,7 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, rxPin, txPin);
 	#elif defined(COCUBE)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 22, 21);
-	#elif defined(C3_SUPERMINI)
+	#elif defined(C3_SUPERMINI) || defined(ESP32_C3)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 20, 21);
 	#elif defined(M5CORE2)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 32, 33);
