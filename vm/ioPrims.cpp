@@ -868,19 +868,14 @@ void hardwareInit() {
 
 #elif defined(ARDUINO_XIAO_ESP32S3)
 	#define BOARD_TYPE "Xiao ESP32S3"
-	#define DIGITAL_PINS 13
-	#define ANALOG_PINS 13
+	#define DIGITAL_PINS 14
+	#define ANALOG_PINS 14
 	#define TOTAL_PINS 49
-	#define PIN_LED 12
+	#define PIN_LED 21
 	#define INVERT_USER_LED true
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {};
-	static const char digitalPin[DIGITAL_PINS] = {1, 2, 3, 4, 5, 6, 43, 44, 7, 8, 9, 42, 41};
-	// See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
-	// strapping pins 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG)
-	// SPI (26-32); also 33-37 on boards with Octal SPI Flash PSRAM
-	// USB pins: 19 (USB D-), 20 (USB D+)
-	// also possibly: 39-42 (JTAG pins)
+	static const char digitalPin[DIGITAL_PINS] = {1, 2, 3, 4, 5, 6, 43, 44, 7, 8, 9, 42, 41, 21};
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

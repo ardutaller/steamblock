@@ -225,6 +225,8 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 22, 21);
 	#elif defined(C3_SUPERMINI) || defined(ARDUINO_XIAO_ESP32C3)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 20, 21);
+	#elif defined(ARDUINO_XIAO_ESP32S3)
+		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 44, 43);
 	#elif defined(M5CORE2)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 32, 33);
 	#elif defined(M5Atom_Lite) || defined(M5Atom_Matrix)

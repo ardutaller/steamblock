@@ -12,6 +12,11 @@ cp .pio/build/xiao-rp2040/firmware.uf2 extraVMs/vm_xiao_rp2040.uf2
 pio run -e xiao-rp2350
 cp .pio/build/xiao-rp2350/firmware.uf2 extraVMs/vm_xiao_rp2350.uf2
 
+pio run -e xiao-esp32-c3
+cp .pio/build/xiao-esp32-c3/firmware.bin extraVMs/vm_xiao_esp32_c3.bin
+pio run -e xiao-esp32-s3
+cp .pio/build/xiao-esp32-s3/firmware.bin extraVMs/vm_xiao_esp32_s3.bin
+
 pio run -e itsybitsy
 python precompiled/uf2conv.py -c .pio/build/itsybitsy/firmware.bin -o extraVMs/vm_itsybitsy.uf2
 pio run -e metroM0
