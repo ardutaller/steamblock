@@ -18,6 +18,9 @@
 
 #if defined(ARDUINO_BBC_MICROBIT_V2)
 	#define SS 16
+#elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_M5STACK_CORES3)
+	#undef SS
+	#define SS 4
 #endif
 
 #define USE_UTF8_LONG_NAMES 1
