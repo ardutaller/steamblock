@@ -17,10 +17,8 @@
 #if defined(SD_CARD)
 
 #if defined(ARDUINO_BBC_MICROBIT_V2)
+	// SS must defined before including SdFat.h
 	#define SS 16
-#elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_M5STACK_CORES3)
-	#undef SS
-	#define SS 4
 #endif
 
 #define USE_UTF8_LONG_NAMES 1
@@ -33,6 +31,8 @@ SdFat SD;
 
 #if defined(ARDUINO_ARCH_RP2040)
 	#define DEFAULT_CS_PIN PIN_SPI0_SS
+#elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_M5STACK_CORES3)
+	#define DEFAULT_CS_PIN 4
 #else
 	#define DEFAULT_CS_PIN SS
 #endif
