@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-08-05 07:01+0000\n"
+"PO-Revision-Date: 2025-08-08 07:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -4164,7 +4164,7 @@ msgstr "Cutebot sieht Linie bei links _ rechts _"
 
 #. OLED Graphics library block
 msgid "clear"
-msgstr "lösche"
+msgstr "lösche Display"
 
 #. Lists library block
 msgid "filter _ with _"
@@ -4225,7 +4225,7 @@ msgstr "setze Video _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "initialisiere i2c _ Adresse(hex) _ Reset-Pin _ flip _"
+msgstr "initialisiere i2c _ Adresse (hex) _ ResetPin _ flip _"
 
 #. General MIDI control change
 msgid "hold"
@@ -4269,7 +4269,7 @@ msgstr "_ mit Farbton _ (0-360)"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "_drehe Display oben _"
+msgstr "drehe Display flip _"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" light
@@ -4322,7 +4322,7 @@ msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "initialisiere spi _ D/C-Pin _ Reset-Pin _ flip _"
+msgstr "initialisiere spi _ D/C-Pin _ ResetPin _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -4330,7 +4330,7 @@ msgstr "schreibe _ bei x _ y _ invers _"
 
 #. OLED Graphics library block
 msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
-msgstr "zeichne Rechteck x _ y _ b _ h _ löschen _ Rundung(3-15) _"
+msgstr "zeichne Rechteck x _ y _ b _ h _ löschen _ Rundung (3-15) _"
 
 #. OLED Graphics library block
 msgid "cursor location"
@@ -7041,3 +7041,17 @@ msgstr "Diamant"
 #. Octostudio shape names
 msgid "octo;moon"
 msgstr "Mond"
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"setze NeoPixel #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ "
+"#BR# _ _ _ _ _"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr "Dieser Block wird noch verwendet in"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr "Skripten oder Funktionen."
