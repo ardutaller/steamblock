@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-07-23 11:06+0000\n"
+"PO-Revision-Date: 2025-08-11 11:41+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -6925,3 +6925,7 @@ msgstr "LogicLinks led vermell _"
 #. LogicLinks library block
 msgid "LogicLinks light (0-100)"
 msgstr "LogicLinks llum (0-100)"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr "Missatge d'error d'eliminació de blocs de l'IDE de MicroBlocks."
