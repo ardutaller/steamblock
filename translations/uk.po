@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-06-02 10:44+0000\n"
+"PO-Revision-Date: 2025-08-11 15:15+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -6336,3 +6336,20 @@ msgstr "MCP4725 I2C ЦАП"
 #. as in pin number or i2c address
 msgid "number/address _"
 msgstr "номер/адреса _"
+
+#. MicroBlocks IDE block deletion error message.
+#, fuzzy
+msgid "scripts or functions."
+msgstr "скрипти або функції."
+
+#. MicroBlocks IDE block deletion error message.
+#, fuzzy
+msgid "This block is still being used in"
+msgstr "Цей блок досі використовується у"
+
+#. NeoPixel library block
+#, fuzzy
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"встановити НеоПікселі #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ "
+"_ _ _ #BR# _ _ _ _ _"
