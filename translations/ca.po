@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-08-11 11:41+0000\n"
+"PO-Revision-Date: 2025-08-12 22:02+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -6928,4 +6928,14 @@ msgstr "LogicLinks llum (0-100)"
 
 #. MicroBlocks IDE block deletion error message.
 msgid "scripts or functions."
-msgstr "Missatge d'error d'eliminació de blocs de l'IDE de MicroBlocks."
+msgstr "scripts o funcions."
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"posa NeoPíxels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ "
+"#BR# _ _ _ _ _"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr "Aquest bloc encara s'utilitza"
