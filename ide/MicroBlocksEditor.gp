@@ -1149,10 +1149,10 @@ method gearMenu MicroBlocksEditor {
 	menu = (menu 'MicroBlocks' this)
 	setIsTopMenu menu true
 	addItem menu 'about...' (action 'showAboutBox' (smallRuntime))
-	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addLine menu
 	addItem menu 'update firmware on board' (action 'installVM' (smallRuntime) false false) // do not wipe flash, do not download VM from server
 	addLine menu
+	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addItem menu 'dark mode' (action 'toggleDarkMode' this false) 'make the IDE darker' (newCheckmark this (darkModeEnabled this))
 	addItem menu 'advanced mode' 'toggleAdvancedMode' 'show advanced blocks, menu items and editor functionalities' (newCheckmark this (devMode))
 
@@ -1161,7 +1161,7 @@ method gearMenu MicroBlocksEditor {
 		addItem menu 'show implementation blocks' (action 'toggleShowHiddenBlocks' this) 'show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)' (newCheckmark this (showHiddenBlocksEnabled this))
 		addItem menu 'autoload board libraries' (action 'toggleBoardLibAutoLoad' this) nil (newCheckmark this (not (boardLibAutoLoadDisabled this)))
 // Does anyone ever enable 'PlugShare when project empty'?
-		addItem menu 'PlugShare when project empty' (action 'toggleAutoDecompile' this) 'when plugging a board, automatically read its contents into the IDE if the current project is empty' (newCheckmark this (autoDecompileEnabled this))
+//		addItem menu 'PlugShare when project empty' (action 'toggleAutoDecompile' this) 'when plugging a board, automatically read its contents into the IDE if the current project is empty' (newCheckmark this (autoDecompileEnabled this))
 		addLine menu
 		addItem menu 'install ESP firmware from URL' (action 'installESPFirmwareFromURL' (smallRuntime))
 		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (smallRuntime))
