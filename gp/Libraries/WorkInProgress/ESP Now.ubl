@@ -1,6 +1,6 @@
 module 'ESP Now' Comm
 author MicroBlocks
-version 1 1 
+version 1 2 
 description 'Support for ESP Now peer-to-peer messaging for ESP boards. Unencrypted messages are broadcast to all peers within range, so pairing is not necessary and there is no limit to the number of peers.
 
 Delivery is unreliable; messages may be lost, especially when there is a lot of other WiFi and Bluetooth traffic in the 2.4 GHz band. The best channel is one without much traffic.
@@ -13,6 +13,9 @@ When using WiFi and ESP Now at the same time, the ESP32 forces ESP Now to use th
   space
   spec ' ' '[net:ESPNowSetChannel]' 'espNow set channel _' 'menu.range:1-13' 1
   spec 'r' '[net:ESPNowChannel]' 'espNow channel'
+  space
+  spec ' ' '[net:ESPNowSetGroup]' 'espNow set group _ (0-255)' 'num' 0
+  spec 'r' '[net:ESPNowGroup]' 'espNow group'
 
 to espNow_send msg {
   '[net:ESPNowSend]' ('[data:convertType]' msg 'string')
