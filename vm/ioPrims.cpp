@@ -1186,23 +1186,28 @@ void hardwareInit() {
 	// 42 (PF_2) - reset
 	// 49 (PA_12) - USB P
 	// 50 (PA_11) - USB N
-	// 47 (PA_3) - Downlink RX
-	// 52 (PA_2) - Downlink TX
+	// 47 (PA_3) - Downlink RX (serial)
+	// 52 (PA_2) - Downlink TX (serial)
+
+	// 13 (PA_5, edge pin 21) is the buzzer
+	// 19 (PB_0, edge pin 8) is the light sensor
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
 		 1, 13,  7, 12, 15, 54, 11}; // row pins: 7, 12, 15, 54, 11
 
+	// 13 (PA_5, edge pin 21) is the buzzer
+	// 12 (PA_6, edge pin 23) is the light sensor
+	// 29 (PA_10, edge pin 22) is the display reset pin
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13, 12, 14, 15, 29, 32}; // unused pins: 12, 14, 15, 29, 32
+		 1, 13, 29, 12, 15, 14, 32}; // unused pins: 12, 15, 14, 32
 
-	// Pin 13 is repeated at index 21 (DEFAULT_TONE_PIN)
 	static const char dueStandardPin[DIGITAL_PINS] = {
 		15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
 		33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
-		28, 13,  8,  2, 27, 32, 32}; // unused pins: 8, 2, 27, 32
+		28,  8,  2, 27, 32, 255, 255};
 
 	// Analog pin names for DUELink boards
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
