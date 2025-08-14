@@ -1,6 +1,6 @@
 module 'Tiny OLED' Output
 author MicroBlocks
-version 1 0 
+version 1 1 
 description 'Tiny graphics library for a 128x64 pixel monochrome OLED display with a SSD1306 controller.
 Useful on boards with very limited code store space such as the DUELink PixoBit.
 '
@@ -90,7 +90,7 @@ to '_tinyOLED_init' {
   if (_tinyOLED_buffer != 0) {return 0}
   _tinyOLED_buffer = ('[data:newByteArray]' 1024)
   comment 'Toggle OLED reset pin.'
-  local 'resetPin' 25
+  local 'resetPin' 22
   digitalWriteOp resetPin false
   waitMillis 1
   digitalWriteOp resetPin true
