@@ -1018,7 +1018,8 @@ method toggleAutoDecompile MicroBlocksEditor {
 }
 
 method autoDecompileEnabled MicroBlocksEditor {
-	return (autoDecompile == true)
+	return false // this feature is disabled; always return false
+//	return (autoDecompile == true)
 }
 
 method toggleShowHiddenBlocks MicroBlocksEditor {
