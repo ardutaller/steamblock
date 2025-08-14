@@ -318,6 +318,7 @@ static OBJ primAppendLine(int argCount, OBJ *args) {
 	OBJ arg = args[0];
 
 	int i = entryFor(fileName);
+	if (i < 0) return falseObj;
 
 	if ((i >= 0) && fileEntry[i].file)  {
 		int oldPos = fileEntry[i].file.position();
@@ -350,6 +351,10 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 	int i = entryFor(fileName);
 	if (i < 0) return falseObj;
 
+	int oldPos = fileEntry[i].file.position();
+	int oldSize = fileEntry[i].file.size();
+	if (oldPos != oldSize) fileEntry[i].file.seekEnd(); // seek to current end
+
 	if (IS_TYPE(data, ByteArrayType)) {
 		fileEntry[i].file.write((uint8 *) &FIELD(data, 0), BYTES(data));
 	} else if (IS_TYPE(data, StringType)) {
@@ -357,11 +362,20 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 		fileEntry[i].file.write((uint8 *) s, strlen(s));
 	}
 	fileEntry[i].file.flush();
+	fileEntry[i].file.seekSet(oldPos); // reset position for reading
+
 	processMessage();
 	return falseObj;
 }
 
 // File info
+
+static OBJ primHasCard(int argCount, OBJ *args) {
+	int oldCardPin = sdCardCSPin;
+	sdCardCSPin = -999; // force re-initialization
+	initSDCard(oldCardPin);
+	return (sdCardCSPin >= 0) ? trueObj : falseObj;
+}
 
 static OBJ primFileExists(int argCount, OBJ *args) {
 	if (argCount < 1) return fail(notEnoughArguments);
@@ -458,6 +472,7 @@ static PrimEntry entries[] = {
 		{"setReadPosition", primSetReadPosition},
 		{"appendLine", primAppendLine},
 		{"appendBytes", primAppendBytes},
+		{"hasCard", primHasCard},
 		{"fileExists", primFileExists},
 		{"fileSize", primFileSize},
 		{"startList", primStartFileList},
