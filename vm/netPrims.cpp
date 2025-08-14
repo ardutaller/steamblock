@@ -805,14 +805,20 @@ static OBJ primWebSocketSendToClient(int argCount, OBJ *args) { return fail(noWi
 
 #if defined(ESP_NOW)
 
-// reserve 10 bytes of the 250 payload bytes for future use
-#define ESP_NOW_MAX_MSG 240
+// MicroBlocks ESP Now header byte format: <version (3 bits)> <header byte count (5 bits)>
+#define ESP_NOW_HEADER_VERSION 1
+#define ESP_NOW_HEADER_LEN 2
+#define ESP_NOW_HEADER ((ESP_NOW_HEADER_VERSION << 5) | ESP_NOW_HEADER_LEN)
+
+// reserve the first N bytes of the 250 payload bytes for the MicroBlocks ESP Now header
+#define ESP_NOW_MAX_MSG (250 - ESP_NOW_HEADER_LEN)
 
 static volatile int esp_now_send_buffers = 10;
 static uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 static int esp_now_msg_bytecount = 0;
 static char esp_now_msg[250];
+static uint8_t esp_now_group = 255; // 255 is wildcard; receives messages from all groups
 
 // ESP Now send callback
 
@@ -831,10 +837,13 @@ static char esp_now_msg[250];
 #else
 	void espNow_receivedData(uint8_t* mac_addr, uint8_t* data, uint8_t length) {
 #endif
-	if (esp_now_msg_bytecount == 0) {
-		esp_now_msg_bytecount = (length > ESP_NOW_MAX_MSG) ? ESP_NOW_MAX_MSG : length;
-		memcpy(esp_now_msg, data, esp_now_msg_bytecount);
-	}
+	if (esp_now_msg_bytecount > 0) return; // already have a message
+	if (data[0] != ESP_NOW_HEADER) return; // not a MicroBlocks message
+	if ((data[1] != esp_now_group) && (esp_now_group < 255)) return; // group mismatch and not wildcard group
+
+	// receive the message
+	esp_now_msg_bytecount = length - ESP_NOW_HEADER_LEN;
+	memcpy(esp_now_msg, data + ESP_NOW_HEADER_LEN, esp_now_msg_bytecount);
 }
 
 static void setWiFiChannel(int channel) {
@@ -919,10 +928,15 @@ static OBJ primESPNowSend(int argCount, OBJ *args) {
 	}
 	esp_now_send_buffers--;
 
+	uint8_t sendBuf[256];
+	sendBuf[0] = ESP_NOW_HEADER;
+	sendBuf[1] = esp_now_group;
+	memcpy(sendBuf + ESP_NOW_HEADER_LEN, msg, byteCount);
+
 	#if defined(ESP8266)
-		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, byteCount);
+		int rc = esp_now_send(broadcastAddress, sendBuf, ESP_NOW_HEADER_LEN + byteCount);
 	#elif defined(ARDUINO_ARCH_ESP32)
-		int rc = esp_now_send(broadcastAddress, (uint8_t *) msg, byteCount);
+		int rc = esp_now_send(broadcastAddress, sendBuf, ESP_NOW_HEADER_LEN + byteCount);
 	#endif
 
 	taskSleep(10);
@@ -951,6 +965,20 @@ static OBJ primESPNowSetChannel(int argCount, OBJ *args) {
 
 	if (!esp_now_started) startESPNow();
 	setWiFiChannel(channel);
+	return falseObj;
+}
+
+static OBJ primESPNowGroup(int argCount, OBJ *args) {
+	return int2obj(esp_now_group);
+}
+
+static OBJ primESPNowSetGroup(int argCount, OBJ *args) {
+	if ((argCount > 0) && isInt(args[0])) {
+		int newGroup = obj2int(args[0]);
+		if (newGroup < 0) newGroup = 0;
+		if (newGroup > 255) newGroup = 255;
+		esp_now_group = newGroup;
+	}
 	return falseObj;
 }
 
@@ -1236,6 +1264,8 @@ static PrimEntry entries[] = {
 	{"ESPNowReceive", primESPNowReceive},
 	{"ESPNowChannel", primESPNowChannel},
 	{"ESPNowSetChannel", primESPNowSetChannel},
+	{"ESPNowGroup", primESPNowGroup},
+	{"ESPNowSetGroup", primESPNowSetGroup},
 	#endif
 
 	{"MQTTConnect", primMQTTConnect},
