@@ -1614,6 +1614,10 @@ msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
 msgstr ""
 
 #. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr ""
+
+#. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
 msgstr ""
 
