@@ -4930,6 +4930,78 @@ msgstr "Calliope set continous servo _ to speed _ (-100~100)"
 msgid "Calliope stop servo _"
 msgstr "Calliope stop servo _"
 
+#. Calliope MotionKit2 library block
+msgid "mk2;bright"
+msgstr "mk2;bright"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;dark"
+msgstr "mk2;dark"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;ok"
+msgstr "mk2;ok"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;up"
+msgstr "mk2;up"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;down"
+msgstr "mk2;down"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S1"
+msgstr "mk2;S1"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S2"
+msgstr "mk2;S2"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit distance (cm)"
+msgstr "MotionKit distance (cm)"
+
+#. Calliope MotionKit2 library block
+msgid "IR key _ pressed?"
+msgstr "IR key _ pressed?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set NeoPixels _"
+msgstr "MotionKit set NeoPixels _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit clear NeoPixels"
+msgstr "MotionKit clear NeoPixels"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit stop motor _"
+msgstr "MotionKit stop motor _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit motor _ dir _ speed _ (0~255)"
+msgstr "MotionKit motor _ dir _ speed _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit LED _ _"
+msgstr "MotionKit LED _ _"
+
+#. Calliope MotionKit2 library block
+msgid "color r _ g _ b _ (0~255)"
+msgstr "color r _ g _ b _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit line sensor _ _"
+msgstr "MotionKit line sensor _ _"
+
+#. Calliope MotionKit2 library block
+msgid "IR code received?"
+msgstr "IR code received?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set servo _ to _ ° (0~180)"
+msgstr "MotionKit set servo _ to _ ° (0~180)"
+
 #. LCD 16x2 (Seeed) library block
 msgid "LCD init display"
 msgstr "LCD init display"
