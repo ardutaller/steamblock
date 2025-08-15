@@ -2812,6 +2812,10 @@ msgstr "next _ bytes of file _"
 msgid "read into _ from file _"
 msgstr "read into _ from file _"
 
+#. Files library block
+msgid "contents of file _"
+msgstr "contents of file _"
+
 #. Example string. Tells the user this input accepts a byte array
 msgid "a ByteArray"
 msgstr "a ByteArray"
