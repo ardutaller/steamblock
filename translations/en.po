@@ -4936,31 +4936,31 @@ msgstr "Calliope stop servo _"
 
 #. Calliope MotionKit2 library block
 msgid "mk2;bright"
-msgstr "mk2;bright"
+msgstr "bright"
 
 #. Calliope MotionKit2 library block
 msgid "mk2;dark"
-msgstr "mk2;dark"
+msgstr "dark"
 
 #. Calliope MotionKit2 library block
 msgid "mk2;ok"
-msgstr "mk2;ok"
+msgstr "ok"
 
 #. Calliope MotionKit2 library block
 msgid "mk2;up"
-msgstr "mk2;up"
+msgstr "up"
 
 #. Calliope MotionKit2 library block
 msgid "mk2;down"
-msgstr "mk2;down"
+msgstr "down"
 
 #. Calliope MotionKit2 library block
 msgid "mk2;S1"
-msgstr "mk2;S1"
+msgstr "S1"
 
 #. Calliope MotionKit2 library block
 msgid "mk2;S2"
-msgstr "mk2;S2"
+msgstr "S2"
 
 #. Calliope MotionKit2 library block
 msgid "MotionKit distance (cm)"
