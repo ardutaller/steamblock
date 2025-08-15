@@ -870,7 +870,7 @@ void hardwareInit() {
 	#define BOARD_TYPE "Xiao ESP32S3"
 	#define DIGITAL_PINS 14
 	#define ANALOG_PINS 14
-	#define TOTAL_PINS 49
+	#define TOTAL_PINS 43
 	#define PIN_LED 21
 	#define INVERT_USER_LED true
 	#define USE_DIGITAL_PIN_MAP true
@@ -878,10 +878,10 @@ void hardwareInit() {
 	static const char digitalPin[DIGITAL_PINS] = {1, 2, 3, 4, 5, 6, 43, 44, 7, 8, 9, 42, 41, 21};
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-		0, 0, 0, 0, 0, 1, 1, 0, 0};
+		0, 0, 0};
 
 #elif defined(ARDUINO_XIAO_ESP32C3)
 	#define BOARD_TYPE "Xiao ESP32C3"
@@ -927,9 +927,9 @@ void hardwareInit() {
 
 #elif defined(ESP32_S3)
 	#define BOARD_TYPE "ESP32-S3"
-	#define DIGITAL_PINS 49
+	#define DIGITAL_PINS 43
 	#define ANALOG_PINS 20
-	#define TOTAL_PINS 49
+	#define TOTAL_PINS 43
 	static const int analogPin[] = {};
 	#ifdef LED_BUILTIN
 		#define PIN_LED LED_BUILTIN
@@ -950,10 +950,10 @@ void hardwareInit() {
 	// also possibly: 39-42 (JTAG pins)
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-		0, 0, 0, 1, 1, 0, 0, 0, 0};
+		0, 0, 0};
 
 #elif defined(ESP32_C3)
 	#define BOARD_TYPE "ESP32-C3"
