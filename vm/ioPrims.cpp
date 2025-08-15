@@ -870,7 +870,7 @@ void hardwareInit() {
 	#define BOARD_TYPE "Xiao ESP32S3"
 	#define DIGITAL_PINS 14
 	#define ANALOG_PINS 14
-	#define TOTAL_PINS 43
+	#define TOTAL_PINS 45
 	#define PIN_LED 21
 	#define INVERT_USER_LED true
 	#define USE_DIGITAL_PIN_MAP true
@@ -878,10 +878,10 @@ void hardwareInit() {
 	static const char digitalPin[DIGITAL_PINS] = {1, 2, 3, 4, 5, 6, 43, 44, 7, 8, 9, 42, 41, 21};
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
 		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-		0, 0, 0};
+		0, 0, 0, 0, 0};
 
 #elif defined(ARDUINO_XIAO_ESP32C3)
 	#define BOARD_TYPE "Xiao ESP32C3"

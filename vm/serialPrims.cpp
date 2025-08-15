@@ -197,7 +197,7 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 #else // use Serial1 or Serial2
 
 // Use Serial2 on original ESP32 and Pico:ed boards, Serial1 on others
-#if (ESP32_ORIGINAL) || defined(PICO_ED) || defined(COCUBE) || defined(DUELink) || defined(ARDUINO_WEACT)
+#if defined(ESP32_ORIGINAL) || defined(ESP32_S3) || defined(PICO_ED) || defined(COCUBE) || defined(DUELink) || defined(ARDUINO_WEACT)
 	#define SERIAL_PORT Serial2
 #else
 	#define SERIAL_PORT Serial1
@@ -251,7 +251,8 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate);
 		delayMicroseconds(5); // wait for garbage byte when first opening the serial port after a reset (seen at 115200 baud)
 		SERIAL_PORT.begin(baudRate); // reset to discard garbage byte
-	#elif defined(ESP32_ORIGINAL)
+	#elif defined(ESP32)
+		// all ESP32 boards that do not have cases above
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
 	#elif defined(DUELink)
 		if (!DUE_HAS_EDGE_CONNECTOR) return; // serial only supported on boards with edge connectors
