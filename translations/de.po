@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-08-15 13:09+0000\n"
+"PO-Revision-Date: 2025-08-16 14:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -7128,3 +7128,11 @@ msgstr "S1"
 #. Calliope MotionKit2 library block
 msgid "mk2;S2"
 msgstr "S2"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "initialisiere i2c (auto) Reset-Pin _ flip _"
+
+#. Files library block
+msgid "contents of file _"
+msgstr "Inhalt der Datei _"
