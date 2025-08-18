@@ -1337,6 +1337,8 @@ const char * boardType() {
 		if (DUE_HAS_EDGE_CONNECTOR) {
 			return (IS_DUE_CINCO) ? "CincoBit" : "PixoBit";
 		}
+		if (IS_DUE_STEM) return "DueSTEM";
+		if (IS_DUE_CLIPIT) return "Clipit";
 	#endif
 	return BOARD_TYPE;
 }
@@ -2622,6 +2624,12 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 			pin = ed1DigitalPinMap[pin - 1];
 		} else {
 			pin = DEFAULT_TONE_PIN;
+		}
+	#elif defined(DUELink)
+		if ((pin < 0) || (pin >= DIGITAL_PINS)) {
+			if (IS_DUE_STEM) pin = 3;
+			else if (IS_DUE_CLIPIT) pin = 7;
+			else pin = DEFAULT_TONE_PIN; // DUE Cinco and PixoBit
 		}
 	#else
 		if ((pin < 0) || (pin >= DIGITAL_PINS)) pin = DEFAULT_TONE_PIN;
