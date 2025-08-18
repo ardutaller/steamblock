@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-08-12 22:02+0000\n"
+"PO-Revision-Date: 2025-08-19 09:02+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.13\n"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -5915,7 +5915,7 @@ msgstr "apaga LEDs multicolor"
 
 #. Cutebot Pro library block
 msgid "CBPro IR code received?"
-msgstr "¿código IR recibido?"
+msgstr "CBPro ¿código IR recibido?"
 
 #. MicroBlocks IDE information
 msgid "The firmware on the board is not compatible with this version of MicroBlocks."
@@ -6996,3 +6996,83 @@ msgstr "Este bloque todavía se utiliza en"
 #. MicroBlocks IDE block deletion error message.
 msgid "scripts or functions."
 msgstr "scripts o funciones."
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "Inicializa i2c (auto) reiniciar pin# _ flip _"
+
+#. Files library block
+msgid "contents of file _"
+msgstr "contenido del archivo _"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;bright"
+msgstr "brillante"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;dark"
+msgstr "oscuro"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;ok"
+msgstr "OK"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;up"
+msgstr "arriba"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;down"
+msgstr "abajo"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S1"
+msgstr "S1"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S2"
+msgstr "S2"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit distance (cm)"
+msgstr "MotionKit distancia (cm)"
+
+#. Calliope MotionKit2 library block
+msgid "IR key _ pressed?"
+msgstr "¿Se presionó la tecla IR _?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set NeoPixels _"
+msgstr "MotionKit pon NeoPíxeles _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit clear NeoPixels"
+msgstr "MotionKit apaga NeoPíxeles"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit stop motor _"
+msgstr "MotionKit detén motor _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit motor _ dir _ speed _ (0~255)"
+msgstr "MotionKit motor _ dirección _ velocidad _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit LED _ _"
+msgstr "MotionKit LED _ _"
+
+#. Calliope MotionKit2 library block
+msgid "color r _ g _ b _ (0~255)"
+msgstr "color r _ g _ b _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit line sensor _ _"
+msgstr "MotionKit sensor de línea _ _"
+
+#. Calliope MotionKit2 library block
+msgid "IR code received?"
+msgstr "¿código IR recibido?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set servo _ to _ ° (0~180)"
+msgstr "MotionKit pon el servo _ a _ ° (0~180)"
