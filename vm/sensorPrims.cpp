@@ -366,10 +366,7 @@ static OBJ primI2cWrite(int argCount, OBJ *args) {
 		}
 	}
 	int error = Wire.endTransmission(stop);
-	if (error) {
-		reportNum("i2c write error", error);
-		taskSleep(5);
-	}
+	if (error) taskSleep(5); // sleep a bit if error occurred; do not print error message
 
 	return falseObj;
 }
