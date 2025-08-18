@@ -379,27 +379,44 @@ void updateMicrobitDisplay() {
 
 #elif defined(DUELink)
 
-#define ROW1 7
-#define ROW2 12
-#define ROW3 15
-#define ROW4 54
-#define ROW5 11
-
-#define COL1 29
-#define COL2 10
-#define COL3 14
-#define COL4 8
-#define COL5 2
-
 static int displaySnapshot = 0;
-static int displayCycle = 0;
-static int rowPins[5] = {ROW1, ROW2, ROW3, ROW4, ROW5};
-static int columnPins[5] = {COL1, COL2, COL3, COL4, COL5};
+static uint8 displayCycle = 0;
+static uint8 dueLEDInitialized = 0;
+static int rowPins[5];
+static int columnPins[5];
+
+static void initDUELedPins() {
+	if (IS_DUE_CLIPIT) {
+		rowPins[0] = mapDigitalPinNum(19);
+		rowPins[1] = mapDigitalPinNum(22);
+		rowPins[2] = mapDigitalPinNum(11);
+		rowPins[3] = mapDigitalPinNum(21);
+		rowPins[4] = mapDigitalPinNum(23);
+		columnPins[0] = mapDigitalPinNum(8);
+		columnPins[1] = mapDigitalPinNum(9);
+		columnPins[2] = mapDigitalPinNum(6);
+		columnPins[3] = mapDigitalPinNum(5);
+		columnPins[4] = mapDigitalPinNum(4);
+	} else { // Cinco
+		rowPins[0] = mapDigitalPinNum(22);
+		rowPins[1] = mapDigitalPinNum(23);
+		rowPins[2] = mapDigitalPinNum(24);
+		rowPins[3] = mapDigitalPinNum(25);
+		rowPins[4] = mapDigitalPinNum(26);
+		columnPins[0] = mapDigitalPinNum(4);
+		columnPins[1] = mapDigitalPinNum(7);
+		columnPins[2] = mapDigitalPinNum(3);
+		columnPins[3] = mapDigitalPinNum(6);
+		columnPins[4] = mapDigitalPinNum(10);
+	}
+	dueLEDInitialized = true;
+}
 
 #define DISPLAY_BIT(n) (((displaySnapshot >> n) & 1) ? LOW : HIGH)
 
 static void turnDisplayOn() {
-	if (!IS_DUE_CINCO) return;
+	if (!(IS_DUE_CINCO || IS_DUE_CLIPIT)) return;
+	if (!dueLEDInitialized) initDUELedPins();
 
 	for (int i = 0; i < 5; i++) {
 		setPinMode(rowPins[i], INPUT);
@@ -408,7 +425,8 @@ static void turnDisplayOn() {
 }
 
 static void turnDisplayOff() {
-	if (!IS_DUE_CINCO) return;
+	if (!(IS_DUE_CINCO || IS_DUE_CLIPIT)) return;
+	if (!dueLEDInitialized) initDUELedPins();
 
 	for (int i = 0; i < 5; i++) {
 		setPinMode(columnPins[i], INPUT);
@@ -417,8 +435,6 @@ static void turnDisplayOff() {
 }
 
 static int updateLightLevel() { // placeholder
-	if (!IS_DUE_CINCO) return true;
-
 	lightReadingRequested = false;
 	return true;
 }
@@ -428,8 +444,9 @@ void updateMicrobitDisplay() {
 	// for each column. To minimize display artifacts, the display bits are snapshot
 	// at the start of each cycle and the snapshot is not changed during the cycle.
 
-	if (!IS_DUE_CINCO) return;
+	if (!(IS_DUE_CINCO || IS_DUE_CLIPIT)) return;
 	if (disableLEDDisplay) return;
+	if (!dueLEDInitialized) initDUELedPins();
 
 	if (!microBitDisplayBits && !displaySnapshot) { // display is off
 		if (lightReadingRequested) updateLightLevel();
