@@ -173,8 +173,10 @@ void hardwareInit() {
 		touchSetCycles(0x800, 0x900);
 		writeI2CReg(0x20, 0, 0); // initialize IO expander
 	#endif
-	tftInit();
-	tftClear();
+	#if !defined(IS_XIAO)
+		tftInit();
+		tftClear();
+	#endif
 	#if defined(DATABOT)
 		int yellow = 14864128;
 		setAllNeoPixels(-1, 3, yellow);
@@ -399,6 +401,7 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
 
 	#define BOARD_TYPE "Xiao NRF52840"
+	#define IS_XIAO 1
 	#define DIGITAL_PINS 14
 	#define ANALOG_PINS 6
 	#define TOTAL_PINS 33
@@ -513,6 +516,7 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_M0) // must come before Zero
 
 	#define BOARD_TYPE "Xiao SAMD21"
+	#define IS_XIAO 1
 	#define DIGITAL_PINS 14
 	#define ANALOG_PINS 11
 	#define TOTAL_PINS 14
@@ -868,6 +872,7 @@ void hardwareInit() {
 
 #elif defined(ARDUINO_XIAO_ESP32S3)
 	#define BOARD_TYPE "Xiao ESP32S3"
+	#define IS_XIAO 1
 	#define DIGITAL_PINS 14
 	#define ANALOG_PINS 14
 	#define TOTAL_PINS 45
@@ -885,6 +890,7 @@ void hardwareInit() {
 
 #elif defined(ARDUINO_XIAO_ESP32C3)
 	#define BOARD_TYPE "Xiao ESP32C3"
+	#define IS_XIAO 1
 	#define DIGITAL_PINS 22
 	#define ANALOG_PINS 4
 	#define TOTAL_PINS 22
@@ -1101,6 +1107,7 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_RP2040)
 
 	#define BOARD_TYPE "Xiao RP2040"
+	#define IS_XIAO 1
 	#define DIGITAL_PINS 15
 	#define ANALOG_PINS 4
 	#define TOTAL_PINS 30
@@ -1118,6 +1125,7 @@ void hardwareInit() {
 #elif defined(ARDUINO_SEEED_XIAO_RP2350)
 
 	#define BOARD_TYPE "Xiao RP2350"
+	#define IS_XIAO 1
 	#define DIGITAL_PINS 21
 	#define ANALOG_PINS 3
 	#define TOTAL_PINS 30
