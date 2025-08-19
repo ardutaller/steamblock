@@ -1183,10 +1183,6 @@ void hardwareInit() {
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
 	#define PIN_LED 15 // PA_6 (unmapped)
-	#define PIN_BUTTON_A 28 // (unmapped) edge pin 5
-	#define PIN_BUTTON_B 27 // (unmapped) edge pin 11
-	#undef BUTTON_PRESSED
-	#define BUTTON_PRESSED HIGH
 	#define DEFAULT_TONE_PIN 21
 	static const int8_t analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
 
@@ -1970,12 +1966,17 @@ OBJ primButtonA(OBJ *args) {
 		#elif defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_ARCH_ESP32) || \
 			  defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
-		#elif defined(DUELink)
-			setPinMode(PIN_BUTTON_A, INPUT_PULLDOWN); // Arduino pin number not edge pin
 		#else
 			SET_MODE(PIN_BUTTON_A, INPUT);
 		#endif
 		return (BUTTON_PRESSED == digitalRead(PIN_BUTTON_A)) ? trueObj : falseObj;
+	#elif defined(DUELink)
+		int pinButton = -1;
+		if (DUE_HAS_EDGE_CONNECTOR) { pinButton = 28;
+		} else if (IS_DUE_STEM) { pinButton = 28;
+		} else { return falseObj; }
+		setPinMode(pinButton, INPUT_PULLDOWN); // Arduino pin, not edge pin number
+		return (HIGH == digitalRead(pinButton)) ? trueObj : falseObj;
 	#else
 		return falseObj;
 	#endif
@@ -1993,13 +1994,17 @@ OBJ primButtonB(OBJ *args) {
 			setPinMode(PIN_BUTTON_B, INPUT_PULLUP); // ESP32 pin number not edge pin
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
-		#elif defined(DUELink)
-			setPinMode(PIN_BUTTON_B, INPUT); // workaround: force button back to digital mode if light sensor was read
-			setPinMode(PIN_BUTTON_B, INPUT_PULLDOWN); // Arduino pin number not edge pin
 		#else
 			SET_MODE(PIN_BUTTON_B, INPUT);
 		#endif
 		return (BUTTON_PRESSED == digitalRead(PIN_BUTTON_B)) ? trueObj : falseObj;
+	#elif defined(DUELink)
+		int pinButton = -1;
+		if (DUE_HAS_EDGE_CONNECTOR) { pinButton = 27;
+		} else if (IS_DUE_STEM) { pinButton = 16;
+		} else { return falseObj; }
+		setPinMode(pinButton, INPUT_PULLDOWN); // Arduino pin, not edge pin number
+		return (HIGH == digitalRead(pinButton)) ? trueObj : falseObj;
 	#else
 		return falseObj;
 	#endif
