@@ -1360,6 +1360,12 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'NeoPixel'
 		importEmbeddedLibrary scripter 'Tone'
 		importEmbeddedLibrary scripter 'TFT'
+	} (or ('PixoBit' == boardType) ('DueSTEM' == boardType)) {
+		importEmbeddedLibrary scripter 'Tiny OLED'
+		importEmbeddedLibrary scripter 'Tone'
+	} (or ('CincoBit' == boardType) ('Clipit' == boardType)) {
+		importEmbeddedLibrary scripter 'LED Display'
+		importEmbeddedLibrary scripter 'Tone'
 	}
 }
 
