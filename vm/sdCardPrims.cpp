@@ -16,7 +16,7 @@
 
 #if defined(SD_CARD)
 
-#if defined(ARDUINO_BBC_MICROBIT_V2)
+#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(ARDUINO_CALLIOPE_MINI_V3)
 	// SS must defined before including SdFat.h
 	#define SS 16
 #endif
