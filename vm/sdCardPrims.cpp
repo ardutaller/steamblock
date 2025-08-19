@@ -27,7 +27,11 @@
 
 SdFat SD;
 
-#define SPI_SPEED SD_SCK_MHZ(24)
+#if defined(ARDUINO_ARCH_RP2040) // this includes RP2350
+	#define SPI_SPEED SD_SCK_MHZ(12)
+#else
+	#define SPI_SPEED SD_SCK_MHZ(24)
+#endif
 
 #if defined(ARDUINO_ARCH_RP2040)
 	#define DEFAULT_CS_PIN PIN_SPI0_SS
