@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-08-16 14:01+0000\n"
+"PO-Revision-Date: 2025-08-25 12:03+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -6759,7 +6759,7 @@ msgstr "#SVG#wave-noise Gate _"
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
-"Verbinde MicroBlocks neu mit deinem Board. Klicke dafür auf die Taste "
+"Verbinde MicroBlocks neu mit dem Board. Klicke dafür auf die Taste "
 "\"verbinden\"."
 
 #. Analog Synthesis library block
