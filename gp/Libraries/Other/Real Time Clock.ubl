@@ -1,6 +1,6 @@
 module 'Real Time Clock'
 author MicroBlocks
-version 1 5 
+version 1 6 
 choices rtc_moduleNames '' DS1307 DS3231 PCF8523 PCF8563 PCF85063 RV1805 
 choices rtc_timeOrDate 'rtc;time (H:M:S)' 'rtc;date (Y-M-D)' 
 choices rtc_component second minute hour day month year 'day of week' 
@@ -139,7 +139,7 @@ to '_rtc_testRegSeconds' reg {
   waitMillis 1000
   local 't2' (i2cGet rtc_i2cAddr reg)
   '[sensors:i2cSetClockSpeed]' 400000
-  return (and (t2 == (t1 + 1)) (t1 == (t0 + 1)))
+  return (and (t2 > t1) (t1 > t0))
 }
 
 to '_rtc_twoDigit' n {
@@ -231,6 +231,7 @@ to rtc_setDate year month day {
 }
 
 to rtc_setDayOfWeek weekdayNum {
+  '_rtc_init'
   weekdayNum = (maximum 1 (minimum weekdayNum 7))
   if (0 < ('[data:find]' rtc_module ('[data:makeList]' 'PCF8523' 'PCF8563' 'PCF85063' 'RV1805'))) {
     comment 'Clock uses weekday range 0-6.'
