@@ -5307,30 +5307,6 @@ msgid "LogicLinks light (0-100)"
 msgstr "LogicLinks light (0-100)"
 
 #. Real Time Clock library block
-msgid "DS1307"
-msgstr "DS1307"
-
-#. Real Time Clock library block
-msgid "DS3231"
-msgstr "DS3231"
-
-#. Real Time Clock library block
-msgid "PCF8523"
-msgstr "PCF8523"
-
-#. Real Time Clock library block
-msgid "PCF8563"
-msgstr "PCF8563"
-
-#. Real Time Clock library block
-msgid "PCF85063"
-msgstr "PCF85063"
-
-#. Real Time Clock library block
-msgid "RV1805"
-msgstr "RV1805"
-
-#. Real Time Clock library block
 msgid "time (H:M:S)"
 msgstr "time (H:M:S)"
 
