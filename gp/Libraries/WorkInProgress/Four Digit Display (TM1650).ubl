@@ -12,12 +12,13 @@ https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/digi_c
 variables _tmSegmentMap 
 
   spec ' ' 'tm1650_show' '#SVG#square11#00c612 tm1650 show _ : decimal places _' 'auto menu.range:0-3' 3142 3
+  spec ' ' 'tm1650_showString' '#SVG#square11#00c612 tm1650 string _' 'str' '3.142'
+  space
   spec ' ' 'tm1650_clear' '#SVG#square11#00c612 tm1650 clear'
   spec ' ' 'tm1650_setBrightness' '#SVG#square11#00c612 tm1659 brightness _' 'menu.range:1-7' 3
   space
   spec ' ' '_tm1650_init' '_tm1650_init'
   spec ' ' '_tm1650_setDigit' '_tm1650_setDigit _ segments _ decimal after _' 'num num num' 1 0 0
-  spec ' ' 'tm1650_showString' 'tm1650_showString _' 'str' '10'
 
 to '_tm1650_init' {
   if (not ('[sensors:i2cExists]' (hexToInt '24'))) {
