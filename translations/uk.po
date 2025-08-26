@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-08-11 15:15+0000\n"
+"PO-Revision-Date: 2025-08-26 14:51+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.13\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -1617,28 +1617,32 @@ msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
 msgstr ""
 
 #. OLED Graphics library block
+#, fuzzy
 msgid "write _ at x _ y _ inverse _"
-msgstr ""
+msgstr "записати _ за координатами x _ y _ зворотнє _"
 
 #. OLED Graphics library block
 msgid "show display buffer"
-msgstr ""
+msgstr "показати буфер дисплею"
 
 #. OLED Graphics library block
 msgid "clear"
-msgstr ""
+msgstr "очистити"
 
 #. OLED Graphics library block
+#, fuzzy
 msgid "set contrast (1-4) _"
-msgstr ""
+msgstr "встановити контраст (від 1 до 4) _"
 
 #. OLED Graphics library block
+#, fuzzy
 msgid "draw circle at x _ y _ radius _ erase _"
-msgstr ""
+msgstr "намалювати коло за координатами x _ y _ з радіусом _ стерти _"
 
 #. OLED Graphics library block
+#, fuzzy
 msgid "draw image _ at x _ y _"
-msgstr ""
+msgstr "відобразити зображення _ за координатами x _ y _"
 
 #. OLED Graphics library block
 msgid "draw line from x _ y _ to x _ y _ erase _"
@@ -6353,3 +6357,8 @@ msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _
 msgstr ""
 "встановити НеоПікселі #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ "
 "_ _ _ #BR# _ _ _ _ _"
+
+#. OLED Graphics library block
+#, fuzzy
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "Ініціалізувати i2c(auto) скинути пін №_ поміняти _"
