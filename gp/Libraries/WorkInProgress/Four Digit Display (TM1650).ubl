@@ -1,6 +1,6 @@
 module 'Four Digit Display (TM1650)' Output
 author MicroBlocks
-version 1 0 
+version 1 1 
 description 'Four digit seven-segment LED display for KidsIOT.
 Displays decimal numbers from -999 to 9999 with optional decimal point.
 
@@ -109,6 +109,7 @@ to tm1650_showString s {
       comment 'Leading minus sign'
       sign = -1
     } (and (48 <= ch) (ch <= 57)) {
+      comment 'ch is a digit'
       n = ((10 * n) + (ch - 48))
       if (decimalPos != 99) {
         comment 'Move the decimal point left'
@@ -117,17 +118,14 @@ to tm1650_showString s {
           exitLoop
         }
       }
-    } (or (ch == 44) (ch == 46)) {
+    } else {
+      comment 'ch is not a digit -- assume it is a decimal point character (varies by country)'
       if (decimalPos != 99) {
         comment 'More than one decimal point'
         tm1650_clear
         return 0
       }
       decimalPos = 4
-    } else {
-      comment 'Bad number string'
-      tm1650_clear
-      return 0
     }
   }
   if (decimalPos != 99) {
