@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-08-26 14:59+0000\n"
+"PO-Revision-Date: 2025-08-26 19:30+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -7192,3 +7192,27 @@ msgstr "setze Jahr _ Monat _ Tag _"
 #. Real Time Clock library block
 msgid "set hours _ minutes _ seconds _"
 msgstr "setze Stunden _ Minuten _ Sekunden _"
+
+#. Real Time Clock library block
+msgid "DS1307"
+msgstr "DS1307"
+
+#. Real Time Clock library block
+msgid "DS3231"
+msgstr "DS3231"
+
+#. Real Time Clock library block
+msgid "PCF8523"
+msgstr "PCF8523"
+
+#. Real Time Clock library block
+msgid "PCF8563"
+msgstr "PCF8563"
+
+#. Real Time Clock library block
+msgid "PCF85063"
+msgstr "PCF85063"
+
+#. Real Time Clock library block
+msgid "RV1805"
+msgstr "RV1805"
