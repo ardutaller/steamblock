@@ -34,6 +34,9 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) { fail(primitiveNotImp
 #if defined(CALLIOPE_V3)
 	uint8 nrf52PinRx = 16;
 	uint8 nrf52PinTx = 17;
+#elif defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+	uint8 nrf52PinRx = g_ADigitalPinMap[PIN_SERIAL1_RX];
+	uint8 nrf52PinTx = g_ADigitalPinMap[PIN_SERIAL1_TX];
 #else
 	uint8 nrf52PinRx = 0;
 	uint8 nrf52PinTx = 1;
