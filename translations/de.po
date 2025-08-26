@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-08-25 12:03+0000\n"
+"PO-Revision-Date: 2025-08-26 14:51+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -7136,3 +7136,59 @@ msgstr "initialisiere i2c (auto) Reset-Pin _ flip _"
 #. Files library block
 msgid "contents of file _"
 msgstr "Inhalt der Datei _"
+
+#. Real Time Clock library block
+msgid "time (H:M:S)"
+msgstr "Uhrzeit (H:M:S)"
+
+#. Real Time Clock library block
+msgid "date (Y-M-D)"
+msgstr "Datum (J-M-T)"
+
+#. Real Time Clock library block
+msgid "second"
+msgstr "Sekunde"
+
+#. Real Time Clock library block
+msgid "minute"
+msgstr "Minute"
+
+#. Real Time Clock library block
+msgid "hour"
+msgstr "Stunde"
+
+#. Real Time Clock library block
+msgid "day"
+msgstr "Tag"
+
+#. Real Time Clock library block
+msgid "month"
+msgstr "Monat"
+
+#. Real Time Clock library block
+msgid "year"
+msgstr "Jahr"
+
+#. Real Time Clock library block
+msgid "day of week"
+msgstr "Wochentag"
+
+#. Real Time Clock library block
+msgid "set day of week _ (1-7)"
+msgstr "setze Wochentag _ (1-7)"
+
+#. Real Time Clock library block
+msgid "init clock _"
+msgstr "initialisiere Uhr _"
+
+#. Real Time Clock library block
+msgid "clock _"
+msgstr "Uhr _"
+
+#. Real Time Clock library block
+msgid "set year _ month _ day _"
+msgstr "setze Jahr _ Monat _ Tag _"
+
+#. Real Time Clock library block
+msgid "set hours _ minutes _ seconds _"
+msgstr "setze Stunden _ Minuten _ Sekunden"
