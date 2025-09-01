@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-08-19 09:02+0000\n"
+"PO-Revision-Date: 2025-09-02 09:02+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.1-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -7019,3 +7019,15 @@ msgstr "codi IR rebut?"
 #. Calliope MotionKit2 library block
 msgid "MotionKit set servo _ to _ ° (0~180)"
 msgstr "MotionKit servo _ a _ ° (0~180)"
+
+#. Real Time Clock library block
+msgid "set year _ month _ day _"
+msgstr "estableix any _ mes _ dia _"
+
+#. Real Time Clock library block
+msgid "set hours _ minutes _ seconds _"
+msgstr "estableix hores _ minuts _ segons _"
+
+#. Real Time Clock library block
+msgid "time (H:M:S)"
+msgstr "hora (h:m:s)"
