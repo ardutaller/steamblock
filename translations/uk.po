@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-08-26 14:51+0000\n"
+"PO-Revision-Date: 2025-09-02 09:02+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.1-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -4734,135 +4734,141 @@ msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "New"
-msgstr ""
+msgstr "Новий"
 
 #. In MicroBlocks IDE project menu
 msgid "Open"
-msgstr ""
+msgstr "Відкрити"
 
 #. In MicroBlocks IDE project menu
 msgid "Open from board"
-msgstr ""
+msgstr "Відкрити з плати"
 
 #. In MicroBlocks IDE project menu
 msgid "Copy project URL to clipboard"
-msgstr ""
+msgstr "Копіювати URL проєкту до буферу обміну"
 
 #. In information window title
 msgid "Information"
-msgstr ""
+msgstr "Інформація"
 
 #. MicroBlocks IDE message
 msgid "Plug in the board."
-msgstr ""
+msgstr "Вставте плату."
 
 #. MicroBlocks IDE message
 msgid "Connect board to proceed."
-msgstr ""
+msgstr "Під'єднайте плату, щоб продовжити."
 
 #. MicroBlocks IDE message
+#, fuzzy
 msgid "Reading project from board..."
-msgstr ""
+msgstr "Читаю проєкт з плати..."
 
 #. MicroBlocks IDE message
+#, fuzzy
 msgid "Loading project..."
-msgstr ""
+msgstr "Завантажую проєкт..."
 
 #. MicroBlocks IDE message
 #. %1 holds the name of a library
 msgid "Found a newer version of %1."
-msgstr ""
+msgstr "Знайдено новішу версію %1."
 
 #. MicroBlocks IDE message.
 #. First part is "Found a newer version of [a library name]"
 msgid "Do you want me to update the one in the project?"
-msgstr ""
+msgstr "Оновити її версію у проєкті?"
 
 #. In MicroBlocks IDE project menu
 msgid "Save"
-msgstr ""
+msgstr "Зберегти"
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
-msgstr ""
+msgstr "Під'єднати"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect"
-msgstr ""
+msgstr "під'єднати"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (USB)"
-msgstr ""
+msgstr "під'єднати (USB)"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (BLE)"
-msgstr ""
+msgstr "під'єднати (BLE)"
 
 #. In MicroBlocks IDE connection menu
+#, fuzzy
 msgid "open Boardie"
-msgstr ""
+msgstr "відкрити Платку (Boardie)"
 
 #. In MicroBlocks IDE connection menu
 msgid "disconnect"
-msgstr ""
+msgstr "від'єднати"
 
 #. In MicroBlocks IDE connection menu
 msgid "Serial port:"
-msgstr ""
+msgstr "Послідовний порт:"
 
 #. MicroBlocks IDE message.
 msgid "Connect board and try again"
-msgstr ""
+msgstr "Під'єднати плату і повторити спробу"
 
 #. In MicroBlocks IDE connection menu. Select "other..." serial port
 msgid "other..."
-msgstr ""
+msgstr "інший..."
 
 #. In MicroBlocks IDE connection menu. Select "no" serial port
 msgid "none"
-msgstr ""
+msgstr "жодний"
 
 #. In MicroBlocks IDE connection window. Serial port name to connect to.
 msgid "Port name?"
-msgstr ""
+msgstr "Ім'я порту?"
 
 #. In MicroBlocks IDE firmware update widgets. Board type to update.
 msgid "Board type:"
-msgstr ""
+msgstr "Тип плати:"
 
 #. In MicroBlocks IDE firmware update widgets. Board to update.
 msgid "Select board:"
-msgstr ""
+msgstr "Виберіть плату:"
 
 #. Firmware file read error.
 #. %1 holds the firmware file name
 msgid "Could not read %1."
-msgstr ""
+msgstr "Не вдалося прочитати %1."
 
 #. About window info. As in "By Mary, Johanna and Tracy".
 #. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
 msgid "about;by %1, %2 & %3."
-msgstr ""
+msgstr "створено %1, %2 та %3."
 
 #. About window info
+#, fuzzy
 msgid "Created with GP"
-msgstr ""
+msgstr "Створено з GP"
 
 #. About window info
 msgid "More info at http://microblocks.fun"
-msgstr ""
+msgstr "Докладніше на http://microblocks.fun"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
-msgstr ""
+msgstr "Скрипт завеликий для відправлення на плату."
 
 #. MicroBlocks IDE information
 msgid "Use \"Connect\" button to connect to a MicroBlocks device."
 msgstr ""
+"Натисніть кнопку \"Під'єднатися\" для під'єднання до пристроя, що підтримує "
+"MicroBlocks."
 
 #. MicroBlocks IDE error message.
 msgid "No boards found; is your board plugged in?"
-msgstr ""
+msgstr "Не знайдено плат; чи під'єднана плата?"
 
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
@@ -6362,3 +6368,7 @@ msgstr ""
 #, fuzzy
 msgid "initialize i2c(auto) reset pin# _ flip _"
 msgstr "Ініціалізувати i2c(auto) скинути пін №_ поміняти _"
+
+#. Real Time Clock library block
+msgid "set hours _ minutes _ seconds _"
+msgstr "встановити годин _ хвилин _ секунд _"
