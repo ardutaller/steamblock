@@ -143,7 +143,7 @@ static uint8_t bleRecvBuf[RECV_BUF_SIZE];
 static int bleBytesAvailable = 0;
 static int overRuns = 0;
 
-static void updateConnectionState() {
+static void updateConnectionState() { // NimBLE
 	if (USB_connected_to_IDE && !ideConnected()) {
 		// lost USB connection; resume advertisting
 		USB_connected_to_IDE = false;
@@ -480,10 +480,10 @@ static int gattWriteCallback(uint16_t attribute_handle, uint8_t *data, uint16_t 
 	return 0;
 }
 
-static void updateConnectionState() {
+static void updateConnectionState() { // PicoBLE
 	if (!__isPicoW) return;
 
-	if ((USB_connected_to_IDE || BLE_connected_to_IDE) && !ideConnected()) {
+	if (USB_connected_to_IDE && !ideConnected()) {
 		// lost connection to IDE; resume advertisting
 		USB_connected_to_IDE = false;
 		BLE_connected_to_IDE = false;
