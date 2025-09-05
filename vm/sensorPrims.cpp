@@ -1169,11 +1169,11 @@ static int readTemperature() {
 	return val;
 }
 
-#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
+#elif defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FAB_SPARKLE)
 
 #if defined(ARDUINO_Mbits)
 	#define MPU6050 0x69
-#elif defined(STEAMaker)
+#elif defined(STEAMaker) || defined(FAB_SPARKLE)
 	#define MPU6050 0x68
 #endif
 
