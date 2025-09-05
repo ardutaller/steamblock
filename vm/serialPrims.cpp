@@ -226,8 +226,6 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, rxPin, txPin);
 	#elif defined(COCUBE)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 22, 21);
-	#elif defined(C3_SUPERMINI) || defined(ARDUINO_XIAO_ESP32C3)
-		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 20, 21);
 	#elif defined(ARDUINO_XIAO_ESP32S3)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 44, 43);
 	#elif defined(M5CORE2)
@@ -255,7 +253,11 @@ static void serialOpen(int baudRate) {
 		delayMicroseconds(5); // wait for garbage byte when first opening the serial port after a reset (seen at 115200 baud)
 		SERIAL_PORT.begin(baudRate); // reset to discard garbage byte
 	#elif defined(ESP32_C3)
-		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 10, 9);
+		#if !defined(ARDUINO_USB_MODE)
+			SERIAL_PORT.begin(baudRate, SERIAL_8N1, 18, 19);
+		#else
+			SERIAL_PORT.begin(baudRate, SERIAL_8N1, RX, TX);
+		#endif
 	#elif defined(ESP32)
 		// all ESP32 boards that do not have cases above
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
