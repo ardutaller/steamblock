@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-09-02 09:02+0000\n"
-"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
+"PO-Revision-Date: 2025-09-07 08:02+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.1-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -7031,3 +7031,47 @@ msgstr "estableix hores _ minuts _ segons _"
 #. Real Time Clock library block
 msgid "time (H:M:S)"
 msgstr "hora (h:m:s)"
+
+#. Real Time Clock library block
+msgid "date (Y-M-D)"
+msgstr "data (A-M-D)"
+
+#. Real Time Clock library block
+msgid "second"
+msgstr "segon"
+
+#. Real Time Clock library block
+msgid "minute"
+msgstr "minut"
+
+#. Real Time Clock library block
+msgid "hour"
+msgstr "hora"
+
+#. Real Time Clock library block
+msgid "day"
+msgstr "dia"
+
+#. Real Time Clock library block
+msgid "month"
+msgstr "mes"
+
+#. Real Time Clock library block
+msgid "year"
+msgstr "any"
+
+#. Real Time Clock library block
+msgid "day of week"
+msgstr "dia de la setmana"
+
+#. Real Time Clock library block
+msgid "set day of week _ (1-7)"
+msgstr "posa dia de la setmana a _ (1-7)"
+
+#. Real Time Clock library block
+msgid "init clock _"
+msgstr "inicialitza rellotge _"
+
+#. Real Time Clock library block
+msgid "clock _"
+msgstr "rellotge _"
