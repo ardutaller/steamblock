@@ -1,6 +1,6 @@
 module 'Four Digit Display (TM1650)' Output
 author MicroBlocks
-version 1 1 
+version 1 2 
 description 'Four digit seven-segment LED display for KidsIOT.
 Displays decimal numbers from -999 to 9999 with optional decimal point.
 
@@ -12,12 +12,11 @@ https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/digi_c
 variables _tmSegmentMap 
 
   spec ' ' 'tm1650_show' '#SVG#square11#00c612 tm1650 show _ : decimal places _' 'auto menu.range:0-3' 3142 3
-  spec ' ' 'tm1650_showString' '#SVG#square11#00c612 tm1650 string _' 'str' '3.142'
-  space
   spec ' ' 'tm1650_clear' '#SVG#square11#00c612 tm1650 clear'
   spec ' ' 'tm1650_setBrightness' '#SVG#square11#00c612 tm1659 brightness _' 'menu.range:1-7' 3
   space
   spec ' ' '_tm1650_init' '_tm1650_init'
+  spec ' ' '_tm1650_showString' '_tm1650 string _' 'str' '3.142'
   spec ' ' '_tm1650_setDigit' '_tm1650_setDigit _ segments _ decimal after _' 'num num num' 1 0 0
 
 to '_tm1650_init' {
@@ -34,6 +33,42 @@ to '_tm1650_init' {
 to '_tm1650_setDigit' digit bits decimalPos {
   if (decimalPos == digit) {bits = (128 | bits)}
   '[sensors:i2cWrite]' ((hexToInt '33') + digit) ('[data:makeList]' bits)
+}
+
+to '_tm1650_showString' s {
+  local 'sign' 1
+  local 'decimalPos' 99
+  local 'n' 0
+  s = ('[data:convertType]' s 'string')
+  for i (size s) {
+    local 'ch' ('[data:unicodeAt]' i s)
+    if (and (i == 1) (ch == 45)) {
+      comment 'Leading minus sign'
+      sign = -1
+    } (and (48 <= ch) (ch <= 57)) {
+      comment 'ch is a digit'
+      n = ((10 * n) + (ch - 48))
+      if (decimalPos != 99) {
+        comment 'Move the decimal point left'
+        decimalPos += -1
+        if (decimalPos <= 1) {
+          exitLoop
+        }
+      }
+    } else {
+      comment 'ch is not a digit -- assume it is a decimal point character (varies by country)'
+      if (decimalPos != 99) {
+        comment 'More than one decimal point'
+        tm1650_clear
+        return 0
+      }
+      decimalPos = 4
+    }
+  }
+  if (decimalPos != 99) {
+    decimalPos = (4 - decimalPos)
+  }
+  tm1650_show (sign * n) decimalPos
 }
 
 to tm1650_clear {
@@ -59,7 +94,7 @@ to tm1650_setBrightness brightness {
 to tm1650_show n optionalDecimalPlaces {
   if (isType n 'string') {
     tm1650_clear
-    return (tm1650_showString n)
+    return ('_tm1650_showString' n)
   }
   '_tm1650_init'
   local 'decimalPos' (argOrDefault 2 99)
@@ -97,41 +132,5 @@ to tm1650_show n optionalDecimalPlaces {
       digit += -1
     }
   }
-}
-
-to tm1650_showString s {
-  local 'sign' 1
-  local 'decimalPos' 99
-  local 'n' 0
-  s = ('[data:convertType]' s 'string')
-  for i (size s) {
-    local 'ch' ('[data:unicodeAt]' i s)
-    if (and (i == 1) (ch == 45)) {
-      comment 'Leading minus sign'
-      sign = -1
-    } (and (48 <= ch) (ch <= 57)) {
-      comment 'ch is a digit'
-      n = ((10 * n) + (ch - 48))
-      if (decimalPos != 99) {
-        comment 'Move the decimal point left'
-        decimalPos += -1
-        if (decimalPos <= 1) {
-          exitLoop
-        }
-      }
-    } else {
-      comment 'ch is not a digit -- assume it is a decimal point character (varies by country)'
-      if (decimalPos != 99) {
-        comment 'More than one decimal point'
-        tm1650_clear
-        return 0
-      }
-      decimalPos = 4
-    }
-  }
-  if (decimalPos != 99) {
-    decimalPos = (4 - decimalPos)
-  }
-  tm1650_show (sign * n) decimalPos
 }
 
