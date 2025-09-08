@@ -1,8 +1,8 @@
 module 'Real Time Clock'
 author MicroBlocks
-version 1 7 
-choices rtc_moduleNames '' DS1307 DS3231 PCF8523 PCF8563 PCF85063 RV1805 
+version 1 8 
 choices rtc_timeOrDate 'time (H:M:S)' 'date (Y-M-D)' 
+choices rtc_modules '' DS1307 DS3231 PCF8523 PCF8563 PCF85063 RV1805 
 choices rtc_component second minute hour day month year 'day of week' 
 description 'Real Time Clock (RTC)
 
@@ -30,7 +30,7 @@ variables rtc_i2cAddr rtc_module rtc_registerMap
   spec ' ' 'rtc_setDate' 'set year _ month _ day _' 'num num num' 2025 1 1
   spec ' ' 'rtc_setDayOfWeek' 'set day of week _ (1-7)' 'num' 1
   advanced
-  spec ' ' 'rtc_initModule' 'init clock _' 'menu.rtc_moduleNames' ''
+  spec ' ' 'rtc_initModule' 'init clock _' 'menu.rtc_modules' ''
   space
   spec ' ' '_rtc_init' '_rtc_init'
   spec 'r' '_rtc_bcd2dec' '_rtc_bcd2dec _' 'num'
@@ -132,6 +132,7 @@ to '_rtc_testReg' reg num {
 }
 
 to '_rtc_testRegSeconds' reg {
+  comment 'Read the register three times to get the values t0, t1, and t2.'
   '[sensors:i2cSetClockSpeed]' 100000
   local 't0' (i2cGet rtc_i2cAddr reg)
   waitMillis 1000
@@ -139,7 +140,15 @@ to '_rtc_testRegSeconds' reg {
   waitMillis 1000
   local 't2' (i2cGet rtc_i2cAddr reg)
   '[sensors:i2cSetClockSpeed]' 400000
-  return (and (t2 > t1) (t1 > t0))
+  local 'result' (and (t2 > t1) (t1 > t0))
+  comment 'If the result is false perhaps the second gets 0 and the next minute starts.'
+  if (t1 == 0) {
+    result = (and (t0 > 0) (t2 > t1))
+  }
+  if (t2 == 0) {
+    result = (and (t0 > 0) (t1 > t0))
+  }
+  return result
 }
 
 to '_rtc_twoDigit' n {
