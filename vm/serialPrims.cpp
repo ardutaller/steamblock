@@ -262,10 +262,15 @@ static void serialOpen(int baudRate) {
 		// all ESP32 boards that do not have cases above
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
 	#elif defined(DUELink)
-		if (!DUE_HAS_EDGE_CONNECTOR) return; // serial only supported on boards with edge connectors
-		// Edge connector pins 0 and 1
-		SERIAL_PORT.setRx(mapDigitalPinNum(0));
-		SERIAL_PORT.setTx(mapDigitalPinNum(1));
+		if (DUE_HAS_EDGE_CONNECTOR) {
+			// Edge connector pins 0 and 1
+			SERIAL_PORT.setRx(mapDigitalPinNum(0));
+			SERIAL_PORT.setTx(mapDigitalPinNum(1));
+		} else {
+			// DUE standard pins
+			SERIAL_PORT.setRx(mapDigitalPinNum(22));
+			SERIAL_PORT.setTx(mapDigitalPinNum(21));
+		}
 		SERIAL_PORT.begin(baudRate);
 	#else
 		SERIAL_PORT.begin(baudRate);
