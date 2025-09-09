@@ -77,7 +77,7 @@ typedef signed short int int16;
 
 // Boolean constants for readability (if not already defined)
 
-#if !defined(true) || !defined(false)
+#if !defined(__cplusplus)
 	#define true 1
 	#define false 0
 #endif
