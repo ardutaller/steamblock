@@ -1182,7 +1182,7 @@ void hardwareInit() {
 	#define DIGITAL_PINS 27
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
-	#define PIN_LED 15 // PA_6 (unmapped)
+	#define PIN_LED 15 // PB_8
 	#define DEFAULT_TONE_PIN 21
 	static const int8_t analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
 
@@ -1193,16 +1193,16 @@ void hardwareInit() {
 	// 47 (PA_3) - Downlink RX (serial)
 	// 52 (PA_2) - Downlink TX (serial)
 
-	// 13 (PA_5, edge pin 21) is the buzzer
-	// 19 (PB_0, edge pin 8) is the light sensor
+	// PA_5, D13, edge pin 21 is the buzzer
+	// PB_0, D19, edge pin  9 is the light sensor
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
 		 1, 13,  7, 12, 15, 54, 11}; // row pins: 7, 12, 15, 54, 11
 
-	// 13 (PA_5, edge pin 21) is the buzzer
-	// 12 (PA_6, edge pin 23) is the light sensor
-	// 29 (PA_10, edge pin 22) is the display reset pin
+	// PA_5, D13, edge pin 21 is the buzzer
+	// PC_6, D29, edge pin 22 is the display reset pin
+	// PA_6, D12, edge pin 23 is the light sensor
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
@@ -1215,11 +1215,15 @@ void hardwareInit() {
 
 	// Analog pin names for DUELink boards
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
-	#define DUE_ANALOG_PIN_COUNT 18
+	#define DUE_ANALOG_PIN_COUNT 24
 	static const int16_t dueEdgeAnalog[DUE_ANALOG_PIN_COUNT] = {
-		PA_0, PA_1, PA_4, PA_7, PB_1, PA_14, -1, -1, PB_2, PB_0, -1, PA_13, PA_8, -1, -1, -1, -1, -1};
+		PA_0, PA_1, PA_4, PA_7, PB_1, PA_14, -1, -1, PB_2, PB_0,
+		-1, PA_13, PA_8, -1, -1, -1, -1, -1, -1, -1,
+		-1, -1, -1, PA_6};
 	static const int16_t dueStandardAnalog[DUE_ANALOG_PIN_COUNT] = {
-		-1, PA_0, PA_1, PA_4, PA_5, PA_6, PA_7, PA_8, PB_1, PB_0, -1, -1, -1, -1, -1,  -1,  -1, PB_2};
+		-1, PA_0, PA_1, PA_4, PA_5, PA_6, PA_7, PA_8, PB_1, PB_0,
+		-1, -1, -1, -1, -1,  -1,  -1, PB_2, -1, -1,
+		-1, -1, -1, -1};
 
 	static int dueAnalogPin(int pinNum) {
 		int result = -1; // default - no pin

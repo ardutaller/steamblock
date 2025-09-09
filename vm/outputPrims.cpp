@@ -568,9 +568,13 @@ static OBJ primLightLevel(int argCount, OBJ *args) {
 	#elif defined(FOXBIT)
 		lightLevel = analogRead(39) * 1000 / 4095; // output range 0-1000
 	#elif defined(DUELink)
-		if (DUE_HAS_EDGE_CONNECTOR) {
-			int lightPin = (IS_DUE_CINCO) ? 19 : 12;
-			lightLevel = analogRead(lightPin) * 1000 / 4095; // output range 0-1000
+		int lightPin =
+			(DUE_HAS_EDGE_CONNECTOR) ?
+				((IS_DUE_CINCO) ? 9 : 23) :
+				(((IS_DUE_STEM) || (IS_DUE_CLIPIT)) ? 17 : -1);
+		if (lightPin != -1) {
+			OBJ pinArg = int2obj(lightPin);
+			lightLevel = obj2int(primAnalogRead(1, &pinArg));
 		} else {
 			lightLevel = 0;
 		}
