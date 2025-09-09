@@ -1,6 +1,6 @@
 module 'Calliope Callibot'
 author 'Michael Klein (kleinswelt)'
-version 0 7 
+version 1 1 
 choices cb_V1intensity '0' '1' '2' '3' '4' '5' '6' '7' '8' 
 choices cb_motor left right both 
 choices cb_line 'mk2;bright' 'mk2;dark' 
@@ -11,7 +11,7 @@ choices cb_servo 'mk2;S1' 'mk2;S2' both
 choices cb_position left right 
 description 'Calliope Calli:bot 1&2
 These are blocks for driving the fully I2C controlled 
-Calliope mini Calli:bot V1 and V2 from Knotech.
+Calliope mini Calli:bot V1, V2 and V2E from Knotech.
 
 https://shop.knotech.de/calli-bot
 '
@@ -31,6 +31,11 @@ variables _ledState_
   spec ' ' 'cb_setNeoPixel' 'Callibot V2 set neopixel _ to _' 'menu.cb_RGBLed color' 'all'
   spec 'r' 'cb_colorRGB' 'color r _ g _ b _ (0~255)' 'num num num' 0 100 100
   space
+  spec ' ' 'cb_resetEncodercounter' 'Callibot V2E reset encodercounter _' 'menu.cb_motor auto' 'both'
+  spec 'r' 'cb_encodercounter' 'Callibot V2E encodercounter _' 'menu.cb_position' 'left'
+  spec 'r' '_cb_battery' 'Callibot V2E battery (mV)'
+  space
+  space
   spec 'r' '_cb_initialized' '_cb_initialized'
   spec 'r' '_callibotv2_' '_callibotv2_'
   spec 'r' '_cb_i2cRead' '_cb_i2cRead addr _ reg _' 'num num'
@@ -41,6 +46,16 @@ to '_callibotv2_' {
     local 'buffer' ('_cb_i2cRead' (hexToInt '21') 1)
     return (((at 1 buffer) & (hexToInt '80')) != 0)
   }
+}
+
+to '_cb_battery' {
+  if ('_callibotv2_') {
+    '_cb_i2cWrite' (hexToInt '22') ('[data:makeList]' (hexToInt '83'))
+    local 'mv' (newList 3)
+    i2cSet (hexToInt '22') 3 0
+    '[sensors:i2cRead]' (hexToInt '22') mv
+  }
+  return (((at 3 mv) << 8) + (at 2 mv))
 }
 
 to '_cb_i2cRead' cbi2cAddr regAddr {
@@ -159,6 +174,29 @@ to cb_distance {
   }
 }
 
+to cb_encodercounter encoderlr {
+  if ('_callibotv2_') {
+    local 'result' (newList 9)
+    if (encoderlr == 'left') {
+      local 'index' 2
+    } else {
+      local 'index' 6
+    }
+    if ('_cb_initialized') {
+      i2cSet (hexToInt '22') (hexToInt '91') 0
+      '[sensors:i2cRead]' (hexToInt '22') result
+    }
+    '[sensors:i2cSetClockSpeed]' 400000
+    local 'encodercount' (at (index + 3) result)
+    encodercount = ((encodercount * 256) + (at (index + 2) result))
+    encodercount = ((encodercount * 256) + (at (index + 1) result))
+    encodercount = ((encodercount * 256) + (at index result))
+    return encodercount
+  } else {
+    return 0
+  }
+}
+
 to cb_lineSensor which brightdark {
   if ('_cb_initialized') {
     local 'patrol' (at 1 ('_cb_i2cRead' (hexToInt '21') 1))
@@ -172,6 +210,19 @@ to cb_lineSensor which brightdark {
       var = (not var)
     }
     return var
+  }
+}
+
+to cb_resetEncodercounter encoderlrb {
+  if ('_callibotv2_') {
+    if (encoderlrb == 'left') {
+      local 'lrb' 1
+    } (encoderlrb == 'right') {
+      local 'lrb' 2
+    } else {
+      local 'lrb' 3
+    }
+    '_cb_i2cWrite' (hexToInt '22') ('[data:makeList]' 5 lrb)
   }
 }
 
