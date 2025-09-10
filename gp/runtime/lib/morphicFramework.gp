@@ -504,14 +504,6 @@ method processTouchHold Hand currentObj {
 	lastTouchTime = nil
 	if (isMobile) {
 		processRightClicked this currentObj
-	} else {
-		// try to grab object
-		toBeGrabbed = (rootForGrab this lastTouched)
-		if (isClass toBeGrabbed 'Block') {
-			grab this (topBlock toBeGrabbed)
-			lastTouched = nil
-			lastTouchTime = nil
-		}
 	}
 }
 

@@ -34,6 +34,9 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) { fail(primitiveNotImp
 #if defined(CALLIOPE_V3)
 	uint8 nrf52PinRx = 16;
 	uint8 nrf52PinTx = 17;
+#elif defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+	uint8 nrf52PinRx = g_ADigitalPinMap[PIN_SERIAL1_RX];
+	uint8 nrf52PinTx = g_ADigitalPinMap[PIN_SERIAL1_TX];
 #else
 	uint8 nrf52PinRx = 0;
 	uint8 nrf52PinTx = 1;
@@ -197,7 +200,7 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 #else // use Serial1 or Serial2
 
 // Use Serial2 on original ESP32 and Pico:ed boards, Serial1 on others
-#if (ESP32_ORIGINAL) || defined(PICO_ED) || defined(COCUBE) || defined(DUELink) || defined(ARDUINO_WEACT)
+#if defined(ESP32_ORIGINAL) || defined(ESP32_S3) || defined(PICO_ED) || defined(COCUBE) || defined(DUELink) || defined(ARDUINO_WEACT)
 	#define SERIAL_PORT Serial2
 #else
 	#define SERIAL_PORT Serial1
@@ -223,8 +226,8 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, rxPin, txPin);
 	#elif defined(COCUBE)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 22, 21);
-	#elif defined(C3_SUPERMINI)
-		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 20, 21);
+	#elif defined(ARDUINO_XIAO_ESP32S3)
+		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 44, 43);
 	#elif defined(M5CORE2)
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 32, 33);
 	#elif defined(M5Atom_Lite) || defined(M5Atom_Matrix)
@@ -249,13 +252,25 @@ static void serialOpen(int baudRate) {
 		SERIAL_PORT.begin(baudRate);
 		delayMicroseconds(5); // wait for garbage byte when first opening the serial port after a reset (seen at 115200 baud)
 		SERIAL_PORT.begin(baudRate); // reset to discard garbage byte
-	#elif defined(ESP32_ORIGINAL)
+	#elif defined(ESP32_C3)
+		#if !defined(ARDUINO_USB_MODE)
+			SERIAL_PORT.begin(baudRate, SERIAL_8N1, 18, 19);
+		#else
+			SERIAL_PORT.begin(baudRate, SERIAL_8N1, RX, TX);
+		#endif
+	#elif defined(ESP32)
+		// all ESP32 boards that do not have cases above
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
 	#elif defined(DUELink)
-		if (!DUE_HAS_EDGE_CONNECTOR) return; // serial only supported on boards with edge connectors
-		// Edge connector pins 0 and 1
-		SERIAL_PORT.setRx(mapDigitalPinNum(0));
-		SERIAL_PORT.setTx(mapDigitalPinNum(1));
+		if (DUE_HAS_EDGE_CONNECTOR) {
+			// Edge connector pins 0 and 1
+			SERIAL_PORT.setRx(mapDigitalPinNum(0));
+			SERIAL_PORT.setTx(mapDigitalPinNum(1));
+		} else {
+			// DUE standard pins
+			SERIAL_PORT.setRx(mapDigitalPinNum(22));
+			SERIAL_PORT.setTx(mapDigitalPinNum(21));
+		}
 		SERIAL_PORT.begin(baudRate);
 	#else
 		SERIAL_PORT.begin(baudRate);
@@ -503,14 +518,18 @@ static OBJ primMIDIRecv(int argCount, OBJ *args) { return falseObj; }
 
 #if defined(DUELink)
 
-HardwareSerial DOWNLINK(PA3, PA2);
+#define DOWNLINK Serial2
 static int downlinkInitialized = false;
 
 static void initDownlink() {
 	if (downlinkInitialized) return; // already open
+	DOWNLINK.setRx(PA3);
+	DOWNLINK.setTx(PA2);
 	DOWNLINK.begin(115200);
 	downlinkInitialized = true;
 }
+
+static OBJ primIsDUELink(int argCount, OBJ *args) { return trueObj; }
 
 static OBJ primDUELinkSend(int argCount, OBJ *args) {
 	// Send up to 63 bytes to the DUELink downstream link and return the number of bytes sent.
@@ -566,6 +585,8 @@ static void initDownlink() {
 	delay(5); // leave a litte time for things to settle
 }
 
+static OBJ primIsDUELink(int argCount, OBJ *args) { return falseObj; }
+
 static OBJ primDUELinkSend(int argCount, OBJ *args) {
 	initDownlink();
 	return primSerialWriteBytes(argCount, args);
@@ -590,6 +611,7 @@ static PrimEntry entries[] = {
 	{"writeBytes", primSerialWriteBytes},
 	{"midiSend", primMIDISend},
 	{"midiRecv", primMIDIRecv},
+	{"isDUELink", primIsDUELink},
 	{"dueSend", primDUELinkSend},
 	{"dueRecv", primDUELinkRecv},
 };

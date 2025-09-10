@@ -40,6 +40,8 @@ extern "C" {
 	// CincoBit = 1, PixoBit = 2; ID's 3-15 are reserved for future boards with edge connectors
 	#define DUE_HAS_EDGE_CONNECTOR ((*((uint32 *) 0x1FFF7004) & 0xFFFFFF) < 16)
 	#define IS_DUE_CINCO ((*((uint32 *) 0x1FFF7004) & 0xFFFFFF) == 1)
+	#define IS_DUE_STEM ((*((uint32 *) 0x1FFF7004) & 0xFFFFFF) == 16)
+	#define IS_DUE_CLIPIT ((*((uint32 *) 0x1FFF7004) & 0xFFFFFF) == 17)
 #endif
 
 #if defined(ESP32) && !(defined(ESP32_S2) || defined(ESP32_S3) || defined(ESP32_C3) || defined(ESP32_C6))
@@ -75,7 +77,7 @@ typedef signed short int int16;
 
 // Boolean constants for readability (if not already defined)
 
-#if !defined(true) || !defined(false)
+#if !defined(__cplusplus)
 	#define true 1
 	#define false 0
 #endif

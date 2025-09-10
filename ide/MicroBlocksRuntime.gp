@@ -1362,6 +1362,17 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'NeoPixel'
 		importEmbeddedLibrary scripter 'Tone'
 		importEmbeddedLibrary scripter 'TFT'
+	} ('DueSTEM' == boardType) {
+		importEmbeddedLibrary scripter 'Tiny OLED'
+		importEmbeddedLibrary scripter 'Tone'
+	} ('PixoBit' == boardType) {
+		importEmbeddedLibrary scripter 'Due Touch Pin'
+		importEmbeddedLibrary scripter 'Tiny OLED'
+		importEmbeddedLibrary scripter 'Tone'
+	} (or ('CincoBit' == boardType) ('Clipit' == boardType)) {
+		importEmbeddedLibrary scripter 'Due Touch Pin'
+		importEmbeddedLibrary scripter 'LED Display'
+		importEmbeddedLibrary scripter 'Tone'
 	}
 }
 
@@ -1373,6 +1384,9 @@ method boardIsBLECapable SmallRuntime {
 	if (isNil boardType) { getVersion this }
 	if (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'Databot' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers' 'CodingBox' 'Foxbit' 'KidsIOT') {
+		return true
+	}
+	if (notNil (findSubstring 'ESP' boardType)) {
 		return true
 	}
 	return false
@@ -2860,8 +2874,17 @@ method showOutputStrings SmallRuntime {
 
 // Virtual Machine Installer
 
+method dueBoardConnected SmallRuntime {
+	if (isNil boardType) { return false }
+	return (isOneOf boardType 'CincoBit' 'Clipit' 'DueSTEM' 'PixoBit' 'DUELink')
+}
+
 method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 	closeAllDialogs (findMicroBlocksEditor)
+	if (dueBoardConnected this) {
+		openURL 'https://www.duelink.com/docs/language/microblocks#standalone-with-microblocks'
+		return
+	}
 	if ('Browser' == (platform)) {
 		installVMInBrowser this eraseFlashFlag downloadLatestFlag
 		return

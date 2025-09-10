@@ -1,22 +1,24 @@
 module 'Tiny OLED' Output
 author MicroBlocks
-version 1 0 
+version 1 2 
 description 'Tiny graphics library for a 128x64 pixel monochrome OLED display with a SSD1306 controller.
 Useful on boards with very limited code store space such as the DUELink PixoBit.
 '
 variables _tinyOLED_buffer _tinyOLED_hideUpdates 
 
-  spec ' ' 'tinyOLED_clear' 'clear display'
-  spec ' ' 'tinyOLED_drawString' 'draw string _ x _ y _' 'str num num' 'Hello!' 48 52
-  spec ' ' 'tinyOLED_drawLine' 'draw line from _ _ to _ _ white _' 'num num num num bool' 0 0 127 63 true
+  spec ' ' 'tinyOLED_clear' 'clear tiny OLED display'
+  spec ' ' 'tinyOLED_drawString' 'draw string _ x _ y _ white _' 'str num num bool' 'Hello!' 48 52 true
   spec ' ' 'tinyOLED_drawRect' 'draw rect x _ y _ w _ h _ fill _ white _' 'num num num num bool bool' 44 17 40 30 false true
   spec ' ' 'tinyOLED_drawCircle' 'draw circle center _ _ radius _ fill _ white _' 'num num num bool bool' 64 32 10 false true
+  spec ' ' 'tinyOLED_drawLine' 'draw line from _ _ to _ _ white _' 'num num num num bool' 0 0 127 63 true
   spec ' ' 'tinyOLED_drawPixel' 'draw pixel x _ y _ white _' 'num num bool' 20 30 true
   space
-  spec ' ' 'tinyOLED_setBrightness' 'set brightness _ (1-5)' 'num' 4
+  spec ' ' 'tinyOLED_setBrightness' 'set tiny OLED brightness _' 'menu.range:1-5' 4
   space
-  spec ' ' 'tinyOLED_hideUpdates' 'defer display updates'
-  spec ' ' 'tinyOLED_showUpdates' 'show display updates'
+  spec ' ' 'tinyOLED_hideUpdates' 'defer tiny OLED display updates'
+  spec ' ' 'tinyOLED_showUpdates' 'show tiny OLED display updates'
+  space
+  spec ' ' 'tinyOLED_setResetPin' 'reset tiny OLED pin _' 'num' 22
   space
   spec ' ' '_tinyOLED_init' '_tinyOLED_init'
   spec ' ' '_tinyOLED_cmd' '_tinyOLED_cmd _' 'auto' 10
@@ -88,19 +90,8 @@ to '_tinyOLED_hline' startX endX y white {
 
 to '_tinyOLED_init' {
   if (_tinyOLED_buffer != 0) {return 0}
-  _tinyOLED_buffer = ('[data:newByteArray]' 1024)
-  comment 'Toggle OLED reset pin.'
-  local 'resetPin' 25
-  digitalWriteOp resetPin false
-  waitMillis 1
-  digitalWriteOp resetPin true
-  waitMillis 1
-  comment 'Minimal initialization commands:
-A1     - Horizontal flip (A0 or A1)
-C8     - Vertical flip (C0 or C8)
-8D,14  - Enable charge pump
-AF     - Display on'
-  '_tinyOLED_cmd' 'A1,C8,8D,14,AF'
+  comment 'Use default reset pin 22 for PixoBit and ClipIt boards.'
+  tinyOLED_setResetPin 22
 }
 
 to '_tinyOLED_setPixel' x y white {
@@ -247,8 +238,13 @@ to tinyOLED_drawRect x y w h fill white {
   '_tinyOLED_updateDisplay'
 }
 
-to tinyOLED_drawString s x y {
+to tinyOLED_drawString s x y white {
   '_tinyOLED_init'
+  if (not white) {
+    comment 'Clear string rectangle'
+    tinyOLED_drawRect x y (6 * (size s)) 7 true false
+    return
+  }
   for ch s {
     '_tinyOLED_drawChar' ch x y
     x += 6
@@ -264,6 +260,23 @@ to tinyOLED_setBrightness level {
   level = (maximum 1 (minimum level 5))
   local 'cLevels' ('[data:makeList]' 0 20 40 80 'FF')
   '_tinyOLED_cmd' ('[data:join]' '81,' (at level cLevels))
+}
+
+to tinyOLED_setResetPin resetPin {
+  _tinyOLED_buffer = ('[data:newByteArray]' 1024)
+  if (resetPin >= 0) {
+    comment 'Toggle OLED reset pin (skip this if resetPin < 0)'
+    digitalWriteOp resetPin false
+    waitMillis 1
+    digitalWriteOp resetPin true
+    waitMillis 1
+  }
+  comment 'Minimal initialization commands:
+A1     - Horizontal flip (A0 or A1)
+C8     - Vertical flip (C0 or C8)
+8D,14  - Enable charge pump
+AF     - Display on'
+  '_tinyOLED_cmd' 'A1,C8,8D,14,AF'
 }
 
 to tinyOLED_showUpdates {

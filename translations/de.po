@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-07-16 13:38+0000\n"
+"PO-Revision-Date: 2025-08-28 07:02+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.13\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -147,12 +147,12 @@ msgstr "Palette"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set an I2C device and register to given value (0-255)."
 msgstr ""
-"setzt für ein I2C-Gerät (0-127) ein Register (0-255) auf den angegebenen "
+"Setzt für ein I2C-Gerät (0-127) ein Register (0-255) auf den angegebenen "
 "Wert (0-255)."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Close the serial port."
-msgstr "schließt den seriellen Anschluss."
+msgstr "Schließt den seriellen Anschluss."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Add an item to the end of a list."
@@ -160,7 +160,7 @@ msgstr "Fügt ein Element an das Ende der Liste an."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Delete the Nth item (or all items) of a list."
-msgstr "Lösche das angegebene Element (oder alle Elemente) aus der Liste."
+msgstr "Löscht das angegebene Element (oder alle Elemente) aus der Liste."
 
 #. Block input right-click context menu option
 msgid "number/string"
@@ -1946,21 +1946,21 @@ msgstr "Sensoren"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Run the first set of blocks whose test condition is (-o) ."
-msgstr "führt den ersten Blockbereich aus, für den die Bedingung (-o) ist."
+msgstr "Führt den ersten Blockbereich aus, für den die Bedingung (-o) ist."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks with the variable set to the current iteration number or item."
 msgstr ""
-"wiederholt die umschlossenen Blöcke mit einer Laufvariablen, die auf die "
+"Wiederholt die umschlossenen Blöcke mit einer Laufvariablen, die auf die "
 "aktuelle Zahl oder das aktuelle Element gesetzt ist."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Stop this task."
-msgstr "beendet das Skript."
+msgstr "Beendet das Skript."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Stop all tasks except this one."
-msgstr "beendet alle anderen Skripte außer diesem."
+msgstr "Beendet alle anderen Skripte außer diesem."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Call the function with the given name and optional parameter list and report its return value."
@@ -2070,7 +2070,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Combine the items of a list into a string, optionally separated by a delimiter (e.g. comma)."
 msgstr ""
-"verbindet die Elemente der Liste zu einer Zeichenfolge, optional mit "
+"Verbindet die Elemente der Liste zu einer Zeichenfolge, optional mit "
 "Trennzeichen getrennt."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
@@ -2487,7 +2487,7 @@ msgstr "Board nicht verbunden"
 
 #. Process cancellation tip
 msgid "(press ESC to cancel)"
-msgstr "(drücke ESC zum Abbrechen)"
+msgstr "drücke ESC zum Abbrechen."
 
 #. Process finished information
 msgid "Done!"
@@ -2616,15 +2616,15 @@ msgstr "Verschiebe um die Größe des Bereichs zu ändern."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Run when buttons A, B, or A+B are pressed."
-msgstr "ausführen, wenn Knopf A, B oder A+B gedrückt werden."
+msgstr "Wird ausgeführt, wenn Knopf A, B oder A+B gedrückt werden."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks the given number of times."
-msgstr "wiederholt die umschlossenen Blöcke so oft wie angegeben."
+msgstr "Wiederholt die umschlossenen Blöcke so oft wie angegeben."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Wait the given number of milliseconds."
-msgstr "wartet die in Millisekunden angegebene Zeit."
+msgstr "Wartet die in Millisekunden angegebene Zeit."
 
 #. Microphone library block
 msgid "clap count"
@@ -2725,7 +2725,7 @@ msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Do nothing. Used to add notes and documentation."
-msgstr "macht gar nichts, wird aber zum Dokumentieren genutzt."
+msgstr "Macht gar nichts, wird aber zum Dokumentieren genutzt."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
@@ -3231,25 +3231,25 @@ msgstr "gibt den Zustand von Taste B zurück ( (-o) oder (o-) )."
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Turn a pin on or off ( (-o) or (o-) )."
-msgstr "schaltet einen Pin ein oder aus ( (-o) or (o-) )."
+msgstr "Schaltet einen Pin ein oder aus ( (-o) or (o-) )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send multiple bytes to an I2C device."
-msgstr "sendet mehrere Bytes an ein I2C-Gerät."
+msgstr "Sendet mehrere Bytes an ein I2C-Gerät."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Run when the condition becomes (-o) ."
-msgstr "ausführen, wenn die Bedingung (-o) wird."
+msgstr "Wird ausgeführt, wenn die Bedingung (-o) wird."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Repeat the enclosed blocks until the condition becomes (-o) ."
-msgstr "wiederholt die umschlossenen Blöcke, bis die Bedingung (-o) wird."
+msgstr "Wiederholt die umschlossenen Blöcke, bis die Bedingung (-o) wird."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the value of a register (0-255) of an I2C device (0-127)."
-msgstr "gibt für ein I2C-Gerät (0-127) den Wert eines Registers (0-255) zurück."
+msgstr "Gibt für ein I2C-Gerät (0-127) den Wert eines Registers (0-255) zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
@@ -3272,7 +3272,7 @@ msgstr ""
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Boolean constant ( (-o) or (o-) )."
-msgstr "Wahrheitswert ( (-o) oder (o-) )."
+msgstr "Gibt einen Wahrheitswert ( (-o) oder (o-) ) zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the given number shifted left by the given number of bits."
@@ -3283,7 +3283,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Create a variable local to the containing script with the given initial value."
 msgstr ""
-"Erzeuge eine lokale Variable im enthaltenen Skript und setze den angegebenen "
+"Erzeugt eine lokale Variable im enthaltenen Skript und setzt den angegebenen "
 "Anfangswert."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
@@ -3412,7 +3412,7 @@ msgstr ""
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the last broadcast message received."
-msgstr "gibt die zuletzt empfangene Nachricht zurück."
+msgstr "Gibt die zuletzt empfangene Nachricht zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the numerical value of a hexadecimal string (range: -0x1FFFFFFF to 0x1FFFFFFF)"
@@ -3423,7 +3423,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Split the given string with the given delimiter and report the result (a list of strings)."
 msgstr ""
-"teilt die gegebene Zeichenfolge mit dem angegebenen Trennzeichen und gibt "
+"Teilt die gegebene Zeichenfolge mit dem angegebenen Trennzeichen und gibt "
 "dies als Liste von Zeichenfolgen zurück."
 
 #. Block in Input category
@@ -3452,7 +3452,7 @@ msgstr "größere Blockgröße"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte (0-255) to an SPI device."
-msgstr "sendet ein Byte (0-255) an ein SPI-Gerät."
+msgstr "Sendet ein Byte (0-255) an ein SPI-Gerät."
 
 #. Block in Pins category
 msgid "pullup _"
@@ -3605,54 +3605,54 @@ msgstr "gibt den Zustand der Taste A zurück ( (-o) oder (o-) )."
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a number proportional to the voltage on an analog pin (0 = ground, 1023 = supply voltage)."
 msgstr ""
-"zeigt eine Zahl proportional zur Spannung an einem analogen Pin (0 = Masse, "
+"Zeigt eine Zahl proportional zur Spannung an einem analogen Pin (0 = Masse, "
 "1023 = Versorgungsspannung)."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report number of analog pins on this device."
-msgstr "zeigt die Anzahl analoger Pins des Geräts."
+msgstr "Zeigt die Anzahl analoger Pins des Geräts."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report number of digital pins on this device."
-msgstr "zeigt die Anzahl digitaler Pins des Geräts."
+msgstr "Zeigt die Anzahl digitaler Pins des Geräts."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Receive multiple bytes from an I2C device."
-msgstr "empfängt mehrere Byte von einem I2C-Gerät."
+msgstr "Empfängt mehrere Byte von einem I2C-Gerät."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Read a byte from an SPI device while sending a zero byte. Report the byte received."
 msgstr ""
-"liest ein Byte von einem SPI-Gerät, während es ein Null-Byte sendet, und "
+"Liest ein Byte von einem SPI-Gerät, während es ein Null-Byte sendet, und "
 "gibt das Byte zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte array via SPI, replacing its contents with the bytes received."
 msgstr ""
-"sendet ein ByteArray über SPI und ersetzt seinen Inhalt mit den empfangenen "
+"Sendet ein ByteArray über SPI und ersetzt seinen Inhalt mit den empfangenen "
 "Bytes."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Open the serial port at the given baud rate."
-msgstr "öffnet einen seriellen Anschluss mit der angegebenen Baudrate."
+msgstr "Öffnet einen seriellen Anschluss mit der angegebenen Baud-Rate."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report data received from the serial port (a byte array)."
 msgstr ""
-"gibt die empfangenen Daten vom seriellen Anschluss (als ByteArray) zurück."
+"Gibt die empfangenen Daten vom seriellen Anschluss (als ByteArray) zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte array to the serial port."
-msgstr "sendet ein ByteArray zum seriellen Anschluss."
+msgstr "Sendet ein ByteArray zum seriellen Anschluss."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Wait until the condition becomes (-o) ."
-msgstr "wartet, bis die Bedingung (-o) wird."
+msgstr "Wartet, bis die Bedingung (-o) wird."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Return (report) the given value from a function or script."
-msgstr "gibt den Wert einer Funktion oder eines Skripts zurück."
+msgstr "Gibt den Wert einer Funktion oder eines Skripts zurück."
 
 #. Block in Control category
 msgid "when started"
@@ -3787,7 +3787,7 @@ msgstr "gibt die Zeit in Millisekunden (ms) seit dem Einschalten zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Broadcast the given message."
-msgstr "sendet die angegebene Nachricht als Broadcast."
+msgstr "Sendet die angegebene Nachricht als Broadcast."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
@@ -3902,33 +3902,33 @@ msgstr "zeigt den Wert grafisch an."
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 #. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
 msgid "Report the electrical logic level on a digital pin ( (-o) or (o-) )."
-msgstr "zeigt den Logikpegel eines digitalen Pins ( (-o) or (o-) )."
+msgstr "Zeigt den Logikpegel eines digitalen Pins ( (-o) or (o-) )."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Pulse width modulate (PWM) a pin with the given duty cycle (0 - 1023)."
 msgstr ""
-"erzeugt ein pulsweitenmoduliertes Signal (PWM) an einem Pin mit dem "
+"Erzeugt ein pulsweitenmoduliertes Signal (PWM) an einem Pin mit dem "
 "angegebenen Zyklus (0 - 1023)."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Run when the board powers up or when the IDE start button is clicked."
 msgstr ""
-"ausführen, wenn das Board eingeschaltet oder wenn der IDE-Start-Knopf "
+"Wird ausgeführt, wenn das Board eingeschaltet oder wenn der IDE-Start-Knopf "
 "gedrückt wird."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Repeat the enclosed blocks indefinitely."
-msgstr "wiederholt die umschlossenen Blöcke dauerhaft."
+msgstr "Wiederholt die umschlossenen Blöcke dauerhaft."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Wait the given number of microseconds."
-msgstr "wartet die in Mikrosekunden angegebene Zeit."
+msgstr "Wartet die in Mikrosekunden angegebene Zeit."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Find and report the index of an item in a list or a substring within a string. Report -1 if not found."
 msgstr ""
-"Gib die Stelle des Elements in der Liste oder der Teilzeichenfolge in der "
-"Zeichenfolge zurück. Gibt -1 zurück, falls nichts gefunden."
+"Gibt die Stelle des Elements in der Liste oder der Teilzeichenfolge in der "
+"Zeichenfolge zurück. Gibt -1 zurück, falls nichts gefunden wird."
 
 #. Cutebot Pro library block
 msgid "CBPro IR code"
@@ -4067,12 +4067,12 @@ msgstr "CBPro drehe Rotationsservo _ mit _ (-100~100)"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "Reports (-o) if the board is connected to IDE."
-msgstr "zeigt (-o), wenn das Board mit der IDE verbunden ist."
+msgstr "Zeigt (-o), wenn das Board mit der IDE verbunden ist."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Set the SPI clock speed, mode, channel (Raspberry Pi only), and bit order."
 msgstr ""
-"setzt SPI-Taktfrequenz, -Modus, -Kanal (nur Raspberry Pi) und Bit-"
+"Setzt SPI-Taktfrequenz, -Modus, -Kanal (nur Raspberry Pi) und Bit-"
 "Reihenfolge."
 
 #. Cutebot Pro library block
@@ -4164,7 +4164,7 @@ msgstr "Cutebot sieht Linie bei links _ rechts _"
 
 #. OLED Graphics library block
 msgid "clear"
-msgstr "lösche"
+msgstr "lösche Display"
 
 #. Lists library block
 msgid "filter _ with _"
@@ -4225,7 +4225,7 @@ msgstr "setze Video _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "initialisiere i2c _ Adresse(hex) _ Reset-Pin _ flip _"
+msgstr "initialisiere i2c _ Adresse (hex) _ ResetPin _ flip _"
 
 #. General MIDI control change
 msgid "hold"
@@ -4269,7 +4269,7 @@ msgstr "_ mit Farbton _ (0-360)"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "_drehe Display oben _"
+msgstr "drehe Display flip _"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" light
@@ -4295,34 +4295,35 @@ msgstr "wenn _ dann _ sonst _"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Run when the given message is received as a broadcast."
-msgstr "ausführen, wenn die angegebene Nachricht als Broadcast empfangen wird."
+msgstr ""
+"Wird ausgeführt, wenn die angegebene Nachricht als Broadcast empfangen wird."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the given argument or defaultValue if the argument was not supplied by the caller."
 msgstr ""
-"gibt das angegebene Argument aus oder einen Standardwert, wenn das Argument "
+"Gibt das angegebene Argument aus oder einen Standardwert, wenn das Argument "
 "nicht beim Aufruf bereitgestellt wurde."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Convert a value to the given data type."
-msgstr "Wert in den angegebenen Datentyp konvertieren."
+msgstr "Konvertiert den Wert in den angegebenen Datentyp."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 #. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
 msgid "If the condition is (-o) report the first alternative otherwise report the second alternative."
 msgstr ""
-"Wenn die Bedingung (-o) ist, wird die erste Alternative zurückgegeben, "
-"andernfalls die zweite Alternative."
+"Gibt die erste Alternative zurück, wenn die Bedingung (-o) ist, andernfalls "
+"die zweite Alternative."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Map a value in the \"from\" range to the corresponding value in the \"to\" range."
 msgstr ""
-"Wert aus dem Quellbereich auf den entsprechenden Wert im Zielbereich "
-"zuordnen."
+"Ordnet den Wert aus dem Quellbereich auf den entsprechenden Wert im "
+"Zielbereich zu."
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "initialisiere spi _ D/C-Pin _ Reset-Pin _ flip _"
+msgstr "initialisiere spi _ D/C-Pin _ ResetPin _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -4330,7 +4331,7 @@ msgstr "schreibe _ bei x _ y _ invers _"
 
 #. OLED Graphics library block
 msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
-msgstr "zeichne Rechteck x _ y _ b _ h _ löschen _ Rundung(3-15) _"
+msgstr "zeichne Rechteck x _ y _ b _ h _ löschen _ Rundung (3-15) _"
 
 #. OLED Graphics library block
 msgid "cursor location"
@@ -4538,12 +4539,12 @@ msgstr "Motoren"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte array to the serial port, starting at the given byte."
 msgstr ""
-"sendet ein ByteArray zum seriellen Anschluss, beginnend mit dem angegebenen "
+"Sendet ein ByteArray zum seriellen Anschluss, beginnend mit dem angegebenen "
 "Byte."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Write a byte to the pin at the specified baud rate."
-msgstr "schreibt ein Byte zum Pin mit der angegebene Baudrate."
+msgstr "Schreibt ein Byte zum Pin mit der angegebene Baud-Rate."
 
 #. Examples folder
 msgid "folder;Games"
@@ -4584,8 +4585,8 @@ msgstr "_ pseudozufällige Zahlen _ bis _ mit Seed _"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a list containing the given range of numbers (with optional increment). Useful in \"for\" loops."
 msgstr ""
-"Liste ausgeben, die den angegebenen Zahlenbereich enthält (mit optionalem "
-"Inkrement). Nützlich in \"for\"-Schleifen."
+"Gibt eine Liste aus, die den angegebenen Zahlenbereich enthält (mit "
+"optionalem Inkrement). Nützlich in \"für\"-Schleifen."
 
 #. Settings menu option
 msgid "advanced mode"
@@ -4604,7 +4605,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the microseconds since the given start microseconds. Handles clock wrap."
 msgstr ""
-"gibt die Mikrosekunden nach den angegebenen Startmikrosekunden an. Handles "
+"Gibt die Mikrosekunden nach den angegebenen Startmikrosekunden an. Handles "
 "Clock Wrap."
 
 #. Block in Control category
@@ -4866,16 +4867,16 @@ msgstr "Wukong2040"
 #. Sphero-RVR robot library block
 msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
 msgstr ""
-"setze Motoren mit Linksmodus _ Geschwindigkeit _ und mit Rechtsmodus _ "
+"setze Motoren links auf Modus _ Geschwindigkeit _ und rechts auf Modus _ "
 "Geschwindigkeit _"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to speed _ (-100 to 100)"
-msgstr "Wukong drehe Rotationsservo _ mit _ (-100~100)"
+msgstr "Wukong drehe Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
-msgstr "Nezha starte Motor_ mit _ % (-100~100)"
+msgstr "Nezha drehe Motor_ mit Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong stop motor _"
@@ -4915,11 +4916,11 @@ msgstr "Wukong setze blaue LEDs auf Helligkeit _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
-msgstr "Wukong2040 starte Motor _ mit _ % (-100~100)"
+msgstr "Wukong2040 drehe Motor _ mit Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong set servo _ to _ degrees (-90 to 90)"
-msgstr "Wukong setze 180°-Servo _ auf _ ° (-90~90)"
+msgstr "Wukong setze 180°-Servo _ auf Winkel _ (-90~90)"
 
 #. Wukong robot library block
 msgid "Wukong set NeoPixels _ _ _ _"
@@ -4939,7 +4940,7 @@ msgstr "Nezha setze _ Servo _ auf Winkel _"
 
 #. NeZha robot library block
 msgid "NeZha set continuous rotation servo _ speed to _ %"
-msgstr "Nezha drehe Rotationsservo _ mit _ %"
+msgstr "Nezha drehe Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus sonar trig _ echo _ distance (cm)"
@@ -4967,11 +4968,11 @@ msgstr "retain _ QoS _"
 
 #. Sphero-RVR robot library block
 msgid "set RGB LED _ to red _ green _ blue _"
-msgstr "setze LED _ auf Rot _ Grün_ Blau_"
+msgstr "setze LED _ auf Farbe r _ g _ b _"
 
 #. Sphero-RVR robot library block
 msgid "set all LEDs to red _ green _ blue _"
-msgstr "setze alle LEDs auf Rot _ Grün _ Blau _"
+msgstr "setze alle LEDs auf Farbe r _ g _ b _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 stop motor _"
@@ -5055,7 +5056,7 @@ msgstr "g#"
 
 #. Wukong robot library block
 msgid "Wukong set motor _ to _ (-100 to 100)"
-msgstr "Wukong drehe Motor _ mit _ % (-100~100)"
+msgstr "Wukong drehe Motor _ mit _ (-100~100)"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
@@ -5087,7 +5088,7 @@ msgstr "Octopus OLED zeichne Kreis x _ y _ Radius _"
 
 #. Sphero-RVR robot library block
 msgid "drive with speed _ and heading _"
-msgstr "mit Geschwindigkeit _ und Richtung _ fahren"
+msgstr "fahre mit Geschwindigkeit _ und Richtung _"
 
 #. Musical note name
 msgid "nt;a"
@@ -5203,7 +5204,7 @@ msgstr "mit _ % Geschwindigkeit"
 
 #. micro:STEAMakers library block
 msgid "start micro꞉STEAMakers audio"
-msgstr "starte micro꞉STEAMakers Audio"
+msgstr "ms starte Audio"
 
 #. InnovaDidàctic 3DBot library block
 msgid "3dBot obstacle < _ cm?"
@@ -5590,7 +5591,7 @@ msgstr "ms scrolle Text _ mit Farbe _ "
 
 #. micro:STEAMakers library block
 msgid "ms stop scrolling"
-msgstr "ms stoppe scrollen"
+msgstr "ms stoppe Scrollen"
 
 #. micro:STEAMakers library block
 msgid "ms button _ ?"
@@ -5626,7 +5627,7 @@ msgstr "ms Energie _"
 
 #. micro:STEAMakers library block
 msgid "ms _ energy meter"
-msgstr "ms _ Energiemesser"
+msgstr "ms _ Energiesensor"
 
 #. micro:STEAMakers library block
 msgid "ms;stop"
@@ -5793,7 +5794,7 @@ msgstr "Nezha spiele Ton _ Hz für _ ms"
 
 #. NeZha2 robot library block
 msgid "Nezha set motor _ speed to _ (-100-100)"
-msgstr "Nezha starte Motor _ mit Geschwindigkeit _ (-100~100)"
+msgstr "Nezha drehe Motor _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha2 robot library block
 msgid "Nezha stop motor _"
@@ -5805,7 +5806,7 @@ msgstr "Nezha stoppe alle Motoren"
 
 #. NeZha2 robot library block
 msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
-msgstr "Nezha drehe Rotationsservo _ mit _ % (-100~100)"
+msgstr "Nezha drehe Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
@@ -6273,7 +6274,7 @@ msgstr "1+2"
 
 #. Wukong robot library block
 msgid "Wukong set _ servo _ to _ degrees"
-msgstr "Wukong setze _ Servo _ auf _ °"
+msgstr "Wukong setze _ Servo _ auf Winkel _"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50) for _ msecs"
@@ -6688,7 +6689,7 @@ msgstr "SCD40 relative Luftfeuchtigkeit (%)"
 
 #. Firmware install instruction
 msgid "Do not switch browser tabs!"
-msgstr "Wechsle nicht den Browser-Tab!"
+msgstr "wechsle nicht den Browser-Tab!"
 
 #. Gas (SCD40) library block
 msgid "°F"
@@ -6758,7 +6759,8 @@ msgstr "#SVG#wave-noise Gate _"
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
-"Verbinde dich neu mit deinem Board. Klicke dafür auf die Taste \"verbinden\"."
+"Verbinde MicroBlocks neu mit dem Board. Klicke dafür auf die Taste "
+"\"verbinden\"."
 
 #. Analog Synthesis library block
 msgid "set frequency ramp from _ % to _ % for gate _"
@@ -6838,7 +6840,7 @@ msgstr "fb Luftfeuchtigkeit"
 
 #. Foxbit library block
 msgid "fb beep for _ millisecs"
-msgstr "fb Pieps mit _ Millisekunden"
+msgstr "fb spiele Ton für _ ms"
 
 #. Coding Box library block
 msgid "cb PIR motion detected?"
@@ -6858,7 +6860,7 @@ msgstr "cb Ultrasonic-Entfernung"
 
 #. Coding Box library block
 msgid "cb speaker beep for _ millisecs"
-msgstr "cb Pieps mit _ Millisekunden"
+msgstr "cb spiele Ton für _ ms"
 
 #. Coding Box library block
 msgid "cb set _ LED to _"
@@ -6947,7 +6949,7 @@ msgstr "LogicLinks Zufallsfarbe"
 
 #. LogicLinks library block
 msgid "LogicLinks beep _ ms"
-msgstr "LogicLinks Pieps _ ms"
+msgstr "LogicLinks spiele Ton für _ ms"
 
 #. LogicLinks library block
 msgid "LogicLinks set relay _"
@@ -7040,3 +7042,177 @@ msgstr "Diamant"
 #. Octostudio shape names
 msgid "octo;moon"
 msgstr "Mond"
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"setze NeoPixel #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ "
+"#BR# _ _ _ _ _"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr "Dieser Block wird noch verwendet in"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr "Skripten oder Funktionen."
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit distance (cm)"
+msgstr "MotionKit Entfernung (cm)"
+
+#. Calliope MotionKit2 library block
+msgid "IR key _ pressed?"
+msgstr "IR-Taste _ gedrückt?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set NeoPixels _"
+msgstr "MotionKit setze NeoPixel _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit clear NeoPixels"
+msgstr "MotionKit lösche NeoPixel"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit stop motor _"
+msgstr "MotionKit stoppe Motor _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit motor _ dir _ speed _ (0~255)"
+msgstr "MotionKit Motor _ Richtung _ Tempo _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit LED _ _"
+msgstr "MotionKit LED _ _"
+
+#. Calliope MotionKit2 library block
+msgid "color r _ g _ b _ (0~255)"
+msgstr "Farbe r _ g _ b _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit line sensor _ _"
+msgstr "MotionKit Liniensensor _ _"
+
+#. Calliope MotionKit2 library block
+msgid "IR code received?"
+msgstr "IR-Code empfangen?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set servo _ to _ ° (0~180)"
+msgstr "MotionKit setze Servo _ auf _ ° (0~180)"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;bright"
+msgstr "hell"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;dark"
+msgstr "dunkel"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;ok"
+msgstr "ok"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;up"
+msgstr "hoch"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;down"
+msgstr "runter"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S1"
+msgstr "S1"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S2"
+msgstr "S2"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "initialisiere i2c (auto) Reset-Pin _ flip _"
+
+#. Files library block
+msgid "contents of file _"
+msgstr "Inhalt der Datei _"
+
+#. Real Time Clock library block
+msgid "time (H:M:S)"
+msgstr "Uhrzeit (H:M:S)"
+
+#. Real Time Clock library block
+msgid "date (Y-M-D)"
+msgstr "Datum (J-M-T)"
+
+#. Real Time Clock library block
+msgid "second"
+msgstr "Sekunde"
+
+#. Real Time Clock library block
+msgid "minute"
+msgstr "Minute"
+
+#. Real Time Clock library block
+msgid "hour"
+msgstr "Stunde"
+
+#. Real Time Clock library block
+msgid "day"
+msgstr "Tag"
+
+#. Real Time Clock library block
+msgid "month"
+msgstr "Monat"
+
+#. Real Time Clock library block
+msgid "year"
+msgstr "Jahr"
+
+#. Real Time Clock library block
+msgid "day of week"
+msgstr "Wochentag"
+
+#. Real Time Clock library block
+msgid "set day of week _ (1-7)"
+msgstr "setze Wochentag _ (1-7)"
+
+#. Real Time Clock library block
+msgid "init clock _"
+msgstr "initialisiere Uhr _"
+
+#. Real Time Clock library block
+msgid "clock _"
+msgstr "Uhr _"
+
+#. Real Time Clock library block
+msgid "set year _ month _ day _"
+msgstr "setze Jahr _ Monat _ Tag _"
+
+#. Real Time Clock library block
+msgid "set hours _ minutes _ seconds _"
+msgstr "setze Stunde _ Minute _ Sekunde _"
+
+#. Real Time Clock library block
+msgid "DS1307"
+msgstr "DS1307"
+
+#. Real Time Clock library block
+msgid "DS3231"
+msgstr "DS3231"
+
+#. Real Time Clock library block
+msgid "PCF8523"
+msgstr "PCF8523"
+
+#. Real Time Clock library block
+msgid "PCF8563"
+msgstr "PCF8563"
+
+#. Real Time Clock library block
+msgid "PCF85063"
+msgstr "PCF85063"
+
+#. Real Time Clock library block
+msgid "RV1805"
+msgstr "RV1805"

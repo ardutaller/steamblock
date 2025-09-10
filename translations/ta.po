@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-01-18 05:53+0200\n"
-"PO-Revision-Date: 2025-06-23 02:30+0000\n"
+"PO-Revision-Date: 2025-08-10 14:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/microblocks/ide/ta/"
 ">\n"
@@ -3289,7 +3289,7 @@ msgstr "எச்.பி. எல்.ஈ. அணை"
 
 #. Shield:bit library block
 msgid "sb set all LEDs to _"
-msgstr "எச்.பி."
+msgstr "sb அனைத்து LED களையும் _ ஆக அமைக்கவும்"
 
 #. Shield:bit library block
 msgid "sb set LED _ (1-4) to _"
@@ -3313,7 +3313,7 @@ msgstr "எச்.பி. டர்ன் 360 சர்வோ எச்- _ (1-8)
 
 #. Shield:bit library block
 msgid "sb turn DC M- _ (1-4) motor _ at _ %"
-msgstr "எச்.பி."
+msgstr "sb டர்ன் DC M- _ (1-4) மோட்டார் _ at _ %"
 
 #. Shield:bit library block
 msgid "sb turn Stepper- _ (1-2) motor _ for _ _"
@@ -3373,7 +3373,7 @@ msgstr "எம்.எச் சூழ்ச்சி ஃச் _ ஒய் _ _ �
 
 #. micro:STEAMakers library block
 msgid "ms unplot x _ y _"
-msgstr "எம்.எச்."
+msgstr "எம்எச் பிளாட் x _ y _"
 
 #. micro:STEAMakers library block
 msgid "ms display character _ with _"
@@ -6477,7 +6477,9 @@ msgstr "SCD40 இணைக்கப்பட்டுள்ளதா?"
 
 #. Foxbit library block
 msgid "fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
-msgstr "fb நியோபிக்சல்கள்"
+msgstr ""
+"fb அமை நியோபிக்சல்கள் #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ "
+"#BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
 
 #. Foxbit library block
 msgid "fb current"
@@ -6829,3 +6831,152 @@ msgstr "காலியோப் பிரகாசத்தை _ % ஆக அ�
 #. Calliope Servoboard library block
 msgid "Calliope stop all motors and servos"
 msgstr "காலியோப் அனைத்து மோட்டார்கள் மற்றும் சர்வோக்களை நிறுத்துங்கள்"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "ஃச் _ ஒய் _ முதல் ஃச் _ ஒய் _ வண்ணம் _ வரை நியோபனெல் டிரா வரி"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "ஃச் _ ஒய் _ ஆரம் _ வண்ணத்தில் நியோபனெல் டிரா வட்டம் _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "ஃச் _ ஒய் _ அகலம் _ உயரம் _ வண்ணத்தில் நியோபனெல் டிரா செவ்வகம் _"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "மைக்ரோஃபோனை அணைக்கவும்"
+
+#. micro:STEAMakers library block
+msgid "ms pin _ touched?"
+msgstr "MS முள் _ தொட்டதா?"
+
+#. micro:STEAMakers library block
+msgid "ms accel _ m/s2"
+msgstr "எம்.எச். முடி _ மீ/எச் 2"
+
+#. micro:STEAMakers library block
+msgid "ms gyro _ deg/s"
+msgstr "எம்எஸ் கைரோ _ டிகிரி/வி"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "left" side
+msgid "left"
+msgstr "இடது"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "right" side
+msgid "right"
+msgstr "வலது"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "both" sides
+msgid "both"
+msgstr "இரண்டும்"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "வட்டம்"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "நாற்கை"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "விண்மீன்"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "இதயம்"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "முக்கோணம்"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "சீமை மசால்"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "வைர"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "சந்திரன்"
+
+#. LogicLinks library block
+msgid "LogicLinks receive IR code"
+msgstr "லாசிக் லின்க்ச் ஐஆர் குறியீட்டைப் பெறுகிறது"
+
+#. LogicLinks library block
+msgid "LogicLinks IR Code"
+msgstr "லாசிக் லின்க்ச் ஐஆர் குறியீடு"
+
+#. LogicLinks library block
+msgid "LogicLinks button"
+msgstr "லாசிக் லின்க்ச் பொத்தான்"
+
+#. LogicLinks library block
+msgid "LogicLinks potentiometer"
+msgstr "லாசிக் லின்க்ச் பொட்டென்டோமீட்டர்"
+
+#. LogicLinks library block
+msgid "LogicLinks random color"
+msgstr "லாசிக் லிங்க்ச் சீரற்ற நிறம்"
+
+#. LogicLinks library block
+msgid "LogicLinks beep _ ms"
+msgstr "லாசிக் லின்க்ச் பீப் _ எம்.எச்"
+
+#. LogicLinks library block
+msgid "LogicLinks set relay _"
+msgstr "லாசிக் லின்க்ச் செட் ரிலே _"
+
+#. LogicLinks library block
+msgid "LogicLinks IR code received?"
+msgstr "லாசிக் லின்க்ச் ஐஆர் குறியீடு பெறப்பட்டது?"
+
+#. LogicLinks library block
+msgid "LogicLinks color r _ g _ b _ (0-255)"
+msgstr "லாசிக் லின்க்ச் கலர் r _ g _ B _ (0-255)"
+
+#. LogicLinks library block
+msgid "LogicLinks humidity"
+msgstr "லாசிக் லிங்க்ச் ஈரப்பதம்"
+
+#. LogicLinks library block
+msgid "LogicLinks set RGB LED _"
+msgstr "லாசிக் லின்க்ச் செட் ஆர்சிபி எல்இடி _"
+
+#. LogicLinks library block
+msgid "LogicLinks turn off RGB LED"
+msgstr "லாசிக் லின்க்ச் RGB LED ஐ அணைக்கவும்"
+
+#. LogicLinks library block
+msgid "LogicLinks temperature (°C)"
+msgstr "லாசிக் லிங்க்ச் வெப்பநிலை (° C)"
+
+#. LogicLinks library block
+msgid "LogicLinks set red LED _"
+msgstr "லாசிக் லின்க்ச் செட் சிவப்பு எல்.ஈ.டி _"
+
+#. LogicLinks library block
+msgid "LogicLinks light (0-100)"
+msgstr "லாசிக் லிங்க்ச் லைட் (0-100)"
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"நியோபிக்சல்களை அமை #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ "
+"#BR# _ _ _ _ _"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr "இந்த தொகுதி இன்னும் பயன்படுத்தப்படுகிறது"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr "கைஉரைகள் அல்லது செயல்பாடுகள்."

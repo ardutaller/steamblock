@@ -699,6 +699,10 @@ msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
 msgstr "set NeoPixels _ _ _ _ _ _ _ _ _ _"
 
 #. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+
+#. NeoPixel library block
 msgid "clear NeoPixels"
 msgstr "clear NeoPixels"
 
@@ -1608,6 +1612,10 @@ msgstr "initialize i2c _ address(hex) _ reset pin# _ flip _"
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
 msgstr "initialize spi _ d/c pin# _ reset pin# _ flip _"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "initialize i2c(auto) reset pin# _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -2807,6 +2815,10 @@ msgstr "next _ bytes of file _"
 #. File System library block
 msgid "read into _ from file _"
 msgstr "read into _ from file _"
+
+#. Files library block
+msgid "contents of file _"
+msgstr "contents of file _"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "a ByteArray"
@@ -4926,6 +4938,78 @@ msgstr "Calliope set continous servo _ to speed _ (-100~100)"
 msgid "Calliope stop servo _"
 msgstr "Calliope stop servo _"
 
+#. Calliope MotionKit2 library block
+msgid "mk2;bright"
+msgstr "bright"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;dark"
+msgstr "dark"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;ok"
+msgstr "ok"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;up"
+msgstr "up"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;down"
+msgstr "down"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S1"
+msgstr "S1"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S2"
+msgstr "S2"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit distance (cm)"
+msgstr "MotionKit distance (cm)"
+
+#. Calliope MotionKit2 library block
+msgid "IR key _ pressed?"
+msgstr "IR key _ pressed?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set NeoPixels _"
+msgstr "MotionKit set NeoPixels _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit clear NeoPixels"
+msgstr "MotionKit clear NeoPixels"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit stop motor _"
+msgstr "MotionKit stop motor _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit motor _ dir _ speed _ (0~255)"
+msgstr "MotionKit motor _ dir _ speed _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit LED _ _"
+msgstr "MotionKit LED _ _"
+
+#. Calliope MotionKit2 library block
+msgid "color r _ g _ b _ (0~255)"
+msgstr "color r _ g _ b _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit line sensor _ _"
+msgstr "MotionKit line sensor _ _"
+
+#. Calliope MotionKit2 library block
+msgid "IR code received?"
+msgstr "IR code received?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set servo _ to _ ° (0~180)"
+msgstr "MotionKit set servo _ to _ ° (0~180)"
+
 #. LCD 16x2 (Seeed) library block
 msgid "LCD init display"
 msgstr "LCD init display"
@@ -5222,6 +5306,62 @@ msgstr "LogicLinks set red LED _"
 msgid "LogicLinks light (0-100)"
 msgstr "LogicLinks light (0-100)"
 
+#. Real Time Clock library block
+msgid "time (H:M:S)"
+msgstr "time (H:M:S)"
+
+#. Real Time Clock library block
+msgid "date (Y-M-D)"
+msgstr "date (Y-M-D)"
+
+#. Real Time Clock library block
+msgid "second"
+msgstr "second"
+
+#. Real Time Clock library block
+msgid "minute"
+msgstr "minute"
+
+#. Real Time Clock library block
+msgid "hour"
+msgstr "hour"
+
+#. Real Time Clock library block
+msgid "day"
+msgstr "day"
+
+#. Real Time Clock library block
+msgid "month"
+msgstr "month"
+
+#. Real Time Clock library block
+msgid "year"
+msgstr "year"
+
+#. Real Time Clock library block
+msgid "day of week"
+msgstr "day of week"
+
+#. Real Time Clock library block
+msgid "set day of week _ (1-7)"
+msgstr "set day of week _ (1-7)"
+
+#. Real Time Clock library block
+msgid "init clock _"
+msgstr "init clock _"
+
+#. Real Time Clock library block
+msgid "clock _"
+msgstr "clock _"
+
+#. Real Time Clock library block
+msgid "set year _ month _ day _"
+msgstr "set year _ month _ day _"
+
+#. Real Time Clock library block
+msgid "set hours _ minutes _ seconds _"
+msgstr "set hours _ minutes _ seconds _"
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr "New"
@@ -5361,6 +5501,14 @@ msgstr "For AdaFruit boards, double-click reset button and try again."
 #. MicroBlocks IDE error message.
 msgid "Only recent Chrome and Edge browsers support WebSerial."
 msgstr "Only recent Chrome and Edge browsers support WebSerial."
+
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr "This block is still being used in"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr "scripts or functions."
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."

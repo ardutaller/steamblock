@@ -1,0 +1,53 @@
+module 'Voice Recognition'
+author 'José García Yeste'
+version 1 0 
+description 'Offline Language Learning Voice Recognition Sensor I2C
+
+https://www.dfrobot.com/product-2665.html
+'
+
+  spec 'r' 'vrGetCmd' 'voice command'
+  spec ' ' 'vrPlayCmd' 'voice play command _' 'auto' 142
+  space
+  spec ' ' 'vrSetVolume' 'voice volume _' 'auto' 10
+  spec ' ' 'vrSetMuteMode' 'voice mute mode _' 'bool' true
+  space
+  spec ' ' 'vrSetWakeTime' 'voice wake time _' 'auto' 15
+  spec 'r' 'vrGetWakeUpTime' 'voice wake time'
+  spec 'r' '_vrReadReg' '_voice read reg _' 'auto' 2
+
+to '_vrReadReg' reg {
+  '[sensors:i2cWrite]' (hexToInt '64') ('[data:makeList]' reg) false
+  local 'data' ('[data:makeList]' 0)
+  '[sensors:i2cRead]' (hexToInt '64') data
+  return (at 1 data)
+}
+
+to vrGetCmd {
+  return ('_vrReadReg' 2)
+  waitMillis 50
+}
+
+to vrGetWakeUpTime {
+  return ('_vrReadReg' 6)
+}
+
+to vrPlayCmd cmd {
+  i2cSet (hexToInt '64') 3 cmd
+  waitMillis 1000
+}
+
+to vrSetMuteMode mute {
+  i2cSet (hexToInt '64') 4 ('[data:convertType]' mute 'number')
+}
+
+to vrSetVolume volume {
+  volume = (maximum volume 1)
+  volume = (minimum volume 20)
+  i2cSet (hexToInt '64') 5 volume
+}
+
+to vrSetWakeTime wakeTime {
+  i2cSet (hexToInt '64') 6 wakeTime
+}
+
