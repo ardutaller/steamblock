@@ -35,7 +35,7 @@ static void initPins(void); // forward reference
 static void initRandomSeed(void); // forward reference
 static void stopRF(); // forward reference
 
-#if (defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)) && !defined(ESP32_C3)
+#if (defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)) && !defined(ESP32_C3) && !defined(ESP32_C6)
 	#include <I2S.h>
 	int I2SsampleRate = 16000;
 	#define HAS_I2S 1
@@ -1730,7 +1730,7 @@ void primAnalogWrite(OBJ *args) {
 	#endif
 
 	#if defined(ESP32)
-	  #if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(COCUBE)
+	  #if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(ESP32_C6) && !defined(COCUBE)
 		if ((25 == pinNum) || (26 == pinNum)) { // ESP32 and ESP32-S2 DAC pins
 			dacWrite(pinNum, (value >> 2)); // convert 10-bit to 8-bit value for ESP32 DAC
 			return;
@@ -2488,7 +2488,7 @@ OBJ primI2SWrite(int argCount, OBJ *args) { return falseObj; }
 
 // DAC (digital to analog converter) Support
 
-#if defined(ESP32) && !defined(ESP32_S3) && !defined(ESP32_C3)
+#if defined(ESP32) && !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(ESP32_C6)
 
 #include "driver/dac_common.h"
 
