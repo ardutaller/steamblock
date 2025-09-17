@@ -35,7 +35,7 @@ static void initPins(void); // forward reference
 static void initRandomSeed(void); // forward reference
 static void stopRF(); // forward reference
 
-#if (defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)) && !defined(ESP32_C3)
+#if (defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)) && !defined(ESP32_C3) && !defined(ESP32_C6)
 	#include <I2S.h>
 	int I2SsampleRate = 16000;
 	#define HAS_I2S 1
@@ -173,8 +173,10 @@ void hardwareInit() {
 		touchSetCycles(0x800, 0x900);
 		writeI2CReg(0x20, 0, 0); // initialize IO expander
 	#endif
-	tftInit();
-	tftClear();
+	#if !defined(IS_XIAO)
+		tftInit();
+		tftClear();
+	#endif
 	#if defined(DATABOT)
 		int yellow = 14864128;
 		setAllNeoPixels(-1, 3, yellow);
@@ -396,6 +398,16 @@ void hardwareInit() {
 	static const int analogPin[6] = {A0, A1, A2, A3, A4, A5};
 	// Note: pins 0 and 1 are reserved for primary UART
 
+#elif defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+
+	#define BOARD_TYPE "Xiao NRF52840"
+	#define IS_XIAO 1
+	#define DIGITAL_PINS 14
+	#define ANALOG_PINS 6
+	#define TOTAL_PINS 33
+	#define INVERT_USER_LED true
+	static const int analogPin[] = {A0, A1, A2, A3, A4, A5};
+
 #elif defined(ARDUINO_TEENSY31)
 	#define BOARD_TYPE "Teensy 3.1"
 	#define DIGITAL_PINS 24
@@ -501,6 +513,16 @@ void hardwareInit() {
 	#define TOTAL_PINS 20
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5};
 
+#elif defined(ARDUINO_SEEED_XIAO_M0) // must come before Zero
+
+	#define BOARD_TYPE "Xiao SAMD21"
+	#define IS_XIAO 1
+	#define DIGITAL_PINS 14
+	#define ANALOG_PINS 11
+	#define TOTAL_PINS 14
+	#define INVERT_USER_LED true
+	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10};
+
 #elif defined(ARDUINO_SAMD_ZERO)
 
 	#define BOARD_TYPE "Zero"
@@ -523,12 +545,12 @@ void hardwareInit() {
 	#define DIGITAL_PINS 9
 	#define ANALOG_PINS 1
 	#define TOTAL_PINS 18 // A0 is pin 17
+	#define INVERT_USER_LED true
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {A0};
 	static const char digitalPin[9] = {16, 5, 4, 0, 2, 14, 12, 13, 15};
 	#define PIN_LED LED_BUILTIN
 	#define PIN_BUTTON_A 0
-	#define INVERT_USER_LED true
 
 #elif defined(ARDUINO_CITILAB_ED1)
 
@@ -848,6 +870,39 @@ void hardwareInit() {
 	// LDR - 24 (was 39)
 	// Unused - 34
 
+#elif defined(ARDUINO_XIAO_ESP32S3)
+	#define BOARD_TYPE "Xiao ESP32S3"
+	#define IS_XIAO 1
+	#define DIGITAL_PINS 14
+	#define ANALOG_PINS 14
+	#define TOTAL_PINS 45
+	#define PIN_LED 21
+	#define INVERT_USER_LED true
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[] = {};
+	static const char digitalPin[DIGITAL_PINS] = {1, 2, 3, 4, 5, 6, 43, 44, 7, 8, 9, 42, 41, 21};
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+		0, 0, 0, 0, 0};
+
+#elif defined(ARDUINO_XIAO_ESP32C3)
+	#define BOARD_TYPE "Xiao ESP32C3"
+	#define IS_XIAO 1
+	#define DIGITAL_PINS 22
+	#define ANALOG_PINS 4
+	#define TOTAL_PINS 22
+	#define PIN_LED 10 // there is no user LED; use pin 10
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[] = {};
+	static const char digitalPin[DIGITAL_PINS] = {2, 3, 4, 5, 6, 7, 21, 20, 8, 9, 10};
+		static const char reservedPin[TOTAL_PINS] = {
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			0, 0};
+
 #elif defined(ESP32_S2)
 	#define BOARD_TYPE "ESP32-S2"
 	#define DIGITAL_PINS 48
@@ -878,9 +933,9 @@ void hardwareInit() {
 
 #elif defined(ESP32_S3)
 	#define BOARD_TYPE "ESP32-S3"
-	#define DIGITAL_PINS 49
+	#define DIGITAL_PINS 43
 	#define ANALOG_PINS 20
-	#define TOTAL_PINS 49
+	#define TOTAL_PINS 43
 	static const int analogPin[] = {};
 	#ifdef LED_BUILTIN
 		#define PIN_LED LED_BUILTIN
@@ -901,10 +956,10 @@ void hardwareInit() {
 	// also possibly: 39-42 (JTAG pins)
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-		0, 0, 0, 1, 1, 0, 0, 0, 0};
+		0, 0, 0};
 
 #elif defined(ESP32_C3)
 	#define BOARD_TYPE "ESP32-C3"
@@ -1049,6 +1104,44 @@ void hardwareInit() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 1, 1, 1, 0, 0, 0};
 
+#elif defined(ARDUINO_SEEED_XIAO_RP2040)
+
+	#define BOARD_TYPE "Xiao RP2040"
+	#define IS_XIAO 1
+	#define DIGITAL_PINS 15
+	#define ANALOG_PINS 4
+	#define TOTAL_PINS 30
+	#define INVERT_USER_LED true
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[ANALOG_PINS] = {A0, A1, A2, A3};
+	static const char digitalPin[DIGITAL_PINS] = {
+		D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10,
+		PIN_LED_R, PIN_LED_G, PIN_LED_B, PIN_NEOPIXEL};
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+#elif defined(ARDUINO_SEEED_XIAO_RP2350)
+
+	#define BOARD_TYPE "Xiao RP2350"
+	#define IS_XIAO 1
+	#define DIGITAL_PINS 21
+	#define ANALOG_PINS 3
+	#define TOTAL_PINS 30
+	#define INVERT_USER_LED true
+	#define PIN_NEOPIXEL 22
+	#define USE_DIGITAL_PIN_MAP true
+	static const int analogPin[ANALOG_PINS] = {A0, A1, A2};
+	static const char digitalPin[DIGITAL_PINS] = {
+		D0, D1, D2, D3, D4, D5, D6, D7, D8, D9,
+		D10, D11, D12, D13, D14, D15, D16, D17, D18, PIN_LED,
+		PIN_NEOPIXEL};
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
 #elif defined(ARDUINO_ARCH_RP2040)
 
 	#define BOARD_TYPE "RP2040"
@@ -1072,7 +1165,7 @@ void hardwareInit() {
 		#elif defined(GIZMO_MECHATRONICS)
 			#undef BOARD_TYPE
 			#define BOARD_TYPE "RP2040 Gizmo"
-		#elif defined(RP2350)
+		#elif defined(RP2350) || defined(PICO_RP2350)
 			#undef BOARD_TYPE
 			#define BOARD_TYPE "RP2350"
 		#endif
@@ -1089,41 +1182,48 @@ void hardwareInit() {
 	#define DIGITAL_PINS 27
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
-	#define PIN_LED 15 // PA_6 (unmapped)
-	#define PIN_BUTTON_A 28 // (unmapped) edge pin 5
-	#define PIN_BUTTON_B 27 // (unmapped) edge pin 11
-	#undef BUTTON_PRESSED
-	#define BUTTON_PRESSED HIGH
+	#define PIN_LED 15 // PB_8
 	#define DEFAULT_TONE_PIN 21
 	static const int8_t analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
 
 	// Reserved C071R pins:
 	// 42 (PF_2) - reset
-	// 47 (PA_3) - USB RX
-	// 52 (PA_2) - USB TX
+	// 49 (PA_12) - USB P
+	// 50 (PA_11) - USB N
+	// 47 (PA_3) - Downlink RX (serial)
+	// 52 (PA_2) - Downlink TX (serial)
+
+	// PA_5, D13, edge pin 21 is the buzzer
+	// PB_0, D19, edge pin  9 is the light sensor
 	static const char cincoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 14, 29, 28,  8,  10,  37, 19,
 		 2, 27, 32,  9,  5,  4, 33, 255, 255,  0,
 		 1, 13,  7, 12, 15, 54, 11}; // row pins: 7, 12, 15, 54, 11
 
+	// PA_5, D13, edge pin 21 is the buzzer
+	// PC_6, D29, edge pin 22 is the display reset pin
+	// PA_6, D12, edge pin 23 is the light sensor
 	static const char pixoEdgePin[DIGITAL_PINS] = {
 		16, 17, 18, 11, 54, 28,  8,  10,  37, 19,
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
-		 1, 13, 12, 14, 15, 29, 32}; // unused pins: 12, 14, 15, 29, 32
+		 1, 13, 29, 12, 15, 14, 32}; // unused pins: 12, 15, 14, 32
 
-	// Pin 13 is repeated at index 21 (DEFAULT_TONE_PIN)
 	static const char dueStandardPin[DIGITAL_PINS] = {
 		15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
 		33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
-		28, 13,  8,  2, 27, 32, 32}; // unused pins: 8, 2, 27, 32
+		28,  8,  2, 27, 32, 255, 255};
 
 	// Analog pin names for DUELink boards
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable
-	#define DUE_ANALOG_PIN_COUNT 18
+	#define DUE_ANALOG_PIN_COUNT 24
 	static const int16_t dueEdgeAnalog[DUE_ANALOG_PIN_COUNT] = {
-		PA_0, PA_1, PA_4, PA_7, PB_1, PA_14, -1, -1, PB_2, PB_0, -1, PA_13, PA_8, -1, -1, -1, -1, -1};
+		PA_0, PA_1, PA_4, PA_7, PB_1, PA_14, -1, -1, PB_2, PB_0,
+		-1, PA_13, PA_8, -1, -1, -1, -1, -1, -1, -1,
+		-1, -1, -1, PA_6};
 	static const int16_t dueStandardAnalog[DUE_ANALOG_PIN_COUNT] = {
-		-1, PA_0, PA_1, PA_4, PA_5, PA_6, PA_7, PA_8, PB_1, PB_0, -1, -1, -1, -1, -1,  -1,  -1, PB_2};
+		-1, PA_0, PA_1, PA_4, PA_5, PA_6, PA_7, PA_8, PB_1, PB_0,
+		-1, -1, -1, -1, -1,  -1,  -1, PB_2, -1, -1,
+		-1, -1, -1, -1};
 
 	static int dueAnalogPin(int pinNum) {
 		int result = -1; // default - no pin
@@ -1245,6 +1345,8 @@ const char * boardType() {
 		if (DUE_HAS_EDGE_CONNECTOR) {
 			return (IS_DUE_CINCO) ? "CincoBit" : "PixoBit";
 		}
+		if (IS_DUE_STEM) return "DueSTEM";
+		if (IS_DUE_CLIPIT) return "Clipit";
 	#endif
 	return BOARD_TYPE;
 }
@@ -1327,6 +1429,18 @@ static void initPins(void) {
 		pinMode(PIN_BUTTON_A, INPUT_PULLUP); // BUTTON A
 		pinMode(PIN_BUTTON_B, INPUT_PULLUP); // BUTTON B
 	#endif
+
+	#ifdef ARDUINO_SEEED_XIAO_M0
+		// put TX/RX LED into input mode to suppress flashing
+		SET_MODE(PIN_LED_RXL, INPUT);
+		SET_MODE(PIN_LED_TXL, INPUT);
+	#endif
+
+	#ifdef ARDUINO_SEEED_XIAO_RP2040
+		SET_MODE(PIN_LED_R, INPUT);
+		SET_MODE(PIN_LED_G, INPUT);
+		SET_MODE(PIN_LED_B, INPUT);
+	#endif
 }
 
 #if !defined(ARDUINO_SAM_DUE) && !defined(ESP8266) && !defined(PICO_RP2350)
@@ -1348,6 +1462,12 @@ void turnOffPins() {
 					int duePin = mapDigitalPinNum(pin);
 					if (duePin >= 0) digitalWrite(duePin, LOW);
 				}
+			#endif
+			#if defined(PICO_RP2350)
+				pinMode(pin, OUTPUT);
+				digitalWrite(pin, LOW); // workaround for RP2350 chip bug; set low before switching to input
+				delayMicroseconds(10);
+				pinMode(pin, INPUT);
 			#endif
 			SET_MODE(pin, INPUT);
 		}
@@ -1468,7 +1588,9 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		SET_MODE(pinNum, mode);
 		return int2obj(adc_read_value((PinName) duePin, 10));
 	#endif
-	#if defined(ARDUINO_ARCH_RP2040) && !defined(PICO_ED)
+	#if defined(ARDUINO_SEEED_XIAO_RP2040) || defined(ARDUINO_SEEED_XIAO_RP2350)
+		if ((26 <= pinNum) && (pinNum <= 29)) pinNum -= 26; // map pins 26-29 are aliases for A0-A3
+	#elif defined(ARDUINO_ARCH_RP2040) && !defined(PICO_ED)
 		if ((pinNum < 26) || (pinNum > 29)) return int2obj(0);
 		pinNum -= 26; // map pins 26-29 to A0-A3
 	#endif
@@ -1608,7 +1730,7 @@ void primAnalogWrite(OBJ *args) {
 	#endif
 
 	#if defined(ESP32)
-	  #if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(COCUBE)
+	  #if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(ESP32_C6) && !defined(COCUBE)
 		if ((25 == pinNum) || (26 == pinNum)) { // ESP32 and ESP32-S2 DAC pins
 			dacWrite(pinNum, (value >> 2)); // convert 10-bit to 8-bit value for ESP32 DAC
 			return;
@@ -1848,12 +1970,17 @@ OBJ primButtonA(OBJ *args) {
 		#elif defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_ARCH_ESP32) || \
 			  defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
-		#elif defined(DUELink)
-			setPinMode(PIN_BUTTON_A, INPUT_PULLDOWN); // Arduino pin number not edge pin
 		#else
 			SET_MODE(PIN_BUTTON_A, INPUT);
 		#endif
 		return (BUTTON_PRESSED == digitalRead(PIN_BUTTON_A)) ? trueObj : falseObj;
+	#elif defined(DUELink)
+		int pinButton = -1;
+		if (DUE_HAS_EDGE_CONNECTOR) { pinButton = 28;
+		} else if (IS_DUE_STEM) { pinButton = 28;
+		} else { return falseObj; }
+		setPinMode(pinButton, INPUT_PULLDOWN); // Arduino pin, not edge pin number
+		return (HIGH == digitalRead(pinButton)) ? trueObj : falseObj;
 	#else
 		return falseObj;
 	#endif
@@ -1871,13 +1998,17 @@ OBJ primButtonB(OBJ *args) {
 			setPinMode(PIN_BUTTON_B, INPUT_PULLUP); // ESP32 pin number not edge pin
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
-		#elif defined(DUELink)
-			setPinMode(PIN_BUTTON_B, INPUT); // workaround: force button back to digital mode if light sensor was read
-			setPinMode(PIN_BUTTON_B, INPUT_PULLDOWN); // Arduino pin number not edge pin
 		#else
 			SET_MODE(PIN_BUTTON_B, INPUT);
 		#endif
 		return (BUTTON_PRESSED == digitalRead(PIN_BUTTON_B)) ? trueObj : falseObj;
+	#elif defined(DUELink)
+		int pinButton = -1;
+		if (DUE_HAS_EDGE_CONNECTOR) { pinButton = 27;
+		} else if (IS_DUE_STEM) { pinButton = 16;
+		} else { return falseObj; }
+		setPinMode(pinButton, INPUT_PULLDOWN); // Arduino pin, not edge pin number
+		return (HIGH == digitalRead(pinButton)) ? trueObj : falseObj;
 	#else
 		return falseObj;
 	#endif
@@ -2357,7 +2488,7 @@ OBJ primI2SWrite(int argCount, OBJ *args) { return falseObj; }
 
 // DAC (digital to analog converter) Support
 
-#if defined(ESP32) && !defined(ESP32_S3) && !defined(ESP32_C3)
+#if defined(ESP32) && !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(ESP32_C6)
 
 #include "driver/dac_common.h"
 
@@ -2511,6 +2642,12 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 		} else {
 			pin = DEFAULT_TONE_PIN;
 		}
+	#elif defined(DUELink)
+		if ((pin < 0) || (pin >= DIGITAL_PINS)) {
+			if (IS_DUE_STEM) pin = 3;
+			else if (IS_DUE_CLIPIT) pin = 7;
+			else pin = DEFAULT_TONE_PIN; // DUE Cinco and PixoBit
+		}
 	#else
 		if ((pin < 0) || (pin >= DIGITAL_PINS)) pin = DEFAULT_TONE_PIN;
 	#endif
@@ -2599,7 +2736,7 @@ OBJ primDACInit(int argCount, OBJ *args) {
 OBJ primDACWrite(int argCount, OBJ *args) {
 	// Write sound samples to the DAC output buffer and return the number of samples written.
 	// The argument may be an integer representing a single sample or a ByteArray of samples
-	// plus an optional starting index withing that buffer.
+	// plus an optional starting index within that buffer.
 
 	if (argCount < 1) return fail(notEnoughArguments);
 	OBJ arg0 = args[0];

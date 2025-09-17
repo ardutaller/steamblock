@@ -48,6 +48,9 @@
 #elif defined(M5Atom_Matrix) || defined(M5Atom_Lite)
 	#define PIN_WIRE_SCL 21
 	#define PIN_WIRE_SDA 25
+#elif defined(ARDUINO_M5Stack_ATOMS3)
+	#define PIN_WIRE_SCL 1
+	#define PIN_WIRE_SDA 2
 #elif defined(DUELink)
 	// 0 and 1 are edge connector pins 19 and 20 or DUELink standard pins 16 and 15
 	#define PIN_WIRE_SCL 1
@@ -124,7 +127,11 @@ int readI2CReg(int deviceID, int reg) {
 	#else
 		int error = Wire.endTransmission((bool) false);
 	#endif
-	if (error) return -error; // error; bad device ID?
+	if (error) {
+		reportNum("i2c read error", error);
+		taskSleep(5);
+		return -error; // error; bad device ID?
+	}
 
 	#if defined(NRF51)
 		noInterrupts();
@@ -144,12 +151,21 @@ void writeI2CReg(int deviceID, int reg, int value) {
 	Wire.beginTransmission(deviceID);
 	Wire.write(reg);
 	Wire.write(value);
-	Wire.endTransmission();
+	int error = Wire.endTransmission();
+	if (error) {
+		reportNum("i2c write error", error);
+		taskSleep(5);
+	}
 }
 
-#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) || defined(ARDUINO_M5STACK_Core2)
+#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3) || defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE) // || defined(ARDUINO_M5STACK_Core2) || defined(DUELink)
 
 #define HAS_INTERNAL_I2C 1
+
+#if defined(DUELink)
+	// DUELink pins 52 and 47 are the downlink connector
+	TwoWire Wire1 = TwoWire(PA2, PA3);
+#endif
 
 static int internalWireStarted = false;
 
@@ -350,7 +366,7 @@ static OBJ primI2cWrite(int argCount, OBJ *args) {
 		}
 	}
 	int error = Wire.endTransmission(stop);
-	if (error) reportNum("i2c write error", error);
+	if (error) taskSleep(5); // sleep a bit if error occurred; do not print error message
 
 	return falseObj;
 }
@@ -865,7 +881,7 @@ static int readTemperature() {
 	return (int) round(result);
 }
 
-#elif defined(ARDUINO_NRF52840_CLUE) || defined(XRP)
+#elif defined(ARDUINO_NRF52840_CLUE) || defined(XRP) || defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
 
 #if defined(XRP)
 	#define LSM6DS 107
@@ -873,8 +889,25 @@ static int readTemperature() {
 	#define LSM6DS 106
 #endif
 
+#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+	static void setHighDrive(int pin) {
+		if ((pin < 0) || (pin >= PINS_COUNT)) return;
+		pin = g_ADigitalPinMap[pin];
+		NRF_GPIO_Type* port = (NRF_GPIO_Type*) ((pin < 32) ? 0x50000000 : 0x50000300);
+		port->PIN_CNF[pin & 0x1F] |= (3 << 8); // high drive 1 and 0
+	}
+#endif
+
 static void startAccelerometer() {
-	writeI2CReg(LSM6DS, 0x10, 0x80); // enable accelerometer, 1660 Hz sample rate
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		pinMode(PIN_LSM6DS3TR_C_POWER, OUTPUT);
+		setHighDrive(PIN_LSM6DS3TR_C_POWER);
+		digitalWrite(PIN_LSM6DS3TR_C_POWER, HIGH);
+		delay(10); // leave time for accelerometer power up
+		writeInternalI2CReg(LSM6DS, 0x10, 0x80); // enable accelerometer, 1660 Hz sample rate
+	#else
+		writeI2CReg(LSM6DS, 0x10, 0x80); // enable accelerometer, 1660 Hz sample rate
+	#endif
 	delay(2);
 	accelStarted = true;
 }
@@ -882,9 +915,15 @@ static void startAccelerometer() {
 static int readAcceleration(int registerID) {
 	if (!accelStarted) startAccelerometer();
 	int val = 0;
-	if (1 == registerID) val = readI2CReg(LSM6DS, 0x29); // x-axis
-	if (3 == registerID) val = readI2CReg(LSM6DS, 0x2B); // y-axis
-	if (5 == registerID) val = readI2CReg(LSM6DS, 0x2D); // z-axis
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		if (1 == registerID) val = readInternalI2CReg(LSM6DS, 0x2B); // x-axis
+		if (3 == registerID) val = readInternalI2CReg(LSM6DS, 0x29); // y-axis
+		if (5 == registerID) val = readInternalI2CReg(LSM6DS, 0x2D); // z-axis
+	#else
+		if (1 == registerID) val = readI2CReg(LSM6DS, 0x29); // x-axis
+		if (3 == registerID) val = readI2CReg(LSM6DS, 0x2B); // y-axis
+		if (5 == registerID) val = readI2CReg(LSM6DS, 0x2D); // z-axis
+	#endif
 
 	val = (val >= 128) ? (val - 256) : val; // value is a signed byte
 	if (val < -127) val = -127; // keep in range -127 to 127
@@ -910,14 +949,24 @@ static void setAccelRange(int range) {
 	default: break;
 	}
 	int sampleRate = 8; // 1660 Hz
-	writeI2CReg(LSM6DS, 0x10, (sampleRate << 4) | (rangeBits << 2));
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		writeInternalI2CReg(LSM6DS, 0x10, (sampleRate << 4) | (rangeBits << 2));
+	#else
+		writeI2CReg(LSM6DS, 0x10, (sampleRate << 4) | (rangeBits << 2));
+	#endif
 }
 
 static int readTemperature() {
 	if (!accelStarted) startAccelerometer();
-	int temp = (readI2CReg(LSM6DS, 0x21) << 8) | readI2CReg(LSM6DS, 0x20);
+	#if defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
+		int temp = (readInternalI2CReg(LSM6DS, 0x21) << 8) | readInternalI2CReg(LSM6DS, 0x20);
+		int shift = 8; // LSM6dS3-C has 8 bits of fraction
+	#else
+		int temp = (readI2CReg(LSM6DS, 0x21) << 8) | readI2CReg(LSM6DS, 0x20);
+		int shift = 4;
+	#endif
 	if (temp >= 32768) temp = temp - 65536; // negative
-	return 25 + (temp / 16);
+	return 25 + (temp >> shift);
 }
 
 #elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5Stick_C) || \
@@ -926,7 +975,6 @@ static int readTemperature() {
 #ifdef ARDUINO_M5Stack_Core_ESP32 || defined(M5Atom_Matrix)
 	#define Wire1 Wire
 #endif
-
 
 #define MPU6886_ID		0x68
 #define MPU6886_SMPLRT_DIV	0x19
@@ -956,8 +1004,10 @@ static void writeAccelReg(int regID, int value) {
 static char is6886 = false;
 
 static void startAccelerometer() {
-	#ifdef M5Atom_Matrix
+	#if defined(M5Atom_Matrix)
 		Wire1.begin(25, 21);
+	#elif defined(M5Atom_S3_TFT)
+		Wire1.begin(38, 39);
 	#else
 		Wire1.begin(); // use internal I2C bus with default pins
 	#endif
@@ -1119,11 +1169,11 @@ static int readTemperature() {
 	return val;
 }
 
-#elif defined(ARDUINO_Mbits) || defined(STEAMaker)
+#elif defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FAB_SPARKLE)
 
 #if defined(ARDUINO_Mbits)
 	#define MPU6050 0x69
-#elif defined(STEAMaker)
+#elif defined(STEAMaker) || defined(FAB_SPARKLE)
 	#define MPU6050 0x68
 #endif
 
@@ -1578,6 +1628,7 @@ static void i2cReadBytes(int deviceID, int reg, int *buf, int bufSize) {
 		int error = Wire1.endTransmission((bool) false);
 		if (error) {
 			reportNum("i2c read error", error);
+			taskSleep(5);
 			return;
 		}
 		Wire1.requestFrom(deviceID, bufSize);
@@ -1591,6 +1642,7 @@ static void i2cReadBytes(int deviceID, int reg, int *buf, int bufSize) {
 		int error = Wire.endTransmission((bool) false);
 		if (error) {
 			reportNum("i2c read error", error);
+			taskSleep(5);
 			return;
 		}
 
@@ -1941,7 +1993,7 @@ static OBJ primReadDHT(int argCount, OBJ *args) {
 
 // Microphone Support
 
-#if defined(ARDUINO_NRF52840_CIRCUITPLAY) || defined(ARDUINO_NRF52840_CLUE)
+#if defined(ARDUINO_NRF52840_CIRCUITPLAY) || defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_SEEED_XIAO_NRF52840_SENSE)
 
 #define USE_DIGITAL_MICROPHONE 1
 
@@ -1953,6 +2005,11 @@ static int16_t mic_sample;
 static void initPDM() {
 	if (mic_initialized) return;
 	mic_initialized = true;
+
+	#if defined(PIN_PDM_PWR)
+		pinMode(PIN_PDM_PWR, OUTPUT);
+		digitalWrite(PIN_PDM_PWR, HIGH);
+	#endif
 
 	pinMode(PIN_PDM_CLK, OUTPUT);
 	digitalWrite(PIN_PDM_CLK, LOW);
@@ -2043,7 +2100,7 @@ static int readDigitalMicrophone() {
 	return result;
 }
 
-#elif defined(DATABOT) || defined(ARDUINO_M5STACK_Core2)
+#elif defined(DATABOT) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_XIAO_ESP32S3)
 
 #define USE_DIGITAL_MICROPHONE 1
 
@@ -2060,6 +2117,11 @@ static int readDigitalMicrophone() {
 	#define I2S_WS 0
 	#define I2S_SD 34
 	#define I2S_SCK 12
+	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM)
+#elif defined(ARDUINO_XIAO_ESP32S3)
+	#define I2S_WS 42
+	#define I2S_SD 41
+	#define I2S_SCK -1
 	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM)
 #endif
 

@@ -152,13 +152,13 @@ void initKeyboardHandler() {
 
 void initSound() {
 	EM_ASM_({
-		var context = new AudioContext();
-		window.gainNode = context.createGain();
+		window.audioContext = new AudioContext();
+		window.gainNode = window.audioContext.createGain();
 		window.gainNode.gain.value = 0.1;
-		window.oscillator = context.createOscillator();
+		window.oscillator = window.audioContext.createOscillator();
 		window.oscillator.type = 'square';
 		window.oscillator.start();
-		window.gainNode.connect(context.destination);
+		window.gainNode.connect(window.audioContext.destination);
 	});
 };
 

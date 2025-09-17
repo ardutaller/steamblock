@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-05-28 14:02+0000\n"
+"PO-Revision-Date: 2025-09-07 08:02+0000\n"
 "Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -832,7 +832,7 @@ msgstr "escriu _ a x _ y _ color _ al NeoPanell"
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr "mostra imagen BMP _ x _ y _ al NeoPanell"
+msgstr "mostra imatge BMP _ x _ y _ al NeoPanell"
 
 #. Microphone library label
 msgid "Microphone"
@@ -6586,7 +6586,7 @@ msgstr "pin analògic"
 
 #. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
-msgstr "Torna a connectar-te a la placa clicant el botó \"Connectar\"."
+msgstr "Torna a connectar-te a la placa clicant el botó \"Connecta\"."
 
 #. Analog Synthesis library block
 #. only translate "gate _" as in a synthesizer sound gate that can be triggered
@@ -6648,3 +6648,430 @@ msgstr "CoCube"
 #. Library button, abbreviated
 msgid "LIBS"
 msgstr "BIBS"
+
+#. Foxbit library block
+msgid "fb light level"
+msgstr "fb nivell de llum"
+
+#. Foxbit library block
+msgid "fb pin _ touched?"
+msgstr "fb pin _ tocat?"
+
+#. Foxbit library block
+msgid "fb beep for _ millisecs"
+msgstr "fb beep durant _ mil·lisegons"
+
+#. Foxbit library block
+msgid "fb humidity"
+msgstr "fb humitat"
+
+#. Foxbit library block
+msgid "fb current"
+msgstr "fb corrent"
+
+#. Foxbit library block
+msgid "fb clear NeoPixels"
+msgstr "fb apaga NeoPíxels"
+
+#. Coding Box library block
+msgid "cb stop fan"
+msgstr "cb atura el ventilador"
+
+#. Coding Box library block
+msgid "cb clear oled"
+msgstr "cb neteja pantalla"
+
+#. Coding Box library block
+msgid "cb set _ LED to _"
+msgstr "cb posa el led _ a _"
+
+#. Coding Box library block
+msgid "cb ultrasonic distance"
+msgstr "cb distància"
+
+#. Coding Box library block
+msgid "cb RFID"
+msgstr "cb RFID"
+
+#. Coding Box library block
+msgid "cb compass direction"
+msgstr "cb direcció bruíxola"
+
+#. Coding Box library block
+msgid "cb barometric pressure (mBar)"
+msgstr "cb pressió baromètrica (mBar)"
+
+#. Coding Box library block
+msgid "cb altitude (cm)"
+msgstr "cb altitud (cm)"
+
+#. Coding Box library block
+msgid "cb speaker beep for _ millisecs"
+msgstr "cb beep durant _ mil·lisegons"
+
+#. Coding Box library block
+msgid "cb temperature"
+msgstr "cb temperatura"
+
+#. Coding Box library block
+msgid "cb sound"
+msgstr "cb nivell de so"
+
+#. Coding Box library block
+msgid "cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+msgstr "cb cercle de leds #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _"
+
+#. Coding Box library block
+msgid "cb set servo to _ degrees (0 to 180)"
+msgstr "cb posa el servo a _ graus (0 a 180)"
+
+#. Coding Box library block
+msgid "cb set fan power _ (-100 to 100)"
+msgstr "cb potència del ventilador _ (-100 a 100)"
+
+#. Coding Box library block
+msgid "cb humidity"
+msgstr "cb humitat"
+
+#. Coding Box library block
+msgid "cb light"
+msgstr "cb nivell de llum"
+
+#. Foxbit library block
+msgid "fb temperature"
+msgstr "fb temperatura"
+
+#. Coding Box library block
+msgid "cb PIR motion detected?"
+msgstr "cb PIR moviment detectat?"
+
+#. Coding Box library block
+msgid "cb set all rainbow colors to _"
+msgstr "cb tots els leds del cercle de color _"
+
+#. Foxbit library block
+msgid "logo"
+msgstr "logo"
+
+#. Coding Box library block
+msgid "cb clear rainbow colors"
+msgstr "cb apaga cercle de leds"
+
+#. Coding Box library block
+msgid "cb oled write _ at x _ y _ big _"
+msgstr "cb pantalla escriu _ a x _ y _ gran _"
+
+#. Foxbit library block
+msgid "fb loudness"
+msgstr "fb nivell de so"
+
+#. Foxbit library block
+msgid "fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+msgstr ""
+"fb posa NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ "
+"#BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+
+#. Foxbit library block
+msgid "fb set all NeoPixels _"
+msgstr "fb tots els NeoPíxels de color _"
+
+#. Coding Box library block
+msgid "cb _ ADKey button pressed?"
+msgstr "cb ADKey botó _ premut?"
+
+#. Coding Box library block
+msgid "cb joystick _"
+msgstr "cb joystick _"
+
+#. WiFi library block
+msgid "wifi set local domain name _ .local"
+msgstr "wifi nom de domini local _.local"
+
+#. Firmware install instruction
+msgid "Connecting..."
+msgstr "Connectant..."
+
+#. Generic robot side input. Used in robot libraries
+#. as in "left" side
+msgid "left"
+msgstr "esquerra"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "right" side
+msgid "right"
+msgstr "dreta"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "both" sides
+msgid "both"
+msgstr "ambdós"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "apaga el micròfon"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "dibuixa línia de x _ y _ a x _ y _ color _ al NeoPanell"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "dibuixa cercle a x _ y _ radi _ color _ al NeoPanell"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "dibuixa rectangle a x _ y _ amplada _ alçada _ color _ al NeoPanell"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "cercle"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "quadrat"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "estrella"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "cor"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "triangle"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "trèbol"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "diamant"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "lluna"
+
+#. micro:STEAMakers library block
+msgid "ms pin _ touched?"
+msgstr "ms tocant el pin _?"
+
+#. micro:STEAMakers library block
+msgid "ms accel _ m/s2"
+msgstr "ms acceleració _ m/s²"
+
+#. micro:STEAMakers library block
+msgid "ms gyro _ deg/s"
+msgstr "ms giroscopi _ graus/s"
+
+#. LogicLinks library block
+msgid "LogicLinks receive IR code"
+msgstr "LogicLinks rebre codi IR"
+
+#. LogicLinks library block
+msgid "LogicLinks IR Code"
+msgstr "LogicLinks codi IR"
+
+#. LogicLinks library block
+msgid "LogicLinks button"
+msgstr "LogicLinks botó"
+
+#. LogicLinks library block
+msgid "LogicLinks potentiometer"
+msgstr "LogicLinks potenciòmetre"
+
+#. LogicLinks library block
+msgid "LogicLinks random color"
+msgstr "LogicLinks color aleatori"
+
+#. LogicLinks library block
+msgid "LogicLinks beep _ ms"
+msgstr "LogicLinks bip _ ms"
+
+#. LogicLinks library block
+msgid "LogicLinks set relay _"
+msgstr "LogicLinks relé _"
+
+#. LogicLinks library block
+msgid "LogicLinks IR code received?"
+msgstr "LogicLinks codi IR rebut?"
+
+#. LogicLinks library block
+msgid "LogicLinks color r _ g _ b _ (0-255)"
+msgstr "LogicLinks color r _ g _ b _ (0-255)"
+
+#. LogicLinks library block
+msgid "LogicLinks humidity"
+msgstr "LogicLinks humitat"
+
+#. LogicLinks library block
+msgid "LogicLinks set RGB LED _"
+msgstr "LogicLinks led RGB _"
+
+#. LogicLinks library block
+msgid "LogicLinks turn off RGB LED"
+msgstr "LogicLinks apaga el led RGB"
+
+#. LogicLinks library block
+msgid "LogicLinks temperature (°C)"
+msgstr "LogicLinks temperatura (°C)"
+
+#. LogicLinks library block
+msgid "LogicLinks set red LED _"
+msgstr "LogicLinks led vermell _"
+
+#. LogicLinks library block
+msgid "LogicLinks light (0-100)"
+msgstr "LogicLinks llum (0-100)"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "scripts or functions."
+msgstr "scripts o funcions."
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"posa NeoPíxels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ "
+"#BR# _ _ _ _ _"
+
+#. MicroBlocks IDE block deletion error message.
+msgid "This block is still being used in"
+msgstr "Aquest bloc encara s'utilitza"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "inicialitza i2c(auto) reinicia el pin _ capgira _"
+
+#. Files library block
+msgid "contents of file _"
+msgstr "contingut del fitxer _"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;bright"
+msgstr "brillant"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;dark"
+msgstr "fosc"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;ok"
+msgstr "d'acord"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;up"
+msgstr "amunt"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;down"
+msgstr "avall"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S1"
+msgstr "S1"
+
+#. Calliope MotionKit2 library block
+msgid "mk2;S2"
+msgstr "S2"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit distance (cm)"
+msgstr "MotionKit distància (cm)"
+
+#. Calliope MotionKit2 library block
+msgid "IR key _ pressed?"
+msgstr "s'ha premut la tecla IR _?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set NeoPixels _"
+msgstr "MotionKit posa NeoPíxels _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit clear NeoPixels"
+msgstr "MotionKit apaga NeoPíxels"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit stop motor _"
+msgstr "MotionKit atura el motor _"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit motor _ dir _ speed _ (0~255)"
+msgstr "MotionKit motor _ direcció _ velicitat _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit LED _ _"
+msgstr "MotionKit LED _ _"
+
+#. Calliope MotionKit2 library block
+msgid "color r _ g _ b _ (0~255)"
+msgstr "color r _ g _ b _ (0~255)"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit line sensor _ _"
+msgstr "MotionKit sensor de línia _ _"
+
+#. Calliope MotionKit2 library block
+msgid "IR code received?"
+msgstr "codi IR rebut?"
+
+#. Calliope MotionKit2 library block
+msgid "MotionKit set servo _ to _ ° (0~180)"
+msgstr "MotionKit servo _ a _ ° (0~180)"
+
+#. Real Time Clock library block
+msgid "set year _ month _ day _"
+msgstr "estableix any _ mes _ dia _"
+
+#. Real Time Clock library block
+msgid "set hours _ minutes _ seconds _"
+msgstr "estableix hores _ minuts _ segons _"
+
+#. Real Time Clock library block
+msgid "time (H:M:S)"
+msgstr "hora (h:m:s)"
+
+#. Real Time Clock library block
+msgid "date (Y-M-D)"
+msgstr "data (A-M-D)"
+
+#. Real Time Clock library block
+msgid "second"
+msgstr "segon"
+
+#. Real Time Clock library block
+msgid "minute"
+msgstr "minut"
+
+#. Real Time Clock library block
+msgid "hour"
+msgstr "hora"
+
+#. Real Time Clock library block
+msgid "day"
+msgstr "dia"
+
+#. Real Time Clock library block
+msgid "month"
+msgstr "mes"
+
+#. Real Time Clock library block
+msgid "year"
+msgstr "any"
+
+#. Real Time Clock library block
+msgid "day of week"
+msgstr "dia de la setmana"
+
+#. Real Time Clock library block
+msgid "set day of week _ (1-7)"
+msgstr "posa dia de la setmana a _ (1-7)"
+
+#. Real Time Clock library block
+msgid "init clock _"
+msgstr "inicialitza rellotge _"
+
+#. Real Time Clock library block
+msgid "clock _"
+msgstr "rellotge _"

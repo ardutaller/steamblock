@@ -4,40 +4,74 @@
 
 // Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
 
-// filePrims.c - File system primitives.
-// John Maloney, May 2025
-
-// #include <stdlib.h>
-// #include <string.h>
+// sdCardPrims.c - SD Card file system.
+// John Maloney, July 2025
 
 #include "mem.h"
 #include "interp.h"
 
+#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_RP2040)
+	#define SD_CARD 1
+#endif
+
 #if defined(SD_CARD)
 
-#include "SD.h"
+#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(ARDUINO_CALLIOPE_MINI_V3)
+	// SS must defined before including SdFat.h
+	#define SS 16
+#endif
+
+#define USE_UTF8_LONG_NAMES 1
+#define DISABLE_FS_H_WARNING 1
+#include <SdFat.h>
+
+SdFat SD;
+
+#if defined(ARDUINO_ARCH_RP2040) // this includes RP2350
+	#define SPI_SPEED SD_SCK_MHZ(12)
+#else
+	#define SPI_SPEED SD_SCK_MHZ(24)
+#endif
+
+#if defined(ARDUINO_ARCH_RP2040)
+	#define DEFAULT_CS_PIN PIN_SPI0_SS
+#elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_M5STACK_CORES3)
+	#define DEFAULT_CS_PIN 4
+#else
+	#define DEFAULT_CS_PIN SS
+#endif
 
 // Variables
 
-static int sdCardInitialized = false;
+#define MAX_FILE_PATH 128
+#define FILE_ENTRIES 4
 
-static char fullPath[32]; // used to prefix "/" to file names
+// Current chip select pin; -1 if not yet initialized
+static int sdCardCSPin = -1;
+static char fullPath[MAX_FILE_PATH]; // used to prefix "/" to file names
 
 typedef struct {
-	char fileName[32];
-	SDFile file;
+	char fileName[MAX_FILE_PATH];
+	FsFile file;
 } FileEntry;
 
-#define FILE_ENTRIES 8
 static FileEntry fileEntry[FILE_ENTRIES]; // fileEntry[] records open files
 
 // Helper functions
 
-static void initSDCard() {
-	if (!sdCardInitialized) {
-//		SD.end();
-		SD.begin();
-		sdCardInitialized = true;
+static void initSDCard(int chipSelectPin) {
+	if (sdCardCSPin != chipSelectPin) {
+		if (sdCardCSPin != -1) SD.end();
+		if (chipSelectPin < 0) chipSelectPin = DEFAULT_CS_PIN;
+		int ok = SD.begin(chipSelectPin, SPI_SPEED);
+		if (!ok) {
+			outputString("Could not open SD Card.");
+			outputString("Check wiring, chip select pin, and that card is inserted.");
+			sdCardCSPin = -1;
+			return;
+		}
+		outputString("SD Card opened");
+		sdCardCSPin = chipSelectPin;
 	}
 }
 
@@ -47,7 +81,7 @@ static char *extractFilename(OBJ obj) {
 		char *fileName = obj2str(obj);
 		if (strcmp(fileName, "ublockscode") == 0) return fullPath;
 		if ('/' == fileName[0]) return fileName; // fileName already had a leading "/"
-		snprintf(fullPath, 31, "/%s", fileName);
+		snprintf(fullPath, MAX_FILE_PATH - 1, "/%s", fileName);
 	} else {
 		fail(needsStringError);
 	}
@@ -58,7 +92,7 @@ static int entryFor(char *fileName) {
 	// Return the index of a file entry for the file with the given path.
 	// Return -1 if fileName doesn't match any entry.
 
-	initSDCard();
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
 	if (!fileName[0]) return -1; // empty string is not a valid file name
 	for (int i = 0; i < FILE_ENTRIES; i++) {
 		if (0 == strcmp(fileName, fileEntry[i].fileName)) return i;
@@ -81,19 +115,16 @@ static void closeIfOpen(char *fileName) {
 	int i = entryFor(fileName);
 	if (i >= 0) {
 		fileEntry[i].fileName[0] = '\0';
-		fileEntry[i].file.close();
+		if (fileEntry[i].file.isOpen()) fileEntry[i].file.close();
 	}
 }
 
-static void closeAndDeleteFile(char *fileName) {
-	// Called from fileTransfer.cpp.
+// Initialize
 
-	closeIfOpen(fileName);
-
-	// to avoid a LittleFS error message, must ensure that the file exists before removing it
-	File tempFile = SDFileSystem.open(fileName, "w");
-	tempFile.close();
-	SDFileSystem.remove(fileName);
+static OBJ primInit(int argCount, OBJ *args) {
+	int csPin = ((argCount > 0) && isInt(args[0])) ? obj2int(args[0]) : -1;
+	initSDCard(csPin);
+	return falseObj;
 }
 
 // Open, Close, Delete
@@ -105,16 +136,19 @@ static OBJ primOpen(int argCount, OBJ *args) {
 
 	int i = entryFor(fileName);
 	if (i >= 0) { // use the existing entry
-		fileEntry[i].file.seek(0, SeekSet); // read from start of file
+		fileEntry[i].file.seekSet(0); // read from start of file
 		return falseObj;
 	}
 
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
 	i = freeEntry();
 	if (i >= 0) { // initialize new entry
 		fileEntry[i].fileName[0] = '\0';
-		strncat(fileEntry[i].fileName, fileName, 31);
-		fileEntry[i].file = SDFileSystem.open(fileName, "a+");
-		fileEntry[i].file.seek(0, SeekSet); // read from start of file
+		strncat(fileEntry[i].fileName, fileName, MAX_FILE_PATH - 1);
+		fileEntry[i].file.open(fileName, O_RDWR | O_CREAT);
+		fileEntry[i].file.seekSet(0); // read from start of file
+	} else {
+		outputString("File not found");
 	}
 	return falseObj;
 }
@@ -132,7 +166,9 @@ static OBJ primDelete(int argCount, OBJ *args) {
 	char *fileName = extractFilename(args[0]);
 	if (!fileName[0]) return falseObj;
 
-	closeAndDeleteFile(fileName);
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
+	closeIfOpen(fileName);
+	SD.remove(fileName);
 	return falseObj;
 }
 
@@ -145,6 +181,7 @@ static OBJ primEndOfFile(int argCount, OBJ *args) {
 	int i = entryFor(fileName);
 	if (i < 0) return trueObj;
 
+	processMessage();
 	return (!fileEntry[i].file.available()) ? trueObj : falseObj;
 }
 
@@ -155,14 +192,13 @@ static OBJ primReadLine(int argCount, OBJ *args) {
 	int i = entryFor(fileName);
 	if (i < 0) return newString(0);
 
-	File file = fileEntry[i].file;
-	char buf[800];
+	char buf[1024];
 	uint32 byteCount = 0;
-	while ((byteCount < sizeof(buf)) && file.available()) {
-		int ch = file.read();
+	while ((byteCount < sizeof(buf)) && fileEntry[i].file.available()) {
+		int ch = fileEntry[i].file.read();
 		if ((10 == ch) || (13 == ch)) {
-			if ((10 == ch) && (13 == file.peek())) file.read(); // lf-cr ending
-			if ((13 == ch) && (10 == file.peek())) file.read(); // cr-lf ending
+			if ((10 == ch) && (13 == fileEntry[i].file.peek())) fileEntry[i].file.read(); // lf-cr ending
+			if ((13 == ch) && (10 == fileEntry[i].file.peek())) fileEntry[i].file.read(); // cr-lf ending
 			break;
 		}
 		buf[byteCount++] = ch;
@@ -171,6 +207,7 @@ static OBJ primReadLine(int argCount, OBJ *args) {
 	if (result) {
 		memcpy(obj2str(result), buf, byteCount);
 	}
+	processMessage();
 	return result;
 }
 
@@ -182,17 +219,17 @@ static OBJ primReadBytes(int argCount, OBJ *args) {
 
 	int i = entryFor(fileName);
 	if (i >= 0) {
-		uint8 buf[800];
+		uint8 buf[1024];
 		if (byteCount > sizeof(buf)) byteCount = sizeof(buf);
 		if ((argCount > 2) && isInt(args[2])) {
-			fileEntry[i].file.seek(obj2int(args[2]), SeekSet);
+			fileEntry[i].file.seekSet(obj2int(args[2]));
 		}
 		byteCount = fileEntry[i].file.read(buf, byteCount);
 		if (!byteCount && fileEntry[i].file.available()) {
 			// workaround for rare read error -- skip to the next block
 			int pos = fileEntry[i].file.position();
 			reportNum("skipping bad file block at", pos);
-			fileEntry[i].file.seek(pos + 256, SeekSet);
+			fileEntry[i].file.seekSet(pos + 256);
 			byteCount = fileEntry[i].file.read(buf, byteCount);
 		}
 		int wordCount = (byteCount + 3) / 4;
@@ -203,6 +240,7 @@ static OBJ primReadBytes(int argCount, OBJ *args) {
 			return result;
 		}
 	}
+	processMessage();
 	return newObj(ByteArrayType, 0, falseObj); // empty byte array
 }
 
@@ -231,6 +269,7 @@ static OBJ primReadPosition(int argCount, OBJ *args) {
 	if (i >= 0) {
 		result = fileEntry[i].file.position();
 	}
+	processMessage();
 	return int2obj(result);
 }
 
@@ -245,12 +284,34 @@ static OBJ primSetReadPosition(int argCount, OBJ *args) {
 	if (i >= 0) {
 		int fileSize = fileEntry[i].file.size();
 		if (newPosition > fileSize) newPosition = fileSize;
-		fileEntry[i].file.seek(newPosition, SeekSet);
+		fileEntry[i].file.seekSet(newPosition);
 	}
 	return falseObj;
 }
 
 // Writing
+
+static void writeObj(int fileEntryIndex, OBJ arg) {
+	int i = fileEntryIndex;
+	if (IS_TYPE(arg, StringType)) {
+		char *str = obj2str(arg);
+		fileEntry[i].file.write(str, strlen(str));
+	} else if (isInt(arg)) {
+		char s[16];
+		sprintf(s, "%d", obj2int(arg));
+		fileEntry[i].file.write(s, strlen(s));
+	} else if (isBoolean(arg)) {
+		if (trueObj == arg) {
+			fileEntry[i].file.write("true", 4);
+		} else {
+			fileEntry[i].file.write("false", 5);
+		}
+	} else if (IS_TYPE(arg, ListType)) {
+		fileEntry[i].file.write("<List>", 6);
+	} else if (IS_TYPE(arg, ByteArrayType)) {
+		fileEntry[i].file.write("<ByteArray>", 11);
+	}
+}
 
 static OBJ primAppendLine(int argCount, OBJ *args) {
 	// Append a String to a file followed by a newline.
@@ -261,35 +322,24 @@ static OBJ primAppendLine(int argCount, OBJ *args) {
 	OBJ arg = args[0];
 
 	int i = entryFor(fileName);
-	if (i >= 0) {
-		File file = fileEntry[i].file;
-		int oldPos = file.position();
-		int oldSize = file.size();
-		if (oldPos != oldSize) file.seek(0, SeekEnd); // seek to current end
-		if (IS_TYPE(arg, StringType)) {
-			fileEntry[i].file.print(obj2str(arg));
-		} else if (isInt(arg)) {
-			fileEntry[i].file.print(obj2int(arg));
-		} else if (isBoolean(arg)) {
-			fileEntry[i].file.print((trueObj == arg) ? "true" : "false");
-		} else if (IS_TYPE(arg, ListType)) {
-			// print list items separated by spaces
+	if (i < 0) return falseObj;
+
+	if ((i >= 0) && fileEntry[i].file)  {
+		int oldPos = fileEntry[i].file.position();
+		int oldSize = fileEntry[i].file.size();
+		if (oldPos != oldSize) fileEntry[i].file.seekEnd(); // seek to current end
+		if (IS_TYPE(arg, ListType)) {
 			int count = obj2int(FIELD(arg, 0));
 			for (int j = 1; j <= count; j++) {
-				OBJ item = FIELD(arg, j);
-				if (IS_TYPE(item, StringType)) {
-					fileEntry[i].file.print(obj2str(item));
-				} else if (isInt(item)) {
-					fileEntry[i].file.print(obj2int(item));
-				} else if (isBoolean(item)) {
-					fileEntry[i].file.print((trueObj == item) ? "true" : "false");
-				}
-				if (j < count) fileEntry[i].file.write(32); // space
+				writeObj(i, FIELD(arg, j));
+				if (j < count) fileEntry[i].file.write(", ", 2);
 			}
+		} else {
+			writeObj(i, arg);
 		}
 		fileEntry[i].file.write(10); // newline
 		fileEntry[i].file.flush();
-		if (oldPos != oldSize) file.seek(oldPos, SeekSet); // reset position for reading
+		fileEntry[i].file.seekSet(oldPos); // reset position for reading
 	}
 	processMessage();
 	return falseObj;
@@ -305,88 +355,107 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 	int i = entryFor(fileName);
 	if (i < 0) return falseObj;
 
-	File f = fileEntry[i].file;
+	int oldPos = fileEntry[i].file.position();
+	int oldSize = fileEntry[i].file.size();
+	if (oldPos != oldSize) fileEntry[i].file.seekEnd(); // seek to current end
+
 	if (IS_TYPE(data, ByteArrayType)) {
-		f.write((uint8 *) &FIELD(data, 0), BYTES(data));
+		fileEntry[i].file.write((uint8 *) &FIELD(data, 0), BYTES(data));
 	} else if (IS_TYPE(data, StringType)) {
 		char *s = obj2str(data);
-		f.write((uint8 *) s, strlen(s));
+		fileEntry[i].file.write((uint8 *) s, strlen(s));
 	}
-	f.flush();
+	fileEntry[i].file.flush();
+	fileEntry[i].file.seekSet(oldPos); // reset position for reading
+
 	processMessage();
 	return falseObj;
 }
 
-// File list
-
-static File listDir;
-
-static OBJ primStartFileList(int argCount, OBJ *args) {
-	listDir = SDFileSystem.open("/");
-	return falseObj;
-}
-
-static void nextFileName(char *fileName) {
-	// Copy the next file name into the argument. Set argument to empty string when done.
-	// Argument must have room for at least 32 bytes.
-
-	fileName[0] = '\0'; // clear string
-	#if defined(ESP32)
-		if (listDir) {
-			File file = listDir.openNextFile();
-			if (file) strncat(fileName, file.name(), 31);
-		}
-	#else
-		if (listDir.next()) strncat(fileName, listDir.fileName().c_str(), 31);
-	#endif
-}
-
-static OBJ primNextFileInList(int argCount, OBJ *args) {
-	char fileName[100];
-	nextFileName(fileName);
-	while ((strcmp(fileName, "/") == 0) || strstr(fileName, "ublockscode")) {
-		nextFileName(fileName); // skip root directory and code file
-	}
-	char *s = fileName;
-	if ('/' == s[0]) s++; // skip leading slash
-	return newStringFromBytes(s, strlen(s));
-}
-
 // File info
+
+static OBJ primHasCard(int argCount, OBJ *args) {
+	int oldCardPin = sdCardCSPin;
+	sdCardCSPin = -999; // force re-initialization
+	initSDCard(oldCardPin);
+	return (sdCardCSPin >= 0) ? trueObj : falseObj;
+}
+
+static OBJ primFileExists(int argCount, OBJ *args) {
+	if (argCount < 1) return fail(notEnoughArguments);
+	char *fileName = extractFilename(args[0]);
+	if (!fileName[0]) return falseObj;
+
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
+	return (SD.exists(fileName)) ? trueObj : falseObj;
+}
 
 static OBJ primFileSize(int argCount, OBJ *args) {
 	if (argCount < 1) return fail(notEnoughArguments);
 	char *fileName = extractFilename(args[0]);
 	if (!fileName[0]) return int2obj(-1);
 
-	File file = SDFileSystem.open(fileName, "r");
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
+	FsFile file = SD.open(fileName, O_RDONLY);
 	if (!file) return int2obj(-1);
 	int size = file.size();
 	file.close();
 	return int2obj(size);
 }
 
-// System info
+// File and Folder listing
 
-static OBJ primSystemInfo(int argCount, OBJ *args) {
-	size_t totalBytes = 0;
-	size_t usedBytes = 0;
+static FsFile listDir;
 
-	#if defined(ESP32)
-		initSDCard();
-outputString("initialized!");
-		totalBytes = SDFileSystem.totalBytes();
-		usedBytes = SDFileSystem.usedBytes();
-	#else
-		FSInfo info;
-		SDFileSystem.info(info);
-		totalBytes = info.totalBytes;
-		usedBytes = info.usedBytes;
-	#endif
+static OBJ primStartFileList(int argCount, OBJ *args) {
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
+	if ((argCount > 0) && (IS_TYPE(args[0], StringType)) && (strlen(obj2str(args[0])) > 0)) {
+		listDir.open(obj2str(args[0]));
+	} else {
+		listDir.open("/");
+	}
+	return falseObj;
+}
 
-	char result[100];
-	sprintf(result, "%u bytes used of %u", usedBytes, totalBytes);
-	return newStringFromBytes(result, strlen(result));
+static OBJ primNextFileInList(int argCount, OBJ *args) {
+	char fileName[100];
+	int listFolders = ((argCount > 0) && (args[0] == trueObj));
+	FsFile file = listDir.openNextFile();
+	if (listFolders) {
+		while (file && !file.isDir()) { // skip non-foldres
+			file = listDir.openNextFile();
+		}
+	} else {
+		while (file && file.isDir()) { // skip folders
+			file = listDir.openNextFile();
+		}
+	}
+	file.getName(fileName, sizeof(fileName) - 1);
+	return newStringFromBytes(fileName, strlen(fileName));
+}
+
+// Folder create/delete
+
+static OBJ primCreateFolder(int argCount, OBJ *args) {
+	if (argCount < 1) return fail(notEnoughArguments);
+	char *folderPath = extractFilename(args[0]);
+	if (!folderPath[0]) return int2obj(-1);
+
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
+	int ok = SD.mkdir(folderPath, true);
+	if (!ok) outputString("Create folder failed");
+	return ok ? trueObj : falseObj;
+}
+
+static OBJ primDeleteFolder(int argCount, OBJ *args) {
+	if (argCount < 1) return fail(notEnoughArguments);
+	char *folderPath = extractFilename(args[0]);
+	if (!folderPath[0]) return int2obj(-1);
+
+	if (sdCardCSPin < 0) initSDCard(DEFAULT_CS_PIN);
+	int ok = SD.rmdir(folderPath);
+	if (!ok) outputString("Delete folder failed");
+	return ok ? trueObj : falseObj;
 }
 
 #endif
@@ -394,23 +463,27 @@ outputString("initialized!");
 // Primitives
 
 static PrimEntry entries[] = {
-#if defined(SD_CARD)
-	{"open", primOpen},
-	{"close", primClose},
-	{"delete", primDelete},
-	{"endOfFile", primEndOfFile},
-	{"readLine", primReadLine},
-	{"readBytes", primReadBytes},
-	{"readInto", primReadInto},
-	{"readPosition", primReadPosition},
-	{"setReadPosition", primSetReadPosition},
-	{"appendLine", primAppendLine},
-	{"appendBytes", primAppendBytes},
-	{"fileSize", primFileSize},
-	{"startList", primStartFileList},
-	{"nextInList", primNextFileInList},
-	{"systemInfo", primSystemInfo},
-#endif
+	#if defined(SD_CARD)
+		{"init", primInit},
+		{"open", primOpen},
+		{"close", primClose},
+		{"delete", primDelete},
+		{"endOfFile", primEndOfFile},
+		{"readLine", primReadLine},
+		{"readBytes", primReadBytes},
+		{"readInto", primReadInto},
+		{"readPosition", primReadPosition},
+		{"setReadPosition", primSetReadPosition},
+		{"appendLine", primAppendLine},
+		{"appendBytes", primAppendBytes},
+		{"hasCard", primHasCard},
+		{"fileExists", primFileExists},
+		{"fileSize", primFileSize},
+		{"startList", primStartFileList},
+		{"nextInList", primNextFileInList},
+		{"createFolder", primCreateFolder},
+		{"deleteFolder", primDeleteFolder},
+	#endif
 };
 
 void addSDCardPrims() {

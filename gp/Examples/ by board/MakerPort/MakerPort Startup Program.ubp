@@ -2,7 +2,7 @@ module main
 author 'Roger Wagner'
 version 1 0 
 description ''
-variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived FairyLightsPin SoundLevel SoundLevelMax LightLevel MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed Folder50Present 
+variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameList KeyPosition ToneFreqList NumberOfNeopixels CharPosn Mp3Volume ToneVolume MyFolderPresent TimeStart MyFolder ReadyForTasks ReleasedTPin PrevVolume IRCodeReceived FairyLightsPin SoundLevel SoundLevelMax LightLevel MicroSDPresent Mp3VolumeLevelPin Analog Servo1 Servo2 Extra1 Extra2 SerialTx SerialRx Mp3Tx Mp3Rx IRReceiver Mp3Busy WelcometoMakerPortTrack WelcomeToMakerPortFolder QATest RedMax NeopixelPin DistancePinTrigger DistancePinEcho Folder75Present LanternNeoPixPin QANeoPixPin LightShowNeoPixPin DistanceThreshold Distance ThingIsRunning TimeEnd Folder99Present BaseVolume Volume TimeThreshold FilesSwitch DevelopmentBuild BasicMode Folder76Present HappyAngle SadAngle FaceTurned LCDWaitTime Comment LightThreshold PlayingPong ServeLeft LeftPaddleVisible RightPaddleVisible Delay SpeedUpTime ScoreLeft ScoreRight NewGameAllowed Folder50Present KeyboardChangeAllowed PinTouchedList ServoSpeed 
 
   spec ' ' 'Initialize lists' 'Initialize lists'
   spec ' ' 'MenuAction5' 'MenuActionAccelerometer'
@@ -31,6 +31,7 @@ variables CharacterList CharacterNames TPin KeyboardOn folder IRCodeList IRNameL
   spec ' ' 'DoServeRight' 'DoServeRight'
   spec ' ' 'NewGame' 'NewGame'
   spec ' ' 'KeyboardMode' 'KeyboardMode'
+  spec ' ' 'ServoMoveWthSpeed pin' 'ServoMoveWthSpeed pin _ start (-100 to 100) _ target (-100 to 100) _ speed (0-100) _' 'num num num num' 10 10 10 10
 
 to DefinePinNumbers {
   Mp3VolumeLevelPin = 0
@@ -54,6 +55,8 @@ to DefinePinNumbers {
 }
 
 to DefineVariables {
+  ServoSpeed = 25
+  comment 'speed to move angle servo at (1-100)'
   LCDWaitTime = 1500
   comment 'ms to wait after displaying each status update
 during startup when the LCD is attached.
@@ -97,7 +100,9 @@ to test for presence of the MakerPort flash drive files '
   SoundLevel = (makerport_loudness 'mp3 player')
   SoundLevelMax = 10
   ToneVolume = 5
+  PinTouchedList = ('[data:makeList]' 0 0 0 0)
   PlayingPong = (booleanConstant false)
+  KeyboardChangeAllowed = (booleanConstant true)
   NewGameAllowed = (booleanConstant true)
   ServeLeft = (booleanConstant true)
   LeftPaddleVisible = (booleanConstant false)
@@ -165,7 +170,7 @@ to DoServeLeft {
     if (and (or (i == 7) (i == 8)) LeftPaddleVisible) {
       makerport_beep 440 50 5
       ScoreLeft = (ScoreLeft + 1)
-      neoPanel_fillRectangle 8 (9 - ScoreLeft) 1 ScoreLeft (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      neoPanel_draw_rectangle 8 (9 - ScoreLeft) 8 ScoreLeft (color_withBrightness (colorSwatch 72 218 233 255) 50)
       if (ScoreLeft == 4) {
         'play ringtone' 'Pacman:d=16,o=6,b=140:
 b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
@@ -187,7 +192,7 @@ to DoServeRight {
     if (and (or (i == 2) (i == 1)) RightPaddleVisible) {
       makerport_beep 440 50
       ScoreRight = (ScoreRight + 1)
-      neoPanel_fillRectangle 1 (9 - ScoreRight) 1 ScoreRight (color_withBrightness (colorSwatch 72 218 233 255) 50)
+      neoPanel_draw_rectangle 1 (9 - ScoreRight) 1 ScoreRight (color_withBrightness (colorSwatch 72 218 233 255) 50)
       if (ScoreRight == 4) {
         'play ringtone' 'Pacman:d=16,o=6,b=140:
 b5,b,f#,d#,8b,8d#,c,c7,g,f,8c7,8e,b5,b,f#,d#,8b,8d#,32d#,32e,f,32f,32f#,g,32g,32g#,a,8b'
@@ -215,9 +220,12 @@ to DownArrowVolume {
 }
 
 to EnableTouchLEDsIRRemote {
-  LCD1602_clear
-  LCD1602_write '   Touch+LEDs' 1
-  LCD1602_write '  & IR Enabled' 2
+  if (LCD1602_isConnected) {
+    LCD1602_clear
+    LCD1602_write '   Touch+LEDs' 1
+    LCD1602_write '  & IR Enabled' 2
+  }
+  waitMillis 7000
   sendBroadcast 'WatchForTouch'
   sendBroadcast 'WatchForIRCommand'
 }
@@ -235,34 +243,60 @@ to FixKeyPositionFromIR {
 
 to IncrementFolderP12 {
   folder += 1
-  if (and ('[misc:connectedToIDE]') (folder < 56)) {
-    sayIt 'folder' folder
-  }
   if (folder == 55) {
-    mp3_playTrack 55 99
-    if ('[misc:connectedToIDE]') {
-      waitMillis 1000
-      sayIt 'touch button 1 for the keyboard mode, or touch 12 again
-to go back to the first sound folder.'
-    }
-    waitMillis 6000
-    waitUntil (touch_touch_event)
-    if (touch_isTouched 1) {
-      KeyboardMode
-    } else {
-      folder += 1
-    }
-  }
-  if (folder > 55) {
     if Folder50Present {
       folder = 50
     } else {
       folder = 51
     }
+    if KeyboardChangeAllowed {
+      mp3_playTrack 55 99
+      if ('[misc:connectedToIDE]') {
+        sayIt 'touch button 1 for the keyboard mode, or touch 12 again
+to go back to the first sound folder.'
+      }
+      if (LCD1602_isConnected) {
+        LCD1602_clear
+        LCD1602_write 'Touch button 1 ' 1
+        LCD1602_write 'for the keyboard ' 2
+        waitMillis 2000
+        LCD1602_clear
+        LCD1602_write 'or touch 12' 1
+        LCD1602_write 'to go back to' 2
+        waitMillis 2000
+        LCD1602_clear
+        LCD1602_write 'the first sound' 1
+        LCD1602_write 'folder' 2
+      }
+      waitUntil (touch_touch_event)
+      LCD1602_clear
+      if ((touch_last_touched_pin) == 1) {
+        if ('[misc:connectedToIDE]') {sayIt 'Keyboard Actions Enabled!'}
+        if (LCD1602_isConnected) {
+          LCD1602_write 'Keyboard Actions' 1
+          LCD1602_write '     Enabled!' 2
+          waitMillis 2000
+        }
+        KeyboardMode
+        KeyboardChangeAllowed = (booleanConstant false)
+        LCD1602_write 'Ready...' 1
+        LCD1602_write '                 ' 2
+        LCD1602_write_field ('[data:join]' 'Folder:' folder) 2 8 16
+      } else {
+        mp3_playTrack 99 folder
+        LCD1602_write 'Ready...' 1
+        LCD1602_write '                 ' 2
+        LCD1602_write_field ('[data:join]' 'Folder:' folder) 2 8 16
+      }
+    }
+    mp3_playTrack 99 folder
+  } else {
+    mp3_playTrack 99 folder
   }
-  if (folder < 55) {
+  if (LCD1602_isConnected) {
     LCD1602_write_field ('[data:join]' 'Folder:' folder) 2 8 16
   }
+  digitalWriteOp 12 false
 }
 
 to 'Initialize lists' {
@@ -414,10 +448,10 @@ to IsThereMyFolder50 {
       LCD1602_clear
       LCD1602_write '  More sounds' 1
       LCD1602_write ' in folder 50!' 2
-      waitMillis LCDWaitTime
+      waitMillis 4500
       LCD1602_clear
       LCD1602_write '   MakerPort' 1
-      waitMillis (4500 - LCDWaitTime)
+      waitMillis LCDWaitTime
       if DevelopmentBuild {
         if Folder99Present {
           LCD1602_write_field '**' 2 1 2
@@ -438,6 +472,7 @@ to IsThereMyFolder50 {
 }
 
 to IsThereMyFolder99 {
+  LCD1602_write '   MakerPort' 1
   LCD1602_write_field 'Folder 99?' 2 4 13
   if (and (LCD1602_isConnected) DevelopmentBuild) {
     LCD1602_write_field '?' 2 1 1
@@ -457,20 +492,13 @@ to IsThereMyFolder99 {
 }
 
 to KeyboardMode {
-  mp3_playTrack 54 99
-  if ('[misc:connectedToIDE]') {
-    sayIt 'Keyboard Actions Enabled!'
-  }
-  if (LCD1602_isConnected) {
-    LCD1602_write 'Keyboard Actions' 1
-    LCD1602_write '     Enabled!' 2
-    waitMillis (14000 - 2000)
-  } else {
-    waitMillis 14000
-  }
+  clearNeoPixels
+  NewGameAllowed = (booleanConstant false)
+  PlayingPong = (booleanConstant false)
   KeyboardOn = (booleanConstant true)
   ReadyForTasks = (booleanConstant true)
-  waitMillis 14000
+  mp3_playTrack 54 99
+  waitMillis 7000
   EnableTouchLEDsIRRemote
 }
 
@@ -540,12 +568,14 @@ to MenuAction5 {
 
 to NewGame {
   clearNeoPixels
-  Delay = (Delay - 50)
-  ServeLeft = (booleanConstant true)
-  ScoreLeft = 0
-  ScoreRight = 0
-  sendBroadcast 'ShowLeftPaddle'
-  sendBroadcast 'ShowRightPaddle'
+  if NewGameAllowed {
+    Delay = (Delay - 50)
+    ServeLeft = (booleanConstant true)
+    ScoreLeft = 0
+    ScoreRight = 0
+    sendBroadcast 'ShowLeftPaddle'
+    sendBroadcast 'ShowRightPaddle'
+  }
 }
 
 to PinKeyTouched {
@@ -573,7 +603,7 @@ to PinKeyTouched2 {
   if MicroSDPresent {
     if (TPin != 12) {
       if (TPin == 1) {
-        setServoAngle Servo1 90
+        'ServoMoveWthSpeed pin' Servo1 0 90 ServoSpeed
         if (and PlayingPong ServeLeft) {
           sendBroadcast 'ShowLeftPaddle'
         }
@@ -587,17 +617,23 @@ to PinKeyTouched2 {
           NewGame
         }
       }
-      sendBroadcast 'PlayTrack'
+      if (not KeyboardOn) {
+        sendBroadcast 'PlayTrack'
+      } else {
+        'play frequency' 880 10
+      }
     } else {
-      IncrementFolderP12
-      LCD1602_write_field ('[data:join]' 'Folder:' folder) 2 8 16
+      if (not KeyboardOn) {
+        IncrementFolderP12
+      } else {
+        'play frequency' 880 10
+      }
       if (and PlayingPong (not ServeLeft)) {
         sendBroadcast 'ShowRightPaddle'
       }
       if (and (not PlayingPong) NewGameAllowed) {
         NewGame
       }
-      mp3_playTrack 99 folder
     }
   } else {
     makerport_beep (at TPin ToneFreqList) 100 ToneVolume
@@ -621,6 +657,18 @@ to QATestSimple {
   sendBroadcast 'WatchForIRCommand'
   sendBroadcast 'WatchForTouch'
   sendBroadcast 'PortTest'
+}
+
+to 'ServoMoveWthSpeed pin' pin start target speed {
+  local 'Sweep' (target - start)
+  comment '1ms per degree of movement'
+  local 'TotalFastestMoveTime' (Sweep * 1)
+  local 'DesiredTimeForMove' ((TotalFastestMoveTime * 100) / speed)
+  local 'TotalDelayPerStep' (DesiredTimeForMove / Sweep)
+  for i ('[data:range]' start target 1) {
+    setServoAngle pin i
+    waitMillis TotalDelayPerStep
+  }
 }
 
 to SystemSetup2 {
@@ -667,6 +715,7 @@ to SystemSetup2 {
     mp3_repeatAllInFolder MyFolder
     sendBroadcast 'Servo+LightShow'
   } else {
+    sendBroadcast 'Servo+LightShow'
     LCD1602_write 'Ready...' 1
     if (or (not Folder75Present) (not Folder76Present)) {
       LCD1602_write ('[data:join]' '       Folder:' folder) 2
@@ -701,7 +750,9 @@ to myBlock {
   ReadyForTasks = (booleanConstant true)
   sendBroadcast 'WatchForIRCommand'
   mp3_setVolume Mp3Volume
+  waitMillis 50
   mp3_repeatAllInFolder 75
+  waitMillis 50
   mp3_pause
   LCD1602_clear
   LCD1602_write '  Come Closer!' 1
@@ -734,16 +785,16 @@ to myBlock {
   }
 }
 
-script 600 66 {
+script 586 66 {
 stopAll
 mp3_pause
 }
 
-script 452 70 {
+script 438 70 {
 QATestSimple
 }
 
-script 85 76 {
+script 71 76 {
 makerport_initialize
 DefinePinNumbers
 DefineVariables
@@ -768,17 +819,17 @@ observed times for track 99 in folders:
 '
 }
 
-script 602 157 {
+script 588 157 {
 mp3_pause
 }
 
-script 789 347 {
+script 775 347 {
 to 'MakerPort Setup' {}
 }
 
-script 83 528 {
+script 69 528 {
 whenStarted
-Comment = 'MakerPort Startup v05.03.25 - Animatronics'
+Comment = 'MakerPort Startup v07.22.25 - Animatronics'
 Comment = 'Uses timed playback to detect microSD card, not the  "mp3 player has flashcard" block (MakerPort)'
 DevelopmentBuild = (booleanConstant false)
 Comment = 'Set "DevelopmentBuild" to true during development, false for production startup program'
@@ -797,11 +848,11 @@ if MicroSDPresent {
 }
 }
 
-script 85 1275 {
+script 75 1183 {
 whenBroadcastReceived 'Servo+LightShow'
-makerport_setAllLEDs true
-neoPixelAttach NumberOfNeopixels LightShowNeoPixPin
-clearNeoPixels
+if MyFolderPresent {
+  makerport_setAllLEDs true
+}
 comment 'servos respond to sound'
 SoundLevel = (makerport_loudness 'mp3 player')
 forever {
@@ -810,37 +861,49 @@ forever {
     SoundLevelMax = SoundLevel
   }
   LightLevel = ('[misc:rescale]' ((SoundLevel * 100) / SoundLevelMax) 0 100 0 1023)
-  analogWriteOp FairyLightsPin LightLevel
-  for i ('[data:range]' 1 12) {
-    analogWriteOp i LightLevel
-    comment 'Only LEDs 3, 4, 5, 7, 8, 9, 10, 11 & 12 have variable brightness
+  if MyFolderPresent {
+    for i ('[data:range]' 1 12) {
+      analogWriteOp i LightLevel
+      comment 'Only LEDs 3, 4, 5, 7, 8, 9, 10, 11 & 12 have variable brightness
 LEDS 1, 2, 6 do not have variable brightness, but will quickly
 turn on/off in response to the sound volume level.'
+    }
+    setNeoPixelColor (random 1 NumberOfNeopixels) (color_withBrightness (randomColor) 50)
+    analogWriteOp FairyLightsPin LightLevel
   }
-  setNeoPixelColor (random 1 NumberOfNeopixels) (color_withBrightness (randomColor) 50)
-  setServoAngle Servo1 ('[misc:rescale]' ((SoundLevel * 100) / SoundLevelMax) 0 100 0 90)
+  if (and (and (TPin != 1) (TPin != 5)) ((makerport_loudness 'mp3 player') > 5)) {
+    setServoAngle Servo1 ('[misc:rescale]' ((SoundLevel * 100) / SoundLevelMax) 0 100 0 90)
+  }
 }
 }
 
-script 1603 1508 {
+script 1589 1508 {
 to DoNoCard {}
 }
 
-script 1268 1511 {
+script 1254 1511 {
 to KeyboardMode {}
 }
 
-script 807 1781 {
+script 793 1781 {
 to SystemSetup2 {}
 }
 
-script 89 2210 {
+script 222 2278 {
 whenBroadcastReceived 'WatchForTouch'
 forever {
   if (and (touch_touch_event) ReadyForTasks) {
     digitalWriteOp TPin false
     TPin = (touch_last_touched_pin)
     LCD1602_write_field ('[data:join]' 'Touch:' TPin) 1 1 16
+    if (not KeyboardOn) {
+      '[data:addLast]' TPin PinTouchedList
+      '[data:delete]' 1 PinTouchedList
+      KeyboardChangeAllowed = (booleanConstant true)
+      for i 4 {
+        if ((at i PinTouchedList) != 12) {KeyboardChangeAllowed = (booleanConstant false)}
+      }
+    }
     if Folder76Present {
       comment 'Mr. Happy-Sad - play whenever a touchpoint
 is being touched'
@@ -856,25 +919,27 @@ AND a demo is running (01 or 75)'
       }
       makerport_setAllLEDs false
       digitalWriteOp TPin true
-      if (or (TPin == 1) (or (TPin == 5) (TPin == 12))) {
-        comment '"You may pass" (don''t stop other tasks)'
-      } else {
-        comment 'Cancel pong if other than 1, 5 or 12'
-        stopAll
-        clearNeoPixels
-        PlayingPong = (booleanConstant false)
-        NewGameAllowed = (booleanConstant false)
-      }
       comment 'KeyboardOn = true to output characters'
       if KeyboardOn {
-        LCD1602_write_field (at TPin CharacterNames) 2 1 16
+        LCD1602_write_field (at TPin CharacterNames) 2 1 7
         if (TPin == 6) {
           'mouse click' 'left'
         } else {
-          '[hid:holdKey]' (at TPin CharacterList)
+          'press key' (at TPin CharacterList)
+        }
+      } else {
+        if (or (TPin == 1) (or (TPin == 5) (TPin == 12))) {
+          comment '"You may pass" (don''t stop other tasks)'
+        } else {
+          comment 'Cancel pong if other than 1, 5 or 12'
+          stopAll
+          clearNeoPixels
+          PlayingPong = (booleanConstant false)
+          NewGameAllowed = (booleanConstant false)
         }
       }
       sendBroadcast 'WatchForRelease'
+      sendBroadcast 'Servo+LightShow'
       PinKeyTouched2
     }
   }
@@ -882,7 +947,7 @@ AND a demo is running (01 or 75)'
 }
 }
 
-script 1336 3162 {
+script 1322 3162 {
 whenBroadcastReceived 'WatchForIRCommand'
 forever {
   if (and (ir_code_received) ReadyForTasks) {
@@ -912,7 +977,7 @@ forever {
         if (TPin == 6) {
           'mouse click' 'left'
         } else {
-          '[hid:holdKey]' (at TPin CharacterList)
+          'press key' (at TPin CharacterList)
         }
       }
       PinKeyTouched
@@ -921,20 +986,47 @@ forever {
 }
 }
 
-script 549 3558 {
+script 605 3614 {
 whenBroadcastReceived 'PlayTrack'
-LCD1602_write_field ('[data:join]' '       Folder:' folder) 2 1 16
 mp3_playTrack TPin folder
 sendBroadcast 'Listen'
 }
 
-script 88 3678 {
+script 995 3728 {
+whenBroadcastReceived 'Listen'
+forever {
+  if (not (digitalReadOp _mp3RxPin)) {
+    digitalWriteOp TPin false
+    stopTask
+  }
+}
+}
+
+script 612 3787 {
+whenBroadcastReceived 'PortTest'
+forever {
+  digitalWriteOp 13 true
+  waitMillis 100
+  digitalWriteOp 13 false
+  waitMillis 10
+  for i ('[data:range]' 15 19) {
+    analogWriteOp 14 ((makerport_loudness 'mp3 player') * 1)
+    digitalWriteOp i true
+    waitMillis 100
+    digitalWriteOp i false
+    waitMillis 10
+  }
+}
+}
+
+script 87 4072 {
 whenBroadcastReceived 'WatchForRelease'
 forever {
   if (and (touch_release_event) ReadyForTasks) {
     ReleasedTPin = (touch_last_released_pin)
     if (ReleasedTPin == 1) {
-      setServoAngle Servo1 0
+      'ServoMoveWthSpeed pin' Servo1 90 0 ServoSpeed
+      setServoAngle 1 0
       waitMillis 75
       stopServo Servo1
     }
@@ -958,71 +1050,57 @@ forever {
 }
 }
 
-script 933 3682 {
-whenBroadcastReceived 'Listen'
-forever {
-  if (not (digitalReadOp _mp3RxPin)) {
-    digitalWriteOp TPin false
-    stopTask
-  }
-}
-}
-
-script 626 3787 {
-whenBroadcastReceived 'PortTest'
-forever {
-  digitalWriteOp 13 true
-  waitMillis 100
-  digitalWriteOp 13 false
-  waitMillis 10
-  for i ('[data:range]' 15 19) {
-    analogWriteOp 14 ((makerport_loudness 'mp3 player') * 1)
-    digitalWriteOp i true
-    waitMillis 100
-    digitalWriteOp i false
-    waitMillis 10
-  }
-}
-}
-
-script 631 4241 {
+script 617 4241 {
 to IsThereFolder75 {}
 }
 
-script 1297 4465 {
+script 1283 4465 {
 to IsThereFolder76 {}
 }
 
-script 87 4635 {
+script 269 4898 {
 to IsThereMyFolder99 {}
 }
 
-script 832 5154 {
+script 818 5154 {
 to IsThereMyFolder {}
 }
 
-script 66 5230 {
+script 329 5509 {
 to IsThereMyFolder50 {}
 }
 
-script 840 6157 {
+script 826 6157 {
 to DefineVariables {}
 }
 
-script 189 6244 {
+script 139 6412 {
 to DefinePinNumbers {}
 }
 
-script 198 6852 {
+script 461 6594 {
+setServoAngle 14 0
+}
+
+script 440 6658 {
+setServoAngle 14 90
+}
+
+script 487 6728 {
+ServoSpeed = 75
+}
+
+script 76 7016 {
 to 'IsThere Track' {}
 }
 
-script 746 7726 {
+script 825 7777 {
 whenBroadcastReceived 'PlayPong!'
 neoPanel_attach 8 8 Extra1
 clearNeoPixels
 PlayingPong = (booleanConstant true)
 forever {
+  if (not PlayingPong) {stopTask}
   if ServeLeft {
     DoServeLeft
   } else {
@@ -1032,303 +1110,54 @@ forever {
 }
 }
 
-script 81 7895 {
+script 132 8071 {
 to PinKeyTouched2 {}
 }
 
-script 743 8110 {
+script 822 8215 {
 whenBroadcastReceived 'ShowRightPaddle'
 RightPaddleVisible = (booleanConstant true)
-neoPanel_fillRectangle 1 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
+neoPanel_draw_rectangle 1 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
 waitMillis (Delay * (3 / 2))
 RightPaddleVisible = (booleanConstant false)
-neoPanel_fillRectangle 1 2 1 3 (colorSwatch 0 0 0 255)
+neoPanel_draw_rectangle 1 2 1 3 (colorSwatch 0 0 0 255)
 }
 
-script 744 8396 {
+script 822 8514 {
 whenBroadcastReceived 'ShowLeftPaddle'
 LeftPaddleVisible = (booleanConstant true)
-neoPanel_fillRectangle 8 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
+neoPanel_draw_rectangle 8 2 1 3 (color_withBrightness (colorSwatch 72 218 233 255) 50)
 waitMillis (Delay * (3 / 2))
 LeftPaddleVisible = (booleanConstant false)
-neoPanel_fillRectangle 8 2 1 3 (colorSwatch 0 0 0 255)
+neoPanel_draw_rectangle 8 2 1 3 (colorSwatch 0 0 0 255)
 }
 
-script 81 9159 {
+script 305 9464 {
 to DoServeLeft {}
 }
 
-script 87 9942 {
+script 66 10073 {
 to DoServeRight {}
 }
 
-script 75 10751 {
+script 75 10856 {
 to IncrementFolderP12 {}
 }
 
-
-module BMP Output
-author 'José García Yeste'
-version 2 10 
-depends _TFT _Files 
-description 'Display BMP files on a TFT screen.
-
-BMP files can be transferred to and from boards with a file systems using the put/get commands in the IDE file menu (available in "show advanced blocks" mode).
-
-Dragging a BMP file over microBlocks also loads the file into the file system.
-
-This library works with uncompressed BMP files with 1, 4, 8, 16, 24 and 32 bits per pixel. v2.0 supports 4 and 8 bit RLE compressed files.
-
-Tested with GIMP, online-convert.com and convert.io generated files.
-
-'
-variables _bmpPalette _bmpIsRGB565 _bmpPixelsOffset _bmpWidth _bmpHeight _bmpBPP _bmpCompression _bmpLine _bmpPixelLine 
-
-  spec ' ' 'drawBMPfile' 'display BMP file _ at x _ y _' 'str num num' 'image.bmp' 0 0
-  space
-  spec 'r' '_bmp_readHeader' '_bmp_readHeader file _' 'str' ''
-  spec ' ' '_bmp_drawBMP' '_bmp_drawBMP file _ x _ y _' 'str num num' '' 0 0
-  spec ' ' '_bmp_drawBMPPixels' '_bmp_drawBMPPixels file _ x _ y _ with function _' 'str num num str' '' 0 0 '[tft:setPixel]'
-  space
-  spec ' ' '_bmp_readPalette' '_bmp_readPalette file _' 'auto' ''
-  spec 'r' '_bmp_readPixelLine' '_bmp_readPixelLine file _' 'str' ''
-  spec ' ' '_bmp_readLine' '_bmp_readLine file _' 'auto' ''
-  spec 'r' '_bmp_readRLEline' '_bmp_readRLELine file _' 'auto' ''
-  spec ' ' '_bmp_mapIndexedPixels' '_bmp_mapIndexedPixels'
-  space
-  spec 'r' '_bmp_readRGBPixelLine' '_bmp_readRGBPixelLine file _' 'auto' ''
-  spec 'r' '_bmp_16BitPixel' '_bmp_16BitPixel from _ starting at _' 'str num' '' 1
-  spec 'r' '_bmp_24BitPixel' '_bmp_24BitPixel from _ starting at _' 'str num' '' 1
-  space
-  spec ' ' '_bmp_alignLineData' '_bmp_alignLineData file _' 'auto' ''
-  spec 'r' '_bmp_readInt16' '_bmp read int16 file _' 'str' ''
-  spec 'r' '_bmp_readInt32' '_bmp read int32 file _' 'str' ''
-
-to '_bmp_16BitPixel' data i {
-  local 'pixel' (((at (i + 1) data) << 8) | (at i data))
-  if _bmpIsRGB565 {
-    local 'r' ((pixel >> 8) & 248)
-    local 'g' ((pixel >> 3) & 248)
-  } else {
-    local 'r' ((pixel >> 7) & 248)
-    local 'g' ((pixel >> 2) & 248)
-  }
-  local 'b' ((pixel & 31) << 3)
-  return ((r << 16) | ((g << 8) | b))
+script 580 12597 {
+to EnableTouchLEDsIRRemote {}
 }
 
-to '_bmp_24BitPixel' data i {
-  return ((((at (i + 2) data) << 16) | ((at (i + 1) data) << 8)) | (at i data))
+script 68 12750 {
+to 'Initialize lists' {}
 }
 
-to '_bmp_alignLineData' filename {
-  if (and (_bmpCompression != 1) (_bmpCompression != 2)) {
-    local 'padding' (((32 - ((_bmpWidth * _bmpBPP) % 32)) / 8) % 4)
-    if (padding > 0) {
-      file_SkipBytes padding filename
-    }
-  }
+script 68 13362 {
+to NewGame {}
 }
 
-to '_bmp_drawBMP' filename originX originY {
-  '[file:setReadPosition]' _bmpPixelsOffset filename
-  if (_bmpHeight >= 0) {
-    local 'y' ((originY + _bmpHeight) - 1)
-    local 'yIncrement' -1
-  } else {
-    local 'y' originY
-    local 'yIncrement' 1
-  }
-  local 'bytesPerPixel' (_bmpBPP / 8)
-  if (not _bmpIsRGB565) {
-    bytesPerPixel = (0 - bytesPerPixel)
-  }
-  repeat (absoluteValue _bmpHeight) {
-    local 'line' ('_bmp_readPixelLine' filename)
-    '[tft:pixelRow]' line originX y bytesPerPixel _bmpPalette
-    y += yIncrement
-  }
-}
-
-to '_bmp_drawBMPPixels' filename originX originY setPixelFunction {
-  comment 'Much slower than _bmp_drawBMP but allows client to supply
-a setPixelFunction, so it can be used to draw a BMP file
-file onto other devices such as a NeoPixel panel.'
-  '[file:setReadPosition]' _bmpPixelsOffset filename
-  if (_bmpHeight >= 0) {
-    local 'y' ((originY + _bmpHeight) - 1)
-    local 'yIncrement' -1
-  } else {
-    local 'y' originY
-    local 'yIncrement' 1
-  }
-  local 'parameters' (newList 3)
-  repeat (absoluteValue _bmpHeight) {
-    local 'line' ('_bmp_readRGBPixelLine' filename)
-    for x (size line) {
-      atPut 1 parameters (originX + (x - 1))
-      atPut 2 parameters y
-      atPut 3 parameters (at x line)
-      callCustomCommand setPixelFunction parameters
-    }
-    y += yIncrement
-  }
-}
-
-to '_bmp_mapIndexedPixels' {
-  local 'mask' ((1 << _bmpBPP) - 1)
-  local 'pixelsPerByte' (8 / _bmpBPP)
-  local 'i' 1
-  for byte _bmpLine {
-    local 'shift' (8 - _bmpBPP)
-    repeat pixelsPerByte {
-      if (i <= _bmpWidth) {
-        local 'pixelIndex' (((byte >> shift) & mask) + 1)
-        atPut i _bmpPixelLine (at pixelIndex _bmpPalette)
-        shift = (shift - _bmpBPP)
-        i += 1
-      }
-    }
-  }
-  return _bmpPixelLine
-}
-
-to '_bmp_readHeader' filename {
-  local 'fileSize' ('[file:fileSize]' filename)
-  if (fileSize < 0) {
-    sayIt 'File not found: ' filename
-    return 'false'
-  }
-  '[file:open]' filename
-  if (or (fileSize < 54) ('BM' != ('[data:join]' '' ('[file:readBytes]' 2 filename)))) {
-    sayIt 'Not a BMP file: ' filename
-    return false
-  }
-  file_SkipBytes 8 filename
-  _bmpPixelsOffset = ('_bmp_readInt32' filename)
-  local 'headerSize' ('_bmp_readInt32' filename)
-  _bmpWidth = ('_bmp_readInt32' filename)
-  _bmpHeight = ('_bmp_readInt32' filename)
-  _bmpPixelLine = (newList _bmpWidth)
-  file_SkipBytes 2 filename
-  _bmpBPP = ('_bmp_readInt16' filename)
-  _bmpCompression = ('_bmp_readInt32' filename)
-  if (_bmpCompression > 3) {
-    sayIt ('[data:join]' 'Unsupported compression method: ' _bmpCompression)
-    return false
-  }
-  _bmpPalette = 0
-  if (_bmpBPP <= 8) {
-    file_SkipBytes 12 filename
-    local 'palSize' ('_bmp_readInt16' filename)
-    if (palSize == 0) {
-      palSize = (1 << _bmpBPP)
-    }
-    _bmpPalette = (newList palSize)
-    file_SkipBytes (headerSize - 34) filename
-    '_bmp_readPalette' filename
-  } else {
-    _bmpIsRGB565 = (booleanConstant false)
-    if (_bmpCompression == 3) {
-      file_SkipBytes 20 filename
-      comment 'BITFIELD  Red'
-      _bmpIsRGB565 = (('_bmp_readInt32' filename) == (hexToInt 'F800'))
-    }
-  }
-  return true
-}
-
-to '_bmp_readInt16' filename {
-  local 'data' ('[file:readBytes]' 2 filename)
-  return (((at 2 data) << 8) | (at 1 data))
-}
-
-to '_bmp_readInt32' filename {
-  local 'data' ('[file:readBytes]' 4 filename)
-  return ((((at 4 data) << 24) | ((at 3 data) << 16)) | (((at 2 data) << 8) | (at 1 data)))
-}
-
-to '_bmp_readLine' filename {
-  if (or (_bmpCompression == 1) (_bmpCompression == 2)) {
-    _bmpLine = ('_bmp_readRLEline' filename)
-  } else {
-    local 'byteCount' (((_bmpWidth * _bmpBPP) + 7) / 8)
-    if ((size _bmpLine) == byteCount) {
-      comment 'Reuse existing line buffer if possible'
-      local 'bytesRead' ('[file:readInto]' _bmpLine filename)
-    } else {
-      _bmpLine = ('[file:readBytes]' byteCount filename)
-      repeatUntil ((size _bmpLine) >= byteCount) {
-        _bmpLine = ('[data:join]' _bmpLine ('[file:readBytes]' (byteCount - (size _bmpLine)) filename))
-      }
-    }
-  }
-}
-
-to '_bmp_readPalette' filename {
-  local 'pal' ('[file:readBytes]' (4 * (size _bmpPalette)) filename)
-  repeatUntil ((size pal) >= (4 * (size _bmpPalette))) {
-    pal = ('[data:join]' pal ('[file:readBytes]' ((4 * (size _bmpPalette)) - (size pal)) filename))
-  }
-  for i (size _bmpPalette) {
-    atPut i _bmpPalette (((at ((i * 4) - 1) pal) << 16) | (((at ((i * 4) - 2) pal) << 8) | (at ((i * 4) - 3) pal)))
-  }
-}
-
-to '_bmp_readPixelLine' filename {
-  '_bmp_readLine' filename
-  '_bmp_alignLineData' filename
-  return (ifExpression (_bmpBPP < 8) ('_bmp_mapIndexedPixels') _bmpLine)
-}
-
-to '_bmp_readRGBPixelLine' filename {
-  local 'result' ('[data:makeList]')
-  '_bmp_readLine' filename
-  if (_bmpBPP <= 8) {
-    for i _bmpLine {
-      '[data:addLast]' (at (i + 1) _bmpPalette) result
-    }
-  } else {
-    local 'i' 1
-    repeatUntil ((size result) == _bmpWidth) {
-      if (_bmpBPP == 16) {
-        '[data:addLast]' ('_bmp_16BitPixel' _bmpLine i) result
-      } else {
-        '[data:addLast]' ('_bmp_24BitPixel' _bmpLine i) result
-      }
-      i += (maximum (_bmpBPP / 8) 1)
-    }
-  }
-  '_bmp_alignLineData' filename
-  return result
-}
-
-to '_bmp_readRLEline' filename {
-  local 'result' ('[data:newByteArray]' 0)
-  forever {
-    if ((('[file:readPosition]' filename) & 1) == 1) {file_SkipBytes 1 filename}
-    local 'rle' ('[file:readBytes]' 2 filename)
-    if ((size rle) == 0) {
-      return result
-    }
-    if ((at 1 rle) == 0) {
-      if ((at 2 rle) > 2) {
-        comment 'odd numbers for RL4?'
-        result = ('[data:join]' result ('[file:readBytes]' ((((at 2 rle) * _bmpBPP) + 7) / 8) filename))
-      } else {
-        return result
-      }
-    } else {
-      result = ('[data:join]' result ('[data:newByteArray]' ((((at 1 rle) * _bmpBPP) + 7) / 8) (at 2 rle)))
-    }
-  }
-}
-
-to drawBMPfile filename originX originY {
-  if ('_bmp_readHeader' filename) {
-    '_bmp_drawBMP' filename originX originY
-    '[file:close]' filename
-  }
+script 72 13708 {
+to myBlock {}
 }
 
 
@@ -1468,51 +1297,9 @@ to sr04_distanceOnePin pin {
 }
 
 
-module Files Data
-author MicroBlocks
-version 1 3 
-description 'Flash file system operations. Currently supports the LittleFS file system on ESP8266 and ESP32 boards. The GnuBlocks virtual machine (Linux and Raspberry Pi) supports the native system.'
-
-  spec ' ' '[file:open]' 'open file _' 'str'
-  spec ' ' '[file:close]' 'close file _' 'str'
-  spec ' ' '[file:delete]' 'delete file _' 'str'
-  space
-  spec ' ' '[file:appendLine]' 'append line _ to file _' 'str str'
-  spec ' ' '[file:appendBytes]' 'append bytes _ to file _' 'str str'
-  space
-  spec 'r' '[file:endOfFile]' 'end of file _' 'str'
-  spec 'r' '[file:readLine]' 'next line of file _' 'str'
-  spec 'r' '[file:readBytes]' 'next _ bytes of file _ : starting at _' 'num str num' 100 '' 0
-  spec 'r' '[file:readInto]' 'read into _ from file _' 'str str' 'a ByteArray' ''
-  space
-  spec 'r' '[file:readPosition]' 'read position of file _' 'str'
-  spec ' ' '[file:setReadPosition]' 'set read position _ of file _' 'num str' 0 ''
-  spec ' ' 'file_SkipBytes' 'skip _ bytes of file _' 'num str' 4 ''
-  space
-  spec 'r' 'file names' 'file names : in directory _' 'str'
-  spec 'r' '[file:fileSize]' 'size of file _' 'str'
-  spec 'r' '[file:systemInfo]' 'file system info'
-
-to 'file names' dir {
-  '[file:startList]' dir
-  local 'result' ('[data:makeList]')
-  local 'fileName' ('[file:nextInList]')
-  repeatUntil (fileName == '') {
-    '[data:addLast]' fileName result
-    fileName = ('[file:nextInList]')
-  }
-  return result
-}
-
-to file_SkipBytes offset file {
-  local 'newPosition' (('[file:readPosition]' file) + offset)
-  '[file:setReadPosition]' newPosition file
-}
-
-
 module 'IR Remote' Comm
 author MicroBlocks
-version 1 8 
+version 1 9 
 tags ir infrared remote 
 description 'Sends and receives infrared remote control messages like the ones used for TV sets or air conditioners. Currently supports only the NEC protocol, which is quite common but not the only IR protocol in use. An NEC message consists of a one byte device number and a one byte command.
 
@@ -1607,7 +1394,11 @@ to '_captureIRMessage' {
     }
   }
   comment 'Capture the next IR message.'
-  interruptIRCapture
+  if (or ((boardType) == 'micro:bit v2') ((boardType) == 'Calliope v3')) {
+    timerIRCapture
+  } else {
+    interruptIRCapture
+  }
 }
 
 to '_dumpIR' {
@@ -1793,19 +1584,80 @@ to 'press key' key modifier {
 
 module 'LCD Display' Output
 author MicroBlocks
-version 1 5 
+version 1 6 
 description 'Library for 16x2 LCD text displays with 1602 controller I2C "backpack" like the ones from DFRobot, SunFounder, and others. These displays have two lines of sixteen characters.
 
-Most of these displays require 5 volts to provide sufficient LCD contrast, so you will need an external power source for 3.3v boards like the micro:bit.'
-variables _LCD1602_ADDR _LCD1602_LINE1 _LCD1602_LINE2 _LCD1602_LOCK_MSECS 
+Most of these displays require 5 volts to provide sufficient LCD contrast, so you will need an external power source for 3.3v boards like the micro:bit.
+'
+variables _LCD1602_ADDR _LCD1602_LINE1 _LCD1602_LINE2 _LCD1602_LOCK_MSECS _LCD1602_CUSTOM_CHARS 
 
   spec ' ' 'LCD1602_write' 'write _ on LCD line _' 'str num num num' 'Hello, World!' 1 1 16
   spec ' ' 'LCD1602_write_field' 'write field _ on LCD line _ from _ to _' 'str num num num' 'Moon!' 1 8 12
   spec ' ' 'LCD1602_clear' 'clear LCD'
   spec 'r' 'LCD1602_isConnected' 'is LCD connected?'
+  advanced
+  spec ' ' 'LCD1602 draw char' 'draw char _ on LCD line _ column _' 'str num num' '00000
+01010
+01010
+00000
+00100
+00000
+10001
+01110' 1 10
+  space
   spec 'r' '_LCD1602 init' '_LCD1602 init'
   spec ' ' '_LCD1602 send' '_LCD1602 send byte _ mode _' 'num num' 10 1
   spec ' ' '_LCD1602 toggle enable' '_LCD1602 toggle enable _' 'num' 10
+
+to 'LCD1602 draw char' char line col {
+  if (not ('_LCD1602 init')) {return}
+  if (_LCD1602_CUSTOM_CHARS == 0) {_LCD1602_CUSTOM_CHARS = (newList 8)}
+  comment 'Create the character bytes'
+  local 'character bytes' ('[data:makeList]')
+  for 'each line' ('[data:split]' char ('[data:unicodeString]' 10)) {
+    local 'byte' 0
+    for position 5 {
+      byte = (byte + ((at position (v 'each line')) << (position - 1)))
+    }
+    '[data:addLast]' byte (v 'character bytes')
+  }
+  comment 'Find out whether the character has already been created'
+  local 'index' 0
+  local 'last empty' 0
+  for i 8 {
+    if ((at i _LCD1602_CUSTOM_CHARS) == 0) {
+      'last empty' = i
+    } else {
+      local 'found' (booleanConstant true)
+      for position 8 {
+        found = (and found ((at position (at i _LCD1602_CUSTOM_CHARS)) == (at position (v 'character bytes'))))
+      }
+      if found {
+        index = i
+        exitLoop
+      }
+    }
+  }
+  comment 'Character not found. Let''s create it and add it to the LCD CGRAM.
+If there''s an empty spot, we''ll put it there. Otherwise, we''ll reuse the first spot.'
+  if (index == 0) {
+    index = (maximum (v 'last empty') 1)
+    atPut index _LCD1602_CUSTOM_CHARS (v 'character bytes')
+    '_LCD1602 send' ((hexToInt '40') | ((index - 1) << 3)) 0
+    for i 8 {
+      '_LCD1602 send' (at i (v 'character bytes')) 1
+    }
+  }
+  if (line == 1) {
+    atPut col _LCD1602_LINE1 (index - 1)
+  } else {
+    atPut col _LCD1602_LINE2 (index - 1)
+  }
+  waitUntil (((millisOp) - _LCD1602_LOCK_MSECS) > 500)
+  _LCD1602_LOCK_MSECS = (millisOp)
+  LCD1602_write_buffer line
+  _LCD1602_LOCK_MSECS = 0
+}
 
 to LCD1602_clear {
   if (not ('_LCD1602 init')) {return}
@@ -2191,6 +2043,9 @@ variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal _neoPanel_mini
   space
   spec ' ' '_neoPanel_setPixel' '_NeoPanel_setPixel _ _  _' 'num num color' 1 1
   spec ' ' '_neoPanel_drawline' '_NeoPanel_drawLine _ _ _ _ _' 'num num num num color' 1 1 8 8
+  spec ' ' 'neoPanel_fillRectangle' 'obsolete obsolete obsolete NeoPanel fill rectangle x _ y _ width _ height _ color _' 'num num num num color' 1 1 4 4
+  spec 'r' '_neopanel_setPixel' 'obsolete obsolete obsolete _neopanel_setPixel x _ y _ color _' 'auto auto color' 1 1
+  spec 'r' '_neoPanel_indexForXY' 'obsolete obsolete obsolete _neoPanel_index for x _ y _' 'num num' 1 1
 
 to '_neoPanel_drawline' x0 y0 x1 y1 color {
   comment 'Bresenham''s Line Algorithm'
@@ -2391,13 +2246,14 @@ to neoPanel_draw_rectangle x y width height color optionalFilled {
 
 module NeoPixel Output
 author MicroBlocks
-version 1 13 
+version 1 14 
 description 'Control NeoPixel (WS2812) RGB LED strips and rings.
 '
 variables _np_pixels _np_pin _np_haswhite 
 
   spec ' ' 'neoPixelAttach' 'attach _ LED NeoPixel strip to pin _ : has white _' 'num auto bool' 10 '' false
   spec ' ' 'setNeoPixelColors10' 'set NeoPixels _ _ _ _ _ _ _ _ _ _' 'color color color color color color color color color color'
+  spec ' ' 'setNeoPixelColors25' 'set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _' 'color color color color color color color color color color color color color color color color color color color color color color color color color'
   spec ' ' 'clearNeoPixels' 'clear NeoPixels'
   spec ' ' 'neoPixelSetAllToColor' 'set all NeoPixels color _' 'color'
   spec ' ' 'setNeoPixelColor' 'set NeoPixel _ color _' 'num color' 1
@@ -2542,6 +2398,18 @@ to neoPixel_colorSwatch color {
   return color
 }
 
+to randomColor {
+  local 'n1' (random 100 200)
+  local 'n2' (random 0 100)
+  if (1 == (random 1 3)) {
+    return ((n1 << 16) | (n2 << 8))
+  } (1 == (random 1 2)) {
+    return ((n2 << 16) | n1)
+  } else {
+    return ((n1 << 8) | n2)
+  }
+}
+
 to rotateNeoPixelsBy n {
   '_NeoPixel_ensureInitialized'
   local 'rotateLeft' (n < 0)
@@ -2593,6 +2461,86 @@ to setNeoPixelColors10 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 {
   }
   if ((size _np_pixels) >= 10) {
     atPut 10 _np_pixels c10
+  }
+  '_NeoPixel_update'
+}
+
+to setNeoPixelColors25 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 c16 c17 c18 c19 c20 c21 c22 c23 c24 c25 {
+  '_NeoPixel_ensureInitialized'
+  if ((size _np_pixels) >= 1) {
+    atPut 1 _np_pixels c1
+  }
+  if ((size _np_pixels) >= 2) {
+    atPut 2 _np_pixels c2
+  }
+  if ((size _np_pixels) >= 3) {
+    atPut 3 _np_pixels c3
+  }
+  if ((size _np_pixels) >= 4) {
+    atPut 4 _np_pixels c4
+  }
+  if ((size _np_pixels) >= 5) {
+    atPut 5 _np_pixels c5
+  }
+  if ((size _np_pixels) >= 6) {
+    atPut 6 _np_pixels c6
+  }
+  if ((size _np_pixels) >= 7) {
+    atPut 7 _np_pixels c7
+  }
+  if ((size _np_pixels) >= 8) {
+    atPut 8 _np_pixels c8
+  }
+  if ((size _np_pixels) >= 9) {
+    atPut 9 _np_pixels c9
+  }
+  if ((size _np_pixels) >= 10) {
+    atPut 10 _np_pixels c10
+  }
+  if ((size _np_pixels) >= 11) {
+    atPut 11 _np_pixels c11
+  }
+  if ((size _np_pixels) >= 12) {
+    atPut 12 _np_pixels c12
+  }
+  if ((size _np_pixels) >= 13) {
+    atPut 13 _np_pixels c13
+  }
+  if ((size _np_pixels) >= 14) {
+    atPut 14 _np_pixels c14
+  }
+  if ((size _np_pixels) >= 15) {
+    atPut 15 _np_pixels c15
+  }
+  if ((size _np_pixels) >= 16) {
+    atPut 16 _np_pixels c16
+  }
+  if ((size _np_pixels) >= 17) {
+    atPut 17 _np_pixels c17
+  }
+  if ((size _np_pixels) >= 18) {
+    atPut 18 _np_pixels c18
+  }
+  if ((size _np_pixels) >= 19) {
+    atPut 19 _np_pixels c19
+  }
+  if ((size _np_pixels) >= 20) {
+    atPut 20 _np_pixels c20
+  }
+  if ((size _np_pixels) >= 21) {
+    atPut 21 _np_pixels c21
+  }
+  if ((size _np_pixels) >= 22) {
+    atPut 22 _np_pixels c22
+  }
+  if ((size _np_pixels) >= 23) {
+    atPut 23 _np_pixels c23
+  }
+  if ((size _np_pixels) >= 24) {
+    atPut 24 _np_pixels c24
+  }
+  if ((size _np_pixels) >= 25) {
+    atPut 25 _np_pixels c25
   }
   '_NeoPixel_update'
 }
@@ -2808,100 +2756,6 @@ to stopServo which {
   } else {
     atPut ('_servoIndex' which) _servoPulseWidth 0
   }
-}
-
-
-module TFT Output
-author MicroBlocks
-version 1 12 
-description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
-
-  spec ' ' '[tft:clear]' 'clear TFT display'
-  space
-  spec ' ' '[tft:rect]' 'draw rectangle on TFT at x _ y _ width _ height _ color _ : filled _' 'num num num num color bool' 10 10 40 30 nil true
-  spec ' ' '[tft:roundedRect]' 'draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _ : filled _' 'num num num num num color bool' 10 10 40 30 8 nil true
-  spec ' ' '[tft:circle]' 'draw circle on TFT at x _ y _ radius _ color _ : filled _' 'num num num color bool' 40 40 30 nil true
-  spec ' ' '[tft:triangle]' 'draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _ : filled _' 'num num num num num num color bool' 20 20 30 80 60 5 nil true
-  spec ' ' '[tft:line]' 'draw line on TFT from x _ y _ to x _ y _ color _' 'num num num num color' 12 8 25 15
-  spec ' ' 'tft_drawVector' 'draw vector x _ y _ angle _ length _ color _' 'num num num num color' 40 40 45 40
-  space
-  spec ' ' '[tft:text]' 'write _ on TFT at x _ y _ color _ : scale _ wrap _ : bg color _' 'str num num color num bool color' 'Hello World!' 5 5 nil 2 true
-  spec ' ' 'tft_drawText' 'draw text _ on TFT at x _ y _ color _ : scale _ : bg color _' 'str num num color num color' 'Line 1
-Line 2' 50 20 nil 2
-  space
-  spec ' ' '[tft:setPixel]' 'set TFT pixel x _ y _ to _' 'num num color' 10 10
-  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytesPerPixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
-  spec ' ' '[tft:drawBitmap]' 'draw bitmap _ palette _ on TFT at x _ y _' 'str str num num' 'aBitmap' 'a list of colors' 10 10
-  space
-  spec 'r' 'tft_colorSwatch' '_' 'color'
-  spec 'r' 'makeColor' 'color r _ g _ b _ (0-255)' 'num num num' 0 100 100
-  spec 'r' 'makeGray' 'gray _ %' 'num' 50
-  spec 'r' 'randomColor' 'random color'
-  space
-  spec 'r' '[tft:getWidth]' 'TFT width'
-  spec 'r' '[tft:getHeight]' 'TFT height'
-  space
-  spec ' ' '[tft:setBacklight]' 'set TFT backlight _ (0-10)' 'num' 10
-  space
-  spec ' ' '_deferMonochromeDisplayUpdates' '_defer monochrome display updates'
-  spec ' ' '_resumeMonochromeDisplayUpdates' '_resume monochrome display updates'
-
-to '_deferMonochromeDisplayUpdates' {
-  '[tft:deferUpdates]'
-}
-
-to '_resumeMonochromeDisplayUpdates' {
-  '[tft:resumeUpdates]'
-}
-
-to makeColor r g b {
-  r = (maximum 0 (minimum r 255))
-  g = (maximum 0 (minimum g 255))
-  b = (maximum 0 (minimum b 255))
-  return ((r << 16) | ((g << 8) | b))
-}
-
-to makeGray percent {
-  gray = ((percent * 255) / 100)
-  gray = (maximum 0 (minimum gray 255))
-  return ((gray << 16) | ((gray << 8) | gray))
-}
-
-to randomColor {
-  local 'n1' (random 100 200)
-  local 'n2' (random 0 100)
-  if (1 == (random 1 3)) {
-    return ((n1 << 16) | (n2 << 8))
-  } (1 == (random 1 2)) {
-    return ((n2 << 16) | n1)
-  } else {
-    return ((n1 << 8) | n2)
-  }
-}
-
-to tft_colorSwatch color {
-  return color
-}
-
-to tft_drawText s x y color optionalScale optionalBGColor {
-  s = ('[data:convertType]' s 'string')
-  local 'scale' (argOrDefault 5 2)
-  local 'bgColor' (argOrDefault 6 '')
-  local 'lines' ('[data:split]' s ('[data:unicodeString]' 10))
-  for line ('[data:split]' s ('[data:unicodeString]' 10)) {
-    if (isType bgColor 'number') {
-      '[tft:text]' line x y color scale false bgColor
-    } else {
-      '[tft:text]' line x y color scale false
-    }
-    y += (8 * scale)
-  }
-}
-
-to tft_drawVector x y angle length color {
-  local 'endX' (x + ((length * ('[misc:sin]' (100 * (angle + 90)))) >> 14))
-  local 'endY' (y + ((length * ('[misc:sin]' (100 * angle))) >> 14))
-  '[tft:line]' x y endX endY color
 }
 
 

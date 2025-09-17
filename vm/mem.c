@@ -54,9 +54,9 @@
 #elif defined(ARDUINO_ARCH_ESP32)
 	// object store is allocated from heap on ESP32
 	#if defined(USE_NIMBLE)
-		#define OBJSTORE_BYTES 46000 // max that allows both BLE and WiFi is 59000
+		#define OBJSTORE_BYTES 38000 // max that allows both BLE and WiFi is 59000; drops to 38000 w/ ESP Now
 	#else
-		#define OBJSTORE_BYTES 78000
+		#define OBJSTORE_BYTES 70000
 	#endif
 #elif defined(GNUBLOCKS)
 	#define OBJSTORE_BYTES 262100 // max number of bytes that we can allocate for now
@@ -69,7 +69,7 @@
 #elif defined(DUELink)
 	#define OBJSTORE_BYTES 7200
 #else
-	#define OBJSTORE_BYTES 4000
+	#define OBJSTORE_BYTES 3600
 	// max that works on Wemos D1 mini (ESP8266) is 11000
 	// however, WiFi is unreliable for 4 concurrent requestions even down to 7200
 	// 5000 seems stable for up to 10 concurrent requests
