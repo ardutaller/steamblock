@@ -92,6 +92,10 @@ function isChromeOS() {
 		(typeof chrome.app.window !== 'undefined'));
 }
 
+function isElectron() {
+	return window.electronAPI !== undefined;
+}
+
 function setGPClipboard(s) {
 	// Called by GP's setClipboard primitive
 
@@ -1203,21 +1207,26 @@ class NimBLESerial {
 	}
 
 	async connect() {
-		// Connect to a microBit
-		this.device = await navigator.bluetooth.requestDevice({
-			filters: [{ services: [MICROBLOCKS_SERVICE_UUID] }]
-		})
-		this.device.addEventListener('gattserverdisconnected', this.handle_disconnected.bind(this));
-		const server = await this.device.gatt.connect();
-		this.service = await server.getPrimaryService(MICROBLOCKS_SERVICE_UUID);
-		const tx_char = await this.service.getCharacteristic(MICROBLOCKS_TX_CHAR_UUID);
-		this.rx_char = await this.service.getCharacteristic(MICROBLOCKS_RX_CHAR_UUID);
-		await tx_char.startNotifications();
-		// bind overrides the default this=tx_char to this=the NimBLESerial
-		tx_char.addEventListener("characteristicvaluechanged", this.handle_read.bind(this));
- 		this.connected = true;
-		this.sendInProgress = false;
-		console.log("BLE connected");
+		// Connect to a microcontroller
+		if (isElectron()) {
+			// TODO implement webserial for Electron
+			console.log('TO BE IMPLEMENTED');
+		} else {
+			this.device = await navigator.bluetooth.requestDevice({
+				filters: [{ services: [MICROBLOCKS_SERVICE_UUID] }]
+			})
+			this.device.addEventListener('gattserverdisconnected', this.handle_disconnected.bind(this));
+			const server = await this.device.gatt.connect();
+			this.service = await server.getPrimaryService(MICROBLOCKS_SERVICE_UUID);
+			const tx_char = await this.service.getCharacteristic(MICROBLOCKS_TX_CHAR_UUID);
+			this.rx_char = await this.service.getCharacteristic(MICROBLOCKS_RX_CHAR_UUID);
+			await tx_char.startNotifications();
+			// bind overrides the default this=tx_char to this=the NimBLESerial
+			tx_char.addEventListener("characteristicvaluechanged", this.handle_read.bind(this));
+			this.connected = true;
+			this.sendInProgress = false;
+			console.log("BLE connected");
+		}
 	}
 
 	disconnect() {
