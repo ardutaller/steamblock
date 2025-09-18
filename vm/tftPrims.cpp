@@ -881,28 +881,19 @@ static int deferUpdates = false;
 		Adafruit_ST7789 tft = Adafruit_ST7789(&CoCubeSPI, TFT_CS, TFT_DC, TFT_RST);
 
 		void drawRawImage(const char* filename, int x0, int y0, int width, int height) {
-			if (!LittleFS.begin()) {
-				return;
-				}
-				
+			if (!LittleFS.begin()) return;
+
 			File file = LittleFS.open(filename, "r");
-			if (!file) {
-				return;
-			}
+			if (!file) return;
 
 			uint16_t lineBuf[width];
-
 			for (int y = 0; y < height; y++) {
 				size_t read = file.read((uint8_t*)lineBuf, width * 2);
-				if (read != width * 2) {
-					break;
-				}
-
+				if (read != width * 2) break;
 				tft.drawRGBBitmap(x0, y0 + y, lineBuf, width, 1);
 			}
-
 			file.close();
-			}
+		}
 
 		void drawBatteryStatus(int percentage, int x, int y, int width, int height, int textSize) {
 			uint16_t fillColor = 0x07E0; // GREEN
