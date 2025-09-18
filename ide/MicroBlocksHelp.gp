@@ -304,18 +304,18 @@ method initialize MicroBlocksHelp {
 		(array 'bleScan_hasType' '/network_libraries/ble-scanner#hastype' 'Report (-o) if device name is type 8 or 9.')
 
 		// BLE SERIAL
-		(array '[ble:uartConnected]' '/network_libraries/' 'Report (-o) if BLE serial is connected')
-		(array 'bleSerial_readString' '/network_libraries/' 'Returns a string read from the BLE Serial port.')
-		(array 'bleSerial_readBytes' '/network_libraries/' 'Returns bytes read from the BLE Serial port.')
-		(array 'bleSerial_write' '/network_libraries/' 'Writes any String or ByteArray to the BLE Serial port.')
+		(array '[ble:uartConnected]' '/network_libraries/ble-serial#ble-serial-connected' 'Report (-o) if BLE serial is connected')
+		(array 'bleSerial_readString' '/network_libraries/ble-serial#ble-serial-read-string' 'Returns a string read from the BLE Serial port.')
+		(array 'bleSerial_readBytes' '/network_libraries/ble-serial#ble-serial-read-bytes' 'Returns bytes read from the BLE Serial port.')
+		(array 'bleSerial_write' '/network_libraries/ble-serial#ble-serial-write' 'Writes any String or ByteArray to the BLE Serial port.')
 
 		// UDP
-		(array '[net:udpStart]' '/network_libraries/' '')
-		(array '[net:udpStop]' '/network_libraries/' '')
-		(array '[net:udpSendPacket]' '/network_libraries/' '')
-		(array '[net:udpReceivePacket]' '/network_libraries/' '')
-		(array '[net:udpRemoteIPAddress]' '/network_libraries/' '')
-		(array '[net:udpRemotePort]' '/network_libraries/' '')
+		(array '[net:udpStart]' '/network_libraries/udp#udp-start' 'Starts UDP protocol on selected port.')
+		(array '[net:udpStop]' '/network_libraries/udp#udp-stop' 'Stops UDP protocol.')
+		(array '[net:udpSendPacket]' '/network_libraries/udp#udp-send-packet' 'Sends a packet to designated address and port.')
+		(array '[net:udpReceivePacket]' '/network_libraries/udp#udp-receive-packet' 'Returns the packet received from the UDP remote.')
+		(array '[net:udpRemoteIPAddress]' '/network_libraries/udp#udp-remote-ip-address' 'Returns the IP address of the UDP remote.')
+		(array '[net:udpRemotePort]' '/network_libraries/udp#udp-remote-port' 'Returns the port number of the UDP remote.')
 
 		// WIFI
 		(array 'wifiConnect' '/network_libraries/wifi#wifi-connect-to' 'Connect to the local IP network.')
