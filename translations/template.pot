@@ -6156,6 +6156,10 @@ msgid "folder;CoCube"
 msgstr ""
 
 #. Examples folder
+msgid "folder;MakerPort"
+msgstr ""
+
+#. Examples folder
 msgid "folder;Art"
 msgstr ""
 
