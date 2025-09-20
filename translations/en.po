@@ -1838,8 +1838,8 @@ msgid "fract _ + _"
 msgstr "fract _ + _"
 
 #. Fractions library block
-msgid "fract _ - _"
-msgstr "fract _ - _"
+msgid "fract _ − _"
+msgstr "fract _ − _"
 
 #. Fractions library block
 msgid "fract _ × _"
