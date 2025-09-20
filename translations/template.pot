@@ -4847,34 +4847,6 @@ msgid "battery percentage"
 msgstr ""
 
 #. CoCube Module library block
-msgid "gripper open"
-msgstr ""
-
-#. CoCube Module library block
-msgid "gripper close"
-msgstr ""
-
-#. CoCube Module library block
-msgid "gripper stop"
-msgstr ""
-
-#. CoCube Module library block
-msgid "gripper degrees _ (0 to 70)"
-msgstr ""
-
-#. CoCube Module library block
-msgid "attach NeoPixels"
-msgstr ""
-
-#. CoCube Module library block
-msgid "ToF connected"
-msgstr ""
-
-#. CoCube Module library block
-msgid "ToF distance (mm)"
-msgstr ""
-
-#. CoCube Module library block
 msgid "3D gesture connected"
 msgstr ""
 
@@ -4883,7 +4855,55 @@ msgid "3D gesture read"
 msgstr ""
 
 #. CoCube Module library block
+msgid "gripper close"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ASR get command"
+msgstr ""
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr ""
+
+#. CoCube Module library block
+msgid "set all NeoPixels color _"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ASR play command _"
+msgstr ""
+
+#. CoCube Module library block
 msgid "power on module"
+msgstr ""
+
+#. CoCube Module library block
+msgid "DLight level"
+msgstr ""
+
+#. CoCube Module library block
+msgid "clear NeoPixels"
 msgstr ""
 
 #. CoCube Module library block
