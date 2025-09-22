@@ -1838,7 +1838,7 @@ msgid "fract _ + _"
 msgstr ""
 
 #. Fractions library block
-msgid "fract _ - _"
+msgid "fract _ − _"
 msgstr ""
 
 #. Fractions library block
@@ -4847,34 +4847,6 @@ msgid "battery percentage"
 msgstr ""
 
 #. CoCube Module library block
-msgid "gripper open"
-msgstr ""
-
-#. CoCube Module library block
-msgid "gripper close"
-msgstr ""
-
-#. CoCube Module library block
-msgid "gripper stop"
-msgstr ""
-
-#. CoCube Module library block
-msgid "gripper degrees _ (0 to 70)"
-msgstr ""
-
-#. CoCube Module library block
-msgid "attach NeoPixels"
-msgstr ""
-
-#. CoCube Module library block
-msgid "ToF connected"
-msgstr ""
-
-#. CoCube Module library block
-msgid "ToF distance (mm)"
-msgstr ""
-
-#. CoCube Module library block
 msgid "3D gesture connected"
 msgstr ""
 
@@ -4883,11 +4855,351 @@ msgid "3D gesture read"
 msgstr ""
 
 #. CoCube Module library block
+msgid "gripper close"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ToF distance (mm)"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper stop"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ToF connected"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ASR get command"
+msgstr ""
+
+#. CoCube Module library block
+msgid "attach NeoPixels"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper open"
+msgstr ""
+
+#. CoCube Module library block
+msgid "gripper degrees _ (0 to 70)"
+msgstr ""
+
+#. CoCube Module library block
+msgid "set all NeoPixels color _"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ASR play command _"
+msgstr ""
+
+#. CoCube Module library block
 msgid "power on module"
 msgstr ""
 
 #. CoCube Module library block
+msgid "DLight level"
+msgstr ""
+
+#. CoCube Module library block
+msgid "clear NeoPixels"
+msgstr ""
+
+#. CoCube Module library block
 msgid "ultrasonic distance (mm)"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "Color Recog"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "Blob Detect"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "Ball Detect"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "Line Detect"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "Card Recog"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "Face Recog"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "QRcode"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "black"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "white"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "blue"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "x1"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "y1"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "x2"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "y2"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "degree"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "w"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "h"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "R"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "G"
+msgstr ""
+
+#. CoCube Sengo1 library choice
+msgid "B"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 read QRcode"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 change algorithm _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 delete face ID _ (1-10)"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 detect ball (ping pong or tennis)"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get QRcode _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get ball _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get blob _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get card _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get color _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get face _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get face ID"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 get line _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 init"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 read blob"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 read card"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 read color"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 record face ID _ (1-10)"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 reset"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 set blob detect property color _ width _ height _"
+msgstr ""
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 set color recog area x _ y _ width _ height _ (0-100)"
+msgstr ""
+
+#. CoCube Sengo2 library choice
+msgid "16H5"
+msgstr ""
+
+#. CoCube Sengo2 library choice
+msgid "25H9"
+msgstr ""
+
+#. CoCube Sengo2 library choice
+msgid "36H11"
+msgstr ""
+
+#. CoCube Sengo2 library choice
+msgid "AprilTag"
+msgstr ""
+
+#. CoCube Sengo2 library choice
+msgid "Deep Learning"
+msgstr ""
+
+#. CoCube Sengo2 library choice
+msgid "Obj20Class"
+msgstr ""
+
+#. CoCube Sengo2 library choice
+msgid "Motion Detect"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 read QRcode"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 change algorithm _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 delete face ID _ (1-10)"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 delete learning ID _ (1-15)"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get AprilTag _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get Obj20Class _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get QRcode _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get blob _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get card _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get color _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get face ID"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get learning ID"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get line _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 get motion _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 init"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 read AprilTag"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 read Obj20Class"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 read blob"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 read card"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 read color"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 record face ID _ (1-10)"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 record learning ID _ (1-15)"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 reset"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 set AprilTag type _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 set blob detect property color _ width _ height _"
+msgstr ""
+
+#. CoCube Sengo2 library block
+msgid "Sengo2 set color recog area x _ y _ width _ height _ (0-100)"
 msgstr ""
 
 #. Calliope NeoPixel library block
