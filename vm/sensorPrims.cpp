@@ -1600,6 +1600,61 @@ static int readTemperature() {
 	return (qmi8658Read16Bit(QMI8658_TEMP) >> 8) + fudgeFactor;
 }
 
+#elif defined(DUELink)
+
+#define MC3216_ADDR 0x4C
+
+static void startMC3216() {
+	if (!wireStarted) startWire();
+	if (!wireStarted) return;
+
+	writeI2CReg(MC3216_ADDR, 0x08, 0x14);	// sampling rate: 125 Hz
+	writeI2CReg(MC3216_ADDR, 0x20, 3);		// +/-2G range, 10-bit resolution
+	writeI2CReg(MC3216_ADDR, 0x07, 1);		// start accelerometer
+	taskSleep(150); // wait for accelerometer to start up
+	accelStarted = true;
+}
+
+static int mc3216Read16Bit(int reg) {
+	if (!accelStarted) startMC3216();
+	if (!accelStarted) return 0;
+	int lowByte = readI2CReg(MC3216_ADDR, reg);
+	int highByte = readI2CReg(MC3216_ADDR, reg + 1);
+	return fix16bitSign((highByte << 8) | lowByte);
+}
+
+static int readAcceleration(int registerID) {
+	if (!IS_DUE_STEM) return 0;
+
+	int val = 0;
+	if (1 == registerID) val = mc3216Read16Bit(13); // x-axis
+	if (3 == registerID) val = -mc3216Read16Bit(15); // y-axis
+	if (5 == registerID) val = mc3216Read16Bit(17); // z-axis
+	return (100 * val) >> 8;
+}
+
+static void setAccelRange(int range) {
+	// Range is 0, 1, 2, or 3 for +/- 2, 4, 8, or 16 g.
+
+	if (!IS_DUE_STEM) return;
+
+	if (!accelStarted) startMC3216();
+	if (!accelStarted) return;
+	if ((range < 0) || (range > 3)) return; // out of range
+	writeI2CReg(MC3216_ADDR, 0x07, 0);					// stop accelerometer
+	writeI2CReg(MC3216_ADDR, 0x20, (range << 4) | 3);	// range + 10-bit resolution
+	writeI2CReg(MC3216_ADDR, 0x07, 1);					// start accelerometer
+}
+
+static int readTemperature() {
+	if (!IS_DUE_STEM) return 0;
+
+	OBJ pinArg = int2obj(9);
+	int analogValue = obj2int(primAnalogRead(1, &pinArg));
+	int mVx10 = (33000 * analogValue) / 1023;
+	return (mVx10 - 4000) / 195;
+}
+
 #elif defined(RP2040_PHILHOWER)
 
 static int readTemperature() { return analogReadTemp(); }
