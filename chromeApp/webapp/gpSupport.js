@@ -1209,7 +1209,7 @@ class NimBLESerial {
 	async connect() {
 		// Connect to a microcontroller
 		if (isElectron()) {
-			// TODO implement webserial for Electron
+			// TODO implement BLE for Electron
 			console.log('TO BE IMPLEMENTED');
 		} else {
 			this.device = await navigator.bluetooth.requestDevice({

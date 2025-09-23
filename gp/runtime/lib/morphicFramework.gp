@@ -953,6 +953,10 @@ method doOneCycle Page {
 	stepTasks taskMaster 75
 	if (or redrawAll (notEmpty damages)) { fixDamages this }
 
+	if ('Browser' == (platform)) {
+		processLastCall (api (smallRuntime))
+	}
+
 	// sleep for any extra time, but always sleep a little to ensure that
 	// we get events (and to return control to the browser)
 	sleepTime = (max 1 (15 - (msecs t)))

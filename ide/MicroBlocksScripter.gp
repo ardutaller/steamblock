@@ -849,9 +849,6 @@ method step MicroBlocksScripter {
 		saveNeeded = false
 	}
 	updateStopping (smallRuntime)
-	if ('Browser' == (platform)) {
-		processLastCall (api (smallRuntime))
-	}
 }
 
 method saveScripts MicroBlocksScripter oldScale {
