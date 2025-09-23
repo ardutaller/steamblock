@@ -1608,7 +1608,8 @@ static void startMC3216() {
 	if (!wireStarted) startWire();
 	if (!wireStarted) return;
 
-	writeI2CReg(MC3216_ADDR, 0x08, 0x14);	// sampling rate: 125 Hz
+	writeI2CReg(MC3216_ADDR, 0x07, 0);		// stop accelerometer
+	writeI2CReg(MC3216_ADDR, 0x08, 9);		// sampling rate: 128 Hz
 	writeI2CReg(MC3216_ADDR, 0x20, 3);		// +/-2G range, 10-bit resolution
 	writeI2CReg(MC3216_ADDR, 0x07, 1);		// start accelerometer
 	taskSleep(150); // wait for accelerometer to start up
