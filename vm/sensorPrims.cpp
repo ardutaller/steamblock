@@ -1600,7 +1600,10 @@ static int readTemperature() {
 	return (qmi8658Read16Bit(QMI8658_TEMP) >> 8) + fudgeFactor;
 }
 
-#elif defined(DUELink)
+#elif defined(DUELink_DISABLED)
+
+// DISABLED! Unfortunately, enabling this code adds ~10k to the compiled code size.
+// That is more than the available code space without shrinking the code store by 4k.
 
 #define MC3216_ADDR 0x4C
 
