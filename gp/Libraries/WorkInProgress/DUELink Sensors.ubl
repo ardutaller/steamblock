@@ -1,4 +1,4 @@
-module 'DUE Sensors' Input
+module 'DUELink Sensors'
 author MicroBlocks
 version 1 0 
 choices dueSensors_axis x y z 
