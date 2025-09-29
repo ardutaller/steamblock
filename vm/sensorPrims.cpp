@@ -972,7 +972,7 @@ static int readTemperature() {
 #elif defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5Stick_C) || \
 	defined(M5Atom_Matrix) || defined(ARDUINO_M5STACK_Core2) || defined(M5Atom_S3_TFT)
 
-#ifdef ARDUINO_M5Stack_Core_ESP32 || defined(M5Atom_Matrix)
+#if defined(ARDUINO_M5Stack_Core_ESP32) || defined(M5Atom_Matrix)
 	#define Wire1 Wire
 #endif
 
@@ -1980,6 +1980,7 @@ static OBJ primTouchRead(int argCount, OBJ *args) {
 static OBJ primTouchRead(int argCount, OBJ *args) {
 	uint8 esp32TouchPins[10] = {0, 2, 4, 12, 13, 14, 15, 27, 32, 33};
 	int gpioPin = mapDigitalPinNum(obj2int(args[0]));
+	if (gpioPin < 0) return int2obj(999); // illegal pin; no touch
 	for (int i = 0; i < sizeof(esp32TouchPins); i++) {
 		if (gpioPin == esp32TouchPins[i]) {
 			return int2obj(touchRead(gpioPin));
