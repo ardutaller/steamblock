@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-09-22 07:01+0000\n"
+"PO-Revision-Date: 2025-09-29 12:43+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -801,7 +801,7 @@ msgstr "lies in _ aus der Datei _"
 
 #. Lists library block
 msgid "sorted _"
-msgstr "_ sortiert"
+msgstr "sortiert _"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
@@ -833,7 +833,7 @@ msgstr "Port _"
 
 #. Lists library block
 msgid "shuffled _"
-msgstr "_ gemischt"
+msgstr "gemischt _"
 
 #. Image name for the "display image" block
 msgid "target"
@@ -1078,7 +1078,7 @@ msgstr "nächste Zeile der Datei _"
 
 #. Lists library block
 msgid "reversed _"
-msgstr "_ umgekehrt"
+msgstr "umgekehrt _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill row _ color _"
@@ -1264,7 +1264,7 @@ msgstr "Neigung Rechts"
 
 #. 5x5 LED Display library block
 msgid "plot x _ y _"
-msgstr "plotte x _ y _"
+msgstr "setze x _ y _"
 
 #. Image name for the "display image" block
 msgid "small diamond"
@@ -1284,7 +1284,7 @@ msgstr "Finch _ Licht"
 
 #. Fractions library block
 msgid "simplify fraction _"
-msgstr "vereinfache Bruch _"
+msgstr "gekürzter Bruch _"
 
 #. Turtle geometry library label
 msgid "Turtle"
@@ -1388,7 +1388,7 @@ msgstr "Links"
 
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
-msgstr "setze Beschleunigungsbereich auf _ g = 100"
+msgstr "setze Beschleunigungsbereich _ g = 100"
 
 #. Rhythm library block
 msgid "set tempo to _ bpm at _ / _ signature"
@@ -1420,7 +1420,7 @@ msgstr "setze Schritt-Schwellenwert _ (0-50)"
 
 #. Lists library block
 msgid "reverse _"
-msgstr "kehre _ um"
+msgstr "kehre um _"
 
 #. Image name for the "display image" block
 msgid "chess board"
@@ -1608,7 +1608,7 @@ msgstr "bewege Motor _ _ komplette Runden"
 
 #. Lists library block
 msgid "unique _"
-msgstr "mache _ eindeutig"
+msgstr "mache eindeutig _"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Control"
@@ -2189,7 +2189,7 @@ msgstr "ESC"
 
 #. Lists library block
 msgid "uniqued _"
-msgstr "_ eindeutig"
+msgstr "eindeutig _"
 
 #. BLE Keyboard library block
 msgid "start BLE Keyboard"
