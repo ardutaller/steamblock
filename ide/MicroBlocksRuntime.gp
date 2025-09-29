@@ -1361,6 +1361,7 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'Tone'
 		importEmbeddedLibrary scripter 'TFT'
 	} (or ('DueSTEM' == boardType) ('PixoBit' == boardType)) {
+		if ('DueSTEM' == boardType) { importEmbeddedLibrary scripter 'DueSTEM' }
 		importEmbeddedLibrary scripter 'DUELink Sensors'
 		importEmbeddedLibrary scripter 'Tiny OLED'
 		importEmbeddedLibrary scripter 'Tone'
