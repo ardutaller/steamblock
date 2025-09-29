@@ -1469,8 +1469,11 @@ OBJ primSetCursor(int nargs, OBJ args[]) {
 }
 
 OBJ primLastAPIRequest(int nargs, OBJ args[]) {
+	// Get the index of the last queued call
 	int index = EM_ASM_INT({ return GP.callQueue.length - 1; }, NULL);
 	if (index < 0) { return nilObj; }
+	// Read and process call object properties:
+	// [ ID, endPoint, callback, ...params ]
 	OBJ id = int2obj(EM_ASM_INT({ return GP.callQueue[$0][0]; }, index));
 	int endPointLength = EM_ASM_INT({ return GP.callQueue[$0][1].length + 1; }, index);
 	OBJ endPoint = allocateString(endPointLength);
@@ -1481,14 +1484,66 @@ OBJ primLastAPIRequest(int nargs, OBJ args[]) {
 		endPointLength
 	);
 
-	OBJ callObject = newObj(ArrayClass, 2, nilObj);
+	// Create new GP params object, and size it appropriately
+	int paramCount =
+		EM_ASM_INT({
+				// [ ID, endPoint, callback, ...params ] → params start at index 3
+				return GP.callQueue[$0].length - 3
+			},
+			index
+		);
+	OBJ paramsObject = newObj(ArrayClass, paramCount, nilObj);
+
+	// Populate GP params object
+	int i;
+	for (i = 0; i < paramCount; i++) {
+		// For each param, find out its type and size, and store it in the GP object
+		int type =
+			EM_ASM_INT(
+				{ return (typeof GP.callQueue[$0][3 + $1]) == "number" ? 0 : 1; },
+				index,
+				i
+			);
+		if (type == 0) {
+			// Number. Assume int.
+			FIELD(paramsObject, i) =
+				int2obj(EM_ASM_INT(
+					{ return GP.callQueue[$0][3 + $1]; },
+					index,
+					i)
+				);
+		} else {
+			// String. Allocate space for it
+			int paramLength =
+				EM_ASM_INT(
+					{ return GP.callQueue[$0][3 + $1].length; },
+					index,
+					i
+				);
+			OBJ stringParam = allocateString(paramLength);
+			EM_ASM_(
+					{ stringToUTF8(GP.callQueue[$0][3 + $1], $2, $3); },
+					index,
+					i,
+					&FIELD(stringParam, 0),
+					paramLength
+			);
+			FIELD(paramsObject, i) = stringParam;
+		}
+	}
+
+	// populate a new GP call object
+	OBJ callObject = newObj(ArrayClass, 3, nilObj);
 	FIELD(callObject, 0) = id;
 	FIELD(callObject, 1) = endPoint;
+	FIELD(callObject, 2) = paramsObject;
+
 
 	return callObject;
 }
 
 OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
+	// find the request in the call queue
 	int index = EM_ASM_INT({
 			for (var i = 0; i < GP.callQueue.length; i++) {
 				if (GP.callQueue[i][0] == $0) {
@@ -1503,9 +1558,11 @@ OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
 	if (index < 0) { return falseObj; }
 
 	EM_ASM_({
-		GP.callQueue[$0][2]($1); // callback function in GP callQueue
+		var params = [];			// CONSIDER JSON?
+		// parse params
+		GP.callQueue[$0][2](params); // callback function in GP callQueue
 		GP.callQueue.splice($0,1); // remove call from queue else it'll run again
-	}, index, obj2int(args[1]));
+	}, index, args[1]);			// CONSIDER JSON?
 
 	return falseObj;
 };
