@@ -595,11 +595,12 @@ void hardwareInit() {
 	#ifdef KEY_BUILTIN
 		#define PIN_BUTTON_A KEY_BUILTIN
 	#endif
+	// Pins 14, 27, and 33 reserved for use by the M5Stack Core TFT display.
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 1, 0, 1, 0, 0, 1, 1, 1, 1,
-		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
-		1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+		1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
+		1, 0, 0, 0, 1, 0, 0, 1, 1, 1,
+		1, 1, 0, 1, 0, 0, 0, 0, 0, 0};
 
 #elif defined(ARDUINO_M5Stick_Plus)
 	#define BOARD_TYPE "M5StickC+"
@@ -712,9 +713,10 @@ void hardwareInit() {
 	#define TOTAL_PINS 40
 	static const int analogPin[] = {};
 	#define DEFAULT_TONE_PIN 2
+	// Pins 5 and 15 are reserved for use by the M5Stack Core2 TFT display
 	static const char reservedPin[TOTAL_PINS] = {
-		0, 1, 0, 1, 0, 0, 1, 1, 1, 1,
-		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 0, 1, 0, 1, 1, 1, 1, 1,
+		1, 1, 0, 0, 0, 1, 0, 0, 0, 0,
 		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 
