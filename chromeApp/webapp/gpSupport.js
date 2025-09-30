@@ -1217,7 +1217,6 @@ class NimBLESerial {
 
 	async connect() {
 		// Connect to a microcontroller
-		console.log('Requesting BLE device');
 		this.device = await navigator.bluetooth.requestDevice({
 			filters: [{ services: [MICROBLOCKS_SERVICE_UUID] }]
 		})
