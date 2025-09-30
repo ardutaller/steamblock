@@ -6,19 +6,30 @@ if (require('electron-squirrel-startup')) {
 	app.quit();
 }
 
-async function showConnectionMenu(portList, callback) {
-	function usbSelected(menuItem, window, event) {
+let bleMenuOpen = false;
+
+function showConnectionMenu(portList, callback, closeCallback) {
+	function itemSelected(menuItem, window, event) {
 		console.log("selected", menuItem.label, menuItem.id);
+		bleMenuOpen = false;
 		callback(menuItem.id);
 	}
 
 console.log("portlist", portList);
 	const myMenu = new Menu();
+
 	for (var i = 0; i < portList.length; i++) {
-		var fullName = portList[i].displayName + ' (' + portList[i].portName + ')';
-		myMenu.append(new MenuItem({label: fullName, click: usbSelected, id: portList[i].portId}));
+		var item = portList[i];
+		if ('portName' in item) { // USB
+			var fullName = item.displayName + ' (' + item.portName + ')';
+			myMenu.append(new MenuItem({label: fullName, click: itemSelected, id: item.portId}));
+		} else {
+			myMenu.append(new MenuItem({label: item.deviceName, click: itemSelected, id: item.deviceId}));
+		}
 	}
-	myMenu.popup();
+	myMenu.append(new MenuItem({type: 'separator'}));
+	myMenu.append(new MenuItem({label: 'cancel', click: closeCallback}));
+	myMenu.popup({callback: closeCallback});
 }
 
 const createWindow = () => {
@@ -58,14 +69,23 @@ const createWindow = () => {
 	let selectBluetoothCallback;
 
 	mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+		function bleMenuClosed() {
+			if (bleMenuOpen) selectBluetoothCallback('');
+			bleMenuOpen = false;
+		}
 		event.preventDefault();
+		if (bleMenuOpen) return;
+		if (deviceList.length <= 0) return;
+		bleMenuOpen = true;
 		selectBluetoothCallback = callback;
-		showConnectionMenu(deviceList, callback);
+		showConnectionMenu(deviceList, callback, bleMenuClosed);
 	});
 
-	ipcMain.on('cancel-bluetooth-request', (event) => {
-		selectBluetoothCallback('');
-	});
+
+// 	ipcMain.on('cancel-bluetooth-request', (event) => {
+// 		selectBluetoothCallback('');
+// 		bleMenuOpen = false;
+// 	});
 
 	// open devTools when in dev mode
 	if (!app.isPackaged) { mainWindow.webContents.openDevTools(); }
