@@ -65,7 +65,7 @@ GP.apiCall = function (endPoint, params, callback) {
 		Date.now() % 100000000,	// reasonably unique ID
 		endPoint,								// API endpoint selector
 		callback,								// takes a param with the return value
-		...params								// call params
+		...params								// call params - CONSIDER JSON?
 	]);
 };
 

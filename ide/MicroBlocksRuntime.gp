@@ -3461,8 +3461,11 @@ method doCall MicroBlocksAPI callObject {
 	editor = (findMicroBlocksEditor)
 	id = (at callObject 1)
 	endPoint = (at callObject 2)
+	params = (at callObject 3)
 	if (endPoint == 'random') {
 		browserRespondAPIRequest id (rand 1 100)
+	} (endPoint == 'echo') {
+		browserRespondAPIRequest id params
 	} (endPoint == 'newProject') {
 		browserRespondAPIRequest id 0 // respond first so the request is deleted
 		newProject editor
