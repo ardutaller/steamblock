@@ -3454,10 +3454,10 @@ defineClass MicroBlocksAPI
 
 method processLastCall MicroBlocksAPI {
 	request = (browserLastAPIRequest)
-	if (notNil request) { doCall this request }
+	if (notNil request) { dispatchCall this request }
 }
 
-method doCall MicroBlocksAPI callObject {
+method dispatchCall MicroBlocksAPI callObject {
 	editor = (findMicroBlocksEditor)
 
 	// retrieve call properties
@@ -3474,7 +3474,7 @@ method doCall MicroBlocksAPI callObject {
 	} (endPoint == 'newProject') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		newProject editor
-	} (endPoint == 'openProjectMenu') {
+	} (endPoint == 'openProjectDialog') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		openProjectMenu editor
 	}
