@@ -182,4 +182,13 @@ and written from MicroBlocks.
 	);
 ```
 
+### Localization
+
+#### locale.getLanguageList
+
+Asks for the list of available languages to localize to.
+
+- **params:** none
+- **returns:** (array of strings) languages
+- **example:** `GP.apiCall('locale.getLanguageList', [], (list) => console.log(list));`
 
