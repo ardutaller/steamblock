@@ -17,7 +17,6 @@ function showConnectionMenu(portList, callback, closeCallback) {
 		callback(menuItem.id);
 	}
 
-console.log("portlist", portList);
 	const myMenu = new Menu();
 
 	for (var i = 0; i < portList.length; i++) {
@@ -71,7 +70,6 @@ const createWindow = () => {
 	let selectBluetoothCallback;
 
 	mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
-		console.log('I am called');
 		function bleMenuClosed() {
 			if (bleMenuOpen) selectBluetoothCallback('');
 			bleMenuOpen = false;

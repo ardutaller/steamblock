@@ -36,6 +36,8 @@ JohnWorkInProgress
 # ELECTRON STUFF BELOW
 # probably overkill, but this is what the official docs recommend
 
+electron/package-lock.json
+
 # Logs
 logs
 *.log
