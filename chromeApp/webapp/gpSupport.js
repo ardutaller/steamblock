@@ -1208,10 +1208,10 @@ class NimBLESerial {
 
 	async connect() {
 		// Connect to a microcontroller
-		if (isElectron()) {
-			// TODO implement BLE for Electron
-			console.log('TO BE IMPLEMENTED');
-		} else {
+// 		if (isElectron()) {
+// 			// TODO implement BLE for Electron
+// 			console.log('TO BE IMPLEMENTED');
+// 		} else {
 			this.device = await navigator.bluetooth.requestDevice({
 				filters: [{ services: [MICROBLOCKS_SERVICE_UUID] }]
 			})
@@ -1226,7 +1226,7 @@ class NimBLESerial {
 			this.connected = true;
 			this.sendInProgress = false;
 			console.log("BLE connected");
-		}
+// 		}
 	}
 
 	disconnect() {
