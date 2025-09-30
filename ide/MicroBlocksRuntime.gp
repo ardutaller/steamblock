@@ -3454,23 +3454,33 @@ defineClass MicroBlocksAPI
 
 method processLastCall MicroBlocksAPI {
 	request = (browserLastAPIRequest)
-	if (notNil request) { doCall this request }
+	if (notNil request) { dispatchCall this request }
 }
 
-method doCall MicroBlocksAPI callObject {
+method dispatchCall MicroBlocksAPI callObject {
 	editor = (findMicroBlocksEditor)
+
+	// retrieve call properties
 	id = (at callObject 1)
 	endPoint = (at callObject 2)
-	params = (at callObject 3)
+	params = (jsonParse (at callObject 3))
+
+	// dispatch API call
 	if (endPoint == 'random') {
-		browserRespondAPIRequest id (rand 1 100)
+		respondAPIRequest this id (rand (at params 1) (at params 2))
 	} (endPoint == 'echo') {
-		browserRespondAPIRequest id params
+		// for testing purposes, just respond with the exact same params I received
+		respondAPIRequest this id params
 	} (endPoint == 'newProject') {
-		browserRespondAPIRequest id 0 // respond first so the request is deleted
+		respondAPIRequest this id 0 // respond first so the request is deleted
 		newProject editor
-	} (endPoint == 'openProjectMenu') {
-		browserRespondAPIRequest id 0 // respond first so the request is deleted
+	} (endPoint == 'openProjectDialog') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
 		openProjectMenu editor
 	}
+}
+
+method respondAPIRequest MicroBlocksAPI id params {
+	// just stringify params before responding to the request
+	browserRespondAPIRequest id (jsonStringify params)
 }
