@@ -3459,6 +3459,8 @@ method processLastCall MicroBlocksAPI {
 
 method dispatchCall MicroBlocksAPI callObject {
 	editor = (findMicroBlocksEditor)
+	scripter = (scripter editor)
+	runtime = (smallRuntime)
 
 	// retrieve call properties
 	id = (at callObject 1)
@@ -3466,18 +3468,59 @@ method dispatchCall MicroBlocksAPI callObject {
 	params = (jsonParse (at callObject 3))
 
 	// dispatch API call
+	// TESTS
 	if (endPoint == 'random') {
 		respondAPIRequest this id (rand (at params 1) (at params 2))
 	} (endPoint == 'echo') {
 		// for testing purposes, just respond with the exact same params I received
 		respondAPIRequest this id params
-	} (endPoint == 'newProject') {
+
+	// IDE
+	} (endPoint == 'ide.showAboutBox') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		showAboutBox runtime
+	} (endPoint == 'ide.isAdvancedMode') {
+		respondAPIRequest this id (devMode)
+	} (endPoint == 'ide.isDarkMode') {
+		respondAPIRequest this id (darkModeEnabled editor)
+
+	// Project
+	} (endPoint == 'project.save') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		saveProjectToFile editor
+	} (endPoint == 'project.new') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		newProject editor
-	} (endPoint == 'openProjectDialog') {
+	} (endPoint == 'project.open') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		openProjectMenu editor
+	} (endPoint == 'project.copyURL') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		copyProjectURLToClipboard editor
+	} (endPoint == 'project.exportBlocksLibrary') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		exportAsLibrary scripter
+
+	// Board
+	} (endPoint == 'board.installVM') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		// params: wipeFlash (bool), downloadFromServer (bool)
+		installVM runtime (at params 1) (at params 2)
+	} (endPoint == 'board.uploadFile') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		putFileOnBoard runtime
+	} (endPoint == 'board.downloadFile') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		getFileFromBoard runtime
+	} (endPoint == 'board.retrieveProject') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		openFromBoard editor
+	} (endPoint == 'board.canDoBLE') {
+		respondAPIRequest this id (boardIsBLECapable runtime)
+	} (endPoint == 'board.hasFS') {
+		respondAPIRequest this id (boardHasFileSystem runtime)
 	}
+
 }
 
 method respondAPIRequest MicroBlocksAPI id params {
