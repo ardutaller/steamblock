@@ -1,6 +1,8 @@
 const { app, ipcMain, BrowserWindow, Menu, MenuItem } = require('electron');
 const path = require('node:path');
 
+app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
 	app.quit();
@@ -69,6 +71,7 @@ const createWindow = () => {
 	let selectBluetoothCallback;
 
 	mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+		console.log('I am called');
 		function bleMenuClosed() {
 			if (bleMenuOpen) selectBluetoothCallback('');
 			bleMenuOpen = false;
