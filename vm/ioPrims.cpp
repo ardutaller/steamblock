@@ -969,10 +969,11 @@ void hardwareInit() {
 	#define ANALOG_PINS 6 // pins 0-5, but pin 5 uses ADC2 may be less reliable
 	#define TOTAL_PINS 22
 	static const int analogPin[] = {};
-	#ifdef LED_BUILTIN
-		#define PIN_LED LED_BUILTIN
-	#elif !defined(PIN_LED)
+	#if defined(FAB_SPARKLE)
+		// Note: The Super C3 mini has user LED on the I2C SDA line; do not use it!
 		#define PIN_LED -1
+	#elif defined(LED_BUILTIN)
+		#define PIN_LED LED_BUILTIN
 	#endif
 	#if !defined(PIN_BUTTON_A)
 		#if defined(KEY_BUILTIN)
