@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-09-07 08:02+0000\n"
+"PO-Revision-Date: 2025-10-06 07:02+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -7132,3 +7132,103 @@ msgstr "establece el año _ mes _ y dia _"
 #. Real Time Clock library block
 msgid "set hours _ minutes _ seconds _"
 msgstr "establece horas _ minutos _ segundos _"
+
+#. Fractions library block
+msgid "fract _ − _"
+msgstr "fracc _ − _"
+
+#. CoCube Module library block
+msgid "ASR get command"
+msgstr "ASR obtén la orden"
+
+#. CoCube Module library block
+msgid "ASR play command _"
+msgstr "ASR ejecuta la orden _"
+
+#. CoCube Module library block
+msgid "DLight level"
+msgstr "nivel DLight"
+
+#. CoCube Sengo1 library choice
+msgid "Color Recog"
+msgstr "reconocimineto de color"
+
+#. CoCube Sengo1 library choice
+msgid "Blob Detect"
+msgstr "detección de zona"
+
+#. CoCube Sengo1 library choice
+msgid "Ball Detect"
+msgstr "detección de pelota"
+
+#. CoCube Sengo1 library choice
+msgid "Line Detect"
+msgstr "detección de línea"
+
+#. CoCube Sengo1 library choice
+msgid "Card Recog"
+msgstr "reconocimineto del mapa de coord"
+
+#. CoCube Sengo1 library choice
+msgid "Face Recog"
+msgstr "reconocimiento de cara"
+
+#. CoCube Sengo1 library choice
+msgid "QRcode"
+msgstr "código QR"
+
+#. CoCube Sengo1 library choice
+msgid "black"
+msgstr "negro"
+
+#. CoCube Sengo1 library choice
+msgid "white"
+msgstr "blanco"
+
+#. CoCube Sengo1 library choice
+msgid "blue"
+msgstr "azul"
+
+#. CoCube Sengo1 library choice
+msgid "x1"
+msgstr "x1"
+
+#. CoCube Sengo1 library choice
+msgid "y1"
+msgstr "y1"
+
+#. CoCube Sengo1 library choice
+msgid "x2"
+msgstr "x2"
+
+#. CoCube Sengo1 library choice
+msgid "y2"
+msgstr "y2"
+
+#. CoCube Sengo1 library choice
+msgid "degree"
+msgstr "ángulo"
+
+#. CoCube Sengo1 library choice
+msgid "w"
+msgstr "ancho"
+
+#. CoCube Sengo1 library choice
+msgid "h"
+msgstr "alto"
+
+#. CoCube Sengo1 library choice
+msgid "R"
+msgstr "R"
+
+#. CoCube Sengo1 library choice
+msgid "G"
+msgstr "G"
+
+#. CoCube Sengo1 library choice
+msgid "B"
+msgstr "B"
+
+#. CoCube Sengo1 library block
+msgid "Sengo1 read QRcode"
+msgstr "Sengo1 lee el código QR"
