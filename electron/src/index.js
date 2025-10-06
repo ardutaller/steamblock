@@ -91,7 +91,11 @@ const createWindow = () => {
 	// open devTools when in dev mode
 	if (!app.isPackaged) { mainWindow.webContents.openDevTools(); }
 
-	mainWindow.loadFile(path.join(__dirname, '../../chromeApp/webapp/microblocks.html'));
+	mainWindow.loadFile(
+		app.isPackaged ?
+			path.join(process.resourcesPath, '/webapp/microblocks.html') :
+			path.join(__dirname, '../../chromeApp/webapp/microblocks.html')
+	);
 };
 
 app.whenReady().then(() => {

@@ -38,7 +38,9 @@ if test -n "$help"; then
   echo "                              to pause the Morphic loop and gain access to the"
   echo "                              REPL. Then issue the 'go' command to give control"
   echo "                              back to the Morphic loop."
-  echo "--electron                    Build the webapp and then run it as an Electron app."
+  echo "--electron                    Run the webapp as an Electron app."
+  echo "  --rebuild                     When combined with --electron, rebuild the webapp"
+  echo "                                first."
   echo
   exit 0
 fi
@@ -99,7 +101,9 @@ if test -n "$tools"; then
 fi
 
 if test -n "$electron"; then
-  (cd chromeApp/emscripten; ./buildEmcc.sh)
+  if test -n "$rebuild"; then
+    (cd chromeApp/emscripten; ./buildEmcc.sh)
+  fi
   (cd electron; npm start)
   exit 0
 fi
