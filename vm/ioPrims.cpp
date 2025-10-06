@@ -1244,9 +1244,9 @@ void hardwareInit() {
 		return result;
 	}
 
-	// PWM pins for CincoBit and PixoBit edge pins 0 to 16
+	// PWM pins for CincoBit and PixoBit edge pins 0 to 21
 	// Note: TIM14 is used by Tone library. TIM16 is used by Servo library
-	#define DUE_PWM_PIN_COUNT 17
+	#define DUE_PWM_PIN_COUNT 22
 	static const int16 dueEdgePWM[DUE_PWM_PIN_COUNT] = {
 		PA_0_ALT1,		// TIM1_CH1, *TIM2_CH1, TIM16_CH1
 		PA_1_ALT1,		// TIM1_CH2, TIM2_CH2, TIM17_CH1
@@ -1265,6 +1265,11 @@ void hardwareInit() {
 		PB_4,			// *TIM3_CH1
 		PB_5_ALT1,		// TIM3_CH2, *TIM3_CH3
 		-1, // PC_15,	// TIM3_CH3
+		-1,
+		-1,
+		-1,
+		-1,
+		PA_5_ALT1,		// TIM1_CH1, *TIM1_CH3N, TIM2_CH1
 	};
 
 	// PWM pins for standard DUEBoards 0 to 16 (pin 17 does not have a timer)
@@ -1719,7 +1724,7 @@ void primAnalogWrite(OBJ *args) {
 		if (pwmPin < 0) return;
 		SET_MODE(mapDigitalPinNum(pinNum), OUTPUT);
 		pwm_stop((PinName) pwmPin); // force restart in case PWM was stopped by reading the pin
-		pwm_start((PinName) pwmPin, 1000, value, (TimerCompareFormat_t) 10); // 1000 Hz, 10-bit resolution
+		pwm_start((PinName) pwmPin, 46830, value, (TimerCompareFormat_t) 10); // 46830 Hz, 10-bit resolution
 		pwmRunning[pinNum] = true;
 		return;
 	#else
