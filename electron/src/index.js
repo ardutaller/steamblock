@@ -1,7 +1,8 @@
 const { app, ipcMain, BrowserWindow, Menu, MenuItem } = require('electron');
 const path = require('node:path');
 
-app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
+app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+app.commandLine.appendSwitch('gtk-version', '3');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
