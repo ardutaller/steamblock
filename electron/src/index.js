@@ -9,29 +9,50 @@ if (require('electron-squirrel-startup')) {
 	app.quit();
 }
 
-let bleMenuOpen = false;
+let bleStartMSecs;
+let bleMenu;
 
-function showConnectionMenu(portList, callback, closeCallback) {
+function bleSelectMenu(portList, callback) {
 	function itemSelected(menuItem, window, event) {
-		console.log("selected", menuItem.label, menuItem.id);
-		bleMenuOpen = false;
+		bleStartMSecs = undefined;
+		bleMenu = undefined;
+		callback(menuItem.id);
+	}
+	function bleMenuClosed() {
+		if (bleMenu) callback('');
+		bleStartMSecs = undefined;
+		bleMenu = undefined;
+	}
+
+	if (bleMenu) return; // already showing menu
+
+	if (bleStartMSecs === undefined) bleStartMSecs = Date.now(); // first call
+	if ((Date.now() - bleStartMSecs) < 500) return; // wait a bit to collect BLE devices
+
+	bleMenu = new Menu();
+	for (var i = 0; i < portList.length; i++) {
+		var item = portList[i];
+		bleMenu.append(new MenuItem({label: item.deviceName, click: itemSelected, id: item.deviceId}));
+	}
+	bleMenu.append(new MenuItem({type: 'separator'}));
+	bleMenu.append(new MenuItem({label: 'cancel', click: bleMenuClosed}));
+	bleMenu.popup({callback: bleMenuClosed});
+}
+
+function usbSelectMenu(portList, callback) {
+	function usbPortSelected(menuItem, window, event) {
 		callback(menuItem.id);
 	}
 
 	const myMenu = new Menu();
-
 	for (var i = 0; i < portList.length; i++) {
 		var item = portList[i];
-		if ('portName' in item) { // USB
-			var fullName = item.displayName + ' (' + item.portName + ')';
-			myMenu.append(new MenuItem({label: fullName, click: itemSelected, id: item.portId}));
-		} else {
-			myMenu.append(new MenuItem({label: item.deviceName, click: itemSelected, id: item.deviceId}));
-		}
+		var fullName = item.displayName + ' (' + item.portName + ')';
+		myMenu.append(new MenuItem({label: fullName, click: usbPortSelected, id: item.portId}));
 	}
 	myMenu.append(new MenuItem({type: 'separator'}));
-	myMenu.append(new MenuItem({label: 'cancel', click: closeCallback}));
-	myMenu.popup({callback: closeCallback});
+	myMenu.append(new MenuItem({label: 'cancel'}));
+	myMenu.popup();
 }
 
 const createWindow = () => {
@@ -65,29 +86,19 @@ const createWindow = () => {
 		'select-serial-port',
 		(event, portList, webContents, callback) => {
 			event.preventDefault();
-			showConnectionMenu(portList, callback);
+			usbSelectMenu(portList, callback);
 	});
-
-	let selectBluetoothCallback;
 
 	mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
-		function bleMenuClosed() {
-			if (bleMenuOpen) selectBluetoothCallback('');
-			bleMenuOpen = false;
-		}
+		// When the user requests a a BLE connection, this function is called repeatedly
+		// until the callback function is called. The number devices in the device list
+		// grows over time as additional devices are discovered. The current stategy is to
+		// wait a litte, then present of menu of the devices that have been discovered
+		// up to that point.
+
 		event.preventDefault();
-		if (bleMenuOpen) return;
-		if (deviceList.length <= 0) return;
-		bleMenuOpen = true;
-		selectBluetoothCallback = callback;
-		showConnectionMenu(deviceList, callback, bleMenuClosed);
+		bleSelectMenu(deviceList, callback);
 	});
-
-
-// 	ipcMain.on('cancel-bluetooth-request', (event) => {
-// 		selectBluetoothCallback('');
-// 		bleMenuOpen = false;
-// 	});
 
 	// open devTools when in dev mode
 	if (!app.isPackaged) { mainWindow.webContents.openDevTools(); }
