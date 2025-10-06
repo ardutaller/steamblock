@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-10-06 07:02+0000\n"
+"PO-Revision-Date: 2025-10-06 13:38+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -20,7 +20,7 @@ msgstr "Sortida"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr "encén LED integrat _"
+msgstr "encén led integrat _"
 
 #. Block in Output category
 msgid "say _"
@@ -908,11 +908,11 @@ msgstr "fixa llindar capacitiu a _"
 
 #. BirdBrain Technologies Hummingbird kit library label
 msgid "Hummingbird LED _ _ %"
-msgstr "Hummingbird LED _ _ %"
+msgstr "Hummingbird led _ _ %"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
-msgstr "Hummingbird Tri-LED _ Vermell _ % Verd _ % Blau _ %"
+msgstr "Hummingbird Tri-led _ Vermell _ % Verd _ % Blau _ %"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Position Servo _ _ °"
@@ -2886,15 +2886,16 @@ msgstr "interruptor de la Circuit Playground"
 
 #. DotStar LED library block
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
-msgstr "inicialitza tira de _ LEDs DotStar al pin de dades _ i pin de rellotge _"
+msgstr ""
+"inicialitza tira de _ leds DotStar al pin de dades _ i pin de rellotge _"
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
-msgstr "posa tots els LEDs DotStar a vermell _ verd _ blau _"
+msgstr "posa tots els leds DotStar a vermell _ verd _ blau _"
 
 #. DotStar LED library block
 msgid "set DotStar LED _ to r _ g _ b _"
-msgstr "posa el LEDs DotStar _ a vermell _ verd _ blau _"
+msgstr "posa el leds DotStar _ a vermell _ verd _ blau _"
 
 #. DotStar LED library block
 msgid "set DotStar brightness _"
@@ -3235,15 +3236,15 @@ msgstr "Mike fixa l'actuador D8 a _"
 
 #. Shield:bit library block
 msgid "sb LEDs off"
-msgstr "sb apaga els LED"
+msgstr "sb apaga els leds"
 
 #. Shield:bit library block
 msgid "sb set all LEDs to _"
-msgstr "sb posa tots els LEDs a _"
+msgstr "sb posa tots els leds a _"
 
 #. Shield:bit library block
 msgid "sb set LED _ (1-4) to _"
-msgstr "sb posa el LED _ (1-4) a _"
+msgstr "sb posa el led _ (1-4) a _"
 
 #. Shield:bit library block
 msgid "sb send audio to shield _"
@@ -3761,7 +3762,7 @@ msgstr "Home posa _ _ _ _ als Neopixels"
 
 #. Keyestudio Smart Home library block
 msgid "Home clear leds"
-msgstr "Home apaga els Neopixels"
+msgstr "Home apaga els Neopíxels"
 
 #. Keyestudio Smart Home library block
 msgid "Home electric consumption _"
@@ -4139,7 +4140,7 @@ msgstr "Posa els NeoPíxels del Wukong a _ _ _ _"
 
 #. Wukong robot library block
 msgid "Wukong set LED brightness to _"
-msgstr "Fixa la brillantor del LED a _"
+msgstr "Fixa la brillantor del led a _"
 
 #. Sphero-RVR robot library block
 msgid "wake"
@@ -4167,11 +4168,11 @@ msgstr "atura't amb direcció _"
 
 #. Sphero-RVR robot library block
 msgid "set RGB LED _ to red _ green _ blue _"
-msgstr "posa el LED RGB _ a vermell _ verd _ blau _"
+msgstr "posa el led RGB _ a vermell _ verd _ blau _"
 
 #. Sphero-RVR robot library block
 msgid "set all LEDs to red _ green _ blue _"
-msgstr "posa tots els LEDs RGB _ a vermell _ verd _ blau _"
+msgstr "posa tots els leds RGB _ a vermell _ verd _ blau _"
 
 #. Joystick:bit library block
 msgid "button _ is pressed"
@@ -4215,15 +4216,15 @@ msgstr "WuKong2040"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ color to _"
-msgstr "posa LED multicolor _ a _"
+msgstr "posa el led multicolor _ a _"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
-msgstr "posa LED multicolor _ a vermell _ verd _ blau _ (0~255)"
+msgstr "posa el led multicolor _ a vermell _ verd _ blau _ (0~255)"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 clear all rainbowLED"
-msgstr "apaga LEDs multicolor"
+msgstr "apaga els leds multicolor"
 
 #. WuKong2040 robot library block
 msgid "WuKong2040 motor _ speed to _ (-100~100)"
@@ -4247,11 +4248,11 @@ msgstr "Octopus"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus LED pin _ toggle to _"
-msgstr "Octopus pin LED _ canviar a _"
+msgstr "Octopus pin led _ canvia a _"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus LED pin _ brightness _ %"
-msgstr "Octopus pin LED _ brillantor al _ %"
+msgstr "Octopus pin led _ brillantor al _ %"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus motor fan pin _ speed to _ %"
@@ -6071,7 +6072,7 @@ msgstr "toca el brunzidor a _ Hz durant _ mil·lisegons"
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
-msgstr "posa el LED _ a _"
+msgstr "posa el led _ a _"
 
 #. NeZha2 robot library block
 msgid "Nezha set motor _ speed to _ (-100-100)"
@@ -6107,7 +6108,7 @@ msgstr "brillantor _ %"
 
 #. NeZha2 robot library block
 msgid "Nezha set all LEDs to _"
-msgstr "posa tots els LEDs a _"
+msgstr "posa tots els leds a _"
 
 #. NeZha2 robot library block
 msgid "Nezha crash sensor _"
@@ -6426,7 +6427,7 @@ msgstr "el meu ID de ràdio"
 
 #. 5x5 LED Display library block
 msgid "led image _"
-msgstr "imatge LED _"
+msgstr "imatge led _"
 
 #. Robo ESP32 library block
 msgid "RoboESP32 set motor _ power _ (-100 to 100)"
@@ -7002,7 +7003,7 @@ msgstr "MotionKit motor _ direcció _ velicitat _ (0~255)"
 
 #. Calliope MotionKit2 library block
 msgid "MotionKit LED _ _"
-msgstr "MotionKit LED _ _"
+msgstr "MotionKit led _ _"
 
 #. Calliope MotionKit2 library block
 msgid "color r _ g _ b _ (0~255)"
@@ -7404,7 +7405,7 @@ msgstr "gas (MQ-135)"
 
 #. KidsIOT library choice
 msgid "kiot;film pressure"
-msgstr "Pressió de la làmina"
+msgstr "pressió de la làmina"
 
 #. KidsIOT library choice
 msgid "kiot;flame"
@@ -7520,7 +7521,7 @@ msgstr "dreta"
 
 #. KidsIOT library block
 msgid "#SVG#square11#ffffff RGB color _ port _"
-msgstr "#SVG#square11#ffffff led RGB color _ port _"
+msgstr "#SVG#square11#ffffff RGB color _ port _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#ff0000 analog _ port _"
