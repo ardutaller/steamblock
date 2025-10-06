@@ -1,8 +1,8 @@
 module 'DUELink Sensors'
 author MicroBlocks
-version 1 0 
+version 1 1 
 choices dueSensors_axis x y z 
-choices dueSensors_touchPin P0 P1 P2 A B left right up down 
+choices dueSensors_touchPin P0 P1 P2 P3 A B left right up down 
 description 'Sensor library for educational DUELink boards.
 
 Note: Touch sensing works only on pins with capacitive touch circuits including pins 0, 1, 2 of the CincoBit and PixoBit and all but the SCL/SDA pins of the ClipIt.
@@ -10,7 +10,7 @@ Note: Touch sensing works only on pins with capacitive touch circuits including 
 variables dueSensors_accelAddr 
 
   spec 'r' 'dueSensors_light' 'due light level'
-  spec 'r' 'dueSensors_touched' 'due pin _  touched : threshold _' 'num.dueSensors_touchPin num' 0 100
+  spec 'r' 'dueSensors_touched' 'due pin _  touched : threshold _' 'menu.dueSensors_touchPin num' 'P1' 100
   space
   spec 'r' 'dueSensors_temperature' 'dueSTEM temperature'
   spec 'r' 'dueSensors_tilt' 'dueSTEM tilt _' 'menu.dueSensors_axis' 'x'
