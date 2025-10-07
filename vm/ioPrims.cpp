@@ -1593,7 +1593,7 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 	#elif defined(DUELink)
 		int duePin = dueAnalogPin(pinNum);
 		if (duePin < 0) return zeroObj;
-		SET_MODE(pinNum, mode);
+		SET_MODE(mapDigitalPinNum(pinNum), mode);
 		return int2obj(adc_read_value((PinName) duePin, 10));
 	#endif
 	#if defined(ARDUINO_SEEED_XIAO_RP2040) || defined(ARDUINO_SEEED_XIAO_RP2350)
@@ -1722,8 +1722,10 @@ void primAnalogWrite(OBJ *args) {
 	#elif defined(DUELink)
 		int pwmPin = duePWMPin(pinNum);
 		if (pwmPin < 0) return;
+		if (OUTPUT != currentMode[mapDigitalPinNum(pinNum)]) {
+			pwm_stop((PinName) pwmPin); // force restart if PWM was stopped by reading the pin
+		}
 		SET_MODE(mapDigitalPinNum(pinNum), OUTPUT);
-		pwm_stop((PinName) pwmPin); // force restart in case PWM was stopped by reading the pin
 		pwm_start((PinName) pwmPin, 46830, value, (TimerCompareFormat_t) 10); // 46830 Hz, 10-bit resolution
 		pwmRunning[pinNum] = true;
 		return;
