@@ -38,9 +38,10 @@ if test -n "$help"; then
   echo "                              to pause the Morphic loop and gain access to the"
   echo "                              REPL. Then issue the 'go' command to give control"
   echo "                              back to the Morphic loop."
-  echo "--electron                    Run the webapp as an Electron app."
-  echo "  --rebuild                     When combined with --electron, rebuild the webapp"
-  echo "                                first."
+  echo "--webapp                      Rebuild MicroBlocks as a webapp."
+  echo "--electron                    Run the webapp as an Electron app. Can be combined"
+  echo "                              with --webapp to make sure you're running the latest"
+  echo "                              version of the web application."
   echo
   exit 0
 fi
@@ -100,10 +101,15 @@ if test -n "$tools"; then
   export tools=1
 fi
 
-if test -n "$electron"; then
-  if test -n "$rebuild"; then
-    (cd chromeApp/emscripten; ./buildEmcc.sh)
+if test -n "$webapp"; then
+  (cd chromeApp/emscripten; ./buildEmcc.sh)
+  if [ -z $electron ]; then
+  # quit the script unless we're also being asked to build the electron wrapper
+    exit 0
   fi
+fi
+
+if test -n "$electron"; then
   (cd electron; npm start)
   exit 0
 fi
