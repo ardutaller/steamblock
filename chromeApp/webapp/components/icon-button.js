@@ -1,3 +1,19 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with GetText
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+
+// icon-button.js - A clickable icon that does something.
+
+// Bernat Romagosa, 2025
+
+// TODO:
+// [ ] action
+// [ ] disabled state
+// [x] cursor
+// [ ] hover states
+
 class IconButton extends HTMLElement {
 	static get observedAttributes() { return ['src', 'size']; }
 
@@ -51,6 +67,7 @@ function updateStyle(elem) {
 			display: inline-block;
 			width: ${elem.getAttribute('size')}px;
 			height: ${elem.getAttribute('size')}px;
+			cursor: pointer;
 		}
 		img {
 			width: 100%;

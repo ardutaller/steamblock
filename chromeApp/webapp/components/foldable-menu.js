@@ -1,8 +1,36 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with GetText
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+
+// foldable-menu.js - A menu component that can be folded and unfolded. Its
+// items are read from a JSON file and have the form:
+
+// {
+//   "label": "The Item Label",
+//   "icon": "an-icon-name",
+//   "onclick": "aJsFunction()"
+// }
+
+// A string containing a single hyphen represents a separator.
+
+// Bernat Romagosa, 2025
+
+// TODO:
+// [x] localization
+// [ ] read and use icons
+// [ ] hide/show items from menu dynamically
+// [ ] close menu when clicking item
+// [ ] close menu when clicking somewhere outside
+
+
 class FoldableMenu extends HTMLElement {
 	static get observedAttributes() { return ['json']; }
 
 	constructor() {
 		super();
+		this.items = [];
 
 		// create a shadow root that contains all subelements
 		const shadow = this.attachShadow({ mode: 'open' });
@@ -18,9 +46,6 @@ class FoldableMenu extends HTMLElement {
 			left: 0;
 			background: white;
 			border: 1px solid red;
-		}
-		li {
-			list-style: none;
 		}
 	`;
 
@@ -45,19 +70,12 @@ class FoldableMenu extends HTMLElement {
 		const container = this.shadowRoot.querySelector('.container');
 		fetch('json/' + this.getAttribute('json') + '.json')
 			.then(result => result.json())
-			.then(items => {
-				items.forEach((item) => {
-					if (item == '-') {
-						container.appendChild(document.createElement('hr'));
-					} else {
-						// TODO: add icons. Their filename selector is at item.icon
-						let li = document.createElement('li');
-						let l = document.createElement('l-'); // localizable
-						l.innerText = item.label;
-						li.setAttribute('onclick', item.onclick);
-						li.appendChild(l);
-						container.appendChild(li);
-					}
+			.then(descriptors => {
+				descriptors.forEach((descriptor) => {
+					let item = document.createElement('menu-item');
+					item.applyDescriptor(descriptor);
+					container.appendChild(item);
+					this.items.push(item);
 				});
 			});
 	}

@@ -6,6 +6,7 @@
 
 // gettext.js - A GetText subset parser. Not by any means a complete GetText
 // engine. Just the very few parts that we need for MicroBlocks.
+
 // Bernat Romagosa, 2025
 
 var GetText = {};

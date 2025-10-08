@@ -1,3 +1,13 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with GetText
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+
+// top-menu.js - An element with an icon button that unfolds a menu.
+
+// Bernat Romagosa, 2025
+
 class TopMenu extends HTMLElement {
 	static get observedAttributes() { return ['selector', 'icon']; }
 
