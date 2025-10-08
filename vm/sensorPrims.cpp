@@ -488,12 +488,24 @@ static void initSPI() {
 }
 
 OBJ primSPISend(OBJ *args) {
-	if (!isInt(args[0])) return fail(needsIntegerError);
-	unsigned data = obj2int(args[0]);
-	if (data > 255) return fail(i2cValueOutOfRange);
-	initSPI();
-	SPI.transfer(data); // send data byte to the slave
-	SPI.endTransaction();
+	OBJ arg = args[0];
+	if (isInt(arg)) {
+		unsigned data = obj2int(arg);
+		if (data > 255) return fail(i2cValueOutOfRange);
+		initSPI();
+		SPI.transfer(data); // send data byte to the slave
+		SPI.endTransaction();
+	} else if (objType(arg) == ByteArrayType) {
+		unsigned char *data = (unsigned char *) &FIELD(arg, 0);
+		int byteCount = BYTES(arg);
+		initSPI();
+		for (int i = 0; i < byteCount; i++) {
+			SPI.transfer(data[i]);
+		}
+		SPI.endTransaction();
+	} else {
+		return fail(needsIntegerError);
+	}
 	return falseObj;
 }
 
