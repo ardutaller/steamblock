@@ -1,5 +1,33 @@
 [
 	{
-		"label": "test project item"
+		"label": "Save",
+		"onclick": "GP.apiCall('project.save')"
+	},
+	"-",
+	{
+		"label": "New",
+		"onclick": "GP.apiCall('project.new')"
+	},
+	{
+		"label": "Open",
+		"onclick": "GP.apiCall('project.open')"
+	},
+	{
+		"label": "Open from board",
+		"onclick": "GP.apiCall('board.retrieveProject')"
+	},
+	"-",
+	{
+		"label": "Copy project URL to clipboard",
+		"onclick": "GP.apiCall('project.copyURL')"
+	},
+	"-",
+	{
+		"label": "put file on board",
+		"onclick": "GP.apiCall('board.uploadFile')"
+	},
+	{
+		"label": "get file from board",
+		"onclick": "GP.apiCall('board.downloadFile')"
 	}
 ]
