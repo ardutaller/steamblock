@@ -24,6 +24,12 @@ class TopMenu extends HTMLElement {
 		button.onclick = () => { menu.collapsed = !menu.collapsed; }
 
 		const style = document.createElement('style');
+		style.textContent = `
+		.wrapper {
+			position: relative;
+			display: inline-block;
+		}
+	`;
 		shadow.appendChild(style);
 		shadow.appendChild(wrapper);
 		wrapper.appendChild(button);

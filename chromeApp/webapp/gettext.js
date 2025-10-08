@@ -76,4 +76,4 @@ GetText.localize = function (key) {
 	return value;
 };
 
-GetText.readLocale('en');
+GetText.setLocale('en');

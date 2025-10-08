@@ -15,6 +15,12 @@ class FoldableMenu extends HTMLElement {
 		.container {
 			position: absolute;
 			display: block;
+			left: 0;
+			background: white;
+			border: 1px solid red;
+		}
+		li {
+			list-style: none;
 		}
 	`;
 
