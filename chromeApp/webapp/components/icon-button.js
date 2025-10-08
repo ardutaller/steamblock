@@ -1,5 +1,5 @@
 class IconButton extends HTMLElement {
-	static get observedAttributes() { return ['size']; }
+	static get observedAttributes() { return ['src', 'size']; }
 
 	constructor() {
 		super();
@@ -14,6 +14,8 @@ class IconButton extends HTMLElement {
 		const icon = document.createElement('span');
 		icon.setAttribute('class', 'icon');
 		icon.setAttribute('tabindex', 0);
+		const img = document.createElement('img');
+		icon.appendChild(img);
 
 		const style = document.createElement('style');
 		shadow.appendChild(style);
@@ -22,23 +24,25 @@ class IconButton extends HTMLElement {
 	}
 
 	connectedCallback() {
-		const img = document.createElement('img');
 		// take the contents of the src attribute and use it to source the image
-		if (this.hasAttribute('src')) {
-			img.src = 'icons/' + this.getAttribute('src');
-		} else {
-			img.src = 'icons/no-icon.svg';
-		}
-		this.shadowRoot.querySelector('.icon').appendChild(img);
+		updateImage(this);
 		updateStyle(this);
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
-		updateStyle(this);
+		if (name == 'src') { updateImage(this); }
+		if (name == 'size') { updateStyle(this); }
 	}
-}
+};
 
-customElements.define('icon-button', IconButton);
+function updateImage(elem) {
+	const img = elem.shadowRoot.querySelector('img');
+	if (elem.hasAttribute('src')) {
+		img.src = 'icons/' + elem.getAttribute('src');
+	} else {
+		img.src = 'icons/no-icon.svg';
+	}
+};
 
 function updateStyle(elem) {
 	elem.shadowRoot.querySelector('style').textContent = `
@@ -53,5 +57,6 @@ function updateStyle(elem) {
 			height: 100%;
 		}
 	`;
-};
+}
 
+customElements.define('icon-button', IconButton);

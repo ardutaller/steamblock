@@ -1,0 +1,136 @@
+[
+	{
+		"label": "Castellano",
+		"onclick": "GetText.setLocale('es');"
+	},
+
+	{
+		"label": "Català",
+		"onclick": "GetText.setLocale('ca');"
+	},
+
+	{
+		"label": "Deutsch",
+		"onclick": "GetText.setLocale('de');"
+	},
+
+	{
+		"label": "English",
+		"onclick": "GetText.setLocale('en');"
+	},
+
+	{
+		"label": "Euskara",
+		"onclick": "GetText.setLocale('eu');"
+	},
+
+	{
+		"label": "Français",
+		"onclick": "GetText.setLocale('fr');"
+	},
+
+	{
+		"label": "Galego",
+		"onclick": "GetText.setLocale('gl');"
+	},
+
+	{
+		"label": "Italiano",
+		"onclick": "GetText.setLocale('it');"
+	},
+
+	{
+		"label": "Nederlands",
+		"onclick": "GetText.setLocale('nl');"
+	},
+
+	{
+		"label": "Polski",
+		"onclick": "GetText.setLocale('pl');"
+	},
+
+	{
+		"label": "Português (Brasil)",
+		"onclick": "GetText.setLocale('pt-br');"
+	},
+
+	{
+		"label": "Português",
+		"onclick": "GetText.setLocale('pt');"
+	},
+
+	{
+		"label": "Română",
+		"onclick": "GetText.setLocale('ro');"
+	},
+
+	{
+		"label": "Türkçe",
+		"onclick": "GetText.setLocale('tr');"
+	},
+
+	{
+		"label": "Uzbek",
+		"onclick": "GetText.setLocale('uz');"
+	},
+
+	{
+		"label": "Čeština",
+		"onclick": "GetText.setLocale('cs');"
+	},
+
+	{
+		"label": "Ελληνικά",
+		"onclick": "GetText.setLocale('el');"
+	},
+
+	{
+		"label": "Русский",
+		"onclick": "GetText.setLocale('ru');"
+	},
+
+	{
+		"label": "Српски",
+		"onclick": "GetText.setLocale('sr');"
+	},
+
+	{
+		"label": "українська мова",
+		"onclick": "GetText.setLocale('uk');"
+	},
+
+	{
+		"label": "عربى",
+		"onclick": "GetText.setLocale('ar');"
+	},
+
+	{
+		"label": "فارسی",
+		"onclick": "GetText.setLocale('fa');"
+	},
+
+	{
+		"label": "தமிழ்",
+		"onclick": "GetText.setLocale('ta');"
+	},
+
+	{
+		"label": "日本語",
+		"onclick": "GetText.setLocale('ja');"
+	},
+
+	{
+		"label": "简体中文",
+		"onclick": "GetText.setLocale('zh-chs');"
+	},
+
+	{
+		"label": "繁體中文",
+		"onclick": "GetText.setLocale('zh-cht');"
+	},
+
+	{
+		"label": "한국어",
+		"onclick": "GetText.setLocale('ko');"
+	}
+]

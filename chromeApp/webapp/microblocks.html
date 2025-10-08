@@ -21,8 +21,12 @@
 		<meta name="msapplication-TileColor" content="#FFFFFF">
 
 		<!-- Import Web Components -->
+		<script type="text/javascript" src="components/localizable-text.js"></script>
 		<script type="text/javascript" src="components/icon-button.js"></script>
+		<script type="text/javascript" src="components/foldable-menu.js"></script>
+		<script type="text/javascript" src="components/top-menu.js"></script>
 
+		<!-- Localization -->
 		<script type="text/javascript" src="gettext.js"></script>
 
 		<style>
@@ -53,15 +57,6 @@
 			<progress value="0" max="100" id="progress" hidden=1></progress>
 		</div>
 
-		<!-- Web Components tests -->
-		<!--
-		<nav class="top-bar">
-			<icon-button size="26" src="icon-globe.svg"></icon-button>
-			<icon-button size="26" src="icon-gear.svg"></icon-button>
-			<icon-button size="26" src="icon-file.svg"></icon-button>
-		</nav>
-		-->
-
 		<div class="emscripten">
 			<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
 		</div>
@@ -70,6 +65,13 @@
 		<script type="text/javascript" src="gpSupport.js"></script>
 		<script type="text/javascript" src="FileSaver.js"></script>
 		<script type="text/javascript" src="gp_wasm.js"></script>
+
+		<!-- Web Components tests -->
+		<nav class="top-bar">
+			<top-menu json="languageMenu" icon="globe"></top-menu>
+			<top-menu json="settingsMenu" icon="gear"></top-menu>
+			<top-menu json="projectMenu" icon="file"></top-menu>
+		</nav>
 
 	</body>
 </html>

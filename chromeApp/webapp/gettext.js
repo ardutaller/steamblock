@@ -11,6 +11,9 @@
 var GetText = {};
 GetText.locales = [];
 GetText.currentLocale = 'en';
+GetText.localizable = [];
+
+GetText.addLocalizable = function (element) { this.localizable.push(element); }
 
 GetText.readLocale = function (langcode, callback) {
 	this.locales[langcode] = {};
@@ -56,23 +59,21 @@ GetText.setLocale = function (langcode) {
 		this.readLocale(langcode, () => { this.setLocale(langcode);} )
 	} else {
 		this.currentLocale = langcode;
-		this.localizePage();
+		this.localizable.forEach(e => e.localize());
 	}
 };
 
 GetText.localize = function (key) {
-	var value = this.locales[this.currentLocale][key];
-	// default to EN if GetText locale doesn't have a translation for GetText key
-	if ((value == undefined) || (value == '')) {
-		value = this.locales['en'][key];
+	if (this.locales[this.currentLocale]) {
+		var value = this.locales[this.currentLocale][key];
+		// default to EN if GetText locale doesn't have a translation for GetText key
+		if ((value == undefined) || (value == '')) {
+			value = this.locales['en'][key];
+		}
 	}
 	// default to the key itself if there's no EN translation either
 	if ((value == undefined) || (value == '')) { value = key; }
 	return value;
 };
 
-GetText.localizePage = function () {
-	document.querySelectorAll('l').forEach(element => {
-		element.innerText = this.localize(element.innerText);
-	});
-};
+GetText.readLocale('en');
