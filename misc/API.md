@@ -109,6 +109,7 @@ a MicroBlocks library.
 #### board.installVM
 
 Triggers the process to install a VM into the currently plugged in board.
+
 - **params:**
 	- (boolean) wipeFlash: Wipe the board's flash memory before installing the VM.
 	- (boolean) downloadFromServer: Retrieve a list of precompiled VMs from the MicroBlocks server.
@@ -148,7 +149,7 @@ Checks whether the currently connected board supports programming over BLE.
 
 - **params:** none
 - **returns:** nothing
-- **example:** `GP.apiCall('board.installVM', [false, true]);`
+- **example:**
 ```
 	GP.apiCall(
 		'board.canDoBLE',
@@ -167,7 +168,7 @@ and written from MicroBlocks.
 
 - **params:** none
 - **returns:** nothing
-- **example:** `GP.apiCall('board.installVM', [false, true]);`
+- **example:**
 ```
 	GP.apiCall(
 		'board.hasFS',
