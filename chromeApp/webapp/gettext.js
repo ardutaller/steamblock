@@ -60,6 +60,7 @@ GetText.setLocale = function (langcode) {
 		this.readLocale(langcode, () => { this.setLocale(langcode);} )
 	} else {
 		this.currentLocale = langcode;
+		GP.apiCall('locale.setLanguage', [langcode]);
 		this.localizable.forEach(e => e.localize());
 	}
 };

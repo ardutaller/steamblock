@@ -17,6 +17,7 @@ method processLastCall MicroBlocksAPI {
 
 method dispatchCall MicroBlocksAPI callObject {
 	editor = (findMicroBlocksEditor)
+	if (isNil editor) { return }
 	scripter = (scripter editor)
 	runtime = (smallRuntime)
 
@@ -79,8 +80,11 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id (boardHasFileSystem runtime)
 
 	// Localization
-	} (endPoint == 'locale.getLanguageList') {
-		respondAPIRequest this id (languageCodeList (authoringSpecs))
+	} (endPoint == 'locale.setLanguage') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		setLanguage editor (at params 1)
+	} else {
+		respondAPIRequest this id 'Unknown API endpoint'
 	}
 }
 
