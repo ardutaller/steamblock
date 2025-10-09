@@ -14,4 +14,25 @@ IDE.userPreference = function (pref) {
 	let value = localStorage['user-prefs'][pref];
 	if (value == undefined) { value = false; }
 	return value;
-}
+};
+
+IDE.populateTopBar = function (container) {
+	// add logo
+	let logo = document.createElement('img');
+	logo.setAttribute('src', 'img/logo.svg');
+	logo.classList.add('logo');
+	container.appendChild(logo);
+
+	// add top menus
+	['language', 'settings', 'project'].forEach(selector => {
+		container.appendChild(Menus.elementFor(selector));
+	});
+};
+
+// TODO placeholder. GP needs to set this on connection
+IDE.board = { canDoBLE: false };
+
+// Build the IDE
+IDE.build = function () {
+	IDE.populateTopBar(document.querySelector('.top-bar'));
+};

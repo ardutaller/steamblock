@@ -20,15 +20,13 @@
 		<meta name="msapplication-TileImage" content="icons/Bunny192.png">
 		<meta name="msapplication-TileColor" content="#FFFFFF">
 
-		<!-- Import Web Components -->
-		<script type="text/javascript" src="components/localizable-text.js"></script>
-		<script type="text/javascript" src="components/icon-button.js"></script>
-		<script type="text/javascript" src="components/menu-item.js"></script>
-		<script type="text/javascript" src="components/foldable-menu.js"></script>
-		<script type="text/javascript" src="components/top-menu.js"></script>
-
 		<!-- Localization -->
+		<script type="text/javascript" src="components/localizable-text.js"></script>
 		<script type="text/javascript" src="gettext.js"></script>
+
+		<!-- IDE -->
+		<script type="text/javascript" src="ide.js"></script>
+		<script type="text/javascript" src="menus.js"></script>
 
 		<style>
 		</style>
@@ -67,12 +65,10 @@
 		<script type="text/javascript" src="FileSaver.js"></script>
 		<script type="text/javascript" src="gp_wasm.js"></script>
 
-		<!-- Web Components tests -->
-		<nav class="top-bar">
-			<top-menu json="languageMenu" icon="globe"></top-menu>
-			<top-menu json="settingsMenu" icon="gear"></top-menu>
-			<top-menu json="projectMenu" icon="file"></top-menu>
-		</nav>
+		<nav class="top-bar" ></nav>
+		<script>
+			IDE.build();
+		</script>
 
 	</body>
 </html>

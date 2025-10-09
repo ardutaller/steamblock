@@ -504,35 +504,7 @@ method languageNameForCode AuthoringSpecs langCode {
 
 method languageCodeList AuthoringSpecs {
 	// Return an array of (<languageName> <abbreviation>) pairs."
-	return (array
-		(array 'Castellano' 'es')
-		(array 'Català' 'ca')
-		(array 'Deutsch' 'de')
-		(array 'English' 'en')
-		(array 'Euskara' 'eu')
-		(array 'Français' 'fr')
-		(array 'Galego' 'gl')
-		(array 'Italiano' 'it')
-		(array 'Nederlands' 'nl')
-		(array 'Polski' 'pl')
-		(array 'Português (Brasil)' 'pt-br')
-		(array 'Português' 'pt')
-		(array 'Română' 'ro')
-		(array 'Türkçe' 'tr')
-		(array 'Uzbek' 'uz')
-		(array 'Čeština' 'cs')
-		(array 'Ελληνικά' 'el')
-		(array 'Русский' 'ru')
-		(array 'Српски' 'sr')
-		(array 'українська мова' 'uk')
-		(array 'عربى' 'ar')
-		(array 'فارسی' 'fa')
-		(array 'தமிழ்' 'ta')
-		(array '日本語' 'ja')
-		(array '简体中文' 'zh-chs')
-		(array '繁體中文' 'zh-cht')
-		(array '한국어' 'ko')
-	)
+	return (jsonParse (readEmbeddedFile 'translations/locales.json'))
 }
 
 method isRTL AuthoringSpecs {
