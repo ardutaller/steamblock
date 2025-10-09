@@ -83,6 +83,7 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'locale.setLanguage') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		setLanguage editor (at params 1)
+
 	} else {
 		respondAPIRequest this id 'Unknown API endpoint'
 	}
