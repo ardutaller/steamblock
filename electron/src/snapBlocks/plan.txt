@@ -1,0 +1,26 @@
+Snap Blocks Experiment
+
+Next steps:
+[ ] test script to generate some MicroBlocks blocks
+[ ] make context menus work on blocks and scripting area
+[ ] code to generate MicroBlocks code from blocks
+
+Bigger:
+[ ] blocks palette
+[ ] block specs for MicroBlocks built-in blocks
+
+Long term plan:
+  - basic block mechanics for MicroBlocks blocks
+  - ability to export MicroBlocks code from blocks of a single script
+  - parser (big!)
+  - ability to parse a single script and generate blocks for it
+  - ability to read parse and load entire project
+  - ability to export an entire project
+  - compiler (big!)
+  - ability to print compiled code and bytecodes
+  - IDE communication protocol (big!)
+  - ability to compile, download, and run a script
+  - ability to compile entire project
+  - library support
+  - ability to install VM's from the IDE
+  - ...
