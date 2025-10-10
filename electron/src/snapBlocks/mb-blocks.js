@@ -186,9 +186,6 @@ var MultiArgMorph;
 var TemplateSlotMorph;
 var FunctionSlotMorph;
 var ReporterSlotMorph;
-var RingMorph;
-var RingCommandSlotMorph;
-var RingReporterSlotMorph;
 var CommentMorph;
 var ArgLabelMorph;
 var TextSlotMorph;
@@ -1098,52 +1095,6 @@ SyntaxElementMorph.prototype.labelParts = {
     },
 
     /*
-        type: 'ring'
-        tags: 'static'
-        selector: 'reifyScript', 'reifyReporter', 'reifyPredicate'
-        spec: a spec string
-    */
-    '%cmdRing': {
-        type: 'ring',
-        selector: 'reifyScript',
-        spec: '%rc %ringparms'
-    },
-    '%repRing': {
-        type: 'ring',
-        tags: 'static',
-        selector: 'reifyReporter',
-        spec: '%rr %ringparms'
-    },
-    '%predRing': {
-        type: 'ring',
-        tags: 'static',
-        selector: 'reifyPredicate',
-        spec: '%rp %ringparms'
-    },
-
-    /*
-        type: 'ring slot'
-        tags: 'static',
-        kind: 'command', 'reporter', 'predicate'
-
-    */
-    '%rc': {
-        type: 'ring slot',
-        tags: 'static',
-        kind: 'command'
-    },
-    '%rr': {
-        type: 'ring slot',
-        tags: 'static',
-        kind: 'reporter'
-    },
-    '%rp': {
-        type: 'ring slot',
-        tags: 'static',
-        kind: 'predicate'
-    },
-
-    /*
         type: 'template'
         label: string
     */
@@ -1238,11 +1189,6 @@ SyntaxElementMorph.prototype.labelParts = {
         slots: '%t',
         label: 'Input Names:',
         tags: 'widget'
-    },
-    '%ringparms': {
-        type: 'multi',
-        slots: '%t',
-        label: 'input names:'
     },
     '%words': {
         type: 'multi',
@@ -2138,16 +2084,6 @@ SyntaxElementMorph.prototype.fixLayout = function () {
             } else {
                 lines.push([part]);
             }
-        } else if (this.isVertical() && !(part instanceof FrameMorph)) {
-            // variadic ring-inputs are arranged vertically
-            // except the arrows for expanding and collapsing them
-            if (l.length > 0) {
-                lines.push(l);
-            }
-            if (part.isVisible) { // ignore hidden collapse labels
-                l = [part];
-                x = part.fullBounds().width() + space;
-            }
         } else {
             if (part.isVisible) {
                 x += part.fullBounds().width() + space;
@@ -2398,11 +2334,6 @@ SyntaxElementMorph.prototype.fixHighlight = function () {
     if (top.getHighlight && top.getHighlight()) {
         top.addHighlight(top.removeHighlight());
     }
-};
-
-SyntaxElementMorph.prototype.isVertical = function () {
-    // control layout rule of variadic inputs, default is false
-    return false;
 };
 
 // SyntaxElementMorph evaluating:
@@ -2916,12 +2847,6 @@ BlockSymbolMorph.prototype.getShadowRenderColor =
     %vid    - chameleon colored rectangular drop-down for video modes
     %scn    - chameleon colored rectangular drop-down for scene names
 
-    rings:
-
-    %cmdRing    - command slotted ring with %ringparms
-    %repRing    - round slotted ringn with %ringparms
-    %predRing   - diamond slotted ring with %ringparms
-
     arity: multiple
 
     %mult%x      - where %x stands for any of the above single inputs
@@ -2932,7 +2857,6 @@ BlockSymbolMorph.prototype.getShadowRenderColor =
     %exp         - for a static expandable list of minimum 0 (used in LIST)
     %scriptVars  - for an expandable list of variable reporter templates
     %parms       - for an expandable list of formal parameters
-    %ringparms   - the same for use inside Rings
 
     special form: upvar
 
@@ -3085,9 +3009,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
             part.fixLayout();
             part.rerender();
         }
-        if (part instanceof MultiArgMorph ||
-                part.constructor === CommandSlotMorph ||
-                part.constructor === RingCommandSlotMorph) {
+        if (part instanceof MultiArgMorph || part.constructor === CommandSlotMorph) {
             part.fixLayout();
         }
         if (this.isPrototype) {
@@ -4569,9 +4491,6 @@ CommandBlockMorph.prototype.snap = function (hand) {
             before.nextBlock(this);
         } else if (before instanceof CommandSlotMorph) {
             before.nestedBlock(this);
-        } else if (before instanceof RingReporterSlotMorph) {
-            before.add(this);
-            before.fixLayout();
         }
 
         // fix zebra coloring.
@@ -4668,12 +4587,12 @@ CommandBlockMorph.prototype.extract = function () {
     // private: extract just this one block
     // reattach next block to the previous one,
     var scripts = this.parentThatIsA(ScriptsMorph),
-        cs = this.parentThatIsA(CommandSlotMorph, RingReporterSlotMorph),
+        cs = this.parentThatIsA(CommandSlotMorph),
         pb,
         nb = this.nextBlock(),
         above,
         parent = this.parentThatIsA(SyntaxElementMorph),
-        cslot = this.parentThatIsA(CSlotMorph, RingReporterSlotMorph);
+        cslot = this.parentThatIsA(CSlotMorph);
 
 
     this.topBlock().fullChanged();
@@ -4688,9 +4607,7 @@ CommandBlockMorph.prototype.extract = function () {
     }
     this.destroy(true); // just this block
     if (nb) {
-        if (above instanceof CommandSlotMorph ||
-            above instanceof RingReporterSlotMorph
-        ) {
+        if (above instanceof CommandSlotMorph) {
             above.nestedBlock(nb);
         } else if (above instanceof CommandBlockMorph) {
             above.nextBlock(nb);
@@ -5484,10 +5401,7 @@ ReporterBlockMorph.prototype.mouseClickLeft = function (pos) {
         return this.parent.mouseClickLeft();
     }
     if (this.parent instanceof TemplateSlotMorph) {
-        if (this.parent.parent && this.parent.parent.parent &&
-                this.parent.parent.parent instanceof RingMorph) {
-            label = "Input name";
-        } else if (this.parent.parent.elementSpec === '%blockVars') {
+        if (this.parent.parent.elementSpec === '%blockVars') {
             label = "Block variable name";
         } else {
             label = "Script variable name";
@@ -8664,9 +8578,7 @@ BooleanSlotMorph.prototype.isEmptySlot = function () {
 };
 
 BooleanSlotMorph.prototype.isBinary = function () {
-    return !this.isTernary &&
-        isNil(this.parentThatIsA(RingMorph)) &&
-        !isNil(this.parentThatIsA(ScriptsMorph));
+    return !this.isTernary && !isNil(this.parentThatIsA(ScriptsMorph));
 };
 
 BooleanSlotMorph.prototype.setContents = function (boolOrNull) {
@@ -10009,9 +9921,6 @@ MultiArgMorph.prototype.fixArrowsLayout = function () {
             listSymbol.setLeft(arrows.left());
             centerList = false;
         }
-    } else if (this.is3ArgRingInHOF() && inpCount > 2) { // hide right arrow
-        rightArrow.hide();
-        arrows.width(dim.x);
     } else { // show both arrows
         if (label) {
             label.show();
@@ -10155,16 +10064,6 @@ MultiArgMorph.prototype.addInput = function (contents) {
             i = Math.floor((i - 1) / 26);
         }
         newPart.setContents(name);
-    } else if (contains(['%parms', '%ringparms'], this.elementSpec)) {
-        if (this.is3ArgRingInHOF() && idx < 5) {
-            newPart.setContents([
-                localize('value'),
-                localize('index'),
-                localize('list')
-            ][idx - 1]);
-        } else {
-            newPart.setContents('#' + idx);
-        }
     } else if (this.elementSpec === '%message') {
         newPart.setContents(localize('data'));
     } else if (this.elementSpec === '%keyName') {
@@ -10229,8 +10128,7 @@ MultiArgMorph.prototype.removeInput = function () {
         if (oldPart instanceof CSlotMorph) {
             oldPart = oldPart.nestedBlock();
         }
-        if (oldPart instanceof BlockMorph &&
-                !(oldPart instanceof RingMorph && !oldPart.contents())) {
+        if (oldPart instanceof BlockMorph && !oldPart.contents()) {
             scripts = this.parentThatIsA(ScriptsMorph);
             if (scripts) {
                 oldPart.moveBy(10);
@@ -10278,37 +10176,6 @@ MultiArgMorph.prototype.expandTo = function (arity = 0) {
             this.removeInput();
         }
     }
-};
-
-MultiArgMorph.prototype.isVertical = function () {
-    return contains(['%repRing', '%predRing', '%cmdRing'], this.slotSpec);
-};
-
-MultiArgMorph.prototype.is3ArgRingInHOF = function () {
-    // answer true if I am embedded into a ring inside a HOF block
-    // that supports 3 parameters ("item, idx, data")
-    // of which there are currently only MAP, KEEP and FIND
-    // and their atomic counterparts
-    var ring = this.parent,
-        block;
-    if (ring) {
-        block = ring.parent;
-        if (block instanceof ReporterBlockMorph) {
-            return block.inputs()[0] === ring &&
-                contains(
-                    [
-                        'reportMap',
-                        'reportAtomicMap',
-                        'reportKeep',
-                        'reportAtomicKeep',
-                        'reportFindFirst',
-                        'reportAtomicFindFirst'
-                    ],
-                    block.selector
-                );
-        }
-    }
-    return false;
 };
 
 MultiArgMorph.prototype.slotSpecFor = function (index) {
@@ -10417,9 +10284,7 @@ MultiArgMorph.prototype.userMenu = function () {
         return this.parent.userMenu();
     }
     if (block) {
-        if (block instanceof RingMorph) {
-            key = 'parms_';
-        } else if (block.selector === 'doDeclareVariables') {
+        if (block.selector === 'doDeclareVariables') {
             key = 'tempvars_';
         }
     }
@@ -11365,10 +11230,6 @@ ScriptFocusMorph.prototype.fillInBlock = function (block) {
                 this.fixLayout();
             } else if (pb instanceof CommandSlotMorph) {
                 pb.nestedBlock(block);
-            } else if (pb instanceof RingReporterSlotMorph) {
-                block.nextBlock(pb.nestedBlock());
-                pb.add(block);
-                pb.fixLayout();
             } else if (pb instanceof CommandBlockMorph) {
                 pb.nextBlock(block);
             }
@@ -11678,7 +11539,7 @@ ScriptFocusMorph.prototype.blockTypes = function () {
 
     if (this.element.isTemplate) {return null; }
     if (this.element instanceof ScriptsMorph) {
-        return ['hat', 'command', 'reporter', 'predicate', 'ring'];
+        return ['hat', 'command', 'reporter', 'predicate'];
     }
     if (this.element instanceof HatBlockMorph ||
             this.element instanceof CommandSlotMorph) {
@@ -11697,7 +11558,7 @@ ScriptFocusMorph.prototype.blockTypes = function () {
         if (this.element.getSlotSpec() === '%n') {
             return ['reporter'];
         }
-        return ['reporter', 'predicate', 'ring'];
+        return ['reporter', 'predicate'];
     }
     if (this.element.getSpec() === '%n') {
         return ['reporter'];
@@ -11705,7 +11566,7 @@ ScriptFocusMorph.prototype.blockTypes = function () {
     if (this.element.isStatic) {
         return null;
     }
-    return ['reporter', 'predicate', 'ring'];
+    return ['reporter', 'predicate'];
 };
 
 
@@ -11878,12 +11739,6 @@ ScriptFocusMorph.prototype.reactToKeyEvent = function (key) {
 
     cs = new CommandBlockMorph();
     cs.setSpec('control %b %ca');
-
-    cmd = new CommandBlockMorph();
-    cmd.setSpec('command %cmdRing');
-
-    rings = new CommandBlockMorph();
-    rings.setSpec('reporter %repRing predicate %predRing');
 
     rc = new ReporterBlockMorph();
     rc.setSpec('color %clr');
