@@ -2641,7 +2641,7 @@ SyntaxElementMorph.prototype.showBubble = function (value, exportPic, target) {
             scroller.color = new Color(0, 0, 0, 0);
             morphToShow = scroller;
         }
-        
+
         // support exporting text / numbers directly from result bubbles:
         morphToShow.userMenu = function () {
             var menu = new MenuMorph(this);
@@ -3205,8 +3205,12 @@ BlockMorph.prototype.localizeBlockSpec = function (spec) {
 // BlockMorph menu:
 
 BlockMorph.prototype.userMenu = function () {
-    alert('not yet implemented');
-    return;
+    var menu = new MenuMorph(this),
+        shiftClicked = this.world().currentKey === 16;
+
+    menu.addItem('MicroBlocks code', 'showCode', 'test code generation');
+    menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
+    return menu;
 };
 
 BlockMorph.prototype.type = function () {
@@ -6327,134 +6331,11 @@ ScriptsMorph.prototype.closestBlock = function (comment, hand) {
 // ScriptsMorph user menu
 
 ScriptsMorph.prototype.userMenu = function () {
-    alert('not implemented yet');
-    return;
-
     var menu = new MenuMorph(this),
-        ide = this.parentThatIsA(IDE_Morph),
-        shiftClicked = this.world().currentKey === 16,
-        blockEditor,
-        obj = this.scriptTarget(),
-        hasUndropQueue,
-        stage = obj.parentThatIsA(StageMorph);
-
-    function addOption(label, toggle, test, onHint, offHint) {
-        menu.addItem(
-            [
-                test ? new SymbolMorph(
-                    'checkedBox',
-                    MorphicPreferences.menuFontSize * 0.75
-                ) : new SymbolMorph(
-                    'rectangle',
-                    MorphicPreferences.menuFontSize * 0.75
-                ),
-                localize(label)
-            ],
-            toggle,
-            test ? onHint : offHint
-        );
-    }
-
-    if (!ide) {
-        blockEditor = this.parentThatIsA(BlockEditorMorph);
-        if (blockEditor) {
-            ide = blockEditor.target.parentThatIsA(IDE_Morph);
-        }
-    }
-
-    if (this.dropRecord) {
-        if (this.dropRecord.lastRecord) {
-            hasUndropQueue = true;
-            menu.addPair(
-                [
-                    new SymbolMorph(
-                        'turnBack',
-                        MorphicPreferences.menuFontSize
-                    ),
-                    localize('undrop')
-                ],
-                'undrop',
-                '^Z',
-                'undo the last\nblock drop\nin this pane'
-            );
-        }
-        if (this.dropRecord.nextRecord) {
-            hasUndropQueue = true;
-            menu.addPair(
-                [
-                    new SymbolMorph(
-                        'turnForward',
-                        MorphicPreferences.menuFontSize
-                    ),
-                    localize('redrop')
-                ],
-                'redrop',
-                '^Y',
-                'redo the last undone\nblock drop\nin this pane'
-            );
-        }
-        if (hasUndropQueue) {
-            if (shiftClicked) {
-                menu.addItem(
-                    "clear undrop queue",
-                    () => {
-                        this.dropRecord = null;
-                        this.clearDropInfo();
-                        this.recordDrop();
-                    },
-                    'forget recorded block drops\non this pane',
-                    new Color(100, 0, 0)
-                );
-            }
-            menu.addLine();
-        }
-    }
+        shiftClicked = this.world().currentKey === 16;
 
     menu.addItem('clean up', 'cleanUp', 'arrange scripts\nvertically');
-    menu.addItem('add comment', 'addComment');
-    menu.addItem(
-        'scripts pic...',
-        'exportScriptsPicture',
-        'save a picture\nof all scripts'
-    );
-    if (ide) {
-        menu.addLine();
-        if (!blockEditor && obj.exemplar) {
-            addOption(
-                'inherited',
-                () => obj.toggleInheritanceForAttribute('scripts'),
-                obj.inheritsAttribute('scripts'),
-                'uncheck to\ndisinherit',
-                localize('check to inherit\nfrom')
-                    + ' ' + obj.exemplar.name
-            );
-        }
-        if (!ide.config.noOwnBlocks) {
-            menu.addItem(
-                'make a block...',
-                () => new BlockDialogMorph(
-                    null,
-                    definition => {
-                        if (definition.spec !== '') {
-                            if (definition.isGlobal) {
-                                stage.globalBlocks.push(definition);
-                            } else {
-                                obj.customBlocks.push(definition);
-                            }
-                            ide.flushPaletteCache();
-                            ide.refreshPalette();
-                            new BlockEditorMorph(definition, obj).popUp();
-                        }
-                    },
-                    this
-                ).prompt(
-                    'Make a block',
-                    null,
-                    this.world()
-                )
-            );
-        }
-    }
+    menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
     return menu;
 };
 
@@ -10220,7 +10101,7 @@ MultiArgMorph.prototype.insertNewInputBefore = function (anInput, contents) {
         block = this.parentThatIsA(BlockMorph),
         sprite = block.scriptTarget(),
         infix;
-    
+
     if (this.maxInputs && (this.inputs().length >= this.maxInputs)) {
         return;
     }
