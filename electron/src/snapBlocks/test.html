@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Just Blocks</title>
+        <title>MicroBlocks in Snap</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="morphic.js?version=2025-03-20"></script>
         <script src="symbols.js?version=2024-11-24"></script>
-        <script src="blocks.js?version=2025-06-11"></script>
+        <script src="mb-blocks.js?version=2025-10-10"></script>
+        <script src="mb-gui.js?version=2025-10-10"></script>
         <script>
             var world;
             window.onload = function () {
@@ -25,12 +26,7 @@
                         );
                     };
                 world = new WorldMorph(document.getElementById('world'));
-                var scripts = new ScriptsMorph();
-                scripts.setExtent(new Point(800, 600));
-                world.add(scripts);
-                b=new CommandBlockMorph(); b.setCategory('motion'); b.setSpec('testing %s'); b.isDraggable=true; world.children[0].add(b)
-                b=new CommandBlockMorph(); b.setCategory('looks'); b.setSpec('something else %s'); b.isDraggable=true; world.children[0].add(b)
-                b=new ReporterBlockMorph(); b.setCategory('operators'); b.setSpec('report this %s'); b.isDraggable=true; world.children[0].add(b);
+                addMicroBlocksGUI(world);
                 requestAnimationFrame(loop);
             };
         </script>
