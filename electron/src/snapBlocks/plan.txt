@@ -1,20 +1,31 @@
 Snap Blocks Experiment
 
 Next steps:
-[ ] test script to generate some MicroBlocks blocks
-[ ] make context menus work on blocks and scripting area
+[x] test script to generate MicroBlocks blocks
+[x] make context menus work on blocks and the scripting area
+[x] fix input slot types for MicroBlocks blocks (including C-shaped ones)
+[ ] make boolean slots accept reporters of any type
+[ ] make boolean slots default to false
+[ ] handle slot default values 
+[ ] make "if" be expandable to multiple cases
+[ ] add category labels to palette
+[ ] make palette delete dropped morphs
 [ ] code to generate MicroBlocks code from blocks
+[ ] start on parser
 
 Bigger:
-[ ] blocks palette
-[ ] block specs for MicroBlocks built-in blocks
+[x] blocks palette
+[x] block specs for MicroBlocks built-in blocks
 
+Issues:
+[ ] Snap! does not appear to have general mechanism for optional block sections (ignoring for now)
+ 
 Long term plan:
   - basic block mechanics for MicroBlocks blocks
   - ability to export MicroBlocks code from blocks of a single script
   - parser (big!)
   - ability to parse a single script and generate blocks for it
-  - ability to read parse and load entire project
+  - ability to parse and load entire project
   - ability to export an entire project
   - compiler (big!)
   - ability to print compiled code and bytecodes
@@ -23,4 +34,6 @@ Long term plan:
   - ability to compile entire project
   - library support
   - ability to install VM's from the IDE
+  - decompiler (big!)
   - ...
+

@@ -2882,18 +2882,24 @@ BlockMorph.prototype.constructor = BlockMorph;
 BlockMorph.uber = SyntaxElementMorph.prototype;
 
 BlockMorph.prototype.colorFor = function (category) {
-    return {
-        motion : new Color(74, 108, 212),
-        looks : new Color(143, 86, 227),
-        sound : new Color(207, 74, 217),
-        pen : new Color(0, 161, 120),
-        control : new Color(230, 168, 34),
-        sensing : new Color(4, 148, 220),
-        operators : new Color(98, 194, 19),
-        variables : new Color(243, 118, 29),
-        lists : new Color(217, 77, 17),
-        other: new Color(150, 150, 150)
+    let result = {
+		Output : new Color(72, 82, 191),
+		Input : new Color(159, 66, 165),
+		Pins : new Color(84, 135, 153),
+		Comm : new Color(30, 153, 122),
+		Control : new Color(209, 140, 37),
+		Operators : new Color(71, 157, 29),
+		Variables : new Color(211, 115, 42),
+		Data : new Color(196, 78, 107),
+		Advanced : new Color(178, 116, 53),
+		'My Blocks' : new Color(26, 140, 221),
+		Library : new Color(30, 153, 122),
+		Obsolete : new Color(196, 15, 0),
     }[category];
+    if (result === undefined) {
+        result = new Color(37, 145, 221);
+    }
+    return result;
 };
 
 // BlockMorph preferences settings:
@@ -3130,6 +3136,17 @@ BlockMorph.prototype.userMenu = function () {
     var menu = new MenuMorph(this),
         shiftClicked = this.world().currentKey === 16;
 
+    menu.addItem(
+    	'duplicate',
+        () => { this.fullCopy().pickUp(world); },
+        'make a copy\nand pick it up'
+    );
+    menu.addItem(
+    	'delete',
+        () => { this.destroy(); },
+        'delete this morph'
+    );
+    menu.addLine();
     menu.addItem('MicroBlocks code', 'showCode', 'test code generation');
     menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
     return menu;
@@ -8592,28 +8609,10 @@ BooleanSlotMorph.prototype.setContents = function (boolOrNull) {
 };
 
 BooleanSlotMorph.prototype.toggleValue = function () {
-    var target = this.selectForEdit(),
-        block = this.parentThatIsA(BlockMorph),
-        sprite,
-        ide;
-    if (target !== this) {
-        return this.toggleValue.call(target);
-    }
+    var block = this.parentThatIsA(BlockMorph);
     this.value = this.nextValue();
-    if (block) {
-        sprite = block.scriptTarget();
-        if (!block.isTemplate) {
-            sprite.recordUserEdit(
-                'scripts',
-                'boolean slot',
-                'toggle',
-                block.abstractBlockSpec(),
-                this.value
-            );
-        }
-        if (block.isCustomBlock) {
-            block.fireSlotEditedEvent(this);
-        }
+    if (block && (block.isCustomBlock)) {
+        block.fireSlotEditedEvent(this);
     }
     this.progress = 3;
     this.rerender();
