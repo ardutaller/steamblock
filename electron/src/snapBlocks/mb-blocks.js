@@ -1911,6 +1911,7 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
                     switch (tag) {
                     case 'numeric':
                         part.isNumeric = true;
+                        part.setContents(0);
                         break;
                     case 'alphanum':
                         part.isNumeric = true;
@@ -3137,6 +3138,11 @@ BlockMorph.prototype.userMenu = function () {
         shiftClicked = this.world().currentKey === 16;
 
     menu.addItem(
+    	'print code',
+        () => { this.printCode(); },
+        'test coverting scripts to pseudocode'
+    );
+    menu.addItem(
     	'duplicate',
         () => { this.fullCopy().pickUp(world); },
         'make a copy\nand pick it up'
@@ -3147,10 +3153,30 @@ BlockMorph.prototype.userMenu = function () {
         'delete this morph'
     );
     menu.addLine();
-    menu.addItem('MicroBlocks code', 'showCode', 'test code generation');
     menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
     return menu;
 };
+
+BlockMorph.prototype.printCode = function () {
+	let result = [];
+	result.push(this.selector + ' ');
+	let args = this.inputs();
+	for (let i = 0; i < args.length; i++) {
+		if (args[i] instanceof BooleanSlotMorph) {
+			result.push(args[i].value == true);
+		} else {
+			result.push(args[i].contents().text);
+		}
+		if (i < (args.length - 1)) {
+			result.push(' ');
+		}
+	}
+	if (this.type() != 'command') {
+		result.unshift('(');
+		result.push(')');
+	}
+	console.log(result.join(''));
+}
 
 BlockMorph.prototype.type = function () {
     // private
@@ -8572,6 +8598,7 @@ BooleanSlotMorph.prototype.init = function (initialValue) {
     this.progress = 0; // for animation state, not persisted
     BooleanSlotMorph.uber.init.call(this);
     this.alpha = 1;
+    this.setContents(true);
     this.fixLayout();
 };
 
@@ -9207,7 +9234,7 @@ TextSlotMorph.prototype.init = function (
     contents.isEditable = true;
     contents.isDraggable = false;
     contents.enableSelecting();
-    this.setContents(text);
+    this.setContents(''); // MicroBlocks wants a default value
 
 };
 

@@ -14,11 +14,6 @@ function addMicroBlocksGUI(world) {
 	scripts.setLeft(paletteWidth);
 	scripts.setExtent(new Point(800, 600));
 	world.add(scripts);
-
-	const x = paletteWidth + 10;
-	scripts.add(newBlock(' ', 'motion', 'testing %s', x, 10));
-	scripts.add(newBlock(' ', 'looks', 'something else %s', x, 40));
-	scripts.add(newBlock('r', 'operators', 'report this %s', x, 70));
 }
 
 function newBlock(type, category, spec, x, y) {
@@ -83,7 +78,6 @@ function blockForSpec(spec, category) {
 		b.selector = spec[1];
 		b.setCategory(category);
 		b.setSpec(snapSpecFrom(spec));
-//		b.fixLayout();
 		// todo: set default values
 		return b;
 	}
