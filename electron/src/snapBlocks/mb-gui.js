@@ -1,18 +1,25 @@
 function addMicroBlocksGUI(world) {
-	const paletteWidth = 150;
+	const scriptingHeight = 500;
+	const paletteWidth = 200;
 
 	let palette = new ScrollFrameMorph();
 	newMorph = new ScrollFrameMorph();
 	palette.color = new Color(180, 180, 180);
-	palette.setExtent(new Point(paletteWidth, 600));
-	palette.contents.acceptsDrops = true;
+	palette.setExtent(new Point(paletteWidth, scriptingHeight));
 	addMicroBlocksSpecs(palette);
 	palette.contents.adjustBounds();
+	palette.contents.acceptsDrops = true;
+    palette.contents.reactToDropOf = (droppedMorph) => {
+        if (droppedMorph instanceof BlockMorph) {
+            droppedMorph.destroy();
+        }
+    };
 	world.add(palette);
 
 	let scripts = new ScriptsMorph();
+	scripts.color = new Color(150, 150, 150);
 	scripts.setLeft(paletteWidth);
-	scripts.setExtent(new Point(800, 600));
+	scripts.setExtent(new Point(1000, scriptingHeight));
 	world.add(scripts);
 }
 
@@ -25,28 +32,15 @@ function newBlock(type, category, spec, x, y) {
 	return b;
 }
 
-function addTestBlocks(palette) {
-	let y = 10;
-	for (let i = 0; i < 20; i++) {
-		let b = new CommandBlockMorph();
-		b.setCategory('motion');
-		b.setSpec('testing %s');
-		b.isTemplate = true;
-		b.setPosition(new Point(10, y));
-		palette.contents.add(b);
-		y += b.height() + 10;
-	}
-}
-
 function addMicroBlocksSpecs(palette) {
 	const specs = mbBuiltinBlockSpecs();
 	let	y = 10;
 	let currentCategory = 'Output';
-	for (let i = 0; i < 192; i++) {
+	for (let i = 0; i < 166; i++) {
 		let item = specs[i];
 		if (Array.isArray(item)) { // block spec
 			let b = blockForSpec(item, currentCategory);
-			b.setPosition(new Point(10, y));
+			b.setPosition(new Point(15, y));
 			b.isTemplate = true;
 			palette.contents.add(b);
 			y += b.height() + 10;
@@ -56,10 +50,17 @@ function addMicroBlocksSpecs(palette) {
 			if (item.indexOf('cat;') == 0) {
 				item = item.substring(4);
 			}
+			let fullCategoryName = item;
 			if (item.indexOf('-Advanced') > 0) {
 				item = item.substring(0, item.indexOf('-Advanced'));
 			}
 			currentCategory = item;
+			if (y > 10) y += 15;
+			let label = new StringMorph(fullCategoryName, 14);
+			label.toggleWeight();
+			label.setPosition(new Point(5, y));
+			palette.contents.add(label);
+			y += label.height() + 15;
 		}
 	}
 }
@@ -85,6 +86,9 @@ function blockForSpec(spec, category) {
 }
 
 function snapSpecFrom(spec) {
+	if (spec[1] == 'if') { // special case for "if"
+		return 'if %b %c %elseif';
+	}
 	let mbSpec = spec[2];
 	let mbArgTypes = (spec.length > 3) ? spec[3].split(' ') : [];
 	let i = mbSpec.indexOf(':');
@@ -122,7 +126,7 @@ function mbToSnapArgType(mbArgType) {
 	if ('str' == mbArgType) return '%s';
 	if ('auto' == mbArgType) return '%ns';
 	if ('bool' == mbArgType) return '%bool';
- 	if ('color' == mbArgType) return '%color';
+ 	if ('color' == mbArgType) return '%clr';
  	if ('cmd' == mbArgType) return '%c';
 // 	if ('var' == mbArgType) return '%n';
 // 	if ('menu' == mbArgType) return '%n';

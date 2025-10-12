@@ -1,29 +1,38 @@
-Snap Blocks Experiment
+MicroBlocks as Snap Blocks Experiment
 
-Next steps:
+To do:
 [x] test script to generate MicroBlocks blocks
 [x] make context menus work on blocks and the scripting area
 [x] fix input slot types for MicroBlocks blocks (including C-shaped ones)
 [x] blocks palette
 [x] block specs for MicroBlocks built-in blocks
-[ ] make boolean slots accept reporters of any type
 [x] make boolean slots default to true
-[ ] handle slot default values 
-[ ] make "if" be expandable to multiple cases
-[ ] add category labels to palette
-[ ] make palette delete dropped morphs
+[x] add category labels to palette
+[x] make palette delete dropped morphs
+[ ] set slot default values 
+[ ] make boolean slots accept reporters of any type (how?)
+[ ] make "if" be expandable to multiple cases (how?)
 [ ] code to generate MicroBlocks code from blocks
 [ ] start on parser
 
 Issues:
 [ ] Snap! does not appear to have general mechanism for optional block sections (ignoring them for now)
+[ ] Snap! seems to allow arg slots to contain null, MicroBlocks assumes they always have some value
+
+Questions for Bernat:
+  - how get a Morphic inspector in Snap! (both MB Snap and actual Snap!)
+  - bug: if-else expansion
+  - remove code for many Snap! input slot types (especially menus)
+  - how does Snap! handle variable reporters?
+  - how to make boolean slots accept reporters of any type
+  - replace BlockSymbolMorph with a placeholder (not currently used by MicroBlocks but will be later)
  
 Long term plan:
   - basic block mechanics for MicroBlocks blocks
   - ability to export MicroBlocks code from blocks of a single script
   - parser (medium!)
   - ability to parse a single script and generate blocks for it
-  - ability to parse and load entire project
+  - ability to import an entire project
   - ability to export an entire project
   - compiler (big!)
   - ability to print compiled code and bytecodes

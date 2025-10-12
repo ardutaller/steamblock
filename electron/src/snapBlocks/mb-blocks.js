@@ -150,7 +150,7 @@ CustomHatBlockMorph*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.blocks = '2025-June-11';
+modules.blocks = '2025-Oct-12';
 
 var SyntaxElementMorph;
 var BlockMorph;

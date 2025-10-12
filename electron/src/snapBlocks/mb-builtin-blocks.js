@@ -169,6 +169,9 @@ function mbBuiltinBlockSpecs() {
 			["r", "[data:asByteArray]", "as byte array _", "auto", "aByteListOrString"],
 		"-",
 			["r", "[data:freeMemory]", "free memory"],
+
+["r", "[misc:hue]", "hue _", "color"], // test color input slot
+
 		"Prims-Deprecated (not in palette)",
 			["r", "newArray", "new list length _", "num", 10],
 			[" ", "fillArray", "fill list _ with _", "str auto", "aList", 0],
