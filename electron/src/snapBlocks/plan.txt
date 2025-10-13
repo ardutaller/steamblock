@@ -13,7 +13,7 @@ To do:
 [ ] make boolean slots accept reporters of any type (how?)
 [ ] make "if" be expandable to multiple cases (how?)
 [ ] code to generate MicroBlocks code from blocks
-[ ] start on parser
+[ ] finish and test parser
 
 Issues:
 [ ] Snap! does not appear to have general mechanism for optional block sections (ignoring them for now)
@@ -22,9 +22,9 @@ Issues:
 Questions for Bernat:
   - how get a Morphic inspector in Snap! (both MB Snap and actual Snap!)
   - bug: if-else expansion
-  - remove code for many Snap! input slot types (especially menus)
-  - how does Snap! handle variable reporters?
   - how to make boolean slots accept reporters of any type
+  - how does Snap! handle variable reporters?
+  - can we remove code for many Snap! input slot types (especially ones with menus)?
   - replace BlockSymbolMorph with a placeholder (not currently used by MicroBlocks but will be later)
  
 Long term plan:
