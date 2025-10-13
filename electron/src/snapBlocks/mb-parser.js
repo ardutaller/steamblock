@@ -53,9 +53,196 @@ class MB_Parser {
 
 	// Private methods
 
-	readValue() {
+	// ***** Command Parsing *****
+
+	readCmdList() {
+		// Read a list of commands, either with or without and initial '{'.
+
+		let hadOpenBracket = false;
+
+		this.skipWhiteSpace();
+		if ('{' == peek()) {
+			this.skip(1);
+			hadOpenBracket = true;
+		}
+
+		let firstCmd = null;
+		let lastCmd = null;
+		while (true) {
+			skipWhiteSpace();
+			let c = peek();
+			if ((MB_EOF == c) || ('}' == c)) break;
+			let cmdOrValue = this.readCmd(false);
+// is the following needed?
+// 	if (IS_CLASS(cmd, ReporterClass)) SETCLASS(cmd, CmdClass); // if reporter, convert to command
+			if (cmdOrValue instanceof CommandBlockMorph) {
+				if (!firstCmd) firstCmd = cmd;
+				if (lastCmd) lastCommand.nextBlock(cmd);
+				lastCmd = cmd;
+			} else {
+				if (!hadOpenBracket && !firstCmd) return cmd; // not a cmd list; return it
+			}
+			if (';' == peek()) {
+				this.skip(1);
+				continue; // multiple commands on the same line
+			}
+			if (!hadOpenBracket) break;
+		}
+
+		if (hadOpenBracket) {
+			if ('}' == c) {
+				this.skip(1);
+			} else {
+				this.complete = false;
+			}
+		} else if ('}' == c) {
+			this.parseError('Unexpected "}" encountered');
+			this.skip(1);
+		}
+		return firstCmd;
+	}
+
+	readCmd(isReporter) {
+		// Read a command or reporter. Terminate at close paren, close bracket, end of line, or end of file.
+
+		let buf = [];
+		if (isReporter && ('(' == this.peek())) {
+			this.skip(1);
+		}
+
+		let c;
+		while (true) { // collect selector and arguments
+			if (isReporter) {
+				this.skipWhiteSpace();
+			} else {
+				this.skipSpacesAndTabs(); // reporters can span lines
+			}
+			c = this.peek();
+			if ((MB_EOF == c) || (this.isNewLine(c))) break;
+			if ((')' == c) || (';' == c) || ('}' == c)) break;
+			buf.push(this.readToken());
+		}
+
+		if (isReporter) {
+			if (')' == c) {
+				this.skip(1);
+			} else {
+				this.complete = false;
+				if ((';' == c) || ('}' == c)) {
+					this.parseError("Missing ')'");
+					this.skipRestOfLine();
+				}
+				return null;
+			}
+		} else {
+			if (')' == c) {
+				parseError("Unexpected ')' encountered");
+				this.skip(1);
+			}
+		}
+
+		if (buf.length == 0) {
+			parseError('Empty command or reporter');
+			return null;
+		}
+
+		if ((buf.length == 3) && isInfixOp(buf[1]) && !isCallOp(buf[0])) {
+			// Convert infix to prefix order (unless the command is 'call' or 'callWith')
+			let tmp = buf[0];
+			buf[0] = buf[1];
+			buf[1] = tmp;
+		}
+
+		if (buf.length == 1) {
+			if (((typeof buf[0]) != 'string') || (buf[0][0] == "'")) {
+				return buf[0]; // constant (number, quoted string, or special value)
+			}
+		}
+
+		let selector = buf[0];
+		if ((typeof selector) != 'string') {
+			parseError('Selector must be a string; missing parentheses around a subexpression?');
+			return null;
+		} else if (selector[0] == "'") {
+			selector = selector.slice(1, -1); // remove quotes
+			buf[0] = selector;
+		}
+
+		// xxx temporary for testing; should build a Command or Reporter block
+		return buf;
+
+	// 	OBJ cmdObj = newObj(isReporter ? ReporterClass : CmdClass, CmdFieldCount + argCount, null);
+	// 	CmdPtr cmd = (CmdPtr)O2A(cmdObj);
+	// 	cmd->primName = FIELD(buf, 0);
+	// 	cmd->prim = 0;
+	// 	cmd->lineno = let2obj(lineNum);
+	// 	cmd->fileName = this.cachedFileName;
+	// 	for (i = 1; i < count; i++) {
+	// 		OBJ arg = FIELD(buf, i);
+	// 		cmd->args[i - 1] = argOrVarRef(arg, cmd->primName, i, argCount, lineNum);
+	// 	}
+	//	return cmdObj;
+	}
+
+	// ***** Command Parsing Support *****
+
+	isInfixOp(op) {
+		let infixOps = [
+			'=', '+=',
+			'+', '-', '*', '/', '%',
+			'<', '<=', '==', '!=', '>=', '>', '===',
+			'&', '|', '^', '<<', '>>', '>>>',
+		];
+		return infixOps.includes(op);
+	}
+
+	isCallOp(op) {
+		return (('call' == op) || ('callWith' == op));
+	}
+
+	isProperName(op, index, argCount) {
+		// Return true if the given operation uses the argument at the given index as a proper name such as
+		// a variable or function name. Proper names are treated as strings, not variable references.
+
+		let quoteAll = ['to', 'defineClass', 'method'];
+		if (quoteAll.includes(op)) return true;
+
+		let quoteFirstArg = ['v', '=', '+=', 'local', 'for', 'help', 'classComment'];
+		if ((index == 1) && (quoteFirstArg.includes(op))) return true;
+
+		if (('function' == op) && (index < argCount)) return true;
+		return false;
+	}
+
+	argOrVarRef(arg, op, index, argCount, lineNum) {
+		// If arg is an unquoted string and the arg at the given index is not used
+		// as a proper name by the given operator, create a variable reference.
+		// Otherwise, just return arg, without the quotes if it was quoted.
+
+		if (arg[0] == "'") {
+			// quoted string constant; remove the quotes
+			arg = arg.slice(1, -1);
+		} else { // arg is an unquoted string, so it could be a variable reference
+			if (!isProperName(op, index, argCount) && !isInfixOp(arg)) {
+				// to do: return a variable reporter block
+	// 			OBJ rObj = newObj(ReporterClass, CmdFieldCount + 1, nilObj);
+	// 			CmdPtr r = (CmdPtr)O2A(rObj);
+	// 			r->primName = this.cachedGetVarPrim;
+	// 			r->args[0] = arg;
+	// 			r->lineno = let2obj(lineNum);
+	// 			r->fileName = this.cachedFileName;
+				return rObj;
+			}
+		}
+		return arg;
+	}
+
+	// ***** Tokenizing *****
+
+	readToken() {
 		// Read and return the next number, quoted string, command, or command list.
 
+		this.skipWhiteSpace();
 		let c = this.peek();
 		if (MB_EOF == c) {
 			this.complete = false;
@@ -116,8 +303,8 @@ class MB_Parser {
 				if ('\'' == this.peek()) {
 					this.skip(1); // quoted quote character
 				} else {
-					strBuf += '\''; // ending quote character
-					break;
+					strBuf += '\'';
+					break; // skip ending quote character
 				}
 			}
 			strBuf += c;
@@ -260,7 +447,7 @@ function parser_test1() {
 	let p = new MB_Parser("33 1 2 3 foo 'bar' nil true false\n -1 -3.14 -314e-1 -314E-2");
 	while (!p.atEnd()) {
 		p.skipWhiteSpace();
-		let v = p.readValue();
+		let v = p.readToken();
 		if (v != MB_EOF) console.log(v);
 	}
 }
@@ -268,5 +455,11 @@ function parser_test1() {
 function parser_test2() {
 	let p = new MB_Parser("'xxx");
 	p.skipWhiteSpace();
-	let v = p.readValue(); // gives error - no closing string quote
+	let v = p.readToken(); // gives error - no closing string quote
+}
+
+function parser_test3() {
+	let p = new MB_Parser("print 123");
+	p.skipWhiteSpace();
+	console.log(p.readCmd(false));
 }
