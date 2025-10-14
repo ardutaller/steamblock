@@ -200,8 +200,10 @@ class MB_Parser {
 				result += '%s';
 			} else if ((arg == true) || (arg == false)) {
 				result += '%bool';
-			} else if (arg instanceof Array) {
+			} else if (arg instanceof CommandBlockMorph) {
 				result += '%c';
+			} else {
+				result += '%ns';
 			}
 			if (i < (args.length - 1)) {
 				result += ' ';
@@ -484,18 +486,33 @@ function parser_test2() {
 }
 
 function parser_test3() {
-	let p = new MB_Parser("  print ((1 + 2) * 3) { stop }  ");
-	p.skipWhiteSpace();
+	let p = new MB_Parser("  'foo'  ");
 	console.log(p.readCmd(false));
 }
 
 function parser_test4() {
 	let p = new MB_Parser("  { stop; go }  ");
-	console.log(p.readCmd(false));
+	let b = p.readCmd(false);
+	console.log(b);
+	addBlockToScripts(b);
 }
 
 function parser_test5() {
-	let p = new MB_Parser("  'foo'  ");
-	console.log(p.readCmd(false));
+	let p = new MB_Parser("  print ((1 + 2) * 3) { stop }  ");
+	let b = p.readCmd(false);
+	console.log(b);
+	addBlockToScripts(b);
 }
 
+function randomBetween(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function addBlockToScripts(b) {
+	let scripts = world.childThatIsA(ScriptsMorph); // assume palette is the last child of world
+	b.setPosition(new Point(randomBetween(200, 1000), randomBetween(10, 500)));
+	scripts.add(b);
+	scripts.changed();
+}
