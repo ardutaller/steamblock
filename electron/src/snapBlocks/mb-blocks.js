@@ -360,6 +360,10 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'c',
 		tags: 'static'
 	},
+    '%cs': {
+        type: 'c',
+        tags: 'lambda'
+    },
 	'%t': {
 		type: 'template',
 		label: '\xa0' // non-breaking space, appears blank
