@@ -174,17 +174,13 @@ class MB_Parser {
 		let selector = buf[0];
 		let args = buf.slice(1);
 		let spec = this.makeSpec(selector, args);
-		let b;
-		if (isReporter) {
-			b = newBlock('r', '', spec);
-			b.selector = selector;
-		} else {
-			b = newBlock(' ', '', spec);
-			b.selector = selector;
-		}
+		let b = isReporter ? new ReporterBlockMorph() : new CommandBlockMorph();
+		b.setCategory('');
+		b.selector = selector;
+		b.setSpec(spec);
+		b.isDraggable = true;
 		let inputs = b.inputs();
-		let count = Math.min(args.length, inputs.length);
-		for (let i = 0; i < count; i++) {
+		for (let i = 0; i < inputs.length; i++) {
 			if (args[i] instanceof BlockMorph) {
 				b.replaceInput(inputs[i], args[i]);
 				args[i].fixBlockColor();

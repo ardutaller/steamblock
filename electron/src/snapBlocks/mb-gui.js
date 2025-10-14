@@ -1,4 +1,6 @@
-function addMicroBlocksGUI(world) {
+MB_GUI = {}
+
+MB_GUI.addMicroBlocksGUI = function (world) {
 	const scriptingHeight = 500;
 	const paletteWidth = 200;
 
@@ -6,7 +8,7 @@ function addMicroBlocksGUI(world) {
 	newMorph = new ScrollFrameMorph();
 	palette.color = new Color(180, 180, 180);
 	palette.setExtent(new Point(paletteWidth, scriptingHeight));
-	addMicroBlocksSpecs(palette);
+	this.addMicroBlocksSpecs(palette);
 	palette.contents.adjustBounds();
 	palette.contents.acceptsDrops = true;
 	palette.contents.reactToDropOf = (droppedMorph) => {
@@ -23,23 +25,14 @@ function addMicroBlocksGUI(world) {
 	world.add(scripts);
 }
 
-function newBlock(type, category, spec, x, y) {
-	let b = ('r' == type) ? new ReporterBlockMorph() : new CommandBlockMorph();
-	b.setCategory(category);
-	b.setSpec(spec);
-	b.isDraggable = true;
-	b.setPosition(new Point(x, y));
-	return b;
-}
-
-function addMicroBlocksSpecs(palette) {
+MB_GUI.addMicroBlocksSpecs = function (palette) {
 	const specs = mbBuiltinBlockSpecs();
 	let	y = 10;
 	let currentCategory = 'Output';
 	for (let i = 0; i < 166; i++) {
 		let item = specs[i];
 		if (Array.isArray(item)) { // block spec
-			let b = blockForSpec(item, currentCategory);
+			let b = this.blockForSpec(item, currentCategory);
 			b.setPosition(new Point(15, y));
 			b.isTemplate = true;
 			palette.contents.add(b);
@@ -65,7 +58,7 @@ function addMicroBlocksSpecs(palette) {
 	}
 }
 
-function blockForSpec(spec, category) {
+MB_GUI.blockForSpec = function (spec, category) {
 	if (Array.isArray(spec)) {
 		let b;
 		let type = spec[0];
@@ -78,14 +71,14 @@ function blockForSpec(spec, category) {
 		}
 		b.selector = spec[1];
 		b.setCategory(category);
-		b.setSpec(snapSpecFrom(spec));
+		b.setSpec(this.snapSpecFrom(spec));
 		// todo: set default values
 		return b;
 	}
 	return undefined; // error; spec should be an array
 }
 
-function snapSpecFrom(spec) {
+MB_GUI.snapSpecFrom = function (spec) {
 	if (spec[1] == 'if') { // special case for "if"
 		return 'if %b %c %elseif';
 	}
@@ -105,7 +98,7 @@ function snapSpecFrom(spec) {
 				end--; // omit space before _
 			}
 			result.push(mbSpec.substring(0, end));
-			result.push(mbToSnapArgType(mbArgTypes[argIndex]));
+			result.push(this.mbToSnapArgType(mbArgTypes[argIndex]));
 			if ((i < (mbSpec.length - 1)) && (mbSpec[i + 1] == ' ')) {
 				i++; // omit space after _
 			}
@@ -120,7 +113,7 @@ function snapSpecFrom(spec) {
 }
 
 // MicroBlocks types: 'num' 'cmt' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
-function mbToSnapArgType(mbArgType) {
+MB_GUI.mbToSnapArgType = function (mbArgType) {
 	if (mbArgType.indexOf('.') < -1) return '%s'; // convert menu to string
 	if ('num' == mbArgType) return '%n';
 	if ('str' == mbArgType) return '%s';
@@ -132,4 +125,3 @@ function mbToSnapArgType(mbArgType) {
 	// 	if ('menu' == mbArgType) return '%n';
 	return '%s'; // default
 }
-
