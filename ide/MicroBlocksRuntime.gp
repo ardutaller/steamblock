@@ -2921,7 +2921,7 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 				'Foxbit'
 				'CoCube'
 				'Databot'
-				'M5Stack-Core'
+//				'M5Stack-Core'
 				'ESP32'
 				'ESP8266'
 		) {
@@ -2929,7 +2929,7 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 		}
 		if (not eraseFlashFlag) {
 			addLine menu
-			addItem menu 'ELECFREAKS Pico:ed' (action 'rp2040ResetMessage' this)
+//			addItem menu 'ELECFREAKS Pico:ed' (action 'rp2040ResetMessage' this)
 			addItem menu 'ELECFREAKS Wukong2040' (action 'rp2040ResetMessage' this)
 			addItem menu 'RP2040 (Pico or Pico-W)' (action 'rp2040ResetMessage' this)
 			addItem menu 'MakerPort' (action 'adaFruitResetMessage' this)
@@ -3009,7 +3009,7 @@ method getBoardDriveName SmallRuntime path {
 method picoVMFileName SmallRuntime {
 	tmp = (array nil)
 	menu = (menu 'Pico board type?' (action 'atPut' tmp 1) true)
-	addItem menu 'ELECFREAKS Pico:ed'
+//	addItem menu 'ELECFREAKS Pico:ed'
 	addItem menu 'ELECFREAKS Wukong2040'
 	addItem menu 'RP2040 (Pico or Pico W)'
 	waitForSelection menu
@@ -3092,7 +3092,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addItem menu 'Foxbit'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
-			addItem menu 'M5Stack-Core'
+//			addItem menu 'M5Stack-Core'
 			addItem menu 'ESP32'
 			addItem menu 'ESP8266'
 		} else {
@@ -3106,7 +3106,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
 			addLine menu
-			addItem menu 'ELECFREAKS Pico:ed'
+//			addItem menu 'ELECFREAKS Pico:ed'
 			addItem menu 'ELECFREAKS Wukong2040'
 			addItem menu 'RP2040 (Pico or Pico W)'
 			addLine menu
@@ -3114,9 +3114,9 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addLine menu
 			addItem menu 'Circuit Playground Express'
 			addItem menu 'Circuit Playground Bluefruit'
-			addItem menu 'Clue'
+//			addItem menu 'Clue'
 			addLine menu
-			addItem menu 'M5Stack-Core'
+//			addItem menu 'M5Stack-Core'
 			addItem menu 'ESP32'
 			addItem menu 'ESP8266'
 		}
