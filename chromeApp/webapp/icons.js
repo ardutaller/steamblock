@@ -11,10 +11,14 @@
 const Icon = {};
 
 Icon.forSelector = function (selector) {
+	return this.forUrl('img/icon-' + selector + '.svg');
+};
+
+Icon.forUrl = function (url) {
 	let icon = document.createElement('div');
 	let img = document.createElement('img');
 	icon.classList.add('icon');
-	img.setAttribute('src', 'img/icon-' + selector + '.svg');
+	img.setAttribute('src', url);
 	icon.appendChild(img);
 	return icon;
 };

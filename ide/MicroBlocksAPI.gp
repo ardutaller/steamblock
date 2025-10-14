@@ -113,6 +113,11 @@ method respondAPIRequest MicroBlocksAPI id params {
 method setProperty MicroBlocksAPI path value {
 	// just cast value into a string before storing it in the browser IDE object
 	if ('Browser' == (platform)) {
+		if (isClass value 'String') {
+			value = (join '"' value '"')
+		} (value == nil) {
+			value = 'null'
+		}
 		browserStoreIDEProperty path (toString value)
 	}
 }
