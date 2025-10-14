@@ -11,9 +11,16 @@
 IDE = {};
 
 IDE.userPreference = function (pref) {
-	let value = localStorage['user-prefs'][pref];
+	let value = JSON.parse(localStorage['user-prefs'])[pref];
 	if (value == undefined) { value = false; }
 	return value;
+};
+
+IDE.setUserPreference = function (pref, value) {
+	let prefs = JSON.parse(localStorage['user-prefs']);
+	prefs[pref] = value;
+	localStorage['user-prefs'] = JSON.stringify(prefs);
+	GP.apiCall('ide.applyUserPreferences');
 };
 
 IDE.populateTopBar = function (container) {

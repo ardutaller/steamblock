@@ -27,21 +27,13 @@ method dispatchCall MicroBlocksAPI callObject {
 	params = (jsonParse (at callObject 3))
 
 	// dispatch API call
-	// TESTS
-	if (endPoint == 'random') {
-		respondAPIRequest this id (rand (at params 1) (at params 2))
-	} (endPoint == 'echo') {
-		// for testing purposes, just respond with the exact same params I received
-		respondAPIRequest this id params
-
 	// IDE
-	} (endPoint == 'ide.showAboutBox') {
+	if (endPoint == 'ide.showAboutBox') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		showAboutBox runtime
-	} (endPoint == 'ide.isAdvancedMode') {
-		respondAPIRequest this id (devMode)
-	} (endPoint == 'ide.isDarkMode') {
-		respondAPIRequest this id (darkModeEnabled editor)
+	} (endPoint == 'ide.applyUserPreferences') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		applyUserPreferences editor
 
 	// Project
 	} (endPoint == 'project.save') {

@@ -58,11 +58,17 @@ Menus.settings = {
 		},
 		{
 			label: 'dark mode',
-			checked: () => { return IDE.userPreference('darkMode'); }
+			checked: () => { return IDE.userPreference('darkMode'); },
+			action: () => {
+				IDE.setUserPreference('darkMode', !IDE.userPreference('darkMode'));
+			}
 		},
 		{
 			label: 'advanced mode',
-			checked: () => { return IDE.userPreference('devMove'); }
+			checked: () => { return IDE.userPreference('devMode'); },
+			action: () => {
+				IDE.setUserPreference('devMode', !IDE.userPreference('devMode'));
+			}
 		}
 	]
 };

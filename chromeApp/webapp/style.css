@@ -91,8 +91,8 @@ canvas.emscripten { border: 0px none; margin-left: 0px; margin-top: -18px }
 	height: 48px;
 	top: 0;
 	left: 0;
-	background-color: rgb(38, 41, 56);
-	border-bottom: 1px solid white;
+	background-color: #262938;
+	border-bottom: 1px solid #454A64;
 }
 
 .logo {
