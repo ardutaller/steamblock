@@ -9,11 +9,11 @@ function addMicroBlocksGUI(world) {
 	addMicroBlocksSpecs(palette);
 	palette.contents.adjustBounds();
 	palette.contents.acceptsDrops = true;
-    palette.contents.reactToDropOf = (droppedMorph) => {
-        if (droppedMorph instanceof BlockMorph) {
-            droppedMorph.destroy();
-        }
-    };
+	palette.contents.reactToDropOf = (droppedMorph) => {
+		if (droppedMorph instanceof BlockMorph) {
+			droppedMorph.destroy();
+		}
+	};
 	world.add(palette);
 
 	let scripts = new ScriptsMorph();
@@ -116,7 +116,7 @@ function snapSpecFrom(spec) {
 			break;
 		}
 	}
-	return result.join(' ');
+	return result.join(' ').trim();
 }
 
 // MicroBlocks types: 'num' 'cmt' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
@@ -125,11 +125,11 @@ function mbToSnapArgType(mbArgType) {
 	if ('num' == mbArgType) return '%n';
 	if ('str' == mbArgType) return '%s';
 	if ('auto' == mbArgType) return '%ns';
-	if ('bool' == mbArgType) return '%bool';
- 	if ('color' == mbArgType) return '%clr';
- 	if ('cmd' == mbArgType) return '%c';
-// 	if ('var' == mbArgType) return '%n';
-// 	if ('menu' == mbArgType) return '%n';
+	if ('bool' == mbArgType) return '%b';
+	if ('color' == mbArgType) return '%clr';
+	if ('cmd' == mbArgType) return '%c';
+	// 	if ('var' == mbArgType) return '%n';
+	// 	if ('menu' == mbArgType) return '%n';
 	return '%s'; // default
 }
 
