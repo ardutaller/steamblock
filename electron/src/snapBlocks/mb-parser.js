@@ -185,8 +185,14 @@ class MB_Parser {
 		let inputs = b.inputs();
 		let count = Math.min(args.length, inputs.length);
 		for (let i = 0; i < count; i++) {
-			inputs[i].setContents(args[i]);
+			if (args[i] instanceof BlockMorph) {
+				b.replaceInput(inputs[i], args[i]);
+				args[i].fixBlockColor();
+			} else {
+				inputs[i].setContents(args[i]);
+			}
 		}
+		b.fixBlockColor();
 		return b;
 	}
 
@@ -505,9 +511,9 @@ function parser_test5() {
 }
 
 function randomBetween(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function addBlockToScripts(b) {
