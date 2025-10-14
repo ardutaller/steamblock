@@ -31,5 +31,7 @@ Buttons.elementFor = function (selector) {
 Buttons.connectWidget = function () {
 	// special case, as this is a slightly more complex element
 	// TODO placeholder right now
-	return Icon.forSelector('usb');
+	let icon = Icon.forSelector('usb');
+	icon.onclick = () => { GP.apiCall('ide.showConnectMenu'); }
+	return icon;
 }

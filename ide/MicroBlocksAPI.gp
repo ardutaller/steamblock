@@ -43,6 +43,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.stopAll') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		stopAndSyncScripts runtime
+	} (endPoint == 'ide.showConnectMenu') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		selectPort runtime
 
 	// Project
 	} (endPoint == 'project.save') {
