@@ -24,14 +24,14 @@ fetch('translations/locales.json')
 		})
 	})
 	.then(() => {
-		Menus.language.items.push('-');
+		Menus.language.items.push({ label: '-' });
 		Menus.language.items.push({
 			label: 'Missing language?',
 			action: () => {
 				window.open('https://wiki.microblocks.fun/en/translating', '_blank');
 			}
 		});
-		Menus.language.items.push('-');
+		Menus.language.items.push({ label: '-' });
 		Menus.language.items.push({
 			label: 'Custom...',
 			action: () => { window.alert('TODO'); }
@@ -45,30 +45,79 @@ Menus.settings = {
 			label: 'about...',
 			action: () => { GP.apiCall('ide.showAboutBox'); }
 		},
-		'-'
-		,
+		{ label: '-' },
 		{
 			label: 'update firmware on board',
 			action: () => { GP.apiCall('board.installVM', [false, false]); }
 		},
-		'-',
+		{ label: '-' },
 		{
 			label: 'inform of new versions',
-			checked: () => { IDE.userPreference('versionCheckOnStartup'); }
+			checked: () => { IDE.userPreference('versionCheckOnStartup'); },
+			action: () => { IDE.toggleUserPreference('versionCheckOnStartup'); }
 		},
 		{
 			label: 'dark mode',
 			checked: () => { return IDE.userPreference('darkMode'); },
-			action: () => {
-				IDE.setUserPreference('darkMode', !IDE.userPreference('darkMode'));
-			}
+			action: () => { IDE.toggleUserPreference('darkMode'); }
 		},
 		{
 			label: 'advanced mode',
 			checked: () => { return IDE.userPreference('devMode'); },
-			action: () => {
-				IDE.setUserPreference('devMode', !IDE.userPreference('devMode'));
+			action: () => { IDE.toggleUserPreference('devMode'); }
+		},
+		{ label: '-', hidden: () => { return !IDE.userPreference('devMode'); } },
+		{
+			label: 'show implementation blocks',
+			checked: () => { return IDE.userPreference('showImplementationBlocks'); },
+			action: () => { IDE.toggleUserPreference('showImplementationBlocks'); },
+			hidden: () => { return !IDE.userPreference('devMode'); }
+		},
+		{
+			label: 'autoload board libraries',
+			checked: () => { return !IDE.userPreference('boardLibAutoLoadDisabled'); },
+			action: () => { IDE.toggleUserPreference('boardLibAutoLoadDisabled'); },
+			hidden: () => { return !IDE.userPreference('devMode'); }
+		},
+		{ label: '-', hidden: () => { return !IDE.userPreference('devMode'); } },
+		{
+			label: 'install ESP firmware from URL',
+			action: () => { GP.apiCall('board.installVMfromURL'); },
+			hidden: () => { return !IDE.userPreference('devMode'); },
+			disabled: () => { return !IDE.board.connected; }
+		},
+		{
+			label: 'install ESP firmware from microblocks.fun',
+			action: () => { GP.apiCall('board.installVMfromRepo'); },
+			hidden: () => { return !IDE.userPreference('devMode'); },
+			disabled: () => { return !IDE.board.connected; }
+		},
+		{
+			label: 'erase flash and update firmware on ESP board',
+			action: () => { GP.apiCall('board.installVM', [true, false]); },
+			hidden: () => { return !IDE.userPreference('devMode'); },
+			disabled: () => { return !IDE.board.connected; }
+		},
+		{ label: '-', hidden: () => { return !IDE.userPreference('devMode'); } },
+		{
+			label: 'compact code store',
+			action: () => { GP.apiCall('board.compactStorage'); },
+			hidden: () => { return !IDE.userPreference('devMode'); },
+			disabled: () => { return !IDE.board.connected; }
+		},
+		{
+			label: '-',
+			hidden: () => {
+				return !IDE.userPreference('devMode') && !IDE.board.canDoBLE;
 			}
+		},
+		{
+			label: 'enable or disable BLE',
+			action: () => { GP.apiCall('board.toggleBLE'); },
+			hidden: () => {
+				return !IDE.userPreference('devMode') && !IDE.board.canDoBLE;
+			},
+			disabled: () => { return !IDE.board.connected; }
 		}
 	]
 };
@@ -80,7 +129,7 @@ Menus.project = {
 			label: 'Save',
 			action: () => { GP.apiCall('project.save'); }
 		},
-		'-',
+		{ label: '-' },
 		{
 			label: 'New',
 			action: () => { GP.apiCall('project.new'); }
@@ -93,21 +142,31 @@ Menus.project = {
 			label: 'Open from board',
 			action: () => { GP.apiCall('board.retrieveProject'); }
 		},
-		'-',
+		{ label: '-' },
 		{
 			label: 'Copy project URL to clipboard',
 			action: () => { GP.apiCall('project.copyURL'); }
 		},
-		'-',
+		{ label: '-', hidden: () => { return !IDE.userPreference('devMode'); } },
+		{
+			label: 'export functions as library',
+			action: () => { GP.apiCall('project.exportBlocksLibrary'); },
+			hidden: () => {
+				return !IDE.userPreference('devMode') && !IDE.hasCustomBlocks;
+			},
+			disabled: () => { return !IDE.hasCustomBlocks; }
+		},
 		{
 			label: 'put file on board',
 			action: () => { GP.apiCall('board.uploadFile'); },
-			disabled: !IDE.board.canDoBLE
+			hidden: () => { return !IDE.userPreference('devMode'); },
+			disabled: () => { return !IDE.board.hasFS }
 		},
 		{
 			label: 'get file from board',
 			action: () => { GP.apiCall('board.downloadFile'); },
-			disabled: !IDE.board.canDoBLE
+			hidden: () => { return !IDE.userPreference('devMode'); },
+			disabled: () => { return !IDE.board.hasFS }
 		}
 	]
 };
@@ -137,42 +196,47 @@ Menus.elementFor = function (selector) {
 			IDE.currentMenu.icon = icon;
 			icon.appendChild(IDE.currentMenu);
 
-			descriptor.items.forEach(item => {
-				let li = document.createElement('li');
-				if (item == '-') {
-					li.appendChild(document.createElement('hr'));
-				} else {
-					let a = document.createElement('a');
-					let text = document.createElement('l-'); // localizable
+			descriptor.items.forEach((item, index) => {
+				if (!(item.hidden?.())) {
+					let li = document.createElement('li');
+					if (item.label == '-') {
+						// vertical separator, unless this is the last item
+						li.appendChild(document.createElement('hr'));
+					} else {
+						let a = document.createElement('a');
+						let text = document.createElement('l-'); // localizable
 
-					li.classList.add('menu-item');
+						li.classList.add('menu-item');
 
-					// set the menu item action
-					a.onclick = item.action;
+						// set the menu item action
+						a.onclick = item.action;
 
-					// set the menu item label
-					if (typeof item.label == 'string') {
-						text.innerText = item.label;
-					} else if (typeof item.label == 'function') {
-						text.innerText = item.label();
+						// set the menu item label
+						if (typeof item.label == 'string') {
+							text.innerText = item.label;
+						} else if (typeof item.label == 'function') {
+							text.innerText = item.label();
+						}
+
+						// states: disabled and checked
+						if (item.disabled?.()) {
+							a.classList.add('disabled');
+						}
+						if (item.checked) {
+							// can be checked, so it needs a tick icon
+							let tick = document.createElement('img');
+							tick.setAttribute('src', 'img/checkmark.svg');
+							// we now run the checked callback to see if the item is checked or not
+							tick.classList.add('tick');
+							tick.classList.add(item.checked() ? 'checked' : 'unchecked');
+							a.appendChild(tick);
+						}
+
+						a.appendChild(text);
+						li.appendChild(a);
 					}
-
-					// states: disabled and checked
-					if (item.disabled) { a.classList.add('disabled'); }
-					if (item.checked) {
-						// can be checked, so it needs a tick icon
-						let tick = document.createElement('img');
-						tick.setAttribute('src', 'img/checkmark.svg');
-						// we now run the checked callback to see if the item is checked or not
-						tick.classList.add('tick');
-						tick.classList.add(item.checked() ? 'checked' : 'unchecked');
-						a.appendChild(tick);
-					}
-
-					a.appendChild(text);
-					li.appendChild(a);
+					IDE.currentMenu.appendChild(li);
 				}
-				IDE.currentMenu.appendChild(li);
 			});
 		}
 	};

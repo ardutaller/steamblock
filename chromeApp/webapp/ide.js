@@ -10,6 +10,9 @@
 
 IDE = {};
 
+// TODO placeholders. GP needs to set these when appropriate.
+IDE.hasCustomBlocks = false;
+
 IDE.userPreference = function (pref) {
 	let value = JSON.parse(localStorage['user-prefs'])[pref];
 	if (value == undefined) { value = false; }
@@ -20,6 +23,11 @@ IDE.setUserPreference = function (pref, value) {
 	let prefs = JSON.parse(localStorage['user-prefs']);
 	prefs[pref] = value;
 	localStorage['user-prefs'] = JSON.stringify(prefs);
+	GP.apiCall('ide.applyUserPreferences');
+};
+
+IDE.toggleUserPreference = function (pref) {
+	this.setUserPreference(pref, !this.userPreference(pref));
 	GP.apiCall('ide.applyUserPreferences');
 };
 
@@ -36,8 +44,8 @@ IDE.populateTopBar = function (container) {
 	});
 };
 
-// TODO placeholder. GP needs to set this on connection
-IDE.board = { canDoBLE: false };
+// TODO placeholders. GP needs to set these on connection.
+IDE.board = { hasFS: false, isESP: false, canDoBLE: false, connected: false };
 
 // Build the IDE
 IDE.build = function () {

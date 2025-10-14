@@ -57,6 +57,18 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		// params: wipeFlash (bool), downloadFromServer (bool)
 		installVM runtime (at params 1) (at params 2)
+	} (endPoint == 'board.installVMfromURL) {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		installESPFirmwareFromURL runtime
+	} (endPoint == 'board.installVMfromRepo) {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		installESPFirmwareFromRepo runtime
+	} (endPoint == 'board.compactStorage) {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		sendMsg runtime 'systemResetMsg' 2 nil
+	} (endPoint == 'board.toggleBLE) {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		sendMsg runtime 'setBLEFlag'
 	} (endPoint == 'board.uploadFile') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		putFileOnBoard runtime
