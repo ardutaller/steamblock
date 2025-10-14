@@ -109,7 +109,7 @@ canvas.emscripten { border: 0px none; margin-left: 0px; margin-top: -18px }
 	cursor: pointer;
 }
 .icon img:hover {
-	filter: brightness(1.3);
+	filter: brightness(0) saturate(100%) invert(72%) sepia(78%) saturate(469%) hue-rotate(356deg) brightness(106%) contrast(99%);
 }
 .menu {
 	position: absolute;
@@ -151,4 +151,16 @@ hr {
 	filter: brightness(1.3);
 	vertical-align: middle;
 }
-
+.buttons {
+	display: flex;
+	position: absolute;
+	top: 0;
+	right: 12px;
+}
+.buttons .icon {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+.vl {
+	border-left: 1px solid #454A64;
+}

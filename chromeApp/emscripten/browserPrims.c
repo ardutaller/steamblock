@@ -523,6 +523,28 @@ static OBJ primBrowserReadPrefs(int nargs, OBJ args[]) {
 	return result;
 }
 
+static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
+	// path has the form 'board.connected', while value is a JSON string
+	char *path = "";
+	if ((nargs > 0) && (IS_CLASS(args[0], StringClass))) path = obj2str(args[0]);
+	char *value = "";
+	if ((nargs > 1) && (IS_CLASS(args[1], StringClass))) value = obj2str(args[1]);
+	EM_ASM_({
+			let path = UTF8ToString($0).split('.');
+			let obj = window['IDE'];
+			path.forEach(
+				function (part) {
+					if (typeof obj[part] == 'object') {
+						obj = obj[part];
+					} else {
+						obj[part] = JSON.parse(UTF8ToString($1));
+					}
+				}
+			);
+	}, path, value);
+	return nilObj;
+}
+
 // Boardie Support
 
 static OBJ primBrowserOpenBoardie(int nargs, OBJ args[]) {
@@ -1561,6 +1583,7 @@ static PrimEntry browserPrimList[] = {
 	{"browserWritePrefs",			primBrowserWritePrefs,			"Write user preferences to localStorage. Args: jsonString"},
 	{"browserOpenBoardie",		primBrowserOpenBoardie,			"Open boardie."},
 	{"browserCloseBoardie",		primBrowserCloseBoardie,		"Disconnect boardie."},
+	{"browserStoreIDEProperty",	primBrowserStoreIDEProperty,		"Store a property for the browser version to use. Args: GPobjectPropertyName, propertyValue"},
 	{"boardiePutFile",				primBoardiePutFile,					"Store a file in boardie's file system."},
 	{"boardieGetFile",				primBoardieGetFile,					"Read a file from boardie's file system."},
 	{"boardieFileList",				primBoardieListFiles,				"Get a list of files in boardie's file system."},

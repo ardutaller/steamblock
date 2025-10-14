@@ -42,10 +42,18 @@ IDE.populateTopBar = function (container) {
 	['language', 'settings', 'project'].forEach(selector => {
 		container.appendChild(Menus.elementFor(selector));
 	});
+
+	// add right buttons
+	let buttons = document.createElement('div');
+	buttons.classList.add('buttons');
+	container.appendChild(buttons);
+	['graph', '|', 'connect', '|', 'run', 'stop' ].forEach(selector => {
+		buttons.appendChild(Buttons.elementFor(selector));
+	});
 };
 
 // TODO placeholders. GP needs to set these on connection.
-IDE.board = { hasFS: false, isESP: false, canDoBLE: false, connected: false };
+IDE.board = { hasFS: false, canDoBLE: false, connected: false };
 
 // Build the IDE
 IDE.build = function () {

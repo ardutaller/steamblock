@@ -8,7 +8,7 @@
 
 // Bernat Romagosa, 2025
 
-var Menus = {};
+const Menus = {};
 Menus.language = { icon: 'globe', items: [] };
 
 // fill language menu out of available locales
@@ -108,16 +108,15 @@ Menus.settings = {
 		{
 			label: '-',
 			hidden: () => {
-				return !IDE.userPreference('devMode') && !IDE.board.canDoBLE;
+				return !IDE.userPreference('devMode') || !IDE.board.canDoBLE;
 			}
 		},
 		{
 			label: 'enable or disable BLE',
 			action: () => { GP.apiCall('board.toggleBLE'); },
 			hidden: () => {
-				return !IDE.userPreference('devMode') && !IDE.board.canDoBLE;
-			},
-			disabled: () => { return !IDE.board.connected; }
+				return !IDE.userPreference('devMode') || !IDE.board.canDoBLE;
+			}
 		}
 	]
 };
@@ -176,13 +175,7 @@ Menus.elementFor = function (selector) {
 
 	let descriptor = this[selector];
 
-	let icon = document.createElement('div');
-	let img = document.createElement('img');
-
-	icon.classList.add('icon');
-
-	img.setAttribute('src', 'img/icon-' + descriptor.icon + '.svg');
-	icon.appendChild(img);
+	let icon = Icon.forSelector(descriptor.icon);
 
 	icon.onclick = () => {
 		// dynamically generate the menu each time, since it can change depending on

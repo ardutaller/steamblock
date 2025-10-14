@@ -938,6 +938,9 @@ method setPort SmallRuntime newPortName {
 
 method closePort SmallRuntime {
 	// Close the serial port and clear info about the currently connected board.
+	setProperty api 'board.connected' false
+	setProperty api 'board.canDoBLE' false
+	setProperty api 'board.hasFS' false
 
 	if (notNil port) { closeSerialPort port }
 	port = nil
@@ -991,6 +994,7 @@ method tryToInstallVM SmallRuntime {
 }
 
 method connectedToBoard SmallRuntime {
+	connected = false
 	pingTimeout = 8000
 	if (or (isNil port) (not (isOpenSerialPort port))) { return false }
 	if (or (isNil lastPingRecvMSecs) (lastPingRecvMSecs == 0)) { return false }
@@ -1004,7 +1008,10 @@ method updateConnection SmallRuntime {
 	if (isNil lastPingRecvMSecs) { lastPingRecvMSecs = 0 }
 	if (isNil disconnected) { disconnected = false }
 
-	if (notNil decompiler) { return 'connected' }
+	if (notNil decompiler) {
+		browserStoreIDEProperty 'board.connected' 'true'
+		return 'connected'
+	}
 	if disconnected { return 'not connected' }
 
 	// handle connection attempt in progress
@@ -1051,6 +1058,7 @@ method justConnected SmallRuntime {
 	// Called when a board has just connected (browser or stand-alone).
 
 	print 'Connected to' portName
+	setProperty api 'board.connected' true
 	connectionStartTime = nil
 	vmVersion = nil
 	sendMsgSync this 'getVersionMsg'
@@ -1246,6 +1254,8 @@ method versionReceived SmallRuntime versionString {
 	if justConnected { // check the version number and load board libraries
 		checkVmVersion this
 		installBoardSpecificBlocks this
+		setProperty api 'board.canDoBLE' (boardIsBLECapable this)
+		setProperty api 'board.hasFS' (boardHasFileSystem this)
 	} else { // not first time: show the version number
 		inform (global 'page') (join 'MicroBlocks Virtual Machine ' versionString) 'Firmware version'
 	}

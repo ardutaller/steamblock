@@ -31,9 +31,18 @@ method dispatchCall MicroBlocksAPI callObject {
 	if (endPoint == 'ide.showAboutBox') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		showAboutBox runtime
+	} (endPoint == 'ide.showGraph') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		showGraph editor
 	} (endPoint == 'ide.applyUserPreferences') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		applyUserPreferences editor
+	} (endPoint == 'ide.startAll') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		startAll runtime
+	} (endPoint == 'ide.stopAll') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		stopAndSyncScripts runtime
 
 	// Project
 	} (endPoint == 'project.save') {
@@ -57,16 +66,16 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		// params: wipeFlash (bool), downloadFromServer (bool)
 		installVM runtime (at params 1) (at params 2)
-	} (endPoint == 'board.installVMfromURL) {
+	} (endPoint == 'board.installVMfromURL') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		installESPFirmwareFromURL runtime
-	} (endPoint == 'board.installVMfromRepo) {
+	} (endPoint == 'board.installVMfromRepo') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		installESPFirmwareFromRepo runtime
-	} (endPoint == 'board.compactStorage) {
+	} (endPoint == 'board.compactStorage') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		sendMsg runtime 'systemResetMsg' 2 nil
-	} (endPoint == 'board.toggleBLE) {
+	} (endPoint == 'board.toggleBLE') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		sendMsg runtime 'setBLEFlag'
 	} (endPoint == 'board.uploadFile') {
@@ -96,4 +105,11 @@ method dispatchCall MicroBlocksAPI callObject {
 method respondAPIRequest MicroBlocksAPI id params {
 	// just stringify params before responding to the request
 	browserRespondAPIRequest id (jsonStringify params)
+}
+
+method setProperty MicroBlocksAPI path value {
+	// just cast value into a string before storing it in the browser IDE object
+	if ('Browser' == (platform)) {
+		browserStoreIDEProperty path (toString value)
+	}
 }
