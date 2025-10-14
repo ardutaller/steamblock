@@ -9,9 +9,11 @@ To do:
 [x] make boolean slots default to true
 [x] add category labels to palette
 [x] make palette delete dropped morphs
+
 [ ] set slot default values 
 [ ] make boolean slots accept reporters of any type (how?)
 [ ] make "if" be expandable to multiple cases (how?)
+
 [ ] code to generate MicroBlocks code from blocks
 [ ] finish and test parser
 
@@ -21,9 +23,13 @@ Issues:
 
 Questions for Bernat:
   - how get a Morphic inspector in Snap! (both MB Snap and actual Snap!)
+	- shift-click on Snap logo to enter dev mode
+	- click on world in SnapBlocks to enter dev mode
+  - how to add inputs to a block and have them be editable?
+  - where is native clipboard paste implemented? (see initKeyboardHandler)
   - bug: if-else expansion
   - how to make boolean slots accept reporters of any type
-  - how does Snap! handle variable reporters?
+  - how does Snap! handle variable reporters? (spec is 'v')
   - can we remove code for many Snap! input slot types (especially ones with menus)?
   - replace BlockSymbolMorph with a placeholder (not currently used by MicroBlocks but will be later)
  
