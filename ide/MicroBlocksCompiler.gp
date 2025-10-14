@@ -387,6 +387,33 @@ method microBlocksSpecs SmallCompiler {
 	)
 }
 
+method exportSpecsAsJavascript SmallCompiler {
+	// setClipboard (exportSpecsAsJavascript (initialize (new 'SmallCompiler')))
+	result = (list)
+	for specLine (microBlocksSpecs this) {
+		if (isClass specLine 'Array') {
+			add result '			['
+			itemCount = (count specLine)
+			for i itemCount {
+				item = (at specLine i)
+				if (isClass item 'String') {
+					add result (join '"' (escapeDoubleQuotes item) '"')
+				} (isNil item) {
+					add result '""'
+				} else {
+					add result (toString item)
+				}
+				if (i < itemCount) { add result ', ' }
+			}
+			add result '],'
+			add result (newline)
+		} else { // category name or separator
+			add result (join '		' (join '"' specLine '",' (newline)))
+		}
+	}
+	return (joinStrings result)
+}
+
 method initMicroBlocksSpecs SmallCompiler {
 	authoringSpecs = (authoringSpecs)
 	if (isEmpty (specsFor authoringSpecs 'cat;Output')) {
