@@ -61,28 +61,27 @@ class MB_Parser {
 		let hadOpenBracket = false;
 
 		this.skipWhiteSpace();
-		if ('{' == peek()) {
+		if ('{' == this.peek()) {
 			this.skip(1);
 			hadOpenBracket = true;
 		}
 
 		let firstCmd = null;
 		let lastCmd = null;
+		let c;
 		while (true) {
-			skipWhiteSpace();
-			let c = peek();
+			this.skipWhiteSpace();
+			c = this.peek();
 			if ((MB_EOF == c) || ('}' == c)) break;
 			let cmdOrValue = this.readCmd(false);
-// is the following needed?
-// 	if (IS_CLASS(cmd, ReporterClass)) SETCLASS(cmd, CmdClass); // if reporter, convert to command
 			if (cmdOrValue instanceof CommandBlockMorph) {
-				if (!firstCmd) firstCmd = cmd;
-				if (lastCmd) lastCommand.nextBlock(cmd);
-				lastCmd = cmd;
+				if (!firstCmd) firstCmd = cmdOrValue;
+				if (lastCmd) lastCmd.nextBlock(cmdOrValue);
+				lastCmd = cmdOrValue;
 			} else {
-				if (!hadOpenBracket && !firstCmd) return cmd; // not a cmd list; return it
+				if (!hadOpenBracket && !firstCmd) return cmdOrValue; // not a cmd list; return it
 			}
-			if (';' == peek()) {
+			if (';' == this.peek()) {
 				this.skip(1);
 				continue; // multiple commands on the same line
 			}
@@ -136,17 +135,17 @@ class MB_Parser {
 			}
 		} else {
 			if (')' == c) {
-				parseError("Unexpected ')' encountered");
+				this.parseError("Unexpected ')' encountered");
 				this.skip(1);
 			}
 		}
 
 		if (buf.length == 0) {
-			parseError('Empty command or reporter');
+			this.parseError('Empty command or reporter');
 			return null;
 		}
 
-		if ((buf.length == 3) && isInfixOp(buf[1]) && !isCallOp(buf[0])) {
+		if ((buf.length == 3) && this.isInfixOp(buf[1]) && !this.isCallOp(buf[0])) {
 			// Convert infix to prefix order (unless the command is 'call' or 'callWith')
 			let tmp = buf[0];
 			buf[0] = buf[1];
@@ -168,20 +167,47 @@ class MB_Parser {
 			buf[0] = selector;
 		}
 
-		// xxx temporary for testing; should build a Command or Reporter block
-		return buf;
+		return this.makeBlock(buf, isReporter);
+	}
 
-	// 	OBJ cmdObj = newObj(isReporter ? ReporterClass : CmdClass, CmdFieldCount + argCount, null);
-	// 	CmdPtr cmd = (CmdPtr)O2A(cmdObj);
-	// 	cmd->primName = FIELD(buf, 0);
-	// 	cmd->prim = 0;
-	// 	cmd->lineno = let2obj(lineNum);
-	// 	cmd->fileName = this.cachedFileName;
-	// 	for (i = 1; i < count; i++) {
-	// 		OBJ arg = FIELD(buf, i);
-	// 		cmd->args[i - 1] = argOrVarRef(arg, cmd->primName, i, argCount, lineNum);
-	// 	}
-	//	return cmdObj;
+	makeBlock(buf, isReporter) {
+		let selector = buf[0];
+		let args = buf.slice(1);
+		let spec = this.makeSpec(selector, args);
+		let b;
+		if (isReporter) {
+			b = newBlock('r', '', spec);
+			b.selector = selector;
+		} else {
+			b = newBlock(' ', '', spec);
+			b.selector = selector;
+		}
+		let inputs = b.inputs();
+		let count = Math.min(args.length, inputs.length);
+		for (let i = 0; i < count; i++) {
+			inputs[i].setContents(args[i]);
+		}
+		return b;
+	}
+
+	makeSpec(selector, args) {
+		let result = (selector + ' ');
+		for (let i = 0; i < args.length; i++) {
+			let arg = args[i];
+			if ((typeof arg) == 'number') {
+				result += '%n';
+			} else if (((typeof arg) == 'string') || (arg == null)) {
+				result += '%s';
+			} else if ((arg == true) || (arg == false)) {
+				result += '%bool';
+			} else if (arg instanceof Array) {
+				result += '%c';
+			}
+			if (i < (args.length - 1)) {
+				result += ' ';
+			}
+		}
+		return result;
 	}
 
 	// ***** Command Parsing Support *****
@@ -224,14 +250,13 @@ class MB_Parser {
 			arg = arg.slice(1, -1);
 		} else { // arg is an unquoted string, so it could be a variable reference
 			if (!isProperName(op, index, argCount) && !isInfixOp(arg)) {
-				// to do: return a variable reporter block
-	// 			OBJ rObj = newObj(ReporterClass, CmdFieldCount + 1, nilObj);
-	// 			CmdPtr r = (CmdPtr)O2A(rObj);
-	// 			r->primName = this.cachedGetVarPrim;
-	// 			r->args[0] = arg;
-	// 			r->lineno = let2obj(lineNum);
-	// 			r->fileName = this.cachedFileName;
-				return rObj;
+				// return a variable reporter block
+				// to do: how do we represent a variable reporter in Snap?
+				let b = newBlock('r', '', 'v %s');
+				b.selector = 'v';
+				b.inputs()[0].setContents(spec);
+				return b;
+				return ['v', arg];
 			}
 		}
 		return arg;
@@ -459,7 +484,18 @@ function parser_test2() {
 }
 
 function parser_test3() {
-	let p = new MB_Parser("print 123");
+	let p = new MB_Parser("  print ((1 + 2) * 3) { stop }  ");
 	p.skipWhiteSpace();
 	console.log(p.readCmd(false));
 }
+
+function parser_test4() {
+	let p = new MB_Parser("  { stop; go }  ");
+	console.log(p.readCmd(false));
+}
+
+function parser_test5() {
+	let p = new MB_Parser("  'foo'  ");
+	console.log(p.readCmd(false));
+}
+
