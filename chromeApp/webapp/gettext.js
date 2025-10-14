@@ -9,13 +9,39 @@
 
 // Bernat Romagosa, 2025
 
-var GetText = {};
-GetText.locales = [];
-GetText.currentLocale = 'en';
-GetText.localizable = [];
+// An <l-> HTML element that is automatically localized into the current locale.
+// GetText makes sure to trigger the localization of all <l-> elements whenever
+// the locale changes.
 
+class LocalizableText extends HTMLElement {
+	constructor() {
+		super();
+		this.key = '';
+	}
+
+	connectedCallback() {
+		this.key = this.textContent;
+		GetText.addLocalizable(this);
+		this.localize();
+	}
+
+	localize () { this.innerText = GetText.localize(this.key); }
+}
+
+customElements.define('l-', LocalizableText);
+
+// A GetText object containing all properties, dictionaries and functions
+// necessary for localization.
+
+var GetText = {};
+GetText.locales = []; // keeps localization dictionaries
+GetText.currentLocale = 'en';
+
+// remember localizable <l-> elements so they can be updated upon locale change
+GetText.localizable = [];
 GetText.addLocalizable = function (element) { this.localizable.push(element); }
 
+// read a .po file and parse it into a localization dictionary
 GetText.readLocale = function (langcode, callback) {
 	this.locales[langcode] = {};
 	fetch('translations/' + langcode + '.po')
@@ -55,6 +81,7 @@ GetText.parseLocale = function (text, langcode) {
 	}
 };
 
+// change the current locale and trigger the localization of all <l-> elements
 GetText.setLocale = function (langcode) {
 	if (this.locales[langcode] == undefined) {
 		this.readLocale(langcode, () => { this.setLocale(langcode);} )
@@ -65,6 +92,8 @@ GetText.setLocale = function (langcode) {
 	}
 };
 
+// localize a particular key into the current language, or fall back to defaults
+// if not found
 GetText.localize = function (key) {
 	if (this.locales[this.currentLocale]) {
 		var value = this.locales[this.currentLocale][key];
@@ -79,3 +108,5 @@ GetText.localize = function (key) {
 };
 
 GetText.setLocale('en');
+
+
