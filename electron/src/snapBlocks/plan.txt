@@ -12,15 +12,16 @@ To do:
 [x] make boolean slots accept reporters of any type (how?)
 [x] make "if" be expandable to multiple cases (how?)
 
+[ ] rework built-in block specs as object keyed by selector
 [ ] set slot default values 
+[ ] option block sections (see e.g. Snap! "broadcast" block)
 [ ] code to generate MicroBlocks code from blocks
 [ ] test parser
 
 Issues:
-[ ] Snap! does not appear to have general mechanism for optional block sections (ignoring them for now)
-[ ] Snap! seems to allow arg slots to contain null, MicroBlocks assumes they always have some value
+[ ] Snap! seems to allow arg slots to contain null, MicroBlocks assumes they always have some value. (Solutions: MB always sets a default value OR MicroBlocks compiler can deal with "null" arg values.)
 
-Questions for Bernat:
+Questions answered by Bernat:
   - how get a Morphic inspector in Snap! (both MB Snap and actual Snap!)
 	- shift-click on Snap logo to enter dev mode
 	- click on world in SnapBlocks to enter dev mode

@@ -125,3 +125,7 @@ MB_GUI.mbToSnapArgType = function (mbArgType) {
 	// 	if ('menu' == mbArgType) return '%n';
 	return '%s'; // default
 }
+
+MB_GUI.handlePaste = function (event) {
+	console.log('MB_GUI.handlePaste', event);
+}
