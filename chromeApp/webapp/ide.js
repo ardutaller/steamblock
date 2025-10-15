@@ -52,8 +52,8 @@ IDE.populateTopBar = function (container) {
 	});
 };
 
-// TODO placeholders. GP needs to set these on connection.
-IDE.board = { hasFS: false, canDoBLE: false, connected: false };
+// GP sets these on connection.
+IDE.board = { hasFS: false, canDoBLE: false, connected: false, type: null };
 
 // Build the IDE
 IDE.build = function () {

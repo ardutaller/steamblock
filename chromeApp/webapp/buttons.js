@@ -30,8 +30,25 @@ Buttons.elementFor = function (selector) {
 
 Buttons.connectWidget = function () {
 	// special case, as this is a slightly more complex element
-	// TODO placeholder right now
+	let container = document.createElement('div');
+	container.classList.add('connect');
+
 	let icon = Icon.forSelector('usb');
-	icon.onclick = () => { GP.apiCall('ide.showConnectMenu'); }
-	return icon;
-}
+
+	let label = document.createElement('span');
+	label.classList.add('label');
+	label.innerText = GetText.localize('Connect');
+	document.addEventListener(
+		'board.type',
+		(e) => { label.innerText = GetText.localize(e.detail.value); }
+	);
+
+	let arrow = Icon.forUrl('img/dropdown-arrow.svg');
+	arrow.classList.add('dropdown');
+
+	container.appendChild(icon);
+	container.appendChild(label);
+	container.appendChild(arrow);
+	container.onclick = () => { GP.apiCall('ide.showConnectMenu'); }
+	return container;
+};

@@ -941,7 +941,7 @@ method closePort SmallRuntime {
 	setProperty api 'board.connected' false
 	setProperty api 'board.canDoBLE' false
 	setProperty api 'board.hasFS' false
-
+	setProperty api 'board.type' 'Connect'
 	if (notNil port) { closeSerialPort port }
 	port = nil
 	vmVersion = nil
@@ -1259,6 +1259,7 @@ method versionReceived SmallRuntime versionString {
 	} else { // not first time: show the version number
 		inform (global 'page') (join 'MicroBlocks Virtual Machine ' versionString) 'Firmware version'
 	}
+	setProperty api 'board.type' boardType
 	updateConnectionName (findProjectEditor) boardType
 }
 

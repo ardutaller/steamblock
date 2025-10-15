@@ -530,16 +530,22 @@ static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
 	char *value = "";
 	if ((nargs > 1) && (IS_CLASS(args[1], StringClass))) value = obj2str(args[1]);
 	EM_ASM_({
-			let path = UTF8ToString($0).split('.');
+			let path = UTF8ToString($0);
+			let parts = path.split('.');
 			let obj = window['IDE'];
-			path.forEach(
+			let value = JSON.parse(UTF8ToString($1));
+			parts.forEach(
 				function (part) {
 					if (typeof obj[part] == 'object') {
 						obj = obj[part];
 					} else {
-						obj[part] = JSON.parse(UTF8ToString($1));
+						obj[part] = value;
 					}
 				}
+			);
+			// dispatch a custom event so elements can listen to changes
+			document.dispatchEvent(
+				new CustomEvent(path, { detail: { value: value } })
 			);
 	}, path, value);
 	return nilObj;
