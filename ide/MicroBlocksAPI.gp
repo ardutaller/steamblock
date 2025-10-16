@@ -99,7 +99,7 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id (boardHasFileSystem runtime)
 	} (endPoint == 'board.connect') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
-		webSerialConnect runtime
+		webSerialConnect runtime (at params 1)
 	} (endPoint == 'board.disconnect') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		closePort runtime

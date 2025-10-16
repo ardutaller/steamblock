@@ -786,7 +786,7 @@ method webSerialConnect SmallRuntime action {
 		closeSerialPort 1
 		portName = nil
 		port = nil
-	} ('open Boardie' == action) {
+	} ('Boardie' == action) {
 		browserOpenBoardie
 		waitMSecs 100 // make sure Boardie is ready to receive messages
 		disconnected = false
@@ -800,7 +800,7 @@ method webSerialConnect SmallRuntime action {
 			inform (localized 'Only recent Chrome and Edge browsers support WebSerial.')
 			return
 		}
-		if (beginsWith action 'connect (BLE)') {
+		if (beginsWith action 'BLE') {
 			openSerialPort 'webBLE' 115200
 			portName = 'webBLE'
 		} else {

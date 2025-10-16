@@ -175,12 +175,12 @@ Menus.connection = {
 	items: [
 		{
 			label: 'connect (USB)',
-			action: () => { GP.apiCall('board.connect'); },
+			action: () => { GP.apiCall('board.connect', ['USB']); },
 			hidden: () => { return IDE.board.connected }
 		},
 		{
 			label: 'connect (BLE)',
-			action: () => { GP.apiCall('board.connect'); },
+			action: () => { GP.apiCall('board.connect', ['BLE']); },
 			hidden: () => { return IDE.board.connected }
 		},
 		{
@@ -189,7 +189,7 @@ Menus.connection = {
 		},
 		{
 			label: 'open Boardie',
-			action: () => { GP_openBoardie(); },
+			action: () => { GP.apiCall('board.connect', ['Boardie']); },
 			hidden: () => { return IDE.board.connected }
 		},
 		{
