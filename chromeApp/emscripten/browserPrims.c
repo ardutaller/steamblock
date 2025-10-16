@@ -777,11 +777,11 @@ static OBJ primOpenWindow(int nargs, OBJ args[]) {
 
 		var winCnv = document.getElementById('canvas');
 		if (winCnv) {
-			//winCnv.style.setProperty('margin-top', 0 + 'px');
+		// 19 is the height of the tip bar
 			winCnv.style.setProperty('width', w + 'px');
-			winCnv.style.setProperty('height', h + 'px');
+			winCnv.style.setProperty('height', h - 19 + 'px');
 			winCnv.width = 2 * w;
-			winCnv.height = 2 * h;
+			winCnv.height = 2 * (h - 19);
 			GP.isRetina = true;
 		}
 	}, w, h);
