@@ -121,8 +121,6 @@ method setProperty MicroBlocksAPI path value {
 			value = (join '"' value '"')
 		} (isClass value 'Array') {
 			value = (jsonStringify value)
-		} (value == nil) {
-			value = 'null'
 		}
 		browserStoreIDEProperty path (toString value)
 	}
