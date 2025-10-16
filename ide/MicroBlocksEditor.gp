@@ -26,13 +26,12 @@ to uload fileName {
 	return (load fileName (topLevelModule))
 }
 
-defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer connectionWidget progressIndicator httpServer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode versionCheckOnStartup
+defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode versionCheckOnStartup
 
 method scriptingActionsContainer MicroBlocksEditor { return scriptingActionsContainer }
 method fileName MicroBlocksEditor { return fileName }
 method project MicroBlocksEditor { return (project scripter) }
 method scripter MicroBlocksEditor { return scripter }
-method httpServer MicroBlocksEditor { return httpServer }
 method lastScriptPicFolder MicroBlocksEditor { return lastScriptPicFolder }
 method setLastScriptPicFolder MicroBlocksEditor dir { lastScriptPicFolder = dir }
 
@@ -75,7 +74,6 @@ to findMicroBlocksEditor {
 method initialize MicroBlocksEditor {
 	scale = (global 'scale')
 	morph = (newMorph this)
-	httpServer = (newMicroBlocksHTTPServer)
 	scripter = (initialize (new 'MicroBlocksScripter') this)
 	lastProjectFolder = 'Examples'
 	addPart morph (morph scripter)
@@ -258,9 +256,6 @@ method clearProject MicroBlocksEditor {
 	fileName = ''
 	updateTitle this
 	createEmptyProject scripter
-	if (isRunning httpServer) {
-		clearVars httpServer
-	}
 	clearLoggedData (smallRuntime)
 
 	// close graph window
@@ -457,9 +452,6 @@ method step MicroBlocksEditor {
 	processDroppedFiles this
 
 	if (not (busy (smallRuntime))) { processMessages (smallRuntime) }
-	if (isRunning httpServer) {
-		step httpServer
-	}
 	if ('unknown' == newerVersion) {
 		launch (global 'page') (newCommand 'checkLatestVersion' this) // start version check
 		newerVersion = nil
@@ -982,19 +974,6 @@ method gearMenu MicroBlocksEditor {
 			addLine menu
 			addItem menu 'enable or disable BLE' (action 'setBLEFlag' (smallRuntime))
 		}
-
-// Let's deprecate the HTTP server since it doesn't work in browser?
-// Don't think anyone is using it now that we have so many other ways to communicate.
-// And we might not want to -- or be able to -- implement it when we rewrite MicroBlocks.
-//		if ('Browser' != (platform)) {
-//			addLine menu
-//			if (not (isRunning httpServer)) {
-//				addItem menu 'start HTTP server' 'startHTTPServer'
-//			} else {
-//				addItem menu 'stop HTTP server' 'stopHTTPServer'
-//			}
-//		}
-
 	}
 	return menu
 }
@@ -1113,24 +1092,6 @@ method setAdvancedMode MicroBlocksEditor aBoolean {
 	setDevMode (global 'page') aBoolean
 	saveToUserPreferences this 'devMode' aBoolean
 	developerModeChanged this
-}
-
-method startHTTPServer MicroBlocksEditor {
-	if (start httpServer) {
-		(inform (join 'MicroBlocks HTTP Server listening on port ' (port httpServer)) 'HTTP Server')
-	} ('' == (port httpServer)) {
-		return // user did not supply a port number
-	} else {
-		(inform (join
-			'Failed to start HTTP server.' (newline)
-			'Please make sure that no other service is running at port 6473.')
-			'HTTP Server'
-		)
-	}
-}
-
-method stopHTTPServer MicroBlocksEditor {
-	stop httpServer
 }
 
 // Language Button
