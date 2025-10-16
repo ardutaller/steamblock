@@ -47,9 +47,15 @@
 		<div class="emscripten">
 			<progress value="0" max="100" id="progress" hidden=1></progress>
 		</div>
-
-		<div class="emscripten">
-			<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
+		<div class="ide">
+			<nav class="top-bar" ></nav>
+			<div class="emscripten">
+				<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
+			</div>
+			<div class="tip-bar">
+				<span class="tip-title"></span>
+				<span class="tip-content"></span>
+			</div>
 		</div>
 
 		<script type="text/javascript" src="emModule.js"></script>
@@ -66,7 +72,6 @@
 		<script type="text/javascript" src="menus.js"></script>
 		<script type="text/javascript" src="buttons.js"></script>
 
-		<nav class="top-bar" ></nav>
 		<script>
 			IDE.build();
 		</script>

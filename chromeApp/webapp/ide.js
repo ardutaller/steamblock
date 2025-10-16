@@ -64,11 +64,11 @@ IDE.populateTopBar = function (container) {
 		'ide.downloadProgress',
 		(e) => {
 			let colors = [
-				[ 'lightgreen', 'lightgray' ],
+				['lightgreen', 'lightgray'],
 				['green', 'gray'],
 				['darkgreen', 'darkgray']
 			];
-			let phase = parseInt(e.detail.value[0]);
+			let phase = e.detail.value[0];
 			let percentage = e.detail.value[1] * 100;
 			if (percentage < 100) {
 				progress.style.background =
@@ -86,6 +86,18 @@ IDE.populateTopBar = function (container) {
 		buttons.appendChild(Buttons.elementFor(selector));
 	});
 };
+
+// Tip Bar
+IDE.setTip = function(title, content) {
+	document.querySelector('.tip-title').textContent = title;
+	//TODO parse icon placeholders into actual icons
+	document.querySelector('.tip-content').textContent = content;
+}
+
+document.addEventListener(
+	'ide.tip', (e) => { IDE.setTip(e.detail.value[0], e.detail.value[1]); }
+);
+
 
 // GP sets these via `setProperty MicroBlocksAPI path value`
 // When a property is set, an event with that path is fired in the document.

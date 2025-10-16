@@ -198,7 +198,7 @@ method setBlockScalePercent MicroBlocksEditor newPercent {
 method fixZoomButtonsLayout MicroBlocksEditor {
 	scale = (global 'scale')
 	right = ((right morph) - (24 * scale))
-	bottom = (((bottom morph) - (height (morph tipBar))) - (24 * scale))
+	bottom = ((bottom morph) - (24 * scale))
 	firstButtonMorph = (morph (at zoomButtons 1))
 	containerMorph = (morph scriptingActionsContainer)
 	setExtent containerMorph ((((width firstButtonMorph) + (8 * scale)) * (count (parts containerMorph))) + (8 * scale)) ((height firstButtonMorph) + (16 * scale))
@@ -216,8 +216,6 @@ method fixZoomButtonsLayout MicroBlocksEditor {
 method addTipBar MicroBlocksEditor {
 	tipBar = (initialize (new 'MicroBlocksTipBar'))
 	setGlobal 'tipBar' tipBar
-	setTitle tipBar 'an element'
-	setTip tipBar 'some tip about it'
 	addPart morph (morph tipBar)
 }
 
@@ -922,15 +920,8 @@ method topBarHeight MicroBlocksEditor { return (48 * (global 'scale')) }
 
 method fixLayout MicroBlocksEditor fromScripter {
 	setExtent morph (width (morph (global 'page'))) (height (morph (global 'page')))
-	fixTipBarLayout this
 	fixZoomButtonsLayout this
 	if (true != fromScripter) { fixScripterLayout this }
-}
-
-method fixTipBarLayout MicroBlocksEditor {
-	fixLayout tipBar
-	setLeft (morph tipBar) 0
-	setBottom (morph tipBar) (bottom morph)
 }
 
 method fixScripterLayout MicroBlocksEditor {
@@ -939,7 +930,7 @@ method fixScripterLayout MicroBlocksEditor {
 	m = (morph scripter)
 	setPosition m 0 0
 	w = (width (morph (global 'page')))
-	h = (max 1 (((height (morph (global 'page'))) - (top m)) - (height (morph tipBar))))
+	h = (max 1 ((height (morph (global 'page'))) - (top m)))
 	setExtent m w h
 	fixLayout scripter
 }
