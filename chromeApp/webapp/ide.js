@@ -63,12 +63,18 @@ IDE.populateTopBar = function (container) {
 	document.addEventListener(
 		'ide.downloadProgress',
 		(e) => {
-			// TODO colorize depending on phase
-			let phase = e.detail.value[0];
+			let colors = [
+				[ 'lightgreen', 'lightgray' ],
+				['green', 'gray'],
+				['darkgreen', 'darkgray']
+			];
+			let phase = parseInt(e.detail.value[0]);
 			let percentage = e.detail.value[1] * 100;
 			if (percentage < 100) {
 				progress.style.background =
-					'conic-gradient(green ' + percentage + '%, transparent 0)';
+					'conic-gradient(' +
+						colors[phase - 1][0] + ' ' + percentage + '%, ' +
+						colors[phase - 1][1] + ' 0)';
 			} else {
 				progress.style.background = null;
 			}
