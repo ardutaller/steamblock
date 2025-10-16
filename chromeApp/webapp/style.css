@@ -198,7 +198,7 @@ hr {
 .icon.connected img {
 	filter: brightness(0) saturate(100%) invert(64%) sepia(12%) saturate(1783%) hue-rotate(71deg) brightness(99%) contrast(93%);
 }
-.buttons .connect:hover {
+.buttons .connect .label:hover {
 	filter: brightness(0) saturate(100%) invert(72%) sepia(78%) saturate(469%) hue-rotate(356deg) brightness(106%) contrast(99%);
 }
 .buttons .connect .label {

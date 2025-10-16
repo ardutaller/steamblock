@@ -33,14 +33,15 @@ Buttons.connectWidget = function () {
 	let container = document.createElement('div');
 	container.classList.add('connect');
 
-	let icon = Icon.forSelector('usb');
+	let menu = Menus.elementFor('connection');
+
 	document.addEventListener(
 		'board.connected',
 		(e) => {
 			if (e.detail.value) {
-				icon.classList.add('connected');
+				menu.classList.add('connected');
 			} else {
-				icon.classList.remove('connected');
+				menu.classList.remove('connected');
 			}
 		}
 	);
@@ -56,9 +57,14 @@ Buttons.connectWidget = function () {
 	let arrow = Icon.forUrl('img/dropdown-arrow.svg');
 	arrow.classList.add('dropdown');
 
-	container.appendChild(icon);
+	container.appendChild(menu);
 	container.appendChild(label);
 	container.appendChild(arrow);
-	container.onclick = () => { GP.apiCall('ide.showConnectMenu'); }
+
+	// clicking anywhere in the widget triggers the menu
+	menu.onclick = null;
+	menu.clickable = container;
+	container.onclick = menu.openMenu;
+
 	return container;
 };

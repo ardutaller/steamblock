@@ -97,6 +97,12 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id (boardIsBLECapable runtime)
 	} (endPoint == 'board.hasFS') {
 		respondAPIRequest this id (boardHasFileSystem runtime)
+	} (endPoint == 'board.connect') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		webSerialConnect runtime
+	} (endPoint == 'board.disconnect') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		closePort runtime
 
 	// Localization
 	} (endPoint == 'locale.setLanguage') {

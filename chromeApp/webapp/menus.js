@@ -170,14 +170,43 @@ Menus.project = {
 	]
 };
 
+Menus.connection = {
+	icon : 'usb',
+	items: [
+		{
+			label: 'connect (USB)',
+			action: () => { GP.apiCall('board.connect'); },
+			hidden: () => { return IDE.board.connected }
+		},
+		{
+			label: 'connect (BLE)',
+			action: () => { GP.apiCall('board.connect'); },
+			hidden: () => { return IDE.board.connected }
+		},
+		{
+			label: '-',
+			hidden: () => { return IDE.board.connected }
+		},
+		{
+			label: 'open Boardie',
+			action: () => { GP_openBoardie(); },
+			hidden: () => { return IDE.board.connected }
+		},
+		{
+			label: 'disconnect',
+			action: () => { GP.apiCall('board.disconnect'); },
+			hidden: () => { return !IDE.board.connected }
+		}
+	]
+};
+
 Menus.elementFor = function (selector) {
 	// return an HTML tree containing the icon and menu for a menu selector
 
 	let descriptor = this[selector];
-
 	let icon = Icon.forSelector(descriptor.icon);
 
-	icon.onclick = () => {
+	icon.openMenu = () => {
 		// dynamically generate the menu each time, since it can change depending on
 		// the state of the board, preferences, etc
 		if (IDE.currentMenu) {
@@ -233,6 +262,8 @@ Menus.elementFor = function (selector) {
 			});
 		}
 	};
+	icon.clickable = icon;
+	icon.onclick = icon.openMenu;
 
 	return icon;
 };
@@ -242,7 +273,7 @@ document.addEventListener('click', (event) => {
 	if (IDE.currentMenu) {
 		if (
 			!IDE.currentMenu.contains(event.target) &&
-			!IDE.currentMenu.icon?.contains(event.target)
+			!IDE.currentMenu.icon?.clickable.contains(event.target)
 		) {
 			IDE.currentMenu.remove();
 			IDE.currentMenu = null;
