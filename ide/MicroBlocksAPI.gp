@@ -46,6 +46,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.showConnectMenu') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		selectPort runtime
+	} (endPoint == 'ide.updateConnection') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		updateConnection runtime
 
 	// Project
 	} (endPoint == 'project.save') {
@@ -94,10 +97,6 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id (boardIsBLECapable runtime)
 	} (endPoint == 'board.hasFS') {
 		respondAPIRequest this id (boardHasFileSystem runtime)
-	} (endPoint == 'board.disconnected') {
-		// inform GP that the board has been disconnected. Currently used by Boardie
-		respondAPIRequest this id 0 // respond first so the request is deleted
-		setPort runtime 'disconnect'
 
 	// Localization
 	} (endPoint == 'locale.setLanguage') {
@@ -120,6 +119,8 @@ method setProperty MicroBlocksAPI path value {
 	if ('Browser' == (platform)) {
 		if (isClass value 'String') {
 			value = (join '"' value '"')
+		} (isClass value 'Array') {
+			value = (jsonStringify value)
 		} (value == nil) {
 			value = 'null'
 		}

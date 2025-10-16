@@ -52,11 +52,29 @@ IDE.populateTopBar = function (container) {
 		(e) => { title.innerText = e.detail.value; }
 	);
 
-	// TODO download indicator
-
 	// add right buttons
 	let buttons = document.createElement('div');
 	buttons.classList.add('buttons');
+
+	// progress indicator
+	let progress = document.createElement('div');
+	progress.classList.add('progress');
+	buttons.appendChild(progress);
+	document.addEventListener(
+		'ide.downloadProgress',
+		(e) => {
+			// TODO colorize depending on phase
+			let phase = e.detail.value[0];
+			let percentage = e.detail.value[1] * 100;
+			if (percentage < 100) {
+				progress.style.background =
+					'conic-gradient(green ' + percentage + '%, transparent 0)';
+			} else {
+				progress.style.background = null;
+			}
+		}
+	);
+
 	container.appendChild(buttons);
 	['graph', '|', 'connect', '|', 'run', 'stop' ].forEach(selector => {
 		buttons.appendChild(Buttons.elementFor(selector));
@@ -73,4 +91,6 @@ IDE.project = { title: null };
 // Build the IDE
 IDE.build = function () {
 	IDE.populateTopBar(document.querySelector('.top-bar'));
+	// check connection every 500ms
+	setInterval(()=>{ GP.apiCall('ide.updateConnection'); },500);
 };

@@ -78,7 +78,6 @@ GP.apiCall = function (endPoint, params, callback) {
 	]);
 };
 
-
 // Add the following to the meta tags in the header to suppress scaling of the GP canvas
 // <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -839,9 +838,7 @@ function GP_openBoardie() {
 			});
 
 			boardie.isOpen = true;
-			document.dispatchEvent(
-				new CustomEvent('board.connected', { detail: { value: true } })
-			);
+			GP.apiCall('ide.updateConnection');
 		}
 	};
 
@@ -926,12 +923,8 @@ function GP_closeBoardie() {
 		GP.boardie.element = null;
 		GP.boardie.iframe = null;
 		GP.boardie.isOpen = false;
-		GP.apiCall('board.disconnected');
-		console.log('sent board.disconnected API call');
 		IDE.board.connected = false;
-		document.dispatchEvent(
-			new CustomEvent('board.connected', { detail: { value: false } })
-		);
+		GP.apiCall('ide.updateConnection');
 	}
 }
 
@@ -988,6 +981,7 @@ async function webSerialConnect() {
 	if (!GP_webSerialPort) return; // no serial port selected
 	await GP_webSerialPort.open({ baudRate: 115200 }).catch((e) => { window.alert(e); return; });
 	GP_webSerialReader = await GP_webSerialPort.readable.getReader();
+	GP.apiCall('ide.updateConnection');
 	webSerialReadLoop();
 }
 
@@ -996,6 +990,7 @@ async function webSerialDisconnect() {
 	if (GP_webSerialPort) await GP_webSerialPort.close().catch(() => {});
 	GP_webSerialReader = null;
 	GP_webSerialPort = null;
+	GP.apiCall('ide.updateConnection');
 }
 
 async function webSerialReadLoop() {
@@ -1016,6 +1011,7 @@ async function webSerialReadLoop() {
 		GP_webSerialPort = null;
 		GP_webSerialReader = null;
 		console.log('Connection closed.');
+		GP.apiCall('ide.updateConnection');
 	}
 }
 
@@ -1240,12 +1236,14 @@ class NimBLESerial {
 		this.connected = true;
 		this.sendInProgress = false;
 		console.log("BLE connected");
+		GP.apiCall('ide.updateConnection');
 	}
 
 	disconnect() {
 		if (this.device != undefined) {
 			this.device.gatt.disconnect();
 		}
+		GP.apiCall('ide.updateConnection');
 	}
 
 	isConnected() {
