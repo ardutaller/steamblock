@@ -166,6 +166,9 @@ hr {
 	cursor: pointer;
 	display: flex;
 }
+.icon.connected img {
+	filter: brightness(0) saturate(100%) invert(64%) sepia(12%) saturate(1783%) hue-rotate(71deg) brightness(99%) contrast(93%);
+}
 .buttons .connect:hover {
 	filter: brightness(0) saturate(100%) invert(72%) sepia(78%) saturate(469%) hue-rotate(356deg) brightness(106%) contrast(99%);
 }
@@ -177,4 +180,11 @@ hr {
 }
 .vl {
 	border-left: 1px solid #454A64;
+}
+.title {
+	font-size: 24px;
+	color: white;
+	vertical-align: top;
+	margin-left: 12px;
+	line-height: 2em;
 }

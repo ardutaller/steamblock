@@ -94,6 +94,10 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id (boardIsBLECapable runtime)
 	} (endPoint == 'board.hasFS') {
 		respondAPIRequest this id (boardHasFileSystem runtime)
+	} (endPoint == 'board.disconnected') {
+		// inform GP that the board has been disconnected. Currently used by Boardie
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		setPort runtime 'disconnect'
 
 	// Localization
 	} (endPoint == 'locale.setLanguage') {
@@ -102,6 +106,7 @@ method dispatchCall MicroBlocksAPI callObject {
 
 	} else {
 		respondAPIRequest this id 'Unknown API endpoint'
+		print 'unknown API endpoint' endPoint
 	}
 }
 

@@ -43,6 +43,17 @@ IDE.populateTopBar = function (container) {
 		container.appendChild(Menus.elementFor(selector));
 	});
 
+	// add project title
+	let title = document.createElement('span');
+	title.classList.add('title');
+	container.appendChild(title);
+	document.addEventListener(
+		'project.title',
+		(e) => { title.innerText = e.detail.value; }
+	);
+
+	// TODO download indicator
+
 	// add right buttons
 	let buttons = document.createElement('div');
 	buttons.classList.add('buttons');
@@ -52,8 +63,12 @@ IDE.populateTopBar = function (container) {
 	});
 };
 
-// GP sets these on connection.
+// GP sets these via `setProperty MicroBlocksAPI path value`
+// When a property is set, an event with that path is fired in the document.
+// The document can listen for that event and act accordingly. The `details`
+// object in the event contains the value of the property.
 IDE.board = { hasFS: false, canDoBLE: false, connected: false, type: null };
+IDE.project = { title: null };
 
 // Build the IDE
 IDE.build = function () {

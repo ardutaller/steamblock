@@ -34,6 +34,16 @@ Buttons.connectWidget = function () {
 	container.classList.add('connect');
 
 	let icon = Icon.forSelector('usb');
+	document.addEventListener(
+		'board.connected',
+		(e) => {
+			if (e.detail.value) {
+				icon.classList.add('connected');
+			} else {
+				icon.classList.remove('connected');
+			}
+		}
+	);
 
 	let label = document.createElement('span');
 	label.classList.add('label');

@@ -761,7 +761,8 @@ method stopAndSyncScripts SmallRuntime alreadyStopped {
 	suspendCodeFileUpdates this
 	saveAllChunks this true
 	resumeCodeFileUpdates this
-	showDownloadProgress (findMicroBlocksEditor) 3 1
+
+	setProperty api 'ide.downloadProgress' 3 1
 }
 
 method softReset SmallRuntime {
@@ -944,6 +945,7 @@ method closePort SmallRuntime {
 	setProperty api 'board.type' 'Connect'
 	if (notNil port) { closeSerialPort port }
 	port = nil
+	portName = nil
 	vmVersion = nil
 	boardType = nil
 
@@ -1009,7 +1011,7 @@ method updateConnection SmallRuntime {
 	if (isNil disconnected) { disconnected = false }
 
 	if (notNil decompiler) {
-		browserStoreIDEProperty 'board.connected' 'true'
+		setProperty api 'board.connected' true
 		return 'connected'
 	}
 	if disconnected { return 'not connected' }
@@ -1078,7 +1080,7 @@ method justConnected SmallRuntime {
 		} else {
 			print 'Incremental download' vmVersion boardType
 		}
-		showDownloadProgress (findMicroBlocksEditor) 2 0
+		setProperty api 'ide.downloadProgress' 2 0
 		stopAndSyncScripts this true
 		softReset this
 	}
@@ -1488,7 +1490,7 @@ method saveAllChunksAfterLoad SmallRuntime {
 	suspendCodeFileUpdates this
 	saveAllChunks this true
 	resumeCodeFileUpdates this
-	showDownloadProgress (findMicroBlocksEditor) 3 1
+	setProperty api 'ide.downloadProgress' 3 1
 }
 
 method saveAllChunks SmallRuntime checkCRCs {
@@ -1527,7 +1529,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 		if (saveChunk this aFunction skipHiddenFunctions) {
 			functionsSaved += 1
 			if (0 == (functionsSaved % progressInterval)) {
-				showDownloadProgress editor 3 (processedScripts / totalScripts)
+				setProperty api 'ide.downloadProgress' 3 (processedScripts / totalScripts)
 			}
 		}
 		if (not (connectedToBoard this)) { // connection closed
@@ -1545,7 +1547,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 			if (saveChunk this aBlock skipHiddenFunctions) {
 				scriptsSaved += 1
 				if (0 == (scriptsSaved % progressInterval)) {
-					showDownloadProgress editor 3 (processedScripts / totalScripts)
+					setProperty api 'ide.downloadProgress' 3 (processedScripts / totalScripts)
 				}
 			}
 			if (not (connectedToBoard this)) { // connection closed
@@ -1561,7 +1563,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 	recompileAll = false
 	if checkCRCs { verifyCRCs this }
 	resumeCodeFileUpdates this
-	showDownloadProgress editor 3 1
+	setProperty api 'ide.downloadProgress' 3 1
 
 	setCursor 'default'
 }
@@ -1775,7 +1777,7 @@ method verifyCRCs SmallRuntime {
 		if (and (notNil sourceItem) ((at crcDict chunkID) != (at crcForChunkID chunkID))) {
 			print 'CRC mismatch; resaving chunk:' chunkID
 			forceSaveChunk this sourceItem
-			showDownloadProgress editor 3 (processedCount / totalCount)
+			setProperty api 'ide.downloadProgress' 3 (processedCount / totalCount)
 		}
 		processedCount += 1
 	}
@@ -1786,11 +1788,11 @@ method verifyCRCs SmallRuntime {
 			print 'Resaving missing chunk:' chunkID
 			sourceItem = (at ideChunks chunkID)
 			forceSaveChunk this sourceItem
-			showDownloadProgress editor 3 (processedCount / totalCount)
+			setProperty api 'ide.downloadProgress' 3 (processedCount / totalCount)
 		}
 		processedCount += 1
 	}
-	showDownloadProgress editor 3 1
+	setProperty api 'ide.downloadProgress' 3 1
 }
 
 method boardHasSameProject SmallRuntime {
@@ -1947,7 +1949,7 @@ method saveVariableNames SmallRuntime {
 		}
 		varID += 1
 		if (0 == (varID % progressInterval)) {
-			showDownloadProgress editor 2 (varID / varCount)
+			setProperty api 'ide.downloadProgress' 2 (varID / varCount)
 		}
 	}
 	oldVarNames = (copy newVarNames)

@@ -76,11 +76,9 @@ method initialize MicroBlocksEditor {
 	scale = (global 'scale')
 	morph = (newMorph this)
 	httpServer = (newMicroBlocksHTTPServer)
-	addTopBarParts this
 	scripter = (initialize (new 'MicroBlocksScripter') this)
 	lastProjectFolder = 'Examples'
 	addPart morph (morph scripter)
-	addLogo this
 	addTipBar this
 	addZoomButtons this
 	clearProject this
@@ -115,82 +113,12 @@ method scaleChanged MicroBlocksEditor {
 	initialize (smallRuntime) scripter
 
 	// rebuild the editor
-	addTopBarParts this
-	addPart morph (morph title)
 	addPart morph (morph scripter)
-	addLogo this
 	addTipBar this
 	addZoomButtons this
 
 	fixLayout scripter
 	fixLayout this
-}
-
-// top bar parts
-
-method addTopBarParts MicroBlocksEditor {
-	scale = (global 'scale')
-
-	leftItems = (list)
-	add leftItems (175 * scale)
-	add leftItems (addSVGIconButtonOldStyle this 'icon-globe' 'languageMenu' 'Language')
-	add leftItems (8 * scale)
-	add leftItems (addSVGIconButtonOldStyle this 'icon-gear' 'settingsMenu' 'MicroBlocks')
-	add leftItems (8 * scale)
-	add leftItems (addSVGIconButtonOldStyle this 'icon-file' 'projectMenu' 'File')
-
-	if (isNil title) {
-		// only add title the first time
-		title = (newText '' 'Arial' (17 * scale) (microBlocksColor 'blueGray' 50))
-		addPart morph (morph title)
-	}
-
-	rightItems = (list)
-
-	progressW = (36 * scale)
-	progressIndicator = (newImageBox (newBitmap progressW progressW))
-	addPart morph (morph progressIndicator)
-	add rightItems progressIndicator
-	add rightItems (24 * scale)
-
-	addFrameRate = (contains (commandLine) '--allowMorphMenu')
-	if addFrameRate {
-		frameRate = (newText '00 fps' 'Arial' (14 * scale) (microBlocksColor 'blueGray' 200))
-		addPart morph (morph frameRate)
-		add rightItems frameRate
-		add rightItems (12 * scale)
-	}
-
-	connectionWidget = (newMicroBlocksConnectWidget this)
-	addPart morph (morph connectionWidget)
-
-	add rightItems (addTwoStateSVGIconButton this 'icon-graph' 'showGraph' 'Graph')
-	add rightItems (24 * scale)
-	add rightItems (vSeparator this)
-	add rightItems (24 * scale)
-	add rightItems connectionWidget
-	add rightItems (24 * scale)
-	add rightItems (vSeparator this)
-	add rightItems (24 * scale)
-	add rightItems (addSVGIconButton this 'icon-start' 'startAll' 'Start')
-	add rightItems (8 * scale)
-	add rightItems (addSVGIconButton this 'icon-stop' 'stopAndSyncScripts' 'Stop')
-	add rightItems (24 * scale)
-}
-
-method vSeparator MicroBlocksEditor {
-	scale = (global 'scale')
-	separator = (newBox (newMorph) (microBlocksColor 'blueGray' 700) 0 0 false false)
-	setExtent (morph separator) scale (topBarHeight this)
-	addPart morph (morph separator)
-	return separator
-}
-
-method addLogo MicroBlocksEditor {
-	logoM = (newMorph)
-	setCostume logoM (readSVGIcon 'logo')
-	setPosition logoM 8 4
-	addPart morph logoM
 }
 
 // zoom buttons
@@ -327,8 +255,8 @@ method clearProject MicroBlocksEditor {
 	// Remove old project morphs and classes and reset global state.
 
 	closeAllDialogs this
-	setText title ''
 	fileName = ''
+	updateTitle this
 	createEmptyProject scripter
 	if (isRunning httpServer) {
 		clearVars httpServer
@@ -437,8 +365,7 @@ method copyProjectURLToClipboard MicroBlocksEditor {
 	saveScripts scripter
 	codeString = (codeString (project scripter))
 	if (notNil title) {
-		projName = (text title)
-		codeString = (join 'projectName ''' projName '''' (newline) (newline) codeString)
+		codeString = (join 'projectName ''' title '''' (newline) (newline) codeString)
 	}
 	setClipboard (join (urlPrefix this) '#project='(urlEncode codeString true))
 }
@@ -511,26 +438,12 @@ method startAll MicroBlocksEditor { startAll (smallRuntime) }
 // project title
 
 method updateTitle MicroBlocksEditor {
-	projName = (withoutExtension (filePart fileName))
-	setText title projName
-	redraw title
-	placeTitle this
+	title = (withoutExtension (filePart fileName))
+	setProperty (api (smallRuntime)) 'project.title' title
 }
 
-method placeTitle MicroBlocksEditor {
-	scale = (global 'scale')
-	left = (right (morph (last leftItems)))
-	right = (left (morph (first rightItems)))
-	titleM = (morph title)
-	setLeft titleM (left + (18 * scale))
-	setTop titleM (12 * scale)
-
-	// hide title if insufficient space
-	if (((width titleM) + (8 * scale)) > (right - left)) {
-		hide titleM
-	} else {
-		show titleM
-	}
+method updateIndicator MicroBlocksEditor {
+	setProperty (api (smallRuntime)) 'board.connected' ((updateConnection (smallRuntime)) == 'connected')
 }
 
 // stepping
@@ -574,65 +487,6 @@ method updateFPS MicroBlocksEditor {
 	} else {
 		frameCount += 1
 	}
-}
-
-// Progress indicator
-
-method showDownloadProgress MicroBlocksEditor phase downloadProgress {
-	isDownloading = (downloadProgress < 1)
-	bm = (costumeData (morph progressIndicator))
-	drawProgressIndicator this bm phase downloadProgress
-	costumeChanged (morph progressIndicator)
-	updateDisplay (global 'page') // update the display
-}
-
-method drawProgressIndicator MicroBlocksEditor bm phase downloadProgress {
-	scale = (global 'scale')
-	radius = (13 * scale)
-	cx = (half (width bm))
-	cy = ((half (height bm)) + scale)
-	bgColor = (topBarBlue this)
-	if (1 == phase) {
-		lightGray = (microBlocksColor 'blueGray' 50)
-		darkGray = (microBlocksColor 'blueGray' 100)
-	} (2 == phase) {
-		lightGray = (microBlocksColor 'blueGray' 100)
-		darkGray = (microBlocksColor 'blueGray' 300)
-	} (3 == phase) {
-		lightGray = (microBlocksColor 'blueGray' 300)
-		darkGray = (microBlocksColor 'blueGray' 500)
-	}
-
-	fill bm bgColor
-	if (and (3 == phase) (downloadProgress >= 1)) { return }
-
-	// background circle
-	drawCircle (newShapeMaker bm) cx cy radius lightGray
-
-	// draw progress pie chart
-	degrees = (round (360 * downloadProgress))
-	oneDegreeDistance = ((* 2 (pi) radius) / 360.0)
-	pen = (pen (newShapeMaker bm))
-	beginPath pen cx cy
-	setHeading pen 270
-	forward pen radius
-	turn pen 90
-	repeat degrees {
-		forward pen oneDegreeDistance
-		turn pen 1
-	}
-	goto pen cx cy
-	fill pen darkGray
-}
-
-// Connection indicator
-
-method updateIndicator MicroBlocksEditor forcefully {
-	updateIndicator connectionWidget forcefully
-}
-
-method updateConnectionName MicroBlocksEditor aString {
-	updateConnectionName connectionWidget aString
 }
 
 // browser support
@@ -1067,64 +921,18 @@ method pageResized MicroBlocksEditor {
 	}
 }
 
-// top bar drawing
+// top bar properties
 
 method topBarBlue MicroBlocksEditor { return (microBlocksColor 'blueGray' 900) }
 method topBarHeight MicroBlocksEditor { return (48 * (global 'scale')) }
-
-method drawOn MicroBlocksEditor aContext {
-	scale = (global 'scale')
-	x = (left morph)
-	y = (top morph)
-	w = (width morph)
-	topBarH = (topBarHeight this)
-	fillRect aContext (topBarBlue this) x y w topBarH
-
-	// bottom border
-	fillRect aContext (microBlocksColor 'blueGray' 700) x ((y + topBarH) - scale) w scale
-}
 
 // layout
 
 method fixLayout MicroBlocksEditor fromScripter {
 	setExtent morph (width (morph (global 'page'))) (height (morph (global 'page')))
-	fixTopBarLayout this
 	fixTipBarLayout this
 	fixZoomButtonsLayout this
 	if (true != fromScripter) { fixScripterLayout this }
-}
-
-method fixTopBarLayout MicroBlocksEditor {
-	scale = (global 'scale')
-	space = 0
-
-	// Optimization: report one damage rectangle for the entire top bar
-	reportDamage morph (rect (left morph) (top morph) (width morph) (topBarHeight this))
-
-	centerY = (24 * scale)
-	x = 0
-	for item leftItems {
-		if (isNumber item) {
-			x += item
-		} else {
-			m = (morph item)
-			y = (centerY - ((height m) / 2))
-			setPosition m x y
-			x += ((width m) + space)
-		}
-	}
-	x = (width morph)
-	for item (reversed rightItems) {
-		if (isNumber item) {
-			x += (0 - item)
-		} else {
-			m = (morph item)
-			y = (centerY - ((height m) / 2))
-			setPosition m (x - (width m)) y
-			x = ((x - (width m)) - space)
-		}
-	}
-	placeTitle this
 }
 
 method fixTipBarLayout MicroBlocksEditor {
@@ -1137,7 +945,7 @@ method fixScripterLayout MicroBlocksEditor {
 	scale = (global 'scale')
 	if (isNil scripter) { return } // happens during initialization
 	m = (morph scripter)
-	setPosition m 0 (topBarHeight this)
+	setPosition m 0 0
 	w = (width (morph (global 'page')))
 	h = (max 1 (((height (morph (global 'page'))) - (top m)) - (height (morph tipBar))))
 	setExtent m w h

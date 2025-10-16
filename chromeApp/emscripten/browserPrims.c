@@ -777,7 +777,8 @@ static OBJ primOpenWindow(int nargs, OBJ args[]) {
 
 		var winCnv = document.getElementById('canvas');
 		if (winCnv) {
-			winCnv.style.setProperty('margin-top', -19 + 'px'); // avoid gray band in Chrome
+			// avoid gray band in Chrome (19px), plus position scripter just below top bar (48px)
+			winCnv.style.setProperty('margin-top', 48-19 + 'px');
 			winCnv.style.setProperty('width', w + 'px');
 			winCnv.style.setProperty('height', h + 'px');
 			winCnv.width = 2 * w;

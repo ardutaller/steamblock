@@ -839,6 +839,9 @@ function GP_openBoardie() {
 			});
 
 			boardie.isOpen = true;
+			document.dispatchEvent(
+				new CustomEvent('board.connected', { detail: { value: true } })
+			);
 		}
 	};
 
@@ -923,6 +926,12 @@ function GP_closeBoardie() {
 		GP.boardie.element = null;
 		GP.boardie.iframe = null;
 		GP.boardie.isOpen = false;
+		GP.apiCall('board.disconnected');
+		console.log('sent board.disconnected API call');
+		IDE.board.connected = false;
+		document.dispatchEvent(
+			new CustomEvent('board.connected', { detail: { value: false } })
+		);
 	}
 }
 
