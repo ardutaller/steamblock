@@ -39,7 +39,7 @@ fetch('translations/locales.json')
 		Menus.language.items.push({ label: '-' });
 		Menus.language.items.push({
 			label: 'Custom...',
-			action: () => { window.alert('TODO'); }
+			action: () => { GP.apiCall('locale.loadCustomFile'); }
 		});
 	});
 

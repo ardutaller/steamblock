@@ -108,7 +108,11 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'locale.setLanguage') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		setLanguage editor (at params 1)
+	} (endPoint == 'locale.loadCustomFile') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		readCustomTranslationFile editor
 
+	// API endpoint not found
 	} else {
 		respondAPIRequest this id 'Unknown API endpoint'
 		print 'unknown API endpoint' endPoint
