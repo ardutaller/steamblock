@@ -8,10 +8,27 @@
 
 // Bernat Romagosa, 2025
 
+// GP sets the IDE object properties via `setProperty MicroBlocksAPI path value`
+// When a property is set, an event with that path is fired in the document.
+// The document can listen for that event and act accordingly. The `details`
+// object in the event contains the value of the property.
+
 IDE = {};
 
-// TODO placeholders. GP needs to set these when appropriate.
-IDE.hasCustomBlocks = false;
+IDE.init = function () {
+	this.project = this.newProject();
+	this.board = this.newBoard();
+	this.build();
+};
+
+
+IDE.newProject = function () {
+	return { title: null, hasCustomBlocks: false };
+};
+
+IDE.newBoard = function () {
+	return { hasFS: false, canDoBLE: false, connected: false, type: null };
+}
 
 IDE.userPreference = function (pref) {
 	let value = JSON.parse(localStorage['user-prefs'])[pref];
@@ -96,26 +113,21 @@ IDE.setTip = function(title, content) {
 	icons['(-o)'] = 'bool_true';
 	icons['(o-)'] = 'bool_false';
 	let tipHTML = content;
-	Object.keys(icons).forEach(key => {
-		tipHTML =
-			tipHTML.replace(
-				key,
-				'<img src="img/' + icons[key] + '.svg" class="tip-icon"></img>'
-			);
-	});
+	if (content !== null) {
+		Object.keys(icons).forEach(key => {
+			tipHTML =
+				tipHTML.replace(
+					key,
+					'<img src="img/' + icons[key] + '.svg" class="tip-icon"></img>'
+				);
+		});
+	}
 	document.querySelector('.tip-content').innerHTML = tipHTML;
 };
 
 document.addEventListener(
 	'ide.tip', (e) => { IDE.setTip(e.detail.value[0], e.detail.value[1]); }
 );
-
-// GP sets these via `setProperty MicroBlocksAPI path value`
-// When a property is set, an event with that path is fired in the document.
-// The document can listen for that event and act accordingly. The `details`
-// object in the event contains the value of the property.
-IDE.board = { hasFS: false, canDoBLE: false, connected: false, type: null };
-IDE.project = { title: null };
 
 // Build the IDE
 IDE.build = function () {

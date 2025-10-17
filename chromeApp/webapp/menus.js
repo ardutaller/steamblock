@@ -151,9 +151,9 @@ Menus.project = {
 			label: 'export functions as library',
 			action: () => { GP.apiCall('project.exportBlocksLibrary'); },
 			hidden: () => {
-				return !IDE.userPreference('devMode') && !IDE.hasCustomBlocks;
+				return !IDE.userPreference('devMode') && !IDE.project.hasCustomBlocks;
 			},
-			disabled: () => { return !IDE.hasCustomBlocks; }
+			disabled: () => { return !IDE.project.hasCustomBlocks; }
 		},
 		{
 			label: 'put file on board',

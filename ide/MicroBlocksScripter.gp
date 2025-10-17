@@ -1077,6 +1077,8 @@ method createFunction MicroBlocksScripter isReporter {
 		// append an empty return block to reporters
 		setNext script (toBlock (newReporter 'return' 0))
 	}
+	// store whether the project has any custom blocks. For project menu purposes.
+	setProperty (api (smallRuntime)) 'project.hasCustomBlocks' true
 	addToBottom this script
 	updateBlocks this
 }
@@ -1132,6 +1134,8 @@ method removedUserDefinedBlock MicroBlocksScripter function {
 	deleteBlockSpecFor (project projectEditor) (functionName function)
 	updateBlocks this
 	saveNeeded = true
+	// store whether the project has any custom blocks. For project menu purposes.
+	setProperty (api (smallRuntime)) 'project.hasCustomBlocks' ((count (functions (main mbProject))) > 0)
 }
 
 method addToBottom MicroBlocksScripter aBlock noScroll {
@@ -1619,6 +1623,8 @@ method pasteScripts MicroBlocksScripter scriptString atHand {
 			if ('to' == (primName script)) {
 				funcName = (first (argList script))
 				internalHideDefinition this funcName
+				// store whether the project has any custom blocks. For project menu purposes.
+				setProperty (api (smallRuntime)) 'project.hasCustomBlocks' true
 			}
 		}
 	}

@@ -7,13 +7,12 @@
 // MicroBlocksTipBar.gp - A bar that displays useful information about the item under the mouse
 // Bernat Romagosa, November 2021
 
-defineClass MicroBlocksTipBar morph contentDict iconsDict help lastContents
+defineClass MicroBlocksTipBar morph contentDict help lastContents
 
 method initialize MicroBlocksTipBar {
 	morph = (newMorph this)
 	setFPS morph 5
 	initContents this
-	initIcons this
 	help = (initialize (new 'MicroBlocksHelp'))
 	return this
 }
@@ -131,14 +130,4 @@ method contentsFor MicroBlocksTipBar anElement {
 		}
 	}
 	return content
-}
-
-// icons
-
-method initIcons MicroBlocksTipBar {
-	iconsDict = (dictionary)
-	atPut iconsDict '[l]' (readSVGIcon 'mouse-left-button')
-	atPut iconsDict '[r]' (readSVGIcon 'mouse-right-button')
-	atPut iconsDict '(-o)' (readSVGIcon 'bool_true')
-	atPut iconsDict '(o-)' (readSVGIcon 'bool_false')
 }

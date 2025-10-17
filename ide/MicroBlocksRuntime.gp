@@ -578,6 +578,8 @@ method waitForPing SmallRuntime {
 method installDecompiledProject SmallRuntime proj {
 	clearBoardIfConnected this true
 	setProject scripter proj
+	// store whether the project has any custom blocks. For project menu purposes.
+	setProperty api 'project.hasCustomBlocks' ((count (functions (main proj))) > 0)
 	updateLibraryList scripter
 	checkForNewerLibraryVersions (project scripter) true
 	restoreScripts scripter // fix block colors

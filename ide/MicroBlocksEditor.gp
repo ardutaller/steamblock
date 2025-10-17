@@ -255,6 +255,7 @@ method clearProject MicroBlocksEditor {
 	updateTitle this
 	createEmptyProject scripter
 	clearLoggedData (smallRuntime)
+	setProperty (api (smallRuntime)) 'project.hasCustomBlocks' false
 
 	// close graph window
 	graph = (findMorph 'MicroBlocksDataGraph')
@@ -315,6 +316,8 @@ method openProject MicroBlocksEditor projectData projectName updateLibraries {
 	} else {
 		loadNewProjectFromData scripter (toString projectData) updateLibraries
 	}
+	// store whether the project has any custom blocks. For project menu purposes.
+	setProperty (api (smallRuntime)) 'project.hasCustomBlocks' ((count (functions (main (project scripter)))) > 0)
 	updateLibraryList scripter
 	developerModeChanged scripter
 	saveAllChunksAfterLoad (smallRuntime)
