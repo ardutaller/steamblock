@@ -8,10 +8,26 @@
 
 // Bernat Romagosa, 2025
 
-const Buttons = {};
-Buttons.graph = { icon: 'graph', action: () => { GP.apiCall('ide.showGraph'); } }
-Buttons.run = { icon: 'start', action: () => { GP.apiCall('ide.startAll'); } }
-Buttons.stop = { icon: 'stop', action: () => { GP.apiCall('ide.stopAll'); } }
+const Buttons = {
+	graph: {
+		icon: 'graph',
+		label: 'Graph',
+		description: 'Open a graph window. Use the graph block in the Output category to add data points to it.',
+		action: () => { GP.apiCall('ide.showGraph'); }
+	},
+	run: {
+		icon: 'start',
+		label: 'Start',
+		description: 'Trigger all scripts under a "when started" hat block or a generic "when" block.',
+		action: () => { GP.apiCall('ide.startAll'); }
+	},
+	stop: {
+		icon: 'stop',
+		label: 'Stop',
+		description: 'Stop all running scripts and make sure all scripts have been compiled and uploaded to the microcontroller.',
+		action: () => { GP.apiCall('ide.stopAll'); }
+	}
+};
 
 Buttons.elementFor = function (selector) {
 	if (selector == '|') {
@@ -25,6 +41,8 @@ Buttons.elementFor = function (selector) {
 	let descriptor = this[selector];
 	let icon = Icon.forSelector(descriptor.icon);
 	icon.onclick = descriptor.action;
+	icon.ariaLabel = descriptor.label;
+	icon.ariaDescription = descriptor.description; // excuse the alliteration :)
 	return icon;
 };
 
@@ -34,6 +52,9 @@ Buttons.connectWidget = function () {
 	container.classList.add('connect');
 
 	let menu = Menus.elementFor('connection');
+
+	container.ariaLabel = menu.ariaLabel;
+	container.ariaDescription = menu.ariaDescription;
 
 	document.addEventListener(
 		'board.connected',

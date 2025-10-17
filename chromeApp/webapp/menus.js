@@ -9,7 +9,12 @@
 // Bernat Romagosa, 2025
 
 const Menus = {};
-Menus.language = { icon: 'globe', items: [] };
+Menus.language = {
+	icon: 'globe',
+	label: 'Language',
+	description: 'Set the language of the IDE, including all the blocks.',
+	items: []
+};
 
 // fill language menu out of available locales
 fetch('translations/locales.json')
@@ -40,6 +45,8 @@ fetch('translations/locales.json')
 
 Menus.settings = {
 	icon: 'gear',
+	label: 'Settings',
+	description: 'User preferences and different IDE settings and tweaks.',
 	items: [
 		{
 			label: 'about...',
@@ -123,6 +130,8 @@ Menus.settings = {
 
 Menus.project = {
 	icon: 'file',
+	label: 'Project',
+	description: 'Actions relating to MicroBlocks projects.',
 	items: [
 		{
 			label: 'Save',
@@ -172,6 +181,8 @@ Menus.project = {
 
 Menus.connection = {
 	icon : 'usb',
+	label: 'Connection',
+	description: 'Connect to a microcontroller via USB or BLE, or open Boardie.',
 	items: [
 		{
 			label: 'connect (USB)',
@@ -205,6 +216,9 @@ Menus.elementFor = function (selector) {
 
 	let descriptor = this[selector];
 	let icon = Icon.forSelector(descriptor.icon);
+
+	icon.ariaLabel = descriptor.label;
+	icon.ariaDescription = descriptor.description;
 
 	icon.openMenu = () => {
 		// dynamically generate the menu each time, since it can change depending on

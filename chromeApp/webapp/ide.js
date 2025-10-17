@@ -4,7 +4,7 @@
 
 // Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
 
-// ide.js - A bunch of IDE utilities. Eventually, probably the whole IDE?
+// ide.js - A bunch of IDE utilities. Eventually, the whole IDE.
 
 // Bernat Romagosa, 2025
 
@@ -20,7 +20,6 @@ IDE.init = function () {
 	this.board = this.newBoard();
 	this.build();
 };
-
 
 IDE.newProject = function () {
 	return { title: null, hasCustomBlocks: false };
@@ -48,11 +47,15 @@ IDE.toggleUserPreference = function (pref) {
 	GP.apiCall('ide.applyUserPreferences');
 };
 
+
+// Top Bar
 IDE.populateTopBar = function (container) {
 	// add logo
 	let logo = document.createElement('img');
 	logo.setAttribute('src', 'img/logo.svg');
 	logo.classList.add('logo');
+	logo.ariaLabel = 'MicroBlocks';
+	logo.ariaDescription = 'Rosa, the MicroBlocks bunny, is named after Rózsa Péter, a great mathematician.';
 	container.appendChild(logo);
 
 	// add top menus
@@ -104,34 +107,52 @@ IDE.populateTopBar = function (container) {
 	});
 };
 
+
 // Tip Bar
-IDE.setTip = function(title, content) {
-	document.querySelector('.tip-title').textContent = title;
-	let icons = {};
-	icons['[l]'] = 'mouse-left-button';
-	icons['[r]'] = 'mouse-right-button';
-	icons['(-o)'] = 'bool_true';
-	icons['(o-)'] = 'bool_false';
-	let tipHTML = content;
+IDE.tipBar = { icons: {} };
+IDE.tipBar.init = function () {
+	this.icons['[l]'] = 'mouse-left-button';
+	this.icons['[r]'] = 'mouse-right-button';
+	this.icons['(-o)'] = 'bool_true';
+	this.icons['(o-)'] = 'bool_false';
+
+	this.titleElement = document.querySelector('.tip-title');
+	this.contentElement = document.querySelector('.tip-content');
+
+	document.addEventListener(
+		'ide.tip',
+		e => { IDE.tipBar.setTip(e.detail.value[0], e.detail.value[1]); }
+	);
+
+	document.querySelectorAll('*').forEach(element => {
+		element.onmouseenter = () => {
+			if (element.ariaLabel && element.ariaDescription) {
+				this.setTip(element.ariaLabel, element.ariaDescription);
+			}
+		}
+	});
+};
+
+IDE.tipBar.setTip = function (title, content) {
+	this.titleElement.textContent = GetText.localize(title);
+	let tipHTML = GetText.localize(content);
 	if (content !== null) {
-		Object.keys(icons).forEach(key => {
+		Object.keys(this.icons).forEach(key => {
 			tipHTML =
-				tipHTML.replace(
+				tipHTML.replaceAll(
 					key,
-					'<img src="img/' + icons[key] + '.svg" class="tip-icon"></img>'
+					'<img src="img/' + this.icons[key] + '.svg" class="tip-icon"></img>'
 				);
 		});
 	}
-	document.querySelector('.tip-content').innerHTML = tipHTML;
+	this.contentElement.innerHTML = tipHTML;
 };
 
-document.addEventListener(
-	'ide.tip', (e) => { IDE.setTip(e.detail.value[0], e.detail.value[1]); }
-);
 
 // Build the IDE
 IDE.build = function () {
-	IDE.populateTopBar(document.querySelector('.top-bar'));
+	this.populateTopBar(document.querySelector('.top-bar'));
+	this.tipBar.init();
 	// check connection every 500ms
 	setInterval(()=>{ GP.apiCall('ide.updateConnection'); },500);
 };
