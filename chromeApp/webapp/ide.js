@@ -16,16 +16,16 @@
 IDE = {};
 
 IDE.init = function () {
-	this.project = this.newProject();
-	this.board = this.newBoard();
+	this.project = this.emptyProject();
+	this.board = this.emptyBoard();
 	this.build();
 };
 
-IDE.newProject = function () {
+IDE.emptyProject = function () {
 	return { title: null, hasCustomBlocks: false };
 };
 
-IDE.newBoard = function () {
+IDE.emptyBoard = function () {
 	return { hasFS: false, canDoBLE: false, connected: false, type: null };
 }
 
@@ -149,9 +149,20 @@ IDE.tipBar.setTip = function (title, content) {
 };
 
 
+// Zoom Buttons. Eventually also undo/redo
+
+
+IDE.populateScriptControls = (element) => {
+	['zoomOut', 'restoreZoom', 'zoomIn'].forEach(selector => {
+		element.appendChild(Buttons.elementFor(selector));
+	});
+}
+
+
 // Build the IDE
 IDE.build = function () {
 	this.populateTopBar(document.querySelector('.top-bar'));
+	this.populateScriptControls(document.querySelector('.script-controls'));
 	this.tipBar.init();
 	// check connection every 500ms
 	setInterval(()=>{ GP.apiCall('ide.updateConnection'); },500);

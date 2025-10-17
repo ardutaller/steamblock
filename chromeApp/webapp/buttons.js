@@ -26,6 +26,24 @@ const Buttons = {
 		label: 'Stop',
 		description: 'Stop all running scripts and make sure all scripts have been compiled and uploaded to the microcontroller.',
 		action: () => { GP.apiCall('ide.stopAll'); }
+	},
+	zoomOut: {
+		icon: 'img/zoomOut.svg',
+		label: 'Zoom out',
+		description: 'Decrease block size',
+		action: () => { GP.apiCall('ide.zoomOut'); }
+	},
+	restoreZoom: {
+		icon: 'img/restoreZoom.svg',
+		label: 'Restore zoom',
+		description: 'Restore block size to 100%',
+		action: () => { GP.apiCall('ide.restoreZoom'); }
+	},
+	zoomIn: {
+		icon: 'img/zoomIn.svg',
+		label: 'Zoom in',
+		description: 'Increase block size',
+		action: () => { GP.apiCall('ide.zoomIn'); }
 	}
 };
 
@@ -39,7 +57,10 @@ Buttons.elementFor = function (selector) {
 		return this.connectWidget();
 	}
 	let descriptor = this[selector];
-	let icon = Icon.forSelector(descriptor.icon);
+	let icon =
+		descriptor.icon.startsWith('img') ?
+			Icon.forUrl(descriptor.icon) :
+			Icon.forSelector(descriptor.icon);
 	icon.onclick = descriptor.action;
 	icon.ariaLabel = descriptor.label;
 	icon.ariaDescription = descriptor.description; // excuse the alliteration :)

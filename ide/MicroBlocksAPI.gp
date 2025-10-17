@@ -49,6 +49,15 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.updateConnection') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		updateConnection runtime
+	} (endPoint == 'ide.zoomIn') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		zoomIn editor
+	} (endPoint == 'ide.zoomOut') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		zoomOut editor
+	} (endPoint == 'ide.restoreZoom') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		restoreZoom editor
 
 	// Project
 	} (endPoint == 'project.save') {

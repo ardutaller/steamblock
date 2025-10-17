@@ -143,24 +143,16 @@ method darkModeChanged MicroBlocksScripter {
 		scriptsFrameColor = (microBlocksColor 'blueGray' 800)
 		blocksFrameColor = (microBlocksColor 'blueGray' 750)
 		sliderFGColor = (microBlocksColor 'blueGray' 300)
-		scriptingActionsContainerColor = (copy (microBlocksColor 'blueGray' 800))
-		scriptingActionsContainerBorderColor = (copy (microBlocksColor 'blueGray' 600))
 	} else {
 		scriptsFrameColor = (lighter (microBlocksColor 'blueGray' 50) 40)
 		blocksFrameColor = (microBlocksColor 'blueGray' 50)
 		sliderFGColor = (microBlocksColor 'blueGray' 200)
-		scriptingActionsContainerColor = (microBlocksColor 'white')
-		scriptingActionsContainerBorderColor = (microBlocksColor 'blueGray' 75)
 	}
 
 	setColor scriptsFrame scriptsFrameColor
 	setColor blocksFrame blocksFrameColor
 	setSliderColors scriptsFrame sliderBGColor sliderFGColor
 	setSliderColors blocksFrame sliderBGColor sliderFGColor
-	scriptingActionsContainer = (scriptingActionsContainer projectEditor)
-	setColor scriptingActionsContainer scriptingActionsContainerColor
-	setAlpha (color scriptingActionsContainer) 200
-	setBorderColor scriptingActionsContainer scriptingActionsContainerBorderColor
 	if libWasSelected {
 		librarySelected this
 	} else {

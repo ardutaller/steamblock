@@ -26,9 +26,8 @@ to uload fileName {
 	return (load fileName (topLevelModule))
 }
 
-defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode versionCheckOnStartup
+defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode versionCheckOnStartup
 
-method scriptingActionsContainer MicroBlocksEditor { return scriptingActionsContainer }
 method fileName MicroBlocksEditor { return fileName }
 method project MicroBlocksEditor { return (project scripter) }
 method scripter MicroBlocksEditor { return scripter }
@@ -78,7 +77,6 @@ method initialize MicroBlocksEditor {
 	lastProjectFolder = 'Examples'
 	addPart morph (morph scripter)
 	addTipBar this
-	addZoomButtons this
 	clearProject this
 	fixLayout this
 	setFPS morph 200
@@ -113,52 +111,12 @@ method scaleChanged MicroBlocksEditor {
 	// rebuild the editor
 	addPart morph (morph scripter)
 	addTipBar this
-	addZoomButtons this
 
 	fixLayout scripter
 	fixLayout this
 }
 
 // zoom buttons
-
-method addZoomButtons MicroBlocksEditor {
-	scale = (global 'scale')
-	scriptingActionsContainer = (newBox (newMorph) (copy (microBlocksColor 'white')) (4 * scale) scale false false true (microBlocksColor 'blueGray' 75))
-	setAlpha (color scriptingActionsContainer) 220
-	setExtent (morph scriptingActionsContainer) (120 * scale) (30 * scale)
-
-	zoomButtons = (array
-		(newZoomButton this 'zoomIn')
-		(newZoomButton this 'restoreZoom')
-		(newZoomButton this 'zoomOut'))
-	for button zoomButtons {
-		addPart (morph scriptingActionsContainer) (morph button)
-	}
-	addPart morph (morph scriptingActionsContainer)
-	addZoomButtonHints this
-	fixZoomButtonsLayout this
-}
-
-method newZoomButton MicroBlocksEditor iconName action {
-	if (isNil action) { // use the selector name as the action
-		action = (action iconName this)
-	}
-	iconScale = (1.33 * (global 'scale'))
-	normalColor = (microBlocksColor 'blueGray' 400)
-	highlightColor = (microBlocksColor 'yellow')
-	button = (newButton '' action)
-	bm1 = (readSVGIcon iconName normalColor nil iconScale)
-	bm2 = (readSVGIcon iconName highlightColor nil iconScale)
-	setCostumes button bm1 bm2
-	return button
-}
-
-method addZoomButtonHints MicroBlocksEditor {
-	// add zoom button hints in current language
-	setHint (at zoomButtons 1) (localized 'Increase block size')
-	setHint (at zoomButtons 2) (localized 'Restore block size to 100%')
-	setHint (at zoomButtons 3) (localized 'Decrease block size')
-}
 
 method restoreZoom MicroBlocksEditor {
 	setBlockScalePercent this 100
@@ -193,22 +151,6 @@ method setBlockScalePercent MicroBlocksEditor newPercent {
 	setBlockScalePercent (scriptEditor scripter) newPercent
 	syncScripts (smallRuntime)
 	setCursor 'default'
-}
-
-method fixZoomButtonsLayout MicroBlocksEditor {
-	scale = (global 'scale')
-	right = ((right morph) - (24 * scale))
-	bottom = ((bottom morph) - (24 * scale))
-	firstButtonMorph = (morph (at zoomButtons 1))
-	containerMorph = (morph scriptingActionsContainer)
-	setExtent containerMorph ((((width firstButtonMorph) + (8 * scale)) * (count (parts containerMorph))) + (8 * scale)) ((height firstButtonMorph) + (16 * scale))
-	setRight containerMorph right
-	setBottom containerMorph bottom
-	for button zoomButtons {
-		right = (right - ((width (morph button)) + (8 * scale)))
-		setLeft (morph button) right
-		setTop (morph button) ((bottom - (height (morph button))) - (8 * scale))
-	}
 }
 
 // tip bar
@@ -923,7 +865,6 @@ method topBarHeight MicroBlocksEditor { return (48 * (global 'scale')) }
 
 method fixLayout MicroBlocksEditor fromScripter {
 	setExtent morph (width (morph (global 'page'))) (height (morph (global 'page')))
-	fixZoomButtonsLayout this
 	if (true != fromScripter) { fixScripterLayout this }
 }
 
@@ -1160,7 +1101,6 @@ method languageChanged MicroBlocksEditor {
 	setCursor 'wait'
 	languageChanged scripter
 	updateIndicator this true
-	addZoomButtonHints this
 	setCursor 'default'
 }
 
