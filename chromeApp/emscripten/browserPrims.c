@@ -772,16 +772,16 @@ static OBJ primOpenWindow(int nargs, OBJ args[]) {
 		var w = $0;
 		var h = $1;
 
-		// make background gray to make any gaps less noticable
-		document.body.style.backgroundColor = "rgb(200,200,200)";
+		// make background same color as the IDE to make any gaps less noticable
+		document.body.style.backgroundColor = "#2d3143";
 
 		var winCnv = document.getElementById('canvas');
 		if (winCnv) {
-		// 19 is the height of the tip bar
+		// 24 is the height of the tip bar
 			winCnv.style.setProperty('width', w + 'px');
-			winCnv.style.setProperty('height', h - 19 + 'px');
+			winCnv.style.setProperty('height', h - 24 + 'px');
 			winCnv.width = 2 * w;
-			winCnv.height = 2 * (h - 19);
+			winCnv.height = 2 * (h - 24);
 			GP.isRetina = true;
 		}
 	}, w, h);

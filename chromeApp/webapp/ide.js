@@ -90,14 +90,25 @@ IDE.populateTopBar = function (container) {
 // Tip Bar
 IDE.setTip = function(title, content) {
 	document.querySelector('.tip-title').textContent = title;
-	//TODO parse icon placeholders into actual icons
-	document.querySelector('.tip-content').textContent = content;
-}
+	let icons = {};
+	icons['[l]'] = 'mouse-left-button';
+	icons['[r]'] = 'mouse-right-button';
+	icons['(-o)'] = 'bool_true';
+	icons['(o-)'] = 'bool_false';
+	let tipHTML = content;
+	Object.keys(icons).forEach(key => {
+		tipHTML =
+			tipHTML.replace(
+				key,
+				'<img src="img/' + icons[key] + '.svg" class="tip-icon"></img>'
+			);
+	});
+	document.querySelector('.tip-content').innerHTML = tipHTML;
+};
 
 document.addEventListener(
 	'ide.tip', (e) => { IDE.setTip(e.detail.value[0], e.detail.value[1]); }
 );
-
 
 // GP sets these via `setProperty MicroBlocksAPI path value`
 // When a property is set, an event with that path is fired in the document.
