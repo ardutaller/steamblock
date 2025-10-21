@@ -4,7 +4,7 @@
 
 // Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
 
-// buttons.js - Create all sorts of buttons.
+// buttons.js - Create all sorts of buttons and icons.
 
 // Bernat Romagosa, 2025
 
@@ -109,4 +109,21 @@ Buttons.connectWidget = function () {
 	container.onclick = menu.openMenu;
 
 	return container;
+};
+
+
+// Icons
+const Icon = {};
+
+Icon.forSelector = function (selector) {
+	return this.forUrl('img/icon-' + selector + '.svg');
+};
+
+Icon.forUrl = function (url) {
+	let icon = document.createElement('div');
+	let img = document.createElement('img');
+	icon.classList.add('icon');
+	img.setAttribute('src', url);
+	icon.appendChild(img);
+	return icon;
 };

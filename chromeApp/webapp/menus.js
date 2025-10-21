@@ -16,32 +16,35 @@ Menus.language = {
 	items: []
 };
 
-// fill language menu out of available locales
-fetch('translations/locales.json')
-	.then(response => response.json())
-	.then(descriptors => {
-		descriptors.forEach(descriptor => {
-			Menus.language.items.push({
-				label: descriptor[0],
-				action: () => { GetText.setLocale(descriptor[1]); },
-				checked: () => { return GetText.currentLocale == descriptor[1] }
-			});
+Menus.language.init = function () {
+	// fill language menu out of available locales
+	fetch('translations/locales.json')
+		.then(response => response.json())
+		.then(descriptors => {
+			descriptors.forEach(descriptor => {
+				this.items.push({
+					label: descriptor[0],
+					action: () => { GetText.setLocale(descriptor[1]); },
+					checked: () => { return GetText.currentLocale == descriptor[1] }
+				});
+			})
 		})
-	})
-	.then(() => {
-		Menus.language.items.push({ label: '-' });
-		Menus.language.items.push({
-			label: 'Missing language?',
-			action: () => {
-				window.open('https://wiki.microblocks.fun/en/translating', '_blank');
-			}
+		.then(() => {
+			this.items.push({ label: '-' });
+			this.items.push({
+				label: 'Missing language?',
+				action: () => {
+					window.open('https://wiki.microblocks.fun/en/translating', '_blank');
+				}
+			});
+			this.items.push({ label: '-' });
+			this.items.push({
+				label: 'Custom...',
+				action: () => { GP.apiCall('locale.loadCustomFile'); }
+			});
 		});
-		Menus.language.items.push({ label: '-' });
-		Menus.language.items.push({
-			label: 'Custom...',
-			action: () => { GP.apiCall('locale.loadCustomFile'); }
-		});
-	});
+};
+Menus.language.init();
 
 Menus.settings = {
 	icon: 'gear',
@@ -71,7 +74,7 @@ Menus.settings = {
 		{
 			label: 'advanced mode',
 			checked: () => { return IDE.userPreference('devMode'); },
-			action: () => { IDE.toggleUserPreference('devMode'); }
+			action: () => { IDE.toggleAdvancedMode(); }
 		},
 		{ label: '-', hidden: () => { return !IDE.userPreference('devMode'); } },
 		{
@@ -213,7 +216,6 @@ Menus.connection = {
 
 Menus.elementFor = function (selector) {
 	// return an HTML tree containing the icon and menu for a menu selector
-
 	let descriptor = this[selector];
 	let icon = Icon.forSelector(descriptor.icon);
 
