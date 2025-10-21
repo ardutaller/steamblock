@@ -118,6 +118,8 @@ canvas.emscripten { border: 0px none; }
 	width: 192px;
 	min-width: 192px; /* Should change to 65 when the final layout is done */
 	max-width: 300px;
+	display: flex;
+	flex-direction: column;
 }
 
 .tip-bar {
@@ -167,6 +169,41 @@ canvas.emscripten { border: 0px none; }
 
 .category-button l- {
 	align-self: center;
+}
+
+.lib-header {
+	margin-top: 18px;
+	margin-left: 6px;
+	margin-bottom: 14px;
+	font-size: 12px;
+	color: #6e7895;
+	padding-left: 12px;
+	border-bottom: 1px solid;
+	padding-bottom: 5px;
+}
+
+.lib-button-holder {
+	padding-left: 16px;
+}
+
+.libraries {
+	padding-top: 12px;
+}
+
+.round-button {
+	cursor: pointer;
+	border: 2px solid #3e4259;
+	border-radius: 14px;
+	color: #c5b3b0;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 2px 8px;
+	height: 16px;
+}
+
+.round-button:hover {
+	background-color: gold;
+	color: #3e4259;
 }
 
 .tip-bar span {

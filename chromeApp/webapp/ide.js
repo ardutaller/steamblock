@@ -15,7 +15,8 @@
 
 IDE = {
 	currentMenu: null, // remember open menu so it can be closed on outside click
-	currentCategory: 'cat;Control'
+	currentCategory: 'cat;Control',
+	libraryList: []
 };
 
 // Initialization
@@ -168,18 +169,22 @@ IDE.tipBar.setTip = function (title, content) {
 
 
 // Zoom Buttons. Eventually also undo/redo
-IDE.populateScriptControls = (element) => {
+IDE.populateScriptControls = function (element) {
 	['zoomOut', 'restoreZoom', 'zoomIn'].forEach(selector => {
 		element.appendChild(Buttons.elementFor(selector));
 	});
 };
 
 
-// Category list
-IDE.populateCategories = (element) => {
-	element.replaceWith(Categories.build());
+// Category and library lists
+IDE.populateCategories = function (element) {
+	element.replaceWith(Categories.buildStandard());
 };
 
+IDE.populateLibraries = function (element) {
+	console.log(this.libraryList);
+	element.replaceWith(Categories.buildLibraries(this.libraryList));
+};
 
 // Build the IDE
 IDE.build = function () {

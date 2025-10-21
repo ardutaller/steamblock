@@ -20,6 +20,9 @@
 		<meta name="msapplication-TileImage" content="icons/Bunny192.png">
 		<meta name="msapplication-TileColor" content="#FFFFFF">
 
+		<!-- Localization -->
+		<script type="text/javascript" src="gettext.js" defer></script>
+
 		<style>
 		</style>
 	</head>
@@ -51,8 +54,12 @@
 			<nav class="top-bar"></nav>
 			<div class="workspace">
 				<div class="left-bar">
-					<div class="categories">
-					</div>
+					<div class="categories"></div>
+					<span class="lib-header"><l->LIBRARIES</l-></span>
+					<nav class="lib-button-holder">
+						<a class="round-button" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
+					</nav>
+					<div class="libraries"></div>
 				</div>
 				<div class="emscripten">
 					<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
@@ -70,8 +77,6 @@
 		<script type="text/javascript" src="FileSaver.js"></script>
 		<script type="text/javascript" src="gp_wasm.js"></script>
 
-		<!-- Localization -->
-		<script type="text/javascript" src="gettext.js"></script>
 
 		<!-- IDE -->
 		<script type="text/javascript" src="ide.js"></script>
@@ -81,7 +86,7 @@
 
 		<script>
 			// emitted by GP (MicroBlocksEditor.gp → openMicroBlocksEditor)
-			document.addEventListener('ide.ready', (e) => { IDE.init(); });
+			document.addEventListener('ready', (e) => { IDE.init(); });
 		</script>
 
 	</body>

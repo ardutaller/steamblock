@@ -40,13 +40,37 @@ const Categories = {
 	]
 };
 
-Categories.build = function () {
+Categories.colorFor = function (categoryName) {
+	let descriptor = this.descriptors.find(descriptor => {
+		return descriptor.label == 'cat;' + categoryName
+	});
+	// default "Generic" category color is #1e997a
+	return descriptor ? descriptor.color : '#1e997a';
+};
+
+Categories.build = function (descriptors, className) {
 	let container = document.createElement('div');
-	container.classList.add('categories');
-	this.descriptors.forEach(descriptor => {
+	container.classList.add(className);
+	descriptors.forEach(descriptor => {
 		container.appendChild(this.elementFor(descriptor));
 	});
 	return container;
+};
+
+Categories.buildStandard = function () {
+	return this.build(this.descriptors, 'categories');
+};
+
+Categories.buildLibraries = function (descriptors) {
+	return this.build(
+		descriptors.map(descriptor => {
+			return {
+				label: descriptor.label,
+				color: this.colorFor(descriptor.category)
+			};
+		}),
+		'libraries'
+	);
 };
 
 Categories.elementFor = function (descriptor) {
@@ -83,5 +107,13 @@ document.addEventListener(
 				}
 			}
 		});
+	}
+);
+
+document.addEventListener(
+	'libraryList',
+	(e) => {
+		if (IDE.libraryList?.length > 0) {
+			IDE.populateLibraries(document.querySelector('.libraries')); }
 	}
 );

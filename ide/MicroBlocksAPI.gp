@@ -61,6 +61,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.selectCategory') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		selectCategory scripter (at params 1)
+	} (endPoint == 'ide.showLibraryDialog') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		importLibrary scripter
 
 	// Project
 	} (endPoint == 'project.save') {
@@ -141,7 +144,7 @@ method setProperty MicroBlocksAPI path value {
 	if ('Browser' == (platform)) {
 		if (isClass value 'String') {
 			value = (join '"' value '"')
-		} (isClass value 'Array') {
+		} else {
 			value = (jsonStringify value)
 		}
 		browserStoreIDEProperty path (toString value)

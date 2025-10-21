@@ -537,7 +537,11 @@ static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
 			parts.forEach(
 				function (part) {
 					if (typeof obj[part] == 'object') {
-						obj = obj[part];
+						if (Array.isArray(obj[part])) {
+							obj[part] = value;
+						} else {
+							obj = obj[part];
+						}
 					} else {
 						obj[part] = value;
 					}

@@ -1476,17 +1476,22 @@ method importLibraryFromString MicroBlocksScripter data libName fileName asImple
 }
 
 method updateLibraryList MicroBlocksScripter {
-	if (not (showHiddenBlocksEnabled projectEditor)) {
-		libNames = (list)
-		for libName (sorted (keys (libraries mbProject))) {
-			lib = (at (libraries mbProject) libName)
-			if (not (isImplementationLib lib)) {
-				add libNames (moduleName lib)
-			}
+	libDescriptors = (list)
+	libNames = (list)
+	for libName (sorted (keys (libraries mbProject))) {
+		lib = (at (libraries mbProject) libName)
+		if (or
+			(not (isImplementationLib lib))
+			(showHiddenBlocksEnabled projectEditor)
+		) {
+			add libNames (moduleName lib)
+			dict = (dictionary)
+			atPut dict 'label' (moduleName lib)
+			atPut dict 'category' (moduleCategory lib)
+			add libDescriptors dict
 		}
-	} else {
-		libNames = (sorted (keys (libraries mbProject)))
 	}
+	setProperty (api (smallRuntime)) 'libraryList' libDescriptors
 	setCollection libSelector libNames
 	oldSelection = (selection libSelector)
 	if (not (contains libNames oldSelection)) {
