@@ -485,14 +485,8 @@ method metadataBytesFor SmallRuntime aBlockOrFunction {
 method readCodeFromNextBoardConnected SmallRuntime {
 	readFromBoard = true
 	disconnected = false
-	if ('Browser' == (platform)) {
-		// in browser, cannot add the spinner before user has clicked connect icon
-		inform 'Connect board to proceed.'
-		return
-	}
-	decompilerStatus = (localized 'Plug in the board.')
-	spinner = (newSpinner (action 'decompilerStatus' (smallRuntime)) (action 'decompilerDone' (smallRuntime)))
-	addPart (global 'page') spinner
+	// in browser, cannot add the spinner before user has clicked connect icon
+	inform 'Connect board to proceed.'
 }
 
 method readCodeFromBoard SmallRuntime {
@@ -500,18 +494,16 @@ method readCodeFromBoard SmallRuntime {
 	waitForPing this
 	decompilerStatus = (localized 'Reading project from board...')
 
-	if ('Browser' == (platform)) {
-		prompter = (findMorph 'Prompter')
-		if (notNil prompter) { destroy prompter } // remove the prompt to connect board
+	prompter = (findMorph 'Prompter')
+	if (notNil prompter) { destroy prompter } // remove the prompt to connect board
 
-		if (not (canReplaceCurrentProject (findMicroBlocksEditor))) {
-			return // uncommon: user started writing code before connecting the board
-		}
-
-		// in browser, spinner was not added earlier
-		spinner = (newSpinner (action 'decompilerStatus' (smallRuntime)) (action 'decompilerDone' (smallRuntime)))
-		addPart (global 'page') spinner
+	if (not (canReplaceCurrentProject (findMicroBlocksEditor))) {
+		return // uncommon: user started writing code before connecting the board
 	}
+
+	// in browser, spinner was not added earlier
+	spinner = (newSpinner (action 'decompilerStatus' (smallRuntime)) (action 'decompilerDone' (smallRuntime)))
+	addPart (global 'page') spinner
 
 	sendMsg this 'getVarNamesMsg'
 	lastRcvMSecs = (msecsSinceStart)
@@ -774,7 +766,7 @@ method softReset SmallRuntime {
 }
 
 method isWebSerial SmallRuntime {
-	return (and ('Browser' == (platform)) (browserHasWebSerial))
+	return (browserHasWebSerial)
 }
 
 method webSerialConnect SmallRuntime action {
@@ -798,7 +790,7 @@ method webSerialConnect SmallRuntime action {
 		lastPingRecvMSecs = 0
 		sendMsg this 'pingMsg'
 	} else {
-		if (and ('Browser' == (platform)) (not (or (browserIsChromeOS) (browserHasWebSerial)))) { // running in a browser w/o WebSerial (or it is not enabled)
+		if (not (or (browserIsChromeOS) (browserHasWebSerial))) { // running in a browser w/o WebSerial (or it is not enabled)
 			inform (localized 'Only recent Chrome and Edge browsers support WebSerial.')
 			return
 		}
@@ -820,92 +812,27 @@ method webSerialConnect SmallRuntime action {
 method selectPort SmallRuntime {
 	if (isNil disconnected) { disconnected = false }
 
-	if ('Browser' == (platform)) {
-		menu = (menu 'Connect' (action 'webSerialConnect' this) true)
-		if (and (isNil port) ('boardie' != portName)) {
-			addItem menu 'connect (USB)'
-			addItem menu 'connect (BLE)'
-			addLine menu
-			addItem menu 'open Boardie'
-		} else {
-			addItem menu 'disconnect'
-		}
-		popUpAtHand menu (global 'page')
-		return
-	}
-
-	portList = (portList this)
-
-	menu = (menu 'Connect' (action 'setPort' this) true)
-	if (or disconnected (devMode)) {
-		for s portList {
-			if (or (isNil port) (portName != s)) { addItem menu s }
-		}
-		if (isEmpty portList) {
-			addItem menu 'Connect board and try again'
-		}
-	}
-	if (and (devMode) ('Browser' != (platform))) {
+	menu = (menu 'Connect' (action 'webSerialConnect' this) true)
+	if (and (isNil port) ('boardie' != portName)) {
+		addItem menu 'connect (USB)'
+		addItem menu 'connect (BLE)'
 		addLine menu
-		addItem menu 'other...'
-	}
-	if (notNil port) {
-		addLine menu
-		if (notNil portName) {
-			addItem menu (join 'disconnect (' portName ')')
-		} else {
-			addItem menu 'disconnect'
-		}
+		addItem menu 'open Boardie'
+	} else {
+		addItem menu 'disconnect'
 	}
 	popUpAtHand menu (global 'page')
+	return
 }
 
 method portList SmallRuntime {
 	portList = (list)
-	if ('Win' == (platform)) {
-		portList = (list)
-		for pname (listSerialPorts) {
-			blackListed = (or
-				((containsSubString pname 'Bluetooth') > 0)
-				((containsSubString pname '(COM1)') > 0)
-				((containsSubString pname 'Intel(R) Active Management') > 0))
-			if (not blackListed) {
-				add portList pname
-			}
-		}
-	} ('Browser' == (platform)) {
-		listSerialPorts // first call triggers callback
-		waitMSecs 5
-		portList = (list)
-		for portName (listSerialPorts) {
-			if (not (beginsWith portName '/dev/tty.')) {
-				add portList portName
-			}
-		}
-	} else {
-		for fn (listFiles '/dev') {
-			if (or	(notNil (nextMatchIn 'usb' (toLowerCase fn) )) // MacOS
-					(notNil (nextMatchIn 'acm' (toLowerCase fn) ))
-			) { // Linux
-				if (isNil (nextMatchIn 'usbmon' (toLowerCase fn))) { // ignore 'usbmonX' devices
-					add portList (join '/dev/' fn)
-				}
-			}
-		}
-		if ('Linux' == (platform)) {
-			// add pseudoterminal
-			ptyName = (readFile '/tmp/ublocksptyname')
-			if (notNil ptyName) {
-				add portList ptyName
-			}
-		}
-		// Mac OS lists a port as both cu.<name> and tty.<name>
-		for s (copy portList) {
-			if (beginsWith s '/dev/tty.') {
-				if (contains portList (join '/dev/cu.' (substring s 10))) {
-					remove portList s
-				}
-			}
+	listSerialPorts // first call triggers callback
+	waitMSecs 5
+	portList = (list)
+	for portName (listSerialPorts) {
+		if (not (beginsWith portName '/dev/tty.')) {
+			add portList portName
 		}
 	}
 	return portList
@@ -1027,11 +954,8 @@ method updateConnection SmallRuntime {
 	if (or (isNil port) (not (isOpenSerialPort port))) {
 		clearRunningHighlights this
 		closePort this
-		if ('Browser' == (platform)) {
-			portName = nil // clear 'boardie' when boardie is closed with power button
-			return 'not connected' // user must initiate connection attempt
-		}
-		return (tryToConnect this)
+		portName = nil // clear 'boardie' when boardie is closed with power button
+		return 'not connected' // user must initiate connection attempt
 	}
 
 	// if the port is open and it is time, send a ping
@@ -1137,24 +1061,8 @@ method tryToConnect SmallRuntime {
 	closePort this
 	connectionStartTime = nil
 
-	if ('Browser' == (platform)) {  // disable autoconnect on ChromeOS
-		disconnected = true
-		return 'not connected'
-	}
-
-	portNames = (portList this)
-	if (isEmpty portNames) { return 'not connected' } // no ports available
-
-	// try the port following portName in portNames
-	// xxx to do: after trying all the ports, call tryToInstallVM (but only if portNames isn't empty)
-	i = 1
-	if (notNil portName) {
-		i = (indexOf portNames portName)
-		if (isNil i) { i = 0 }
-		i = ((i % (count portNames)) + 1)
-	}
-	portName = (at portNames i)
-	openPortAndSendPing this
+	disconnected = true
+	return 'not connected'
 }
 
 method openPortAndSendPing SmallRuntime {
@@ -2257,7 +2165,7 @@ method ensurePortOpen SmallRuntime {
 			if (isNil port) { return }
 			// connected!
 			disconnected = false
-			if ('Browser' == (platform)) { waitMSecs 100 } // let browser callback complete
+			waitMSecs 100 // let browser callback complete
 		}
 	}
 }
@@ -2487,13 +2395,8 @@ method getFileFromBoard SmallRuntime {
 
 method getAndSaveFile SmallRuntime remoteFileName remoteFileSize {
 	data = (readFileFromBoard this remoteFileName remoteFileSize)
-	if ('Browser' == (platform)) {
-		if (confirm (global 'page') nil 'Save file?') {
-			browserWriteFile data remoteFileName 'fileFromBoard'
-		}
-	} else {
-		fName = (fileToWrite remoteFileName)
-		if ('' != fName) { writeFile fName data }
+	if (confirm (global 'page') nil 'Save file?') {
+		browserWriteFile data remoteFileName 'fileFromBoard'
 	}
 }
 
@@ -2536,12 +2439,8 @@ method readFileFromBoard SmallRuntime remoteFileName remoteFileSize {
 }
 
 method putFileOnBoard SmallRuntime {
-	if ('Browser' == (platform)) {
-		putNextDroppedFileOnBoard (findMicroBlocksEditor)
-		browserReadFile ''
-	} else {
-		pickFileToOpen (action 'writeFileToBoard' this)
-	}
+	putNextDroppedFileOnBoard (findMicroBlocksEditor)
+	browserReadFile ''
 }
 
 method writeFileToBoard SmallRuntime srcFileName fileData {
@@ -2899,62 +2798,7 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 		openURL 'https://www.duelink.com/docs/language/microblocks#standalone-with-microblocks'
 		return
 	}
-	if ('Browser' == (platform)) {
-		installVMInBrowser this eraseFlashFlag downloadLatestFlag
-		return
-	}
-	boards = (collectBoardDrives this)
-	if ((count boards) == 1) {
-		b = (first boards)
-		copyVMToBoard this (first b) (last b)
-	} ((count boards) > 1) {
-		menu = (menu 'Select board:' this)
-		for b boards {
-			addItem menu (niceBoardName this b) (action 'copyVMToBoard' this (first b) (last b))
-		}
-		popUpAtHand menu (global 'page')
-	} (notNil boardType) {
-		if (and (contains (array 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP8266' 'ESP32' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT') boardType)
-				(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
-			flashVM this boardType eraseFlashFlag downloadLatestFlag
-		} (isOneOf boardType 'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort') {
-			adaFruitResetMessage this
-		} (isOneOf boardType 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040') {
-			rp2040ResetMessage this
-		}
-	} else {
-		disconnected = true
-		closePort this
-		menu = (menu 'Select board type:' this)
-		if (not eraseFlashFlag) {
-			for boardName (array 'micro:bit' 'Calliope mini') {
-				addItem menu boardName (action 'noBoardFoundMessage' this)
-			}
-			addLine menu
-		}
-		for boardName (array
-				'Citilab ED1'
-				'micro:STEAMakers'
-				'KidsBits'
-				'Foxbit'
-				'CoCube'
-				'Databot'
-//				'M5Stack-Core'
-				'ESP32'
-				'ESP8266'
-		) {
-			addItem menu boardName (action 'flashVM' this boardName eraseFlashFlag downloadLatestFlag)
-		}
-		if (not eraseFlashFlag) {
-			addLine menu
-//			addItem menu 'ELECFREAKS Pico:ed' (action 'rp2040ResetMessage' this)
-			addItem menu 'ELECFREAKS Wukong2040' (action 'rp2040ResetMessage' this)
-			addItem menu 'RP2040 (Pico or Pico-W)' (action 'rp2040ResetMessage' this)
-			addItem menu 'MakerPort' (action 'adaFruitResetMessage' this)
-			addItem menu 'Adafruit Board' (action 'adaFruitResetMessage' this)
-		}
-		popUpAtHand menu (global 'page')
-	}
+	installVMInBrowser this eraseFlashFlag downloadLatestFlag
 }
 
 method niceBoardName SmallRuntime board {
@@ -3307,7 +3151,7 @@ method startFirmwareCountdown SmallRuntime fileName {
 method firmwareInstallSecsRemaining SmallRuntime {
 	if (isNil firmwareInstallTimer) { return 0 }
 	installWaitMSecs = 6000
-	if (and ('Browser' == (platform)) (browserIsChromeOS)) {
+	if (browserIsChromeOS) {
 		installWaitMSecs = 16000
 	}
 	return (ceiling ((installWaitMSecs - (msecs firmwareInstallTimer)) / 1000))
@@ -3347,17 +3191,12 @@ method removeFlasher SmallRuntime {
 }
 
 method flashVM SmallRuntime boardName eraseFlashFlag downloadLatestFlag {
-	if ('Browser' == (platform)) {
-		disconnected = true
-		flasherPort = port
-		port = nil
-		// workaround for ESP32 install issue introduced in 1.2.89:
-		flasherPort = nil
-		portName = 'webserial'
-	} else {
-		setPort this 'disconnect'
-		flasherPort = nil
-	}
+	disconnected = true
+	flasherPort = port
+	port = nil
+	// workaround for ESP32 install issue introduced in 1.2.89:
+	flasherPort = nil
+	portName = 'webserial'
 	vmVersion = nil
 	boardType = nil
 	flasher = (newFlasher boardName portName eraseFlashFlag downloadLatestFlag)
@@ -3404,7 +3243,7 @@ method installESPFirmwareFromURL SmallRuntime {
 	defaultURL = ''
 	if ('Databot' == boardType) {
 		defaultURL = 'http://microblocks.fun/downloads/databot/databot2.0_V2.18.bin'
-		if ('Browser' == (platform)) { closeSerialPort 1 }
+		closeSerialPort 1
 	}
 	url = (trim (freshPrompt (global 'page') 'ESP32 firmware URL?' defaultURL))
 	if ('' == url) { return }
@@ -3412,14 +3251,9 @@ method installESPFirmwareFromURL SmallRuntime {
 }
 
 method flashESPFirmwareFromURL SmallRuntime boardName url {
-	if ('Browser' == (platform)) {
-		disconnected = true
-		flasherPort = port
-		port = nil
-	} else {
-		setPort this 'disconnect'
-		flasherPort = nil
-	}
+	disconnected = true
+	flasherPort = port
+	port = nil
 	vmVersion = nil
 	boardType = nil
 	flasher = (newFlasher boardName portName false false)
@@ -3452,14 +3286,9 @@ method installESPFirmwareFromRepo SmallRuntime {
 // Install ESP firmware from file
 
 method installESPFirmwareFromFile SmallRuntime fileName data {
-	if ('Browser' == (platform)) {
-		disconnected = true
-		flasherPort = port
-		port = nil
-	} else {
-		setPort this 'disconnect'
-		flasherPort = nil
-	}
+	disconnected = true
+	flasherPort = port
+	port = nil
 	vmVersion = nil
 	boardType = nil
 	flasher = (newFlasher fileName portName false false)

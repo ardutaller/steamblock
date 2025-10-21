@@ -118,7 +118,6 @@ method initialize MicroBlocksFilePicker anAction defaultPath extensionList saveF
 	onPreselect lbox (action 'fileOrFolderSelected' this true)
 	onDoubleClick lbox (action 'fileOrFolderDoubleClicked' this)
 	setFont lbox 'Arial' 16
-	if ('Linux' == (platform)) { setFont lbox 'Arial' 12 }
 	listPane = (scrollFrame lbox clr)
 	addPart morph (morph listPane)
 	setGrabRule (morph listPane) 'ignore'
@@ -137,17 +136,12 @@ method initialize MicroBlocksFilePicker anAction defaultPath extensionList saveF
 	setMinExtent morph minW minH
 	setExtent morph minW minH
 
-	if forSaving {
-		defaultPath = (directoryPart defaultPath)
-		if (isEmpty defaultPath) { defaultPath = (microblocksFolder) }
-		if ('Browser' == (platform)) { defaultPath = 'Downloads' }
-	}
+	if forSaving { defaultPath = 'Downloads' }
 	if (and ((count defaultPath) > 1) (endsWith defaultPath '/')) {
 		defaultPath = (substring defaultPath 1 ((count defaultPath) - 1))
 	}
 	if (isOneOf defaultPath 'Examples' 'Libraries') {
-		useEmbeddedFS = true
-		if ('Browser' == (platform)) { useEmbeddedFS = false }
+		useEmbeddedFS = false
 	}
 	isTopLevel = (isNil (findFirst defaultPath '/')) // root folder
 	showFolder this defaultPath isTopLevel
@@ -158,13 +152,8 @@ method addFolderReadoutAndParentButton MicroBlocksFilePicker {
 	scale = (global 'scale')
 	x = (110 * scale)
 	y = (32 * scale)
-	fontName = 'Arial Bold'
+	fontName = 'Arial'
 	fontSize = (16 * scale)
-	if ('Linux' == (platform)) { fontSize = (12 * scale) }
-	if ('Browser' == (platform)) {
-		fontName = 'Arial'
-		fontSize = (16 * scale)
-	}
 
 	folderReadout = (newText 'Folder Readout')
 	setFont folderReadout fontName fontSize
@@ -183,13 +172,8 @@ method addFileNameField MicroBlocksFilePicker defaultName {
 	scale = (global 'scale')
 	x = (110 * scale)
 	y = (32 * scale)
-	fontName = 'Arial Bold'
+	fontName = 'Arial'
 	fontSize = (15 * scale)
-	if ('Linux' == (platform)) { fontSize = (12 * scale) }
-	if ('Browser' == (platform)) {
-		fontName = 'Arial'
-		fontSize = (15 * scale)
-	}
 
 	// name label
 	nameLabel = (newText (localized 'File name:'))
@@ -213,24 +197,18 @@ method addShortcutButtons MicroBlocksFilePicker {
 	scale = (global 'scale')
 	hidden = (array 'Cloud') // this can be used to hide selected shortcuts
 
-	showMicroBlocks = (and
-		(not (contains hidden 'MicroBlocks'))
-		('Browser' != (platform)))
-		showExamples = (and
+	showExamples = (and
 		(not (contains hidden 'Examples'))
 		(not forSaving)
 		(isClass extensions 'Array')
 		(contains extensions '.gpp'))
-		showLibraries = (and
+	showLibraries = (and
 		(not (contains hidden 'Libraries'))
 		(not forSaving)
 		(isClass extensions 'Array')
 		(contains extensions '.ubl'))
-		showDesktop = (not (contains hidden 'Desktop'))
-		showDownloads = (and
-		(not (contains hidden 'Downloads'))
-		('Linux' != (platform))
-	)
+	showDesktop = (not (contains hidden 'Desktop'))
+	showDownloads = (not (contains hidden 'Downloads'))
 	showComputer = (not (contains hidden 'Computer'))
 
 	buttonX = ((left morph) + (17 * scale))
@@ -247,24 +225,6 @@ method addShortcutButtons MicroBlocksFilePicker {
 	if showLibraries {
 		addIconButton this buttonX buttonY 'libsIcon' (action 'setLibraries' this) 'Libraries'
 		buttonY += dy
-	}
-	if showMicroBlocks {
-		addIconButton this buttonX buttonY 'microblocksFolderIcon' (action 'setMicroBlocksFolder' this) (filePart (microblocksFolder))
-		buttonY += dy
-	}
-	if (not (isOneOf (platform) 'Browser' 'iOS')) {
-		if showDesktop {
-			addIconButton this buttonX buttonY 'desktopIcon' (action 'setDesktop' this)
-			buttonY += dy
-		}
-		if showDownloads {
-			addIconButton this buttonX buttonY 'downloadsIcon' (action 'setDownloads' this)
-			buttonY += dy
-		}
-		if showComputer {
-			addIconButton this buttonX buttonY 'computerIcon' (action 'setComputer' this)
-			buttonY += dy
-		}
 	}
 	if (and showComputer ('Browser' == (platform))) {
 		addIconButton this buttonX buttonY 'computerIcon' (action 'setComputer' this)

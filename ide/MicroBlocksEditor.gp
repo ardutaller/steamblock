@@ -36,12 +36,8 @@ method setLastScriptPicFolder MicroBlocksEditor dir { lastScriptPicFolder = dir 
 
 to openMicroBlocksEditor devMode {
 	if (isNil devMode) { devMode = false }
-	if ('Browser' == (platform)) {
-		browserSize = (browserSize)
-		page = (newPage (first browserSize) (last browserSize))
-	} else {
-		page = (newPage 1000 600)
-	}
+	browserSize = (browserSize)
+	page = (newPage (first browserSize) (last browserSize))
 	setDevMode page devMode
 	toggleMorphicMenu (hand page) (contains (commandLine) '--allowMorphMenu')
 	setGlobal 'page' page
@@ -53,10 +49,8 @@ to openMicroBlocksEditor devMode {
 	readVersionFile (smallRuntime)
 	applyUserPreferences editor
 	developerModeChanged editor
-	if ('Browser' == (platform)) {
-		// attempt to extra project or scripts from URL; does nothing if absent
-		importFromURL editor (browserURL)
-	}
+	// attempt to import extra project or scripts from URL; does nothing if absent
+	importFromURL editor (browserURL)
 	setProperty (api (smallRuntime)) 'ready' true
 	startSteppingSafely page
 }
@@ -282,20 +276,11 @@ method saveProjectToFile MicroBlocksEditor {
 }
 
 method urlPrefix MicroBlocksEditor {
-	if ('Browser' == (platform)) {
-		url = (browserURL)
-		i = (findSubstring '.html' url)
-		if (notNil i) {
-			return (substring url 1 (i + 4))
-		}
+	url = (browserURL)
+	i = (findSubstring '.html' url)
+	if (notNil i) {
+		return (substring url 1 (i + 4))
 	}
-
-	// stand-alone app
-	urlPrefix = 'https://microblocks.fun/run/microblocks.html'
-	if (isPilot this) {
-		urlPrefix = 'https://microblocks.fun/run-pilot/microblocks.html'
-	}
-	return urlPrefix
 }
 
 method copyProjectURLToClipboard MicroBlocksEditor {
@@ -320,34 +305,12 @@ method saveProject MicroBlocksEditor fName {
 		}
 	}
 
-	if ('Browser' == (platform)) {
-		if (or (isNil fName) ('' == fName)) { fName = 'Untitled' }
-		i = (findLast fName '/')
-		if (notNil i) { fName = (substring fName (i + 1)) }
-		if (not (endsWith fName '.ubp')) { fName = (join fName '.ubp') }
-		browserWriteFile (codeString (project scripter)) fName 'project'
-		return
-	}
-
-	fName = (fileToWrite (withoutExtension fName) (array '.ubp'))
-	if ('' == (filePart fName)) { return false }
-
-	if (and
-		(not (isAbsolutePath this fName))
-		(not (beginsWith fName (gpFolder)))
-	) {
-		fName = (join (gpFolder) '/' fName)
-	}
+	if (or (isNil fName) ('' == fName)) { fName = 'Untitled' }
+	i = (findLast fName '/')
+	if (notNil i) { fName = (substring fName (i + 1)) }
 	if (not (endsWith fName '.ubp')) { fName = (join fName '.ubp') }
-
-	fileName = fName
-
-	lastProjectFolder = (directoryPart fileName)
-
-	updateTitle this
-	if (canWriteProject this fileName) {
-		writeFile fileName (codeString (project scripter))
-	}
+	browserWriteFile (codeString (project scripter)) fName 'project'
+	return
 }
 
 method canWriteProject MicroBlocksEditor fName {
@@ -388,11 +351,9 @@ method updateIndicator MicroBlocksEditor {
 // stepping
 
 method step MicroBlocksEditor {
-	if ('Browser' == (platform)) {
-		checkForBrowserResize this
-		processBrowserDroppedFile this
-		processBrowserFileSave this
-	}
+	checkForBrowserResize this
+	processBrowserDroppedFile this
+	processBrowserFileSave this
 	processDroppedFiles this
 
 	if (not (busy (smallRuntime))) { processMessages (smallRuntime) }
@@ -531,11 +492,7 @@ method processDroppedFile MicroBlocksEditor fName data {
 		eval (toString data) nil (topLevelModule)
 	} else {
 		// load file into board, if possible
-		if ('Browser' == (platform)) {
-			sendFileData (smallRuntime) fName data
-		} else {
-			writeFileToBoard (smallRuntime) fName
-		}
+		sendFileData (smallRuntime) fName data
 	}
 }
 
@@ -558,7 +515,7 @@ method processDroppedText MicroBlocksEditor text {
 		} (endsWith url '.ubl') {
 			importLibraryFromString scripter (httpBody (httpGet host path)) fileName fileName
 			saveAllChunksAfterLoad (smallRuntime)
-		} (and (or (notNil json) (endsWith url '.png')) ('Browser' == (platform))) {
+		} (or (notNil json) (endsWith url '.png')) {
 			data = (httpBody (basicHTTPGetBinary host path))
 			if ('' == data) { return }
 			importFromPNG this data
@@ -716,14 +673,9 @@ method reportNewerVersion MicroBlocksEditor {
 
 method readUserPreferences MicroBlocksEditor {
 	result = (dictionary)
-	if ('Browser' == (platform)) {
-		jsonString = (browserReadPrefs)
-		waitMSecs 20 // timer for callback in ChromeOS
-		jsonString = (browserReadPrefs) // will have result the second time
-	} else {
-		path = (join (gpFolder) '/preferences.json')
-		jsonString = (readFile path)
-	}
+	jsonString = (browserReadPrefs)
+	waitMSecs 20 // timer for callback in ChromeOS
+	jsonString = (browserReadPrefs) // will have result the second time
 	if (notNil jsonString) {
 		result = (jsonParse jsonString)
 		if (not (isClass result 'Dictionary')) { result = (dictionary) }
@@ -732,7 +684,6 @@ method readUserPreferences MicroBlocksEditor {
 }
 
 method isChineseWebapp MicroBlocksEditor {
-	if ('Browser' != (platform)) { return false }
 	url = (browserURL)
 	return (or
 		((containsSubString url 'microblocksfun.cn') > 0)
@@ -785,12 +736,7 @@ method saveToUserPreferences MicroBlocksEditor key value {
 	} else {
 		atPut prefs key value
 	}
-	if ('Browser' == (platform)) {
-		browserWritePrefs (jsonStringify prefs)
-	} else {
-		path = (join (gpFolder) '/preferences.json')
-		writeFile path (jsonStringify prefs)
-	}
+	browserWritePrefs (jsonStringify prefs)
 }
 
 method toggleBoardLibAutoLoad MicroBlocksEditor {
@@ -1035,22 +981,11 @@ method setAdvancedMode MicroBlocksEditor aBoolean {
 method languageMenu MicroBlocksEditor {
 	menu = (menu 'Language' this)
 	setIsTopMenu menu true
-	if ('Browser' == (platform)) {
-		for fn (sorted (listFiles 'translations')) {
-			fn = (withoutExtension fn)
-			if (isNil (findSubstring 'template' fn)) {
-				langCode = (withoutExtension fn)
-				addLanguangeMenuEntry this langCode menu
-			}
-		}
-	} else {
-		for fn (sorted (listEmbeddedFiles)) {
-			fn = (withoutExtension fn)
-			if (and (beginsWith fn 'translations/')
-					(isNil (findSubstring 'template' fn))) {
-				langCode = (withoutExtension (substring fn 14))
-				addLanguangeMenuEntry this langCode menu
-			}
+	for fn (sorted (listFiles 'translations')) {
+		fn = (withoutExtension fn)
+		if (isNil (findSubstring 'template' fn)) {
+			langCode = (withoutExtension fn)
+			addLanguangeMenuEntry this langCode menu
 		}
 	}
 

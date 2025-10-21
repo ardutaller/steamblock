@@ -815,10 +815,7 @@ method getNewerVersion MicroBlocksModule {
 
 	if (moduleName == 'main') { return nil }
 
-	embeddedFiles = (listEmbeddedFiles)
-	if ('Browser' == (platform)) {
-		embeddedFiles = (browserEmbeddedLibs this)
-	}
+	embeddedFiles = (browserEmbeddedLibs this)
 
 	// Find the embedded lib path
 	moduleFileName = (join moduleName '.ubl')

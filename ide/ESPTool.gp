@@ -62,7 +62,7 @@ method openPort ESPTool portName boardName {
 	closePort this
 	port = (safelyRun (action 'openSerialPort' portName baudRate))
 	if (not (isClass port 'Integer')) { port = nil } // failed
-	if ('Browser' == (platform)) { waitMSecs 100 } // let browser callback complete
+	waitMSecs 100 // let browser callback complete
 	return (notNil port)
 }
 

@@ -60,11 +60,7 @@ method startFlasher MicroBlocksFlasher serialPortID {
 // Downloading from URL
 
 method installFromURL MicroBlocksFlasher serialPortID url {
-	if ('Browser' == (platform)) {
-		data = (downloadURLInBrowser this url)
-	} else {
-		data = (downloadURL this url)
-	}
+	data = (downloadURLInBrowser this url)
 	if ((byteCount data) == 0) { return }
 	installFromData this serialPortID url data
 }
@@ -72,7 +68,7 @@ method installFromURL MicroBlocksFlasher serialPortID url {
 method installFromData MicroBlocksFlasher serialPortID fileNameOrURL data {
 	if ((byteCount data) == 0) { return }
 
-	if (and ('Browser' == (platform)) (isNil serialPortID)) {
+	if (isNil serialPortID) {
 		// must request a user gesture to open port in browser after long download
 		ok = (confirm (global 'page') nil (join (localized 'Open port?')))
 		if (not ok) { return }
@@ -118,13 +114,9 @@ method installFromData MicroBlocksFlasher serialPortID fileNameOrURL data {
 
 method downloadProgress MicroBlocksFlasher actionLabel {
 	percent = 0
-	if ('Browser' == (platform)) {
-		bytesExpected = (fetchBytesExpected fetchID)
-		if (bytesExpected > 0) {
-			percent = (round ((100 * (fetchBytesReceived fetchID)) / bytesExpected))
-		}
-	} else {
-		percent = downloadProgress
+	bytesExpected = (fetchBytesExpected fetchID)
+	if (bytesExpected > 0) {
+		percent = (round ((100 * (fetchBytesReceived fetchID)) / bytesExpected))
 	}
 	return (join (localized 'Downloading...') ' ' percent  '%')
 }

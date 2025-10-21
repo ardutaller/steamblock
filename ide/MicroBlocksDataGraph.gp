@@ -319,17 +319,7 @@ method csvData MicroBlocksDataGraph {
 }
 
 method exportData MicroBlocksDataGraph {
-	data = (csvData this)
-
-	if ('Browser' == (platform)) {
-		browserWriteFile data 'data.csv' 'graphData'
-		return
-	}
-
-	fileName = (fileToWrite 'data')
-	if (isEmpty fileName) { return }
-	if (not (endsWith fileName '.csv' )) { fileName = (join fileName '.csv') }
-	writeFile fileName data
+	browserWriteFile (csvData this) 'data.csv' 'graphData'
 }
 
 method importData MicroBlocksDataGraph {

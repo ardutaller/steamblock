@@ -29,9 +29,7 @@ method initialize MicroBlocksSpinner labelReporter doneReporter {
 	addPart morph (morph sublabel)
 
 	browserWarning = (newText (localized 'Do not switch browser tabs!') 'Arial' (18 * scale) (gray 255))
-	if ('Browser' == (platform)) {
-		addPart morph (morph browserWarning)
-	}
+	addPart morph (morph browserWarning)
 
 	pageM = (morph (global 'page'))
 	setExtent morph (width (bounds pageM)) (height (bounds pageM))

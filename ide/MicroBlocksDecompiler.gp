@@ -151,21 +151,11 @@ method addEmbeddedLibrary MicroBlocksDecompiler libName project {
 	// Return true if successful, false if embedded library was not found.
 
 	libFileName = (join libName '.ubl')
-	if ('Browser' == (platform)) {
-		for filePath (allFilesInDir (scripter (smallRuntime)) 'Libraries') {
-			if (endsWith filePath (substring filePath 3)) {
-				data = (readEmbeddedFile filePath)
-				addLibraryFromString project (toString data) libName filePath
-				return true
-			}
-		}
-	} else {
-		for filePath (listEmbeddedFiles) {
-			if (endsWith filePath libFileName) {
-				data = (readEmbeddedFile filePath)
-				addLibraryFromString project (toString data) libName filePath
-				return true
-			}
+	for filePath (allFilesInDir (scripter (smallRuntime)) 'Libraries') {
+		if (endsWith filePath (substring filePath 3)) {
+			data = (readEmbeddedFile filePath)
+			addLibraryFromString project (toString data) libName filePath
+			return true
 		}
 	}
 	return false

@@ -29,10 +29,6 @@ method initialize MicroBlocksScripter aProjectEditor {
 	listColor = (gray 240)
 	fontName = 'Arial Bold'
 	fontSize = 14
-	if ('Linux' == (platform)) {
-		fontName = 'Liberation Sans Bold'
-		fontSize = 12
-	}
 	nextX = 0
 	nextY = 0
 
@@ -225,16 +221,8 @@ method hideAllLibraryDefinitions MicroBlocksScripter libName {
 method exportLibrary MicroBlocksScripter libName {
 	lib = (libraryNamed mbProject libName)
 	if (isNil lib) { return }
-
-	if ('Browser' == (platform)) {
-		fName = (join (moduleName lib) '.ubl')
-		browserWriteFile (codeString lib mbProject) fName 'library'
-	} else {
-		fName = (fileToWrite (moduleName lib) (array '.ubl'))
-		if ('' == fName) { return false }
-		if (not (endsWith fName '.ubl' )) { fName = (join fName '.ubl') }
-		writeFile fName (codeString lib mbProject)
-	}
+	fName = (join (moduleName lib) '.ubl')
+	browserWriteFile (codeString lib mbProject) fName 'library'
 }
 
 // layout
@@ -1190,19 +1178,10 @@ method allFilesInDir MicroBlocksScripter rootDir {
 method importEmbeddedLibrary MicroBlocksScripter libName {
 	asImplementation = ((at libName 1) == '_')
 	if asImplementation { libName = (substring libName 2) }
-	if ('Browser' == (platform)) {
-		libFileName = (join libName '.ubl')
-		for filePath (allFilesInDir this 'Libraries') {
-			if (endsWith filePath libFileName) {
-				importLibraryFromFile this filePath nil false asImplementation
-				return
-			}
-		}
-		return
-	}
-	for filePath (listEmbeddedFiles) {
-		if (endsWith filePath (join libName '.ubl')) {
-			importLibraryFromFile this (join '//' filePath) nil false asImplementation
+	libFileName = (join libName '.ubl')
+	for filePath (allFilesInDir this 'Libraries') {
+		if (endsWith filePath libFileName) {
+			importLibraryFromFile this filePath nil false asImplementation
 			return
 		}
 	}
@@ -1349,20 +1328,12 @@ method setLibsDraggable MicroBlocksScripter flag {
 }
 
 method exportAsLibrary MicroBlocksScripter defaultFileName {
-	if ('Browser' == (platform)) {
-		if (or (isNil defaultFileName) ('' == defaultFileName)) {
-			defaultFileName = (localized 'my library')
-		}
-		libName = (freshPrompt (global 'page') (localized 'Library name?') defaultFileName)
-		fName = (join libName '.ubl')
-		browserWriteFile (codeString (main mbProject) mbProject libName) fName 'library'
-	} else {
-		fName = (fileToWrite (withoutExtension defaultFileName) '.ubl')
-		if (isEmpty fName) { return }
-		if (not (endsWith fName '.ubl' )) { fName = (join fName '.ubl') }
-		libName = (withoutExtension (filePart fName))
-		writeFile fName (codeString (main mbProject) mbProject libName)
+	if (or (isNil defaultFileName) ('' == defaultFileName)) {
+		defaultFileName = (localized 'my library')
 	}
+	libName = (freshPrompt (global 'page') (localized 'Library name?') defaultFileName)
+	fName = (join libName '.ubl')
+	browserWriteFile (codeString (main mbProject) mbProject libName) fName 'library'
 }
 
 // importing libraries for dropped scripts
@@ -1375,7 +1346,6 @@ method installLibraryNamed MicroBlocksScripter libName {
 		return
 	}
 	if (not (endsWith fileName '.ubl')) { fileName = (join fileName '.ubl') }
-	if ('Browser' != (platform)) { fileName = (join '//' fileName) }
 	importLibraryFromFile this fileName
 }
 
@@ -1383,22 +1353,11 @@ method fileNameForLibraryNamed MicroBlocksScripter libName {
 	if (isNil embeddedLibraries) {
 		// build a dictionary mapping libName -> fileName
 		embeddedLibraries = (dictionary)
-		if ('Browser' == (platform)) {
-			for filePath (allFilesInDir this 'Libraries') {
-				if (endsWith filePath '.ubl') {
-					name = (extractLibraryName this (readFile filePath))
-					if (notNil name) {
-						atPut embeddedLibraries name filePath
-					}
-				}
-			}
-		} else {
-			for filePath (listEmbeddedFiles) {
-				if (endsWith filePath '.ubl') {
-					name = (extractLibraryName this (readEmbeddedFile filePath))
-					if (notNil name) {
-						atPut embeddedLibraries name (withoutExtension filePath)
-					}
+		for filePath (allFilesInDir this 'Libraries') {
+			if (endsWith filePath '.ubl') {
+				name = (extractLibraryName this (readFile filePath))
+				if (notNil name) {
+					atPut embeddedLibraries name filePath
 				}
 			}
 		}
