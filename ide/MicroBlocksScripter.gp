@@ -40,41 +40,8 @@ method initialize MicroBlocksScripter aProjectEditor {
 	setFPS morph 4
 	saveNeeded = false
 
-	categoryPane = (newBox (newMorph) (transparent) 0 0 false false)
-	categoryFrame = (scrollFrame categoryPane (transparent) false 0 0)
-	setVerticalScrollOnly categoryFrame true
-	setHideWhenNotScrolling categoryFrame true
-	setAutoScroll categoryFrame false
-	addPart morph (morph categoryFrame)
-	makeLibraryHeader this
-	lastLibraryFolder = 'Libraries'
-
-	spacer = (newBox (newMorph) (color transparent) 0 0 false false)
-	addPart (morph categoryPane) (morph spacer)
-
 	categorySelector = (newCategorySelector (categories this) (action 'categorySelected' this))
-	setFont categorySelector fontName fontSize
-	setExtent (morph categorySelector) (190 * scale) 100
-	setMinExtent (morph categorySelector) (65 * scale) (60 * scale)
-	setMaxExtent (morph categorySelector) (300 * scale) 0 // y is ignored
-	addPart (morph categoryPane) (morph categorySelector)
-
-	makeAddLibraryButton this
 	libSelector = (newCategorySelector (array) (action 'librarySelected' this))
-	setFont libSelector fontName fontSize
-	addPart (morph categoryPane) (morph libSelector)
-
-	topGradient = (newMorph)
-	rotateAndScale topGradient 179
-	bottomGradient = (newMorph)
-	setExtent topGradient (140 * scale) (30 * scale)
-	setExtent bottomGradient (140 * scale) (30 * scale)
-	topGradientBitmap = (flipped (scaleAndRotate (gradientBitmap this) (300 * scale) 1)) // max width is 300
-	setCostume topGradient topGradientBitmap
-	bottomGradientBitmap = (scaleAndRotate (gradientBitmap this) (300 * scale) 1) // max width is 300
-	setCostume bottomGradient bottomGradientBitmap
-	addPart morph topGradient
-	addPart morph bottomGradient
 
 	blocksPane = (newBlocksPalette)
 	setSortingOrder (alignment blocksPane) nil
@@ -97,9 +64,6 @@ method initialize MicroBlocksScripter aProjectEditor {
 	addPart morph (morph scriptsFrame)
 
 	// add resizers last so they are in front
-	catResizer = (newPaneResizer (morph categorySelector) 'horizontal')
-	addPart morph (morph catResizer)
-
 	blocksResizer = (newPaneResizer (morph blocksFrame) 'horizontal')
 	addPart morph (morph blocksResizer)
 
@@ -164,101 +128,12 @@ method darkModeChanged MicroBlocksScripter {
 }
 
 method languageChanged MicroBlocksScripter {
-	changed categorySelector
-	updateLibraryHeader this
-	computeLibraryButtonSize this
-	// make sure the "Add library" button fits into the category pane
-	setExtent (morph categorySelector)
-		(max
-			(+ (data libAddButton) (32 * (global 'scale')))
-			(width (morph categorySelector)))
-		(height (morph categorySelector))
 	fixLayout this
-	updateLibraryButton this true // force redrawing button label
 
 	// update the scripts
 	saveScripts this
 	restoreScripts this // calls updateBlocks
 	scriptChanged this
-}
-
-// library header
-
-method makeLibraryHeader MicroBlocksScripter {
-	scale = (global 'scale')
-	libHeader = (newBox (newMorph) (microBlocksColor 'blueGray' 850) 0 0)
-
-	label = (newText (localized 'LIBRARIES') 'Arial' (13 * scale) (microBlocksColor 'blueGray' 300))
-	if ('Linux' == (platform)) {
-		label = (newText (localized 'LIBRARIES') 'Liberation Sans' (11 * scale) (microBlocksColor 'blueGray' 300))
-	}
-	setPosition (morph label) (24 * scale) (20 * scale)
-	addPart (morph libHeader) (morph label)
-
-	hLine = (newBox (newMorph) (microBlocksColor 'blueGray' 700) 0 0 false false)
-	setExtent (morph hLine) (96 * scale) scale
-	setPosition (morph hLine) (24 * scale) ((bottom (morph label)) + (4 * scale))
-
-	addPart (morph libHeader) (morph hLine)
-	addPart (morph categoryPane) (morph libHeader)
-	return libHeader
-}
-
-method updateLibraryHeader MicroBlocksScripter {
-	labelM = (first (parts (morph libHeader)))
-	scale = (global 'scale')
-	if ((width (morph categorySelector)) > (75 * scale)) {
-		if (lastLibraryHeaderStyle != 'long') {
-			lastLibraryHeaderStyle == 'long'
-			setText (handler labelM) (localized 'LIBRARIES')
-		}
-	} else {
-		if (lastLibraryHeaderStyle != 'short') {
-			lastLibraryHeaderStyle == 'short'
-			setText (handler labelM) (localized 'LIBS')
-		}
-	}
-}
-
-method fixLibraryHeaderLayout MicroBlocksScripter {
-	hLine = (last (parts (morph libHeader)))
-	setExtent hLine ((width (morph categorySelector)) - 24) (global 'scale')
-	updateLibraryHeader this
-	setRight hLine (right (owner hLine))
-}
-
-method updateLibraryButton MicroBlocksScripter forceRedrawLabel {
-	scale = (global 'scale')
-	if (isNil libAddIcons) {
-		bm1 = (readSVGIcon 'plus1')
-		bm2 = (readSVGIcon 'plus2')
-		libAddIcons = (array bm1 bm2)
-	}
-	if ((width (morph categorySelector)) > (+ (data libAddButton) (24 * scale))) {
-		if (or (lastLibraryButtonStyle != 'text') (forceRedrawLabel == true)) {
-			lastLibraryButtonStyle = 'text'
-			drawLabelCostumes libAddButton (localized 'Add Library') nil (25 * scale) false true
-		}
-	} else {
-		if (lastLibraryButtonStyle != 'icon') {
-			lastLibraryButtonStyle = 'icon'
-			replaceCostumes libAddButton (at libAddIcons 1) (at libAddIcons 2) (at libAddIcons 2)
-		}
-	}
-}
-
-method computeLibraryButtonSize MicroBlocksScripter {
-	costumes = (array (normalCostume libAddButton) (highlightCostume libAddButton))
-	drawLabelCostumes libAddButton (localized 'Add Library') nil (25 * (global 'scale')) false true
-	setData libAddButton (width (morph libAddButton))
-	replaceCostumes libAddButton (at costumes 1) (at costumes 2) (at costumes 2)
-}
-
-method makeAddLibraryButton MicroBlocksScripter {
-	scale = (global 'scale')
-	libAddButton = (pushButton (localized 'Add Library') (action 'importLibrary' this) nil (25 * scale) false true)
-	setData libAddButton (width (morph libAddButton))
-	addPart (morph categoryPane) (morph libAddButton)
 }
 
 // library item menu
@@ -367,58 +242,30 @@ method exportLibrary MicroBlocksScripter libName {
 method fixLayout MicroBlocksScripter {
 	scale = (global 'scale')
 
-	catWidth = (max (width (morph categorySelector)) (40 * scale))
-	catHeight = (heightForItems categorySelector)
-	libSelectorHeight = (heightForItems libSelector)
 	blocksWidth = (max (width (morph blocksFrame)) (40 * scale))
 
 	// prevent pane dividers from going off right side
-	catWidth = (min catWidth ((width morph) - (20 * scale)))
-	blocksWidth = (min blocksWidth ((width morph) - (catWidth + (20 * scale))))
+	blocksWidth = (min blocksWidth (width morph))
 
 	// resize parts
 	totalHeight = (height morph)
 	totalWidth = (width morph)
-	libHeaderHeight = (45 * scale)
-	setExtent (morph categorySelector) catWidth catHeight
-	setExtent (morph libHeader) catWidth libHeaderHeight
-	setExtent (morph libSelector) catWidth libSelectorHeight
 	setExtent (morph blocksFrame) blocksWidth totalHeight
-	setExtent topGradient catWidth (30 * scale)
-	setExtent bottomGradient catWidth (30 * scale)
-	setExtent (morph scriptsFrame) (totalWidth - (catWidth + blocksWidth)) totalHeight
+	setExtent (morph scriptsFrame) (totalWidth - blocksWidth) totalHeight
 
 	// position parts
 	leftEdge = (left morph)
 	topEdge = (top morph)
-	fastSetPosition (morph categoryFrame) leftEdge topEdge
-	fastSetPosition (morph categorySelector) leftEdge ((top (morph categoryPane)) + (24 * scale))
-	fastSetPosition (morph libHeader) leftEdge (bottom (morph categorySelector))
-	fastSetPosition (morph libAddButton) (24 * scale) ((bottom (morph libHeader)) + (8 * scale))
-	fastSetPosition (morph libSelector) leftEdge ((bottom (morph libAddButton)) + (8 * scale))
-	fastSetPosition topGradient leftEdge topEdge
-	fastSetPosition bottomGradient leftEdge ((bottom morph) - (30 * scale))
-	fastSetPosition (morph blocksFrame) (right (morph categorySelector)) topEdge
+	fastSetPosition (morph blocksFrame) leftEdge topEdge
 	fastSetPosition (morph scriptsFrame) (right (morph blocksFrame)) topEdge
-
-	// set categoryFrame extent
-	fixCategoryPaneExtent this
-	setExtent (morph categoryFrame) catWidth ((bottom morph) - (30 * scale))
 
 	changed morph // report damage
 
 	fixResizerLayout this
-	fixLibraryHeaderLayout this
-	updateLibraryButton this
 	fixScrollbars this
 
 	// rounded corner at bottom left of palette
 	setPosition cornerIcon ((left (morph blocksFrame)) - (2 * scale)) ((bottom (morph blocksFrame)) - (8 * scale))
-}
-
-method fixCategoryPaneExtent MicroBlocksScripter {
-	// 54 is the height of the gradient (30) plus the height of a category button (24)
-	setExtent (morph categoryPane) (width (morph libSelector)) (((bottom (morph libSelector)) - (top (morph spacer))) + (54 * (global 'scale')))
 }
 
 method updateTrashcanPosition MicroBlocksScripter {
@@ -437,11 +284,6 @@ method updateTrashcanPosition MicroBlocksScripter {
 
 method fixResizerLayout MicroBlocksScripter {
 	resizerWidth = (15 * (global 'scale'))
-
-	// categories pane resizer
-	setLeft (morph catResizer) (right (morph categorySelector))
-	setTop (morph catResizer) (top morph)
-	setExtent (morph catResizer) resizerWidth (height morph)
 
 	// blocks pane resizer
 	setLeft (morph blocksResizer) (right (morph blocksFrame))
@@ -467,11 +309,7 @@ method drawOn MicroBlocksScripter ctx {
 	} else {
 		borderColor = (microBlocksColor 'blueGray' 100)
 	}
-	x = ((right (morph categorySelector)) + 1)
-	fillRect ctx paneColor 0 (top morph) x (height morph) // bg color for category/lib panes
-	x = (right (morph blocksFrame))
-	fillRect ctx borderColor x (top morph) borderWidth (height morph)
-	r = (bounds (morph libHeader))
+	fillRect ctx borderColor 0 (top morph) borderWidth (height morph)
 }
 
 // MicroBlocksScripter UI support
@@ -1499,9 +1337,6 @@ method updateLibraryList MicroBlocksScripter {
 		selectCategory this 'cat;Control'
 	}
 	scale = (global 'scale')
-	fastSetPosition (morph libAddButton) (24 * scale) ((bottom (morph libHeader)) + (8 * scale))
-	fixCategoryPaneExtent this
-	scrollToY categoryFrame 0
 }
 
 method justGrabbedPart MicroBlocksScripter part {
