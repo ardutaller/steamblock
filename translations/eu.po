@@ -152,15 +152,15 @@ msgstr "itxaron _ milisegundo"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr "baldin __"
+msgstr "baldin _ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr "baldin__ bestela _"
+msgstr "baldin _ _ bestela _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr "bestela baldin __"
+msgstr "bestela baldin _ _"
 
 #. Block in Control category
 msgid "else"
@@ -216,7 +216,7 @@ msgstr ""
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr "errepikatu __ arte"
+msgstr "errepikatu _ _ arte"
 
 #. Block in Control category
 msgid "stop this task"
