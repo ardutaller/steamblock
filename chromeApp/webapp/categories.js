@@ -66,7 +66,8 @@ Categories.buildLibraries = function (descriptors) {
 		descriptors.map(descriptor => {
 			return {
 				label: descriptor.label,
-				color: this.colorFor(descriptor.category)
+				color: this.colorFor(descriptor.category),
+				isLibrary: true
 			};
 		}),
 		'libraries'
@@ -80,9 +81,15 @@ Categories.elementFor = function (descriptor) {
 	button.ariaLabel = 'Block Category';
 	button.ariaDescription = '[l] to show the blocks in this category';
 	button.appendChild(loc);
-	button.onclick = () => {
-		GP.apiCall('ide.selectCategory', [descriptor.label]);
-	};
+	if (descriptor.isLibrary) {
+		button.onclick = () => {
+			GP.apiCall('ide.selectLibrary', [descriptor.label]);
+		};
+	} else {
+		button.onclick = () => {
+			GP.apiCall('ide.selectCategory', [descriptor.label]);
+		};
+	}
 	button.classList.add('category-button');
 	if (IDE.currentCategory == descriptor.label) {
 		button.classList.add('selected');
@@ -91,22 +98,20 @@ Categories.elementFor = function (descriptor) {
 		button.classList.add('hidden');
 	}
 	button.style.backgroundColor = descriptor.color;
-	descriptor.element = button; // remember so we can select / unselect it later
 	return button;
 };
 
 document.addEventListener(
-	'ide.currentCategory',
+	'currentCategory',
 	(e) => {
-		Categories.descriptors.forEach(descriptor => {
-			if (descriptor.element) {
-				if (descriptor.label == e.detail.value) {
-					descriptor.element.classList.add('selected');
+		document.querySelectorAll('.category-button').forEach(element => {
+				if (element.innerText == GetText.localize(e.detail.value)) {
+					element.classList.add('selected');
 				} else {
-					descriptor.element.classList.remove('selected');
+					element.classList.remove('selected');
 				}
 			}
-		});
+		);
 	}
 );
 

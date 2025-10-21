@@ -61,6 +61,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.selectCategory') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		selectCategory scripter (at params 1)
+	} (endPoint == 'ide.selectLibrary') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		selectLibrary scripter (at params 1)
 	} (endPoint == 'ide.showLibraryDialog') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		importLibrary scripter

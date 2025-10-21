@@ -182,7 +182,6 @@ IDE.populateCategories = function (element) {
 };
 
 IDE.populateLibraries = function (element) {
-	console.log(this.libraryList);
 	element.replaceWith(Categories.buildLibraries(this.libraryList));
 };
 
