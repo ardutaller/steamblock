@@ -886,44 +886,12 @@ method closePort SmallRuntime {
 
 method enableAutoConnect SmallRuntime success {
 	closeAllDialogs (findMicroBlocksEditor)
-	if ('Browser' == (platform)) {
-		// In the browser, the serial port must be closed and re-opened after installing
-		// firmware on an ESP board. Not sure why. Adding a delay did not help.
-		closePort this
-		closeSerialPort 1 // make sure port is really disconnected
-		disconnected = true
-		if success { otherReconnectMessage this }
-		return
-	}
-	disconnected = false
-	stopAndSyncScripts this
-}
-
-method tryToInstallVM SmallRuntime {
-	// Invite the user to install VM if we see a new board drive and are not able to connect to
-	// it within a few seconds. Remember the last set of boardDrives so we don't keep asking.
-	// Details: On Mac OS (at least), 3-4 seconds elapse between when the board drive appears
-	// and when the USB-serial port appears. Thus, the IDE waits a bit to see if it can connect
-	// to the board before prompting the user to install the VM to avoid spurious prompts.
-
-	if (and (notNil vmInstallMSecs) ((msecsSinceStart) > vmInstallMSecs)) {
-		vmInstallMSecs = nil
-		if (and (notNil port) (isOpenSerialPort port)) { return }
-		ok = (confirm (global 'page') nil (join
-			(localized 'The board is not responding.') (newline)
-			(localized 'Try to Install MicroBlocks on the board?')))
-		if ok { installVM this }
-		return
-	}
-
-	boardDrives = (collectBoardDrives this)
-	if (lastBoardDrives == boardDrives) { return }
-	lastBoardDrives = boardDrives
-	if (isEmpty boardDrives) {
-		vmInstallMSecs = nil
-	} else {
-		vmInstallMSecs = ((msecsSinceStart) + 5000) // prompt to install VM in a few seconds
-	}
+	// In the browser, the serial port must be closed and re-opened after installing
+	// firmware on an ESP board. Not sure why. Adding a delay did not help.
+	closePort this
+	closeSerialPort 1 // make sure port is really disconnected
+	disconnected = true
+	if success { otherReconnectMessage this }
 }
 
 method connectedToBoard SmallRuntime {
@@ -2817,55 +2785,6 @@ method niceBoardName SmallRuntime board {
 		return 'Raspberry Pi Pico'
 	}
 	return name
-}
-
-method collectBoardDrives SmallRuntime {
-	result = (list)
-	if ('Mac' == (platform)) {
-		for v (listDirectories '/Volumes') {
-			path = (join '/Volumes/' v '/')
-			driveName = (getBoardDriveName this path)
-			if (notNil driveName) { add result (list driveName path) }
-		}
-	} ('Linux' == (platform)) {
-		// Try both Debian ('/media') and Fedora ('/run/media') variants
-		for media (list '/media' '/run/media') {
-			for userName (listDirectories media) {
-				prefix = (join media '/' userName)
-				for v (listDirectories prefix) {
-					path = (join prefix '/' v '/')
-					driveName = (getBoardDriveName this path)
-					if (notNil driveName) { add result (list driveName path) }
-				}
-			}
-		}
-	} ('Win' == (platform)) {
-		for letter (range 65 90) {
-			drive = (join (string letter) ':')
-			driveName = (getBoardDriveName this drive)
-			if (notNil driveName) { add result (list driveName drive) }
-		}
-	}
-	return result
-}
-
-method getBoardDriveName SmallRuntime path {
-	for fn (listFiles path) {
-		if ('MICROBIT.HTM' == fn) {
-			contents = (readFile (join path fn))
-			return 'MICROBIT' }
-		if (isOneOf fn 'MINI.HTM' 'CALLIOPE.HTM' 'Calliope.html') { return 'MINI' }
-		if ('INFO_UF2.TXT' == fn) {
-			contents = (readFile (join path fn))
-			if (notNil (nextMatchIn 'CPlay Express' contents)) { return 'CPLAYBOOT' }
-			if (notNil (nextMatchIn 'Circuit Playground nRF52840' contents)) { return 'CPLAYBTBOOT' }
-			if (notNil (nextMatchIn 'Adafruit Clue' contents)) { return 'CLUEBOOT' }
-			if (notNil (nextMatchIn 'Adafruit CLUE nRF52840' contents)) { return 'CLUEBOOT' } // bootloader 0.7
-			if (notNil (nextMatchIn 'MakerPort' contents)) { return 'MAKERBOOT' }
-			if (notNil (nextMatchIn 'RPI-RP2' contents)) { return 'RPI-RP2' }
-		}
-	}
-	return nil
 }
 
 method picoVMFileName SmallRuntime {

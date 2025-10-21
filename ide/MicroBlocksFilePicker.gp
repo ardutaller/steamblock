@@ -226,7 +226,7 @@ method addShortcutButtons MicroBlocksFilePicker {
 		addIconButton this buttonX buttonY 'libsIcon' (action 'setLibraries' this) 'Libraries'
 		buttonY += dy
 	}
-	if (and showComputer ('Browser' == (platform))) {
+	if showComputer {
 		addIconButton this buttonX buttonY 'computerIcon' (action 'setComputer' this)
 		buttonY += dy
 	}
@@ -260,13 +260,7 @@ method addIconButton MicroBlocksFilePicker x y iconName anAction label {
 	if (1 == scale) {
 		setFont 'Arial Bold' (9 * scale)
 	} else {
-		setFont 'Arial Bold' (12 * scale)
-	}
-	if ('Browser' == (platform)) {
 		setFont 'Helvetica' (13 * scale)
-	}
-	if (and isChinese ('Win' == (platform))) {
-		setFont 'Arial Bold' (12 * scale)
 	}
 	labelX = (half ((width bm) - (stringWidth (localized label))))
 	labelY = ((height bm) - (fontHeight))
@@ -318,17 +312,12 @@ method onFolderSelect MicroBlocksFilePicker anAction {
 }
 
 method setComputer MicroBlocksFilePicker {
-	if ('Browser' == (platform)) {
-		isDone = true
-		removeFromOwner morph
-		ext = ''
-		if (notNil extensions) { ext = (first extensions) }
-		if (beginsWith ext '.') { ext = (substring ext 2) }
-		browserReadFile ext
-		return
-	}
-	useEmbeddedFS = false
-	showFolder this '/' true
+	isDone = true
+	removeFromOwner morph
+	ext = ''
+	if (notNil extensions) { ext = (first extensions) }
+	if (beginsWith ext '.') { ext = (substring ext 2) }
+	browserReadFile ext
 }
 
 method setDesktop MicroBlocksFilePicker {
@@ -342,14 +331,12 @@ method setDownloads MicroBlocksFilePicker {
 }
 
 method setExamples MicroBlocksFilePicker {
-	useEmbeddedFS = true
-	if ('Browser' == (platform)) { useEmbeddedFS = false }
+	useEmbeddedFS = false
 	showFolder this 'Examples' true
 }
 
 method setLibraries MicroBlocksFilePicker {
-	useEmbeddedFS = true
-	if ('Browser' == (platform)) { useEmbeddedFS = false }
+	useEmbeddedFS = false
 	showFolder this 'Libraries' true
 }
 
@@ -561,15 +548,7 @@ method updateParentAndNewFolderButtons MicroBlocksFilePicker {
 
 	// new folder button
 	if (notNil newFolderButton) {
-		if (and forSaving
-				('Browser' != (platform))
-				(not (contains (splitWith currentDir '/') 'runtime'))
-				(currentDir != '/')
-		) {
-			show (morph newFolderButton)
-		} else {
-			hide (morph newFolderButton)
-		}
+		hide (morph newFolderButton)
 	}
 }
 

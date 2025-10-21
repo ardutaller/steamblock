@@ -312,7 +312,6 @@ method buildListView MicroBlocksListItemViewer {
 	fontName = 'Arial'
 	labelFontName = 'Arial Bold'
 	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	removeAllParts morph
 	if (or (and (notNil label) (notEmpty contents)) editFlag) {
@@ -358,7 +357,6 @@ method initialize MicroBlocksLibraryItemMorph aName anItemViewer forEditing clic
 	morph = (newMorph this)
 	fontName = 'Arial'
 	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	itemName = aName
 	itemViewer = anItemViewer
@@ -391,7 +389,6 @@ method handLeave MicroBlocksLibraryItemMorph aHand {
 method setCostumeColor MicroBlocksLibraryItemMorph color {
 	fontName = 'Arial'
 	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	bm = (stringImage itemName fontName fontSize (gray 0) 'center' nil 0 0 5 3 color)
 	setCostume morph bm
@@ -457,7 +454,6 @@ to newLibraryPropertiesFrame lib forEditing win {
 method initialize MicroBlocksLibraryPropertiesFrame lib forEditing win {
 	fontName = 'Arial'
 	fontSize = (16 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	editFlag = (and (notNil forEditing) forEditing)
 	morph = (morph (newBox nil (transparent) 0))

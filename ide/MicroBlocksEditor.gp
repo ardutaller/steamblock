@@ -322,12 +322,7 @@ method canWriteProject MicroBlocksEditor fName {
 
 method isAbsolutePath MicroBlocksEditor fName {
 	// Return true if this string is an absolute file path.
-	letters = (letters fName)
-	count = (count letters)
-	if (and (count >= 1) ('/' == (first letters))) { return true } // Mac, Linux
-	if (and (count >= 3) (':' == (at letters 2)) (isOneOf (at letters 3) '/' '\')) {
-		return true // Win
-	}
+	// Probably not needed anymore in the browser
 	return false
 }
 
@@ -592,6 +587,8 @@ method justReceivedDrop MicroBlocksEditor aHandler {
 method isPilot MicroBlocksEditor { return (true == isPilot) }
 
 method checkLatestVersion MicroBlocksEditor {
+	// TODO fix for Electron. We'll have to also check what platform Electron is
+	// running on
 	latestVersion = (fetchLatestVersionNumber this) // fetch version, even in browser, to log usage
 	if ('Browser' == (platform)) {
 		// skip version check in browser/Chromebook but set isPilot based on URL
@@ -628,6 +625,8 @@ method checkLatestVersion MicroBlocksEditor {
 }
 
 method fetchLatestVersionNumber MicroBlocksEditor {
+	// TODO fix for Electron. We'll have to also check what platform Electron is
+	// running on
 	platform = (platform)
 	if ('Browser' == platform) {
 		if (browserIsChromeOS) {
@@ -796,11 +795,6 @@ method pageResized MicroBlocksEditor {
 	scale = (global 'scale')
 	page = (global 'page')
 	fixLayout this
-	if ('Win' == (platform)) {
-		// workaround for a Windows graphics issue: when resizing a window it seems to clear
-		// some or all textures. this forces them to be updated from the underlying bitmap.
-		for m (allMorphs (morph page)) { costumeChanged m }
-	}
 }
 
 // top bar properties
