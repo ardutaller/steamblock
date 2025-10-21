@@ -108,6 +108,18 @@ canvas.emscripten { border: 0px none; }
 	z-index: 1;
 }
 
+.workspace {
+	display: flex;
+	flex-direction: row;
+}
+
+.left-bar {
+	background-color: #2d3143;
+	width: 192px;
+	min-width: 192px; /* Should change to 65 when the final layout is done */
+	max-width: 300px;
+}
+
 .tip-bar {
 	width: 100%;
 	height: 24px;
@@ -123,6 +135,38 @@ canvas.emscripten { border: 0px none; }
 	border-radius: 5px;
 	padding: 1px 6px;
 	background-color: #454a6466;
+}
+
+.categories {
+	display: flex;
+	flex-direction: column;
+	padding-top: 26px;
+}
+
+.category-button {
+	height: 23px;
+	margin-bottom: 6px;
+	margin-left: 18px;
+	border-radius: 12px 0 0 12px;
+	padding-left: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	color: white;
+	display: flex;
+	flex-direction: row;
+	cursor: pointer;
+}
+
+.category-button.selected, .category-button:hover {
+	margin-left: 6px;
+}
+
+.category-button.hidden {
+	display: none;
+}
+
+.category-button l- {
+	align-self: center;
 }
 
 .tip-bar span {
@@ -161,7 +205,7 @@ canvas.emscripten { border: 0px none; }
 .icon {
 	display: inline-block;
 	vertical-align: top;
-	align-self: center;
+	align-self: cente;
 	padding-top: 9px;
 	padding-left: 5px;
 	cursor: pointer;

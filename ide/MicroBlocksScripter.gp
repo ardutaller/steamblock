@@ -508,6 +508,7 @@ method currentCategory MicroBlocksScripter {
 }
 
 method categorySelected MicroBlocksScripter {
+	setProperty (api (smallRuntime)) 'ide.currentCategory' (selection categorySelector)
 	select libSelector nil // deselect library
 	updateBlocks this
 }

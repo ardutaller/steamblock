@@ -49,9 +49,15 @@
 		</div>
 		<div class="ide">
 			<nav class="top-bar"></nav>
-			<div class="emscripten">
-				<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
-				<div class="script-controls"></div>
+			<div class="workspace">
+				<div class="left-bar">
+					<div class="categories">
+					</div>
+				</div>
+				<div class="emscripten">
+					<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
+					<div class="script-controls"></div>
+				</div>
 			</div>
 			<div class="tip-bar">
 				<span class="tip-title"></span>
@@ -69,12 +75,13 @@
 
 		<!-- IDE -->
 		<script type="text/javascript" src="ide.js"></script>
-		<script type="text/javascript" src="icons.js"></script>
 		<script type="text/javascript" src="menus.js"></script>
 		<script type="text/javascript" src="buttons.js"></script>
+		<script type="text/javascript" src="categories.js"></script>
 
 		<script>
-			IDE.init();
+			// emitted by GP (MicroBlocksEditor.gp → openMicroBlocksEditor)
+			document.addEventListener('ide.ready', (e) => { IDE.init(); });
 		</script>
 
 	</body>

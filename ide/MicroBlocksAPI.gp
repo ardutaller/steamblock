@@ -58,6 +58,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.restoreZoom') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		restoreZoom editor
+	} (endPoint == 'ide.selectCategory') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		selectCategory scripter (at params 1)
 
 	// Project
 	} (endPoint == 'project.save') {

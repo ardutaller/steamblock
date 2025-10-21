@@ -9,10 +9,10 @@
 
 // Bernat Romagosa, 2025
 
+
 // An <l-> HTML element that is automatically localized into the current locale.
 // GetText makes sure to trigger the localization of all <l-> elements whenever
 // the locale changes.
-
 class LocalizableText extends HTMLElement {
 	constructor() {
 		super();
@@ -30,15 +30,19 @@ class LocalizableText extends HTMLElement {
 
 customElements.define('l-', LocalizableText);
 
+
 // A GetText object containing all properties, dictionaries and functions
 // necessary for localization.
+const GetText = {
+	locales: [], // keeps localization dictionaries
+	currentLocale: 'en',
+	localizable: [] // remember all <-l> elements so they track locale changes
+};
 
-var GetText = {};
-GetText.locales = []; // keeps localization dictionaries
-GetText.currentLocale = 'en';
+GetText.init = function () {
+	GetText.readLocale('en');
+};
 
-// remember localizable <l-> elements so they can be updated upon locale change
-GetText.localizable = [];
 GetText.addLocalizable = function (element) { this.localizable.push(element); }
 
 // read a .po file and parse it into a localization dictionary
@@ -107,6 +111,4 @@ GetText.localize = function (key) {
 	return value;
 };
 
-GetText.setLocale('en');
-
-
+GetText.init();

@@ -57,6 +57,7 @@ to openMicroBlocksEditor devMode {
 		// attempt to extra project or scripts from URL; does nothing if absent
 		importFromURL editor (browserURL)
 	}
+	setProperty (api (smallRuntime)) 'ide.ready' true
 	startSteppingSafely page
 }
 

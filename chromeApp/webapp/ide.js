@@ -13,12 +13,18 @@
 // The document can listen for that event and act accordingly. The `details`
 // object in the event contains the value of the property.
 
-IDE = {};
+IDE = {
+	currentMenu: null, // remember open menu so it can be closed on outside click
+	currentCategory: 'cat;Control'
+};
 
+// Initialization
 IDE.init = function () {
 	this.project = this.emptyProject();
 	this.board = this.emptyBoard();
+	this.applyUserPreferences();
 	this.build();
+	GetText.setLocale(this.userPreference('locale'));
 };
 
 IDE.emptyProject = function () {
@@ -27,8 +33,10 @@ IDE.emptyProject = function () {
 
 IDE.emptyBoard = function () {
 	return { hasFS: false, canDoBLE: false, connected: false, type: null };
-}
+};
 
+
+// User preferences, settable via the gear menu
 IDE.userPreference = function (pref) {
 	let value = JSON.parse(localStorage['user-prefs'])[pref];
 	if (value == undefined) { value = false; }
@@ -39,12 +47,22 @@ IDE.setUserPreference = function (pref, value) {
 	let prefs = JSON.parse(localStorage['user-prefs']);
 	prefs[pref] = value;
 	localStorage['user-prefs'] = JSON.stringify(prefs);
-	GP.apiCall('ide.applyUserPreferences');
+	this.applyUserPreferences();
 };
 
 IDE.toggleUserPreference = function (pref) {
 	this.setUserPreference(pref, !this.userPreference(pref));
+	this.applyUserPreferences();
+};
+
+IDE.applyUserPreferences = function () {
 	GP.apiCall('ide.applyUserPreferences');
+};
+
+IDE.toggleAdvancedMode = function () {
+	this.toggleUserPreference('devMode')
+	// rebuild categories
+	this.populateCategories(document.querySelector('.categories'));
 };
 
 
@@ -150,18 +168,23 @@ IDE.tipBar.setTip = function (title, content) {
 
 
 // Zoom Buttons. Eventually also undo/redo
-
-
 IDE.populateScriptControls = (element) => {
 	['zoomOut', 'restoreZoom', 'zoomIn'].forEach(selector => {
 		element.appendChild(Buttons.elementFor(selector));
 	});
-}
+};
+
+
+// Category list
+IDE.populateCategories = (element) => {
+	element.replaceWith(Categories.build());
+};
 
 
 // Build the IDE
 IDE.build = function () {
 	this.populateTopBar(document.querySelector('.top-bar'));
+	this.populateCategories(document.querySelector('.categories'));
 	this.populateScriptControls(document.querySelector('.script-controls'));
 	this.tipBar.init();
 	// check connection every 500ms
