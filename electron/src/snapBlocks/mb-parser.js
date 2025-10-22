@@ -105,6 +105,7 @@ class MB_Parser {
 		// Read a command or reporter. Terminate at close paren, close bracket, end of line, or end of file.
 
 		let buf = [];
+		this.skipWhiteSpace();
 		if (isReporter && ('(' == this.peek())) {
 			this.skip(1);
 		}
@@ -181,9 +182,15 @@ class MB_Parser {
 		b.isDraggable = true;
 		let inputs = b.inputs();
 		for (let i = 0; i < inputs.length; i++) {
-			if (args[i] instanceof BlockMorph) {
-				b.replaceInput(inputs[i], args[i]);
-				args[i].fixBlockColor();
+			let arg = args[i];
+			if (arg instanceof BlockMorph) {
+				if (inputs[i] instanceof CommandSlotMorph) {
+					inputs[i].nestedBlock(arg);
+				} else {
+					// needed? this case would be unusual and may never happen
+					b.replaceInput(inputs[i], arg);
+				}
+				arg.fixBlockColor();
 			} else {
 				inputs[i].setContents(args[i]);
 			}
@@ -502,6 +509,16 @@ function parser_test4() {
 function parser_test5() {
 	let p = new MB_Parser("  print ((1 + 2) * 3) { stop }  ");
 	let b = p.readCmd(false);
+	console.log(b);
+	addBlockToScripts(b);
+}
+
+function parser_test6() {
+	let p = new MB_Parser("script 915 125 {\nwhenButtonPressed 'A'\nwaitMillis 500\n}\n\nscript 100 200 {\nwhenButtonPressed 'B'\nwaitMillis 300\n}");
+	let b = p.readCmd(false);
+	console.log(b);
+	addBlockToScripts(b);
+	b = p.readCmd(false);
 	console.log(b);
 	addBlockToScripts(b);
 }

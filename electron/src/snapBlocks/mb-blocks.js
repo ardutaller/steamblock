@@ -2057,7 +2057,7 @@ BlockMorph.prototype.userMenu = function () {
 
 	menu.addItem(
 		'print code',
-		() => { this.printCode(); },
+		() => { console.log(this.printCode(0, [])); },
 		'test coverting scripts to pseudocode'
 	);
 	menu.addItem(
@@ -2075,25 +2075,58 @@ BlockMorph.prototype.userMenu = function () {
 	return menu;
 };
 
-BlockMorph.prototype.printCode = function () {
-	let result = [];
+BlockMorph.prototype.printCode = function (indent, result) {
+	if (this.type() == 'reporter') {
+		result.push('(');
+	} else { // command or hat block
+		result.push('\t'.repeat(indent));
+	}
 	result.push(this.selector + ' ');
+
 	let args = this.inputs();
 	for (let i = 0; i < args.length; i++) {
-		if (args[i] instanceof BooleanSlotMorph) {
-			result.push(args[i].value == true);
+		let arg = args[i];
+		if (arg instanceof BooleanSlotMorph) {
+			result.push(arg.value == true);
+		} else if (arg instanceof CSlotMorph) {
+			let nested = arg.nestedBlock();
+			if (nested == null) {
+				result.push('{}');
+			} else {
+				result.push('{\n');
+				nested.printCode(indent + 1, result);
+				result.push('\t'.repeat(indent));
+				result.push('}');
+			}
+		} else if (arg instanceof ReporterBlockMorph) {
+			arg.printCode(indent, result);
 		} else {
-			result.push(args[i].contents().text);
+			let value = arg.contents().text;
+			if ((value.length == 0) && (arg.isNumeric)) {
+				value = '0';
+			}
+			if ((typeof value1 === 'number') || ((value.length > 0) && (Number(value) != NaN))) { // number
+				result.push(value);
+			} else if ((typeof value) == 'boolean') {
+				result.push(value);
+			} else { // string
+				result.push('"' + value + '"');
+			}
 		}
 		if (i < (args.length - 1)) {
 			result.push(' ');
 		}
 	}
-	if (this.type() != 'command') {
-		result.unshift('(');
+
+	if (this.type() == 'reporter') {
 		result.push(')');
+	} else { // command or hat block
+		result.push('\n');
+		let next = this.nextBlock();
+		if (this instanceof HatBlockMorph) indent += 1;
+		if (next != null) next.printCode(indent, result); // recursive!
 	}
-	console.log(result.join(''));
+	return result.join('');
 }
 
 BlockMorph.prototype.type = function () {

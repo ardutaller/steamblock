@@ -1,4 +1,36 @@
-function mbBuiltinBlockSpecs() {
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+
+/*
+	MB_Specs - MicroBlocks block spec operations
+*/
+
+MB_Specs = {
+	selectorToSpec: {} // cached Map for looking up specs by selector
+}
+
+MB_Specs.initSelectorMap = function (selector) {
+	if (this.selectorToSpec instanceof Map) return; // already initialized
+	this.selectorToSpec = new Map();
+	let mbSpecs = MB_Specs.mbBlockSpecs();
+	for (let i = 0; i < mbSpecs.length; i++) {
+		let item = mbSpecs[i];
+		if (Array.isArray(item)) { // block spec (i.e. not a label or separator string)
+			let selector = item[1];
+			this.selectorToSpec.set(selector, item);
+		}
+	}
+}
+
+MB_Specs.specForSelector = function (selector) {
+	this.initSelectorMap();
+	return this.selectorToSpec.get(selector);
+}
+
+MB_Specs.mbBlockSpecs = function () {
 	// These specs are generated automatically by running:
 	//	setClipboard (exportSpecsAsJavascript (initialize (new 'SmallCompiler')))
 	// in the GP command line, then pasting the result into the returned list.
@@ -170,7 +202,7 @@ function mbBuiltinBlockSpecs() {
 		"-",
 			["r", "[data:freeMemory]", "free memory"],
 
-["r", "[misc:hue]", "hue _", "color"], // test color input slot
+["r", "[misc:hue]", "hue _", "color"], // xxx test color input slot
 
 		"Prims-Deprecated (not in palette)",
 			["r", "newArray", "new list length _", "num", 10],
