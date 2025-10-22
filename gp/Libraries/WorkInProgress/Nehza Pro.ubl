@@ -27,11 +27,11 @@ variables nehzaPro_busy nehzaPro_leftWheel nehzaPro_rightWheel nehzaPro_circumfe
   space
   spec 'r' 'nehzaPro_readSpeed' 'np speed _' 'menu.nehzaPro_motor' 'M1'
   spec 'r' 'nehzaPro_angle' 'np angle _' 'menu.nehzaPro_motor' 'M1'
-  space
-  spec 'r' 'nehzaPro_version' 'np version'
   advanced
   spec 'r' 'nehzaPro_readTotalAngle' 'np total angle _' 'menu.nehzaPro_motor' 'M1'
   spec ' ' 'nehzaPro_resetTotalAngle' 'np reset total angle _' 'menu.nehzaPro_motor' 'M1'
+  space
+  spec 'r' 'nehzaPro_version' 'np version'
   space
   spec ' ' '_nehzaPro_initWheels' '_nehzaPro_initWheels'
   spec 'r' '_nezhaPro_motor' '_nezhaPro_motor _' 'menu.nehzaPro_motor' 'M1'
