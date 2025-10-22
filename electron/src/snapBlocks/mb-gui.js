@@ -26,7 +26,7 @@ MB_GUI.addMicroBlocksGUI = function (world) {
 }
 
 MB_GUI.addMicroBlocksSpecs = function (palette) {
-	const specs = mbBuiltinBlockSpecs();
+	const specs = MB_Specs.mbBlockSpecs();
 	let	y = 10;
 	let currentCategory = 'Output';
 	for (let i = 0; i < 166; i++) {
