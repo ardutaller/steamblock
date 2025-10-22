@@ -97,7 +97,6 @@ method buildMorph Menu page yPos {
 	// settings, to be refactored later to somewhere else
 	fontName = 'Arial'
 	fontSize = (scale * 16)
-	if ('Linux' == (platform)) { fontSize = (scale * 13) }
 	border = (scale * 1)
 	corner = (scale * 2)
 	itemPaddingV = (scale * 1)

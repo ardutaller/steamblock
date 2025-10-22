@@ -25,10 +25,8 @@ method step Caret {
 	} else {
 		show morph
 	}
-	if ('Browser' == (platform)) {
-		s = (browserGetDroppedText)
-		if (notNil s) { insertRight this s }
-	}
+	s = (browserGetDroppedText)
+	if (notNil s) { insertRight this s }
 }
 
 method edit Caret aText initialSlot {
