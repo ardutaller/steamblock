@@ -9,17 +9,17 @@
 // Bernat Romagosa, 2025
 
 const LiveReload = {
-	active: true,
 	watchedFiles: [ 'style.css', 'microblocks.html', 'img/logo.svg' ],
 	lastVersions: {},
 	interval: null,
 	watchInterval: 1000,
-	reloadGP: false
+	reloadGP: false // try to reload the whole page except for the GP canvas
 };
 
 LiveReload.enable = function() {
-	this.active = true;
-	if (this.interval) { clearInterval(this.interval); }
+	this.disable();
+	console.log('LiveReload enabled');
+	console.log('Currently watching', this.watchedFiles.join(', '));
 	this.interval = setInterval(() => {
 		this.watchedFiles.forEach(file => {
 			fetch(file)
@@ -38,7 +38,7 @@ LiveReload.enable = function() {
 						document.querySelector('link[href^="' + file + '"]').href = newUrl;
 					} else if (['.svg', '.png', '.jpg'].some(ext=>file.endsWith(ext))) {
 						document.querySelector('*[src^="' + file + '"]').src = newUrl;
-					} else if (file.endsWith('.js') || file.endsWith('.html')) {
+					} else if (file.endsWith('.html')) {
 						// redo the whole page
 						this.reloadPage(text);
 						return;
@@ -50,13 +50,16 @@ LiveReload.enable = function() {
 	}, this.watchInterval);
 };
 
+LiveReload.disable = function() {
+	if (this.interval) { clearInterval(this.interval); }
+};
+
 LiveReload.reloadPage = function (contents) {
 	if (this.reloadGP) {
 		location.replace(location.pathname + '?refresh=' + new Date().getTime());
 	} else {
-		// Load the whole HTML, but take care of not reloading the GP div. This has
-		// the slight inconvenience that the GP canvas can't be interacted with
-		// anymore. Oh well :)
+		// Load the whole HTML, but take care of not reloading the GP div.
+		// This can have some issues but it seems to work right now :)
 		let newPage = document.createElement('html');
 		newPage.innerHTML = contents;
 		let canvas = document.querySelector('#canvas');
@@ -64,6 +67,7 @@ LiveReload.reloadPage = function (contents) {
 		newPage.querySelector('.workspace .emscripten').appendChild(canvas);
 		document.documentElement.innerHTML = newPage.innerHTML;
 		document.dispatchEvent(new CustomEvent('ready'));
+		initGPEventHandlers();
 	}
 };
 
