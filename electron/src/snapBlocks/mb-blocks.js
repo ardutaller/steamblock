@@ -51,6 +51,7 @@
 												CSlotMorph
 										InputSlotMorph
 												TextSlotMorph
+										MicroBitDisplaySlotMorph
 										MultiArgMorph
 										TemplateSlotMorph
 								BlockMorph
@@ -91,6 +92,7 @@
 				ColorSlotMorph
 				TemplateSlotMorph
 				BlockHighlightMorph
+				MicroBitDisplaySlotMorph
 				MultiArgMorph
 				ArgLabelMorph
 
@@ -167,6 +169,7 @@ var ColorSlotMorph;
 var HatBlockMorph;
 var BlockHighlightMorph;
 var MultiArgMorph;
+var MicroBitDisplaySlotMorph;
 var TemplateSlotMorph;
 var ArgLabelMorph;
 var TextSlotMorph;
@@ -376,6 +379,9 @@ SyntaxElementMorph.prototype.labelParts = {
 	// other single types
 	'%clr': {
 		type: 'color'
+	},
+	'%mbDisplay': {
+		type: 'mbDisplay'
 	},
 	'%br': {
 		type: 'break'
@@ -914,6 +920,9 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 				break;
 			case 'color':
 				part = new ColorSlotMorph();
+				break;
+			case 'mbDisplay':
+				part = new MicroBitDisplaySlotMorph();
 				break;
 			case 'break':
 				part = new Morph();
@@ -7961,6 +7970,123 @@ BlockHighlightMorph.prototype.updateReadout = function () {
 		this.add(readout);
 	}
 	readout.setPosition(this.position().add(inset));
+};
+
+// MicroBitDisplaySlotMorph //////////////////////////////////////////////////////
+
+/*
+	I am an editable input slot for the micro:bit 5x5 display.
+	my block spec is %mbdisplay
+*/
+
+// MicroBitDisplaySlotMorph inherits from ArgMorph:
+
+MicroBitDisplaySlotMorph.prototype = new ArgMorph();
+MicroBitDisplaySlotMorph.prototype.constructor = MicroBitDisplaySlotMorph;
+MicroBitDisplaySlotMorph.uber = ArgMorph.prototype;
+
+// MicroBitDisplaySlotMorph instance creation:
+
+function MicroBitDisplaySlotMorph(bits) {
+	this.init(bits);
+}
+
+MicroBitDisplaySlotMorph.prototype.init = function (bits) {
+	MicroBitDisplaySlotMorph.uber.init.call(this);
+	this.display = Array(25).fill(false); ;
+	this.paintMode = true;
+	this.insetX = 2;
+	this.insetY = 9;
+	this.stride = 18;
+	this.ledWidth = 11;
+	this.ledHeight = 14;
+	this.setColor(new Color(71, 82, 191));
+	if (bits) setContents(bits);
+	this.fixLayout();
+};
+
+MicroBitDisplaySlotMorph.prototype.getSpec = function () {
+	return '%mbdisplay';
+};
+
+MicroBitDisplaySlotMorph.prototype.setContents = function (bits) {
+	let shift = 0;
+	for (let row = 0; row < 5; row++) {
+		for (let col = 0; col < 5; col++) {
+			let isOn = ((bits & (1 << shift)) != 0);
+			this.display[(5 * row) + col] = isOn;
+			shift += 1;
+		}
+	}
+	this.rerender();
+};
+
+// MicroBitDisplaySlotMorph drawing:
+
+MicroBitDisplaySlotMorph.prototype.fixLayout = function () {
+	this.bounds.setWidth(84);
+	this.bounds.setHeight(100);
+};
+
+MicroBitDisplaySlotMorph.prototype.render = function (ctx) {
+	var borderColor;
+
+	ctx.fillStyle = this.color.toString();
+	ctx.fillRect(
+		this.edge,
+		this.edge,
+		this.width(),
+		this.height()
+	);
+	let offColor = new Color(37, 43, 101);
+	let onColor = new Color(229, 0, 0);
+	for (let row = 0; row < 5; row++) {
+		for (let col = 0; col < 5; col++) {
+			// todo: use on/off from display array
+			let x = this.insetX + (col * this.stride);
+			let y = this.insetY + (row * this.stride);
+			let isOn = this.display[(5 * row) + col];
+			ctx.fillStyle = (isOn ? onColor : offColor).toString();
+			ctx.fillRect(x, y, this.ledWidth, this.ledHeight);
+		}
+	}
+};
+
+// MicroBitDisplaySlotMorph editing:
+
+MicroBitDisplaySlotMorph.prototype.mouseClickLeft = function (pos) {
+	// ignore left click event
+}
+
+MicroBitDisplaySlotMorph.prototype.mouseDownLeft = function (pos) {
+	let i = this.pixelIndex(pos);
+	this.paintMode = (i >= 0) ? !this.display[i] : true;
+	this.mouseMove(pos);
+	this.lockMouseFocus();
+};
+
+MicroBitDisplaySlotMorph.prototype.mouseMove = function (pos) {
+	let i = this.pixelIndex(pos);
+	if (i >= 0) {
+		this.display[i] = this.paintMode;
+		this.rerender();
+	}
+};
+
+MicroBitDisplaySlotMorph.prototype.pixelIndex = function (pos) {
+	// Return the display pixel index for the given pointer position or -1
+	// the pointer is not over any pixel.
+
+	let relativePoint = pos.subtract(this.topLeft());
+	let x = relativePoint.x - this.insetX;
+	if ((x % this.stride) > this.ledWidth) return -1; // between pixels
+	let y = relativePoint.y - this.insetY;
+	if ((y % this.stride) > this.ledHeight) return -1; // between pixels
+
+	let col = Math.trunc(x / this.stride);
+	let row = Math.trunc(y / this.stride);
+	if ((col < 0) || (col > 4) || (row < 0) || (row > 4)) return -1;
+	return (row * 5) + col;
 };
 
 // MultiArgMorph ///////////////////////////////////////////////////////

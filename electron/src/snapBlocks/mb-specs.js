@@ -96,11 +96,10 @@ MB_Specs.snapTypeForMBType = function (mbType) {
 	if ('color' == mbType) return '%clr';
 	if ('cmd' == mbType) return '%c';
 	if ('var' == mbType) return '%t';
+	if ('microbitDisplay' == mbType) return '%mbDisplay';
 
 	// To do:
-	// 	if ('var' == mbType) return '%ns';
 	// 	if ('menu' == mbType) return '%ns';
-	// 	if ('microbitDisplay' == mbType) return '%ns';
 
 	return '%ns';
 }
@@ -185,6 +184,8 @@ MB_Specs.snapSpecFrom = function (spec) {
 			} else {
 				result[i] = '%ns';
 			}
+		} else if (result[i] == '#BR#') {
+			result[i] = '%br';
 		}
 	}
 	return result.join(' ');
@@ -365,6 +366,8 @@ MB_Specs.mbBlockSpecs = function () {
 			["r", "[data:freeMemory]", "free memory"],
 
 ["r", "[misc:hue]", "hue _", "color"], // xxx test color input slot
+		"cat;Output",
+[" ", "[display:mbDisplay]", "display #BR# _", "microbitDisplay"], // xxx test microbitDisplay input slot
 
 		"Prims-Deprecated (not in palette)",
 			["r", "newArray", "new list length _", "num", 10],
