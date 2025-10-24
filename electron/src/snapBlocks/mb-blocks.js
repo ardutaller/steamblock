@@ -860,7 +860,7 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 		part, tokens, cnts, i;
 	if (((info && Object.hasOwn(info, 'type')) ||
 		(spec[0] === '%' && spec.length > 1)) &&
-		(this.selector !== 'reportGetVar' ||
+		(this.selector !== 'v' ||
 			(['$turtleOutline', '$pipette'].includes(spec) &&
 				this.isObjInputFragment()
 			)
@@ -1055,7 +1055,7 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 
 SyntaxElementMorph.prototype.isObjInputFragment = function () {
 	// private - for displaying a symbol in a variable block template
-	return (this.selector === 'reportGetVar') &&
+	return (this.selector === 'v') &&
 		(this.getSlotSpec() === '%t') &&
 		(['%obj', '%clr'].includes(this.parent.fragment.type));
 };
@@ -2477,7 +2477,7 @@ BlockMorph.prototype.syntaxTree = function (parameterNames) {
 		}
 	});
 	parts.at(1).updateEmptySlots();
-	if (expr.selector === 'reportGetVar') {
+	if (expr.selector === 'v') {
 		parts.add(expr.blockSpec);
 		expr.setSpec('\xa0'); // non-breaking space, appears blank
 	}
@@ -7298,20 +7298,14 @@ function TemplateSlotMorph(name) {
 
 TemplateSlotMorph.prototype.init = function (name) {
 	var template = new ReporterBlockMorph();
-	this.labelString = name || '';
 	template.isDraggable = false;
 	template.isTemplate = true;
-	if (modules.objects !== undefined) {
-		template.color = SpriteMorph.prototype.blockColor.variables;
-		template.category = 'variables';
-	} else {
-		template.color = new Color(243, 118, 29);
-		template.category = null;
-	}
-	template.setSpec(this.labelString);
-	template.selector = 'reportGetVar';
+	template.category = 'Variables';
+	template.setSpec('_');
+	template.selector = 'v';
 	TemplateSlotMorph.uber.init.call(this);
 	this.add(template);
+	this.setContents('v');
 	this.fixLayout();
 	this.isDraggable = false;
 	this.isStatic = true; // I cannot be exchanged
@@ -7360,11 +7354,11 @@ TemplateSlotMorph.prototype.fixLayout = function () {
 // TemplateSlotMorph drop behavior:
 
 TemplateSlotMorph.prototype.wantsDropOf = function (aMorph) {
-	return aMorph.selector === 'reportGetVar';
+	return aMorph.selector === 'v';
 };
 
 TemplateSlotMorph.prototype.reactToDropOf = function (droppedMorph) {
-	if (droppedMorph.selector === 'reportGetVar') {
+	if (droppedMorph.selector === 'v') {
 		droppedMorph.destroy();
 	}
 };
