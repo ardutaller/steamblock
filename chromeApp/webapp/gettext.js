@@ -112,5 +112,3 @@ class LocalizableText extends HTMLElement {
 }
 
 customElements.define('l-', LocalizableText);
-
-

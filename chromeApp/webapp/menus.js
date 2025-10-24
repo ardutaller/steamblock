@@ -63,7 +63,7 @@ Menus.settings = {
 		{ label: '-' },
 		{
 			label: 'inform of new versions',
-			checked: () => { IDE.userPreference('versionCheckOnStartup'); },
+			checked: () => { return IDE.userPreference('versionCheckOnStartup'); },
 			action: () => { IDE.toggleUserPreference('versionCheckOnStartup'); }
 		},
 		{
