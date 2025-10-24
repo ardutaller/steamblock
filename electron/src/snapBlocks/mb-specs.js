@@ -95,6 +95,7 @@ MB_Specs.snapTypeForMBType = function (mbType) {
 	if ('bool' == mbType) return '%b';
 	if ('color' == mbType) return '%clr';
 	if ('cmd' == mbType) return '%c';
+	if ('var' == mbType) return '%t';
 
 	// To do:
 	// 	if ('var' == mbType) return '%ns';
@@ -147,7 +148,18 @@ MB_Specs.blockForSpec = function (spec, category) {
 		b.selector = spec[1];
 		b.setSpec(this.snapSpecFrom(spec));
 		b.setCategory(category);
-		// todo: set default values
+		let defaults = spec.slice(4);
+		if ('v' == b.selector) {
+			// set name (spec) for a variable block
+			if (defaults.length > 0) b.setSpec(defaults[0]);
+		} else {
+			// set default values
+			let inputs = b.inputs();
+			for (let i = 0; i < defaults.length; i++) {
+				if (i >= inputs.length) break;
+				inputs[i].setContents(defaults[i]);
+			}
+		}
 		return b;
 	}
 	return undefined; // error; spec should be an array

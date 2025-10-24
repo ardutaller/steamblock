@@ -4217,27 +4217,9 @@ ReporterBlockMorph.prototype.determineSlotSpec = function () {
 // ReporterBlockMorph events
 
 ReporterBlockMorph.prototype.mouseClickLeft = function (pos) {
-	alert('not implemented yet');
-	return;
-	var label;
-	if (this.parent instanceof BlockInputFragmentMorph) {
-		return this.parent.mouseClickLeft();
-	}
 	if (this.parent instanceof TemplateSlotMorph) {
-		if (this.parent.parent.elementSpec === '%blockVars') {
-			label = "Block variable name";
-		} else {
-			label = "Script variable name";
-		}
-		new DialogBoxMorph(
-			this,
-			this.userSetSpec,
-			this
-		).prompt(
-			label,
-			this.blockSpec,
-			this.world()
-		);
+		let newName = prompt('Variable name?', this.blockSpec);
+		if (newName != null) this.userSetSpec(newName);
 	} else {
 		ReporterBlockMorph.uber.mouseClickLeft.call(this, pos);
 	}

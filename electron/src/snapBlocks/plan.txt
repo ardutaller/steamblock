@@ -1,22 +1,15 @@
 MicroBlocks as Snap Blocks Experiment
 
 To do:
-[x] test script to generate MicroBlocks blocks
-[x] make context menus work on blocks and the scripting area
-[x] fix input slot types for MicroBlocks blocks (including C-shaped ones)
-[x] blocks palette
-[x] block specs for MicroBlocks built-in blocks
-[x] make boolean slots default to true
-[x] add category labels to palette
-[x] make palette delete dropped morphs
-[x] make boolean slots accept reporters of any type (how?)
-[x] make "if" be expandable to multiple cases (how?)
-
-[ ] rework built-in block specs as object keyed by selector
-[ ] set slot default values 
-[ ] option block sections (see e.g. Snap! "broadcast" block)
-[ ] code to generate MicroBlocks code from blocks
-[ ] test parser
+[x] rework built-in block specs as object keyed by selector
+[x] code to generate MicroBlocks code from blocks
+[x] test parser
+[x] handle variables ("var" slot type)
+[ ] fix: remove quotes from quoted strings
+[ ] add MicroBit display input slot type
+[x] set slot default values 
+[ ] optional block sections (see e.g. Snap! "broadcast" block)
+[ ] slot menu mechanism
 
 Issues:
 [ ] Snap! seems to allow arg slots to contain null, MicroBlocks assumes they always have some value. (Solutions: MB always sets a default value OR MicroBlocks compiler can deal with "null" arg values.)
@@ -25,23 +18,56 @@ Questions answered by Bernat:
   - how get a Morphic inspector in Snap! (both MB Snap and actual Snap!)
 	- shift-click on Snap logo to enter dev mode
 	- click on world in SnapBlocks to enter dev mode
-  - where is native clipboard paste implemented? (see initKeyboardHandler)
 
 Long term plan:
-  - basic block mechanics for MicroBlocks blocks
-  - ability to export MicroBlocks code from blocks of a single script
-  - parser (medium!)
-  - block spec lookup mechanism
-  - ability to parse a single script and generate blocks for it
-  - ability to import an entire project
-  - ability to export an entire project
-  - compiler (big!)
-  - ability to print compiled code and bytecodes
-  - IDE communication protocol (huge!)
-  - ability to compile, download, and run a script
-  - ability to compile entire project
-  - library support
-  - ability to install VM's from the IDE
-  - decompiler (huge!)
+  [x] basic block mechanics for MicroBlocks blocks
+  [x] ability to export MicroBlocks code from blocks of a single script
+  [x] parser (medium)
+  [x] block spec lookup mechanism
+  [x] ability to parse a single script and generate blocks for it
+  [ ] project representation (medium)
+  [ ] ability to import an entire project
+  [ ] ability to export an entire project
+  [ ] compiler (big!)
+  [ ] ability to print compiled code and bytecodes
+  [ ] IDE communication protocol (huge!)
+  [ ] ability to compile, download, and run a script
+  [ ] ability to compile entire project
+  [ ] library support
+  [ ] ability to install VM's from the IDE
+  [ ] decompiler (huge!)
   - ...
+
+------------------------  
+GP code that will need to ported:
+	126		 ide/MicroBitDisplaySlot.gp
+
+	1236	ide/MicroBlocksProject.gp
+ 
+	1332 	ide/MicroBlocksCompiler.gp
+	1102		ide/MicroBlocksDecompiler.gp
+
+	3216	ide/MicroBlocksRuntime.gp
+	265		ide/MicroBlocksExchange.gp
+
+	1028	 ide/ESPTool.gp -- use existing Javascript library?
+	153		ide/MicroBlocksAPI.gp -- won't be needed; use direct Javascript calls
+
+	// following are mostly UI and other things that we'll do differently Javascript
+	380		ide/MicroBlocksDataGraph.gp
+	1071	ide/MicroBlocksFilePicker.gp
+	164		ide/MicroBlocksFinder.gp
+	456		ide/MicroBlocksHelp.gp
+	637		ide/MicroBlocksLibraryWidgets.gp
+	1542	ide/MicroBlocksScripter.gp
+	295 		ide/MicroBlocksSelection.gp
+	237		ide/MicroBlocksFlasher.gp
+	108		ide/MicroBlocksSpinner.gp
+	133		ide/MicroBlocksTipBar.gp
+ 
+	1266	ide/MicroBlocksEditor.gp
+
+	17		ide/MicroBlocksPatches.gp
+ 	215		ide/MicroBlocksAppMaker.gp
+	14979	total
 
