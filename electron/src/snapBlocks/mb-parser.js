@@ -172,13 +172,15 @@ class MB_Parser {
 	}
 
 	makeBlock(buf, isReporter) {
+		// Make a command or reporter block from the given array of selector and arguments.
+
 		let selector = buf[0];
 		let args = buf.slice(1);
-		let spec = this.makeSpec(selector, args);
 		let b = isReporter ? new ReporterBlockMorph() : new CommandBlockMorph();
 		b.setCategory('');
 		b.selector = selector;
-		b.setSpec(spec);
+		b.setSpec(MB_Specs.specFor(selector, args));
+		b.setCategory(MB_Specs.categoryForSelector(selector));
 		b.isDraggable = true;
 		let inputs = b.inputs();
 		for (let i = 0; i < inputs.length; i++) {
@@ -197,28 +199,6 @@ class MB_Parser {
 		}
 		b.fixBlockColor();
 		return b;
-	}
-
-	makeSpec(selector, args) {
-		let result = (selector + ' ');
-		for (let i = 0; i < args.length; i++) {
-			let arg = args[i];
-			if ((typeof arg) == 'number') {
-				result += '%n';
-			} else if (((typeof arg) == 'string') || (arg == null)) {
-				result += '%s';
-			} else if ((arg == true) || (arg == false)) {
-				result += '%bool';
-			} else if (arg instanceof CommandBlockMorph) {
-				result += '%c';
-			} else {
-				result += '%ns';
-			}
-			if (i < (args.length - 1)) {
-				result += ' ';
-			}
-		}
-		return result;
 	}
 
 	// ***** Command Parsing Support *****
@@ -503,35 +483,29 @@ function parser_test4() {
 	let p = new MB_Parser("  { stop; go }  ");
 	let b = p.readCmd(false);
 	console.log(b);
-	addBlockToScripts(b);
+	MB_GUI.addBlockToScripts(b);
 }
 
 function parser_test5() {
 	let p = new MB_Parser("  print ((1 + 2) * 3) { stop }  ");
 	let b = p.readCmd(false);
 	console.log(b);
-	addBlockToScripts(b);
+	MB_GUI.addBlockToScripts(b);
 }
 
 function parser_test6() {
 	let p = new MB_Parser("script 915 125 {\nwhenButtonPressed 'A'\nwaitMillis 500\n}\n\nscript 100 200 {\nwhenButtonPressed 'B'\nwaitMillis 300\n}");
 	let b = p.readCmd(false);
 	console.log(b);
-	addBlockToScripts(b);
+	MB_GUI.addBlockToScripts(b);
 	b = p.readCmd(false);
 	console.log(b);
-	addBlockToScripts(b);
+	MB_GUI.addBlockToScripts(b);
 }
 
-function randomBetween(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function addBlockToScripts(b) {
-	let scripts = world.childThatIsA(ScriptsMorph); // assume palette is the last child of world
-	b.setPosition(new Point(randomBetween(200, 1000), randomBetween(10, 500)));
-	scripts.add(b);
-	scripts.changed();
+function parser_test7() {
+	let p = new MB_Parser("digitalReadOp 'hello' 1 true false 'foo'");
+	let b = p.readCmd(false);
+	console.log(b);
+	MB_GUI.addBlockToScripts(b);
 }

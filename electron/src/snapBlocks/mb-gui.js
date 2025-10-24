@@ -8,7 +8,7 @@ MB_GUI.addMicroBlocksGUI = function (world) {
 	newMorph = new ScrollFrameMorph();
 	palette.color = new Color(180, 180, 180);
 	palette.setExtent(new Point(paletteWidth, scriptingHeight));
-	this.addMicroBlocksSpecs(palette);
+	this.addBlocksToPalette(palette);
 	palette.contents.adjustBounds();
 	palette.contents.acceptsDrops = true;
 	palette.contents.reactToDropOf = (droppedMorph) => {
@@ -25,14 +25,48 @@ MB_GUI.addMicroBlocksGUI = function (world) {
 	world.add(scripts);
 }
 
-MB_GUI.addMicroBlocksSpecs = function (palette) {
+MB_GUI.addBlockToScripts = function (b) {
+	// For testing. Add the given block to the scripts pane at a random position.
+
+	let scripts = world.childThatIsA(ScriptsMorph); // assume palette is the last child of world
+	b.setPosition(new Point(this.randomBetween(200, 800), this.randomBetween(10, 300)));
+	scripts.add(b);
+	scripts.changed();
+}
+
+MB_GUI.randomBetween = function (min, max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+MB_GUI.handlePaste = function (event) {
+	let s = event.data;
+	if (!s.startsWith('GP Script')) return; // ignore non-script paste
+
+	let i = s.indexOf('script'); // find first script
+	if (i < 0) return; // no scripts
+
+	let p = new MB_Parser(s.slice(i));
+	while (true) {
+		let b = p.readCmd(false);
+		if (b === null) break;
+		if (b.inputs().length == 3) {
+			this.addBlockToScripts(b.inputs()[2]);
+		}
+	}
+}
+
+// ***** Populate the blocks palette *****
+
+MB_GUI.addBlocksToPalette = function (palette) {
 	const specs = MB_Specs.mbBlockSpecs();
 	let	y = 10;
 	let currentCategory = 'Output';
 	for (let i = 0; i < 166; i++) {
 		let item = specs[i];
 		if (Array.isArray(item)) { // block spec
-			let b = this.blockForSpec(item, currentCategory);
+			let b = MB_Specs.blockForSpec(item, currentCategory);
 			b.setPosition(new Point(15, y));
 			b.isTemplate = true;
 			palette.contents.add(b);
@@ -56,76 +90,4 @@ MB_GUI.addMicroBlocksSpecs = function (palette) {
 			y += label.height() + 15;
 		}
 	}
-}
-
-MB_GUI.blockForSpec = function (spec, category) {
-	if (Array.isArray(spec)) {
-		let b;
-		let type = spec[0];
-		if (' ' == type) {
-			b = new CommandBlockMorph();
-		} else if ('r' == type) {
-			b = new ReporterBlockMorph();
-		} else if ('h' == type) {
-			b = new HatBlockMorph();
-		}
-		b.selector = spec[1];
-		b.setCategory(category);
-		b.setSpec(this.snapSpecFrom(spec));
-		// todo: set default values
-		return b;
-	}
-	return undefined; // error; spec should be an array
-}
-
-MB_GUI.snapSpecFrom = function (spec) {
-	if (spec[1] == 'if') { // special case for "if"
-		return 'if %b %c %elseif';
-	}
-	let mbSpec = spec[2];
-	let mbArgTypes = (spec.length > 3) ? spec[3].split(' ') : [];
-	let i = mbSpec.indexOf(':');
-	if (i > 0) {
-		mbSpec = mbSpec.substring(0, i); // ignore optional args for now
-	}
-	let result = [];
-	let argIndex = 0;
-	while (true) {
-		let i = mbSpec.indexOf('_');
-		if (i >= 0) {
-			let end = i;
-			if ((end > 0) && (mbSpec[end - 1] == ' ')) {
-				end--; // omit space before _
-			}
-			result.push(mbSpec.substring(0, end));
-			result.push(this.mbToSnapArgType(mbArgTypes[argIndex]));
-			if ((i < (mbSpec.length - 1)) && (mbSpec[i + 1] == ' ')) {
-				i++; // omit space after _
-			}
-			mbSpec = mbSpec.substring(i + 1);
-			argIndex++;
-		} else {
-			result.push(mbSpec);
-			break;
-		}
-	}
-	return result.join(' ').trim();
-}
-
-// MicroBlocks types: 'num' 'cmt' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
-MB_GUI.mbToSnapArgType = function (mbArgType) {
-	if (mbArgType.indexOf('.') < -1) return '%s'; // convert menu to string
-	if ('num' == mbArgType) return '%n';
-	if ('str' == mbArgType) return '%s';
-	if ('auto' == mbArgType) return '%ns';
-	if ('bool' == mbArgType) return '%b';
-	if ('color' == mbArgType) return '%clr';
-	if ('cmd' == mbArgType) return '%c';
-	// 	if ('var' == mbArgType) return '%n';
-	// 	if ('menu' == mbArgType) return '%n';
-	return '%s'; // default
-}
-
-MB_GUI.handlePaste = function (event) {
-	console.log('MB_GUI.handlePaste', event);
 }

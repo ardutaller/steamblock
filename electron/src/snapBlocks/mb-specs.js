@@ -9,26 +9,175 @@
 */
 
 MB_Specs = {
-	selectorToSpec: {} // cached Map for looking up specs by selector
+	selectorToSpec: {}, // cached Map for looking up specs by selector
+	selectorToCategory: {}, // cached Map for looking up block category by selector
 }
 
-MB_Specs.initSelectorMap = function (selector) {
+MB_Specs.initialize = function (selector) {
 	if (this.selectorToSpec instanceof Map) return; // already initialized
 	this.selectorToSpec = new Map();
+	this.selectorToCategory = new Map();
 	let mbSpecs = MB_Specs.mbBlockSpecs();
+	let category = '';
 	for (let i = 0; i < mbSpecs.length; i++) {
 		let item = mbSpecs[i];
 		if (Array.isArray(item)) { // block spec (i.e. not a label or separator string)
 			let selector = item[1];
 			this.selectorToSpec.set(selector, item);
+			if (category != '') {
+				this.selectorToCategory.set(selector, category);
+			}
+		} else if ((typeof item === 'string') && (item != '-')) {
+			category = item;
+			if (category.startsWith('cat;')) {
+				category = category.slice(4);
+			}
+			if (category.endsWith('-Advanced')) {
+				category = category.slice(0, -9);
+			}
 		}
 	}
 }
 
-MB_Specs.specForSelector = function (selector) {
-	this.initSelectorMap();
+MB_Specs.specArrayForSelector = function (selector) {
+	this.initialize();
 	return this.selectorToSpec.get(selector);
 }
+
+MB_Specs.categoryForSelector = function (selector) {
+	this.initialize();
+	let result = this.selectorToCategory.get(selector);
+	return (result === undefined) ? BlockMorph.prototype.colorFor('no category') : result;
+}
+
+MB_Specs.specFor = function (selector, args) {
+	// Return a block spec for the command or reporter the given selector and arguments.
+	// Use the MicroBlocks spec for the given selector, if possible.
+	// Otherwise, generate a spec based on the argument types.
+
+	let spec = '';
+	let specArray = this.specArrayForSelector(selector);
+	if (specArray) {
+		let specParts = specArray[2].split(/\s+/);
+		let mbTypes = specArray[3].split(/\s+/);
+		let typeIndex = 0;
+		for (let i = 0; i < specParts.length; i++) {
+			let p = specParts[i];
+			if (p == '_') {
+				if (typeIndex < mbTypes.length) {
+					spec += ' ' + this.snapTypeForMBType(mbTypes[typeIndex]);
+					typeIndex++;
+				}
+			} else if ((p != ':') && (p != '...')) {
+				spec += ' ' + p;
+			}
+		}
+	} else {
+		spec = selector;
+		for (let i = 0; i < args.length; i++) {
+			spec += ' ' + this.specForArg(args[i]);
+		}
+	}
+	spec = this.extendSpecForArgs(spec, args);
+	return spec;
+}
+
+MB_Specs.snapTypeForMBType = function (mbType) {
+	// Return the Snap! slot type for the given MicroBlocks slot type.
+	// MicroBlocks types: 'num' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
+	// To do: handle menus.
+
+	mbType = mbType.split('.')[0]; // remove menu selector (e.g. menu.buttonMenu)
+	if ('num' == mbType) return '%n';
+	if ('str' == mbType) return '%s';
+	if ('auto' == mbType) return '%ns';
+	if ('bool' == mbType) return '%b';
+	if ('color' == mbType) return '%clr';
+	if ('cmd' == mbType) return '%c';
+
+	// To do:
+	// 	if ('var' == mbType) return '%ns';
+	// 	if ('menu' == mbType) return '%ns';
+	// 	if ('microbitDisplay' == mbType) return '%ns';
+
+	return '%ns';
+}
+
+MB_Specs.specForArg = function (arg) {
+	if ((typeof arg) == 'number') {
+		return '%n';
+	} else if (((typeof arg) == 'string') || (arg == null)) {
+		return '%s';
+	} else if ((arg == true) || (arg == false)) {
+		return '%b';
+	} else if (arg instanceof CommandBlockMorph) {
+		return '%c';
+	}
+	return '%ns';
+}
+
+MB_Specs.extendSpecForArgs = function (spec, args) {
+	let specSlotCount = spec.split('%').length - 1;
+	let extraSlotCount = args.length - specSlotCount;
+
+	if (extraSlotCount <= 0) return spec; // no extra slots needed
+	for (let i = 0; i < extraSlotCount; i++) {
+		spec += ' ' + this.specForArg(args[specSlotCount + i]); // add a number/string slot
+	}
+	return spec;
+}
+
+// ***** Creating Blocks from Specs *****
+
+MB_Specs.blockForSpec = function (spec, category) {
+	// Create a block in the given category from the given MicroBlocks spec array.
+	// Used to populate the block palette.
+
+	if (Array.isArray(spec)) {
+		let b;
+		let type = spec[0];
+		if (' ' == type) {
+			b = new CommandBlockMorph();
+		} else if ('r' == type) {
+			b = new ReporterBlockMorph();
+		} else if ('h' == type) {
+			b = new HatBlockMorph();
+		}
+		b.selector = spec[1];
+		b.setSpec(this.snapSpecFrom(spec));
+		b.setCategory(category);
+		// todo: set default values
+		return b;
+	}
+	return undefined; // error; spec should be an array
+}
+
+MB_Specs.snapSpecFrom = function (spec) {
+	if (spec[1] == 'if') { // special case for "if"
+		return 'if %b %c %elseif';
+	}
+	let mbSpec = spec[2];
+	let mbArgTypes = (spec.length > 3) ? spec[3].split(/\s+/) : [];
+	let i = mbSpec.indexOf(':');
+	if (i > 0) {
+		mbSpec = mbSpec.substring(0, i); // ignore optional args for now
+	}
+	let result = mbSpec.split(/\s+/);
+	let argIndex = 0;
+	for (let i = 0; i < result.length; i++) {
+		if (result[i] == '_') {
+			if (argIndex < mbArgTypes.length) {
+				result[i] = MB_Specs.snapTypeForMBType(mbArgTypes[argIndex]);
+				argIndex++;
+			} else {
+				result[i] = '%ns';
+			}
+		}
+	}
+	return result.join(' ');
+}
+
+// ***** MicroBlocks built-in block specs *****
 
 MB_Specs.mbBlockSpecs = function () {
 	// These specs are generated automatically by running:
@@ -111,7 +260,7 @@ MB_Specs.mbBlockSpecs = function () {
 			["h", "whenBroadcastReceived", "when _ received", "str.broadcastMenu", "go!"],
 			[" ", "sendBroadcast", "broadcast _", "str.broadcastMenu", "go!", ""],
 		"-",
-			[" ", "comment", "comment _", "cmt", "How this works..."],
+			[" ", "comment", "comment _", "str", "How this works..."],
 			["r", "[data:range]", "range _ to _ : by _", "num num num", 1, 10, 2],
 			[" ", "for", "for _ in _ _", "var num cmd", "i", 10],
 			[" ", "repeatUntil", "repeat until _ _", "bool cmd", false],
