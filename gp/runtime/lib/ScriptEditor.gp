@@ -621,20 +621,11 @@ method saveScriptsImage ScriptEditor fName doNotCrop {
 	pngData = (encodePNG bm nil scriptsString)
 
 	defaultFileName = (join 'allScripts' (msecsSinceStart) '.png')
-	if ('Browser' == (platform)) {
-		if ((msecs timer) > 4000) {
-			// if it has been more than a few seconds the user must click again to allow file save
-			inform (global 'page') (localized 'PNG preparation complete.')
-		}
-		browserWriteFile pngData defaultFileName 'scriptImage'
-	} else {
-		if (isNil fName) {
-			fName = (fileToWrite defaultFileName '.png')
-			if ('' == fName) { return }
-		}
-		if (not (endsWith fName '.png')) { fName = (join fName '.png') }
-		writeFile fName pngData
+	if ((msecs timer) > 4000) {
+		// if it has been more than a few seconds the user must click again to allow file save
+		inform (global 'page') (localized 'PNG preparation complete.')
 	}
+	browserWriteFile pngData defaultFileName 'scriptImage'
 }
 
 method croppedScriptsCostume ScriptEditor doNotCrop {
@@ -652,17 +643,11 @@ method croppedScriptsCostume ScriptEditor doNotCrop {
 			h = (min h (height bnds))
 		}
 	}
-	if ('Browser' == (platform)) { // in browser, draw on Texture for speed
-		result = (newTexture w h (gray 255 0))
-	} else {
-		result = (newBitmap w h (gray 255 0))
-	}
+	result = (newTexture w h (gray 255 0))
 	ctx = (newGraphicContextOn result)
 	setOffset ctx (0 - (left r)) (0 - (top r))
 	fullDrawOn morph ctx
-	if ('Browser' == (platform)) {
-		result = (toBitmap result)
-	}
+	result = (toBitmap result)
 	return result
 }
 

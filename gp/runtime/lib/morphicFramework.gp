@@ -167,12 +167,7 @@ method draggedObjectChanged Hand {
 	if (isNil obj) { return }
 	removeAllParts morph
 	show (morph obj)
-	if ('Browser' == (platform)) {
-		addPart morph (morph (newCachedTexture obj))
-	} else {
-		addPart morph (shadow (morph obj) 50 (7 * (global 'scale')))
-		addPart morph (cachedCostumeFor this obj)
-	}
+	addPart morph (morph (newCachedTexture obj))
 	hide (morph obj)
 	addPart morph (morph obj)
 	changed morph
@@ -329,10 +324,7 @@ method handHasMoved Hand {
 method processEvent Hand evt {
 	type  = (at evt 'type')
 	if (type == 'mousewheel') {
-		// Windows and Linux only report +/- 1 for mousewheel events so scale them up
-		wheelScale = (60 * (global 'scale'))
-		if ('Browser' == (platform)) { wheelScale = (1 * (global 'scale')) }
-		if ('Mac' == (platform)) { wheelScale = (10 * (global 'scale')) }
+		wheelScale = (1 * (global 'scale'))
 		if (shiftKeyDown (keyboard page)) {
 			// allow shift+scrollwheel to scroll horizontally
 			processSwipe this (* wheelScale (at evt 'y') -1) 0
@@ -613,20 +605,12 @@ method processEvent Keyboard evt {
 	type = (at evt 'type')
 	key = (at evt 'keycode')
 	if (or (key == 91) (key == 93)) { key = nil } // numpad fix for keys 3 and 5
-	if (and ('textinput' == type) ('Browser' == (platform)) ('	' == (at evt 'text'))) {
+	if (and ('textinput' == type) ('	' == (at evt 'text'))) {
 		// skip textinput events for tab characters (sent by browsers but not SDL2)
 		return
 	}
 	if (and ('textinput' == type) (or (controlKeyDown this) (commandKeyDown this))) {
 		return // ignore textinput events with modifier keys
-	}
-	if (and ('Browser' != (platform)) (74 <= key) (key <= 78)) {
-		// Map SDL key codes to browser key codes
-		if (74 === key) { key = 36 // home
-		} (75 === key) { key = 33 // page up
-		} (77 === key) {  key = 35 // end
-		} (78 === key) { key = 34 // page down
-		}
 	}
 	updateModifiedKeys this (at evt 'modifierKeys')
 	if (and (1 <= key) (key <= 255)) {
@@ -857,7 +841,7 @@ method open Page tryRetina title {
 	// Morphic Rework:
 	// The renderToBitmap flag makes SDL screen be a bitmap vs. a texture,
 	// allowing direct rendering (including vectors and text) to SDL's display.
-	renderToBitmap = (not ('Browser' == (platform)))
+	renderToBitmap = false
 
 	openWindow (width morph) (height morph) tryRetina title renderToBitmap
 	winSize = (windowSize)
@@ -953,9 +937,7 @@ method doOneCycle Page {
 	stepTasks taskMaster 75
 	if (or redrawAll (notEmpty damages)) { fixDamages this }
 
-	if ('Browser' == (platform)) {
-		processLastCall (api (smallRuntime))
-	}
+	processLastCall (api (smallRuntime))
 
 	// sleep for any extra time, but always sleep a little to ensure that
 	// we get events (and to return control to the browser)
@@ -1093,12 +1075,9 @@ to getNextEvent {
 
 to readClipboard {
 	// Return the contents of the clipboard.
-
-	if ('Browser' == (platform)) {
-		// On browsers, read the clipboard twice, with a short wait in between.
-		getClipboard
-		waitMSecs 1
-	}
+	// On browsers, read the clipboard twice, with a short wait in between.
+	getClipboard
+	waitMSecs 1
 	return (getClipboard)
 }
 
@@ -1303,8 +1282,7 @@ method clearActiveMenu Page { activeMenu = nil }
 
 method showHint Page aSpeechBubble isHint {
 	removeHint this
-	inset = 3
-	if ('Browser' == (platform)) { inset = 2 }
+	inset = 2
 	keepWithin (morph aSpeechBubble) (insetBy (bounds morph) (inset * (global 'scale')))
 	addPart this aSpeechBubble
 	step aSpeechBubble
@@ -1339,8 +1317,7 @@ method removeAllHints Page {
 
 method showTooltip Page aTooltip {
 	removeTooltip this
-	inset = 3
-	if ('Browser' == (platform)) { inset = 2 }
+	inset = 2
 	keepWithin (morph aTooltip) (insetBy (bounds morph) (inset * (global 'scale')))
 	addPart this aTooltip
 	activeTooltip = aTooltip
