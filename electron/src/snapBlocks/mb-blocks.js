@@ -29,7 +29,7 @@
 
 		prerequisites:
 		--------------
-		needs morphic.js, symbols.js and widgets.js
+		needs morphic.js
 
 
 		hierarchy
@@ -289,15 +289,15 @@ SyntaxElementMorph.prototype.alpha = 1;
 
 SyntaxElementMorph.prototype.labelParts = {
 	/*
-				Input slots
+	Input slots
 
-				type: 'input'
-				tags: 'numeric numstring alphanum read-only unevaluated landscape
-							 static'
-				menu: dictionary or selector
-				react: selector
-				value: string, number or Array for localized strings / constants
-				*/
+	type: 'input'
+	tags: 'numeric numstring alphanum read-only landscape static'
+	menu: dictionary or selector
+	react: selector
+	value: string, number or Array for localized strings / constants
+	*/
+
 	'%s': {
 		type: 'input'
 	},
@@ -880,13 +880,8 @@ SyntaxElementMorph.prototype.fixBlockColor = function (
 SyntaxElementMorph.prototype.labelPart = function (spec) {
 	var info = this.labelParts[spec],
 		part, tokens, cnts, i;
-	if (((info && Object.hasOwn(info, 'type')) ||
-		(spec[0] === '%' && spec.length > 1)) &&
-		(this.selector !== 'v' ||
-			(['$turtleOutline', '$pipette'].includes(spec) &&
-				this.isObjInputFragment()
-			)
-		)
+	if (((info && Object.hasOwn(info, 'type')) || (spec[0] === '%' && spec.length > 1)) &&
+		(this.selector !== 'v')
 	) {
 		// check for variable multi-arg-slot:
 		if ((spec.length > 5) && (spec.slice(0, 5) === '%mult')) {
@@ -981,9 +976,9 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 
 		// apply the tags
 		// ---------------
-		// input: numeric, numstring, alphanum, read-only, unevaluated, landscape, static
+		// input: numeric, numstring, alphanum, read-only, landscape, static
 		// text entry: monospace
-		// boolean: unevaluated, static
+		// boolean: static
 		// symbol: static, fading, protected
 		// c: loop, static, lambda
 		// command slot: (none)
@@ -1013,9 +1008,6 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 							break;
 						case 'read-only':
 							part.isReadOnly = true;
-							break;
-						case 'unevaluated':
-							part.isUnevaluated = true;
 							break;
 						case 'static':
 							part.isStatic = true;
@@ -1076,13 +1068,6 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 
 	}
 	return part;
-};
-
-SyntaxElementMorph.prototype.isObjInputFragment = function () {
-	// private - for displaying a symbol in a variable block template
-	return (this.selector === 'v') &&
-		(this.getSlotSpec() === '%t') &&
-		(['%obj', '%clr'].includes(this.parent.fragment.type));
 };
 
 // SyntaxElementMorph layout:
@@ -1603,7 +1588,6 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 		blockSpec		- a formalized description of my label parts
 		setSpec()		- force me to change my label structure
 		evaluate()		- answer the result of my evaluation
-		isUnevaluated() - answer whether I am part of a special form
 
 		Zebra coloring provides a mechanism to alternate brightness of nested,
 		same colored blocks (of the same category). The deviation of alternating
@@ -1665,9 +1649,6 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 		%cla	- C-shaped with loop arrows, auto-reifying, rejects reporters
 		%clr	- interactive color slot
 		%t		- inline variable reporter template
-		%anyUE	- white rectangular type-in slot, unevaluated if replaced
-		%boolUE - chameleon colored hexagonal slot, unevaluated if replaced
-		%f		- round function slot, unevaluated if replaced,
 		%r		- round reporter slot
 		%p		- hexagonal predicate slot
 		%vid	- chameleon colored rectangular drop-down for video modes
@@ -5251,12 +5232,7 @@ ScriptsMorph.prototype.toggleKeyboardEntry = function () {
 /*
 	I am a syntax element and the ancestor of all block inputs.
 	I am present in block labels.
-	Usually I am just a receptacle for inherited methods and attributes,
-	however, if my 'type' attribute is set to one of the following
-	values, I act as an iconic slot myself:
-
-		'list'		- a list symbol
-		'object'	- a turtle symbol
+	I am just a receptacle for inherited methods and attributes.
 */
 
 // ArgMorph inherits from SyntaxElementMorph:
@@ -5276,7 +5252,6 @@ ArgMorph.prototype.init = function (type) {
 	this.icon = null;
 	ArgMorph.uber.init.call(this);
 	this.color = new Color(0, 17, 173);
-	this.createIcon();
 	if (type === 'list') {
 		this.alpha = 1;
 	}
@@ -5374,21 +5349,6 @@ ArgMorph.prototype.slotMenu = function () {
 
 // ArgMorph drawing
 
-ArgMorph.prototype.createIcon = function () {
-	switch (this.type) {
-	case 'list':
-		this.icon = this.labelPart('$list');
-		this.add(this.icon);
-		break;
-	case 'object':
-		this.icon = this.labelPart('$turtle');
-		this.add(this.icon);
-		break;
-	default:
-		nop(); // no icon
-	}
-};
-
 ArgMorph.prototype.fixLayout = function () {
 	if (this.icon) {
 		this.icon.setPosition(this.position());
@@ -5425,14 +5385,6 @@ ArgMorph.prototype.evaluate = function () {
 
 ArgMorph.prototype.isEmptySlot = function () {
 	return this.type !== null;
-};
-
-// ArgMorph op-sequence analysis
-
-ArgMorph.prototype.unwind = function () {
-	var nxt = this.parent instanceof MultiArgMorph ? this.parent
-				: this.parentThatIsA(BlockMorph);
-	return [this].concat(nxt.unwindAfter(this));
 };
 
 // CommandSlotMorph ////////////////////////////////////////////////////
@@ -5601,21 +5553,6 @@ CommandSlotMorph.prototype.attach = function () {
 	if (choices.length > 0) {
 		menu.popUpAtHand(this.world());
 	}
-};
-
-// CommandSlotMorph op-sequence analysis
-
-CommandSlotMorph.prototype.unwind = function () {
-	var nested = this.nestedBlock(),
-		nxt = this.parent instanceof MultiArgMorph ? this.parent
-				: this.parentThatIsA(BlockMorph);
-	if (nested) {
-		if (this.isLambda) {
-			return [nested.unwind()].concat(nxt.unwindAfter(this));
-		}
-		return nested.unwind().concat(nxt.unwindAfter(this));
-	}
-	return nxt.unwindAfter(this);
 };
 
 // CommandSlotMorph drawing:
@@ -6300,7 +6237,6 @@ CSlotMorph.prototype.drawBottomEdge = function (ctx) {
 
 	%s		- string input, rectangular
 	%n		- numerical input, semi-circular vertical edges
-	%anyUE	- any unevaluated
 
 	evaluate() returns my displayed string, cast to float if I'm numerical
 
@@ -6341,7 +6277,6 @@ InputSlotMorph.prototype.init = function (
 	this.selectedBlock = null;
 	this.symbol = null;
 
-	this.isUnevaluated = false;
 	this.choices = choiceDict || null; // object, function or selector
 	this.oldContentsExtent = contents.extent();
 	this.isNumeric = isNumeric || false;
@@ -6365,9 +6300,6 @@ InputSlotMorph.prototype.init = function (
 // InputSlotMorph accessing:
 
 InputSlotMorph.prototype.getSpec = function () {
-	if (this.isUnevaluated) {
-		return '%anyUE';
-	}
 	if (this.isNumeric) {
 		return '%n';
 	}
@@ -6404,18 +6336,8 @@ InputSlotMorph.prototype.setContents = function (data) {
 	}
 
 	if (isConstant) {
-		// migrate old "any" constants
-		if (dta[0] === 'any') {
-			dta[0] = 'random';
-		}
-		if (dta[0] === '__shout__go__') {
-			this.symbol = this.labelPart('$greenflag');
-			this.add(this.symbol);
-			dta = '';
-		} else {
-			dta = localize(dta[0]);
-			cnts.isItalic = !this.isReadOnly;
-		}
+		dta = localize(dta[0]);
+		cnts.isItalic = !this.isReadOnly;
 	} else if (dta instanceof BlockMorph) {
 		this.selectedBlock = dta;
 		dta = ''; // make sure the contents text emptied
@@ -7277,7 +7199,6 @@ TemplateSlotMorph.prototype.cSlots = function () {
 	My block spec is
 
 	%b			- Boolean
-	%boolUE		- Boolean unevaluated
 
 	I can be directly edited. When the user clicks on me I toggle
 	between <true>, <false> and <null> values.
@@ -7308,7 +7229,6 @@ function BooleanSlotMorph(initialValue) {
 
 BooleanSlotMorph.prototype.init = function (initialValue) {
 	this.value = (typeof initialValue === 'boolean') ? initialValue : null;
-	this.isUnevaluated = false;
 	this.progress = 0; // for animation state, not persisted
 	BooleanSlotMorph.uber.init.call(this);
 	this.alpha = 1;
@@ -7317,7 +7237,7 @@ BooleanSlotMorph.prototype.init = function (initialValue) {
 };
 
 BooleanSlotMorph.prototype.getSpec = function () {
-	return this.isUnevaluated ? '%boolUE' : '%b';
+	return '%b';
 };
 
 BooleanSlotMorph.prototype.isWide = function () {
@@ -7741,7 +7661,6 @@ TextSlotMorph.prototype.init = function (
 	contents.fontSize = this.fontSize;
 	contents.fixLayout();
 
-	this.isUnevaluated = false;
 	this.choices = choiceDict || null; // object, function or selector
 	this.oldContentsExtent = contents.extent();
 	this.isNumeric = isNumeric || false;
@@ -8244,21 +8163,6 @@ MultiArgMorph.prototype.init = function (
 		arrowColor,
 		true // isLbl
 	);
-
-	// list symbol:
-	// listSymbol = this.labelPart('$verticalEllipsis-0.98');
-
-	// alternative list symbol designs to contemplate in the future:
-	// listSymbol = this.labelPart('$listNarrow-0.9');
-
-	/*
-	listSymbol = this.labelPart('$listNarrow-.98');
-	listSymbol.backgroundColor = new Color(255, 140, 0); // list color
-	*/
-
-	// /*
-	// listSymbol = new SymbolMorph('listNarrow', this.fontSize * 0.8);
-	// */
 
 	// control panel:
 	arrows.add(leftArrow);
@@ -8931,11 +8835,6 @@ MultiArgMorph.prototype.evaluate = function () {
 MultiArgMorph.prototype.isEmptySlot = function () {
 	return this.canBeEmpty ? this.inputs().length === 0 : false;
 };
-
-// MultiArgMorph op-sequence analysis
-
-MultiArgMorph.prototype.unwind = BlockMorph.prototype.unwind;
-MultiArgMorph.prototype.unwindAfter = BlockMorph.prototype.unwindAfter;
 
 // ArgLabelMorph ///////////////////////////////////////////////////////
 
