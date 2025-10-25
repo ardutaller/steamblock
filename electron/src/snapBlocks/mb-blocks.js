@@ -389,6 +389,22 @@ SyntaxElementMorph.prototype.labelParts = {
 	'%inputName': {
 		type: 'variable',
 	},
+
+    // specialized variadic inputs
+    /*
+        type: 'multi'
+        slots: a slot spec string
+        label: (optional)
+        infix: (optional)
+        collapse: (optional) alternative label to "Input list"
+        tags: 'widget' // doesn't count as "empty" slot implicit parameter
+        min: (optional) number of minimum inputs) or zero
+        max: (optional) number of maximum inputs) or zero
+        defaults: (optional) number of visible slots to begin with or zero
+        dflt: (optional) array with default value(s)
+        group: (optional) a block spec describing a group of inputs with labels
+    */
+
 	'%elseif': {
 		type: 'multi',
 		group: 'else if %b %cs',
@@ -8430,14 +8446,6 @@ MultiArgMorph.prototype.setMaxSlots = function (maxSlots) {
 
 MultiArgMorph.prototype.setContents = function (anArray) {
 	var inputs = this.inputs(), i;
-
-	if (!(anArray instanceof Array) && this.slotSpec === '%rcv') {
-		// special case for migrating former SEND block inputs to
-		// newer BROADCAST expansion slots for receivers
-		// this can be removed once all SEND blocks have been
-		// converted to v7
-		anArray = [anArray];
-	}
 
 	for (i = 0; i < anArray.length; i += 1) {
 		if (anArray[i] !== null && (inputs[i])) {

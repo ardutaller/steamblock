@@ -5,11 +5,11 @@ To do:
 [x] code to generate MicroBlocks code from blocks
 [x] test parser
 [x] handle variables ("var" slot type)
-[ ] fix: remove quotes from quoted strings
-[ ] add MicroBit display input slot type
 [x] set slot default values 
+[x] add MicroBit display input slot type
+[ ] fix: remove quotes from quoted strings (but may need for 'var' slots...)
+[ ] slot dropdown menu support
 [ ] optional block sections (see e.g. Snap! "broadcast" block)
-[ ] slot menu mechanism
 
 Issues:
 [ ] Snap! seems to allow arg slots to contain null, MicroBlocks assumes they always have some value. (Solutions: MB always sets a default value OR MicroBlocks compiler can deal with "null" arg values.)

@@ -365,6 +365,7 @@ MB_Specs.mbBlockSpecs = function () {
 		"-",
 			["r", "[data:freeMemory]", "free memory"],
 
+		"--- Testing ---",
 ["r", "[misc:hue]", "hue _", "color"], // xxx test color input slot
 		"cat;Output",
 [" ", "[display:mbDisplay]", "display #BR# _", "microbitDisplay"], // xxx test microbitDisplay input slot
@@ -374,7 +375,7 @@ MB_Specs.mbBlockSpecs = function () {
 			[" ", "fillArray", "fill list _ with _", "str auto", "aList", 0],
 			[" ", "fillList", "fill list _ with _", "str auto", "aList", 0],
 		"Prims-Display (not in palette)",
-			[" ", "[display:mbDisplay]", "display _", "microbitDisplay"],
+			[" ", "[display:mbDisplay]", "display #BR# _", "microbitDisplay"],
 			[" ", "[display:mbDisplayOff]", "clear display"],
 			[" ", "[display:mbPlot]", "plot x _ y _", "num num", 3, 3],
 			[" ", "[display:mbUnplot]", "unplot x _ y _", "num num", 3, 3],

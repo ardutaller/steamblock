@@ -63,7 +63,7 @@ MB_GUI.addBlocksToPalette = function (palette) {
 	const specs = MB_Specs.mbBlockSpecs();
 	let	y = 10;
 	let currentCategory = 'Output';
-	for (let i = 0; i < 168; i++) {
+	for (let i = 0; i < 169; i++) {
 		let item = specs[i];
 		if (Array.isArray(item)) { // block spec
 			let b = MB_Specs.blockForSpec(item, currentCategory);
