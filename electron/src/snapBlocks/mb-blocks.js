@@ -220,7 +220,6 @@ SyntaxElementMorph.uber = Morph.prototype;
 				fontSize			- duh
 				labelWidth			- column width, used for word wrapping
 				labelWordWrap		- <bool> if true labels can break after each word
-				dynamicInputLabels	- <bool> if true inputs can have dynamic labels
 
 		snapping:
 
@@ -264,7 +263,6 @@ SyntaxElementMorph.prototype.setScale = function (num) {
 	this.fontSize = 10 * scale;
 	this.labelWidth = 450 * scale;
 	this.labelWordWrap = true;
-	this.dynamicInputLabels = true;
 	this.feedbackMinHeight = 5;
 	this.minSnapDistance = 20;
 	this.reporterDropFeedbackPadding = 10 * scale;
@@ -303,17 +301,10 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'input',
 		tags: 'numstring'
 	},
-	'%txt': {
-		type: 'input',
-		tags: 'landscape'
-	},
 	'%var': {
 		type: 'input',
 		tags: 'read-only static', // if "static" is removed, enable auto-ringify
 		menu: 'getVarNamesDict'
-	},
-	'%mlt': {
-		type: 'text entry',
 	},
 	'%b': {
 		type: 'boolean'
@@ -330,19 +321,23 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'template',
 		label: '\xa0' // non-breaking space, appears blank
 	},
+	'%txt': {
+		type: 'input',
+		tags: 'landscape'
+	},
+	'%mlt': {
+		type: 'text entry',
+	},
 
 	// other single types
+	'%br': {
+		type: 'break'
+	},
 	'%clr': {
 		type: 'color'
 	},
 	'%mbDisplay': {
 		type: 'mbDisplay'
-	},
-	'%br': {
-		type: 'break'
-	},
-	'%inputName': {
-		type: 'variable',
 	},
 
     // specialized variadic inputs
@@ -479,8 +474,7 @@ SyntaxElementMorph.prototype.replaceInput = function (oldArg, newArg) {
 		oldArg.inputs().forEach(inp => // preserve nested reporters
 			oldArg.replaceInput(inp, new InputSlotMorph())
 		);
-		if ((this.dynamicInputLabels || oldArg.collapse) &&
-			newArg instanceof ReporterBlockMorph) {
+		if (oldArg.collapse && (newArg instanceof ReporterBlockMorph)) {
 			replacement = new ArgLabelMorph(newArg, oldArg.collapse);
 		}
 	}
@@ -1580,7 +1574,7 @@ BlockMorph.prototype.colorFor = function (category) {
 // BlockMorph preferences settings:
 
 BlockMorph.prototype.isCachingInputs = true;
-BlockMorph.prototype.zebraContrast = 40; // alternating color brightness
+BlockMorph.prototype.zebraContrast = 20; // alternating color brightness
 
 // BlockMorph sound feedback:
 
