@@ -91,3 +91,26 @@ MB_GUI.addBlocksToPalette = function (palette) {
 		}
 	}
 }
+
+MB_GUI.importLocalFile = function (callback) {
+	async function processFile(file) {
+		let txt = await file.text();
+		if (callback) callback(txt);
+	}
+
+	var inp = document.createElement('input');
+	inp.type = 'file';
+	inp.multiple = true;
+	inp.addEventListener(
+		'change',
+		(evt) => {
+			document.body.removeChild(inp);
+			for (let i = 0; i < inp.files.length; i++) {
+				processFile(inp.files[i]);
+			}
+		},
+		false
+	);
+	document.body.appendChild(inp);
+	inp.click(); // show the input dialog
+};

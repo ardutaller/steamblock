@@ -218,7 +218,6 @@ SyntaxElementMorph.uber = Morph.prototype;
 				labelFontName		- <string> specific font family name
 				labelFontStyle		- <string> generic font family name, cascaded
 				fontSize			- duh
-				embossing			- <Point> offset for embossing effect
 				labelWidth			- column width, used for word wrapping
 				labelWordWrap		- <bool> if true labels can break after each word
 				dynamicInputLabels	- <bool> if true inputs can have dynamic labels
@@ -263,10 +262,6 @@ SyntaxElementMorph.prototype.setScale = function (num) {
 	this.labelFontName = 'Verdana';
 	this.labelFontStyle = 'sans-serif';
 	this.fontSize = 10 * scale;
-	this.embossing = new Point(
-		-1 * Math.max(scale / 2, 1),
-		-1 * Math.max(scale / 2, 1)
-	);
 	this.labelWidth = 450 * scale;
 	this.labelWordWrap = true;
 	this.dynamicInputLabels = true;
@@ -5060,8 +5055,13 @@ ScriptsMorph.prototype.userMenu = function () {
 
 	menu.addItem('clean up', 'cleanUp', 'arrange scripts\nvertically');
 	menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
+	menu.addItem('file test', 'fileTest', 'test file open dialog');
 	return menu;
 };
+
+ScriptsMorph.prototype.fileTest = function () {
+	MB_GUI.importLocalFile((s) => { console.log(s); });
+}
 
 // ScriptsMorph user menu features:
 
