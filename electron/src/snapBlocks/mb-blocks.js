@@ -309,11 +309,7 @@ SyntaxElementMorph.prototype.labelParts = {
 	'%b': {
 		type: 'boolean'
 	},
-	'%c': {
-		type: 'c',
-		tags: 'static'
-	},
-	'%cs': {
+	'%cmd': {
 		type: 'c',
 		tags: 'static'
 	},
@@ -357,7 +353,7 @@ SyntaxElementMorph.prototype.labelParts = {
 
 	'%elseif': {
 		type: 'multi',
-		group: 'else if %b %cs',
+		group: 'else if %b %cmd',
 		dflt: [true, null],
 		tags: 'static widget'
 	}
@@ -995,7 +991,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 		rightCorrection = 0,
 		rightMost;
 
-	if ((this instanceof MultiArgMorph) && (this.slotSpec !== '%cs')) {
+	if ((this instanceof MultiArgMorph) && (this.slotSpec !== '%cmd')) {
 		blockWidth += this.arrows().width();
 	} else if (this instanceof ReporterBlockMorph) {
 		blockWidth += (this.rounding * 2) + (this.edge * 2);
@@ -1013,7 +1009,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 	// determine lines
 	parts.forEach(part => {
 		if ((part instanceof CSlotMorph) ||
-			(part instanceof MultiArgMorph && part.slotSpec.includes('%cs'))
+			(part instanceof MultiArgMorph && part.slotSpec.includes('%cmd'))
 		) {
 			if (l.length > 0) {
 				lines.push(l);
@@ -1055,7 +1051,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 	} else if (this instanceof MultiArgMorph
 		|| this instanceof ArgLabelMorph) {
 		y = this.top();
-		if (this.slotSpec === '%cs' && this.inputs().length > 0) {
+		if (this.slotSpec === '%cmd' && this.inputs().length > 0) {
 			y -= this.rounding;
 		}
 	}
@@ -1080,7 +1076,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 				part.setPosition(new Point(x, y));
 				lineHeight = part.height();
 			} else if (part instanceof MultiArgMorph &&
-				(part.slotSpec.includes('%cs'))
+				(part.slotSpec.includes('%cmd'))
 			) {
 				if (this.isPredicate) {
 					x += this.corner;
@@ -1128,7 +1124,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 		rightMost = this.inputs()[this.inputs().length - 1];
 		if (rightMost instanceof MultiArgMorph) {
 			bottomCorrection = -this.bottomPadding;
-			if (rightMost.slotSpec.includes('%cs')) {
+			if (rightMost.slotSpec.includes('%cmd')) {
 				if (rightMost.inputs().length) {
 					bottomCorrection -= this.bottomPadding;
 				} else {
@@ -1160,7 +1156,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 			maxX - this.left() + this.rounding
 		);
 		rightCorrection = space;
-	} else if ((this instanceof MultiArgMorph && this.slotSpec !== '%cs')
+	} else if ((this instanceof MultiArgMorph && this.slotSpec !== '%cmd')
 		|| this instanceof ArgLabelMorph) {
 		blockWidth = Math.max(
 			blockWidth,
@@ -1195,7 +1191,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 	parts.forEach(part => {
 		var adjustMultiWidth = 0;
 		if (part instanceof CSlotMorph ||
-			(part.slotSpec && part.slotSpec.includes('%cs'))
+			(part.slotSpec && part.slotSpec.includes('%cmd'))
 		) {
 			if (this.isPredicate) {
 				part.bounds.setWidth(
@@ -1211,7 +1207,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 				adjustMultiWidth = this.corner + this.edge;
 			}
 		}
-		if (part instanceof MultiArgMorph && part.slotSpec.includes('%cs')) {
+		if (part instanceof MultiArgMorph && part.slotSpec.includes('%cmd')) {
 			part.inputs().filter(each =>
 				each instanceof CSlotMorph
 			).forEach(slot =>
@@ -1522,9 +1518,7 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 		%s		- white rectangular type-in slot ("string-type")
 		%n		- white roundish type-in slot ("numerical")
 		%b		- chameleon colored hexagonal slot (for predicates)
-		%bool	- chameleon colored hexagonal slot (for predicates), static
-		%c		- C-shaped command slot, special form for primitives
-		%cs		- C-shaped, auto-reifying, accepts reporter drops
+		%cmd	- C-shaped, auto-reifying, accepts reporter drops
 		%txt	- white rectangular type-in slot ("text-type")
 		%mlt	- white rectangular type-in slot ("multi-line-text-type")
 		%var	- chameleon colored rectangular drop-down for variable names
@@ -7973,7 +7967,7 @@ MultiArgMorph.prototype.init = function (
 	}
 
 	// label text:
-	if (this.labelText || (this.slotSpec === '%cs')) {
+	if (this.labelText || (this.slotSpec === '%cmd')) {
 		label = this.labelPart(
 			this.labelText instanceof Array ?
 				this.labelText[0]
@@ -8324,7 +8318,7 @@ MultiArgMorph.prototype.fixArrowsLayout = function () {
 MultiArgMorph.prototype.fixHolesLayout = function () {
 	var pos;
 	this.holes = [];
-	if (this.slotSpec.includes('%cs')) {
+	if (this.slotSpec.includes('%cmd')) {
 		pos = this.position();
 		this.inputs().forEach(slot => {
 			if (slot instanceof CSlotMorph) {

@@ -94,7 +94,7 @@ MB_Specs.snapTypeForMBType = function (mbType) {
 	if ('auto' == mbType) return '%ns';
 	if ('bool' == mbType) return '%b';
 	if ('color' == mbType) return '%clr';
-	if ('cmd' == mbType) return '%c';
+	if ('cmd' == mbType) return '%cmd';
 	if ('var' == mbType) return '%t';
 	if ('microbitDisplay' == mbType) return '%mbDisplay';
 
@@ -112,7 +112,7 @@ MB_Specs.specForArg = function (arg) {
 	} else if ((arg == true) || (arg == false)) {
 		return '%b';
 	} else if (arg instanceof CommandBlockMorph) {
-		return '%c';
+		return '%cmd';
 	}
 	return '%ns';
 }
@@ -166,7 +166,7 @@ MB_Specs.blockForSpec = function (spec, category) {
 
 MB_Specs.snapSpecFrom = function (spec) {
 	if (spec[1] == 'if') { // special case for "if"
-		return 'if %b %c %elseif';
+		return 'if %b %cmd %elseif';
 	}
 	let mbSpec = spec[2];
 	let mbArgTypes = (spec.length > 3) ? spec[3].split(/\s+/) : [];
