@@ -129,7 +129,7 @@
 
 		please also refer to the high-level comment at the beginning of each
 		constructor for further details.
-		*/
+*/
 
 /*global Array, BoxMorph,
 Color, ColorPaletteMorph, FrameMorph, Function, HandleMorph, Math, MenuMorph,
@@ -237,7 +237,7 @@ SyntaxElementMorph.uber = Morph.prototype;
 				activeBlur		- <pixels int> shadow for blurred activeHighlight
 				activeBorder	- <pixels int> unblurred activeHighlight
 				rfColor			- <Color> for reified outlines and slot backgrounds
-				*/
+*/
 
 SyntaxElementMorph.prototype.contrast = 20;
 
@@ -289,7 +289,6 @@ SyntaxElementMorph.prototype.labelParts = {
 	type: 'input'
 	tags: 'numeric numstring alphanum read-only landscape static'
 	menu: dictionary or selector
-	react: selector
 	value: string, number or Array for localized strings / constants
 	*/
 
@@ -308,46 +307,11 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'input',
 		tags: 'landscape'
 	},
-	'%ida': {
-		type: 'input',
-		tags: 'alphanum',
-		menu: {
-			'1' : 1,
-			last : ['last'],
-			'~' : null,
-			all : ['all'],
-			parent : ['parent']
-		}
-	},
-	'%idx': {
-		type: 'input',
-		tags: 'alphanum',
-		menu: {
-			'1' : 1,
-			last : ['last'],
-			random : ['random'],
-			'~' : null,
-			parent : ['parent']
-		}
-	},
-	'%ix': {
-		type: 'input',
-		tags: 'numeric',
-		menu: {
-			'1' : 1,
-			last : ['last'],
-			random : ['random']
-		}
-	},
 	'%var': {
 		type: 'input',
 		tags: 'read-only static', // if "static" is removed, enable auto-ringify
 		menu: 'getVarNamesDict'
 	},
-	/*
-				type: 'text entry'
-				tags: 'monospace'
-				*/
 	'%mlt': {
 		type: 'text entry',
 	},
@@ -363,10 +327,6 @@ SyntaxElementMorph.prototype.labelParts = {
 		tags: 'lambda'
 	},
 	'%t': {
-		type: 'template',
-		label: '\xa0' // non-breaking space, appears blank
-	},
-	'%upvar': {
 		type: 'template',
 		label: '\xa0' // non-breaking space, appears blank
 	},
@@ -904,7 +864,6 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 		switch (info.type) {
 			case 'input':
 				part = new InputSlotMorph(null, null, info.menu);
-				part.onSetContents = info.react || null;
 				break;
 			case 'text entry':
 				part = new TextSlotMorph();
@@ -975,7 +934,7 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 		// text entry: monospace
 		// boolean: static
 		// symbol: static, fading, protected
-		// c: loop, static, lambda
+		// c: static, lambda
 		// command slot: (none)
 		// ring: static
 		// ring slot: static
@@ -1019,9 +978,6 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 							break;
 						case 'protected':
 							part.isProtectedLabel = true;
-							break;
-						case 'lambda':
-							part.isLambda = true;
 							break;
 						case 'widget':
 							part.canBeEmpty = false;
@@ -1518,7 +1474,7 @@ SyntaxElementMorph.prototype.exportPictureWithResult = function (aBubble) {
 /*
 		I am a piece of single-line text written on a block. I serve as a
 		container for sharing typographic attributes among my instances
-		*/
+*/
 
 // BlockLabelMorph inherits from StringMorph:
 
@@ -1610,72 +1566,29 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 
 		%br		- user-forced line break
 		%s		- white rectangular type-in slot ("string-type")
-		%txt	- white rectangular type-in slot ("text-type")
-		%mlt	- white rectangular type-in slot ("multi-line-text-type")
-		%code	- white rectangular type-in slot, monospaced font
 		%n		- white roundish type-in slot ("numerical")
-		%dir	- white roundish type-in slot with drop-down for directions
-		%inst	- white roundish type-in slot with drop-down for instruments
-		%ida	- white roundish type-in slot with drop-down for list indices
-		%idx	- white roundish type-in slot for indices incl. "random"
-		%dim	- white roundish type-in slot for dimensinos incl. "current"
-		%obj	- specially drawn slot for object reporters
-		%rel	- chameleon colored rectangular drop-down for relation options
-		%spr	- chameleon colored rectangular drop-down for object-names
-		%col	- chameleon colored rectangular drop-down for collidables
-		%dst	- chameleon colored rectangular drop-down for destinations
-		%cst	- chameleon colored rectangular drop-down for costume-names
-		%eff	- chameleon colored rectangular drop-down for graphic effects
-		%snd	- chameleon colored rectangular drop-down for sound names
-		%key	- chameleon colored rectangular drop-down for keyboard keys
-		%msg	- chameleon colored rectangular drop-down for messages
-		%att	- chameleon colored rectangular drop-down for attributes
-		%fun	- chameleon colored rectangular drop-down for math functions
-		%typ	- chameleon colored rectangular drop-down for data types
-		%var	- chameleon colored rectangular drop-down for variable names
-		%shd	- Chameleon colored rectuangular drop-down for shadowed var names
 		%b		- chameleon colored hexagonal slot (for predicates)
 		%bool	- chameleon colored hexagonal slot (for predicates), static
-		%l		- list icon
 		%c		- C-shaped command slot, special form for primitives
-		%ca		- C-shaped with loop arrow, for custom blocks
 		%cs		- C-shaped, auto-reifying, accepts reporter drops
-		%cl		- C-shaped, auto-reifying, rejects reporters
-		%cla	- C-shaped with loop arrows, auto-reifying, rejects reporters
+		%txt	- white rectangular type-in slot ("text-type")
+		%mlt	- white rectangular type-in slot ("multi-line-text-type")
+		%var	- chameleon colored rectangular drop-down for variable names
 		%clr	- interactive color slot
 		%t		- inline variable reporter template
 		%r		- round reporter slot
-		%p		- hexagonal predicate slot
-		%vid	- chameleon colored rectangular drop-down for video modes
-		%scn	- chameleon colored rectangular drop-down for scene names
 
 		arity: multiple
 
 		%mult%x		 - where %x stands for any of the above single inputs
 		%group%x%y	 - where %x and %y stand for any of the above single inputs
-		%inputs		 - for an additional text label 'with inputs'
-		%words		 - for an expandable list of default 2 (used in JOIN)
-		%lists		 - for an expandable list of default 2 lists (CONCAT)
-		%exp		 - for a static expandable list of minimum 0 (used in LIST)
-		%scriptVars	 - for an expandable list of variable reporter templates
-		%parms		 - for an expandable list of formal parameters
-
-		special form: upvar
-
-		%upvar		 - same as %t (inline variable reporter template)
-
-		special form: input name
-
-		%inputName	 - variable blob (used in input type dialog)
 
 		examples:
 
-				'if %b %c else %c'			- creates Scratch's If/Else block
-				'set pen color to %clr'		- creates Scratch's Pen color block
-				'list %mult%s'				- creates BYOB's list reporter block
-				'call %n %inputs'			- creates BYOB's Call block
-				'the script %parms %c'		- creates BYOB's THE SCRIPT block
-				*/
+			'if %b %c else %c'			- creates Scratch's If/Else block
+			'set pen color to %clr'		- creates Scratch's Pen color block
+			'list %mult%s'				- creates BYOB's list reporter block
+*/
 
 // BlockMorph inherits from SyntaxElementMorph:
 
@@ -2049,7 +1962,7 @@ BlockMorph.prototype.deleteBlock = function () {
 						since the definition's body still points to this block
 						even after it has been destroyed, mark it to be deleted
 						later.
-						*/
+		*/
 		this.isCorpse = true;
 	}
 	if (tobefixed) {
@@ -5865,7 +5778,6 @@ function CSlotMorph() {
 
 CSlotMorph.prototype.init = function () {
 	CommandSlotMorph.uber.init.call(this);
-	this.isLambda = false; // see Process.prototype.evaluateInput
 	this.color = new Color(0, 17, 173);
 	this.setExtent(new Point(230, this.corner * 4 + this.cSlotPadding));
 };
@@ -6285,7 +6197,6 @@ InputSlotMorph.prototype.init = function (
 	this.isReadOnly = isReadOnly || false;
 	this.minWidth = 0; // can be chaged for text-type inputs ("landscape")
 	this.constant = null;
-	this.onSetContents = null;
 
 	InputSlotMorph.uber.init.call(this, null, true);
 	this.color = WHITE;
@@ -6367,11 +6278,6 @@ InputSlotMorph.prototype.setContents = function (data) {
 		if (block) {
 			block.fixLabelColor();
 		}
-	}
-
-	// run onSetContents if any
-	if (this.onSetContents) {
-		this[this.onSetContents](data);
 	}
 };
 
@@ -7682,10 +7588,7 @@ TextSlotMorph.prototype.init = function (
 // TextSlotMorph accessing:
 
 TextSlotMorph.prototype.getSpec = function () {
-	if (this.isNumeric) {
-		return '%mlt';
-	}
-	return '%mlt'; // default
+	return '%mlt';
 };
 
 TextSlotMorph.prototype.contents = function () {
@@ -8033,7 +7936,6 @@ MicroBitDisplaySlotMorph.prototype.pixelIndex = function (pos) {
 
 		%mult%x - where x is any single input slot
 		%group%x%y - where x and y are any single input slots
-		%inputs - for an additional text label 'with inputs'
 
 	evaluation is handles by the interpreter
 */
@@ -8581,19 +8483,6 @@ MultiArgMorph.prototype.addInput = function (contents) {
 	idx = this.children.length - 1;
 	if (value !== '' && !isNil(value)) {
 		newPart.setContents(value);
-	} else if (this.elementSpec === '%scriptVars' ||
-			this.elementSpec === '%blockVars') {
-		name = '';
-		i = idx;
-		if (this.elementSpec === '%scriptVars') {
-			// compensate for missing label element
-			i += 1;
-		}
-		while (i > 0) {
-			name = String.fromCharCode(97 + (i - 1) % 26) + name;
-			i = Math.floor((i - 1) / 26);
-		}
-		newPart.setContents(name);
 	} else if (this.elementSpec === '%message') {
 		newPart.setContents(localize('data'));
 	} else if (this.elementSpec === '%keyName') {
@@ -8804,18 +8693,6 @@ MultiArgMorph.prototype.userMenu = function () {
 			key = 'tempvars_';
 		}
 	}
-	menu.addItem(
-		'code list mapping...',
-		() => this.mapCodeList(key)
-	);
-	menu.addItem(
-		'code item mapping...',
-		() => this.mapCodeItem(key)
-	);
-	menu.addItem(
-		'code delimiter mapping...',
-		() => this.mapCodeDelimiter(key)
-	);
 	return menu;
 };
 
