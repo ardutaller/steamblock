@@ -90,7 +90,7 @@ MB_Specs.snapTypeForMBType = function (mbType) {
 
 	mbType = mbType.split('.')[0]; // remove menu selector (e.g. menu.buttonMenu)
 	if ('num' == mbType) return '%n';
-	if ('str' == mbType) return '%s';
+	if ('str' == mbType) return '%mlt';
 	if ('auto' == mbType) return '%ns';
 	if ('bool' == mbType) return '%b';
 	if ('color' == mbType) return '%clr';
