@@ -324,7 +324,7 @@ SyntaxElementMorph.prototype.labelParts = {
 	},
 	'%cs': {
 		type: 'c',
-		tags: 'lambda'
+		tags: 'static'
 	},
 	'%t': {
 		type: 'template',
@@ -447,46 +447,6 @@ SyntaxElementMorph.prototype.allInputs = function () {
 		(child instanceof ReporterBlockMorph &&
 			child !== this)
 	);
-};
-
-SyntaxElementMorph.prototype.allEmptySlots = function () {
-	// answer empty input slots of all children excluding myself,
-	// but omit those in nested rings (lambdas) and JS-Function primitives.
-	// Used by the evaluator when binding implicit formal parameters
-	// to empty input slots
-	var empty = [];
-	if (
-		// disregard custom C-slots, because they should be treated as
-		// rings. Commented out for now...
-		// !(this instanceof CSlotMorph && !this.isStatic) &&
-		(this.selector !== 'reportJSFunction')) {
-		this.children.forEach(morph => {
-			if (morph.isEmptySlot && morph.isEmptySlot()) {
-				empty.push(morph);
-			} else if (morph.allEmptySlots) {
-				empty = empty.concat(morph.allEmptySlots());
-			}
-		});
-	}
-	return empty;
-};
-
-SyntaxElementMorph.prototype.tagExitBlocks = function (stopTag, isCommand) {
-	// tag 'report' and 'stop this block' blocks of all children including
-	// myself, with either a stopTag (for "stop" blocks) or an indicator of
-	// being inside a command block definition, but omit those in nested
-	// rings (lambdas. Used by the evaluator when entering a procedure
-	if (this.selector === 'doReport') {
-		this.partOfCustomCommand = isCommand;
-	} else if (this.selector === 'doStopThis') {
-		this.exitTag = stopTag;
-	} else {
-		this.children.forEach(morph => {
-			if (morph.tagExitBlocks) {
-				morph.tagExitBlocks(stopTag, isCommand);
-			}
-		});
-	}
 };
 
 SyntaxElementMorph.prototype.replaceInput = function (oldArg, newArg) {
@@ -2291,25 +2251,6 @@ BlockMorph.prototype.copyWithNext = function (next, parameterNames) {
 		expr.bottomBlock().nextBlock(top);
 	}
 	return expr.reify(parameterNames);
-};
-
-BlockMorph.prototype.markEmptySlots = function () {
-	// private - mark all empty slots with an identifier
-	// and return the count
-	var count = 0;
-
-	this.allInputs().forEach(input =>
-		delete input.bindingID
-	);
-	this.allEmptySlots().forEach(slot => {
-		count += 1;
-		if (slot instanceof MultiArgMorph) {
-			slot.bindingID = Symbol.for('arguments');
-		} else {
-			slot.bindingID = count;
-		}
-	});
-	return count;
 };
 
 // BlockMorph thumbnail and script pic
