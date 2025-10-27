@@ -19,6 +19,11 @@ Questions answered by Bernat:
 	- shift-click on Snap logo to enter dev mode
 	- click on world in SnapBlocks to enter dev mode
 
+mb-block.js cleanups:
+  - do we need ArgLabelMorph?
+  - do we need both CSlotMorph and CommandSlotMorph?
+  - remove support for rendering label text with dropshadows
+
 Long term plan:
   [x] basic block mechanics for MicroBlocks blocks
   [x] ability to export MicroBlocks code from blocks of a single script

@@ -86,9 +86,12 @@ MB_Specs.specFor = function (selector, args) {
 MB_Specs.snapTypeForMBType = function (mbType) {
 	// Return the Snap! slot type for the given MicroBlocks slot type.
 	// MicroBlocks types: 'num' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
-	// To do: handle menus.
 
-	mbType = mbType.split('.')[0]; // remove menu selector (e.g. menu.buttonMenu)
+	let typeParts = mbType.split('.');
+	if (typeParts.length > 1) { // this is a menu (e.g. menu.buttonMenu)
+		return ('menu.' + typeParts[0] + '.' + typeParts[1]);
+	}
+
 	if ('num' == mbType) return '%n';
 	if ('str' == mbType) return '%mlt';
 	if ('auto' == mbType) return '%ns';
@@ -97,11 +100,7 @@ MB_Specs.snapTypeForMBType = function (mbType) {
 	if ('cmd' == mbType) return '%cmd';
 	if ('var' == mbType) return '%t';
 	if ('microbitDisplay' == mbType) return '%mbDisplay';
-
-	// To do:
-	// 	if ('menu' == mbType) return '%ns';
-
-	return '%ns';
+	return '%ns'; // default
 }
 
 MB_Specs.specForArg = function (arg) {

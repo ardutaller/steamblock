@@ -280,6 +280,22 @@ SyntaxElementMorph.prototype.alpha = 1;
 
 // SyntaxElementMorph label part specs:
 
+SyntaxElementMorph.prototype.partInfo = function (partSpec) {
+	if (partSpec.startsWith('menu')) {
+		let specParts = partSpec.split('.');
+		let result = {
+			type: 'input',
+			menu: specParts[2]
+		}
+		if ('menu' == specParts[1]) result.tags = 'read-only static';
+		if ('auto' == specParts[1]) result.tags = 'numstring';
+		if ('num' == specParts[1]) result.tags = 'numeric';
+		return result;
+	} else {
+		return this.labelParts[partSpec];
+	}
+}
+
 SyntaxElementMorph.prototype.labelParts = {
 	/*
 	Input slots
@@ -783,7 +799,7 @@ SyntaxElementMorph.prototype.fixBlockColor = function (
 // SyntaxElementMorph label parts:
 
 SyntaxElementMorph.prototype.labelPart = function (spec) {
-	var info = this.labelParts[spec],
+	var info = this.partInfo(spec),
 		part, tokens, cnts, i;
 	if (((info && Object.hasOwn(info, 'type')) || (spec[0] === '%' && spec.length > 1)) &&
 		(this.selector !== 'v')
@@ -2691,7 +2707,7 @@ BlockMorph.prototype.pickUp = function (wrrld) {
 // BlockMorph events
 
 BlockMorph.prototype.mouseClickLeft = function () {
-	alert('not implemented yet');
+	alert('not implemented yet - left click');
 	return;
 
 	var top = this.topBlock(),
@@ -5074,14 +5090,8 @@ InputSlotMorph.prototype.userSetContents = function (aStringOrFloat) {
 // InputSlotMorph drop-down menu:
 
 InputSlotMorph.prototype.dropDownMenu = function (enableKeyboard) {
-	var menu;
-	if (this.choices === 'dynamicMenu') {
-		return this.dynamicMenu(null, enableKeyboard);
-	}
-	menu = this.menuFromDict(this.choices, null, enableKeyboard);
-	if (!menu) { // has already happened
-		return;
-	}
+	let menu = this.mbMenu(this.choices);
+	if (!menu) return;
 	if (menu.items.length > 0) {
 		if (enableKeyboard) {
 			menu.popup(this.world(), this.bottomLeft());
@@ -5092,146 +5102,48 @@ InputSlotMorph.prototype.dropDownMenu = function (enableKeyboard) {
 	}
 };
 
-InputSlotMorph.prototype.menuFromDict = function (
-	choices,
-	noEmptyOption,
-	enableKeyboard)
-{
-	alert('not implemented yet');
-	return;
+InputSlotMorph.prototype.mbMenu = function (slotMenuName) {
+	menu = new MenuMorph(this.setContents);
+	menu.environment = this;
+	menu.fontSize = this.fontSize;
 
-	var key, dial, flag,
-		myself = this,
-		selector,
-		block = this.parentThatIsA(BlockMorph),
-		trgt = block.scriptTarget(true),
-		menu = new MenuMorph(
-			this.userSetContents,
-			null,
-			this,
-			this.fontSize
-		);
-
-	function update(num) {
-		myself.setContents(num);
-		myself.reactToSliderEdit();
-		if (trgt && !block.isTemplate) {
-			trgt.recordUserEdit(
-				'scripts',
-				'input slot',
-				'set choice',
-				block.abstractBlockSpec(),
-				num
-			);
-		}
+	if ('buttonMenu' == slotMenuName) {
+		menu.addItem('A', 'A');
+		menu.addItem('B', 'B');
+		menu.addItem('A+B', 'A+B');
+		return menu;
+	}
+	if ('pullMenu' == slotMenuName) {
+		menu.addItem('none', 'none');
+		menu.addItem('up', 'up');
+		menu.addItem('down', 'down');
+		return menu;
+	}
+	if ('typesMenu' == slotMenuName) {
+		menu.addItem('boolean', 'boolean');
+		menu.addItem('number', 'number');
+		menu.addItem('string', 'string');
+		menu.addItem('list', 'list');
+		menu.addItem('byte array', 'byte array');
+		return menu;
 	}
 
-	function getImg(block) {
-		return () => block.fullImage();
+	if ('itemOfMenu' == slotMenuName) {
+		menu.addItem('1', 1);
+		menu.addItem('last', 'last');
+		menu.addItem('random', 'random');
+		return menu;
+	}
+	if ('replaceItemMenu' == slotMenuName) {
+		menu.addItem('1', 1);
+		menu.addItem('last', 'last');
+		menu.addItem('all', 'all');
+		return menu;
 	}
 
-	if (choices instanceof Function) {
-		if (!Process.prototype.enableJS) {
-			menu.addItem('JavaScript extensions for Snap!\nare turned off');
-			return menu;
-		}
-		choices = choices.call(this);
-	} else if (isString(choices)) {
-		if (choices.indexOf('ext_') === 0) {
-			selector = choices.slice(4);
-			choices = SnapExtensions.menus.get(selector);
-			if (choices) {
-				choices = choices.call(this);
-			} else {
-				menu.addItem('cannot find extension menu "' + selector + '"');
-				return menu;
-			}
-		} else {
-			choices = this[choices]();
-		}
-		if (!choices) { // menu has already happened
-			return;
-		}
-	}
-	if (!noEmptyOption) {
-		menu.addItem(' ', null);
-	}
-	for (key in choices) {
-		if (Object.prototype.hasOwnProperty.call(choices, key)) {
-			if (key[0] && key[0].split('').every(c => c === '~')) {
-				menu.addLine();
-			} else if (key.indexOf('§_def') === 0) {
-				menu.addItem(
-					this.doWithAlpha(1, getImg(choices[key])),
-					choices[key]
-				);
-			} else if (key.indexOf('§_dir') === 0) {
-				dial = new DialMorph();
-				dial.rootForGrab = function () {return this; };
-				dial.target = this;
-				dial.action = update;
-				dial.fillColor = this.parent.color;
-				dial.setRadius(this.fontSize * 3);
-				dial.setValue(+this.evaluate(), false, true);
-				menu.addLine();
-				menu.items.push(dial);
-				menu.addLine();
-			} else if (key.indexOf('§_') === 0) {
-				// prefixing a key with '§_' only makes the menu item
-				// appear when the user holds down the shift-key
-				// use with care because mobile devices might only
-				// have a "soft" keyboard that isn't always there
-				if (this.world().currentKey === 16) { // shift
-					menu.addItem(
-						key.slice(2),
-						choices[key],
-						null, // hint
-						null, // color
-						null, // bold
-						true, // italic
-						null, // doubleClickAction
-						null, // shortcut
-						!(choices[key] instanceof Array) &&
-							typeof choices[key] !== 'function' // verbatim?
-					);
-				}
-			} else if (choices[key] instanceof Object &&
-					!(choices[key] instanceof Array) &&
-					(typeof choices[key] !== 'function')) {
-				menu.addMenu(
-					key,
-					this.menuFromDict(choices[key],true),
-					null,	// indicator
-					true	// verbatim? - don't translate
-				);
-			} else if (choices[key] instanceof Array &&
-					choices[key][0] instanceof Object &&
-					typeof choices[key][0] !== 'function') {
-				menu.addMenu(
-					key,
-					this.menuFromDict(choices[key][0],true),
-					null,	// indicator
-					false	// verbatim? - do translate, if inside an array
-				);
-			} else {
-				menu.addItem(
-					key,
-					choices[key],
-					null, // hint
-					null, // color
-					null, // bold
-					null, // italic
-					null, // doubleClickAction
-					null, // shortcut
-					!(choices[key] instanceof Array) &&
-						typeof choices[key] !== 'function' &&
-							typeof(choices[key]) !== 'number' // verbatim?
-				);
-			}
-		}
-	}
-	return menu;
-};
+console.log('unhandled slot menu:', slotMenuName); // xxx
+	return null;
+}
 
 // InputSlotMorph layout:
 
