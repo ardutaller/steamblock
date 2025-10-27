@@ -281,7 +281,7 @@ SyntaxElementMorph.prototype.alpha = 1;
 // SyntaxElementMorph label part specs:
 
 SyntaxElementMorph.prototype.partInfo = function (partSpec) {
-	if (partSpec.startsWith('menu')) {
+	if (partSpec.startsWith('%menu')) {
 		let specParts = partSpec.split('.');
 		let result = {
 			type: 'input',
@@ -291,9 +291,66 @@ SyntaxElementMorph.prototype.partInfo = function (partSpec) {
 		if ('auto' == specParts[1]) result.tags = 'numstring';
 		if ('num' == specParts[1]) result.tags = 'numeric';
 		return result;
+	} else if (partSpec.startsWith('%ex')) {
+		return this.mbMultipartInfo(partSpec);
 	} else {
 		return this.labelParts[partSpec];
 	}
+}
+
+SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
+	// Return the info object for an optional part spec starting with either:
+	//	'%ex' (non-repeatable) or
+	//	'%exr' (repeatable).
+	// Multiple input groups are separated by colons.
+	// Periods separate the labels in input slot specs within each group.
+
+	let repeatLast = false;
+	if (partSpec.startsWith('%exr')) {
+		repeatLast = true;
+		partSpec = partSpec.slice(5); // remove '%exr.' prefix
+	} else {
+		partSpec = partSpec.slice(4); // remove '%ex.' prefix
+	}
+
+	let result;
+	if (partSpec.indexOf(':') < 0) {
+		// Single input group, possibly repeating
+		result = {
+			type: 'multi',
+			tags: 'static widget',
+			group: partSpec.replaceAll('.', ' ')
+		};
+		if (!repeatLast) result.max = 1;
+	} else {
+		// Multiple input groups (each block expansion adds another group)
+		// Used for multiple sets of optional input. Usually non-repeating.
+		let slots = [];
+		let labels = [];
+		let groups = partSpec.split(':');
+		for (let i = 0; i < groups.length; i++) {
+			let slotsForGroup = [];
+			let labelsForGroup = [];
+			let groupParts = groups[i].split('.');
+			for (let j = 0; j < groupParts.length; j++) {
+				if (groupParts[j].startsWith('%')) {
+					slotsForGroup.push(groupParts[j]);
+				} else {
+					labelsForGroup.push(groupParts[j]);
+				}
+			}
+			slots.push(slotsForGroup.join(' '));
+			labels.push(labelsForGroup.join(' '));
+		}
+		result = {
+			type: 'multi',
+			tags: 'static widget',
+			slots: slots,
+			label: labels
+		};
+		if (!repeatLast) result.max = slots.length;
+	}
+	return result;
 }
 
 SyntaxElementMorph.prototype.labelParts = {
@@ -352,26 +409,26 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'mbDisplay'
 	},
 
-    // specialized variadic inputs
-    /*
-        type: 'multi'
-        slots: a slot spec string
-        label: (optional)
-        infix: (optional)
-        collapse: (optional) alternative label to "Input list"
-        tags: 'widget' // doesn't count as "empty" slot implicit parameter
-        min: (optional) number of minimum inputs) or zero
-        max: (optional) number of maximum inputs) or zero
-        defaults: (optional) number of visible slots to begin with or zero
-        dflt: (optional) array with default value(s)
-        group: (optional) a block spec describing a group of inputs with labels
-    */
+	// specialized variadic inputs
+	/*
+		type: 'multi'
+		slots: a slot spec string
+		label: (optional)
+		infix: (optional)
+		collapse: (optional) alternative label to "Input list"
+		tags: 'widget' // doesn't count as "empty" slot implicit parameter
+		min: (optional) number of minimum inputs) or zero
+		max: (optional) number of maximum inputs) or zero
+		defaults: (optional) number of visible slots to begin with or zero
+		dflt: (optional) array with default value(s)
+		group: (optional) a block spec describing a group of inputs with labels
+	*/
 
 	'%elseif': {
 		type: 'multi',
+		tags: 'static widget',
 		group: 'else if %b %cmd',
-		dflt: [true, null],
-		tags: 'static widget'
+		dflt: [true, null]
 	}
 };
 
@@ -5140,8 +5197,9 @@ InputSlotMorph.prototype.mbMenu = function (slotMenuName) {
 		menu.addItem('all', 'all');
 		return menu;
 	}
+	// todo when we have a runtime: allVarsMenu, broadcastMenu, functionNameMenu
 
-console.log('unhandled slot menu:', slotMenuName); // xxx
+	console.log('unhandled slot menu:', slotMenuName); // xxx
 	return null;
 }
 
@@ -8000,7 +8058,6 @@ ScriptFocusMorph.prototype.processKeyPress = function (event) {
 ScriptFocusMorph.prototype.processKeyEvent = function (event, action) {
 	var keyName, ctrl, shift;
 
-	//console.log(event.keyCode);
 	this.world().hand.destroyTemporaries(); // remove result bubbles, if any
 	switch (event.keyCode) {
 	case 8:
@@ -8049,7 +8106,6 @@ ScriptFocusMorph.prototype.reactToKeyEvent = function (key) {
 		types,
 		vNames;
 
-	// console.log(evt);
 	switch (evt) {
 	case 'esc':
 		return this.stopEditing();
