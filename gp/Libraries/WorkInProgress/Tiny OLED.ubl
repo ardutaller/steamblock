@@ -1,6 +1,6 @@
 module 'Tiny OLED' Output
 author MicroBlocks
-version 1 3 
+version 1 4 
 description 'Tiny graphics library for a 128x64 pixel monochrome OLED display with a SSD1306 controller.
 Useful on boards with very limited code store space such as the DUELink PixoBit.
 '
@@ -8,7 +8,8 @@ variables _tinyOLED_buffer _tinyOLED_hideUpdates
 
   spec ' ' 'tinyOLED_clear' 'clear tiny OLED display'
   spec ' ' 'tinyOLED_drawString' 'draw string _ x _ y _ white _' 'str num num bool' 'Hello!' 48 52 true
-  spec ' ' 'tinyOLED_drawStringBig' 'draw big string _ x _ y _ white _' 'str num num bool' 'Hello' 0 0 true
+  spec ' ' 'tinyOLED_drawStringBig' 'draw big string _ x _ y _ white _' 'str num num bool' 'Hello!' 36 0 true
+  space
   spec ' ' 'tinyOLED_drawRect' 'draw rect x _ y _ w _ h _ fill _ white _' 'num num num num bool bool' 44 17 40 30 false true
   spec ' ' 'tinyOLED_drawCircle' 'draw circle center _ _ radius _ fill _ white _' 'num num num bool bool' 64 32 10 false true
   spec ' ' 'tinyOLED_drawLine' 'draw line from _ _ to _ _ white _' 'num num num num bool' 0 0 127 63 true
@@ -17,6 +18,7 @@ variables _tinyOLED_buffer _tinyOLED_hideUpdates
   spec ' ' 'tinyOLED_drawImage' 'draw image _ x _ y _ : scale _' 'str num num num' '' 0 0 1
   spec 'r' 'tinyOLED_image' 'image _' 'str' '00000
 01010
+00000
 10001
 01110'
   space
@@ -32,7 +34,7 @@ variables _tinyOLED_buffer _tinyOLED_hideUpdates
   spec ' ' '_tinyOLED_updateDisplay' '_tinyOLED_updateDisplay'
   spec ' ' '_tinyOLED_drawChar' '_tinyOLED_drawChar _ x _ y _' 'auto num num' 65 0 0
   spec ' ' '_tinyOLED_setPixel' '_tinyOLED_setPixel x _ y _ white _' 'num num bool' 0 0 true
-  spec ' ' '_tinyOLED_drawBigPixel' '_tinyOLED_drawBigPixel x _ y _ scale' 'num num num' 0 0 2
+  spec ' ' '_tinyOLED_drawBigPixel' '_tinyOLED_drawBigPixel x _ y _ scale _' 'num num num' 0 0 2
   spec ' ' '_tinyOLED_hline' '_hline startX _ endX _ y _ white _' 'num num num bool' 10 110 10 true
 
 to '_tinyOLED_cmd' cmdString {
@@ -45,11 +47,8 @@ to '_tinyOLED_cmd' cmdString {
 
 to '_tinyOLED_drawBigPixel' x y scale {
   comment 'Fill a square of size scale at the given position.'
-  x = (maximum 0 (minimum x 127))
-  y = (maximum 0 (minimum y 63))
   local 'right' ((x + scale) - 1)
-  local 'bottom' (y + scale)
-  repeatUntil (y >= bottom) {
+  repeat scale {
     '_tinyOLED_hline' x right y true
     y += 1
   }
@@ -200,15 +199,15 @@ to tinyOLED_drawImage imageString x y optionalScale {
 of 0 and 1 characters where each line is one row of the image. 1 means that pixel on (lit).'
   '_tinyOLED_init'
   local 'scale' (argOrDefault 4 1)
-  local 'lines' ('[data:split]' imageString ('[data:unicodeString]' 10))
   local 'left' x
-  for s lines {
-    x = left
-    for ch s {
-      if ('1' == ch) {'_tinyOLED_drawBigPixel' x y scale}
+  for ch ('[data:convertType]' imageString 'byte array') {
+    if (ch == 10) {
+      y += scale
+      x = left
+    } else {
+      if (ch == 49) {'_tinyOLED_drawBigPixel' x y scale}
       x += scale
     }
-    y += scale
   }
   '_tinyOLED_updateDisplay'
 }
