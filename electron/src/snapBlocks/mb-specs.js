@@ -57,22 +57,23 @@ MB_Specs.specFor = function (selector, args) {
 
 	let spec = '';
 	let specArray = this.specArrayForSelector(selector);
-	if (specArray) {
+	if (specArray) { // selector is known; use existing spec
 		let specParts = specArray[2].split(/\s+/);
 		let mbTypes = specArray[3].split(/\s+/);
 		let typeIndex = 0;
 		for (let i = 0; i < specParts.length; i++) {
+			if (i > 0) spec += ' ';
 			let p = specParts[i];
 			if (p == '_') {
-				if (typeIndex < mbTypes.length) {
-					spec += ' ' + this.snapTypeForMBType(mbTypes[typeIndex]);
-					typeIndex++;
-				}
+				spec += this.snapTypeForMBType(mbTypes[typeIndex++]);
+			} else if (p.startsWith('#')) {
+				spec += this.snapSymbolOrBreak(p);
 			} else if ((p != ':') && (p != '...')) {
 				spec += ' ' + p;
+			// xxx todo: exit if p == ':' and there are no more args
 			}
 		}
-	} else {
+	} else { // unknown select; generate a spec based on its arguments
 		spec = selector;
 		for (let i = 0; i < args.length; i++) {
 			spec += ' ' + this.specForArg(args[i]);
@@ -83,24 +84,30 @@ MB_Specs.specFor = function (selector, args) {
 }
 
 MB_Specs.snapTypeForMBType = function (mbType) {
-	// Return the Snap! slot type for the given MicroBlocks slot type.
+	// Return the Snap! slot type for the given MicroBlocks slot type or '%ns' if mbType is null.
 	// MicroBlocks types: 'num' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
-	// To do: handle menus.
 
-	mbType = mbType.split('.')[0]; // remove menu selector (e.g. menu.buttonMenu)
+	if (mbType == null) return '%ns'; // default
+
+	let typeParts = mbType.split('.');
+	if (typeParts.length > 1) { // this is a menu (e.g. menu.buttonMenu)
+		return ('%menu.' + typeParts[0] + '.' + typeParts[1]);
+	}
+
 	if ('num' == mbType) return '%n';
-	if ('str' == mbType) return '%s';
+	if ('str' == mbType) return '%mlt';
 	if ('auto' == mbType) return '%ns';
 	if ('bool' == mbType) return '%b';
 	if ('color' == mbType) return '%clr';
-	if ('cmd' == mbType) return '%c';
+	if ('cmd' == mbType) return '%cmd';
+	if ('var' == mbType) return '%t';
+	if ('microbitDisplay' == mbType) return '%mbDisplay';
+	return '%ns'; // default
+}
 
-	// To do:
-	// 	if ('var' == mbType) return '%ns';
-	// 	if ('menu' == mbType) return '%ns';
-	// 	if ('microbitDisplay' == mbType) return '%ns';
-
-	return '%ns';
+MB_Specs.snapSymbolOrBreak = function (spec) {
+	if (spec == '#BR#') return '%br';
+	return spec; // not recognized; return original
 }
 
 MB_Specs.specForArg = function (arg) {
@@ -111,7 +118,7 @@ MB_Specs.specForArg = function (arg) {
 	} else if ((arg == true) || (arg == false)) {
 		return '%b';
 	} else if (arg instanceof CommandBlockMorph) {
-		return '%c';
+		return '%cmd';
 	}
 	return '%ns';
 }
@@ -146,35 +153,73 @@ MB_Specs.blockForSpec = function (spec, category) {
 		b.selector = spec[1];
 		b.setSpec(this.snapSpecFrom(spec));
 		b.setCategory(category);
-		// todo: set default values
+		let defaults = spec.slice(4);
+		if ('v' == b.selector) {
+			// set name (spec) for a variable block
+			if (defaults.length > 0) b.setSpec(defaults[0]);
+		} else {
+			// set default values
+			let inputs = b.inputs();
+			for (let i = 0; i < defaults.length; i++) {
+				if (i >= inputs.length) break;
+				inputs[i].setContents(defaults[i]);
+			}
+		}
 		return b;
 	}
 	return undefined; // error; spec should be an array
 }
 
 MB_Specs.snapSpecFrom = function (spec) {
+	// Return a Snap! block spec string for the given MicroBlocks spec array.
+
 	if (spec[1] == 'if') { // special case for "if"
-		return 'if %b %c %elseif';
+		return 'if %b %cmd %elseif';
 	}
 	let mbSpec = spec[2];
 	let mbArgTypes = (spec.length > 3) ? spec[3].split(/\s+/) : [];
-	let i = mbSpec.indexOf(':');
-	if (i > 0) {
-		mbSpec = mbSpec.substring(0, i); // ignore optional args for now
-	}
-	let result = mbSpec.split(/\s+/);
+	let parts = mbSpec.split(/\s+/);
+
 	let argIndex = 0;
-	for (let i = 0; i < result.length; i++) {
-		if (result[i] == '_') {
-			if (argIndex < mbArgTypes.length) {
-				result[i] = MB_Specs.snapTypeForMBType(mbArgTypes[argIndex]);
-				argIndex++;
-			} else {
-				result[i] = '%ns';
-			}
+	for (let i = 0; i < parts.length; i++) {
+		let p = parts[i];
+		if (p == '_') {
+			parts[i] = this.snapTypeForMBType(mbArgTypes[argIndex++]);
+		} else if (p.startsWith('#')) {
+			parts[i] = this.snapSymbolOrBreak(p);
+		} else if (p == ':') {
+			// spec has optional parts; add a part spec encoding those parts and exit loop
+			parts[i] = this.optionalInputsSpec(parts.slice(i + 1), mbArgTypes.slice(argIndex));
+
+			parts = parts.slice(0, i + 1);
+			break;
 		}
 	}
-	return result.join(' ');
+	return parts.join(' ');
+}
+
+MB_Specs.optionalInputsSpec = function (parts, mbArgTypes) {
+	// Return a string the encodes the given list of optional inputs.
+	// Spec prefix is '%exr' if the optional inputs are repeated, '%ex' if not.
+	// The result has no spaces; labels and input specs are separated by periods.
+	// Mutiple input slot groups are separated by colons.
+
+	let prefix = '%ex,';
+	if (parts[parts.length - 1] == '...') {
+		parts = parts.slice(0, -2);
+		prefix = '%exr,'; // %exr repeats the last input group
+	}
+
+	let argIndex = 0;
+	for (let i = 0; i < parts.length; i++) {
+		let p = parts[i];
+		if (p == '_') {
+			parts[i] = this.snapTypeForMBType(mbArgTypes[argIndex++]);
+		} else if (p.startsWith('#')) {
+			parts[i] = this.snapSymbolOrBreak(p);
+		}
+	}
+	return prefix + parts.join(',');
 }
 
 // ***** MicroBlocks built-in block specs *****
@@ -351,14 +396,17 @@ MB_Specs.mbBlockSpecs = function () {
 		"-",
 			["r", "[data:freeMemory]", "free memory"],
 
+		"--- Testing ---",
 ["r", "[misc:hue]", "hue _", "color"], // xxx test color input slot
+		"cat;Output",
+[" ", "[display:mbDisplay]", "display #BR# _", "microbitDisplay"], // xxx test microbitDisplay input slot
 
 		"Prims-Deprecated (not in palette)",
 			["r", "newArray", "new list length _", "num", 10],
 			[" ", "fillArray", "fill list _ with _", "str auto", "aList", 0],
 			[" ", "fillList", "fill list _ with _", "str auto", "aList", 0],
 		"Prims-Display (not in palette)",
-			[" ", "[display:mbDisplay]", "display _", "microbitDisplay"],
+			[" ", "[display:mbDisplay]", "display #BR# _", "microbitDisplay"],
 			[" ", "[display:mbDisplayOff]", "clear display"],
 			[" ", "[display:mbPlot]", "plot x _ y _", "num num", 3, 3],
 			[" ", "[display:mbUnplot]", "unplot x _ y _", "num num", 3, 3],

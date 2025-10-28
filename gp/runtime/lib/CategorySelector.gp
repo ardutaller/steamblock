@@ -53,7 +53,6 @@ method drawOn CategorySelector ctx {
 
 	insetX = (20 * scale)
 	insetY = (4 * scale)
-	if ('Linux' == (platform)) { insetY = (3 * scale) }
 
 	threshold = (75 * scale)
 	itemH = (itemHeight this)

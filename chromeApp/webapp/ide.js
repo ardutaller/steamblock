@@ -13,6 +13,8 @@
 // The document can listen for that event and act accordingly. The `details`
 // object in the event contains the value of the property.
 
+// There is a reason for IDE not to be a const. Try it and see the console
+// WASM error to know why.
 IDE = {
 	currentMenu: null, // remember open menu so it can be closed on outside click
 	currentCategory: 'cat;Control',

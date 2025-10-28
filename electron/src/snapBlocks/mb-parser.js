@@ -1,8 +1,6 @@
-const MB_EOF = {}; // Unique object used to mark the end of a string being parsed.
-
 class MB_Parser {
 	constructor(srcString, fileName = '<string>') {
-		// Start parsing the given string. Read scripts until MB_EOF by calling nextScript().
+		// Start parsing the given string. Read scripts by calling nextScript() until null is returned.
 
 		this.buf = Array.from(srcString);
 		this.bufSize = this.buf.length;
@@ -11,29 +9,30 @@ class MB_Parser {
 		this.lineNumber = 1;
 		this.complete = false;
 		this.inString = false;
+		this.EOF = {}; // Unique value indicating that there is no more data to parse
 	}
 
 	// Public methods
 
 	nextScript() {
 		// Return the next reporter, command, or command list in the string being parsed
-		// or MB_EOF when all items have been read.
+		// or null when all items have been read.
 
 		this.complete = true;
 		this.inString = false;
 
 		skipWhiteSpace();
-		if (this.bufPos >= this.bufSize) return MB_EOF;
+		if (this.bufPos >= this.bufSize) return null;
 
 		let script = readCmdList();
 
 		if (this.inString) {
 			this.parseError('Missing closing string quote');
-			return MB_EOF;
+			return null;
 		}
 		if (!this.complete) {
 			this.parseError('Missing closing bracket or parenthesis');
-			return MB_EOF;
+			return null;
 		}
 		return script;
 	}
@@ -45,10 +44,11 @@ class MB_Parser {
 	}
 
 	firstChar() {
-		// Return the first non-whitespace character in the string to be parsed or MB_EOF.
+		// Return the first non-whitespace character in the string to be parsed
+		// or null if there are no more characters.
 
 		skipWhiteSpace();
-		return this.peek();
+		return this.atEnd() ? null : this.peek();
 	}
 
 	// Private methods
@@ -72,7 +72,7 @@ class MB_Parser {
 		while (true) {
 			this.skipWhiteSpace();
 			c = this.peek();
-			if ((MB_EOF == c) || ('}' == c)) break;
+			if ((this.EOF == c) || ('}' == c)) break;
 			let cmdOrValue = this.readCmd(false);
 			if (cmdOrValue instanceof CommandBlockMorph) {
 				if (!firstCmd) firstCmd = cmdOrValue;
@@ -118,7 +118,7 @@ class MB_Parser {
 				this.skipSpacesAndTabs(); // reporters can span lines
 			}
 			c = this.peek();
-			if ((MB_EOF == c) || (this.isNewLine(c))) break;
+			if ((this.EOF == c) || (this.isNewLine(c))) break;
 			if ((')' == c) || (';' == c) || ('}' == c)) break;
 			buf.push(this.readToken());
 		}
@@ -259,11 +259,11 @@ class MB_Parser {
 		// Read and return the next number, quoted string, command, or command list.
 
 		this.skipWhiteSpace();
-		let c = this.peek();
-		if (MB_EOF == c) {
+		if (this.atEnd()) {
 			this.complete = false;
-			return MB_EOF;
+			return this.EOF;
 		}
+		let c = this.peek();
 		if (this.isDigit(c)) return this.readNumber();
 		else if ((('-' == c) || ('.' == c)) && this.isDigit(this.peek2())) return this.readNumber();
 		else if ('\'' == c) return this.readString();
@@ -310,7 +310,7 @@ class MB_Parser {
 		this.inString = true;
 		while (true) {
 			let c = this.next();
-			if (MB_EOF == c) {
+			if (this.EOF == c) {
 				this.parseError('No closing quote');
 				this.complete = false;
 				break;
@@ -341,7 +341,7 @@ class MB_Parser {
 		let symbol = [];
 		while (true) {
 			let c = this.peek();
-			if ((c <= ' ') || (')' == c) || ('}' == c) || (';' == c) || (MB_EOF == c)) {
+			if ((c <= ' ') || (')' == c) || ('}' == c) || (';' == c) || (this.EOF == c)) {
 				break;
 			}
 			symbol += this.next();
@@ -357,19 +357,19 @@ class MB_Parser {
 	peek() {
 		// Return the next character without advancing bufPos.
 
-		return (this.bufPos < this.bufSize) ? (this.buf)[this.bufPos] : MB_EOF;
+		return (this.bufPos < this.bufSize) ? (this.buf)[this.bufPos] : this.EOF;
 	}
 
 	peek2() {
 		// Return the character after the next one without advancing bufPos.
 
-		return ((this.bufPos + 1) < this.bufSize) ? (this.buf)[this.bufPos + 1] : MB_EOF;
+		return ((this.bufPos + 1) < this.bufSize) ? (this.buf)[this.bufPos + 1] : this.EOF;
 	}
 
 	next() {
-		// Return the next character and advance bufPos or MB_EOF if at end.
+		// Return the next character and advance bufPos or EOF if at end.
 
-		return (this.bufPos < this.bufSize) ? (this.buf)[this.bufPos++] : MB_EOF;
+		return (this.bufPos < this.bufSize) ? (this.buf)[this.bufPos++] : this.EOF;
 	}
 
 	skip(skipCount) {
@@ -404,11 +404,11 @@ class MB_Parser {
 
 	skipWhiteSpace() {
 		// Skip whitespace, including comments and newlines.
-		// Stop at the first printable character or MB_EOF.
+		// Stop at the first printable character or EOF.
 		// Comments begin with a double slash (//) and extend to the end of the line.
 
 		let c;
-		while ((c = this.next()) != MB_EOF) {
+		while ((c = this.next()) != this.EOF) {
 			if (('/' == c) && ('/' == this.peek())) {
 				this.skipRestOfLine();
 				this.skipNewLine();
@@ -427,7 +427,7 @@ class MB_Parser {
 		// Comments begin with a double slash (//) and extend to the end of the line.
 
 		let c;
-		while ((c = this.next()) != MB_EOF) {
+		while ((c = this.next()) != this.EOF) {
 			if (('/' == c) && ('/' == this.peek())) {
 				this.skipRestOfLine();
 				return;
@@ -443,7 +443,7 @@ class MB_Parser {
 		// Skip the remainder of the line, but do not consume the line ending.
 
 		let c;
-		while ((c = this.peek()) != MB_EOF) {
+		while ((c = this.peek()) != this.EOF) {
 			if (this.isNewLine(c)) return;
 			this.skip(1);
 		}
@@ -464,7 +464,7 @@ function parser_test1() {
 	while (!p.atEnd()) {
 		p.skipWhiteSpace();
 		let v = p.readToken();
-		if (v != MB_EOF) console.log(v);
+		if (v != p.EOF) console.log(v);
 	}
 }
 

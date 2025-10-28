@@ -186,7 +186,6 @@ to buttonBitmap label color w h isInset corner border hasFrame flat {
 		off = (max (scale / 2) 1)
 		fontName = 'Arial Bold'
 		fontSize = (14 * scale)
-		if ('Linux' == (platform)) { fontSize = (11 * scale) }
 		textColor = (gray 0)
 		if (color == (gray 0)) { textColor = (gray 255) }
 		if (isClass color 'Array') {
@@ -241,7 +240,6 @@ to buttonImage labelBitmap color corner border isInset hasFrame width height fla
 		if isInset {off = (max (border / 2) 1)}
 		drawBitmap bm labelBitmap (((w - (width labelBitmap)) / 2) + off) (((h - (height labelBitmap)) / 2) + off)
 	}
-	if ('Browser' != (platform)) { unmultiplyAlpha bm }
 	return bm
 }
 

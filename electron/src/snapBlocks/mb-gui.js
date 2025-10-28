@@ -63,7 +63,7 @@ MB_GUI.addBlocksToPalette = function (palette) {
 	const specs = MB_Specs.mbBlockSpecs();
 	let	y = 10;
 	let currentCategory = 'Output';
-	for (let i = 0; i < 166; i++) {
+	for (let i = 0; i < 169; i++) {
 		let item = specs[i];
 		if (Array.isArray(item)) { // block spec
 			let b = MB_Specs.blockForSpec(item, currentCategory);
@@ -91,3 +91,26 @@ MB_GUI.addBlocksToPalette = function (palette) {
 		}
 	}
 }
+
+MB_GUI.importLocalFile = function (callback) {
+	async function processFile(file) {
+		let txt = await file.text();
+		if (callback) callback(txt);
+	}
+
+	var inp = document.createElement('input');
+	inp.type = 'file';
+	inp.multiple = true;
+	inp.addEventListener(
+		'change',
+		(evt) => {
+			document.body.removeChild(inp);
+			for (let i = 0; i < inp.files.length; i++) {
+				processFile(inp.files[i]);
+			}
+		},
+		false
+	);
+	document.body.appendChild(inp);
+	inp.click(); // show the input dialog
+};

@@ -1354,19 +1354,11 @@ method exportAsImageScaled Block result isError fName {
 
 	// save result as a PNG file
 	pngData = (encodePNG bm nil (scriptText this))
-	if ('Browser' == (platform)) {
-		if ((msecs timer) > 4500) {
-			// if it has been more than ~4.5 seconds the user must click to allow file save
-			inform (global 'page') (localized 'PNG preparation complete.')
-		}
-		browserWriteFile pngData (join 'scriptImage' (msecsSinceStart) '.png') 'scriptImage'
-	} else {
-		if (isNil fName) {
-			fName = (fileToWrite (join 'scriptImage' (msecsSinceStart) '.png'))
-		}
-		if ('' == fName) { return }
-		writeFile fName pngData
+	if ((msecs timer) > 4500) {
+		// if it has been more than ~4.5 seconds the user must click to allow file save
+		inform (global 'page') (localized 'PNG preparation complete.')
 	}
+	browserWriteFile pngData (join 'scriptImage' (msecsSinceStart) '.png') 'scriptImage'
 }
 
 method delete Block {
@@ -1677,10 +1669,6 @@ method labelText Block aString {
 			colorIndex = ((count aString) + 1)
 		}
 		return (newSVGImage (substring aString 6 (colorIndex - 1)) labelColor color scale)
-	}
-	if ('Linux' == (platform)) {
-		fontName = 'Noto Sans Bold'
-		fontSize = (11 * scale)
 	}
 	return (newText aString fontName fontSize labelColor)
 }
