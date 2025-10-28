@@ -9,7 +9,7 @@
 // Bernat Romagosa, 2025
 
 const LiveReload = {
-	watchedFiles: [ 'style.css', 'microblocks.html', 'img/logo.svg' ],
+	watchedFiles: [ 'style.css', 'microblocks.html', 'img/logo.svg', 'buttons.js' ],
 	lastVersions: {},
 	interval: null,
 	watchInterval: 1000,
@@ -41,6 +41,12 @@ LiveReload.enable = function() {
 					} else if (file.endsWith('.html')) {
 						// redo the whole page
 						this.reloadPage(text);
+						return;
+					} else if (file.endsWith('.js')) {
+						// redo the whole page
+						fetch('microblocks.html')
+							.then(res => res.text())
+							.then(text => { this.reloadPage(text); });
 						return;
 					} else {
 						console.log('file extension not recognized:', file);
