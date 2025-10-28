@@ -122,6 +122,7 @@ Icon.forSelector = function (selector) {
 Icon.forUrl = function (url) {
 	let icon = document.createElement('div');
 	let img = document.createElement('img');
+	icon.setAttribute('role', 'button');
 	icon.classList.add('icon');
 	img.setAttribute('src', url);
 	icon.appendChild(img);
