@@ -281,6 +281,12 @@ SyntaxElementMorph.prototype.alpha = 1;
 // SyntaxElementMorph label part specs:
 
 SyntaxElementMorph.prototype.partInfo = function (partSpec) {
+	// Return the info object for the given part spec string.
+	// The partSpec may be:
+	//	- a simple spec (e.g. '%n')
+	//	- a menu (e.g. 'menu.buttonMenu')
+	//	- a string encoding a set of optional input slots and their labels
+
 	if (partSpec.startsWith('%menu')) {
 		let specParts = partSpec.split('.');
 		let result = {
@@ -303,7 +309,7 @@ SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
 	//	'%ex' (non-repeatable) or
 	//	'%exr' (repeatable).
 	// Multiple input groups are separated by colons.
-	// Periods separate the labels in input slot specs within each group.
+	// Commas separate the labels and input slot specs within each group.
 
 	let repeatLast = false;
 	if (partSpec.startsWith('%exr')) {
@@ -316,10 +322,12 @@ SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
 	let result;
 	if (partSpec.indexOf(':') < 0) {
 		// Single input group, possibly repeating
+		let group = partSpec.replaceAll(',', ' ');
+		group = group.replaceAll('%br ', ''); // Snap! does handle line breaks in MultiArgMorphs
 		result = {
 			type: 'multi',
 			tags: 'static widget',
-			group: partSpec.replaceAll('.', ' ')
+			group: group
 		};
 		if (!repeatLast) result.max = 1;
 	} else {
@@ -331,10 +339,13 @@ SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
 		for (let i = 0; i < groups.length; i++) {
 			let slotsForGroup = [];
 			let labelsForGroup = [];
-			let groupParts = groups[i].split('.');
+			let groupParts = groups[i].split(',');
 			for (let j = 0; j < groupParts.length; j++) {
 				if (groupParts[j].startsWith('%')) {
-					slotsForGroup.push(groupParts[j]);
+					if (groupParts[j] != '%br') {
+						// Snap! does not handle line breaks in MultiArgMorphs
+						slotsForGroup.push(groupParts[j]);
+					}
 				} else {
 					labelsForGroup.push(groupParts[j]);
 				}
