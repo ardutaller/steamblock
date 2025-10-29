@@ -58,19 +58,21 @@ MB_Specs.specFor = function (selector, args) {
 	let spec = '';
 	let specArray = this.specArrayForSelector(selector);
 	if (specArray) { // selector is known; use existing spec
-		let specParts = specArray[2].split(/\s+/);
-		let mbTypes = specArray[3].split(/\s+/);
-		let typeIndex = 0;
-		for (let i = 0; i < specParts.length; i++) {
-			if (i > 0) spec += ' ';
-			let p = specParts[i];
-			if (p == '_') {
-				spec += this.snapTypeForMBType(mbTypes[typeIndex++]);
-			} else if (p.startsWith('#')) {
-				spec += this.snapSymbolOrBreak(p);
-			} else if ((p != ':') && (p != '...')) {
-				spec += ' ' + p;
-			// xxx todo: exit if p == ':' and there are no more args
+		if (specArray.length > 3) {
+			let specParts = specArray[2].split(/\s+/);
+			let mbTypes = specArray[3].split(/\s+/);
+			let typeIndex = 0;
+			for (let i = 0; i < specParts.length; i++) {
+				if (i > 0) spec += ' ';
+				let p = specParts[i];
+				if (p == '_') {
+					spec += this.snapTypeForMBType(mbTypes[typeIndex++]);
+				} else if (p.startsWith('#')) {
+					spec += this.snapSymbolOrBreak(p);
+				} else if ((p != ':') && (p != '...')) {
+					spec += p;
+				// xxx todo: exit if p == ':' and there are no more args
+				}
 			}
 		}
 	} else { // unknown select; generate a spec based on its arguments

@@ -1681,7 +1681,6 @@ BlockMorph.prototype.init = function () {
 	// not to be persisted:
 	this.instantiationSpec = null; // spec to set upon fullCopy() of template
 	this.category = null; // for zebra coloring (non persistent)
-	this.isCorpse = false; // marked for deletion fom a custom block definition
 	this.afterglow = 0; // frame count-down for displaying the "active" halo
 
 	BlockMorph.uber.init.call(this);
@@ -1877,7 +1876,7 @@ BlockMorph.prototype.userMenu = function () {
 
 	menu.addItem(
 		'print code',
-		() => { console.log(this.printCode(0, [])); },
+		() => { console.log(this.codeString(0, [])); },
 		'test coverting scripts to pseudocode'
 	);
 	menu.addItem(
@@ -1895,7 +1894,13 @@ BlockMorph.prototype.userMenu = function () {
 	return menu;
 };
 
-BlockMorph.prototype.printCode = function (indent, result) {
+BlockMorph.prototype.codeString = function (indent = 0, result = []) {
+	if (this.selector == 'v') {
+		// variable reporter - just print the variable name
+		result.push(this.blockSpec);
+		return;
+	}
+
 	if (this.type() == 'reporter') {
 		result.push('(');
 	} else { // command or hat block
@@ -1914,18 +1919,20 @@ BlockMorph.prototype.printCode = function (indent, result) {
 				result.push('{}');
 			} else {
 				result.push('{\n');
-				nested.printCode(indent + 1, result);
+				nested.codeString(indent + 1, result);
 				result.push('\t'.repeat(indent));
 				result.push('}');
 			}
 		} else if (arg instanceof ReporterBlockMorph) {
-			arg.printCode(indent, result);
+			arg.codeString(indent, result);
+		} else if (arg instanceof TemplateSlotMorph) {
+			result.push(arg.contents());
 		} else {
 			let value = arg.contents().text;
 			if ((value.length == 0) && (arg.isNumeric)) {
 				value = '0';
 			}
-			if ((typeof value1 === 'number') || ((value.length > 0) && (Number(value) != NaN))) { // number
+			if ((typeof value === 'number') || ((value.length > 0) && (Number(value) != NaN))) { // number
 				result.push(value);
 			} else if ((typeof value) == 'boolean') {
 				result.push(value);
@@ -1944,7 +1951,7 @@ BlockMorph.prototype.printCode = function (indent, result) {
 		result.push('\n');
 		let next = this.nextBlock();
 		if (this instanceof HatBlockMorph) indent += 1;
-		if (next != null) next.printCode(indent, result); // recursive!
+		if (next != null) next.codeString(indent, result); // recursive!
 	}
 	return result.join('');
 }
@@ -1995,7 +2002,6 @@ BlockMorph.prototype.deleteBlock = function () {
 						even after it has been destroyed, mark it to be deleted
 						later.
 		*/
-		this.isCorpse = true;
 	}
 	if (tobefixed) {
 		tobefixed.fixLayout();

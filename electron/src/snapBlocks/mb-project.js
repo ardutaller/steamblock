@@ -228,6 +228,9 @@ class MB_Project {
 	loadFromString (s, updateLibraries) {
 		// Load project from a string in .ubp format. Keep libraries (modules) together.
 
+		this.initialize();
+		let cmdList = new MB_Parser(s).parse();
+console.log(cmdList);
 // 		initialize this
 // 		cmdList = (parse s)
 // 		if (and (notEmpty cmdList) ('projectName' == (primName (first cmdList)))) {
@@ -727,19 +730,19 @@ class MicroBlocksModule {
 	// loading
 
 	loadFromCmds(cmdList) {
-	// 	loadModuleNameAndCategory this cmdList
-	// 	loadVersion this cmdList
-	// 	loadAuthor this cmdList
-	// 	loadDependencies this cmdList
-	// 	loadTags this cmdList
-	// 	loadDescription this cmdList
-	// 	loadChoices this cmdList
-	// 	loadVariables this cmdList
-	// 	loadBlockList this cmdList
-	// 	loadSpecs this cmdList
-	// 	loadFunctions this cmdList
-	// 	loadScripts this cmdList
-	// 	return this
+		this.loadModuleNameAndCategory(cmdList)
+		this.loadVersion(cmdList)
+		this.loadAuthor(cmdList)
+		this.loadDependencies(cmdList)
+		this.loadTags(cmdList)
+		this.loadDescription(cmdList)
+		this.loadChoices(cmdList)
+		this.loadVariables(cmdList)
+		this.loadBlockList(cmdList)
+		this.loadSpecs(cmdList)
+		this.loadFunctions(cmdList)
+		this.loadScripts(cmdList)
+		return this
 	}
 
 	browserEmbeddedLibs() {
