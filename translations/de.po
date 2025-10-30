@@ -4876,7 +4876,7 @@ msgstr "Wukong drehe Servo _ mit Geschwindigkeit _ (-100~100)"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
-msgstr "Nezha drehe Motor_ mit Geschwindigkeit _ (-100~100)"
+msgstr "Nezha drehe Motor _ mit Geschwindigkeit _ (-100~100)"
 
 #. Wukong robot library block
 msgid "Wukong stop motor _"
@@ -5008,7 +5008,7 @@ msgstr "Octopus lösche OLED"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus OLED draw rectangle x _ y _ w _ h _ rounding _ (3~15)"
-msgstr "Octopus OLED zeichne Rechteck x _ y _ w _ h _ abrunden_ (3~15)"
+msgstr "Octopus OLED zeichne Rechteck x _ y _ w _ h _ abrunden _ (3~15)"
 
 #. Octostudio communication library block
 msgid "Octo last beam"
@@ -5244,7 +5244,7 @@ msgstr "ionisch"
 
 #. MiKe Robot library block
 msgid "MiKe Robot speed _ %"
-msgstr "MiKe Robot Geschwindigkeit_ %"
+msgstr "MiKe Robot Geschwindigkeit _ %"
 
 #. micro:STEAMakers library block
 msgid "ms;reset"
@@ -5324,7 +5324,7 @@ msgstr "Farm Luftfeuchtigkeit"
 
 #. Keyestudio Smart Home library block
 msgid "Home fan _"
-msgstr "Home Lüfter_"
+msgstr "Home Lüfter _"
 
 #. General MIDI drum set
 msgid "electronic"
@@ -5516,7 +5516,7 @@ msgstr "ms lösche x _ y _"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm fan _"
-msgstr "Farm Lüfter_"
+msgstr "Farm Lüfter _"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm display _ in line _"
@@ -5721,7 +5721,7 @@ msgstr "lege Pluck Pin _ fest"
 
 #. Pluck library block
 msgid "pluck note _ octave _ for _ ms"
-msgstr "Pluck Note _ Oktave _ für _ms"
+msgstr "Pluck Note _ Oktave _ für _ ms"
 
 #. Pluck library block
 msgid "pluck MIDI key _ for _ msecs"
