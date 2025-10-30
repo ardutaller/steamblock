@@ -14,6 +14,14 @@ class MB_Parser {
 
 	// Public methods
 
+	parse() {
+		let result = [];
+		while (!this.atEnd()) {
+			result.push(this.nextScript());
+		}
+		return result;
+	}
+
 	nextScript() {
 		// Return the next reporter, command, or command list in the string being parsed
 		// or null when all items have been read.
@@ -21,10 +29,10 @@ class MB_Parser {
 		this.complete = true;
 		this.inString = false;
 
-		skipWhiteSpace();
+		this.skipWhiteSpace();
 		if (this.bufPos >= this.bufSize) return null;
 
-		let script = readCmdList();
+		let script = this.readCmdList();
 
 		if (this.inString) {
 			this.parseError('Missing closing string quote');
@@ -34,6 +42,7 @@ class MB_Parser {
 			this.parseError('Missing closing bracket or parenthesis');
 			return null;
 		}
+		this.skipWhiteSpace();
 		return script;
 	}
 
@@ -154,8 +163,8 @@ class MB_Parser {
 		}
 
 		if (buf.length == 1) {
-			if (((typeof buf[0]) != 'string') || (buf[0][0] == "'")) {
-				return buf[0]; // constant (number, quoted string, or special value)
+			if ((typeof buf[0]) != 'string') {
+				return buf[0]; // number or special value
 			}
 		}
 
@@ -177,7 +186,6 @@ class MB_Parser {
 		let selector = buf[0];
 		let args = buf.slice(1);
 		let b = isReporter ? new ReporterBlockMorph() : new CommandBlockMorph();
-		b.setCategory('');
 		b.selector = selector;
 		b.setSpec(MB_Specs.specFor(selector, args));
 		b.setCategory(MB_Specs.categoryForSelector(selector));
@@ -185,6 +193,9 @@ class MB_Parser {
 		let inputs = b.inputs();
 		for (let i = 0; i < inputs.length; i++) {
 			let arg = args[i];
+			if ((typeof arg) == 'string') {
+				arg = this.argOrVarRef(selector, arg, (i == 0));
+			}
 			if (arg instanceof BlockMorph) {
 				if (inputs[i] instanceof CommandSlotMorph) {
 					inputs[i].nestedBlock(arg);
@@ -194,7 +205,7 @@ class MB_Parser {
 				}
 				arg.fixBlockColor();
 			} else {
-				inputs[i].setContents(args[i]);
+				inputs[i].setContents(arg);
 			}
 		}
 		b.fixBlockColor();
@@ -217,40 +228,41 @@ class MB_Parser {
 		return (('call' == op) || ('callWith' == op));
 	}
 
-	isProperName(op, index, argCount) {
-		// Return true if the given operation uses the argument at the given index as a proper name such as
-		// a variable or function name. Proper names are treated as strings, not variable references.
-
-		let quoteAll = ['to', 'defineClass', 'method'];
-		if (quoteAll.includes(op)) return true;
-
-		let quoteFirstArg = ['v', '=', '+=', 'local', 'for', 'help', 'classComment'];
-		if ((index == 1) && (quoteFirstArg.includes(op))) return true;
-
-		if (('function' == op) && (index < argCount)) return true;
-		return false;
-	}
-
-	argOrVarRef(arg, op, index, argCount, lineNum) {
+	argOrVarRef(op, arg, isFirstArg) {
 		// If arg is an unquoted string and the arg at the given index is not used
 		// as a proper name by the given operator, create a variable reference.
 		// Otherwise, just return arg, without the quotes if it was quoted.
 
 		if (arg[0] == "'") {
-			// quoted string constant; remove the quotes
-			arg = arg.slice(1, -1);
-		} else { // arg is an unquoted string, so it could be a variable reference
-			if (!isProperName(op, index, argCount) && !isInfixOp(arg)) {
-				// return a variable reporter block
-				// to do: how do we represent a variable reporter in Snap?
-				let b = newBlock('r', '', 'v %s');
-				b.selector = 'v';
-				b.inputs()[0].setContents(spec);
-				return b;
-				return ['v', arg];
+			// quoted string constant; just remove the quotes
+			return arg.slice(1, -1);
+		} else { // arg is an unquoted string, so it may be a variable reference
+			if (this.isVariableReference(op, isFirstArg)) {
+				// return a variable reporter block for arg
+				return this.makeVariableReporter(arg);
 			}
 		}
 		return arg;
+	}
+
+	isVariableReference(op, isFirstArg) {
+		// Return true if the given operation considers a string argument at the given index
+		// to be a variable reference (the common case). Exceptions include the left-hand
+		// side of assignment operations or 'local', the index variable in a 'for' loop,
+		// and the function name and formal parameters in a 'to' function definition.
+
+		if ('to' == op) return false;
+		const quoteFirstArg = ['v', '=', '+=', 'local', 'for'];
+		return (isFirstArg && (quoteFirstArg.includes(op))) ? false : true;
+	}
+
+	makeVariableReporter(varName) {
+		let b = new ReporterBlockMorph();
+		b.setCategory('Variables');
+		b.selector = 'v';
+		b.setSpec(varName);
+		b.isDraggable = true;
+		return b;
 	}
 
 	// ***** Tokenizing *****
@@ -508,4 +520,17 @@ function parser_test7() {
 	let b = p.readCmd(false);
 	console.log(b);
 	MB_GUI.addBlockToScripts(b);
+}
+
+function parser_test8() {
+	function parseFile(fileName, contents) {
+		let startT = Date.now();
+		let cmdList = new MB_Parser(contents).parse();
+		for (let i = 0; i < cmdList.length; i++) {
+			cmd = cmdList[i];
+//			console.log(cmd.codeString());
+		}
+		console.log(fileName, Date.now() - startT, 'msecs');
+	}
+	MB_GUI.importLocalFile(parseFile);
 }

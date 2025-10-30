@@ -58,19 +58,21 @@ MB_Specs.specFor = function (selector, args) {
 	let spec = '';
 	let specArray = this.specArrayForSelector(selector);
 	if (specArray) { // selector is known; use existing spec
-		let specParts = specArray[2].split(/\s+/);
-		let mbTypes = specArray[3].split(/\s+/);
-		let typeIndex = 0;
-		for (let i = 0; i < specParts.length; i++) {
-			let p = specParts[i];
-			if (p == '_') {
+		if (specArray.length > 3) {
+			let specParts = specArray[2].split(/\s+/);
+			let mbTypes = specArray[3].split(/\s+/);
+			let typeIndex = 0;
+			for (let i = 0; i < specParts.length; i++) {
 				if (i > 0) spec += ' ';
-				if (typeIndex < mbTypes.length) {
-					spec += this.snapTypeForMBType(mbTypes[typeIndex]);
-					typeIndex++;
+				let p = specParts[i];
+				if (p == '_') {
+					spec += this.snapTypeForMBType(mbTypes[typeIndex++]);
+				} else if (p.startsWith('#')) {
+					spec += this.snapSymbolOrBreak(p);
+				} else if ((p != ':') && (p != '...')) {
+					spec += p;
+				// xxx todo: exit if p == ':' and there are no more args
 				}
-			} else if ((p != ':') && (p != '...')) {
-				spec += ' ' + p;
 			}
 		}
 	} else { // unknown select; generate a spec based on its arguments
@@ -84,12 +86,14 @@ MB_Specs.specFor = function (selector, args) {
 }
 
 MB_Specs.snapTypeForMBType = function (mbType) {
-	// Return the Snap! slot type for the given MicroBlocks slot type.
+	// Return the Snap! slot type for the given MicroBlocks slot type or '%ns' if mbType is null.
 	// MicroBlocks types: 'num' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
+
+	if (mbType == null) return '%ns'; // default
 
 	let typeParts = mbType.split('.');
 	if (typeParts.length > 1) { // this is a menu (e.g. menu.buttonMenu)
-		return ('menu.' + typeParts[0] + '.' + typeParts[1]);
+		return ('%menu.' + typeParts[0] + '.' + typeParts[1]);
 	}
 
 	if ('num' == mbType) return '%n';
@@ -101,6 +105,11 @@ MB_Specs.snapTypeForMBType = function (mbType) {
 	if ('var' == mbType) return '%t';
 	if ('microbitDisplay' == mbType) return '%mbDisplay';
 	return '%ns'; // default
+}
+
+MB_Specs.snapSymbolOrBreak = function (spec) {
+	if (spec == '#BR#') return '%br';
+	return spec; // not recognized; return original
 }
 
 MB_Specs.specForArg = function (arg) {
@@ -164,30 +173,55 @@ MB_Specs.blockForSpec = function (spec, category) {
 }
 
 MB_Specs.snapSpecFrom = function (spec) {
+	// Return a Snap! block spec string for the given MicroBlocks spec array.
+
 	if (spec[1] == 'if') { // special case for "if"
 		return 'if %b %cmd %elseif';
 	}
 	let mbSpec = spec[2];
 	let mbArgTypes = (spec.length > 3) ? spec[3].split(/\s+/) : [];
-	let i = mbSpec.indexOf(':');
-	if (i > 0) {
-		mbSpec = mbSpec.substring(0, i); // ignore optional args for now
-	}
-	let result = mbSpec.split(/\s+/);
+	let parts = mbSpec.split(/\s+/);
+
 	let argIndex = 0;
-	for (let i = 0; i < result.length; i++) {
-		if (result[i] == '_') {
-			if (argIndex < mbArgTypes.length) {
-				result[i] = MB_Specs.snapTypeForMBType(mbArgTypes[argIndex]);
-				argIndex++;
-			} else {
-				result[i] = '%ns';
-			}
-		} else if (result[i] == '#BR#') {
-			result[i] = '%br';
+	for (let i = 0; i < parts.length; i++) {
+		let p = parts[i];
+		if (p == '_') {
+			parts[i] = this.snapTypeForMBType(mbArgTypes[argIndex++]);
+		} else if (p.startsWith('#')) {
+			parts[i] = this.snapSymbolOrBreak(p);
+		} else if (p == ':') {
+			// spec has optional parts; add a part spec encoding those parts and exit loop
+			parts[i] = this.optionalInputsSpec(parts.slice(i + 1), mbArgTypes.slice(argIndex));
+
+			parts = parts.slice(0, i + 1);
+			break;
 		}
 	}
-	return result.join(' ');
+	return parts.join(' ');
+}
+
+MB_Specs.optionalInputsSpec = function (parts, mbArgTypes) {
+	// Return a string the encodes the given list of optional inputs.
+	// Spec prefix is '%exr' if the optional inputs are repeated, '%ex' if not.
+	// The result has no spaces; labels and input specs are separated by periods.
+	// Mutiple input slot groups are separated by colons.
+
+	let prefix = '%ex,';
+	if (parts[parts.length - 1] == '...') {
+		parts = parts.slice(0, -2);
+		prefix = '%exr,'; // %exr repeats the last input group
+	}
+
+	let argIndex = 0;
+	for (let i = 0; i < parts.length; i++) {
+		let p = parts[i];
+		if (p == '_') {
+			parts[i] = this.snapTypeForMBType(mbArgTypes[argIndex++]);
+		} else if (p.startsWith('#')) {
+			parts[i] = this.snapSymbolOrBreak(p);
+		}
+	}
+	return prefix + parts.join(',');
 }
 
 // ***** MicroBlocks built-in block specs *****

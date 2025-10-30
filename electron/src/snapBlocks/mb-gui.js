@@ -95,7 +95,7 @@ MB_GUI.addBlocksToPalette = function (palette) {
 MB_GUI.importLocalFile = function (callback) {
 	async function processFile(file) {
 		let txt = await file.text();
-		if (callback) callback(txt);
+		if (callback) callback(file.name, txt);
 	}
 
 	var inp = document.createElement('input');

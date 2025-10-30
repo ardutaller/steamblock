@@ -281,7 +281,13 @@ SyntaxElementMorph.prototype.alpha = 1;
 // SyntaxElementMorph label part specs:
 
 SyntaxElementMorph.prototype.partInfo = function (partSpec) {
-	if (partSpec.startsWith('menu')) {
+	// Return the info object for the given part spec string.
+	// The partSpec may be:
+	//	- a simple spec (e.g. '%n')
+	//	- a menu (e.g. 'menu.buttonMenu')
+	//	- a string encoding a set of optional input slots and their labels
+
+	if (partSpec.startsWith('%menu')) {
 		let specParts = partSpec.split('.');
 		let result = {
 			type: 'input',
@@ -291,9 +297,71 @@ SyntaxElementMorph.prototype.partInfo = function (partSpec) {
 		if ('auto' == specParts[1]) result.tags = 'numstring';
 		if ('num' == specParts[1]) result.tags = 'numeric';
 		return result;
+	} else if (partSpec.startsWith('%ex')) {
+		return this.mbMultipartInfo(partSpec);
 	} else {
 		return this.labelParts[partSpec];
 	}
+}
+
+SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
+	// Return the info object for an optional part spec starting with either:
+	//	'%ex' (non-repeatable) or
+	//	'%exr' (repeatable).
+	// Multiple input groups are separated by colons.
+	// Commas separate the labels and input slot specs within each group.
+
+	let repeatLast = false;
+	if (partSpec.startsWith('%exr')) {
+		repeatLast = true;
+		partSpec = partSpec.slice(5); // remove '%exr.' prefix
+	} else {
+		partSpec = partSpec.slice(4); // remove '%ex.' prefix
+	}
+
+	let result;
+	if (partSpec.indexOf(':') < 0) {
+		// Single input group, possibly repeating
+		let group = partSpec.replaceAll(',', ' ');
+		group = group.replaceAll('%br ', ''); // Snap! does handle line breaks in MultiArgMorphs
+		result = {
+			type: 'multi',
+			tags: 'static widget',
+			group: group
+		};
+		if (!repeatLast) result.max = 1;
+	} else {
+		// Multiple input groups (each block expansion adds another group)
+		// Used for multiple sets of optional input. Usually non-repeating.
+		let slots = [];
+		let labels = [];
+		let groups = partSpec.split(':');
+		for (let i = 0; i < groups.length; i++) {
+			let slotsForGroup = [];
+			let labelsForGroup = [];
+			let groupParts = groups[i].split(',');
+			for (let j = 0; j < groupParts.length; j++) {
+				if (groupParts[j].startsWith('%')) {
+					if (groupParts[j] != '%br') {
+						// Snap! does not handle line breaks in MultiArgMorphs
+						slotsForGroup.push(groupParts[j]);
+					}
+				} else {
+					labelsForGroup.push(groupParts[j]);
+				}
+			}
+			slots.push(slotsForGroup.join(' '));
+			labels.push(labelsForGroup.join(' '));
+		}
+		result = {
+			type: 'multi',
+			tags: 'static widget',
+			slots: slots,
+			label: labels
+		};
+		if (!repeatLast) result.max = slots.length;
+	}
+	return result;
 }
 
 SyntaxElementMorph.prototype.labelParts = {
@@ -352,26 +420,26 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'mbDisplay'
 	},
 
-    // specialized variadic inputs
-    /*
-        type: 'multi'
-        slots: a slot spec string
-        label: (optional)
-        infix: (optional)
-        collapse: (optional) alternative label to "Input list"
-        tags: 'widget' // doesn't count as "empty" slot implicit parameter
-        min: (optional) number of minimum inputs) or zero
-        max: (optional) number of maximum inputs) or zero
-        defaults: (optional) number of visible slots to begin with or zero
-        dflt: (optional) array with default value(s)
-        group: (optional) a block spec describing a group of inputs with labels
-    */
+	// specialized variadic inputs
+	/*
+		type: 'multi'
+		slots: a slot spec string
+		label: (optional)
+		infix: (optional)
+		collapse: (optional) alternative label to "Input list"
+		tags: 'widget' // doesn't count as "empty" slot implicit parameter
+		min: (optional) number of minimum inputs) or zero
+		max: (optional) number of maximum inputs) or zero
+		defaults: (optional) number of visible slots to begin with or zero
+		dflt: (optional) array with default value(s)
+		group: (optional) a block spec describing a group of inputs with labels
+	*/
 
 	'%elseif': {
 		type: 'multi',
+		tags: 'static widget',
 		group: 'else if %b %cmd',
-		dflt: [true, null],
-		tags: 'static widget'
+		dflt: [true, null]
 	}
 };
 
@@ -1613,7 +1681,6 @@ BlockMorph.prototype.init = function () {
 	// not to be persisted:
 	this.instantiationSpec = null; // spec to set upon fullCopy() of template
 	this.category = null; // for zebra coloring (non persistent)
-	this.isCorpse = false; // marked for deletion fom a custom block definition
 	this.afterglow = 0; // frame count-down for displaying the "active" halo
 
 	BlockMorph.uber.init.call(this);
@@ -1809,7 +1876,7 @@ BlockMorph.prototype.userMenu = function () {
 
 	menu.addItem(
 		'print code',
-		() => { console.log(this.printCode(0, [])); },
+		() => { console.log(this.codeString(0, [])); },
 		'test coverting scripts to pseudocode'
 	);
 	menu.addItem(
@@ -1827,7 +1894,13 @@ BlockMorph.prototype.userMenu = function () {
 	return menu;
 };
 
-BlockMorph.prototype.printCode = function (indent, result) {
+BlockMorph.prototype.codeString = function (indent = 0, result = []) {
+	if (this.selector == 'v') {
+		// variable reporter - just print the variable name
+		result.push(this.blockSpec);
+		return;
+	}
+
 	if (this.type() == 'reporter') {
 		result.push('(');
 	} else { // command or hat block
@@ -1846,18 +1919,20 @@ BlockMorph.prototype.printCode = function (indent, result) {
 				result.push('{}');
 			} else {
 				result.push('{\n');
-				nested.printCode(indent + 1, result);
+				nested.codeString(indent + 1, result);
 				result.push('\t'.repeat(indent));
 				result.push('}');
 			}
 		} else if (arg instanceof ReporterBlockMorph) {
-			arg.printCode(indent, result);
+			arg.codeString(indent, result);
+		} else if (arg instanceof TemplateSlotMorph) {
+			result.push(arg.contents());
 		} else {
 			let value = arg.contents().text;
 			if ((value.length == 0) && (arg.isNumeric)) {
 				value = '0';
 			}
-			if ((typeof value1 === 'number') || ((value.length > 0) && (Number(value) != NaN))) { // number
+			if ((typeof value === 'number') || ((value.length > 0) && (Number(value) != NaN))) { // number
 				result.push(value);
 			} else if ((typeof value) == 'boolean') {
 				result.push(value);
@@ -1876,7 +1951,7 @@ BlockMorph.prototype.printCode = function (indent, result) {
 		result.push('\n');
 		let next = this.nextBlock();
 		if (this instanceof HatBlockMorph) indent += 1;
-		if (next != null) next.printCode(indent, result); // recursive!
+		if (next != null) next.codeString(indent, result); // recursive!
 	}
 	return result.join('');
 }
@@ -1927,7 +2002,6 @@ BlockMorph.prototype.deleteBlock = function () {
 						even after it has been destroyed, mark it to be deleted
 						later.
 		*/
-		this.isCorpse = true;
 	}
 	if (tobefixed) {
 		tobefixed.fixLayout();
@@ -5140,8 +5214,9 @@ InputSlotMorph.prototype.mbMenu = function (slotMenuName) {
 		menu.addItem('all', 'all');
 		return menu;
 	}
+	// todo when we have a runtime: allVarsMenu, broadcastMenu, functionNameMenu
 
-console.log('unhandled slot menu:', slotMenuName); // xxx
+	console.log('unhandled slot menu:', slotMenuName); // xxx
 	return null;
 }
 
@@ -8000,7 +8075,6 @@ ScriptFocusMorph.prototype.processKeyPress = function (event) {
 ScriptFocusMorph.prototype.processKeyEvent = function (event, action) {
 	var keyName, ctrl, shift;
 
-	//console.log(event.keyCode);
 	this.world().hand.destroyTemporaries(); // remove result bubbles, if any
 	switch (event.keyCode) {
 	case 8:
@@ -8049,7 +8123,6 @@ ScriptFocusMorph.prototype.reactToKeyEvent = function (key) {
 		types,
 		vNames;
 
-	// console.log(evt);
 	switch (evt) {
 	case 'esc':
 		return this.stopEditing();

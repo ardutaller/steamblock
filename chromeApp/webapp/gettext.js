@@ -36,7 +36,7 @@ GetText.readLocale = function (langcode, callback) {
 };
 
 GetText.parseLocale = function (text, langcode) {
-	var lines = text.split('\n');
+	var lines = text.split(/\r?\n|\r|\n/g); // make Windows happy about newlines
 	// populate the locale dictionary with all key and values
 	// skip the first line, as it's always an empty key
 	for (var i = 1; i < lines.length; i++) {
