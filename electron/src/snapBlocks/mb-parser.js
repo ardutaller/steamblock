@@ -1,7 +1,5 @@
 class MB_Parser {
 	constructor(srcString, fileName = '<string>') {
-		// Start parsing the given string. Read scripts by calling nextScript() until null is returned.
-
 		this.buf = Array.from(srcString);
 		this.bufSize = this.buf.length;
 		this.bufPos = 0;
@@ -12,18 +10,34 @@ class MB_Parser {
 		this.EOF = {}; // Unique value indicating that there is no more data to parse
 	}
 
-	// Public methods
+	// Public class methods
 
-	parse() {
+	static parse(srcString, fileName = '<string>') {
+		// Parse the given string containing zero or more commands.
+		// Return an array of command parse trees.
+
 		let result = [];
-		while (!this.atEnd()) {
-			result.push(this.nextScript());
+		let p = new MB_Parser(srcString, fileName);
+		while (!p.atEnd()) {
+			let parseTree = p.nextParseTree(false);
+			if (!parseTree) break;
+			result.push(parseTree);
 		}
 		return result;
 	}
 
-	nextScript() {
-		// Return the next reporter, command, or command list in the string being parsed
+	static blockFor(parseTree) {
+		// Convert the given parse tree into a command block.
+
+		return new MB_Parser('').makeBlock(parseTree);
+	}
+
+	// Private methods
+
+	// ***** Command Parsing *****
+
+	nextParseTree() {
+		// Return the parse tree for the next command in the string being parsed
 		// or null when all items have been read.
 
 		this.complete = true;
@@ -32,7 +46,7 @@ class MB_Parser {
 		this.skipWhiteSpace();
 		if (this.bufPos >= this.bufSize) return null;
 
-		let script = this.readCmdList();
+		let result = this.readCmd();
 
 		if (this.inString) {
 			this.parseError('Missing closing string quote');
@@ -43,71 +57,36 @@ class MB_Parser {
 			return null;
 		}
 		this.skipWhiteSpace();
-		return script;
+		return result;
 	}
-
-	atEnd() {
-		// Return true when all items have been read.
-
-		return this.bufPos >= this.bufSize;
-	}
-
-	firstChar() {
-		// Return the first non-whitespace character in the string to be parsed
-		// or null if there are no more characters.
-
-		skipWhiteSpace();
-		return this.atEnd() ? null : this.peek();
-	}
-
-	// Private methods
-
-	// ***** Command Parsing *****
 
 	readCmdList() {
-		// Read a list of commands, either with or without and initial '{'.
+		// Read a list of starting with '{'.
 
-		let hadOpenBracket = false;
-
+		this.skip(1); // skip '{'
 		this.skipWhiteSpace();
-		if ('{' == this.peek()) {
-			this.skip(1);
-			hadOpenBracket = true;
-		}
 
-		let firstCmd = null;
-		let lastCmd = null;
+		let result = [];
 		let c;
 		while (true) {
-			this.skipWhiteSpace();
 			c = this.peek();
 			if ((this.EOF == c) || ('}' == c)) break;
 			let cmdOrValue = this.readCmd(false);
-			if (cmdOrValue instanceof CommandBlockMorph) {
-				if (!firstCmd) firstCmd = cmdOrValue;
-				if (lastCmd) lastCmd.nextBlock(cmdOrValue);
-				lastCmd = cmdOrValue;
+			if (Array.isArray(cmdOrValue)) {
+				result.push(cmdOrValue);
 			} else {
-				if (!hadOpenBracket && !firstCmd) return cmdOrValue; // not a cmd list; return it
+				this.parseError('Non-command in command list');
+				return [];
 			}
-			if (';' == this.peek()) {
-				this.skip(1);
-				continue; // multiple commands on the same line
-			}
-			if (!hadOpenBracket) break;
+			this.skipWhiteSpace();
 		}
 
-		if (hadOpenBracket) {
-			if ('}' == c) {
-				this.skip(1);
-			} else {
-				this.complete = false;
-			}
-		} else if ('}' == c) {
-			this.parseError('Unexpected "}" encountered');
+		if ('}' == c) {
 			this.skip(1);
+		} else {
+			this.complete = false;
 		}
-		return firstCmd;
+		return result;
 	}
 
 	readCmd(isReporter) {
@@ -128,7 +107,7 @@ class MB_Parser {
 			}
 			c = this.peek();
 			if ((this.EOF == c) || (this.isNewLine(c))) break;
-			if ((')' == c) || (';' == c) || ('}' == c)) break;
+			if ((')' == c) || ('}' == c)) break;
 			buf.push(this.readToken());
 		}
 
@@ -136,9 +115,9 @@ class MB_Parser {
 			if (')' == c) {
 				this.skip(1);
 			} else {
+				this.parseError("Missing ')'");
 				this.complete = false;
-				if ((';' == c) || ('}' == c)) {
-					this.parseError("Missing ')'");
+				if ('}' == c) {
 					this.skipRestOfLine();
 				}
 				return null;
@@ -176,11 +155,26 @@ class MB_Parser {
 			selector = selector.slice(1, -1); // remove quotes
 			buf[0] = selector;
 		}
-
-		return this.makeBlock(buf, isReporter);
+		return buf;
 	}
 
-	makeBlock(buf, isReporter) {
+	isInfixOp(op) {
+		let infixOps = [
+			'=', '+=',
+			'+', '-', '*', '/', '%',
+			'<', '<=', '==', '!=', '>=', '>', '===',
+			'&', '|', '^', '<<', '>>', '>>>',
+		];
+		return infixOps.includes(op);
+	}
+
+	isCallOp(op) {
+		return (('call' == op) || ('callWith' == op));
+	}
+
+	// ***** Converting Parse Trees to Blocks *****
+
+	makeBlock(buf, isReporter = false) {
 		// Make a command or reporter block from the given array of selector and arguments.
 
 		let selector = buf[0];
@@ -196,7 +190,12 @@ class MB_Parser {
 			if ((typeof arg) == 'string') {
 				arg = this.argOrVarRef(selector, arg, (i == 0));
 			}
-			if (arg instanceof BlockMorph) {
+			if (Array.isArray(arg)) {
+				if (Array.isArray(arg[0])) {
+					arg = this.makeBlockList(arg);
+				} else {
+					arg = this.makeBlock(arg, true);
+				}
 				if (inputs[i] instanceof CommandSlotMorph) {
 					inputs[i].nestedBlock(arg);
 				} else {
@@ -212,20 +211,19 @@ class MB_Parser {
 		return b;
 	}
 
-	// ***** Command Parsing Support *****
-
-	isInfixOp(op) {
-		let infixOps = [
-			'=', '+=',
-			'+', '-', '*', '/', '%',
-			'<', '<=', '==', '!=', '>=', '>', '===',
-			'&', '|', '^', '<<', '>>', '>>>',
-		];
-		return infixOps.includes(op);
-	}
-
-	isCallOp(op) {
-		return (('call' == op) || ('callWith' == op));
+	makeBlockList(bufList) {
+		let result, previous;
+		for (let i = 0; i < bufList.length; i++) {
+			let b = this.makeBlock(bufList[i]);
+			if (!result) {
+				result = b;
+				previous = b;
+			} else {
+				previous.nextBlock(b);
+				previous = b;
+			}
+		}
+		return result;
 	}
 
 	argOrVarRef(op, arg, isFirstArg) {
@@ -353,7 +351,7 @@ class MB_Parser {
 		let symbol = [];
 		while (true) {
 			let c = this.peek();
-			if ((c <= ' ') || (')' == c) || ('}' == c) || (';' == c) || (this.EOF == c)) {
+			if ((c <= ' ') || (')' == c) || ('}' == c) || (this.EOF == c)) {
 				break;
 			}
 			symbol += this.next();
@@ -365,6 +363,12 @@ class MB_Parser {
 	}
 
 	// ***** Stream Operations *****
+
+	atEnd() {
+		// Return true when all items have been read.
+
+		return this.bufPos >= this.bufSize;
+	}
 
 	peek() {
 		// Return the next character without advancing bufPos.
@@ -488,46 +492,47 @@ function parser_test2() {
 
 function parser_test3() {
 	let p = new MB_Parser("  'foo'  ");
-	console.log(p.readCmd(false));
+	console.log(p.readCmd());
 }
 
 function parser_test4() {
-	let p = new MB_Parser("  { stop; go }  ");
-	let b = p.readCmd(false);
-	console.log(b);
-	MB_GUI.addBlockToScripts(b);
+	let p = new MB_Parser(" { stop; go }  ");
+	let cmds = p.readCmdList(false);
+	console.log(cmds);
+}
+
+function parser_test(s) {
+	let cmds = MB_Parser.parse(s);
+	console.log(cmds);
+	cmds.forEach( (cmd) => {
+		console.log(MB_Parser.blockFor(cmd));
+		MB_GUI.addBlockToScripts(MB_Parser.blockFor(cmd));
+	});
 }
 
 function parser_test5() {
-	let p = new MB_Parser("  print ((1 + 2) * 3) { stop }  ");
-	let b = p.readCmd(false);
-	console.log(b);
-	MB_GUI.addBlockToScripts(b);
+	parser_test("  stop; go\nanother 123 \n  'the end'");
 }
 
 function parser_test6() {
-	let p = new MB_Parser("script 915 125 {\nwhenButtonPressed 'A'\nwaitMillis 500\n}\n\nscript 100 200 {\nwhenButtonPressed 'B'\nwaitMillis 300\n}");
-	let b = p.readCmd(false);
-	console.log(b);
-	MB_GUI.addBlockToScripts(b);
-	b = p.readCmd(false);
-	console.log(b);
-	MB_GUI.addBlockToScripts(b);
+	parser_test("  print ((1 + 2) * 3) { stop }  ");
 }
 
 function parser_test7() {
-	let p = new MB_Parser("digitalReadOp 'hello' 1 true false 'foo'");
-	let b = p.readCmd(false);
-	console.log(b);
-	MB_GUI.addBlockToScripts(b);
+	parser_test("script 915 125 {\nwhenButtonPressed 'A'\nwaitMillis 500\n}\n\nscript 100 200 {\nwhenButtonPressed 'B'\nwaitMillis 300\n}");
 }
 
 function parser_test8() {
+	parser_test("digitalReadOp 'hello' 1 true false 'foo'");
+}
+
+function parser_testFile() {
 	function parseFile(fileName, contents) {
 		let startT = Date.now();
-		let cmdList = new MB_Parser(contents).parse();
+		let cmdList = MB_Parser.parse(contents);
 		for (let i = 0; i < cmdList.length; i++) {
 			cmd = cmdList[i];
+			console.log(cmd);
 //			console.log(cmd.codeString());
 		}
 		console.log(fileName, Date.now() - startT, 'msecs');

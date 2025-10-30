@@ -415,7 +415,7 @@ console.log(cmdList);
 
 class MicroBlocksModule {
 	constructor(moduleName) {
-		this.moduleName = moduleName;
+		this.moduleName = moduleName || 'main';
 		this.moduleCategory = 'Library';
 		this.dependencies = [];
 		this.version = [1, 0];
