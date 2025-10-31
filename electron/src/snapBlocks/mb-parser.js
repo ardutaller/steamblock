@@ -183,10 +183,19 @@ class MB_Parser {
 
 		let selector = buf[0];
 		let args = buf.slice(1);
-		let b = isReporter ? new ReporterBlockMorph() : new CommandBlockMorph();
+		let b, blockType = MB_Specs.blockTypeForSelector(selector);
+		if (isReporter || ('r' == blockType)) {
+			b = new ReporterBlockMorph();
+		} else if ('h' == blockType) {
+			b = new HatBlockMorph();
+		} else {
+			b = new CommandBlockMorph();
+		}
 		b.selector = selector;
 		b.setSpec(MB_Specs.specFor(selector, args));
-		b.setCategory(MB_Specs.categoryForSelector(selector));
+		let cat = MB_Specs.categoryForSelector(selector);
+		if (cat.includes('Display')) cat = 'Output'; // xxx remove when libraries work
+		b.setCategory(cat);
 		b.isDraggable = true;
 		let inputs = b.inputs();
 		for (let i = 0; i < inputs.length; i++) {

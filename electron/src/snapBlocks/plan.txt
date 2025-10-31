@@ -7,9 +7,11 @@ To do:
 [x] handle variables ("var" slot type)
 [x] set slot default values
 [x] add MicroBit display input slot type
-[ ] fix: remove quotes from quoted strings (but may need for 'var' slots...)
+[x] fix: remove quotes from quoted strings (but may need for 'var' slots...)
 [x] slot dropdown menu support
 [x] optional block sections (see e.g. Snap! "broadcast" block)
+
+multi-arg: look for labelText and slotSpec
 
 Issues:
 [x] Snap! seems to allow arg slots to contain null, MicroBlocks assumes they always have some value.
