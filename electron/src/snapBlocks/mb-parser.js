@@ -29,7 +29,11 @@ class MB_Parser {
 	static blockFor(parseTree) {
 		// Convert the given parse tree into a command block.
 
-		return new MB_Parser('').makeBlock(parseTree);
+		if (Array.isArray(parseTree[0])) { // array of commands
+			return new MB_Parser('').makeBlockList(parseTree);
+		} else {
+			return new MB_Parser('').makeBlock(parseTree);
+		}
 	}
 
 	// Private methods
@@ -532,7 +536,7 @@ function parser_testFile() {
 		let cmdList = MB_Parser.parse(contents);
 		for (let i = 0; i < cmdList.length; i++) {
 			cmd = cmdList[i];
-			console.log(cmd);
+//			console.log(cmd);
 //			console.log(cmd.codeString());
 		}
 		console.log(fileName, Date.now() - startT, 'msecs');

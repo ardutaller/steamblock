@@ -58,9 +58,9 @@ MB_Specs.specFor = function (selector, args) {
 	let spec = '';
 	let specArray = this.specArrayForSelector(selector);
 	if (specArray) { // selector is known; use existing spec
-		if (specArray.length > 3) {
+		if (specArray.length > 2) {
 			let specParts = specArray[2].split(/\s+/);
-			let mbTypes = specArray[3].split(/\s+/);
+			let mbTypes = (specArray.length > 3) ? specArray[3].split(/\s+/) : [];
 			let typeIndex = 0;
 			for (let i = 0; i < specParts.length; i++) {
 				if (i > 0) spec += ' ';
@@ -82,6 +82,7 @@ MB_Specs.specFor = function (selector, args) {
 		}
 	}
 	spec = this.extendSpecForArgs(spec, args);
+	if (spec == '') return 'unknown'; // shouldn't happen
 	return spec;
 }
 

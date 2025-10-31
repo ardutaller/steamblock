@@ -1,11 +1,21 @@
 class MB_Project {
 	constructor() {
-		this.main = new MicroBlocksModule('main');
+		this.main = new MB_Module('main');
 		this.libraries = new Map();
 		this.blockSpecs = new Map();
 	}
 
 	choicesFor (selector) {
+		let result = main.choices.get(selector);
+		if (result) return result;
+
+		let libs = Array.from(libraries.values());
+		for (let i = 0; i < libs.length; i++) {
+			result = lib.choices.get(selector);
+			if (result) return result;
+		}
+		return []; // not found; return empty choices list
+	}
 // 		if (contains (choices main) selector) {
 // 			return (at (choices main) selector)
 // 		}
@@ -14,7 +24,6 @@ class MB_Project {
 // 			if (contains libChoices selector) { return (at libChoices selector) }
 // 		}
 // 		return nil // not found; return empty choices list
-	}
 
 	hasUserCode () {
 // 		if (isNil main) { return false }
@@ -220,7 +229,6 @@ class MB_Project {
 // 		for v (variableNames (module aClass)) { addVariable main v }
 // 		for k (keys specList) { atPut blockSpecs k (at specList k) }
 // 		setScripts main (copy (scripts aClass))
-// 		updatePrimitives this
 // 		fixFunctionLocals this
 // 		return this
 	}
@@ -228,9 +236,21 @@ class MB_Project {
 	loadFromString (s, updateLibraries) {
 		// Load project from a string in .ubp format. Keep libraries (modules) together.
 
-		this.initialize();
-		let cmdList = new MB_Parser(s).parse();
-console.log(cmdList);
+		let cmdList = MB_Parser.parse(s);
+		let moduleCmdLists = this.splitCmdListIntoModules(cmdList);
+
+		this.main.loadFromCmds(moduleCmdLists[0]);
+		for (let i = 1; i < moduleCmdLists.length; i++) {
+			let m = new MB_Module();
+			m.loadFromCmds(moduleCmdLists[i]);
+			this.libraries.set(m.moduleName, m);
+		}
+// 		if (updateLibraries || true) {
+// 			this.checkForNewerLibraryVersions();
+// 		}
+// 		this.fixFunctionLocals();
+	}
+//console.log(cmdList.length, 'cmds in', cmdsByModule.length, 'modules');
 // 		initialize this
 // 		cmdList = (parse s)
 // 		if (and (notEmpty cmdList) ('projectName' == (primName (first cmdList)))) {
@@ -251,10 +271,8 @@ console.log(cmdList);
 // 		}
 // 		if (isNil updateLibraries) { updateLibraries = true }
 // 		if updateLibraries { checkForNewerLibraryVersions this }
-// 		updatePrimitives this
 // 		fixFunctionLocals this
 // 		return this
-	}
 
 	addLibraryFromString (s, libName, fileName) {
 		// Load a library from a string.
@@ -278,7 +296,6 @@ console.log(cmdList);
 // 				// are unsupported as dependencies.
 // 				setPath lib nil
 // 			}
-// 			updatePrimitives lib
 // 			fixFunctionLocals this
 //
 // 			moduleName = (moduleName lib)
@@ -293,35 +310,24 @@ console.log(cmdList);
 // 		return this
 	}
 
-	parsedSpecs (cmdList) {
-// 		specs = (dictionary)
-// 		for cmd cmdList {
-// 			if ('spec' == (primName cmd)) {
-// 				args = (argList cmd)
-// 				blockType = (at args 1)
-// 				op = (at args 2)
-// 				specString = (at args 3)
-// 				slotTypes = ''
-// 				if ((count args) > 3) { slotTypes = (at args 4) }
-// 				slotDefaults = (array)
-// 				if ((count args) > 4) { slotDefaults = (copyArray args ((count args) - 4) 5) }
-// 				spec = (blockSpecFromStrings op blockType specString slotTypes slotDefaults)
-// 				atPut specs op spec
-// 			}
-// 		}
-// 		return specs
-	}
-
-	loadSpecs (cmdList) {
-// 		specs = (parsedSpecs this cmdList)
-// 		for k (keys specs) {
-// 			atPut blockSpecs k (at specs k)
-// 		}
-	}
 
 	splitCmdListIntoModules (cmdList) {
 		// Split the list of commands into a list of command lists for each module of the project.
 		// Each module after the first (main) module begins with a 'module' command.
+
+		let result = [];
+		let thisModule = [];
+		for (let i = 0; i < cmdList.length; i++) {
+			let cmd = cmdList[i];
+			if ('module' == cmd[0]) {
+				if (thisModule.length > 0) result.push(thisModule);
+				thisModule = [];
+			}
+			thisModule.push(cmd);
+		}
+		if (thisModule.length > 0) result.push(thisModule); // add final module
+		return result;
+	}
 
 // 		result = (list)
 // 		m = (list)
@@ -334,7 +340,6 @@ console.log(cmdList);
 // 		}
 // 		add result m // add final module
 // 		return result
-	}
 
 	// Saving
 
@@ -362,13 +367,6 @@ console.log(cmdList);
 
 // 		projectVars = (allVariableNames this)
 // 		for f (allFunctions this) { removeFieldsFromLocals f projectVars }
-	}
-
-	updatePrimitives () {
-		// Update primitives that have been replaced with newer versions.
-
-// 		updatePrimitives main
-// 		for lib (values libraries) { updatePrimitives lib }
 	}
 
 	// save/load test
@@ -413,7 +411,7 @@ console.log(cmdList);
 	}
 }
 
-class MicroBlocksModule {
+class MB_Module {
 	constructor(moduleName) {
 		this.moduleName = moduleName || 'main';
 		this.moduleCategory = 'Library';
@@ -729,20 +727,155 @@ class MicroBlocksModule {
 
 	// loading
 
+	unquoted(s) {
+		if ((s.length > 1) && (s[0] == '\'') && s.endsWith('\'')) {
+			return s.slice(1, -1); // remove quotes
+		}
+		return s;
+	}
+
 	loadFromCmds(cmdList) {
-		this.loadModuleNameAndCategory(cmdList)
-		this.loadVersion(cmdList)
-		this.loadAuthor(cmdList)
-		this.loadDependencies(cmdList)
-		this.loadTags(cmdList)
-		this.loadDescription(cmdList)
-		this.loadChoices(cmdList)
-		this.loadVariables(cmdList)
-		this.loadBlockList(cmdList)
-		this.loadSpecs(cmdList)
-		this.loadFunctions(cmdList)
-		this.loadScripts(cmdList)
+		for (let i = 0; i < cmdList.length; i++) {
+			let cmd = cmdList[i];
+			if (cmd.length > 1) {
+				switch (cmd[0].toLowerCase()) {
+				case 'module':
+					this.loadModuleNameAndCategory(cmd);
+				case 'version':
+					this.loadVersion(cmd);
+					break;
+				case 'author':
+					this.loadAuthor(cmd);
+					break;
+				case 'depends':
+					this.loadDependencies(cmd);
+					break;
+				case 'description':
+					this.loadDescription(cmd);
+					break;
+				case 'tags':
+					this.loadTags(cmd);
+					break;
+				case 'choices':
+					this.loadChoices(cmd);
+					break;
+				case 'variables':
+					this.loadVariables(cmd);
+					break;
+				}
+			}
+		}
+		this.loadSpecs(cmdList);
+		this.loadFunctions(cmdList);
+		this.loadScripts(cmdList);
 		return this
+	}
+
+	loadModuleNameAndCategory(cmd) {
+		this.moduleName = this.unquoted(cmd[1]);
+		if (cmd.length > 2) {
+			this.moduleCategory = this.unquoted(cmd[2]);
+		}
+	}
+
+	loadVersion(cmd) {
+		if (cmd.length > 2) {
+			this.version = [cmd[1], cmd[2]];
+		}
+	}
+
+	loadAuthor(cmd) {
+		this.author = this.unquoted(cmd[1]);
+	}
+
+	loadDependencies(cmd) {
+		this.dependencies = [];
+		for (let i = 1; i < cmd.length; i++) {
+			this.dependencies.push(this.unquoted(cmd[i]));
+		}
+	}
+
+	loadDescription(cmd) {
+		this.description = this.unquoted(cmd[1]);
+	}
+
+	loadTags(cmd) {
+		this.tags = [];
+		for (let i = 1; i < cmd.length; i++) {
+			this.tags.push(this.unquoted(cmd[i]));
+		}
+	}
+
+	loadChoices(cmd) {
+		if (cmd.length < 2) return;
+		let choiceList = [];
+		for (let i = 2; i < cmd.length; i++) {
+			choiceList.push(this.unquoted(String(cmd[i])));
+		}
+		this.choices.set(this.unquoted(cmd[1]), choiceList);
+	}
+
+	loadVariables(cmd) {
+		this.variableNames = [];
+		for (let i = 1; i < cmd.length; i++) {
+			this.variableNames.push(this.unquoted(cmd[i]));
+		}
+	}
+
+	loadSpecs(cmdList) {
+		// Store the specs and blocks list for this module.
+		// The specs are stored in a Map keyed by selector.
+		// The blockList is a list of blocks for the module's palette in order
+		// of appearance. The 'space' keyword
+		// can be used to add some space between groups of blocks.
+
+		this.blockList = [];
+		this.blockSpecs = new Map();
+		for (let i = 0; i < cmdList.length; i++) {
+			switch(cmdList[i][0]) {
+			case 'spec':
+				let spec = cmdList[i].slice(1);
+				this.unquoteAll(spec);
+				this.blockSpecs.set(spec[1], spec); // spec[1] is the selector
+				this.blockList.push(spec);
+				break;
+			case 'space':
+				this.blockList.push('-'); // spacer
+				break;
+			case 'advanced':
+				this.blockList.push('advanced');
+				break;
+			}
+		}
+	}
+	// 	blockList = (list)
+	// 	for cmd cmdList {
+	// 		if ('space' == (primName cmd)) {
+	// 			add blockList '-' // spacer
+	// 		} ('advanced' == (primName cmd)) {
+	// 			add blockList 'advanced'
+	// 		} ('spec' == (primName cmd)) {
+	// 			add blockList (at (argList cmd) 2)
+	// 		}
+	// 	}
+
+	unquoteAll(anArray) {
+		// Unquote all strings the given array. Modifies the array.
+
+		for (let i = 0; i < anArray.length; i++) {
+			let item = anArray[i];
+			if ((typeof item) == 'string') {
+				anArray[i] = this.unquoted(item);
+			}
+		}
+		return anArray;
+	}
+
+	unquoted(s) {
+		if ((s.length > 1) && (s[0] == '\'') && s.endsWith('\'')) {
+			return s.slice(1, -1); // remove quotes
+		}
+		return s;
 	}
 
 	browserEmbeddedLibs() {
@@ -813,28 +946,6 @@ class MicroBlocksModule {
 	// 	}
 	}
 
-	loadModuleNameAndCategory(cmdList) {
-	// 	if (not (isEmpty cmdList)) {
-	// 		cmd = (first cmdList)
-	// 		if ('module' == (primName cmd)) {
-	// 			arg = (first (argList cmd))
-	// 			if (isClass arg 'String') { // quoted var name
-	// 				moduleName = arg
-	// 			} else { // unquoted var: mapped to "(v 'varName')" block by the parser
-	// 				moduleName = (first (argList arg))
-	// 			}
-	// 			if ((count (argList cmd)) > 1) {
-	// 				cat = (at (argList cmd) 2)
-	// 				if (isClass cat 'Reporter') { cat = (first (argList cat)) } // unquoted var (see above)
-	// 				if (beginsWith cat 'cat;') {
-	// 					cat = (substring cat 5) // remove leading 'cat;' prefix used for translation
-	// 				}
-	// 				moduleCategory = cat
-	// 			}
-	// 		}
-	// 	}
-	}
-
 	stringArgs(cmd) {
 	// 	args = (list)
 	// 	for arg (argList cmd) {
@@ -847,68 +958,6 @@ class MicroBlocksModule {
 	// 		}
 	// 	}
 	// 	return args
-	}
-
-	loadDescription(cmdList) {
-	// 	for cmd cmdList {
-	// 		if ('description' == (primName cmd)) {
-	// 			description = (first (stringArgs this cmd))
-	// 		}
-	// 	}
-	}
-
-	loadChoices(cmdList) {
-	// 	for cmd cmdList {
-	// 		if ('choices' == (primName cmd)) {
-	// 			i = (list)
-	// 			for input (stringArgs this cmd) {
-	// 				add i (toString input)
-	// 			}
-	// 			atPut choices (first (stringArgs this cmd)) (copyFromTo i 2)
-	// 		}
-	// 	}
-	}
-
-	loadVersion(cmdList) {
-	// 	for cmd cmdList {
-	// 		if ('version' == (primName cmd)) {
-	// 			atPut version 1 (at (argList cmd) 1)
-	// 			atPut version 2 (at (argList cmd) 2)
-	// 		}
-	// 	}
-	}
-
-	loadAuthor(cmdList) {
-	// 	for cmd cmdList {
-	// 		if ('author' == (primName cmd)) {
-	// 			author = (first (stringArgs this cmd))
-	// 		}
-	// 	}
-	}
-
-	loadVariables(cmdList) {
-	// 	varNames = (list)
-	// 	for cmd cmdList {
-	// 		if (isOneOf (primName cmd) 'variables' 'sharedVariables') {
-	// 			for v (stringArgs this cmd) {
-	// 				add varNames v
-	// 			}
-	// 		}
-	// 	}
-	// 	variableNames = (toArray varNames)
-	}
-
-	loadDependencies(cmdList) {
-	// 	deps = (list)
-	// 	for cmd cmdList {
-	// 		if ('depends' == (primName cmd)) {
-	// 			for libName (stringArgs this cmd) {
-	// 				lib = (toString libName)
-	// 				add deps lib
-	// 			}
-	// 		}
-	// 	}
-	// 	dependencies = (toArray deps)
 	}
 
 	importDependencies(scripter) {
@@ -958,18 +1007,6 @@ class MicroBlocksModule {
 	// 	}
 	}
 
-	loadTags(cmdList) {
-	// 	t = (list)
-	// 	for cmd cmdList {
-	// 		if ('tags' == (primName cmd)) {
-	// 			for tag (stringArgs this cmd) {
-	// 				add t (toLowerCase (toString tag))
-	// 			}
-	// 		}
-	// 	}
-	// 	tags = (toArray t)
-	}
-
 	loadFunctions(cmdList) {
 	// 	for cmd cmdList {
 	// 		if ('to' == (primName cmd)) {
@@ -1002,33 +1039,13 @@ class MicroBlocksModule {
 	}
 
 	loadScripts(cmdList) {
-	// 	scripts = (list)
-	// 	for cmd cmdList {
-	// 		if ('script' == (primName cmd)) {
-	// 			add scripts (argList cmd)
-	// 		}
-	// 	}
-	}
-
-	loadBlockList(cmdList) {
-		// The blockList is a list of blocks for this library's palette in order
-		// of appearance. It is derived from the module specs. The 'space' keyword
-		// can be used to add some space between groups of blocks.
-
-	// 	blockList = (list)
-	// 	for cmd cmdList {
-	// 		if ('space' == (primName cmd)) {
-	// 			add blockList '-' // spacer
-	// 		} ('advanced' == (primName cmd)) {
-	// 			add blockList 'advanced'
-	// 		} ('spec' == (primName cmd)) {
-	// 			add blockList (at (argList cmd) 2)
-	// 		}
-	// 	}
-	}
-
-	loadSpecs(cmdList) {
-	// 	blockSpecs = (parsedSpecs (project (findProjectEditor)) cmdList)
+		this.scripts = [];
+		for (let i = 0; i < cmdList.length; i++) {
+			if (cmdList[i][0] == 'script') {
+console.log(cmdList[i][3]);
+				this.scripts.push(MB_Parser.blockFor(cmdList[i]));
+			}
+		}
 	}
 
 	// equality
@@ -1144,3 +1161,46 @@ class MicroBlocksModule {
 	// 	return (contains (keys translationSources) langCode)
 	}
 }
+
+function testLoad() {
+	function loadFile(fileName, contents) {
+		let startT = Date.now();
+		let cmdList = MB_Parser.parse(contents);
+console.log(cmdList);
+		let module = new MB_Module();
+		module.loadFromCmds(cmdList);
+		console.log(module);
+//		console.log(fileName, Date.now() - startT, 'msecs');
+	}
+	MB_GUI.importLocalFile(loadFile);
+}
+
+function testLoad2() {
+	function loadFile(fileName, contents) {
+		let project = new MB_Project();
+		let startT = Date.now();
+		project.loadFromString(contents);
+//		console.log(project);
+//		let cmdList = MB_Parser.parse(contents);
+		console.log(fileName, Date.now() - startT, 'msecs2');
+		MB_GUI.removeAllScripts();
+		project.main.scripts.forEach( (cmd) => {
+			let args = cmd.inputs();
+			let script = cmd.children[3]; // xxx todo: hack! makeBlock should be createing a CommandSlotMorph to hold the command list but is not yet
+			MB_GUI.addBlockToScriptsAt(script, args[0].evaluate(), args[1].evaluate());
+		});
+	}
+	MB_GUI.importLocalFile(loadFile);
+}
+
+function testShow() {
+	let codeString =
+		"whenButtonPressed 'A'\n" +
+		"[display:mbDisplay] 10813998\n" +
+		"waitMillis 1000\n" +
+		"[display:mbDisplayOff]\n";
+	let parseTree = MB_Parser.parse(codeString);
+	let b = MB_Parser.blockFor(parseTree);
+	MB_GUI.addBlockToScripts(b);
+}
+
