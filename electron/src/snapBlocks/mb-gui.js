@@ -26,14 +26,14 @@ MB_GUI.addMicroBlocksGUI = function (world) {
 }
 
 MB_GUI.removeAllScripts = function () {
-	let scripts = world.childThatIsA(ScriptsMorph);
-    scripts.children.forEach(m => m.destroy());
+	let allBlocks = world.childThatIsA(ScriptsMorph).children.slice();
+    allBlocks.forEach((m) => { m.destroy(); });
 }
 
 MB_GUI.addBlockToScripts = function (b) {
 	// For testing. Add the given block to the scripts pane at a random position.
 
-	let scripts = world.childThatIsA(ScriptsMorph); // assume palette is the last child of world
+	let scripts = world.childThatIsA(ScriptsMorph);
 	b.setPosition(new Point(this.randomBetween(200, 800), this.randomBetween(10, 300)));
 	scripts.add(b);
 	scripts.changed();
@@ -42,7 +42,7 @@ MB_GUI.addBlockToScripts = function (b) {
 MB_GUI.addBlockToScriptsAt = function (b, x, y) {
 	// For testing. Add the given block to the scripts pane at the given position.
 
-	let scripts = world.childThatIsA(ScriptsMorph); // assume palette is the last child of world
+	let scripts = world.childThatIsA(ScriptsMorph);
 	b.setPosition(new Point(300 + x, y));
 	scripts.add(b);
 	scripts.changed();
