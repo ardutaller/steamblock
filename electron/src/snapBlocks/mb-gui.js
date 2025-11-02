@@ -25,27 +25,36 @@ MB_GUI.addMicroBlocksGUI = function (world) {
 	world.add(scripts);
 }
 
+MB_GUI.scriptsPane = function () {
+	// Return the scripts pane.
+	// Hack: Assume the scripts pane is the second child of the world.
+	// This allows dynmically reloading of mb-blocks.js which breaks
+	// "childThatIsA(ScriptsMorph)" by redefining the ScriptsMorph prototype.
+
+	return world.children[1];
+}
+
 MB_GUI.removeAllScripts = function () {
-	let allBlocks = world.childThatIsA(ScriptsMorph).children.slice();
-    allBlocks.forEach((m) => { m.destroy(); });
+	let allScripts = this.scriptsPane().children.slice();
+    allScripts.forEach((m) => { m.destroy(); });
 }
 
 MB_GUI.addBlockToScripts = function (b) {
 	// For testing. Add the given block to the scripts pane at a random position.
 
-	let scripts = world.childThatIsA(ScriptsMorph);
+	let scriptsPane = this.scriptsPane();
 	b.setPosition(new Point(this.randomBetween(200, 800), this.randomBetween(10, 300)));
-	scripts.add(b);
-	scripts.changed();
+	scriptsPane.add(b);
+	scriptsPane.changed();
 }
 
 MB_GUI.addBlockToScriptsAt = function (b, x, y) {
 	// For testing. Add the given block to the scripts pane at the given position.
 
-	let scripts = world.childThatIsA(ScriptsMorph);
+	let scriptsPane = this.scriptsPane();
 	b.setPosition(new Point(300 + x, y));
-	scripts.add(b);
-	scripts.changed();
+	scriptsPane.add(b);
+	scriptsPane.changed();
 }
 
 
@@ -129,3 +138,13 @@ MB_GUI.importLocalFile = function (callback) {
 	document.body.appendChild(inp);
 	inp.click(); // show the input dialog
 };
+
+// Debugging Utility Function
+
+function reload(scriptPath) {
+	// Run in console to reload a Javascript file without reloading the page.
+	// Example: reloadScript('mb-gui.js')
+    const newScript = document.createElement('script');
+    newScript.src = scriptPath + '?' + new Date().getTime(); // cache busting
+    document.body.appendChild(newScript);
+}
