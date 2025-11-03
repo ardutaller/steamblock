@@ -113,6 +113,21 @@ method scaleChanged MicroBlocksEditor {
 
 // zoom buttons
 
+// we need to keep these for the Graph window, until it's rewritten in HTML
+method newZoomButton MicroBlocksEditor iconName action {
+	if (isNil action) { // use the selector name as the action
+		action = (action iconName this)
+	}
+	iconScale = (1.33 * (global 'scale'))
+	normalColor = (microBlocksColor 'blueGray' 400)
+	highlightColor = (microBlocksColor 'yellow')
+	button = (newButton '' action)
+	bm1 = (readSVGIcon iconName normalColor nil iconScale)
+	bm2 = (readSVGIcon iconName highlightColor nil iconScale)
+	setCostumes button bm1 bm2
+	return button
+}
+
 method restoreZoom MicroBlocksEditor {
 	setBlockScalePercent this 100
 }
