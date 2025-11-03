@@ -555,6 +555,15 @@ static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
 	return nilObj;
 }
 
+static OBJ primBrowserNotify(int nargs, OBJ args[]) {
+	char *event = "";
+	if ((nargs > 0) && (IS_CLASS(args[0], StringClass))) event = obj2str(args[0]);
+	EM_ASM_({
+			document.dispatchEvent(new CustomEvent(UTF8ToString($0)));
+	}, event);
+	return nilObj;
+}
+
 // Boardie Support
 
 static OBJ primBrowserOpenBoardie(int nargs, OBJ args[]) {
@@ -1594,6 +1603,7 @@ static PrimEntry browserPrimList[] = {
 	{"browserOpenBoardie",		primBrowserOpenBoardie,			"Open boardie."},
 	{"browserCloseBoardie",		primBrowserCloseBoardie,		"Disconnect boardie."},
 	{"browserStoreIDEProperty",	primBrowserStoreIDEProperty,		"Store a property for the browser version to use. Args: GPobjectPropertyName, propertyValue"},
+	{"browserNotify",					primBrowserNotify,					"Trigger a custom event to the document. Args: eventName"},
 	{"boardiePutFile",				primBoardiePutFile,					"Store a file in boardie's file system."},
 	{"boardieGetFile",				primBoardieGetFile,					"Read a file from boardie's file system."},
 	{"boardieFileList",				primBoardieListFiles,				"Get a list of files in boardie's file system."},

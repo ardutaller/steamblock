@@ -17,6 +17,7 @@ to startSelecting aScripter aHand {
 }
 
 to cancelSelection {
+	browserNotify 'dragend'
 	editor = (findMicroBlocksEditor)
 	if (isNil editor) { return }
 	scripter = (scripter editor)
@@ -42,11 +43,14 @@ method initialize MicroBlocksSelection aHand {
 
 	focusOn aHand this
 
+	browserNotify 'dragstart'
+
 	return this
 }
 
 method destroy MicroBlocksSelection {
 	selecting = false
+	browserNotify 'dragend'
 	destroy morph
 }
 

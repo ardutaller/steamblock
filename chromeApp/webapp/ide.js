@@ -177,6 +177,17 @@ IDE.populateScriptControls = function (element) {
 	});
 };
 
+document.addEventListener('dragstart', () => {
+	document.querySelectorAll('.can-drag-through').forEach(
+		e => e.classList.add('dragging')
+	);
+});
+
+document.addEventListener('dragend', () => {
+	document.querySelectorAll('.can-drag-through').forEach(
+		e => e.classList.remove('dragging')
+	);
+});
 
 // Category and library lists
 IDE.populateCategories = function (element) {
