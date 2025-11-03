@@ -204,6 +204,8 @@ method contextMenu BlockDefinition {
 		addItem menu 'show instructions' (action 'showInstructions' this)
 		addItem menu 'show compiled bytes' (action 'showCompiledBytes' this)
 		addItem menu 'show call tree' (action 'showCallTree' this)
+		addLine menu
+		addItem menu 'add to library' (action 'addToLibraryMenu' this)
 	}
 	addLine menu
 	addItem menu 'delete block definition...' 'deleteBlockDefinition'
@@ -224,6 +226,56 @@ method showCompiledBytes BlockDefinition {
 
 method showCallTree BlockDefinition {
 	showCallTree (smallRuntime) (handler (owner (owner morph)))
+}
+
+method addToLibraryMenu BlockDefinition {
+	menu = (menu nil this)
+	project = (project (findMicroBlocksEditor))
+	for lib (values (libraries project)) {
+		addItem menu (moduleName lib) (action 'addToLibrary' this lib)
+	}
+	addLine menu
+	addItem menu 'My Blocks' (action 'addToLibrary' this (main project))
+	popUpAtHand menu (global 'page')
+}
+
+method addToLibrary BlockDefinition library {
+	scripter = (scripter (findMicroBlocksEditor))
+	project = (project (findMicroBlocksEditor))
+	mainModule = (main project)
+	function = (functionNamed project op)
+	for lib (values (libraries (project scripter))) {
+		if (contains (functions lib) function) {
+			// Block already in a library, let's remove it from there first
+			removeFunction lib function
+			remove (blockList lib) (functionName function)
+			remove (blockSpecs lib) (blockSpecFor function)
+		}
+	}
+	if (not (contains (functions library) function)) {
+		globalsUsed = (globalVarsUsed function)
+		if (contains (functions mainModule) function) {
+			// Block is in My Blocks, let's remove it from there first
+			removeFunction mainModule function
+			remove (blockList mainModule) (functionName function)
+			remove (blockSpecs mainModule) (blockSpecFor function)
+			for var globalsUsed {
+				deleteVariable mainModule var
+			}
+		}
+		addFunction library function
+		add (blockList library) (functionName function)
+		add (blockSpecs library) (blockSpecFor function)
+		for var globalsUsed {
+			addVariable library var
+		}
+	}
+	languageChanged scripter
+	if (library == mainModule) {
+		selectCategory scripter 'cat;My Blocks'
+	} else {
+		selectLibrary scripter (moduleName library)
+	}
 }
 
 method gpContextMenu BlockDefinition {
