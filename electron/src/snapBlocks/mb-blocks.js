@@ -1927,6 +1927,8 @@ BlockMorph.prototype.codeString = function (indent = 0, result = []) {
 			arg.codeString(indent, result);
 		} else if (arg instanceof TemplateSlotMorph) {
 			result.push(arg.contents());
+		} else if (arg instanceof MicroBitDisplaySlotMorph) {
+			result.push(arg.contents());
 		} else {
 			let value = arg.contents().text;
 			if ((value.length == 0) && (arg.isNumeric)) {
@@ -6403,6 +6405,18 @@ MicroBitDisplaySlotMorph.prototype.init = function (bits) {
 MicroBitDisplaySlotMorph.prototype.getSpec = function () {
 	return '%mbdisplay';
 };
+
+MicroBitDisplaySlotMorph.prototype.contents = function (bits) {
+	let result = 0;
+	for (let row = 0; row < 5; row++) {
+		for (let col = 0; col < 5; col++) {
+			let isOn = this.display[(5 * row) + col];
+			result <<= 1;
+			result |= isOn ? 1 : 0;
+		}
+	}
+	return result;
+}
 
 MicroBitDisplaySlotMorph.prototype.setContents = function (bits) {
 	let shift = 0;

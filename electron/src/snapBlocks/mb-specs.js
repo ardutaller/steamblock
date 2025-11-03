@@ -17,7 +17,7 @@ MB_Specs.initialize = function (selector) {
 	if (this.selectorToSpec instanceof Map) return; // already initialized
 	this.selectorToSpec = new Map();
 	this.selectorToCategory = new Map();
-	let mbSpecs = MB_Specs.mbBlockSpecs();
+	let mbSpecs = this.mbBlockSpecs();
 	let category = '';
 	for (let i = 0; i < mbSpecs.length; i++) {
 		let item = mbSpecs[i];
@@ -47,7 +47,13 @@ MB_Specs.specArrayForSelector = function (selector) {
 MB_Specs.categoryForSelector = function (selector) {
 	this.initialize();
 	let result = this.selectorToCategory.get(selector);
-	return (result === undefined) ? BlockMorph.prototype.colorFor('no category') : result;
+	return (result === undefined) ? 'other' : result;
+}
+
+MB_Specs.blockTypeForSelector = function (selector) {
+	this.initialize();
+	let spec = this.selectorToSpec.get(selector);
+	return spec ? spec[0] : ' ';
 }
 
 MB_Specs.specFor = function (selector, args) {
@@ -58,9 +64,9 @@ MB_Specs.specFor = function (selector, args) {
 	let spec = '';
 	let specArray = this.specArrayForSelector(selector);
 	if (specArray) { // selector is known; use existing spec
-		if (specArray.length > 3) {
+		if (specArray.length > 2) {
 			let specParts = specArray[2].split(/\s+/);
-			let mbTypes = specArray[3].split(/\s+/);
+			let mbTypes = (specArray.length > 3) ? specArray[3].split(/\s+/) : [];
 			let typeIndex = 0;
 			for (let i = 0; i < specParts.length; i++) {
 				if (i > 0) spec += ' ';
@@ -82,6 +88,7 @@ MB_Specs.specFor = function (selector, args) {
 		}
 	}
 	spec = this.extendSpecForArgs(spec, args);
+	if (spec == '') return 'unknown'; // shouldn't happen
 	return spec;
 }
 
