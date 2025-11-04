@@ -64,9 +64,11 @@ __attribute__ ((section (".ramfunc"))) static void dueLinkEraseFlashAndReset() {
 	// disable interrupts
 	__disable_irq();
 
-	// mass erase
+	// mass erase all of Flash
 	FLASH->CR |= (FLASH_CR_STRT | FLASH_CR_MER1);
-	SET_BIT(FLASH->ACR, 1 << 16);  // enable DFU mode when is Flash empty
+
+	// set the Flash empty flag
+	SET_BIT(FLASH->ACR, 1 << 16);
 
 	// reset
 	SCB->AIRCR = (
@@ -1181,7 +1183,10 @@ static void processShortMessage() {
 		if (1 == chunkIndex) { outputRecordHeaders(); break; }
 		if (2 == chunkIndex) { compactCodeStore(); break; }
 		if (3 == chunkIndex) { primMBDisplayOff(0, NULL); } // used by Boardie reset
-		if (199 == chunkIndex) { dueLinkEraseFlashAndReset(); }
+		if (199 == chunkIndex) {
+			clearAllVariables(); // do a Flash write operation to enable DFU after reset
+			dueLinkEraseFlashAndReset();
+		}
 		softReset(true);
 		break;
 	case pingMsg:
