@@ -1186,7 +1186,6 @@ void hardwareInit() {
 	#define ANALOG_PINS 5
 	#define TOTAL_PINS 60
 	#define PIN_LED 15 // PB_8
-	#define DEFAULT_TONE_PIN 21
 	static const int8_t analogPin[ANALOG_PINS] = {16, 17, 18, 19, 37}; // used to initialize random generater
 
 	// Reserved C071R pins:
@@ -1211,6 +1210,8 @@ void hardwareInit() {
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
 		 1, 13, 29, 12, 15, 14, 32}; // unused pins: 12, 15, 14, 32
 
+	// PA_9, D8, edge pin 21 is UART1_TX
+	// PA_10, D2, edge pin 22 is UART1_RX
 	static const char dueStandardPin[DIGITAL_PINS] = {
 		15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
 		33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
@@ -2654,9 +2655,10 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 		}
 	#elif defined(DUELink)
 		if ((pin < 0) || (pin >= DIGITAL_PINS)) {
-			if (IS_DUE_STEM) pin = 3;
+			if (DUE_HAS_EDGE_CONNECTOR) pin = 21; // DUE Cinco and PixoBit
+			else if (IS_DUE_STEM) pin = 3;
 			else if (IS_DUE_CLIPIT) pin = 7;
-			else pin = DEFAULT_TONE_PIN; // DUE Cinco and PixoBit
+			else return trueObj; // no default tone pin on other DUELink boards
 		}
 	#else
 		if ((pin < 0) || (pin >= DIGITAL_PINS)) pin = DEFAULT_TONE_PIN;

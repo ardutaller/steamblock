@@ -202,7 +202,8 @@ static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 #else // use Serial1 or Serial2
 
 // Use Serial2 on original ESP32 and Pico:ed boards, Serial1 on others
-#if defined(ESP32_ORIGINAL) || defined(ESP32_S3) || defined(PICO_ED) || defined(COCUBE) || defined(DUELink) || defined(ARDUINO_WEACT)
+#if defined(ESP32_ORIGINAL) || defined(ESP32_S3) || defined(PICO_ED) || \
+	defined(COCUBE) || defined(DUELink) || defined(ARDUINO_WEACT)
 	#define SERIAL_PORT Serial2
 #else
 	#define SERIAL_PORT Serial1
@@ -270,8 +271,8 @@ static void serialOpen(int baudRate) {
 			SERIAL_PORT.setTx(mapDigitalPinNum(1));
 		} else {
 			// DUE standard pins
-			SERIAL_PORT.setRx(mapDigitalPinNum(22));
-			SERIAL_PORT.setTx(mapDigitalPinNum(21));
+			SERIAL_PORT.setRx(2); // PA_10, D2, edge pin 22 is UART1_RX
+			SERIAL_PORT.setTx(8); // PA_9, D8, edge pin 21 is UART1_TX
 		}
 		SERIAL_PORT.begin(baudRate);
 	#else
