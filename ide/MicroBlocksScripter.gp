@@ -1150,6 +1150,7 @@ method importLibrary MicroBlocksScripter {
 	if (downloadInProgress (findProjectEditor)) { return }
 	libraryWindow = (findMorph 'MicroBlocksLibraryImportDialog')
 	if (notNil libraryWindow) { destroy libraryWindow }
+	if (isNil lastLibraryFolder) { lastLibraryFolder = 'Libraries' }
 	pickLibraryToOpen (action 'openLibraryFile' this) lastLibraryFolder (array '.ubl')
 }
 
