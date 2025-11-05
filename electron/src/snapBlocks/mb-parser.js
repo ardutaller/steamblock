@@ -216,6 +216,8 @@ class MB_Parser {
 					b.replaceInput(inputs[i], arg);
 				}
 				arg.fixBlockColor();
+			} else if (arg instanceof ReporterBlockMorph) {
+				b.replaceInput(inputs[i], arg);
 			} else {
 				inputs[i].setContents(arg);
 			}
@@ -247,11 +249,11 @@ class MB_Parser {
 		if (arg[0] == "'") {
 			// quoted string constant; just remove the quotes
 			return arg.slice(1, -1);
-		} else { // arg is an unquoted string, so it may be a variable reference
-			if (this.isVariableReference(op, isFirstArg)) {
-				// return a variable reporter block for arg
-				return this.makeVariableReporter(arg);
-			}
+		}
+		// arg is an unquoted string, so it may be a variable reference
+		if (this.isVariableReference(op, isFirstArg)) {
+			// return a variable reporter block for arg
+			return this.makeVariableReporter(arg);
 		}
 		return arg;
 	}

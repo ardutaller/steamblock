@@ -489,6 +489,10 @@ SyntaxElementMorph.prototype.inputs = function () {
 	return this.cachedInputs;
 };
 
+SyntaxElementMorph.prototype.inputValues = function () {
+	return this.inputs().map(slot => slot.evaluate());
+}
+
 SyntaxElementMorph.prototype.debugCachedInputs = function () {
 	// private - only used for manually debugging inputs caching
 	var realInputs, i;
@@ -1878,6 +1882,11 @@ BlockMorph.prototype.userMenu = function () {
 		'print code',
 		() => { console.log(this.codeString(0, [])); },
 		'test coverting scripts to pseudocode'
+	);
+	menu.addItem(
+		'log',
+		() => { console.log(this); },
+		'log this object to the console'
 	);
 	menu.addItem(
 		'duplicate',
