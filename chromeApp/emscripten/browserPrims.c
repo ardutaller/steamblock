@@ -548,9 +548,7 @@ static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
 				}
 			);
 			// dispatch a custom event so elements can listen to changes
-			document.dispatchEvent(
-				new CustomEvent(path, { detail: { value: value } })
-			);
+			IDE.fireEvent(path, value);
 	}, path, value);
 	return nilObj;
 }
@@ -559,7 +557,7 @@ static OBJ primBrowserNotify(int nargs, OBJ args[]) {
 	char *event = "";
 	if ((nargs > 0) && (IS_CLASS(args[0], StringClass))) event = obj2str(args[0]);
 	EM_ASM_({
-			document.dispatchEvent(new CustomEvent(UTF8ToString($0)));
+			IDE.fireEvent(UTF8ToString($0), null);
 	}, event);
 	return nilObj;
 }
