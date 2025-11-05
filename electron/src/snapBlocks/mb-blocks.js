@@ -6410,7 +6410,7 @@ MicroBitDisplaySlotMorph.prototype.contents = function (bits) {
 	let result = 0;
 	for (let row = 0; row < 5; row++) {
 		for (let col = 0; col < 5; col++) {
-			let isOn = this.display[(5 * row) + col];
+			let isOn = this.display[(5 * (4 - row)) + col];
 			result <<= 1;
 			result |= isOn ? 1 : 0;
 		}

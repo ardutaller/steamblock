@@ -5,51 +5,43 @@ class MB_Project {
 		this.blockSpecs = new Map();
 	}
 
-	choicesFor (selector) {
-		let result = main.choices.get(selector);
+	choicesFor(selector) {
+		let result = this.main.choices.get(selector);
 		if (result) return result;
 
-		let libs = Array.from(libraries.values());
+		let libs = Array.from(this.libraries.values());
 		for (let i = 0; i < libs.length; i++) {
-			result = lib.choices.get(selector);
+			result = libs[i].choices.get(selector);
 			if (result) return result;
 		}
 		return []; // not found; return empty choices list
 	}
-// 		if (contains (choices main) selector) {
-// 			return (at (choices main) selector)
-// 		}
-// 		for lib (values libraries) {
-// 			libChoices = (choices lib)
-// 			if (contains libChoices selector) { return (at libChoices selector) }
-// 		}
-// 		return nil // not found; return empty choices list
 
-	hasUserCode () {
-// 		if (isNil main) { return false }
-// 		if (and (isEmpty (scripts main)) (isEmpty (functions main)) (isEmpty (variableNames main))) {
-// 			return false
-// 		}
-// 		return true
+	hasUserCode() {
+		if (!main) return false;
+		return (
+			(main.scripts.length > 0) ||
+			(main.functions.length > 0) ||
+			(main.variables.length > 0));
 	}
 
 	// Block Specs
 
-	recordBlockSpec (opName, spec) {
-// 		atPut blockSpecs opName spec
+	recordBlockSpec(opName, spec) {
+		this.blockSpecs.set(opName, spec);
 	}
 
 	deleteBlockSpecFor (functionName) {
-// 		remove blockSpecs functionName
+		this.blockSpecs.delete(functionName);
 	}
 
 	// Libraries
 
-	libraryNamed (name) {
-// 		return (at libraries name)
+	libraryNamed(name) {
+		return this.libraries.get(name);
 	}
 
-	addLibrary (aMicroBlocksModule) {
+	addLibrary(aMicroBlocksModule) {
 // 		libName = (moduleName aMicroBlocksModule)
 // 		oldLib = (at libraries libName)
 // 		if (notNil oldLib) {
@@ -75,7 +67,7 @@ class MB_Project {
 // 		}
 	}
 
-	removeLibraryNamed (libName) {
+	removeLibraryNamed(libName) {
 // 		lib = (at libraries libName)
 // 		if (isNil lib) { return }
 // 		remove libraries libName
@@ -84,7 +76,7 @@ class MB_Project {
 // 		}
 	}
 
-	categoryForOp (op) {
+	categoryForOp(op) {
 		// Return the category for the give op if it is in one of my libraries.
 
 // 		if ('-' == op) { return nil } // ignore dash used as a spacer in library block lists
@@ -95,7 +87,7 @@ class MB_Project {
 // 		return nil
 	}
 
-	checkForNewerLibraryVersions (autoConfirm) {
+	checkForNewerLibraryVersions(autoConfirm) {
 		// Check for newer versions of libraries used in this project.
 		// If true is passed to the optional autoConfirm parameter, update old
 		// libraries without asking. Otherwise ask the user for confirmation.
@@ -119,16 +111,16 @@ class MB_Project {
 
 	// Functions
 
-	allFunctions () {
-// 		result = (list)
-// 		addAll result (functions main)
-// 		for lib (values libraries) {
-// 			addAll result (functions lib)
-// 		}
-// 		return result
+	allFunctions() {
+		let result = this.main.functions.slice();
+		let libs = Array.from(this.libraries.values());
+		for (let i = 0; i < libs.length; i++) {
+			result = result.concat(lib[i].functions);
+		}
+		return result;
 	}
 
-	functionNamed (functionName) {
+	functionNamed(functionName) {
 // 		f = (functionNamed main functionName)
 // 		if (notNil f) { return f }
 // 		for lib (values libraries) {
@@ -138,7 +130,7 @@ class MB_Project {
 // 		return nil
 	}
 
-	libForFunction (aFunc) {
+	libForFunction(aFunc) {
 // 		funcName = (functionName aFunc)
 // 		for lib (values libraries) {
 // 			if (notNil (functionNamed lib funcName)) {
@@ -148,7 +140,7 @@ class MB_Project {
 // 		return ''
 	}
 
-	metaInfoForFunction (aFunc) {
+	metaInfoForFunction(aFunc) {
 		// Return a tab-delimited block spec string for the given function:
 		//	blockType specString argTypes
 
@@ -182,7 +174,7 @@ class MB_Project {
 
 	// Variables
 
-	allVariableNames () {
+	allVariableNames() {
 		// Return a sorted array of all global variables. Use case-insensitive sort.
 
 // 		result = (dictionary)
@@ -195,19 +187,22 @@ class MB_Project {
 // 			(function s1 s2 { return ((toUpperCase s1) < (toUpperCase s2)) }))
 	}
 
-	addVariable (newVar) {
+	addVariable(newVar) {
 // 		addVariable main newVar
 	}
 
-	deleteVariable (varName) {
-// 		for lib (values libraries) {
-// 			deleteVariable lib varName
-// 		}
+	deleteVariable(varName) {
+		this.main.variables.delete(varName);
+
+		let libs = Array.from(this.libraries.values());
+		for (let i = 0; i < libs.length; i++) {
+			libs[i].deleteVariable(varName);
+		}
 	}
 
 	// Variables
 
-	allBroadcasts () {
+	allBroadcasts() {
 // 		result = (dictionary)
 // 		for entry (scripts main) {
 // 			for b (allBlocks (last entry)) {
@@ -221,19 +216,7 @@ class MB_Project {
 
 	// Loading
 
-	loadFromOldProjectClassAndSpecs (aClass, specList) {
-		// Used when reading projects in the old .gpp format.
-
-// 		initialize this
-// 		for f (functions (module aClass)) { addFunction main f }
-// 		for v (variableNames (module aClass)) { addVariable main v }
-// 		for k (keys specList) { atPut blockSpecs k (at specList k) }
-// 		setScripts main (copy (scripts aClass))
-// 		fixFunctionLocals this
-// 		return this
-	}
-
-	loadFromString (s, updateLibraries) {
+	loadFromString(s, updateLibraries) {
 		// Load project from a string in .ubp format. Keep libraries (modules) together.
 
 		let cmdList = MB_Parser.parse(s);
@@ -274,7 +257,7 @@ class MB_Project {
 // 		fixFunctionLocals this
 // 		return this
 
-	addLibraryFromString (s, libName, fileName) {
+	addLibraryFromString(s, libName, fileName) {
 		// Load a library from a string.
 
 // 		cmdList = (parse s)
@@ -311,7 +294,7 @@ class MB_Project {
 	}
 
 
-	splitCmdListIntoModules (cmdList) {
+	splitCmdListIntoModules(cmdList) {
 		// Split the list of commands into a list of command lists for each module of the project.
 		// Each module after the first (main) module begins with a 'module' command.
 
@@ -329,21 +312,9 @@ class MB_Project {
 		return result;
 	}
 
-// 		result = (list)
-// 		m = (list)
-// 		for cmd cmdList {
-// 			if ('module' == (primName cmd)) {
-// 				if (not (isEmpty m)) { add result m }
-// 				m = (list)
-// 			}
-// 			add m cmd
-// 		}
-// 		add result m // add final module
-// 		return result
-
 	// Saving
 
-	codeString () {
+	codeString() {
 		// Return a string representing this project in the new .ubp format.
 
 // 		// sort libraries by name (this canonicalizes their order)
@@ -362,7 +333,7 @@ class MB_Project {
 
 	// Post-load processing
 
-	fixFunctionLocals () {
+	fixFunctionLocals() {
 		// Remove project variables for function locals.
 
 // 		projectVars = (allVariableNames this)
@@ -371,7 +342,7 @@ class MB_Project {
 
 	// save/load test
 
-	saveLoadTest () {
+	saveLoadTest() {
 		// Verify that this project can be saved and reloaded.
 
 // 		s1 = (codeString this)
@@ -432,40 +403,35 @@ class MB_Module {
 	}
 
 	setModuleName(modName) {
-	// 	moduleName = modName
-	}
-
-	toString() {
-	// 	return (join 'MicroBlocksModule(''' moduleName ''')')
+		this.moduleName = modName;
 	}
 
 	version() {
-	// 	return (copy version)
+		return this.version.slice();
 	}
 
 	tags() {
-	// 	return (copy tags)
+		return this.tags.slice();
 	}
 
 	dependencies() {
-	// 	return (copy dependencies)
+		return this.dependencies.slice();
 	}
 
 	beImplementation() {
-	// 	isImplementation = true
+		this.isImplementation = true;
 	}
 
 	setDependencies(deps) {
-	// 	dependencies = (toArray (copy deps))
+		this.dependencies = deps.slice();
 	}
 
 	setVersion(versionArray) {
-	// 	atPut version 1 (at versionArray 1)
-	// 	atPut version 2 (at versionArray 2)
+		this.version = versionArray.slice();
 	}
 
 	setTags(tagList) {
-	// 	tags = (copy (toArray tagList))
+		this.args = tagList.slice();
 	}
 
 	dependencyName(dep) {
@@ -491,10 +457,11 @@ class MB_Module {
 	// functions
 
 	functionNamed(functionName) {
-	// 	for f functions {
-	// 		if (functionName == (functionName f)) { return f }
-	// 	}
-	// 	return nil
+		for (let i = 0; i < functions.length; i++) {
+			let f = functions[i];
+			if (f.functionName == functionName) return f;
+		}
+		return null;
 	}
 
 	defineFunctionInModule(funcName, funcParams, funcBody) {
@@ -541,21 +508,21 @@ class MB_Module {
 	// variables
 
 	variableNames() {
-	// 	return (copy variableNames)
+		return this.variableNames.slice();
 	}
 
 	removeAllVariables() {
-	// 	this.variableNames = [];
+		this.variableNames = [];
 	}
 
 	addVariable(newVar) {
-	// 	if (not (contains variableNames newVar)) {
-	// 		variableNames = (copyWith variableNames newVar)
-	// 	}
+		if (!this.variableNames.includes(newVar)) {
+			this.variableNames.push(newVar);
+		}
 	}
 
 	deleteVariable(varName) {
-	// 	variableNames = (copyWithout variableNames varName)
+		this.variableNames = this.variableNames.filter(v => v != varName);
 	}
 
 	// saving
@@ -1041,9 +1008,14 @@ class MB_Module {
 	loadScripts(cmdList) {
 		this.scripts = [];
 		for (let i = 0; i < cmdList.length; i++) {
-			if (cmdList[i][0] == 'script') {
-console.log(cmdList[i][3]);
-				this.scripts.push(MB_Parser.blockFor(cmdList[i]));
+			let entry = cmdList[i];
+			if ((entry.length == 4) && (entry[0] == 'script')) {
+console.log(MB_Parser.blockFor(entry[3]));
+				this.scripts.push([
+					entry[1], // x position
+					entry[2], // y position
+					MB_Parser.blockFor(entry[3]) // script blocks
+				]);
 			}
 		}
 	}
@@ -1181,13 +1153,11 @@ function testLoad2() {
 		let startT = Date.now();
 		project.loadFromString(contents);
 //		console.log(project);
-//		let cmdList = MB_Parser.parse(contents);
 		console.log(fileName, Date.now() - startT, 'msecs2');
 		MB_GUI.removeAllScripts();
-		project.main.scripts.forEach( (cmd) => {
-			let args = cmd.inputs();
-			let script = cmd.children[3]; // xxx todo: hack! makeBlock should be createing a CommandSlotMorph to hold the command list but is not yet
-			MB_GUI.addBlockToScriptsAt(script, args[0].evaluate(), args[1].evaluate());
+		project.main.scripts.forEach( (entry) => {
+			let x = entry[0], y = entry[1], script = entry[2];
+			MB_GUI.addBlockToScriptsAt(script, x, y);
 		});
 	}
 	MB_GUI.importLocalFile(loadFile);
@@ -1196,7 +1166,7 @@ function testLoad2() {
 function testShow() {
 	let codeString =
 		"whenButtonPressed 'A'\n" +
-		"[display:mbDisplay] 10813998\n" +
+		"[display:mbDisplay] 15237450\n" +
 		"waitMillis 1000\n" +
 		"[display:mbDisplayOff]\n";
 	let parseTree = MB_Parser.parse(codeString);
