@@ -72,7 +72,7 @@ LiveReload.reloadPage = function (contents) {
 		newPage.querySelector('#canvas').remove();
 		newPage.querySelector('.workspace .emscripten').appendChild(canvas);
 		document.documentElement.innerHTML = newPage.innerHTML;
-		document.dispatchEvent(new CustomEvent('ready'));
+		IDE.fireEvent('ready');
 		initGPEventHandlers();
 	}
 };

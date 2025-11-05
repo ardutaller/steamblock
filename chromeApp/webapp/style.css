@@ -133,9 +133,15 @@ canvas.emscripten { border: 0px none; }
 	z-index: 2;
 	right: 24px;
 	bottom: 48px;
-	border: 1px solid #454a64;
+	border: 1px solid;
 	border-radius: 5px;
 	padding: 1px 6px;
+	background-color: #FFFFFFDD;
+	border-color: #eff0f2;
+}
+
+.script-controls.dark-mode {
+	border-color: #454a64;
 	background-color: #454a6466;
 }
 

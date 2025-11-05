@@ -39,6 +39,12 @@ IDE.emptyBoard = function () {
 };
 
 
+// Event firing, for easy communication between modules
+IDE.fireEvent = function (name, value) {
+	document.dispatchEvent(new CustomEvent(name, { detail: { value: value } }));
+};
+
+
 // User preferences, settable via the gear menu
 IDE.userPreference = function (pref) {
 	let value = JSON.parse(localStorage['user-prefs'])[pref];
@@ -60,6 +66,10 @@ IDE.toggleUserPreference = function (pref) {
 
 IDE.applyUserPreferences = function () {
 	GP.apiCall('ide.applyUserPreferences');
+	let prefs = JSON.parse(localStorage['user-prefs']);
+	Object.keys(prefs).forEach(
+		pref => this.fireEvent('preference.' + pref, prefs[pref])
+	);
 };
 
 IDE.toggleAdvancedMode = function () {
@@ -109,6 +119,7 @@ IDE.populateTopBar = function (container) {
 				['green', 'gray'],
 				['darkgreen', 'darkgray']
 			];
+			if (typeof e.detail.value != 'object') { return; }
 			let phase = e.detail.value[0];
 			let percentage = e.detail.value[1] * 100;
 			if (percentage < 100) {
@@ -142,7 +153,10 @@ IDE.tipBar.init = function () {
 
 	document.addEventListener(
 		'ide.tip',
-		e => { IDE.tipBar.setTip(e.detail.value[0], e.detail.value[1]); }
+		e => {
+			if (typeof e.detail.value != 'object') { return; }
+			IDE.tipBar.setTip(e.detail.value[0], e.detail.value[1]);
+		}
 	);
 
 	document.querySelectorAll('*').forEach(element => {
@@ -176,6 +190,16 @@ IDE.populateScriptControls = function (element) {
 		element.appendChild(Buttons.elementFor(selector));
 	});
 };
+
+document.addEventListener('preference.darkMode', (e) =>
+	{
+		if (e.detail.value) {
+			document.querySelector('.script-controls').classList.add('dark-mode');
+		} else {
+			document.querySelector('.script-controls').classList.remove('dark-mode');
+		}
+	}
+);
 
 document.addEventListener('dragstart', () => {
 	document.querySelectorAll('.can-drag-through').forEach(
