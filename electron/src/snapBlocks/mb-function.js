@@ -119,6 +119,7 @@ class MB_Function {
 		});
 		return result;
 	}
+}
 
 function functest() {
 	let cmds = MB_Parser.parse('to test a { local b 10 \n return (+ (foo a) c) }');

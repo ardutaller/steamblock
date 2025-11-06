@@ -1,7 +1,7 @@
 class MB_Project {
 	constructor() {
 		this.main = new MB_Module('main');
-		this.libraries = new Map();
+		this.libraries = [];
 		this.blockSpecs = new Map();
 	}
 
@@ -9,9 +9,8 @@ class MB_Project {
 		let result = this.main.choices.get(selector);
 		if (result) return result;
 
-		let libs = Array.from(this.libraries.values());
-		for (let i = 0; i < libs.length; i++) {
-			result = libs[i].choices.get(selector);
+		for (const lib of this.libraries) {
+			result = lib.choices.get(selector);
 			if (result) return result;
 		}
 		return []; // not found; return empty choices list
@@ -38,7 +37,10 @@ class MB_Project {
 	// Libraries
 
 	libraryNamed(name) {
-		return this.libraries.get(name);
+		for (const lib of this.libraries) {
+			if (lib.moduleName == name) return lib;
+		}
+		return null;
 	}
 
 	addLibrary(aMicroBlocksModule) {
@@ -113,9 +115,8 @@ class MB_Project {
 
 	allFunctions() {
 		let result = this.main.functions.slice();
-		let libs = Array.from(this.libraries.values());
-		for (let i = 0; i < libs.length; i++) {
-			result = result.concat(lib[i].functions);
+		for (const lib of this.libraries) {
+			result = result.concat(lib.functions);
 		}
 		return result;
 	}
@@ -193,10 +194,8 @@ class MB_Project {
 
 	deleteVariable(varName) {
 		this.main.variables.delete(varName);
-
-		let libs = Array.from(this.libraries.values());
-		for (let i = 0; i < libs.length; i++) {
-			libs[i].deleteVariable(varName);
+		for (const lib of this.libraries) {
+			lib.deleteVariable(varName);
 		}
 	}
 
@@ -226,7 +225,7 @@ class MB_Project {
 		for (let i = 1; i < moduleCmdLists.length; i++) {
 			let m = new MB_Module();
 			m.loadFromCmds(moduleCmdLists[i]);
-			this.libraries.set(m.moduleName, m);
+			this.libraries.push(m);
 		}
 // 		if (updateLibraries || true) {
 // 			this.checkForNewerLibraryVersions();
@@ -300,8 +299,7 @@ class MB_Project {
 
 		let result = [];
 		let thisModule = [];
-		for (let i = 0; i < cmdList.length; i++) {
-			let cmd = cmdList[i];
+		for (const cmd of cmdList) {
 			if ('module' == cmd[0]) {
 				if (thisModule.length > 0) result.push(thisModule);
 				thisModule = [];
@@ -457,8 +455,7 @@ class MB_Module {
 	// functions
 
 	functionNamed(functionName) {
-		for (let i = 0; i < functions.length; i++) {
-			let f = functions[i];
+		for (const f of functions) {
 			if (f.functionName == functionName) return f;
 		}
 		return null;
@@ -702,8 +699,7 @@ class MB_Module {
 	}
 
 	loadFromCmds(cmdList) {
-		for (let i = 0; i < cmdList.length; i++) {
-			let cmd = cmdList[i];
+		for (const cmd of cmdList) {
 			if (cmd.length > 1) {
 				switch (cmd[0].toLowerCase()) {
 				case 'module':
@@ -798,10 +794,10 @@ class MB_Module {
 
 		this.blockList = [];
 		this.blockSpecs = new Map();
-		for (let i = 0; i < cmdList.length; i++) {
-			switch(cmdList[i][0]) {
+		for (const cmd of cmdList) {
+			switch(cmd[0]) {
 			case 'spec':
-				let spec = cmdList[i].slice(1);
+				let spec = cmd.slice(1);
 				this.unquoteAll(spec);
 				this.blockSpecs.set(spec[1], spec); // spec[1] is the selector
 				this.blockList.push(spec);
@@ -815,16 +811,6 @@ class MB_Module {
 			}
 		}
 	}
-	// 	blockList = (list)
-	// 	for cmd cmdList {
-	// 		if ('space' == (primName cmd)) {
-	// 			add blockList '-' // spacer
-	// 		} ('advanced' == (primName cmd)) {
-	// 			add blockList 'advanced'
-	// 		} ('spec' == (primName cmd)) {
-	// 			add blockList (at (argList cmd) 2)
-	// 		}
-	// 	}
 
 	unquoteAll(anArray) {
 		// Unquote all strings the given array. Modifies the array.
@@ -986,20 +972,8 @@ functionCount++;
 				this.functions.push(new MB_Function(funcName, funcArgs, funcBody, this.moduleName));
 			}
 		}
-		// todo: set recompile needed flage
+		// todo: set recompile needed flag
 	}
-	// 	for cmd cmdList {
-	// 		if ('to' == (primName cmd)) {
-	// 			args = (toList (argList cmd))
-	// 			functionName = (removeFirst args)
-	// 			addFirst args nil
-	// 			f = (callWith 'functionFor' (toArray args))
-	// 			setField f 'functionName' functionName
-	// 			setField f 'module' this
-	// 			functions = (appendFunction this functions f)
-	// 		}
-	// 	}
-	// 	recompileNeeded (smallRuntime)
 
 	appendFunction(anArray, f) {
 		// Append function f to the given array of functions and return the new array. If the
@@ -1019,15 +993,21 @@ functionCount++;
 
 	loadScripts(cmdList) {
 		this.scripts = [];
-		for (let i = 0; i < cmdList.length; i++) {
-			let entry = cmdList[i];
+		for (const entry of cmdList) {
 			if ((entry.length == 4) && (entry[0] == 'script')) {
 scriptCount++;
-				this.scripts.push([
-					entry[1], // x position
-					entry[2], // y position
-					MB_Parser.blockFor(entry[3]) // script blocks
-				]);
+				const scriptCmds = entry[3];
+				if ((scriptCmds.length > 0) &&
+					(scriptCmds[0].length == 3) &&
+					(scriptCmds[0][0] == 'to')) {
+						console.log('function ref:', scriptCmds[0][1]);
+				} else {
+					this.scripts.push([
+						entry[1], // x position
+						entry[2], // y position
+						MB_Parser.blockFor(scriptCmds) // script blocks
+					]);
+				}
 			}
 		}
 	}
@@ -1146,35 +1126,26 @@ scriptCount++;
 	}
 }
 
+// Testing...
+
+// Counters to be removed later...
+var scriptCount = 0, functionCount = 0, blockCount = 0;
+
 function testLoad() {
 	function loadFile(fileName, contents) {
-		let startT = Date.now();
-		let cmdList = MB_Parser.parse(contents);
-console.log(cmdList);
-		let module = new MB_Module();
-		module.loadFromCmds(cmdList);
-		console.log(module);
-//		console.log(fileName, Date.now() - startT, 'msecs');
-	}
-	MB_GUI.importLocalFile(loadFile);
-}
-
-var scriptCount = 0, functionCount = 0;
-
-function testLoad2() {
-	function loadFile(fileName, contents) {
 		let project = new MB_Project();
+scriptCount = functionCount = blockCount = 0;
 		let startT = Date.now();
 		project.loadFromString(contents);
-//		console.log(project);
-		console.log(fileName, Date.now() - startT, 'msecs', functionCount, 'functions', scriptCount, 'scripts');
+		let msecs = Date.now() - startT;
+		console.log(fileName, functionCount, 'functions', scriptCount, 'scripts', blockCount, 'blocks',
+				msecs, 'msecs', Math.round(blockCount / msecs), 'blocks/msec');
 		MB_GUI.removeAllScripts();
 		project.main.scripts.forEach( (entry) => {
 			let x = entry[0], y = entry[1], script = entry[2];
 			MB_GUI.addBlockToScriptsAt(script, x, y);
 		});
 	}
-	scriptCount = functionCount = 0;
 	MB_GUI.importLocalFile(loadFile);
 }
 
