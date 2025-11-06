@@ -975,6 +975,19 @@ class MB_Module {
 	}
 
 	loadFunctions(cmdList) {
+		this.functions = [];
+		for (let i = 0; i < cmdList.length; i++) {
+			let entry = cmdList[i];
+			if ((entry.length > 2) && (entry[0] == 'to')) {
+functionCount++;
+				let funcName = entry[1];
+				let funcArgs = entry.slice(2, -1);
+				let funcBody = MB_Parser.blockFor(entry.at(-1));
+				this.functions.push(new MB_Function(funcName, funcArgs, funcBody, this.moduleName));
+			}
+		}
+		// todo: set recompile needed flage
+	}
 	// 	for cmd cmdList {
 	// 		if ('to' == (primName cmd)) {
 	// 			args = (toList (argList cmd))
@@ -987,7 +1000,6 @@ class MB_Module {
 	// 		}
 	// 	}
 	// 	recompileNeeded (smallRuntime)
-	}
 
 	appendFunction(anArray, f) {
 		// Append function f to the given array of functions and return the new array. If the
@@ -1010,7 +1022,7 @@ class MB_Module {
 		for (let i = 0; i < cmdList.length; i++) {
 			let entry = cmdList[i];
 			if ((entry.length == 4) && (entry[0] == 'script')) {
-console.log(MB_Parser.blockFor(entry[3]));
+scriptCount++;
 				this.scripts.push([
 					entry[1], // x position
 					entry[2], // y position
@@ -1147,19 +1159,22 @@ console.log(cmdList);
 	MB_GUI.importLocalFile(loadFile);
 }
 
+var scriptCount = 0, functionCount = 0;
+
 function testLoad2() {
 	function loadFile(fileName, contents) {
 		let project = new MB_Project();
 		let startT = Date.now();
 		project.loadFromString(contents);
 //		console.log(project);
-		console.log(fileName, Date.now() - startT, 'msecs2');
+		console.log(fileName, Date.now() - startT, 'msecs', functionCount, 'functions', scriptCount, 'scripts');
 		MB_GUI.removeAllScripts();
 		project.main.scripts.forEach( (entry) => {
 			let x = entry[0], y = entry[1], script = entry[2];
 			MB_GUI.addBlockToScriptsAt(script, x, y);
 		});
 	}
+	scriptCount = functionCount = 0;
 	MB_GUI.importLocalFile(loadFile);
 }
 
@@ -1174,3 +1189,40 @@ function testShow() {
 	MB_GUI.addBlockToScripts(b);
 }
 
+function testPerf() {
+	let a = Array.from({ length: 10000000 }, (v, i) => i + 1 );
+
+	let result = 0;
+	let startT = Date.now();
+	for (let i = 0; i < a.length; i++) { result += a[i]; }
+	console.log('loop', Date.now() - startT, 'msecs', 'result = ', result);
+
+	result = 0;
+	startT = Date.now();
+	for (const n of a) { result += n; }
+	console.log('forOf', Date.now() - startT, 'msecs', 'result = ', result);
+
+	result = 0;
+	startT = Date.now();
+	a.forEach(n => result += n);
+	console.log('forEach', Date.now() - startT, 'msecs', 'result = ', result);
+
+	startT = Date.now();
+	result = a.map(n => 2 * n);
+	console.log('map', Date.now() - startT, 'msecs', result.length, 'result = ', result);
+
+	startT = Date.now();
+	result = a.find(n => n == 10000000);
+	console.log('findA', Date.now() - startT, 'msecs', 'result = ', result);
+
+	result = 0;
+	startT = Date.now();
+	for (let i = 0; i < a.length; i++) { result += a[i]; if (a[i] == 5000000) break; }
+	console.log('loopWithBreak', Date.now() - startT, 'msecs', 'result = ', result);
+
+	result = 0;
+	startT = Date.now();
+	for (const n of a) { result += n; if (n == 5000000) break; }
+	console.log('forOfWithBreak', Date.now() - startT, 'msecs', 'result = ', result);
+
+}
