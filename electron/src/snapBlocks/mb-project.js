@@ -3,6 +3,7 @@ class MB_Project {
 		this.main = new MB_Module('main');
 		this.libraries = [];
 		this.blockSpecs = new Map();
+		this.needsRecompilation = false;
 	}
 
 	choicesFor(selector) {
@@ -70,46 +71,35 @@ class MB_Project {
 	}
 
 	removeLibraryNamed(libName) {
+		const lib = this.libraryNamed(libName);
+		if (!lib) return;
+		libraries = this.libraries.filter(m => m.moduleName != libName);
+		for (const f of lib.functions) {
+			this.blockSpecs.delete(f.functionName);
+		}
+	}
 // 		lib = (at libraries libName)
 // 		if (isNil lib) { return }
 // 		remove libraries libName
 // 		for f (functions lib) {
 // 			remove blockSpecs (functionName f)
 // 		}
-	}
 
 	categoryForOp(op) {
 		// Return the category for the give op if it is in one of my libraries.
 
+		if (('-' == op) || ('advanced' == op)) return null; // ignore spacers and 'advanced'
+		for (const lib of this.libraries) {
+			if (lib.blockList.includes(op)) return lib.moduleCategory;
+		}
+		return null;
+	}
 // 		if ('-' == op) { return nil } // ignore dash used as a spacer in library block lists
 //
 // 		for lib (values libraries) {
 // 			if (contains (blockList lib) op) { return (moduleCategory lib) }
 // 		}
 // 		return nil
-	}
-
-	checkForNewerLibraryVersions(autoConfirm) {
-		// Check for newer versions of libraries used in this project.
-		// If true is passed to the optional autoConfirm parameter, update old
-		// libraries without asking. Otherwise ask the user for confirmation.
-
-// 		if (isNil autoConfirm) { autoConfirm = false }
-//
-// 		for libName (keys libraries) {
-// 			newVersion = (getNewerVersion (at libraries libName))
-// 			if (notNil newVersion) {
-// 				if (or
-// 					autoConfirm
-// 					(confirm (global 'page') nil (join
-// 						(localized 'Found a newer version of %1.' libName) (newline)
-// 						(localized 'Do you want me to update the one in the project?')))
-// 				) {
-// 					addLibrary this newVersion
-// 				}
-// 			}
-// 		}
-	}
 
 	// Functions
 
@@ -122,6 +112,8 @@ class MB_Project {
 	}
 
 	functionNamed(functionName) {
+		return this.allFunctions.find(f => (f.functionName == functionName));
+	}
 // 		f = (functionNamed main functionName)
 // 		if (notNil f) { return f }
 // 		for lib (values libraries) {
@@ -129,9 +121,11 @@ class MB_Project {
 // 			if (notNil f) { return f }
 // 		}
 // 		return nil
-	}
 
 	libForFunction(aFunc) {
+		const f = this.functionNamed(aFunc.funcName);
+		return f ? f.moduleName : '';
+	}
 // 		funcName = (functionName aFunc)
 // 		for lib (values libraries) {
 // 			if (notNil (functionNamed lib funcName)) {
@@ -139,7 +133,6 @@ class MB_Project {
 // 			}
 // 		}
 // 		return ''
-	}
 
 	metaInfoForFunction(aFunc) {
 		// Return a tab-delimited block spec string for the given function:
@@ -189,8 +182,9 @@ class MB_Project {
 	}
 
 	addVariable(newVar) {
-// 		addVariable main newVar
+		this.main.addVariable(newVar);
 	}
+// 		addVariable main newVar
 
 	deleteVariable(varName) {
 		this.main.variables.delete(varName);
@@ -199,7 +193,7 @@ class MB_Project {
 		}
 	}
 
-	// Variables
+	// Broadcasts
 
 	allBroadcasts() {
 // 		result = (dictionary)
@@ -221,18 +215,16 @@ class MB_Project {
 		let cmdList = MB_Parser.parse(s);
 		let moduleCmdLists = this.splitCmdListIntoModules(cmdList);
 
-		this.main.loadFromCmds(moduleCmdLists[0]);
-		for (let i = 1; i < moduleCmdLists.length; i++) {
-			let m = new MB_Module();
-			m.loadFromCmds(moduleCmdLists[i]);
-			this.libraries.push(m);
+		this.main.loadFromCmds(moduleCmdLists.shift());
+		for (const cmdsForModule of moduleCmdLists) {
+			let library = new MB_Module().loadFromCmds(cmdsForModule);
+			this.libraries.push(library);
 		}
 // 		if (updateLibraries || true) {
 // 			this.checkForNewerLibraryVersions();
 // 		}
 // 		this.fixFunctionLocals();
 	}
-//console.log(cmdList.length, 'cmds in', cmdsByModule.length, 'modules');
 // 		initialize this
 // 		cmdList = (parse s)
 // 		if (and (notEmpty cmdList) ('projectName' == (primName (first cmdList)))) {
@@ -255,6 +247,24 @@ class MB_Project {
 // 		if updateLibraries { checkForNewerLibraryVersions this }
 // 		fixFunctionLocals this
 // 		return this
+
+	splitCmdListIntoModules(cmdList) {
+		// Split the list of commands into a list of command lists for each module of the project.
+		// Each module after the first (main) module begins with a 'module' command.
+
+		let result = [];
+		let thisModule = [];
+		for (const cmd of cmdList) {
+			if ('module' == cmd[0]) {
+				if (thisModule.length > 0) result.push(thisModule);
+				thisModule = [];
+			}
+			thisModule.push(cmd);
+		}
+		if (thisModule.length > 0) result.push(thisModule); // add final module
+		return result;
+	}
+
 
 	addLibraryFromString(s, libName, fileName) {
 		// Load a library from a string.
@@ -292,22 +302,26 @@ class MB_Project {
 // 		return this
 	}
 
+	checkForNewerLibraryVersions(autoConfirm) {
+		// Check for newer versions of libraries used in this project.
+		// If true is passed to the optional autoConfirm parameter, update old
+		// libraries without asking. Otherwise ask the user for confirmation.
 
-	splitCmdListIntoModules(cmdList) {
-		// Split the list of commands into a list of command lists for each module of the project.
-		// Each module after the first (main) module begins with a 'module' command.
-
-		let result = [];
-		let thisModule = [];
-		for (const cmd of cmdList) {
-			if ('module' == cmd[0]) {
-				if (thisModule.length > 0) result.push(thisModule);
-				thisModule = [];
-			}
-			thisModule.push(cmd);
-		}
-		if (thisModule.length > 0) result.push(thisModule); // add final module
-		return result;
+// 		if (isNil autoConfirm) { autoConfirm = false }
+//
+// 		for libName (keys libraries) {
+// 			newVersion = (getNewerVersion (at libraries libName))
+// 			if (notNil newVersion) {
+// 				if (or
+// 					autoConfirm
+// 					(confirm (global 'page') nil (join
+// 						(localized 'Found a newer version of %1.' libName) (newline)
+// 						(localized 'Do you want me to update the one in the project?')))
+// 				) {
+// 					addLibrary this newVersion
+// 				}
+// 			}
+// 		}
 	}
 
 	// Saving
@@ -353,7 +367,7 @@ class MB_Project {
 
 	// equality
 
-	equal (proj) {
+	equal(proj) {
 		// Return true if the given project has the same contents as this one.
 
 // 		if (not (equal main (main proj))) { return false }
@@ -482,12 +496,12 @@ class MB_Module {
 	// 	}
 	// 	setField aFunction 'module' this
 	// 	functions = (copyWith functions aFunction)
-	// 	recompileNeeded (smallRuntime)
+	// 	MB_Project.needsRecompilation = true;
 	}
 
 	removeFunction (aFunction) {
 	// 	functions = (copyWithout functions aFunction)
-	// 	recompileNeeded (smallRuntime)
+	// 	MB_Project.needsRecompilation = true;
 	}
 
 	removeSupercededFunctions(superceded) {
@@ -523,16 +537,6 @@ class MB_Module {
 	}
 
 	// saving
-
-	arrayToDeclaration(array, title) {
-	// 	declaration = (list title)
-	// 	for i array {
-	// 		if (needsQuotes this i) { i = (join '''' i '''') }
-	// 		add declaration (toString i)
-	// 	}
-	// 	add declaration (newline)
-	// 	return (joinStrings declaration ' ')
-	}
 
 	codeString(owningProject, newLibName) {
 		// Return a string containing the code for this MicroBlocksModule.
@@ -637,6 +641,16 @@ class MB_Module {
 	// 	}
 	//
 	// 	return (joinStrings result)
+	}
+
+	arrayToDeclaration(array, title) {
+	// 	declaration = (list title)
+	// 	for i array {
+	// 		if (needsQuotes this i) { i = (join '''' i '''') }
+	// 		add declaration (toString i)
+	// 	}
+	// 	add declaration (newline)
+	// 	return (joinStrings declaration ' ')
 	}
 
 	scriptString() {
@@ -797,8 +811,7 @@ class MB_Module {
 		for (const cmd of cmdList) {
 			switch(cmd[0]) {
 			case 'spec':
-				let spec = cmd.slice(1);
-				this.unquoteAll(spec);
+				let spec = cmd.slice(1).map(s => this.unquoted(s));
 				this.blockSpecs.set(spec[1], spec); // spec[1] is the selector
 				this.blockList.push(spec);
 				break;
@@ -812,19 +825,8 @@ class MB_Module {
 		}
 	}
 
-	unquoteAll(anArray) {
-		// Unquote all strings the given array. Modifies the array.
-
-		for (let i = 0; i < anArray.length; i++) {
-			let item = anArray[i];
-			if ((typeof item) == 'string') {
-				anArray[i] = this.unquoted(item);
-			}
-		}
-		return anArray;
-	}
-
 	unquoted(s) {
+		if ((typeof item) != 'string') return s;
 		if ((s.length > 1) && (s[0] == '\'') && s.endsWith('\'')) {
 			return s.slice(1, -1); // remove quotes
 		}
@@ -899,20 +901,6 @@ class MB_Module {
 	// 	}
 	}
 
-	stringArgs(cmd) {
-	// 	args = (list)
-	// 	for arg (argList cmd) {
-	// 		if (isClass arg 'String') { // quoted item
-	// 			add args arg
-	// 		} (isClass arg 'Integer') {
-	// 			add args arg
-	// 		} else { // unquoted item: mapped to "(v 'varName')" block by the parser
-	// 			add args (first (argList arg))
-	// 		}
-	// 	}
-	// 	return args
-	}
-
 	importDependencies(scripter) {
 	// 	project = (project scripter)
 	// 	for dependency dependencies {
@@ -962,17 +950,17 @@ class MB_Module {
 
 	loadFunctions(cmdList) {
 		this.functions = [];
-		for (let i = 0; i < cmdList.length; i++) {
-			let entry = cmdList[i];
+		for (const entry of cmdList) {
 			if ((entry.length > 2) && (entry[0] == 'to')) {
 functionCount++;
-				let funcName = entry[1];
-				let funcArgs = entry.slice(2, -1);
-				let funcBody = MB_Parser.blockFor(entry.at(-1));
+				const funcName = entry[1];
+				const funcArgs = entry.slice(2, -1);
+				const funcCmds = entry.at(-1);
+				let funcBody = (funcCmds.length > 0) ? MB_Parser.blockFor(funcCmds) : null;
 				this.functions.push(new MB_Function(funcName, funcArgs, funcBody, this.moduleName));
 			}
 		}
-		// todo: set recompile needed flag
+		MB_Project.needsRecompilation = true;
 	}
 
 	appendFunction(anArray, f) {
@@ -1052,16 +1040,6 @@ scriptCount++;
 	// 			return false
 	// 		}
 	// 	}
-	// 	return true
-	}
-
-	functionsEqual(f1, f2) {
-	// 	if ((functionName f1) != (functionName f1)) { return false }
-	// 	if ((classIndex f1) != (classIndex f1)) { return false }
-	// 	if ((argNames f1) != (argNames f1)) { return false }
-	// 	if ((localNames f1) != (localNames f1)) { return false }
-	// 	if ((cmdList f1) != (cmdList f1)) { return false }
-	// 	if ((module f1) != (module f1)) { return false }
 	// 	return true
 	}
 

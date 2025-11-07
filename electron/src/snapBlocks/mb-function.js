@@ -119,6 +119,24 @@ class MB_Function {
 		});
 		return result;
 	}
+
+	equalsFunction(f) {
+		function arraysEqual(a1, a2) {
+			if (!Array.isArray(a1) || !Array.isArray(a2)) return false;
+			if (a1.length != a2.length) return false;
+			for (let i = 0; i < a1.length; i++) {
+				if (a1[i] != a2[i]) return false;
+			}
+			return true;
+		}
+		return (
+			(f.functionName == this.functionName) &&
+			(f.module == this.module) &&
+ 			arraysEqual(f.argNames, this.argNames) &&
+			arraysEqual(f.localVars, this.localVars) &&
+			f.cmdList.codeString() == this.cmdList.codeString());
+	}
+
 }
 
 function functest() {
@@ -134,4 +152,7 @@ function functest() {
 	console.log('locals:', f.localVars);
 	console.log('globals:', f.globalVars());
 	console.log('refs of a', f.refsOfVariable('a'));
+	f2 = new MB_Function(funcName, argNames, b.nextBlock());
+	console.log('functions equal', f2.equalsFunction(f));
+
 }
