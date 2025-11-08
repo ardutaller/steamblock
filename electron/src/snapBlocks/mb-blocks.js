@@ -1700,6 +1700,26 @@ BlockMorph.prototype.toString = function () {
 		this.blockSpec.slice(0, 30) + '...")';
 };
 
+// BlockMorph utilities
+
+BlockMorph.prototype.forAllBlocks = function (func) {
+	// Call the given function on all command and reporter blocks in this script.
+	// TODO, Fix: This currently fails with infinite recursion. Why?
+
+	let todo = [this];
+	while (todo.length > 0) {
+		let b = todo.pop();
+console.log(b);
+//		func(b);
+		if (b instanceof CommandBlockMorph) {
+			if (b.nextBlock()) todo.push(b.nextBlock());
+		}
+		for (const arg of b.inputs()) {
+			if (arg instanceof BlockMorph) todo.push(b);
+		}
+	}
+}
+
 // BlockMorph spec:
 
 BlockMorph.prototype.parseSpec = function (spec) {

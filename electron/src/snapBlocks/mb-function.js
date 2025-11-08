@@ -44,7 +44,6 @@ class MB_Function {
 
 		let result = [];
 		this.forAllBlocks(cmd => {
-			let sel = cmd.selector;
 			if (['v', '=', '+=', 'local', 'for'].includes(cmd.selector)) {
 				result.push(cmd);
 			}
@@ -154,5 +153,4 @@ function functest() {
 	console.log('refs of a', f.refsOfVariable('a'));
 	f2 = new MB_Function(funcName, argNames, b.nextBlock());
 	console.log('functions equal', f2.equalsFunction(f));
-
 }

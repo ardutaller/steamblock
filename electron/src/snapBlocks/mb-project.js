@@ -78,12 +78,6 @@ class MB_Project {
 			this.blockSpecs.delete(f.functionName);
 		}
 	}
-// 		lib = (at libraries libName)
-// 		if (isNil lib) { return }
-// 		remove libraries libName
-// 		for f (functions lib) {
-// 			remove blockSpecs (functionName f)
-// 		}
 
 	categoryForOp(op) {
 		// Return the category for the give op if it is in one of my libraries.
@@ -94,12 +88,6 @@ class MB_Project {
 		}
 		return null;
 	}
-// 		if ('-' == op) { return nil } // ignore dash used as a spacer in library block lists
-//
-// 		for lib (values libraries) {
-// 			if (contains (blockList lib) op) { return (moduleCategory lib) }
-// 		}
-// 		return nil
 
 	// Functions
 
@@ -184,7 +172,6 @@ class MB_Project {
 	addVariable(newVar) {
 		this.main.addVariable(newVar);
 	}
-// 		addVariable main newVar
 
 	deleteVariable(varName) {
 		this.main.variables.delete(varName);
@@ -195,16 +182,35 @@ class MB_Project {
 
 	// Broadcasts
 
+	forAllBlocks(topBlock, f) {
+		// Call the given function on all command and reporter blocks in this script.
+		// Todo: move this to BlockMorph
+
+		if (!topBlock) return;
+
+		let todo = [topBlock];
+		while (todo.length > 0) {
+			let cmd = todo.pop();
+			f(cmd);
+			if (cmd instanceof CommandBlockMorph) {
+				if (cmd.nextBlock()) todo.push(cmd.nextBlock());
+			}
+			for (const arg of cmd.inputs()) {
+				if (arg instanceof BlockMorph) todo.push(arg);
+			}
+		}
+	}
+
 	allBroadcasts() {
-// 		result = (dictionary)
-// 		for entry (scripts main) {
-// 			for b (allBlocks (last entry)) {
-// 				if (isOneOf (primName b) 'sendBroadcast' 'whenBroadcastReceived') {
-// 					add result (first (argList b))
-// 				}
-// 			}
-// 		}
-// 		return (toList (sorted (keys result)))
+		let result = new Set();
+		for (const entry of main.scripts) {
+			this.forAllBlocks(entry[2], cmd => {
+				if (['sendBroadcast', 'whenBroadcastReceived'].includes(cmd.selector)) {
+					result.push(cmd.inputValues()[0]);
+				}
+			});
+		}
+		return Array.from(result).sort();
 	}
 
 	// Loading
@@ -327,8 +333,20 @@ class MB_Project {
 	// Saving
 
 	codeString() {
-		// Return a string representing this project in the new .ubp format.
+		// Return a string representing this project in .ubp format.
 
+		// sort libraries by name (this canonicalizes their order)
+		const sortedLibs = this.libraries.slice().sort(
+			(m1, m2) => m1.toLowerCase() < m2.toLowerCase
+		);
+
+		let result = [this.main.codeString(this)];
+		for (const lib of sortedLibs) {
+			result.push('\n');
+			result.push(lib.codeString(this));
+		}
+		return result.join('\n');
+	}
 // 		// sort libraries by name (this canonicalizes their order)
 // 		sortedLibs = (sorted
 // 			(values libraries)
@@ -341,7 +359,6 @@ class MB_Project {
 // 			add result (codeString lib this)
 // 		}
 // 		return (joinStrings result)
-	}
 
 	// Post-load processing
 
@@ -397,21 +414,21 @@ class MB_Project {
 class MB_Module {
 	constructor(moduleName) {
 		this.moduleName = moduleName || 'main';
-		this.moduleCategory = 'Library';
+		this.moduleCategory = '';
 		this.dependencies = [];
 		this.version = [1, 0];
 		this.author = 'unknown';
 		this.description = '';
 		this.tags = [];
+		this.isImplementation = false;
 		this.path = '';
 		this.choices = new Map();
 		this.variableNames = [];
 		this.blockList = [];
 		this.blockSpecs = new Map();
 		this.functions = [];
-		this.scripts = [];
+		this.scripts = []; // an array of [x, y, <cmds>]
 		this.translationSources = new Map();
-		this.isImplementation = false;
 	}
 
 	setModuleName(modName) {
@@ -475,18 +492,6 @@ class MB_Module {
 		return null;
 	}
 
-	defineFunctionInModule(funcName, funcParams, funcBody) {
-	// 	f = (newFunction funcName funcParams funcBody this)
-	// 	for i (count functions) {
-	// 		if ((functionName (at functions i)) == funcName) {
-	// 			atPut functions i f
-	// 			return f
-	// 		}
-	// 	}
-	// 	functions = (copyWith functions f)
-	// 	return f
-	}
-
 	addFunction(aFunction) {
 	// 	if (notNil (indexOf functions aFunction)) { return } // already there
 	// 	for f (copy functions) {
@@ -538,13 +543,47 @@ class MB_Module {
 
 	// saving
 
-	codeString(owningProject, newLibName) {
-		// Return a string containing the code for this MicroBlocksModule.
-		// If newLibName is not nil, this module is being exported as a library.
+	fixEmbeddedQuotes(s) {
+		if (!s.includes('\'')) return s;
+		return s.replaceAll('\'', '\'\''); // double embedded single quotes
+	}
+
+	codeString(owningProject, exportedLibName) {
+		// Return a string containing the code for this MB_Module.
+		// If exportedLibName is not nil, this module is being exported as a library.
+
+		let result = [];
+
+		let moduleLine = [
+			'module',
+			exportedLibName ? exportedLibName : this.moduleName];
+		if (this.moduleCategory != '') {
+			moduleLine.push(this.quoteIfNeeded(this.moduleCategory));
+		}
+		moduleLine = moduleLine.map(s => this.quoteIfNeeded(s));
+		result.push(moduleLine.join(' '));
+
+		result.push('author ' + this.quoteIfNeeded(this.author));
+		result.push('version ' + this.version[0] + '.' + this.version[1]);
+		if (this.dependencies.length > 0) {
+			result.push(this.arrayToDeclaration('depends', this.dependencies));
+		}
+		if (this.tags.length > 0) {
+			result.push(this.arrayToDeclaration('tags', this.tags));
+		}
+		if (this.description.length > 0) {
+			result.push('description ' + this.fixEmbeddedQuotes(this.description));
+		}
+		for (const choices of this.choices.keys()) {
+		}
+		return result.join('\n');
+
+		// todo: scripts and functions
+	}
 
 	// 	result = (list)
 	// 	modName = moduleName
-	// 	if (notNil newLibName) { modName = newLibName }
+	// 	if (notNil exportedLibName) { modName = exportedLibName }
 	// 	if (needsQuotes this modName) { modName = (join '''' modName '''') }
 	// 	add result (join 'module ' modName)
 	//
@@ -560,16 +599,16 @@ class MB_Module {
 	// 	if (needsQuotes this author) { by = (join '''' author '''') }
 	// 	add result (join 'author ' by (newline))
 	//
-	// 	add result (arrayToDeclaration this version 'version')
+	// 	add result (arrayToDeclaration this 'version' version)
 	//
 	// 	// add dependency declaration
 	// 	if ((count dependencies) > 0) {
-	// 		add result (arrayToDeclaration this dependencies 'depends')
+	// 		add result (arrayToDeclaration this 'depends' dependencies)
 	// 	}
 	//
 	// 	// add tag declaration
 	// 	if ((count tags) > 0) {
-	// 		add result (arrayToDeclaration this tags 'tags')
+	// 		add result (arrayToDeclaration this 'tags' tags)
 	// 	}
 	//
 	// 	// add choice lists
@@ -577,7 +616,7 @@ class MB_Module {
 	// 		for key (keys choices) {
 	// 			choice = (list key)
 	// 			addAll choice (at choices key)
-	// 			add result (arrayToDeclaration this choice 'choices')
+	// 			add result (arrayToDeclaration this 'choices' choice)
 	// 		}
 	// 	}
 	//
@@ -586,7 +625,7 @@ class MB_Module {
 	//
 	// 	// add variable declaration
 	// 	if ((count variableNames) > 0) {
-	// 		add result (arrayToDeclaration this variableNames 'variables')
+	// 		add result (arrayToDeclaration this 'variables' variableNames)
 	// 	}
 	//
 	// 	add result (newline)
@@ -636,14 +675,26 @@ class MB_Module {
 	// 	}
 	//
 	// 	// Add scripts if not exporting as a library
-	// 	if (isNil newLibName) {
+	// 	if (isNil exportedLibName) {
 	// 		add result (scriptString this)
 	// 	}
 	//
 	// 	return (joinStrings result)
+
+	quoteIfNeeded(s) {
+		// Return a quoted version of the given string if necessary for parsing.
+		// Otherwise, return the original string.
+
+		return this.needsQuotes(s) ? ('\'' + s + '\'') : s;
 	}
 
-	arrayToDeclaration(array, title) {
+	arrayToDeclaration(title, array) {
+		let result = [title];
+		for (const word of array) {
+			result.push(this.quoteIfNeeded(word));
+		}
+		return result.join(' ');
+	}
 	// 	declaration = (list title)
 	// 	for i array {
 	// 		if (needsQuotes this i) { i = (join '''' i '''') }
@@ -651,7 +702,6 @@ class MB_Module {
 	// 	}
 	// 	add declaration (newline)
 	// 	return (joinStrings declaration ' ')
-	}
 
 	scriptString() {
 	// 	if (isEmpty scripts) { return '' }
@@ -690,23 +740,21 @@ class MB_Module {
 		// Return true if the given string needs to be quoted in order to be parsed as
 		// a variable or function name.
 
-	// 	if (isNumber s) { return false }
-	// 	if (isOneOf s 'true' 'false') { return true }
-	// 	letters = (letters s)
-	// 	if (isEmpty letters) { return true }
-	// 	firstLetter = (first letters)
-	// 	if (or (isDigit firstLetter) ('-' == firstLetter)) { return true }
-	// 	if (not (or (isLetter firstLetter) ('_' == firstLetter))) { return true }
-	// 	for ch letters {
-	// 		if (not (or (isLetter ch) (isDigit ch) ('_' == ch))) { return true }
-	// 	}
-	// 	return false
+		if (typeof s === 'number') return false;
+		if (('true' == s) || ('false' == s) || ('' == s)) return true;
+		if ('-.0123456789'.includes(s[0])) return true;
+		if (!/[a-zA-Z_]/.test(s[0])) return true; // does not start with letter or underscore
+		for (const ch of s) {
+			if (!/[a-zA-Z0-9_]/.test(ch)) return true; // contains non-alphanumeric
+		}
+		return false;
 	}
 
 	// loading
 
 	unquoted(s) {
-		if ((s.length > 1) && (s[0] == '\'') && s.endsWith('\'')) {
+		if ((typeof s) != 'string') return s;
+		if ((s.length > 1) && (s[0] == '\'') && (s.at(-1) == '\'')) {
 			return s.slice(1, -1); // remove quotes
 		}
 		return s;
@@ -722,13 +770,13 @@ class MB_Module {
 					this.loadVersion(cmd);
 					break;
 				case 'author':
-					this.loadAuthor(cmd);
+					this.author = this.unquoted(cmd[1]);
 					break;
 				case 'depends':
 					this.loadDependencies(cmd);
 					break;
 				case 'description':
-					this.loadDescription(cmd);
+					this.description = this.unquoted(cmd[1]);
 					break;
 				case 'tags':
 					this.loadTags(cmd);
@@ -761,19 +809,11 @@ class MB_Module {
 		}
 	}
 
-	loadAuthor(cmd) {
-		this.author = this.unquoted(cmd[1]);
-	}
-
 	loadDependencies(cmd) {
 		this.dependencies = [];
 		for (let i = 1; i < cmd.length; i++) {
 			this.dependencies.push(this.unquoted(cmd[i]));
 		}
-	}
-
-	loadDescription(cmd) {
-		this.description = this.unquoted(cmd[1]);
 	}
 
 	loadTags(cmd) {
@@ -826,8 +866,8 @@ class MB_Module {
 	}
 
 	unquoted(s) {
-		if ((typeof item) != 'string') return s;
-		if ((s.length > 1) && (s[0] == '\'') && s.endsWith('\'')) {
+		if ((typeof s) != 'string') return s;
+		if ((s.length > 1) && (s[0] == '\'') && (s.at(-1) == '\'')) {
 			return s.slice(1, -1); // remove quotes
 		}
 		return s;
@@ -988,6 +1028,8 @@ scriptCount++;
 				if ((scriptCmds.length > 0) &&
 					(scriptCmds[0].length == 3) &&
 					(scriptCmds[0][0] == 'to')) {
+						// todo: figure out how to represent function references
+						// for now, don't add them to scripting area
 						console.log('function ref:', scriptCmds[0][1]);
 				} else {
 					this.scripts.push([
@@ -1091,16 +1133,16 @@ scriptCount++;
 
 	// localization
 
-	setTranslations(translationsDict) {
-	// 	translationSources = translationsDict
+	setTranslations(aMap) {
+		this.translationSources = aMap;
 	}
 
-	getTranslationSources (langCode) {
-	// 	return (at translationSources langCode)
+	getTranslationSources(langCode) {
+		return this.translationSources.get(langCode);
 	}
 
 	hasTranslationFor (langCode) {
-	// 	return (contains (keys translationSources) langCode)
+		return this.translationSources.includes(langCode);
 	}
 }
 
@@ -1175,3 +1217,13 @@ function testPerf() {
 	console.log('forOfWithBreak', Date.now() - startT, 'msecs', 'result = ', result);
 
 }
+
+function testLoad2() {
+	function loadFile(fileName, contents) {
+		let project = new MB_Project();
+		project.loadFromString(contents);
+		console.log(project.codeString());
+	}
+	MB_GUI.importLocalFile(loadFile);
+}
+
