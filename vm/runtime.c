@@ -826,8 +826,15 @@ static void setVariableValue(int varID, int byteCount, uint8 *data) {
 	}
 }
 
-static void sendVersionString() {
+static void sendVersionString(int chunkIndex) {
 	char s[100];
+	#if defined(DUELink)
+		if (1 == chunkIndex) { // return the PID as a hex string
+			snprintf(s, sizeof(s), "0x%06X", DUE_PID);
+			sendMessage(versionMsg, 1, strlen(s), s);
+			return;
+		}
+	#endif
 	snprintf(s, sizeof(s), " %s %s", VM_VERSION, boardType());
 	s[0] = 2; // data type (2 is string)
 	sendMessage(versionMsg, 0, strlen(s), s);
@@ -1163,7 +1170,7 @@ static void processShortMessage() {
 		sendAllCRCs();
 		break;
 	case getVersionMsg:
-		sendVersionString();
+		sendVersionString(chunkIndex);
 		break;
 	case getAllCodeMsg:
 		if (1 != chunkIndex) break; // ignore msg from 32-bit IDE
