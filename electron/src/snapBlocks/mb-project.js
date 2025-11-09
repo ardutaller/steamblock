@@ -70,6 +70,30 @@ class MB_Project {
 // 		}
 	}
 
+	updatingLibrary(newerModule) {
+		// Called when updating an existing library (the receiver) to a newer version.
+		// Update the block specs of existing functions that are being updated.
+		// Retain the block specs for any functions that are being removed
+		// and add "obsolete" to their labels to allow them to be identified
+		// in any scripts in which they appear.
+
+	// 	newSpecs = (blockSpecs newerModule)
+	// 	projectSpecs = (blockSpecs (project (findProjectEditor)))
+	// 	for oldSpec (values (blockSpecs this)) { // for each spec in this module
+	// 		op = (blockOp oldSpec)
+	// 		if (contains newSpecs op) {
+	// 			// update exising spec for op
+	// 			atPut projectSpecs op (at newSpecs op)
+	// 		} else {
+	// 			// mark old function as obsolete and append to module
+	// 			obsoletedLabel = (join 'obsolete ' (first (specs oldSpec)))
+	// 			atPut (specs oldSpec) 1 obsoletedLabel
+	// 			atPut projectSpecs op oldSpec
+	// 			add (blockList newerModule) op
+	// 		}
+	// 	}
+	}
+
 	removeLibraryNamed(libName) {
 		const lib = this.libraryNamed(libName);
 		if (!lib) return;
@@ -102,56 +126,10 @@ class MB_Project {
 	functionNamed(functionName) {
 		return this.allFunctions.find(f => (f.functionName == functionName));
 	}
-// 		f = (functionNamed main functionName)
-// 		if (notNil f) { return f }
-// 		for lib (values libraries) {
-// 			f = (functionNamed lib functionName)
-// 			if (notNil f) { return f }
-// 		}
-// 		return nil
 
 	libForFunction(aFunc) {
 		const f = this.functionNamed(aFunc.funcName);
 		return f ? f.moduleName : '';
-	}
-// 		funcName = (functionName aFunc)
-// 		for lib (values libraries) {
-// 			if (notNil (functionNamed lib funcName)) {
-// 				return (moduleName lib)
-// 			}
-// 		}
-// 		return ''
-
-	metaInfoForFunction(aFunc) {
-		// Return a tab-delimited block spec string for the given function:
-		//	blockType specString argTypes
-
-// 		funcName = (functionName aFunc)
-// 		spec = (at blockSpecs funcName)
-// 		if (isNil spec) { // no spec (very unlikely), so create one
-// 			specString = funcName
-// 			typeString = ''
-// 			for argName (argNames aFunc) {
-// 				specString = (join specString ' _')
-// 				typeString = (join typeString ' auto')
-// 			}
-// 			defaults = (list)
-// 			spec = (blockSpecFromStrings funcName ' ' specString typeString defaults)
-// 		}
-//
-// 		parts = (toList (argList (first (parse (specDefinitionString spec)))))
-// 		// parts is a list of: blockType functionName specString argTypes [defaultValues...]
-// 		if ((count parts) < 4) {
-// 			add parts '' // add empty arg types string for a parmeterless function
-// 		} else {
-// 			parts = (copyFromTo parts 1 4) // remove any default arg values
-// 		}
-// 		// parts is now a list of: blockType functionName specString argTypes
-// 		removeAt parts 2 // remove the function name
-// 		// parts is now a list of: blockType specString argTypes
-//
-// 		// join the blockType, specString, and argType strings with tab delimiters
-// 		return (joinStrings parts (string 9))
 	}
 
 	// Variables
@@ -159,14 +137,13 @@ class MB_Project {
 	allVariableNames() {
 		// Return a sorted array of all global variables. Use case-insensitive sort.
 
-// 		result = (dictionary)
-// 		addAll result (variableNames main)
-// 		for lib (values libraries) {
-// 			addAll result (variableNames lib)
-// 		}
-// 		return (sorted
-// 			(keys result)
-// 			(function s1 s2 { return ((toUpperCase s1) < (toUpperCase s2)) }))
+		result = main.variableNames.slice();
+		for (const lib of this.libraries) {
+			result = result.concat(lib.variableNames);
+		}
+		return result.sort(
+			(m1, m2) => m1.toLowerCase() < m2.toLowerCase
+		);
 	}
 
 	addVariable(newVar) {
@@ -308,28 +285,6 @@ class MB_Project {
 // 		return this
 	}
 
-	checkForNewerLibraryVersions(autoConfirm) {
-		// Check for newer versions of libraries used in this project.
-		// If true is passed to the optional autoConfirm parameter, update old
-		// libraries without asking. Otherwise ask the user for confirmation.
-
-// 		if (isNil autoConfirm) { autoConfirm = false }
-//
-// 		for libName (keys libraries) {
-// 			newVersion = (getNewerVersion (at libraries libName))
-// 			if (notNil newVersion) {
-// 				if (or
-// 					autoConfirm
-// 					(confirm (global 'page') nil (join
-// 						(localized 'Found a newer version of %1.' libName) (newline)
-// 						(localized 'Do you want me to update the one in the project?')))
-// 				) {
-// 					addLibrary this newVersion
-// 				}
-// 			}
-// 		}
-	}
-
 	// Saving
 
 	codeString() {
@@ -337,7 +292,7 @@ class MB_Project {
 
 		// sort libraries by name (this canonicalizes their order)
 		const sortedLibs = this.libraries.slice().sort(
-			(m1, m2) => m1.toLowerCase() < m2.toLowerCase
+			(m1, m2) => m1.moduleName.toLowerCase() < m2.moduleName.toLowerCase()
 		);
 
 		let result = [this.main.codeString(this)];
@@ -463,26 +418,6 @@ class MB_Module {
 		this.args = tagList.slice();
 	}
 
-	dependencyName(dep) {
-	// 	slashPos = (findLast dep '/')
-	// 	if (slashPos > 0) { slashPos = (slashPos + 1) }
-	// 	poundPos = (findLast dep '#')
-	// 	if (poundPos > 0) {
-	// 		poundPos = (poundPos - 1)
-	// 	} else {
-	// 		poundPos = (count dep)
-	// 	}
-	// 	return (withoutExtension (substring dep slashPos poundPos))
-	}
-
-	dependencyNames() {
-	// 	deps = (list)
-	// 	for dep dependencies {
-	// 		add deps (dependencyName this dep)
-	// 	}
-	// 	return deps
-	}
-
 	// functions
 
 	functionNamed(functionName) {
@@ -493,20 +428,15 @@ class MB_Module {
 	}
 
 	addFunction(aFunction) {
-	// 	if (notNil (indexOf functions aFunction)) { return } // already there
-	// 	for f (copy functions) {
-	// 		if ((functionName f) == (functionName aFunction)) {
-	// 			removeFunction this f
-	// 		}
-	// 	}
-	// 	setField aFunction 'module' this
-	// 	functions = (copyWith functions aFunction)
-	// 	MB_Project.needsRecompilation = true;
+		this.removeFunction(aFunction);
+		aFunction.module = this;
+		functions.push(aFunction);
+		MB_Project.needsRecompilation = true;
 	}
 
-	removeFunction (aFunction) {
-	// 	functions = (copyWithout functions aFunction)
-	// 	MB_Project.needsRecompilation = true;
+	removeFunction(aFunction) {
+		functions = functions.filter(f => f !== aFunction);
+		MB_Project.needsRecompilation = true;
 	}
 
 	removeSupercededFunctions(superceded) {
@@ -554,82 +484,31 @@ class MB_Module {
 
 		let result = [];
 
-		let moduleLine = [
-			'module',
-			exportedLibName ? exportedLibName : this.moduleName];
+		let moduleLine = [exportedLibName ? exportedLibName : this.moduleName];
 		if (this.moduleCategory != '') {
 			moduleLine.push(this.quoteIfNeeded(this.moduleCategory));
 		}
-		moduleLine = moduleLine.map(s => this.quoteIfNeeded(s));
-		result.push(moduleLine.join(' '));
-
+		this.addDeclaration('module', moduleLine, result);
 		result.push('author ' + this.quoteIfNeeded(this.author));
-		result.push('version ' + this.version[0] + '.' + this.version[1]);
-		if (this.dependencies.length > 0) {
-			result.push(this.arrayToDeclaration('depends', this.dependencies));
+		result.push('version ' + this.version[0] + ' ' + this.version[1]);
+		this.addDeclaration('depends', this.dependencies, result);
+		this.addDeclaration('tags', this.tags, result);
+		for (const [menuName, menuItems] of this.choices) {
+			this.addDeclaration('choices', [menuName].concat(menuItems), result);
 		}
-		if (this.tags.length > 0) {
-			result.push(this.arrayToDeclaration('tags', this.tags));
+		if (this.description) {
+			result.push('description \'' + this.fixEmbeddedQuotes(this.description) + '\'');
 		}
-		if (this.description.length > 0) {
-			result.push('description ' + this.fixEmbeddedQuotes(this.description));
+		this.addDeclaration('variables', this.variableNames, result);
+
+		// todo: add specs
+		// todo: add functions
+		if (!exportedLibName) { // add scripts if not exporting as a library
+			// todo: add scripts
 		}
-		for (const choices of this.choices.keys()) {
-		}
+
 		return result.join('\n');
-
-		// todo: scripts and functions
 	}
-
-	// 	result = (list)
-	// 	modName = moduleName
-	// 	if (notNil exportedLibName) { modName = exportedLibName }
-	// 	if (needsQuotes this modName) { modName = (join '''' modName '''') }
-	// 	add result (join 'module ' modName)
-	//
-	// 	if ('Library' != moduleCategory) {
-	// 		modCat = moduleCategory
-	// 		if (needsQuotes this modCat) { modCat = (join '''' modCat '''') }
-	// 		add result (join ' ' modCat)
-	// 	}
-	// 	add result (newline)
-	//
-	// 	// add author
-	// 	by = author
-	// 	if (needsQuotes this author) { by = (join '''' author '''') }
-	// 	add result (join 'author ' by (newline))
-	//
-	// 	add result (arrayToDeclaration this 'version' version)
-	//
-	// 	// add dependency declaration
-	// 	if ((count dependencies) > 0) {
-	// 		add result (arrayToDeclaration this 'depends' dependencies)
-	// 	}
-	//
-	// 	// add tag declaration
-	// 	if ((count tags) > 0) {
-	// 		add result (arrayToDeclaration this 'tags' tags)
-	// 	}
-	//
-	// 	// add choice lists
-	// 	if ((count (keys choices)) > 0) {
-	// 		for key (keys choices) {
-	// 			choice = (list key)
-	// 			addAll choice (at choices key)
-	// 			add result (arrayToDeclaration this 'choices' choice)
-	// 		}
-	// 	}
-	//
-	// 	// add description
-	// 	add result (join 'description ' (printString description) (newline))
-	//
-	// 	// add variable declaration
-	// 	if ((count variableNames) > 0) {
-	// 		add result (arrayToDeclaration this 'variables' variableNames)
-	// 	}
-	//
-	// 	add result (newline)
-	//
 	// 	projectSpecs = (blockSpecs owningProject)
 	// 	processed = (dictionary)
 	//
@@ -678,8 +557,16 @@ class MB_Module {
 	// 	if (isNil exportedLibName) {
 	// 		add result (scriptString this)
 	// 	}
-	//
-	// 	return (joinStrings result)
+
+	addDeclaration(title, items, result) {
+		if (items.length == 0) return;
+
+		let line = [title];
+		for (const word of items) {
+			line.push(this.quoteIfNeeded(word));
+		}
+		result.push(line.join(' '));
+	}
 
 	quoteIfNeeded(s) {
 		// Return a quoted version of the given string if necessary for parsing.
@@ -687,21 +574,6 @@ class MB_Module {
 
 		return this.needsQuotes(s) ? ('\'' + s + '\'') : s;
 	}
-
-	arrayToDeclaration(title, array) {
-		let result = [title];
-		for (const word of array) {
-			result.push(this.quoteIfNeeded(word));
-		}
-		return result.join(' ');
-	}
-	// 	declaration = (list title)
-	// 	for i array {
-	// 		if (needsQuotes this i) { i = (join '''' i '''') }
-	// 		add declaration (toString i)
-	// 	}
-	// 	add declaration (newline)
-	// 	return (joinStrings declaration ' ')
 
 	scriptString() {
 	// 	if (isEmpty scripts) { return '' }
@@ -873,21 +745,26 @@ class MB_Module {
 		return s;
 	}
 
-	browserEmbeddedLibs() {
-	// 	result = (list)
-	// 	todo = (list 'Libraries')
-	// 	while (notEmpty todo) {
-	// 		libpath = (removeFirst todo)
-	// 		for dirName (listEmbeddedFiles libpath true) {
-	// 			add todo (join libpath '/' dirName)
-	// 		}
-	// 		for fName (listEmbeddedFiles libpath false) {
-	// 			if (endsWith fName '.ubl') {
-	// 				add result (join libpath '/' fName)
-	// 			}
-	// 		}
-	// 	}
-	// 	return result
+	checkForNewerLibraryVersions(autoConfirm) {
+		// Check for newer versions of libraries used in this project.
+		// If true is passed to the optional autoConfirm parameter, update old
+		// libraries without asking. Otherwise ask the user for confirmation.
+
+// 		if (isNil autoConfirm) { autoConfirm = false }
+//
+// 		for libName (keys libraries) {
+// 			newVersion = (getNewerVersion (at libraries libName))
+// 			if (notNil newVersion) {
+// 				if (or
+// 					autoConfirm
+// 					(confirm (global 'page') nil (join
+// 						(localized 'Found a newer version of %1.' libName) (newline)
+// 						(localized 'Do you want me to update the one in the project?')))
+// 				) {
+// 					addLibrary this newVersion
+// 				}
+// 			}
+// 		}
 	}
 
 	getNewerVersion() {
@@ -917,28 +794,21 @@ class MB_Module {
 	// 	return nil
 	}
 
-	updatingLibrary(newerModule) {
-		// Called when updating an existing library (the receiver) to a newer version.
-		// Update the block specs of existing functions that are being updated.
-		// Retain the block specs for any functions that are being removed
-		// and add "obsolete" to their labels to allow them to be identified
-		// in any scripts in which they appear.
-
-	// 	newSpecs = (blockSpecs newerModule)
-	// 	projectSpecs = (blockSpecs (project (findProjectEditor)))
-	// 	for oldSpec (values (blockSpecs this)) { // for each spec in this module
-	// 		op = (blockOp oldSpec)
-	// 		if (contains newSpecs op) {
-	// 			// update exising spec for op
-	// 			atPut projectSpecs op (at newSpecs op)
-	// 		} else {
-	// 			// mark old function as obsolete and append to module
-	// 			obsoletedLabel = (join 'obsolete ' (first (specs oldSpec)))
-	// 			atPut (specs oldSpec) 1 obsoletedLabel
-	// 			atPut projectSpecs op oldSpec
-	// 			add (blockList newerModule) op
+	browserEmbeddedLibs() {
+	// 	result = (list)
+	// 	todo = (list 'Libraries')
+	// 	while (notEmpty todo) {
+	// 		libpath = (removeFirst todo)
+	// 		for dirName (listEmbeddedFiles libpath true) {
+	// 			add todo (join libpath '/' dirName)
+	// 		}
+	// 		for fName (listEmbeddedFiles libpath false) {
+	// 			if (endsWith fName '.ubl') {
+	// 				add result (join libpath '/' fName)
+	// 			}
 	// 		}
 	// 	}
+	// 	return result
 	}
 
 	importDependencies(scripter) {
@@ -1001,22 +871,6 @@ functionCount++;
 			}
 		}
 		MB_Project.needsRecompilation = true;
-	}
-
-	appendFunction(anArray, f) {
-		// Append function f to the given array of functions and return the new array. If the
-		// array already contains a function with the same name, replace it and issue a warning.
-
-	// 	functionName = (functionName f)
-	// 	for i (count anArray) {
-	// 		item = (at anArray i)
-	// 		if ((functionName item) == functionName) {
-	// 			print 'Warning: There are multiple definitions of' functionName
-	// 			atPut anArray i f
-	// 			return anArray
-	// 		}
-	// 	}
-	// 	return (copyWith anArray f)
 	}
 
 	loadScripts(cmdList) {
