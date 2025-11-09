@@ -1,6 +1,6 @@
 module DueSTEM
 author DUELink
-version 1 1 
+version 1 2 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
 choices dueSTEM_touchPin P0 P1 P2 P3 A B left right up down 
@@ -12,16 +12,16 @@ Touch sensing works only on pins with capacitive touch circuits including pins 0
 '
 variables dueSTEM_accelAddr 
 
-  spec ' ' 'dueSTEM_beep' 'due beep _ Hz _ msecs' 'num num' 440 100
-  spec 'r' 'dueSTEM_light' 'due light level'
-  spec 'r' 'dueSTEM_touched' 'due pin _  touched : threshold _' 'menu.dueSTEM_touchPin num' 'P1' 100
+  spec 'r' 'dueSTEM_light' 'Due light level'
+  spec 'r' 'dueSTEM_touched' 'Due pin _  touched : threshold _' 'menu.dueSTEM_touchPin num' 'P1' 100
   space
-  spec ' ' 'dueSTEM_setLED' 'dueSTEM red _ green _ blue _ (0-1023)' 'auto auto auto' 100 0 200
-  spec 'r' 'dueSTEM_button' 'dueSTEM _ button?' 'menu.dueSTEM_buttonName' 'left'
-  spec 'r' 'dueSTEM_temperature' 'dueSTEM temperature'
-  spec 'r' 'dueSTEM_tilt' 'dueSTEM tilt _' 'menu.dueSTEM_axis' 'x'
+  spec ' ' 'dueSTEM_setLED' 'DueSTEM red _ green _ blue _ (0-1023)' 'auto auto auto' 100 0 200
+  spec 'r' 'dueSTEM_button' 'DueSTEM _ button?' 'menu.dueSTEM_buttonName' 'left'
+  spec 'r' 'dueSTEM_temperature' 'DueSTEM temperature'
+  spec 'r' 'dueSTEM_tilt' 'DueSTEM tilt _' 'menu.dueSTEM_axis' 'x'
   space
-  spec 'r' '[misc:dueLinkPID]' 'due PID'
+  spec 'r' 'dueSTEM_buzzerPin' 'Due buzzer pin'
+  spec 'r' '[misc:dueLinkPID]' 'DuePID'
   space
   spec 'r' '_dueSTEM_pulseTime' '_dueSTEM_pulseTime _' 'num' 0
   spec ' ' '_dueSTEM_accelInit' '_dueSTEM_accelInit'
@@ -62,12 +62,6 @@ to '_dueSTEM_pulseTime' pin {
   return (at 1 pulses)
 }
 
-to dueSTEM_beep freq msecs {
-  '[io:playTone]' -1 freq
-  waitMillis msecs
-  '[io:playTone]' -1 0
-}
-
 to dueSTEM_button which {
   if ((boardType) != 'DueSTEM') {return (booleanConstant false)}
   if ('left' == which) {
@@ -80,6 +74,23 @@ to dueSTEM_button which {
     return (digitalReadOp 10 'down')
   }
   return (booleanConstant false)
+}
+
+to dueSTEM_buzzerPin {
+  if (or ((boardType) == 'CincoBit') ((boardType) == 'PixoBit')) {
+    return 21
+  } ((boardType) == 'DueSTEM') {
+    return 3
+  } ((boardType) == 'Clipit') {
+    return 7
+  } (('[misc:dueLinkPID]') == (hexToInt '0C0001')) {
+    comment 'Ghizzy'
+    return 3
+  } (('[misc:dueLinkPID]') == (hexToInt '0C0003')) {
+    comment 'Holiday Tree'
+    return 1
+  }
+  return -1
 }
 
 to dueSTEM_light {
