@@ -18,7 +18,6 @@ variables dueSTEM_accelAddr
   space
   spec ' ' 'dueSTEM_setLED' 'dueSTEM red _ green _ blue _ (0-1023)' 'auto auto auto' 100 0 200
   spec 'r' 'dueSTEM_button' 'dueSTEM _ button?' 'menu.dueSTEM_buttonName' 'left'
-  space
   spec 'r' 'dueSTEM_temperature' 'dueSTEM temperature'
   spec 'r' 'dueSTEM_tilt' 'dueSTEM tilt _' 'menu.dueSTEM_axis' 'x'
   space
@@ -70,7 +69,7 @@ to dueSTEM_beep freq msecs {
 }
 
 to dueSTEM_button which {
-  if ((boardType) != 'DueSTEM') {return 0}
+  if ((boardType) != 'DueSTEM') {return (booleanConstant false)}
   if ('left' == which) {
     return (digitalReadOp 20 'down')
   } ('right' == which) {
