@@ -127,9 +127,6 @@ method microBlocksSpecs SmallCompiler {
 		'-'
 		(array 'r' 'getLastBroadcast'	'last message')
 		(array 'r' 'argOrDefault'		'arg _ default _' 'num auto' 1 'default')
-		'-'
-		(array ' ' 'callCustomCommand'	'call _ : with _' 'str.functionNameMenu str' 'function name' 'parameter list')
-		(array 'r' 'callCustomReporter'	'call _ : with _' 'str.functionNameMenu str' 'function name' 'parameter list')
 	'cat;Operators'
 		(array 'r' '+'					'_ + _' 'num num' 10 2)
 		(array 'r' '-'					'_ − _' 'num num' 10 2)
@@ -212,6 +209,9 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' 'newArray'				'new list length _' 'num' 10)
 		(array ' ' 'fillArray'				'fill list _ with _' 'str auto' nil 0)
 		(array ' ' 'fillList'				'fill list _ with _' 'str auto' nil 0)
+	'Prims-Control (not in palette)'
+		(array ' ' 'callCustomCommand'	'call _ : with _' 'str.functionNameMenu str' 'function name' 'parameter list')
+		(array 'r' 'callCustomReporter'	'call _ : with _' 'str.functionNameMenu str' 'function name' 'parameter list')
 	'Prims-Display (not in palette)'
 		(array ' ' '[display:mbDisplay]'	'display _' 'microbitDisplay')
 		(array ' ' '[display:mbDisplayOff]'	'clear display')
