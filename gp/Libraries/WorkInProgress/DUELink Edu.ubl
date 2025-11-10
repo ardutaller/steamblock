@@ -1,6 +1,6 @@
 module 'DUELink Edu'
 author DUELink
-version 1 4 
+version 1 5 
 choices dueSTEM_clipItPad A B left right up down P1 P2 P3 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
@@ -14,7 +14,7 @@ Touch sensing works only on pins with capacitive touch circuits including pins 0
 variables dueSTEM_accelAddr 
 
   spec 'r' 'dueSTEM_light' 'due light level'
-  spec 'r' 'dueSTEM_touched' 'due pin _ touched' 'num' 1
+  spec 'r' 'dueSTEM_touched' 'due pin _ touched?' 'num' 1
   spec 'r' 'dueSTEM_buzzerPin' 'due buzzer pin'
   spec 'r' '[misc:dueLinkPID]' 'due PID'
   space
