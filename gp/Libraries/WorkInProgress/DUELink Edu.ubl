@@ -14,7 +14,7 @@ Touch sensing works only on pins with capacitive touch circuits including pins 0
 variables dueSTEM_accelAddr 
 
   spec 'r' 'dueSTEM_light' 'due light level'
-  spec 'r' 'dueSTEM_touched' 'due pin _ touched : threshold _' 'num num' 1 100
+  spec 'r' 'dueSTEM_touched' 'due pin _ touched' 'num' 1
   spec 'r' 'dueSTEM_buzzerPin' 'due buzzer pin'
   spec 'r' '[misc:dueLinkPID]' 'due PID'
   space
@@ -25,7 +25,6 @@ variables dueSTEM_accelAddr
   space
   spec 'r' 'dueSTEM_clipitTouched' 'Clipit pad _ touched : threshold _' 'menu.dueSTEM_clipItPad num' 'A' 100
   space
-  spec 'r' '_dueSTEM_pulseTime' '_dueSTEM_pulseTime _' 'num' 0
   spec ' ' '_dueSTEM_accelInit' '_dueSTEM_accelInit'
   spec 'r' '_dueSTEM_accelRead16BitReg' '_dueSTEM_accelRead16BitReg _' 'auto' 13
 
@@ -50,24 +49,6 @@ to '_dueSTEM_accelRead16BitReg' reg {
   local '16bit' (((at 2 buf) << 8) | (at 1 buf))
   '16bit' = (((v '16bit') << 15) >> 15)
   return ((100 * (v '16bit')) / 255)
-}
-
-to '_dueSTEM_pulseTime' pin {
-  comment 'Charge up pin'
-  local 'startT' (millisOp)
-  digitalWriteOp pin true
-  waitMicros 200
-  callCustomCommand '[sensors:captureStart]' ('[data:makeList]' pin)
-  repeatUntil ((callCustomReporter '[sensors:captureCount]') > 0) {
-    comment 'Wait until pin state change or timeout.'
-    if ((millisSince startT) > 20) {
-      return 0
-    }
-  }
-  local 'pulses' (callCustomReporter '[sensors:captureEnd]')
-  comment 'Start charging pin'
-  digitalWriteOp pin true
-  return (at 1 pulses)
 }
 
 to dueSTEM_button which {
@@ -128,7 +109,7 @@ to dueSTEM_clipitTouched padName optionalThreshold {
   } ('P3' == padName) {
     pin = 3
   }
-  dueSTEM_touched pin (argOrDefault 2 100)
+  return (dueSTEM_touched pin (argOrDefault 2 100))
 }
 
 to dueSTEM_light {
@@ -160,13 +141,23 @@ to dueSTEM_tilt axis {
   return 0
 }
 
-to dueSTEM_touched pin optionalThreshold {
-  local 'pTime' ('_dueSTEM_pulseTime' pin)
-  if (pTime < 0) {
-    comment 'Negative pulse time glitch; try again'
-    pTime = ('_dueSTEM_pulseTime' pin)
-  }
-  waitMillis 5
-  return (pTime > (argOrDefault 2 100))
+to dueSTEM_touched pin {
+  comment 'Charge up pin'
+  local 'startT' (millisOp)
+  digitalWriteOp pin true
+  waitMicros 200
+  local 'on' (digitalReadOp pin)
+  comment 'Tricky code: MicroBlocks does not switch tasks for waits of 30 microdseconds
+or less so the following three blocks are essentially a busy wait. Because
+of overhead, this takes 100-120 usecs on DUELink boards.
+If the pin is still high after that time, it is because it is touched, thus increasing
+the discharge time of the effective capacitance on the pin.'
+  waitMicros 30
+  waitMicros 30
+  waitMicros 30
+  local 'touched' (digitalReadOp pin)
+  comment 'Start charging pin'
+  digitalWriteOp pin true
+  return touched
 }
 
