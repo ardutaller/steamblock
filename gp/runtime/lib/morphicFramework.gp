@@ -927,17 +927,16 @@ method doOneCycle Page {
 	// sound output buffer, thus decreasing the latency for starting a sound.
 
 	t = (newTimer)
-	step soundMixer
+	// step soundMixer
 	gcIfNeeded
 	processEvents this
+	processLastCall (api (smallRuntime))
 	step hand
 	step morph
 	stepSchedules this
 	wakeUpDisplayTasks taskMaster
 	stepTasks taskMaster 75
 	if (or redrawAll (notEmpty damages)) { fixDamages this }
-
-	processLastCall (api (smallRuntime))
 
 	// sleep for any extra time, but always sleep a little to ensure that
 	// we get events (and to return control to the browser)

@@ -67,6 +67,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.showLibraryDialog') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		importLibrary scripter
+	} (endPoint == 'ide.resize') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		browserResize editor (at params 1) (at params 2)
 
 	// Project
 	} (endPoint == 'project.save') {

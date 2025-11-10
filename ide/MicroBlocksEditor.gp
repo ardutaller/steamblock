@@ -361,7 +361,6 @@ method updateIndicator MicroBlocksEditor {
 // stepping
 
 method step MicroBlocksEditor {
-	checkForBrowserResize this
 	processBrowserDroppedFile this
 	processBrowserFileSave this
 	processDroppedFiles this
@@ -398,25 +397,14 @@ method updateFPS MicroBlocksEditor {
 
 // browser support
 
-method checkForBrowserResize MicroBlocksEditor {
-	winSize = (windowSize)
-	browserSize = (browserSize)
-	browserW = (at browserSize 1)
-	browserH = (at browserSize 2)
-	dx = (abs ((at winSize 1) - browserW))
-	dy = (abs ((at winSize 2) - browserH))
-	if (and (dx <= 1) (dy <= 1)) {
-		// At the smallest browser zoom levels, sizes can differ by one pixel
-		return // no change
-	}
-
-	openWindow browserW browserH true
+method browserResize MicroBlocksEditor newWidth newHeight {
+	openWindow newWidth newHeight true
 	oldScale = (global 'scale')
 	page = (global 'page')
 	updateScale page
+	scale = (global 'scale')
 	pageM = (morph page)
-	winSize = (windowSize)
-	setExtent pageM (at winSize 3) (at winSize 4)
+	setExtent pageM (* newWidth scale) (* newHeight scale)
 
 	for each (parts pageM) { pageResized (handler each) }
 	if ((global 'scale') != oldScale) {
