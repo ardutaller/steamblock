@@ -1361,13 +1361,16 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'Tone'
 		importEmbeddedLibrary scripter 'TFT'
 	} (or ('DueSTEM' == boardType) ('PixoBit' == boardType)) {
-		importEmbeddedLibrary scripter 'DueSTEM'
+		importEmbeddedLibrary scripter 'DUELink Edu'
 		importEmbeddedLibrary scripter 'Tiny OLED'
 		importEmbeddedLibrary scripter 'Tone'
+		if ('DueSTEM' == boardType) { importEmbeddedLibrary scripter 'Servo' }
 	} (or ('CincoBit' == boardType) ('Clipit' == boardType)) {
-		importEmbeddedLibrary scripter 'DueSTEM'
+		importEmbeddedLibrary scripter 'DUELink Edu'
 		importEmbeddedLibrary scripter 'LED Display'
 		importEmbeddedLibrary scripter 'Tone'
+	} ('DUELink' == boardType)) {
+		importEmbeddedLibrary scripter 'DUELink Edu'
 	}
 }
 
