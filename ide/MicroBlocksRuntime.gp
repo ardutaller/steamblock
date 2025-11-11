@@ -1369,6 +1369,9 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'DUELink Edu'
 		importEmbeddedLibrary scripter 'LED Display'
 		importEmbeddedLibrary scripter 'Tone'
+	} (or ('Ghizzy' == boardType) ('Holiday Tree' == boardType)) {
+		importEmbeddedLibrary scripter 'DUELink Edu'
+		importEmbeddedLibrary scripter 'Tone'
 	} ('DUELink' == boardType) {
 		importEmbeddedLibrary scripter 'DUELink Edu'
 	}
