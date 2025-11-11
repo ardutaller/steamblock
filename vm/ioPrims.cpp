@@ -2351,6 +2351,51 @@ static void setServo(int pin, int usecs) {
 	}
 }
 
+#elif defined(DUELink)
+
+#include <Servo.h>
+Servo servo[MAX_SERVOS];
+
+// Map MicroBlocks ("edge connector") pin number to the index of a servo. -1 mean unused.
+int8_t servoIndexForPin[DIGITAL_PINS] = {
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1, -1, -1, -1, -1, -1};
+
+static void setServo(int pin, int usecs) {
+	// find the servo for this pin
+	int servoIndex = servoIndexForPin[pin];
+
+	if (usecs <= 0) { // turn off the servo; do nothing if not running
+		if (servoIndex >= 0) {
+			servo[servoIndex].detach();
+			servoIndexForPin[pin] = -1;
+		}
+		return;
+	}
+
+	if (servoIndex >= 0) { // update servo
+		servo[servoIndex].writeMicroseconds(usecs);
+	} else { // no servo is assigned to this pin; try to find and start one
+		int mappedPin = mapDigitalPinNum(pin);
+		if (mappedPin < 0) return;
+		for (int i = 0; i < MAX_SERVOS; i++) {
+			if (!servo[i].attached()) { // found an unused servo entry
+				servoIndex = i;
+				servoIndexForPin[pin] = i;
+				servo[i].attach(mappedPin, usecs);
+				return;
+			}
+		}
+	}
+}
+
+void stopServos() {
+	for (int pin = 0; pin < DIGITAL_PINS; pin++) {
+		setServo(pin, 0);
+	}
+}
+
 #elif defined(__ZEPHYR__)
 
 static void setServo(int pin, int usecs) {}
@@ -2735,9 +2780,6 @@ OBJ primSetServo(int argCount, OBJ *args) {
 	if ((pin < 0) || (pin >= DIGITAL_PINS)) return falseObj;
 	#if defined(USE_DIGITAL_PIN_MAP)
 		pin = digitalPin[pin];
-	#elif defined(DUELink)
-		pin = mapDigitalPinNum(pin);
-		if (pin < 0) return falseObj;
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pin) && (pin <= 139)) {
 			pin = pin - 100; // allows access to unmapped IO pins 0-39 as 100-139
