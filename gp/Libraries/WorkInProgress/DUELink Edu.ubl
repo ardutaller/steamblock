@@ -1,6 +1,6 @@
 module 'DUELink Edu'
 author DUELink
-version 1 6 
+version 1 7 
 choices dueSTEM_clipItPad A B left right up down P1 P2 P3 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
@@ -29,12 +29,16 @@ variables dueSTEM_accelAddr
   spec 'r' '_dueSTEM_accelRead16BitReg' '_dueSTEM_accelRead16BitReg _' 'auto' 13
 
 to '_dueSTEM_accelInit' {
-  if (dueSTEM_accelAddr != 0) {return}
+  comment 'MC3216
+https://www.mouser.com/datasheet/2/821/MEMSIC_MC3216_Datasheet-1879973.pdf'
+  if (dueSTEM_accelAddr != 0) {
+    return
+  }
   dueSTEM_accelAddr = (hexToInt '4C')
   comment 'Turn off accelerometer before changing settings'
   i2cSet dueSTEM_accelAddr 7 0
-  comment 'Sampling rate: 128 Hz'
-  i2cSet dueSTEM_accelAddr 8 (hexToInt '15')
+  comment 'Sampling rate: 256 Hz'
+  i2cSet dueSTEM_accelAddr 8 10
   comment '+/-2G range, 10-bit resolution'
   i2cSet dueSTEM_accelAddr (hexToInt '20') 3
   comment 'Start accelerometer'
