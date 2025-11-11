@@ -1281,7 +1281,7 @@ void hardwareInit() {
 		PA_1_ALT1,	// TIM1_CH2, *TIM2_CH2*, TIM17_CH1
 		PA_4_ALT2,	// TIM1_CH2N, TIM14_CH1, *TIM17_CH1N* (buzzer on Ghizzy)
 		PA_5_ALT2,	// TIM1_CH1, TIM1_CH3N, *TIM2_CH1
-		PA_6_ALT1,	// TIM3_CH1, *TIM16_CH1*
+		PA_6,		// *TIM3_CH1*, TIM16_CH1
 		PA_7_ALT1,	// TIM1_CH1N, *TIM3_CH2*, TIM14_CH1, TIM17_CH1
 		PA_8_ALT2,	// TIM1_CH1, TIM1_CH2N, *TIM1_CH3N, TIM3_CH3, TIM3_CH4, TIM14_CH1
 		PB_1_ALT2,	// TIM1_CH2N, TIM1_CH3N, *TIM3_CH4*, TIM14_CH1
@@ -1292,7 +1292,12 @@ void hardwareInit() {
 		-1, 		// xxx TIM3_CH1
 		-1, 		// xxx TIM3_CH2, TIM3_CH3
 		-1,			// xxx TIM16_CH1N
-		PB_7,		// TIM1_CH4, TIM3_CH1, TIM3_CH4, TIM16_CH1, TIM17_CH1N
+		PB_7,		// *TIM1_CH4*, TIM3_CH1, TIM3_CH4, TIM16_CH1, TIM17_CH1N
+		-1,
+		-1,
+		-1,
+		-1,
+		-1,
 	};
 
 	static int duePWMPin(int pinNum) {
@@ -2346,7 +2351,7 @@ static void setServo(int pin, int usecs) {
 	}
 }
 
-#elif defined(__ZEPHYR__) || defined(DUELink)
+#elif defined(__ZEPHYR__)
 
 static void setServo(int pin, int usecs) {}
 void stopServos() {}
@@ -2646,7 +2651,7 @@ static int writeDAC(int sample) { return 0; }
 
 OBJ primHasTone(int argCount, OBJ *args) {
 	#if defined(ARDUINO_SAM_DUE)
-		// Arduino Tone library does not work on DUELink
+		// Arduino Tone library does not work on Arduino Due
 		return falseObj;
 	#else
 		return trueObj;
@@ -2710,7 +2715,7 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 }
 
 OBJ primHasServo(int argCount, OBJ *args) {
-	#if defined(__ZEPHYR__) || defined(DUELink)
+	#if defined(__ZEPHYR__)
 		return falseObj;
 	#else
 		return trueObj;
