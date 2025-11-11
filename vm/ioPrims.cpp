@@ -1500,7 +1500,7 @@ int mapDigitalPinNum(int pinNum) {
 				duePin = (IS_DUE_CINCO) ? cincoEdgePin[pinNum] : pixoEdgePin[pinNum];
 			} else {
 				duePin = dueStandardPin[pinNum];
-				if ((21 == duePin) || (22 == duePin)) {
+				if ((21 == pinNum) || (22 == pinNum)) {
 					// DUELink pins 21 and 22 (PA_9 and PA_10) are not available as GPIOs
 					// on most boards and are connected to the USB pins (PA_11, PA_12) on
 					// many boards, which causes a hard crash if those pins are used.
@@ -1513,7 +1513,7 @@ int mapDigitalPinNum(int pinNum) {
 						(0x000012 == DUE_PID) || // DueDuino
 						(0x000013 == DUE_PID) // Stamp
 					)) {
-						duePin = -1; // block pins shared with USB
+						duePin = -1; // block pin
 					}
 				}
 			}
