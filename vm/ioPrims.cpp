@@ -1356,6 +1356,8 @@ const char * boardType() {
 		}
 		if (IS_DUE_STEM) return "DueSTEM";
 		if (IS_DUE_CLIPIT) return "Clipit";
+		if (DUE_PID == 0x0C0001) return "Ghizzy";
+		if (DUE_PID == 0x0C0003) return "Holiday Tree";
 	#endif
 	return BOARD_TYPE;
 }
@@ -1493,6 +1495,22 @@ int mapDigitalPinNum(int pinNum) {
 				duePin = (IS_DUE_CINCO) ? cincoEdgePin[pinNum] : pixoEdgePin[pinNum];
 			} else {
 				duePin = dueStandardPin[pinNum];
+				if ((21 == duePin) || (22 == duePin)) {
+					// DUELink pins 21 and 22 (PA_9 and PA_10) are not available as GPIOs
+					// on most boards and are connected to the USB pins (PA_11, PA_12) on
+					// many boards, which causes a hard crash if those pins are used.
+					// This is a white list of boards that use pins 21 and 22 and thus do
+					// not connect them to the USB pins. Pins 21 and 22 are blocked on all
+					// other DUELink standard boards.
+					if (!(
+						(0x000010 == DUE_PID) || // DueSTEM
+						(0x000011 == DUE_PID) || // Clipit
+						(0x000012 == DUE_PID) || // DueDuino
+						(0x000013 == DUE_PID) // Stamp
+					)) {
+						duePin = -1; // block pins shared with USB
+					}
+				}
 			}
 		}
 		if (255 == duePin) duePin = -1;
