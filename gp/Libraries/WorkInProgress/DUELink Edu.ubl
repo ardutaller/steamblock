@@ -1,6 +1,6 @@
 module 'DUELink Edu'
 author DUELink
-version 1 5 
+version 1 6 
 choices dueSTEM_clipItPad A B left right up down P1 P2 P3 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
@@ -14,14 +14,14 @@ Touch sensing works only on pins with capacitive touch circuits including pins 0
 variables dueSTEM_accelAddr 
 
   spec 'r' 'dueSTEM_light' 'due light level'
-  spec 'r' 'dueSTEM_touched' 'due pin _ touched?' 'num' 1
+  spec 'r' 'dueSTEM_touched' 'due pin _ touched' 'num' 1
   spec 'r' 'dueSTEM_buzzerPin' 'due buzzer pin'
   spec 'r' '[misc:dueLinkPID]' 'due PID'
   space
   spec ' ' 'dueSTEM_setLED' 'DueSTEM bulb red _ green _ blue _ (0-1000)' 'auto auto auto' 100 0 200
-  spec 'r' 'dueSTEM_button' 'DueSTEM _ button?' 'menu.dueSTEM_buttonName' 'left'
+  spec 'r' 'dueSTEM_button' 'DueSTEM _ button' 'menu.dueSTEM_buttonName' 'left'
   spec 'r' 'dueSTEM_tilt' 'DueSTEM tilt _' 'menu.dueSTEM_axis' 'x'
-  spec 'r' 'dueSTEM_temperature' 'DueSTEM temperature'
+  spec 'r' 'dueSTEM_temperature' 'DueSTEM temperature (x10)'
   space
   spec 'r' 'dueSTEM_clipitTouched' 'Clipit pad _ touched : threshold _' 'menu.dueSTEM_clipItPad num' 'A' 100
   space
@@ -125,8 +125,8 @@ to dueSTEM_setLED r g b {
 
 to dueSTEM_temperature {
   if ((boardType) != 'DueSTEM') {return 0}
-  local 'mVx10' ((33000 * (analogReadOp 9)) / 1023)
-  return ((mVx10 - 4000) / 195)
+  local 'mVx10' ((330000 * (analogReadOp 9)) / 1023)
+  return ((mVx10 - 40000) / 195)
 }
 
 to dueSTEM_tilt axis {
