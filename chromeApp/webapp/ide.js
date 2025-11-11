@@ -31,17 +31,15 @@ IDE.init = function () {
 };
 
 IDE.resize = function () {
-		let winHeight = window.innerHeight,
-			topBarHeight = document.querySelector('.top-bar').clientHeight,
-			tipBarHeight = document.querySelector('.tip-bar').clientHeight,
-			winWidth = window.innerWidth,
-			leftBarWidth = document.querySelector('.left-bar').clientWidth,
-			newHeight = winHeight - (topBarHeight + tipBarHeight);
+	let winHeight = window.innerHeight,
+		topBarHeight = document.querySelector('.top-bar').clientHeight,
+		tipBarHeight = document.querySelector('.tip-bar').clientHeight,
+		winWidth = window.innerWidth,
+		leftBarWidth = document.querySelector('.left-bar').clientWidth,
+		newHeight = winHeight - (topBarHeight + tipBarHeight);
 
-		document.querySelector('.workspace').style.height = newHeight + 'px';
-
-		GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
-
+	document.querySelector('.workspace').style.height = newHeight + 'px';
+	GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
 };
 
 window.addEventListener('resize', () => { IDE.resize(); });
@@ -244,9 +242,7 @@ IDE.build = function () {
 	this.populateCategories(document.querySelector('.categories'));
 	this.populateScriptControls(document.querySelector('.script-controls'));
 	this.tipBar.init();
-	// FIXME first resize is not setting the right dimensions! Check the rounded
-	// corner to see what we mean.
-	this.resize();
 	// check connection every 500ms
 	setInterval(()=>{ GP.apiCall('ide.updateConnection'); },500);
+	this.resize();
 };

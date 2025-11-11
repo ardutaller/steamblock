@@ -51,7 +51,7 @@ to openMicroBlocksEditor devMode {
 	developerModeChanged editor
 	// attempt to import extra project or scripts from URL; does nothing if absent
 	importFromURL editor (browserURL)
-	setProperty (api (smallRuntime)) 'ready' true
+	browserNotify 'ready'
 	startSteppingSafely page
 }
 
@@ -803,7 +803,6 @@ method pageResized MicroBlocksEditor {
 // top bar properties
 
 method topBarBlue MicroBlocksEditor { return (microBlocksColor 'blueGray' 900) }
-method topBarHeight MicroBlocksEditor { return (48 * (global 'scale')) }
 
 // layout
 

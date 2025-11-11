@@ -1549,7 +1549,7 @@ OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
 	int index = EM_ASM_INT({
 			for (var i = 0; i < GP.callQueue.length; i++) {
 				if (GP.callQueue[i][0] == $0) {
-					return GP.callQueue[i].id;
+					return i;
 				}
 			}
 			return -1;
