@@ -1,7 +1,7 @@
 module 'Nehza Pro' Output
 author MicroBlocks
-version 1 0 
-choices nehzaPro_turnStyle 'nehzaPro;shortest path' clockwise 'counter-clockwise' 
+version 1 1 
+choices nehzaPro_turnStyle 'nehzaPro;by shortest path' clockwise 'counter-clockwise' 
 choices nehzaPro_dir clockwise 'counter-clockwise' 
 choices nehzaPro_forwardBack forward backward 
 choices nehzaPro_motor M1 M2 M3 M4 
@@ -23,7 +23,8 @@ variables nehzaPro_busy nehzaPro_leftWheel nehzaPro_rightWheel nehzaPro_circumfe
   spec ' ' 'nehzaPro_stopAll' 'np stop all motors'
   space
   spec ' ' 'nehzaPro_rotateBy' 'np rotate _ _ by _ degrees speed _ %' 'menu.nehzaPro_motor menu.nehzaPro_dir num num' 'M1' 'clockwise' 90 30
-  spec ' ' 'nehzaPro_setAngle' 'np set _ angle to _ degrees by _' 'menu.nehzaPro_motor num menu.nehzaPro_turnStyle' 'M1' 0 'shortest path'
+  spec ' ' 'nehzaPro_rotateTo' 'np rotate _ _ to _ degrees speed _ %' 'menu.nehzaPro_motor menu.nehzaPro_dir num num' 'M1' 'clockwise' 90 30
+  spec ' ' 'nehzaPro_setAngle' 'np set _ angle _ to _ degrees' 'menu.nehzaPro_motor menu.nehzaPro_turnStyle num' 'M1' 'nehzaPro;by shortest path' 0
   space
   spec 'r' 'nehzaPro_readSpeed' 'np speed _' 'menu.nehzaPro_motor' 'M1'
   spec 'r' 'nehzaPro_angle' 'np angle _' 'menu.nehzaPro_motor' 'M1'
@@ -113,10 +114,20 @@ to nehzaPro_resetTotalAngle motor {
 
 to nehzaPro_rotateBy motor dir degrees speed {
   dir = (ifExpression ('clockwise' == dir) 1 2)
+  if (degrees < 0) {
+    comment 'rotate the other direction'
+    dir = (ifExpression (1 == dir) 2 1)
+    degrees = (absoluteValue degrees)
+  }
   comment 'Set the motor speed. Internal speed range is 0-900.'
   speed = (9 * (maximum 0 (minimum speed 100)))
   '_nezhaPro_sendCmd' (hexToInt '77') 0 0 ((speed >> 8) & 255) 0 (speed & 255)
   '_nezhaPro_sendCmd' (hexToInt '70') ('_nezhaPro_motor' motor) dir ((degrees >> 8) & 255) 2 (degrees & 255)
+}
+
+to nehzaPro_rotateTo motor dir degrees speed {
+  degrees = ((degrees - (nehzaPro_angle motor)) % 360)
+  nehzaPro_rotateBy motor dir degrees speed
 }
 
 to nehzaPro_runMotor motor dir speed {
@@ -125,7 +136,7 @@ to nehzaPro_runMotor motor dir speed {
   '_nezhaPro_sendCmd' (hexToInt '60') ('_nezhaPro_motor' motor) dir speed (hexToInt 'F5') 0
 }
 
-to nehzaPro_setAngle motor angle turnStyle {
+to nehzaPro_setAngle motor turnStyle angle {
   local 'turnMode' 1
   if ('clockwise' == turnStyle) {
     turnMode = 2

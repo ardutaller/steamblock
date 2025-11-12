@@ -1,4 +1,4 @@
-module DUELink Comm
+module 'DUELink Comm'
 author 'GHI Electronics'
 version 0 8 
 description 'DUELink base library used by all other DUELink libraries.

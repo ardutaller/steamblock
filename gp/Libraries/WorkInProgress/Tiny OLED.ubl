@@ -1,6 +1,6 @@
 module 'Tiny OLED' Output
 author MicroBlocks
-version 1 4 
+version 1 5 
 description 'Tiny graphics library for a 128x64 pixel monochrome OLED display with a SSD1306 controller.
 Useful on boards with very limited code store space such as the DUELink PixoBit.
 '
@@ -89,6 +89,9 @@ to '_tinyOLED_drawChar' ch x y {
 to '_tinyOLED_hline' startX endX y white {
   '_tinyOLED_init'
   if (or (y < 0) (y > 63)) {
+    return 0
+  }
+  if (or (endX < 0) (startX > 127)) {
     return 0
   }
   startX = (maximum 0 (minimum startX 127))
