@@ -129,8 +129,8 @@ MB_GUI.importLocalFile = function (callback) {
 		'change',
 		(evt) => {
 			document.body.removeChild(inp);
-			for (let i = 0; i < inp.files.length; i++) {
-				processFile(inp.files[i]);
+			for (const file of inp.files) {
+				processFile(file);
 			}
 		},
 		false

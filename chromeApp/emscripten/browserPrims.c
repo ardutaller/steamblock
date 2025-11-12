@@ -775,7 +775,6 @@ static void setClipRect(OBJ clipRectObj) {
 
 static OBJ primOpenWindow(int nargs, OBJ args[]) {
 	// Note: We always use retina mode the browser.
-
 	int w = intOrFloatArg(0, 500, nargs, args);
 	int h = intOrFloatArg(1, 500, nargs, args);
 
@@ -788,11 +787,10 @@ static OBJ primOpenWindow(int nargs, OBJ args[]) {
 
 		var winCnv = document.getElementById('canvas');
 		if (winCnv) {
-		// 24 is the height of the tip bar
 			winCnv.style.setProperty('width', w + 'px');
-			winCnv.style.setProperty('height', h - 24 + 'px');
+			winCnv.style.setProperty('height', h + 'px');
 			winCnv.width = 2 * w;
-			winCnv.height = 2 * (h - 24);
+			winCnv.height = 2 * h;
 			GP.isRetina = true;
 		}
 	}, w, h);
@@ -1551,7 +1549,7 @@ OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
 	int index = EM_ASM_INT({
 			for (var i = 0; i < GP.callQueue.length; i++) {
 				if (GP.callQueue[i][0] == $0) {
-					return GP.callQueue[i].id;
+					return i;
 				}
 			}
 			return -1;

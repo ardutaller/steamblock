@@ -67,11 +67,13 @@ GP.apiCall = function (endPoint, params, callback) {
 	// example, get a random number from 10 to 20:
 	// GP.apiCall('random', [10, 20], function (value) { console.log(value) });
 
+	let id = Date.now() % 100000000 + ~~(Math.random() * 1000);
+
 	if (typeof params == 'undefined') { params = ""; }
 	if (typeof callback == 'undefined') { callback = ()=>{}; }
 
 	GP.callQueue.push([
-		Date.now() % 100000000,	// reasonably unique ID
+		id,											// reasonably unique ID
 		endPoint,								// API endpoint selector
 		callback,								// takes a param with the return value
 		JSON.stringify(params)	// call params, JSON encoded

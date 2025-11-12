@@ -37,29 +37,52 @@ canvas.emscripten { border: 0px none; }
 	background-color: rgb(189, 215, 46);
 }
 
-@-webkit-keyframes rotation {
-	from {-webkit-transform: rotate(0deg);}
-	to {-webkit-transform: rotate(360deg);}
-}
-@-moz-keyframes rotation {
-	from {-moz-transform: rotate(0deg);}
-	to {-moz-transform: rotate(360deg);}
-}
-@-o-keyframes rotation {
-	from {-o-transform: rotate(0deg);}
-	to {-o-transform: rotate(360deg);}
-}
 @keyframes rotation {
 	from {transform: rotate(0deg);}
 	to {transform: rotate(360deg);}
 }
 
-#status {
-	display: inline-block;
-	vertical-align: top;
-	margin-left: 15px;
-	font-weight: bold;
-	color: rgb(120, 120, 120);
+@keyframes rocking {
+	from {transform: rotate(1deg);}
+	50%{transform: rotate(-1deg);}
+	to {transform: rotate(1deg);}
+}
+
+.loading {
+	background-color: #262938;
+	position: fixed;
+	z-index: 100;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 1;
+	display: visible;
+}
+
+.loading.loaded {
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 500ms ease-in, visibility 0ms ease-in 500ms;
+}
+
+.loading h1 {
+	position: fixed;
+	bottom: 2em;
+	color: white;
+	width: 100%;
+	text-align: center;
+}
+
+.loading .big-logo {
+	animation: rocking 3s ease-in-out infinite;
+	background-image: url('img/big-logo.svg');
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-size: 20%;
+	background-position-x: 50%;
+	background-position-y: 33%;
 }
 
 #progress {

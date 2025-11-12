@@ -30,6 +30,20 @@ IDE.init = function () {
 	GetText.setLocale(this.userPreference('locale'));
 };
 
+IDE.resize = function () {
+	let winHeight = window.innerHeight,
+		topBarHeight = document.querySelector('.top-bar').clientHeight,
+		tipBarHeight = document.querySelector('.tip-bar').clientHeight,
+		winWidth = window.innerWidth,
+		leftBarWidth = document.querySelector('.left-bar').clientWidth,
+		newHeight = winHeight - (topBarHeight + tipBarHeight);
+
+	document.querySelector('.workspace').style.height = newHeight + 'px';
+	GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
+};
+
+window.addEventListener('resize', () => { IDE.resize(); });
+
 IDE.emptyProject = function () {
 	return { title: null, hasCustomBlocks: false };
 };
@@ -227,8 +241,12 @@ IDE.build = function () {
 	this.populateTopBar(document.querySelector('.top-bar'));
 	this.populateCategories(document.querySelector('.categories'));
 	this.populateScriptControls(document.querySelector('.script-controls'));
-	document.querySelector('.loading').classList.add('loaded');
 	this.tipBar.init();
 	// check connection every 500ms
 	setInterval(()=>{ GP.apiCall('ide.updateConnection'); },500);
+	this.resize();
+	setTimeout(()=>
+		{ document.querySelector('.loading').classList.add('loaded'); },
+		500 // it takes a bit for all elements to position and show themselves
+	);
 };

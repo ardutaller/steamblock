@@ -216,6 +216,8 @@ class MB_Parser {
 					b.replaceInput(inputs[i], arg);
 				}
 				arg.fixBlockColor();
+			} else if (arg instanceof ReporterBlockMorph) {
+				b.replaceInput(inputs[i], arg);
 			} else {
 				inputs[i].setContents(arg);
 			}
@@ -226,8 +228,8 @@ class MB_Parser {
 
 	makeBlockList(bufList) {
 		let result, previous;
-		for (let i = 0; i < bufList.length; i++) {
-			let b = this.makeBlock(bufList[i]);
+		for (const buf of bufList) {
+			let b = this.makeBlock(buf);
 			if (!result) {
 				result = b;
 				previous = b;
@@ -247,11 +249,11 @@ class MB_Parser {
 		if (arg[0] == "'") {
 			// quoted string constant; just remove the quotes
 			return arg.slice(1, -1);
-		} else { // arg is an unquoted string, so it may be a variable reference
-			if (this.isVariableReference(op, isFirstArg)) {
-				// return a variable reporter block for arg
-				return this.makeVariableReporter(arg);
-			}
+		}
+		// arg is an unquoted string, so it may be a variable reference
+		if (this.isVariableReference(op, isFirstArg)) {
+			// return a variable reporter block for arg
+			return this.makeVariableReporter(arg);
 		}
 		return arg;
 	}
@@ -543,12 +545,11 @@ function parser_testFile() {
 	function parseFile(fileName, contents) {
 		let startT = Date.now();
 		let cmdList = MB_Parser.parse(contents);
-		for (let i = 0; i < cmdList.length; i++) {
-			cmd = cmdList[i];
-//			console.log(cmd);
-//			console.log(cmd.codeString());
+		let parseTime = Date.now() - startT;
+		for (const cmd of cmdList) {
+			console.log(cmd[0], cmd.slice(1));
 		}
-		console.log(fileName, Date.now() - startT, 'msecs');
+		console.log(fileName, 'parse time:', parseTime, 'msecs');
 	}
 	MB_GUI.importLocalFile(parseFile);
 }

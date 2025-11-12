@@ -489,6 +489,10 @@ SyntaxElementMorph.prototype.inputs = function () {
 	return this.cachedInputs;
 };
 
+SyntaxElementMorph.prototype.inputValues = function () {
+	return this.inputs().map(slot => slot.evaluate());
+}
+
 SyntaxElementMorph.prototype.debugCachedInputs = function () {
 	// private - only used for manually debugging inputs caching
 	var realInputs, i;
@@ -1696,6 +1700,26 @@ BlockMorph.prototype.toString = function () {
 		this.blockSpec.slice(0, 30) + '...")';
 };
 
+// BlockMorph utilities
+
+BlockMorph.prototype.forAllBlocks = function (func) {
+	// Call the given function on all command and reporter blocks in this script.
+	// TODO, Fix: This currently fails with infinite recursion. Why?
+
+	let todo = [this];
+	while (todo.length > 0) {
+		let b = todo.pop();
+console.log(b);
+//		func(b);
+		if (b instanceof CommandBlockMorph) {
+			if (b.nextBlock()) todo.push(b.nextBlock());
+		}
+		for (const arg of b.inputs()) {
+			if (arg instanceof BlockMorph) todo.push(b);
+		}
+	}
+}
+
 // BlockMorph spec:
 
 BlockMorph.prototype.parseSpec = function (spec) {
@@ -1878,6 +1902,11 @@ BlockMorph.prototype.userMenu = function () {
 		'print code',
 		() => { console.log(this.codeString(0, [])); },
 		'test coverting scripts to pseudocode'
+	);
+	menu.addItem(
+		'log',
+		() => { console.log(this); },
+		'log this object to the console'
 	);
 	menu.addItem(
 		'duplicate',
