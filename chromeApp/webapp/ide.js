@@ -227,6 +227,7 @@ IDE.build = function () {
 	this.populateTopBar(document.querySelector('.top-bar'));
 	this.populateCategories(document.querySelector('.categories'));
 	this.populateScriptControls(document.querySelector('.script-controls'));
+	document.querySelector('.loading').classList.add('loaded');
 	this.tipBar.init();
 	// check connection every 500ms
 	setInterval(()=>{ GP.apiCall('ide.updateConnection'); },500);

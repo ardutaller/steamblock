@@ -47,50 +47,55 @@
 		<input type="file" id="FileUploader" multiple style="display:none">
 	</span>
 
-		<div class="spinner" id='spinner'></div>
-		<div class="emscripten" id="status">Downloading...</div>
+	<div class="loading">
+		<div class="big-logo"></div>
+		<h1>Loading...</h1>
+	</div>
 
-		<div class="emscripten">
-			<progress value="0" max="100" id="progress" hidden=1></progress>
-		</div>
-		<div class="ide">
-			<nav class="top-bar"></nav>
-			<div class="workspace">
-				<div class="left-bar">
-					<div class="categories"></div>
-					<span class="lib-header"><l->LIBRARIES</l-></span>
-					<nav class="lib-button-holder">
-						<a class="round-button" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
-					</nav>
-					<div class="libraries"></div>
-				</div>
-				<div class="emscripten">
-					<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
-					<div class="script-controls can-drag-through"></div>
-				</div>
+	<div class="spinner" id='spinner'></div>
+	<div class="emscripten" id="status"></div>
+	<div class="emscripten">
+		<progress value="0" max="100" id="progress" hidden=1></progress>
+	</div>
+
+	<div class="ide">
+		<nav class="top-bar"></nav>
+		<div class="workspace">
+			<div class="left-bar">
+				<div class="categories"></div>
+				<span class="lib-header"><l->LIBRARIES</l-></span>
+				<nav class="lib-button-holder">
+					<a class="round-button" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
+				</nav>
+				<div class="libraries"></div>
 			</div>
-			<div class="tip-bar">
-				<span class="tip-title"></span>
-				<span class="tip-content"></span>
+			<div class="emscripten">
+				<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
+				<div class="script-controls can-drag-through"></div>
 			</div>
 		</div>
+		<div class="tip-bar">
+			<span class="tip-title"></span>
+			<span class="tip-content"></span>
+		</div>
+	</div>
 
-		<script type="text/javascript" src="emModule.js"></script>
-		<script type="text/javascript" src="gpSupport.js"></script>
-		<script type="text/javascript" src="FileSaver.js"></script>
-		<script type="text/javascript" src="gp_wasm.js"></script>
+	<script type="text/javascript" src="emModule.js"></script>
+	<script type="text/javascript" src="gpSupport.js"></script>
+	<script type="text/javascript" src="FileSaver.js"></script>
+	<script type="text/javascript" src="gp_wasm.js"></script>
 
 
-		<!-- IDE -->
-		<script type="text/javascript" src="ide.js"></script>
-		<script type="text/javascript" src="menus.js"></script>
-		<script type="text/javascript" src="buttons.js"></script>
-		<script type="text/javascript" src="categories.js"></script>
+	<!-- IDE -->
+	<script type="text/javascript" src="ide.js"></script>
+	<script type="text/javascript" src="menus.js"></script>
+	<script type="text/javascript" src="buttons.js"></script>
+	<script type="text/javascript" src="categories.js"></script>
 
-		<script>
-			// emitted by GP (MicroBlocksEditor.gp → openMicroBlocksEditor)
-			document.addEventListener('ready', (e) => { IDE.init(); });
-		</script>
+	<script>
+		// emitted by GP (MicroBlocksEditor.gp → openMicroBlocksEditor)
+		document.addEventListener('ready', (e) => { IDE.init(); });
+	</script>
 
 	</body>
 </html>
