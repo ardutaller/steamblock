@@ -110,7 +110,11 @@ if test -n "$webapp"; then
 fi
 
 if test -n "$electron"; then
-  (cd electron; npm start)
+	if test -n "$pack"; then
+		(cd electron; npm run make)
+	else
+		(cd electron; npm start)
+	fi
   exit 0
 fi
 
