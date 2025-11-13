@@ -518,6 +518,7 @@ method languageCodeList AuthoringSpecs {
 		(array 'Português (Brasil)' 'pt-br')
 		(array 'Português' 'pt')
 		(array 'Română' 'ro')
+		(array 'Suomi' 'fi')
 		(array 'Türkçe' 'tr')
 		(array 'Uzbek' 'uz')
 		(array 'Čeština' 'cs')

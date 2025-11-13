@@ -24,7 +24,7 @@ msgstr ""
 
 #. Block in Output category
 msgid "say _"
-msgstr "sano_"
+msgstr "sano _"
 
 #. Block in Output category
 msgid "graph _"
