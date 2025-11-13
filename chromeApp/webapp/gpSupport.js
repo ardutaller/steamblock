@@ -53,6 +53,7 @@ var GP = {
 	audioInReady: false,
 	audioInSource: null,
 	audioInCapture: null,
+	lastCallId: 0,
 	callQueue: []
 };
 
@@ -67,13 +68,13 @@ GP.apiCall = function (endPoint, params, callback) {
 	// example, get a random number from 10 to 20:
 	// GP.apiCall('random', [10, 20], function (value) { console.log(value) });
 
-	let id = Date.now() % 100000000 + ~~(Math.random() * 1000);
+	this.lastCallId = (this.lastCallId + 1) % 100000;
 
 	if (typeof params == 'undefined') { params = ""; }
 	if (typeof callback == 'undefined') { callback = ()=>{}; }
 
-	GP.callQueue.push([
-		id,											// reasonably unique ID
+	this.callQueue.push([
+		this.lastCallId,				// sequential ID
 		endPoint,								// API endpoint selector
 		callback,								// takes a param with the return value
 		JSON.stringify(params)	// call params, JSON encoded
