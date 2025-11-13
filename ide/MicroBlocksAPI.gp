@@ -154,3 +154,8 @@ method setProperty MicroBlocksAPI path value {
 	}
 	browserStoreIDEProperty path (toString value)
 }
+
+method electronOS MicroBlocksAPI {
+	print 'os is' (at (array 'windows' 'mac' 'linux' 'web') (browserElectronOS))
+	return (at (array 'windows' 'mac' 'linux' 'web') (browserElectronOS))
+}

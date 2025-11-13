@@ -1568,6 +1568,18 @@ OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
 	return falseObj;
 };
 
+OBJ primBrowserElectronOS(int nargs, OBJ args[]) {
+	return int2obj(EM_ASM_INT({
+		if (navigator.userAgent.includes('Electron')) {
+			if (navigator.userAgent.includes('Win')) { return 1; }
+			if (navigator.userAgent.includes('Mac')) { return 2; }
+			if (navigator.userAgent.includes('Linux')) { return 3; }
+		} else {
+			return 4;
+		}
+	}));
+};
+
 static PrimEntry browserPrimList[] = {
 	{"-----", NULL, "Browser Support"},
 	{"browserURL",						primBrowserURL,							"Return the full URL of the current browser page."},
@@ -1585,6 +1597,7 @@ static PrimEntry browserPrimList[] = {
 	{"browserPostMessage",		primBrowserPostMessage,			"Post a message to the browser using the 'postMessage' function."},
 	{"browserLastAPIRequest",		primLastAPIRequest,			""},
 	{"browserRespondAPIRequest",		primRespondAPIRequest,			""},
+	{"browserElectronOS",			primBrowserElectronOS,			""},
 	{"browserIsMobile",				primBrowserIsMobile,				"Return true if running in a mobile browser."},
 	{"browserHasLanguage",		primBrowserHasLanguage,			"Return true the given language code is in navigator.languages. Argument: language code string (e.g. 'en')."},
 	{"browserIsChromeOS",			primBrowserIsChromeOS,			"Return true if running as a Chromebook app."},

@@ -590,10 +590,10 @@ method justReceivedDrop MicroBlocksEditor aHandler {
 method isPilot MicroBlocksEditor { return (true == isPilot) }
 
 method checkLatestVersion MicroBlocksEditor {
-	// TODO fix for Electron. We'll have to also check what platform Electron is
-	// running on
+	os = (electronOS (api (smallRuntime)))
 	latestVersion = (fetchLatestVersionNumber this) // fetch version, even in browser, to log usage
-	if ('Browser' == (platform)) {
+
+	if ('web' == os) {
 		// skip version check in browser/Chromebook but set isPilot based on URL
 		isPilot = (notNil (findSubstring 'run-pilot' (browserURL)))
 		return
@@ -628,20 +628,18 @@ method checkLatestVersion MicroBlocksEditor {
 }
 
 method fetchLatestVersionNumber MicroBlocksEditor {
-	// TODO fix for Electron. We'll have to also check what platform Electron is
-	// running on
-	platform = (platform)
-	if ('Browser' == platform) {
+	os = (electronOS (api (smallRuntime)))
+	if ('web' == os) {
 		if (browserIsChromeOS) {
 			suffix = '?C='
 		} else {
 			suffix = '?B='
 		}
-	} ('Mac' == (platform)) {
+	} ('mac' == os) {
 		suffix = '?M='
-	} ('Linux' == (platform)) {
+	} ('linux' == os) {
 		suffix = '?L='
-	} ('Win' == (platform)) {
+	} ('windows' == os) {
 		suffix = '?W='
 	} else {
 		suffix = '?R='
