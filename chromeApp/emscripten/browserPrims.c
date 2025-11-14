@@ -1459,6 +1459,16 @@ OBJ primShowKeyboard(int nargs, OBJ args[]) {
 	return nilObj;
 }
 
+OBJ primSetEditText(int nargs, OBJ args[]) {
+	if (nargs < 1) return notEnoughArgsFailure();
+	if (NOT_CLASS(args[0], StringClass)) return primFailed("Argument must be a string");
+
+	EM_ASM_({
+		GP.defaultEditText = (UTF8ToString($0));
+	}, obj2str(args[0]));
+	return nilObj;
+}
+
 OBJ primSetCursor(int nargs, OBJ args[]) {
 	if ((nargs < 1) || !IS_CLASS(args[0], StringClass)) return nilObj;
 
@@ -1526,6 +1536,7 @@ static PrimEntry graphicsPrimList[] = {
 	{"getClipboard",	primGetClipboard,		"Return the string from the clipboard, or the empty string if the cliboard is empty."},
 	{"setClipboard",	primSetClipboard,		"Set the clipboard to the given string."},
 	{"showKeyboard",	primShowKeyboard,		"Show or hide the on-screen keyboard on a touchsceen devices. Argument: true or false."},
+	{"setEditText",		primSetEditText,		"Browser only. Set the default contents of the floating text input window. Argument: string"},
 	{"setCursor",		primSetCursor,			"Change the mouse pointer appearance. Argument: cursorNumber (0 -> arrow, 3 -> crosshair, 11 -> hand...)"},
 };
 
