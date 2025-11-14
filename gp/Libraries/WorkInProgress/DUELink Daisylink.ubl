@@ -1,6 +1,6 @@
 module 'DUELink Daisylink' Comm
 author 'GHI Electronics'
-version 0 12 
+version 0 13 
 choices due_combx b0 b1 b2 b3 b4 b5 b6 b7 
 description 'DUELink base library used by all other DUELink libraries.
 
@@ -17,14 +17,14 @@ variables _dueUseI2C _dueReadTimeout
   spec ' ' 'due_set_statled' 'set STAT LED to high _ ms, low _ ms, count _' 'auto auto auto' 100 100 10
   space
   space
-  spec 'r' 'due_make_command' 'command _ : with _ : _ : _ : _ : _ : _ : _ : _ : _ : _ : _ : _' 'str auto auto auto auto auto auto auto auto auto auto auto auto' 'version' nil nil nil nil nil nil nil nil 'nil'
+  spec 'r' 'due_make_command' 'command _ : with _ : _ : ...' 'str auto auto' 'version'
   spec ' ' 'due_run' 'do command _' 'str' 'statled(100,100,10)'
   spec 'r' 'due_returnNum' 'do command _ returns number' 'auto' 'dread(1,2)'
   spec 'r' 'due_returnStr' 'do command _ returns string' 'str' 'version()'
   space
   space
   spec 'r' 'due_device_PID' 'device PID'
-  spec 'r' 'due_device_version' 'device FW version'
+  spec 'r' 'due_device_version' 'device firmware version'
   advanced
   spec ' ' 'due_setReadTimeout' 'set response timeout _ ms' 'auto' 1000
   spec ' ' 'due_useI2C' 'DUELink useI2C _' 'bool' true
@@ -39,13 +39,12 @@ variables _dueUseI2C _dueReadTimeout
   space
   spec ' ' '_due_init' '_due_init'
   spec ' ' '_due_send' '_due send _' 'str'
-  spec ' ' '_due send raw' '_due send raw _' 'auto' '10'
+  spec ' ' '_dueSendRaw' '_due send raw _' 'auto' '10'
   spec 'r' '_due_awaitResult' '_due await result'
   spec 'r' '_due_awaitResultI2C' '_due await result (I2C)'
   spec 'r' '_due_endsWithPrompt' '_due byte array ends with prompt _' 'str'
-  spec 'r' '_due_readResponse' '_read response'
 
-to '_due send raw' s {
+to '_dueSendRaw' s {
   '_due_init'
   comment 'Clear receive buffer.'
   if _dueUseI2C {
@@ -146,10 +145,6 @@ to '_due_init' {
   }
 }
 
-to '_due_readResponse' {
-  return ('_due_awaitResult')
-}
-
 to '_due_send' s {
   '_due_init'
   comment 'Clear receive buffer.'
@@ -192,7 +187,7 @@ to due_exec {
   due_run 'run'
 }
 
-to due_make_command s optionalArgs args args args args args args args args args args args {
+to due_make_command s optionalArgs {
   local 'result' ('[data:makeList]')
   local 'str' (booleanConstant false)
   local 'arr' (booleanConstant false)
@@ -222,7 +217,7 @@ to due_make_command s optionalArgs args args args args args args args args args 
           }
         }
       }
-      if (isType (argOrDefault (i + 1) '') 'list') {
+      if (or (isType (argOrDefault (i + 1) '') 'list') (isType (argOrDefault (i + 1) '') 'byte array')) {
         local 'arg_list' (argOrDefault (i + 1) '')
         for x (size arg_list) {
           '[data:addLast]' (at x arg_list) result
