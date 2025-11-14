@@ -264,6 +264,8 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' '[misc:saturation]'	'saturation _' 'color')
 		(array 'r' '[misc:brightness]'	'brightness _' 'color')
 
+		(array 'r' '[misc:dueLinkPID]'	'DUELink PID')
+
 		(array 'r' '[sensors:touchRead]'	'capacitive sensor _' 'num' 1)
 		(array 'r' '[sensors:readDHT]'		'read DHT data pin _' 'num' 1)
 		(array ' ' '[sensors:captureStart]'	'start pulse capture pin _' 'num' 0)
