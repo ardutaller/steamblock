@@ -174,7 +174,13 @@ to due_connected {
 }
 
 to due_device_PID {
-  return (due_returnNum 'info(0)')
+  local 'module PID' (due_returnNum 'info(0)')
+  local 'result' ('[data:makeList]')
+  for i 6 {
+    local 'hexDigit' (((v 'module PID') >> (24 - (4 * i))) & 15)
+    '[data:addLast]' (at (hexDigit + 1) '0123456789ABCDEF') result
+  }
+  return ('[data:joinStrings]' result)
 }
 
 to due_device_version {
