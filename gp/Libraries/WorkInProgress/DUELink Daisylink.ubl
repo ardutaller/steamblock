@@ -5,7 +5,7 @@ choices due_combx b0 b1 b2 b3 b4 b5 b6 b7
 description 'DUELink base library used by all other DUELink libraries.
 
 Handles daisylink communications via I2C or serial (UART).
-By default, this library uses serial over the Downlink port on DUELink boards and I2C on other boards but that can be changed by using the advanced "DUELink useI2C" block.
+By default, this library uses serial over the Downlink port on DUELink boards and I2C on other boards but that can be changed by using the advanced "use I2C" block.
 
 See https://www.duelink.com/docs/engine/stdlib
 
@@ -27,7 +27,7 @@ variables _dueUseI2C _dueReadTimeout
   spec 'r' 'due_device_version' 'device firmware version'
   advanced
   spec ' ' 'due_setReadTimeout' 'set response timeout _ ms' 'auto' 1000
-  spec ' ' 'due_useI2C' 'DUELink useI2C _' 'bool' true
+  spec ' ' 'due_useI2C' 'use I2C _' 'bool' true
   space
   space
   spec 'r' 'due_stream_read_bytes' 'stream read from _ count _' 'menu.due_combx auto' 'b1' 3
@@ -128,20 +128,18 @@ to '_due_init' {
   if (_dueReadTimeout == 0) {_dueReadTimeout = 1000}
   if (not (isType _dueUseI2C 'boolean')) {
     comment 'Not yet initialized, set _dueUseI2C.'
-    for s ('[data:makeList]' 'CincoBit' 'PixoBit' 'DueSTEM' 'Clipit' 'DUELink') {
-      if (('[data:find]' s (boardType)) > 0) {
-        comment 'This is a DUELink board; use serial.'
-        _dueUseI2C = (booleanConstant false)
-        if ('[serial:dueSend]' ('[data:unicodeString]' 10) 1) {
-          comment 'Serial need first byte is 10, 13 or ''s'', ''S'''
-        }
-        comment 'Wait a bit because device will see muitlple command'
-        waitMillis 10
-        return 0
+    if (('[misc:dueLinkPID]') > 0) {
+      comment 'This is a DUELink board; use serial.'
+      _dueUseI2C = (booleanConstant false)
+      if ('[serial:dueSend]' ('[data:unicodeString]' 10) 1) {
+        comment 'Serial need first byte is 10, 13 or ''s'', ''S'''
       }
+      comment 'Wait a bit because device will see multiple commands'
+      return 0
+    } else {
+      comment 'Not a DUELink board; use I2C.'
+      _dueUseI2C = (booleanConstant true)
     }
-    comment 'Not a DUELink board; use I2C.'
-    _dueUseI2C = (booleanConstant true)
   }
 }
 
