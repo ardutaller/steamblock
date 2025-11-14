@@ -1,12 +1,12 @@
 module 'DUELink Edu'
 author DUELink
-version 1 7 
+version 1 8 
 choices dueSTEM_clipItPad A B left right up down P1 P2 P3 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
 description 'Library for DUELink Educational boards: CincoBit, PixoBit, ClipIt, and DueSTEM.
 
-The "due PIED" works on all DUELink boards.
+The "due PID" works on all DUELink boards.
 Blocks labeled "dueSTEM" work only on the DUEStem board.
 
 Touch sensing works only on pins with capacitive touch circuits including pins 0, 1, 2 of the CincoBit and PixoBit and all but the SCL/SDA pins of the ClipIt.
@@ -14,16 +14,17 @@ Touch sensing works only on pins with capacitive touch circuits including pins 0
 variables dueSTEM_accelAddr 
 
   spec 'r' 'dueSTEM_light' 'due light level'
-  spec 'r' 'dueSTEM_touched' 'due pin _ touched' 'num' 1
   spec 'r' 'dueSTEM_buzzerPin' 'due buzzer pin'
   spec 'r' '[misc:dueLinkPID]' 'due PID'
+  space
+  spec 'r' 'dueSTEM_touched' 'due pin _ touched' 'num' 1
+  spec ' ' 'dueSTEM_waitForRelease' 'due wait for pin _ release' 'auto' 1
+  spec 'r' 'dueSTEM_clipitPadPin' 'Clipit _ pin' 'menu.dueSTEM_clipItPad' 'A'
   space
   spec ' ' 'dueSTEM_setLED' 'DueSTEM bulb red _ green _ blue _ (0-1000)' 'auto auto auto' 100 0 200
   spec 'r' 'dueSTEM_button' 'DueSTEM _ button' 'menu.dueSTEM_buttonName' 'left'
   spec 'r' 'dueSTEM_tilt' 'DueSTEM tilt _' 'menu.dueSTEM_axis' 'x'
   spec 'r' 'dueSTEM_temperature' 'DueSTEM temperature (x10)'
-  space
-  spec 'r' 'dueSTEM_clipitTouched' 'Clipit pad _ touched : threshold _' 'menu.dueSTEM_clipItPad num' 'A' 100
   space
   spec ' ' '_dueSTEM_accelInit' '_dueSTEM_accelInit'
   spec 'r' '_dueSTEM_accelRead16BitReg' '_dueSTEM_accelRead16BitReg _' 'auto' 13
@@ -92,28 +93,27 @@ to dueSTEM_buzzerPin {
   return -1
 }
 
-to dueSTEM_clipitTouched padName optionalThreshold {
-  local 'pin' 0
+to dueSTEM_clipitPadPin padName {
   if ('A' == padName) {
-    pin = 10
+    return 10
   } ('B' == padName) {
-    pin = 24
+    return 24
   } ('left' == padName) {
-    pin = 14
+    return 14
   } ('right' == padName) {
-    pin = 12
+    return 12
   } ('up' == padName) {
-    pin = 13
+    return 13
   } ('down' == padName) {
-    pin = 18
+    return 18
   } ('P1' == padName) {
-    pin = 1
+    return 1
   } ('P2' == padName) {
-    pin = 2
+    return 2
   } ('P3' == padName) {
-    pin = 3
+    return 3
   }
-  return (dueSTEM_touched pin (argOrDefault 2 100))
+  return 10
 }
 
 to dueSTEM_light {
@@ -147,21 +147,39 @@ to dueSTEM_tilt axis {
 
 to dueSTEM_touched pin {
   comment 'Charge up pin'
-  local 'startT' (millisOp)
   digitalWriteOp pin true
-  waitMicros 200
-  local 'on' (digitalReadOp pin)
-  comment 'Tricky code: MicroBlocks does not switch tasks for waits of 30 microdseconds
-or less so the following three blocks are essentially a busy wait. Because
-of overhead, this takes 100-120 usecs on DUELink boards.
-If the pin is still high after that time, it is because it is touched, thus increasing
-the discharge time of the effective capacitance on the pin.'
+  comment 'Switch pin to input mode. Capacitor starts
+discharging through 1M resistor to ground.'
+  local 'ignore' (digitalReadOp pin)
+  comment 'Tricky code: MicroBlocks does not switch tasks for waits of 30 usecs
+or less so the following four blocks are essentially a busy wait. Because
+of overhead, this takes ~140 usecs on DUELink boards. If the pin is still
+high after that time, it is because it is being touched, thus increasing
+the discharge time of the total effective capacitance of the pin.'
   waitMicros 30
   waitMicros 30
   waitMicros 30
-  local 'touched' (digitalReadOp pin)
-  comment 'Start charging pin'
-  digitalWriteOp pin true
-  return touched
+  waitMicros 30
+  return (digitalReadOp pin)
+}
+
+to dueSTEM_waitForRelease pin {
+  comment 'There is a lot of electrical noise while a pin is being touched.
+That noise causes "due pin touched" to sometimes return false
+even though the pin is still being touched. Experimentation
+determined that it requires 60 to 70 "false" reports in a row to
+be certain that the pin is not being touched. Those tests take
+about 16 milliseconds total on an otherwise idle DUELink board.'
+  local 'releaseCount' 0
+  forever {
+    if (dueSTEM_touched pin) {
+      releaseCount = 0
+    } else {
+      releaseCount += 1
+      if (releaseCount >= 80) {
+        return 0
+      }
+    }
+  }
 }
 
