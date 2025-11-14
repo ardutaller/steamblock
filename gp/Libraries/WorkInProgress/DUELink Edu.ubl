@@ -15,7 +15,7 @@ variables dueSTEM_accelAddr
 
   spec 'r' 'dueSTEM_light' 'due light level'
   spec 'r' 'dueSTEM_buzzerPin' 'due buzzer pin'
-  spec 'r' '[misc:dueLinkPID]' 'due PID'
+  spec 'r' 'dueSTEM_PID' 'due PID'
   space
   spec 'r' 'dueSTEM_touched' 'due pin _ touched' 'num' 1
   spec ' ' 'dueSTEM_waitForRelease' 'due wait for pin _ release' 'auto' 1
@@ -56,6 +56,15 @@ to '_dueSTEM_accelRead16BitReg' reg {
   return ((100 * (v '16bit')) / 255)
 }
 
+to dueSTEM_PID {
+  local 'result' ('[data:makeList]')
+  for i 6 {
+    local 'hexDigit' ((('[misc:dueLinkPID]') >> (24 - (4 * i))) & 15)
+    '[data:addLast]' (at (hexDigit + 1) '0123456789ABCDEF') result
+  }
+  return ('[data:joinStrings]' result)
+}
+
 to dueSTEM_button which {
   if ((boardType) != 'DueSTEM') {return (booleanConstant false)}
   if ('left' == which) {
@@ -77,16 +86,16 @@ to dueSTEM_buzzerPin {
     return 3
   } ((boardType) == 'Clipit') {
     return 7
-  } (('[misc:dueLinkPID]') == (hexToInt '0C0001')) {
+  } ((dueSTEM_PID) == '0C0001') {
     comment 'Ghizzy'
     return 3
-  } (('[misc:dueLinkPID]') == (hexToInt '0C0003')) {
+  } ((dueSTEM_PID) == '0C0003') {
     comment 'Holiday Tree'
     return 1
-  } (('[misc:dueLinkPID]') == (hexToInt '0C0005')) {
+  } ((dueSTEM_PID) == '0C0005') {
     comment 'Piano'
     return 3
-  } (('[misc:dueLinkPID]') == (hexToInt '070001')) {
+  } ((dueSTEM_PID) == '070001') {
     comment 'Buzzer'
     return 7
   }
