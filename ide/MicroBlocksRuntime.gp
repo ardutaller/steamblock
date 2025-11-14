@@ -1256,7 +1256,8 @@ method checkVmVersion SmallRuntime {
 	if ((latestVmVersion this) > vmVersion) {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
-			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'DUELink'))
+			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040'))
+		if (dueBoardConnected this) { offerToUpdate = false }
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
 			// then requires the user to put the board into boot mode.
@@ -2877,7 +2878,8 @@ method showOutputStrings SmallRuntime {
 
 method dueBoardConnected SmallRuntime {
 	if (isNil boardType) { return false }
-	return (isOneOf boardType 'CincoBit' 'Clipit' 'DueSTEM' 'PixoBit' 'DUELink')
+	return (isOneOf boardType
+		'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
 }
 
 method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
