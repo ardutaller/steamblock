@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-11-12 22:05+0200\n"
-"PO-Revision-Date: 2025-11-13 08:04+0000\n"
+"PO-Revision-Date: 2025-11-14 22:09+0000\n"
 "Last-Translator: baze <weblate@lantiainen.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/microblocks/ide/"
 "fi/>\n"
@@ -16,11 +16,11 @@ msgstr ""
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Ulostulo"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "aseta LED _"
 
 #. Block in Output category
 msgid "say _"
@@ -28,7 +28,7 @@ msgstr "sano _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "piirrä _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
@@ -249,15 +249,15 @@ msgstr "vakio"
 
 #. Block in Control category
 msgid "call _"
-msgstr ""
+msgstr "kutsu _"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr ""
+msgstr "funktion nimi"
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr ""
+msgstr "parametrilista"
 
 #. Block in Control category
 msgid "with _"
@@ -265,148 +265,151 @@ msgstr ""
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr ""
+msgstr "Operaattorit"
 
 #. Block in Operators category
 msgid "_ mod _"
-msgstr ""
+msgstr "_ modulo _"
 
 #. Block in Operators category
+#, fuzzy
 msgid "abs _"
-msgstr ""
+msgstr "abs _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr ""
+msgstr "minimi _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr ""
+msgstr "maksimi _ _"
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr ""
+msgstr "arvo väliltä _ ja _"
 
 #. Block in Operators category
 msgid "not _"
-msgstr ""
+msgstr "ei _"
 
 #. Block in Operators category
 msgid "_ and _"
-msgstr ""
+msgstr "_ ja _"
 
 #. Block in Operators category
 msgid "and _"
-msgstr ""
+msgstr "ja _"
 
 #. Block in Operators category
 msgid "_ or _"
-msgstr ""
+msgstr "_ tai _"
 
 #. Block in Operators category
 msgid "or _"
-msgstr ""
+msgstr "tai _"
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr ""
+msgstr "_ on _"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr ""
+msgstr "muunna _ muotoon _"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr ""
+msgstr "jos _ sitten _ muuten _"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+#, fuzzy
 msgid "boolean"
-msgstr ""
+msgstr "boolean"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
-msgstr ""
+msgstr "numero"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr ""
+msgstr "merkkijono"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 #. Also label of ( list < > ) block in Data category
 msgid "list"
-msgstr ""
+msgstr "lista"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
-msgstr ""
+msgstr "tavutaulukko"
 
 #. "Advanced" label for advanced blocks in the palette
 msgid "cat;Advanced:"
-msgstr ""
+msgstr "Edistyneet:"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr ""
+msgstr "skaalaa _ alueelta ( _ , _ ) alueelle ( _ , _ )"
 
 #. Block in Operators category
+#, fuzzy
 msgid "hex _"
-msgstr ""
+msgstr "hex _"
 
 #. Block in Operators category
 msgid "sqrt _"
-msgstr ""
+msgstr "neliöjuuri _"
 
 #. "Variables" blocks category label
 msgid "cat;Variables"
-msgstr ""
+msgstr "Muuttujat"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr ""
+msgstr "Lisää muuttuja"
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr ""
+msgstr "Poista muuttuja"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr ""
+msgstr "Uusi muuttuja?"
 
 #. Block in Variables category
 msgid "set _ to _"
-msgstr ""
+msgstr "aseta _ arvoon _"
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr ""
+msgstr "muuta _ arvolla _"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr ""
+msgstr "alusta paikallinen _ arvoon _"
 
 #. "Data" blocks category label
 msgid "cat;Data"
-msgstr ""
+msgstr "Data"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr ""
+msgstr "kissa"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr ""
+msgstr "koira"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr ""
+msgstr "lintu"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr ""
+msgstr "kala"
 
 #. Block in Data category
 msgid "length of _"
-msgstr ""
+msgstr "_ pituus"
 
 #. Block in Data category
 msgid "item _ of _"
@@ -414,28 +417,28 @@ msgstr ""
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr ""
+msgstr "korvaa jäsen _ listasta _ arvolla _"
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr ""
+msgstr "poista jäsen _ listasta _"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr ""
+msgstr "lisää _ listaan _"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr ""
+msgstr "yhdistä _ _"
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr ""
+msgstr "kopioi _ kohteesta _"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr ""
+msgstr "hymyt"
 
 #. Block in Data category
 msgid "to _"
@@ -443,19 +446,19 @@ msgstr ""
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr ""
+msgstr "etsi _ kohteesta _"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr ""
+msgstr "aloita arvosta _"
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr ""
+msgstr "yhdistä jäsenet listasta _"
 
 #. Block in Data category
 msgid "separator _"
-msgstr ""
+msgstr "erotin _"
 
 #. Block in Data category
 msgid "unicode _ of _"
@@ -463,19 +466,19 @@ msgstr ""
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr ""
+msgstr "merkkijono unicodesta _"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr ""
+msgstr "uusi listan pituuteen _"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr ""
+msgstr "uusi tavutaulu _"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr ""
+msgstr "tavutauluna _"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
@@ -487,53 +490,53 @@ msgstr ""
 
 #. Block in Data category
 msgid "free memory"
-msgstr ""
+msgstr "vapauta muistia"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr ""
+msgstr "kaikki"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr ""
+msgstr "viimeinen"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
 msgid "random"
-msgstr ""
+msgstr "arvo"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr ""
+msgstr "jaa _ arvolla _"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr ""
+msgstr "Minun Lohkot"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
-msgstr ""
+msgstr "Yleistä"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr ""
+msgstr "Lisää komentoblokki"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr ""
+msgstr "Lisää arvoblokki"
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr ""
+msgstr "Anna funktion nimi:"
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
-msgstr ""
+msgstr "Viestintä"
 
 #. Block in Comm category
 msgid "i2c get device _ register _"
@@ -7483,3 +7486,7 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
 msgstr ""
+
+#. Option in dropdown menu of editable input slots on mobile devices:
+msgid "edit"
+msgstr "muokkaa"
