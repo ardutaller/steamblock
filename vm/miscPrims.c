@@ -38,9 +38,17 @@ OBJ primHexToInt(int argCount, OBJ *args) {
 	if (!IS_TYPE(args[0], StringType)) return fail(needsStringError);
 
 	char *s = obj2str(args[0]);
+	long result;
 	if ('#' == *s) s++; // skip leading # if there is one
-	long result = strtol(s, NULL, 16);
-	if ((result < -536870912) || (result > 536870911)) return fail(hexRangeError);
+	if (('0' == *s) && (('b' == s[1]) || ('B' == s[1]))) { // binary
+		s += 2; // skip leading '0x' or '0X'
+		result = strtol(s, NULL, 2);
+	} else { // default to hex
+		if (('0' == *s) && (('x' == s[1]) || ('X' == s[1]))) s += 2; // skip leading '0x' or '0X'
+		result = strtol(s, NULL, 16);
+	}
+	result = (result << 1) >> 1; // extend sign bit if bit 31 is set
+	if ((result < -0x40000000) || (result > 0x3FFFFFFF)) return fail(hexRangeError);
 	return int2obj(result);
 }
 
