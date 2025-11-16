@@ -1,7 +1,8 @@
 module 'DUELink Edu'
 author DUELink
 version 1 8 
-choices dueSTEM_clipItPad A B left right up down P1 P2 P3 
+choices dueSTEM_pianoPad left right C 'C#' D 'D#' E F 'F#' G 'G#' A 'A#' B 'High C' 
+choices dueSTEM_clipItPad A B left right up down 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
 description 'Library for DUELink Educational boards: CincoBit, PixoBit, ClipIt, and DueSTEM.
@@ -13,13 +14,14 @@ Touch sensing works only on pins with capacitive touch circuits including pins 0
 '
 variables dueSTEM_accelAddr 
 
-  spec 'r' 'dueSTEM_light' 'due light level'
+  spec 'r' 'dueSTEM_light' 'due light level (0-1000)'
   spec 'r' 'dueSTEM_buzzerPin' 'due buzzer pin'
   spec 'r' 'dueSTEM_PID' 'due PID'
   space
   spec 'r' 'dueSTEM_touched' 'due pin _ touched' 'num' 1
   spec ' ' 'dueSTEM_waitForRelease' 'due wait for pin _ release' 'auto' 1
   spec 'r' 'dueSTEM_clipitPadPin' 'Clipit _ pin' 'menu.dueSTEM_clipItPad' 'A'
+  spec 'r' 'dueSTEM_pianoPadPin' 'Piano _ pin' 'menu.dueSTEM_pianoPad' 'C'
   space
   spec ' ' 'dueSTEM_setLED' 'DueSTEM bulb red _ green _ blue _ (0-1000)' 'auto auto auto' 100 0 200
   spec 'r' 'dueSTEM_button' 'DueSTEM _ button' 'menu.dueSTEM_buttonName' 'left'
@@ -126,7 +128,42 @@ to dueSTEM_clipitPadPin padName {
 }
 
 to dueSTEM_light {
-  return ('[display:lightLevel]')
+  return (minimum ('[display:lightLevel]') 1000)
+}
+
+to dueSTEM_pianoPadPin padName {
+  if ('left' == padName) {
+    return 11
+  } ('right' == padName) {
+    return 7
+  } ('C' == padName) {
+    return 23
+  } ('C#' == padName) {
+    return 19
+  } ('D' == padName) {
+    return 12
+  } ('D#' == padName) {
+    return 13
+  } ('E' == padName) {
+    return 14
+  } ('F' == padName) {
+    return 15
+  } ('F#' == padName) {
+    return 16
+  } ('G' == padName) {
+    return 18
+  } ('G#' == padName) {
+    return 24
+  } ('A' == padName) {
+    return 10
+  } ('A#' == padName) {
+    return 9
+  } ('B' == padName) {
+    return 8
+  } ('High C' == padName) {
+    return 17
+  }
+  return 23
 }
 
 to dueSTEM_setLED r g b {
@@ -157,6 +194,7 @@ to dueSTEM_tilt axis {
 to dueSTEM_touched pin {
   comment 'Charge up pin'
   digitalWriteOp pin true
+  waitMicros 500
   comment 'Switch pin to input mode. Capacitor starts
 discharging through 1M resistor to ground.'
   local 'ignore' (digitalReadOp pin)
