@@ -7,7 +7,7 @@ choices dueSTEM_axis x y z
 description 'Library for DUELink Educational boards: CincoBit, PixoBit, ClipIt, and DueSTEM.
 
 The "due PID" works on all DUELink boards.
-Blocks labeled "dueSTEM" work only on the DUEStem board.
+Blocks labeled "dueSTEM" work only on the DueSTEM board.
 
 Touch sensing works only on pins with capacitive touch circuits including pins 0, 1, 2 of the CincoBit and PixoBit and all but the SCL/SDA pins of the ClipIt.
 '
