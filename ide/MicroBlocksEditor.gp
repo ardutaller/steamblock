@@ -717,7 +717,7 @@ method processDroppedFiles MicroBlocksEditor {
 
 method processDroppedFile MicroBlocksEditor fName data {
 	lcFilename = (toLowerCase fName)
-	if (endsWith lcFilename '.ubp') {
+	if (or (endsWith lcFilename '.ubp') (endsWith lcFilename '.ubp.txt')) {
 		if (not (canReplaceCurrentProject this)) { return }
 		openProject this data fName
 	} (endsWith lcFilename '.ubl') {
