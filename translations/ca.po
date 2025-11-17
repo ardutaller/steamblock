@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-10-06 13:38+0000\n"
+"PO-Revision-Date: 2025-11-17 19:51+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.15-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -7586,3 +7586,7 @@ msgstr "#SVG#square11#ffffff semàfor vermell _ groc _ verd _ port _"
 #. Examples folder
 msgid "folder;MakerPort"
 msgstr "MakerPort"
+
+#. Option in dropdown menu of editable input slots on mobile devices:
+msgid "edit"
+msgstr "edita"
