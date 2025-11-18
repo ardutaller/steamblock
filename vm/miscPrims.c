@@ -540,6 +540,12 @@ static OBJ primShapeforChar(int argCount, OBJ *args) {
 	return result;
 }
 
+static OBJ primClearGraph(int argCount, OBJ *args) {
+	if (!ideConnected()) return falseObj; // do nothing if not connected to IDE
+	waitAndSendMessage(clearGraphMsg, 0, 0, NULL);
+	return falseObj;
+}
+
 static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
@@ -557,6 +563,7 @@ static PrimEntry entries[] = {
 	{"broadcastToIDE", primBroadcastToIDEOnly},
 	{"bme680GasResistance", primBMP680GasResistance},
 	{"shapeforChar", primShapeforChar},
+	{"clearGraph", primClearGraph},
 	{"dueLinkPID", primDUELinkPID},
 #if !defined(DUELink)
 	{"hsvColor", primHSVColor},

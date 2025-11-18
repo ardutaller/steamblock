@@ -140,6 +140,7 @@ extern int extraByteDelay;
 #define varValueMsg				21
 #define versionMsg				22
 #define chunkCRCMsg				23
+#define clearGraphMsg			24
 
 // Serial Protocol Messages: Bidirectional
 

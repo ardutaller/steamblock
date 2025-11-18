@@ -2056,6 +2056,7 @@ method msgNameToID SmallRuntime msgName {
 		atPut msgDict 'varValueMsg' 21
 		atPut msgDict 'versionMsg' 22
 		atPut msgDict 'chunkCRCMsg' 23
+		atPut msgDict 'clearGraphMsg' 24
 		atPut msgDict 'pingMsg' 26
 		atPut msgDict 'broadcastMsg' 27
 		atPut msgDict 'chunkAttributeMsg' 28
@@ -2365,6 +2366,8 @@ method handleMessage SmallRuntime msg {
 		recordFileTransferMsg this (copyFromTo msg 6)
 	} (op == (msgNameToID this 'fileChunk')) {
 		recordFileTransferMsg this (copyFromTo msg 6)
+	} (op == (msgNameToID this 'clearGraphMsg')) {
+		clearLoggedData this
 	} else {
 		print 'msg:' (toArray msg)
 	}
