@@ -1,6 +1,6 @@
 module 'DUELink Edu'
-author DUELink
-version 1 9 
+author MicroBlocks
+version 1 10 
 choices dueSTEM_pianoPad left right C 'C#' D 'D#' E F 'F#' G 'G#' A 'A#' B 'High C' 
 choices dueSTEM_clipItPad A B left right up down 
 choices dueSTEM_buttonName left right up down 
@@ -12,7 +12,7 @@ Blocks labeled "dueSTEM" work only on the DueSTEM board.
 
 Touch sensing works only on pins with capacitive touch circuits including pins 0, 1, 2 of the CincoBit and PixoBit and all but the SCL/SDA pins of the ClipIt.
 '
-variables dueSTEM_accelAddr _due_touch_adjustment 
+variables dueSTEM_accelAddr dueSTEM_touchAdjustments 
 
   spec 'r' 'dueSTEM_light' 'due light level (0-1000)'
   spec 'r' 'dueSTEM_LDR_button' 'due LDR button'
@@ -62,8 +62,8 @@ to '_dueSTEM_accelRead16BitReg' reg {
 }
 
 to '_dueSTEM_adjustmentForPin' pin {
-  if (_due_touch_adjustment == 0) {_due_touch_adjustment = (newList 30 -1)}
-  local 'result' (at (pin + 1) _due_touch_adjustment)
+  if (dueSTEM_touchAdjustments == 0) {dueSTEM_touchAdjustments = (newList (digitalPins) -1)}
+  local 'result' (at (pin + 1) dueSTEM_touchAdjustments)
   if (result >= 0) {
     return result
   }
@@ -72,7 +72,7 @@ to '_dueSTEM_adjustmentForPin' pin {
     'total usecs' += ('_dueSTEM_dischargeTime' pin)
   }
   result = (maximum 0 (minimum (((v 'total usecs') / 80) - 99) 30))
-  atPut (pin + 1) _due_touch_adjustment result
+  atPut (pin + 1) dueSTEM_touchAdjustments result
   return result
 }
 
