@@ -472,6 +472,10 @@ msgstr "with all _"
 msgid "free memory"
 msgstr "free memory"
 
+#. Option in dropdown menu of editable input slots on mobile devices:
+msgid "edit"
+msgstr "edit"
+
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
@@ -4887,10 +4891,6 @@ msgid "gripper degrees _ (0 to 70)"
 msgstr "gripper degrees _ (0 to 70)"
 
 #. CoCube Module library block
-msgid "set all NeoPixels color _"
-msgstr "set all NeoPixels color _"
-
-#. CoCube Module library block
 msgid "ASR play command _"
 msgstr "ASR play command _"
 
@@ -4901,10 +4901,6 @@ msgstr "power on module"
 #. CoCube Module library block
 msgid "DLight level"
 msgstr "DLight level"
-
-#. CoCube Module library block
-msgid "clear NeoPixels"
-msgstr "clear NeoPixels"
 
 #. CoCube Module library block
 msgid "ultrasonic distance (mm)"

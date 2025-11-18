@@ -1150,7 +1150,8 @@ method checkVmVersion SmallRuntime {
 	if ((latestVmVersion this) > vmVersion) {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
-			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'DUELink'))
+			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040'))
+		if (dueBoardConnected this) { offerToUpdate = false }
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
 			// then requires the user to put the board into boot mode.
@@ -1988,7 +1989,7 @@ method errorString SmallRuntime errID {
 #define needsIntegerIndexError	17	// List or string index must be an integer
 #define indexOutOfRangeError	18	// List or string index out of range
 #define byteArrayStoreError		19	// A ByteArray can only store integer values between 0 and 255
-#define hexRangeError			20	// Hexadecimal input must between between -1FFFFFFF and 1FFFFFFF
+#define hexRangeError			20	// Hexadecimal input must between between -40000000 and 3FFFFFFF
 #define i2cDeviceIDOutOfRange	21	// I2C device ID must be between 0 and 127
 #define i2cRegisterIDOutOfRange	22	// I2C register must be between 0 and 255
 #define i2cValueOutOfRange		23	// I2C value must be between 0 and 255
@@ -2762,7 +2763,8 @@ method showOutputStrings SmallRuntime {
 
 method dueBoardConnected SmallRuntime {
 	if (isNil boardType) { return false }
-	return (isOneOf boardType 'CincoBit' 'Clipit' 'DueSTEM' 'PixoBit' 'DUELink')
+	return (isOneOf boardType
+		'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
 }
 
 method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {

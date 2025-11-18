@@ -129,7 +129,9 @@ method newZoomButton MicroBlocksEditor iconName action {
 }
 
 method restoreZoom MicroBlocksEditor {
-	setBlockScalePercent this 100
+	normalPercent = 100
+	if (isMobile) { normalPercent = 125 }
+	setBlockScalePercent this normalPercent
 }
 
 method zoomIn MicroBlocksEditor {
@@ -464,7 +466,7 @@ method processDroppedFiles MicroBlocksEditor {
 
 method processDroppedFile MicroBlocksEditor fName data {
 	lcFilename = (toLowerCase fName)
-	if (endsWith lcFilename '.ubp') {
+	if (or (endsWith lcFilename '.ubp') (endsWith lcFilename '.ubp.txt')) {
 		if (not (canReplaceCurrentProject this)) { return }
 		openProject this data fName
 	} (endsWith lcFilename '.ubl') {
