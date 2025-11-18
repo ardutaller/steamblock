@@ -71,8 +71,7 @@ to '_dueSTEM_adjustmentForPin' pin {
   repeat 80 {
     'total usecs' += ('_dueSTEM_dischargeTime' pin)
   }
-  sayIt (((v 'total usecs') / 80) - 96)
-  result = (maximum 0 (minimum (((v 'total usecs') / 80) - 100) 30))
+  result = (maximum 0 (minimum (((v 'total usecs') / 80) - 99) 30))
   atPut (pin + 1) _due_touch_adjustment result
   return result
 }
