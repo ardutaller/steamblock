@@ -87,7 +87,7 @@ typedef enum {
 #elif (defined(NRF51) || defined(ESP8266) || defined(DUELink))
 	#define STACK_LIMIT 54 // Task size is 6 + STACK_LIMIT words
 #else
-	#define STACK_LIMIT 100 // Task size is 6 + STACK_LIMIT words
+	#define STACK_LIMIT 125 // Task size is 6 + STACK_LIMIT words
 #endif
 
 typedef struct {
@@ -140,6 +140,7 @@ extern int extraByteDelay;
 #define varValueMsg				21
 #define versionMsg				22
 #define chunkCRCMsg				23
+#define clearGraphMsg			24
 
 // Serial Protocol Messages: Bidirectional
 

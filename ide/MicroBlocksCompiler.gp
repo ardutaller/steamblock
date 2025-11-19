@@ -42,6 +42,7 @@ method microBlocksSpecs SmallCompiler {
 		(array ' ' 'setUserLED'			'set user LED _' 'bool' true)
 		(array ' ' 'sayIt'				'say _ : _ : ...' 'str str str str str str str str str str str str' 123 '' '')
 		(array ' ' 'graphIt'			'graph _ : _ : ...' 'auto auto auto auto auto auto auto auto auto auto' 100)
+		(array ' ' '[misc:clearGraph]'	'clear graph')
 	'cat;Input'
 		(array 'r' 'buttonA'			'button A')
 		(array 'r' 'buttonB'			'button B')
