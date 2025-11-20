@@ -2005,6 +2005,17 @@ method clearVariableNames SmallRuntime {
 	oldVarNames = nil
 }
 
+// Library changes
+
+method librariesChanged SmallRuntime {
+	// Called by scripter when libraries are added or removed.
+
+	sendStopAll this
+	clearVariableNames this
+	scriptChanged scripter
+}
+
+
 // Serial Delay
 
 method serialDelayMenu SmallRuntime {
