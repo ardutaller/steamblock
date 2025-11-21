@@ -2181,8 +2181,10 @@ method sendMsg SmallRuntime msgName chunkID byteList {
 
 	while ((byteCount dataToSend) > 0) {
 		byteCount = (byteCount dataToSend)
-		if ('webBLE' != portName) {
+		if (or ('webBLE' != portName) (isMobile)) {
 			// Note: Serial receive buffer is only 63 bytes on many boards so limit byteCount.
+			// In addition, some mobile devices (e.g. iPhones 11-13 and some Android devices)
+			// fail if over 63 bytes are written to BLE at a time due to a hardware/driver issue.
 			byteCount = (min 63 byteCount)
 		}
 		chunk = (copyFromTo dataToSend 1 byteCount)
