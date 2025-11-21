@@ -397,6 +397,17 @@ static void initDUELedPins() {
 		columnPins[2] = mapDigitalPinNum(6);
 		columnPins[3] = mapDigitalPinNum(5);
 		columnPins[4] = mapDigitalPinNum(4);
+	} else if (IS_DUE_CHRONO) {
+		rowPins[0] = mapDigitalPinNum(7);
+		rowPins[1] = mapDigitalPinNum(5);
+		rowPins[2] = mapDigitalPinNum(0);
+		rowPins[3] = mapDigitalPinNum(8);
+		rowPins[4] = mapDigitalPinNum(6);
+		columnPins[0] = mapDigitalPinNum(3);
+		columnPins[1] = mapDigitalPinNum(4);
+		columnPins[2] = mapDigitalPinNum(18);
+		columnPins[3] = mapDigitalPinNum(19);
+		columnPins[4] = mapDigitalPinNum(9);
 	} else { // Cinco
 		rowPins[0] = mapDigitalPinNum(22);
 		rowPins[1] = mapDigitalPinNum(23);
