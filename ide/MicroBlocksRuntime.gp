@@ -818,7 +818,9 @@ method selectPort SmallRuntime {
 	if ('Browser' == (platform)) {
 		menu = (menu 'Connect' (action 'webSerialConnect' this) true)
 		if (and (isNil port) ('boardie' != portName)) {
-			addItem menu 'connect (USB)'
+			if (not (isMobile)) {
+				addItem menu 'connect (USB)'
+			}
 			addItem menu 'connect (BLE)'
 			addLine menu
 			addItem menu 'open Boardie'
@@ -1257,7 +1259,7 @@ method checkVmVersion SmallRuntime {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
 			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040'))
-		if (dueBoardConnected this) { offerToUpdate = false }
+		if (or (dueBoardConnected this) (isMobile)) { offerToUpdate = false }
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
 			// then requires the user to put the board into boot mode.
