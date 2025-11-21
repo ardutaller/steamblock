@@ -1449,7 +1449,7 @@ OBJ primShowKeyboard(int nargs, OBJ args[]) {
 	if (nargs < 1) return notEnoughArgsFailure();
 
 	EM_ASM_({
-		if (GP_showFloatingInput) {
+		if (typeof GP_showFloatingInput === 'function') {
 			// gpSupport.js has floating input support
 			if ($0) {
 				document.activeElement.blur();
