@@ -262,8 +262,8 @@ Menus.elementFor = function (selector) {
 						}
 						if (item.checked) {
 							// can be checked, so it needs a tick icon
-							let tick = document.createElement('img');
-							tick.setAttribute('src', 'img/checkmark.svg');
+							let tick = document.createElement('span');
+							fetch('img/checkmark.svg').then(res => res.text()).then(text => tick.innerHTML = text);
 							// we now run the checked callback to see if the item is checked or not
 							tick.classList.add('tick');
 							tick.classList.add(item.checked() ? 'checked' : 'unchecked');
