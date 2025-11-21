@@ -9,7 +9,15 @@
 // Bernat Romagosa, 2025
 
 const LiveReload = {
-	watchedFiles: [ 'style.css', 'microblocks.html', 'img/logo.svg', 'buttons.js' ],
+	watchedFiles: [
+      'style.css',
+      'microblocks.html',
+      'buttons.js',
+      'ide.js',
+      'menus.js',
+      'buttons.js',
+      'categories.js'
+  ],
 	lastVersions: {},
 	interval: null,
 	watchInterval: 1000,
