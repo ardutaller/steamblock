@@ -56,8 +56,20 @@ to openMicroBlocksEditor devMode {
 	applyUserPreferences editor
 	developerModeChanged editor
 	if ('Browser' == (platform)) {
-		// attempt to extra project or scripts from URL; does nothing if absent
-		importFromURL editor (browserURL)
+		url = (browserURL)
+		if ((findSubstring 'lang=' url) > 0) {
+			start = ((findSubstring 'lang=' url) + 5)
+			end = (findSubstring '&' url start)
+			if (isNil end) {
+				langCode = (substring url start (count url))
+			} else {
+				langCode = (substring url start (end - 1))
+			}
+			setLanguage editor langCode
+		}
+
+		// attempt to open a project or scripts from URL; does nothing if absent
+		importFromURL editor url
 	}
 	startSteppingSafely page
 }
