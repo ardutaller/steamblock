@@ -1,6 +1,6 @@
 module Cutebot Output
 author wwj718
-version 1 6 
+version 1 7 
 depends 'Distance (HC-SR04)' NeoPixel 
 choices cutebot_side 'cutebotside;left' 'cutebotside;right'
 choices cutebot_light 'cutebotlight;left' 'cutebotlight;right' 'cutebotlight;both'
@@ -14,11 +14,11 @@ The Cutebot can work with the AILens library.
 
 https://www.elecfreaks.com/learn-en/microbitKit/smart_cutebot/cutebot_car.html'
 
-  spec ' ' 'cutebot_setWheelSpeed' 'Cutebot set wheel left _ right _ (-100 to 100)' 'num num' 100 -100
+  spec ' ' 'cutebot_setWheelSpeed' 'Cutebot set wheel left _ right _ (-100 to 100)' 'num num' 50 -50
   spec ' ' 'cutebot_stopWheels' 'Cutebot stop wheels'
   space
   spec ' ' 'cutebot_setServo' 'Cutebot set servo _ to _ degrees (-90 to 90)' 'menu.range:1-2 num' 1 90
-  spec ' ' 'cutebot_setServoSpeed' 'Cutebot set servo _ to speed _ (-100 to 100)' 'menu.range:1-2 num' 1 100
+  spec ' ' 'cutebot_setServoSpeed' 'Cutebot set servo _ to speed _ (-100 to 100)' 'menu.range:1-2 num' 1 50
   space
   spec ' ' 'cutebot_setHeadlightColor' 'Cutebot set headlight _ to _' 'menu.cutebot_light color' 'cutebotlight;both'
   spec ' ' 'cutebot_setNeopixels' 'Cutebot set NeoPixel _ to _' 'menu.cutebot_light color' 'cutebotlight;both'
