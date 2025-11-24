@@ -1107,13 +1107,7 @@ method incrementVar SmallCompiler varName {
 }
 
 method globalVarIndex SmallCompiler varName {
-	varNames = (allVariableNames (project (scripter (smallRuntime))))
-	id = (indexOf varNames varName)
-	if (isNil id) {
-		error 'Unknown variable' varName
-	}
-	if (id >= 128) { error 'Id' id 'for variable' varName 'is out of range' }
-	return (id - 1) // VM uses zero-based index
+	return (indexForVar (project (scripter (smallRuntime))) varName)
 }
 
 // function calls
