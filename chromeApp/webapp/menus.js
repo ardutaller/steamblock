@@ -257,12 +257,12 @@ Menus.elementFor = function (selector) {
 Menus.popUp = function (selector, triggerElement) {
 	this.close();
 	let container = document.querySelector('.top-bar .menu'),
-		nav = this.elementFor(selector);
+		nav = this.elementFor(selector),
+		pos = triggerElement.getClientRects()[0];
 	nav.trigger = triggerElement;
 	container.appendChild(nav);
-	container.style.left = `${triggerElement.offsetLeft}px`;
-	container.style.top =
-		`${triggerElement.offsetTop + triggerElement.clientHeight}px`;
+	container.style.left = `${pos.x}px`;
+	container.style.top = `${pos.y + triggerElement.clientHeight}px`;
 };
 
 Menus.close = function () {

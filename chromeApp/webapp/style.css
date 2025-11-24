@@ -213,6 +213,11 @@ body {
 	vertical-align: top;
 }
 
+.buttons-right {
+	position: absolute;
+	right: 0;
+}
+
 .icon {
 	display: inline-block;
 	vertical-align: top;
