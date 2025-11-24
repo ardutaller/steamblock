@@ -184,7 +184,7 @@ method hideAllMyBlocks MicroBlocksScripter {
 method removeLibraryNamed MicroBlocksScripter libName {
 	removeLibraryNamed mbProject libName
 	closeAllDialogs projectEditor
-	variablesChanged (smallRuntime)
+	librariesChanged (smallRuntime)
 	updateLibraryList this
 	languageChanged this
 }
@@ -633,7 +633,7 @@ method deleteVariableMenu MicroBlocksScripter {
 }
 
 method deleteVariable MicroBlocksScripter varName {
-	deleteVariable (main mbProject) varName
+	deleteVariable mbProject varName
 	variablesChanged (smallRuntime)
 	updateBlocks this
 }
@@ -1283,7 +1283,7 @@ method importLibraryFromUrl MicroBlocksScripter fullUrl {
 method importLibraryFromString MicroBlocksScripter data libName fileName asImplementation {
 	addLibraryFromString mbProject (toString data) libName fileName
 	if asImplementation { beImplementation (libraryNamed mbProject libName) }
-	variablesChanged (smallRuntime)
+	librariesChanged (smallRuntime)
 
 	// update library list and select the new library
 	updateLibraryList this

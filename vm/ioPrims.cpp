@@ -1361,8 +1361,21 @@ const char * boardType() {
 		}
 		if (IS_DUE_STEM) return "DueSTEM";
 		if (IS_DUE_CLIPIT) return "Clipit";
+
+		// Other microcontroller boards
+		if (DUE_PID == 12) return "DueDuino";
+		if (DUE_PID == 13) return "Stamp";
+		if (DUE_PID == 14) return "Stick";
+
+		// Specialty boards
 		if (DUE_PID == 0x0C0001) return "Ghizzy";
+		if (DUE_PID == 0x0C0002) return "Ghizzy Jr";
 		if (DUE_PID == 0x0C0003) return "Holiday Tree";
+		if (DUE_PID == 0x0C0004) return "Chrono";
+		if (DUE_PID == 0x0C0005) return "Piano";
+		if (DUE_PID == 0x0C0006) return "Snowy";
+		if (DUE_PID == 0x0C0007) return "Cubicle";
+		if (DUE_PID == 0x0C0008) return "Controller";
 	#endif
 	return BOARD_TYPE;
 }
@@ -2516,7 +2529,11 @@ void stopTone() {
 			NVIC_DisableIRQ(TC5_IRQn);
 			NVIC_ClearPendingIRQ(TC5_IRQn);
 		#endif
-		noTone(tonePin);
+		#if defined(DUELink)
+			noTone(tonePin, true);
+		#else
+			noTone(tonePin);
+		#endif
 		SET_MODE(tonePin, INPUT);
 	}
 	tonePin = -1;
@@ -2742,12 +2759,12 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 		if (pin < 2) return falseObj;
 	#endif
 
-	SET_MODE(pin, OUTPUT);
-
 	#if defined(DUELink)
 		pin = mapDigitalPinNum(pin); // use the DUE pin number
 		if (pin < 0) return trueObj;
 	#endif
+
+	SET_MODE(pin, OUTPUT);
 
 	int frequency = obj2int(freqArg);
 	if ((frequency < 16) || (frequency > 100000)) {

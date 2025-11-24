@@ -166,8 +166,10 @@ method drawLabelCostumes Trigger label minWidth minHeight isActive onDark {
 		// special case for Window close button
 		bitmap = (readSVGIcon 'icon-close' (microBlocksColor 'blueGray' 100))
 		hlBitmap = (readSVGIcon 'icon-close' (microBlocksColor 'yellow'))
-		normalCostume = (closeButtonImage bitmap 80 50)
-		highlightCostume = (closeButtonImage hlBitmap 80 50)
+		w = (40 * scale)
+		h = (25 * scale)
+		normalCostume = (closeButtonImage bitmap w h)
+		highlightCostume = (closeButtonImage hlBitmap w h)
 		pressedCostume = highlightCostume
 		setCostume morph normalCostume
 		return

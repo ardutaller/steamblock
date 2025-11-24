@@ -49,9 +49,21 @@ to openMicroBlocksEditor devMode {
 	readVersionFile (smallRuntime)
 	applyUserPreferences editor
 	developerModeChanged editor
-	// attempt to import extra project or scripts from URL; does nothing if absent
-	importFromURL editor (browserURL)
 	browserNotify 'ready'
+	url = (browserURL)
+	if ((findSubstring 'lang=' url) > 0) {
+		start = ((findSubstring 'lang=' url) + 5)
+		end = (findSubstring '&' url start)
+		if (isNil end) {
+			langCode = (substring url start (count url))
+		} else {
+			langCode = (substring url start (end - 1))
+		}
+		setLanguage editor langCode
+	}
+
+	// attempt to open a project or scripts from URL; does nothing if absent
+	importFromURL editor url
 	startSteppingSafely page
 }
 
@@ -760,6 +772,15 @@ method autoDecompileEnabled MicroBlocksEditor {
 //	return (autoDecompile == true)
 }
 
+method openVMFolder MicroBlocksEditor {
+	if isPilot {
+		url = 'https://microblocks.fun/downloads/pilot/vm/'
+	} else {
+		url = 'https://microblocks.fun/downloads/latest/vm/'
+	}
+	openURL url
+}
+
 method toggleShowHiddenBlocks MicroBlocksEditor {
 	showHiddenBlocks = (not (showHiddenBlocksEnabled this))
 	saveToUserPreferences this 'showImplementationBlocks' showHiddenBlocks
@@ -841,6 +862,8 @@ method gearMenu MicroBlocksEditor {
 		addItem menu 'autoload board libraries' (action 'toggleBoardLibAutoLoad' this) nil (newCheckmark this (not (boardLibAutoLoadDisabled this)))
 // Does anyone ever enable 'PlugShare when project empty'?
 //		addItem menu 'PlugShare when project empty' (action 'toggleAutoDecompile' this) 'when plugging a board, automatically read its contents into the IDE if the current project is empty' (newCheckmark this (autoDecompileEnabled this))
+		addLine menu
+		addItem menu 'open vm folder on microblocks.fun' (action 'openVMFolder' this)
 		addLine menu
 		addItem menu 'install ESP firmware from URL' (action 'installESPFirmwareFromURL' (smallRuntime))
 		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (smallRuntime))

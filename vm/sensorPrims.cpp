@@ -128,7 +128,6 @@ int readI2CReg(int deviceID, int reg) {
 		int error = Wire.endTransmission((bool) false);
 	#endif
 	if (error) {
-		reportNum("i2c read error", error);
 		taskSleep(5);
 		return -error; // error; bad device ID?
 	}

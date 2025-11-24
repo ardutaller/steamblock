@@ -812,9 +812,12 @@ method webSerialConnect SmallRuntime action {
 method selectPort SmallRuntime {
 	if (isNil disconnected) { disconnected = false }
 
+<<<<<<< HEAD
 	menu = (menu 'Connect' (action 'webSerialConnect' this) true)
 	if (and (isNil port) ('boardie' != portName)) {
-		addItem menu 'connect (USB)'
+		if (not (isMobile)) {
+			addItem menu 'connect (USB)'
+		}
 		addItem menu 'connect (BLE)'
 		addLine menu
 		addItem menu 'open Boardie'
@@ -1151,7 +1154,7 @@ method checkVmVersion SmallRuntime {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
 			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040'))
-		if (dueBoardConnected this) { offerToUpdate = false }
+		if (or (dueBoardConnected this) (isMobile)) { offerToUpdate = false }
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
 			// then requires the user to put the board into boot mode.
@@ -1899,6 +1902,17 @@ method clearVariableNames SmallRuntime {
 	oldVarNames = nil
 }
 
+// Library changes
+
+method librariesChanged SmallRuntime {
+	// Called by scripter when libraries are added or removed.
+
+	sendStopAll this
+	clearVariableNames this
+	scriptChanged scripter
+}
+
+
 // Serial Delay
 
 method serialDelayMenu SmallRuntime {
@@ -2062,8 +2076,10 @@ method sendMsg SmallRuntime msgName chunkID byteList {
 
 	while ((byteCount dataToSend) > 0) {
 		byteCount = (byteCount dataToSend)
-		if ('webBLE' != portName) {
+		if (or ('webBLE' != portName) (isMobile)) {
 			// Note: Serial receive buffer is only 63 bytes on many boards so limit byteCount.
+			// In addition, some mobile devices (e.g. iPhones 11-13 and some Android devices)
+			// fail if over 63 bytes are written to BLE at a time due to a hardware/driver issue.
 			byteCount = (min 63 byteCount)
 		}
 		chunk = (copyFromTo dataToSend 1 byteCount)
