@@ -53,6 +53,7 @@ LiveReload.enable = function() {
 					} else if (file.endsWith('.js')) {
 						// redo the whole page
 						/*
+						// this was beautiful...er, but it didn't work. Meh.
 						fetch('microblocks.html')
 							.then(res => res.text())
 							.then(text => { this.reloadPage(text); });

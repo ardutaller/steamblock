@@ -99,21 +99,21 @@ Buttons.elementFor = function (selector) {
 
 Buttons.connectWidget = function () {
 	// special case, as this is a slightly more complex element
-	let container = document.createElement('div');
+	let container = document.createElement('div'),
+		descriptor = this['connect'],
+		icon = Icon.forSelector(descriptor.icon);
 	container.classList.add('connect');
 
-	let menu = Menus.elementFor('connection');
-
-	container.ariaLabel = menu.ariaLabel;
-	container.ariaDescription = menu.ariaDescription;
+	container.ariaLabel = descriptor.ariaLabel;
+	container.ariaDescription = descriptor.ariaDescription;
 
 	document.addEventListener(
 		'board.connected',
 		(e) => {
 			if (e.detail.value) {
-				menu.classList.add('connected');
+				container.classList.add('connected');
 			} else {
-				menu.classList.remove('connected');
+				container.classList.remove('connected');
 			}
 		}
 	);
@@ -129,14 +129,12 @@ Buttons.connectWidget = function () {
 	let arrow = Icon.forUrl('img/dropdown-arrow.svg');
 	arrow.classList.add('dropdown');
 
-	container.appendChild(menu);
+	container.appendChild(icon);
 	container.appendChild(label);
 	container.appendChild(arrow);
 
 	// clicking anywhere in the widget triggers the menu
-	menu.onclick = null;
-	menu.clickable = container;
-	container.onclick = menu.openMenu;
+	container.onclick = () => { Menus.popUp('connection', container); };
 
 	return container;
 };

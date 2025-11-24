@@ -208,20 +208,24 @@ body {
 	margin-top: 3px;
 }
 
+.buttons-left, .progress, .buttons-right {
+	display: inline-flex;
+	vertical-align: top;
+}
+
 .icon {
 	display: inline-block;
 	vertical-align: top;
-	align-self: cente;
+	align-self: center;
 	padding-top: 9px;
 	padding-left: 5px;
 	cursor: pointer;
 }
-.icon img:hover {
-	filter:	brightness(0) saturate(100%) invert(72%) sepia(78%)
-					saturate(469%) hue-rotate(356deg) brightness(106%) contrast(99%);
+.icon svg:hover > path{
+	fill: gold;
 }
 .menu {
-	position: absolute;
+	position: fixed;
 	background-color: #2d3143;
 	color: white;
 	display: flex;
@@ -270,7 +274,7 @@ hr {
 	margin-left: 6px;
 	margin-right: 6px;
 }
-.buttons .connect {
+.buttons-right .connect {
 	cursor: pointer;
 	display: flex;
 }
@@ -278,11 +282,11 @@ hr {
 	filter:	brightness(0) saturate(100%) invert(64%) sepia(12%) saturate(1783%)
 					hue-rotate(71deg) brightness(99%) contrast(93%);
 }
-.buttons .connect .label:hover {
+.buttons-right .connect .label:hover {
 	filter:	brightness(0) saturate(100%) invert(72%) sepia(78%) saturate(469%)
 					hue-rotate(356deg) brightness(106%) contrast(99%);
 }
-.buttons .connect .label {
+.buttons-right .connect .label {
 	align-self: center;
 	color: white;
 	padding-top: 0.5em;

@@ -217,13 +217,11 @@ Menus.elementFor = function (selector) {
 				let a = document.createElement('a');
 				let text = document.createElement('l-'); // localizable
 
-				menu.icon = document.querySelector(`.button.${selector}`);
 				menu.id = `menu-${selector}`;
-
 				li.classList.add('menu-item');
 
 				// set the menu item action
-				a.onclick = item.action;
+				a.onclick = () => { item.action(); this.close() };
 
 				// set the menu item label
 				if (typeof item.label == 'string') {
@@ -256,11 +254,15 @@ Menus.elementFor = function (selector) {
 	return menu;
 };
 
-Menus.popUp = function (selector, icon) {
+Menus.popUp = function (selector, triggerElement) {
 	this.close();
-	let menu = this.elementFor(selector);
-	menu.icon = icon;
-	document.querySelector('.top-bar .menu').appendChild(menu);
+	let container = document.querySelector('.top-bar .menu'),
+		nav = this.elementFor(selector);
+	nav.trigger = triggerElement;
+	container.appendChild(nav);
+	container.style.left = `${triggerElement.offsetLeft}px`;
+	container.style.top =
+		`${triggerElement.offsetTop + triggerElement.clientHeight}px`;
 };
 
 Menus.close = function () {
@@ -273,7 +275,7 @@ document.addEventListener('click', (event) => {
 	if (currentMenu) {
 		if (
 			!currentMenu.contains(event.target) &&
-			!currentMenu.icon?.contains(event.target)
+			!currentMenu.trigger?.contains(event.target)
 		) {
 			currentMenu.remove();
 		}
