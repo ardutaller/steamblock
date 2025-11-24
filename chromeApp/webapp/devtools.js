@@ -52,9 +52,13 @@ LiveReload.enable = function() {
 						return;
 					} else if (file.endsWith('.js')) {
 						// redo the whole page
+						/*
 						fetch('microblocks.html')
 							.then(res => res.text())
 							.then(text => { this.reloadPage(text); });
+						*/
+						this.reloadGP = true;
+						this.reloadPage();
 						return;
 					} else {
 						console.log('file extension not recognized:', file);

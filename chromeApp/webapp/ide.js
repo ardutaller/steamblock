@@ -95,36 +95,24 @@ IDE.toggleAdvancedMode = function () {
 
 // Top Bar
 IDE.populateTopBar = function (container) {
-	// add logo
-	let logo = document.createElement('img');
-	logo.setAttribute('src', 'img/logo.svg');
-	logo.classList.add('logo');
-	logo.ariaLabel = 'MicroBlocks';
-	logo.ariaDescription = 'Rosa, the MicroBlocks bunny, is named after Rózsa Péter, a great mathematician.';
-	container.appendChild(logo);
-
-	// add top menus
+	let leftButtons = container.querySelector('.buttons-left');
+	// add left-side buttons
 	['language', 'settings', 'project'].forEach(selector => {
-		container.appendChild(Menus.elementFor(selector));
+		leftButtons.appendChild(Buttons.elementFor(selector));
 	});
 
-	// add project title
-	let title = document.createElement('span');
-	title.classList.add('title');
-	container.appendChild(title);
+	// add listener to title
+	let title = container.querySelector('.title');
 	document.addEventListener(
 		'project.title',
 		(e) => { title.innerText = e.detail.value; }
 	);
 
 	// add right buttons
-	let buttons = document.createElement('div');
-	buttons.classList.add('buttons');
+	let rightButtons = container.querySelector('.buttons-right');
 
 	// progress indicator
-	let progress = document.createElement('div');
-	progress.classList.add('progress');
-	buttons.appendChild(progress);
+	let progress =  container.querySelector('.progress');
 	document.addEventListener(
 		'ide.downloadProgress',
 		(e) => {
@@ -147,9 +135,8 @@ IDE.populateTopBar = function (container) {
 		}
 	);
 
-	container.appendChild(buttons);
 	['graph', '|', 'connect', '|', 'run', 'stop' ].forEach(selector => {
-		buttons.appendChild(Buttons.elementFor(selector));
+		rightButtons.appendChild(Buttons.elementFor(selector));
 	});
 };
 

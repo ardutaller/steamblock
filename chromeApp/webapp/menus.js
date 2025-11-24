@@ -9,12 +9,7 @@
 // Bernat Romagosa, 2025
 
 const Menus = {};
-Menus.language = {
-	icon: 'globe',
-	label: 'Language',
-	description: 'Set the language of the IDE, including all the blocks.',
-	items: []
-};
+Menus.language = { items: [] };
 
 Menus.language.init = function () {
 	// fill language menu out of available locales
@@ -47,9 +42,6 @@ Menus.language.init = function () {
 Menus.language.init();
 
 Menus.settings = {
-	icon: 'gear',
-	label: 'Settings',
-	description: 'User preferences and different IDE settings and tweaks.',
 	items: [
 		{
 			label: 'about...',
@@ -132,9 +124,6 @@ Menus.settings = {
 };
 
 Menus.project = {
-	icon: 'file',
-	label: 'Project',
-	description: 'Actions relating to MicroBlocks projects.',
 	items: [
 		{
 			label: 'Save',
@@ -183,9 +172,6 @@ Menus.project = {
 };
 
 Menus.connection = {
-	icon : 'usb',
-	label: 'Connection',
-	description: 'Connect to a microcontroller via USB or BLE, or open Boardie.',
 	items: [
 		{
 			label: 'connect (USB)',
@@ -214,85 +200,82 @@ Menus.connection = {
 	]
 };
 
+
 Menus.elementFor = function (selector) {
-	// return an HTML tree containing the icon and menu for a menu selector
-	let descriptor = this[selector];
-	let icon = Icon.forSelector(descriptor.icon);
+	// return an HTML tree containing the menu for a menu selector, and
+	// dynamically generate the menu each time, since it can change depending on
+	// the state of the board, preferences, etc
+	let menu = document.createElement('nav');
 
-	icon.ariaLabel = descriptor.label;
-	icon.ariaDescription = descriptor.description;
+	this[selector].items.forEach((item, index) => {
+		if (!(item.hidden?.())) {
+			let li = document.createElement('li');
+			if (item.label == '-') {
+				// vertical separator, unless this is the last item
+				li.appendChild(document.createElement('hr'));
+			} else {
+				let a = document.createElement('a');
+				let text = document.createElement('l-'); // localizable
 
-	icon.openMenu = () => {
-		// dynamically generate the menu each time, since it can change depending on
-		// the state of the board, preferences, etc
-		if (IDE.currentMenu) {
-			IDE.currentMenu.remove();
-			IDE.currentMenu = null;
-		} else {
-			IDE.currentMenu = document.createElement('nav');
-			IDE.currentMenu.classList.add('menu');
-			IDE.currentMenu.icon = icon;
-			icon.appendChild(IDE.currentMenu);
+				menu.icon = document.querySelector(`.button.${selector}`);
+				menu.id = `menu-${selector}`;
 
-			descriptor.items.forEach((item, index) => {
-				if (!(item.hidden?.())) {
-					let li = document.createElement('li');
-					if (item.label == '-') {
-						// vertical separator, unless this is the last item
-						li.appendChild(document.createElement('hr'));
-					} else {
-						let a = document.createElement('a');
-						let text = document.createElement('l-'); // localizable
+				li.classList.add('menu-item');
 
-						li.classList.add('menu-item');
+				// set the menu item action
+				a.onclick = item.action;
 
-						// set the menu item action
-						a.onclick = item.action;
-
-						// set the menu item label
-						if (typeof item.label == 'string') {
-							text.innerText = item.label;
-						} else if (typeof item.label == 'function') {
-							text.innerText = item.label();
-						}
-
-						// states: disabled and checked
-						if (item.disabled?.()) {
-							a.classList.add('disabled');
-						}
-						if (item.checked) {
-							// can be checked, so it needs a tick icon
-							let tick = document.createElement('span');
-							fetch('img/checkmark.svg').then(res => res.text()).then(text => tick.innerHTML = text);
-							// we now run the checked callback to see if the item is checked or not
-							tick.classList.add('tick');
-							tick.classList.add(item.checked() ? 'checked' : 'unchecked');
-							a.appendChild(tick);
-						}
-
-						a.appendChild(text);
-						li.appendChild(a);
-					}
-					IDE.currentMenu.appendChild(li);
+				// set the menu item label
+				if (typeof item.label == 'string') {
+					text.innerText = item.label;
+				} else if (typeof item.label == 'function') {
+					text.innerText = item.label();
 				}
-			});
-		}
-	};
-	icon.clickable = icon;
-	icon.onclick = icon.openMenu;
 
-	return icon;
+				// states: disabled and checked
+				if (item.disabled?.()) {
+					a.classList.add('disabled');
+				}
+				if (item.checked) {
+					// can be checked, so it needs a tick icon
+					let tick = document.createElement('span');
+					fetch('img/checkmark.svg').then(res => res.text()).then(text => tick.innerHTML = text);
+					// we now run the checked callback to see if the item is checked or not
+					tick.classList.add('tick');
+					tick.classList.add(item.checked() ? 'checked' : 'unchecked');
+					a.appendChild(tick);
+				}
+
+				a.appendChild(text);
+				li.appendChild(a);
+			}
+			menu.appendChild(li);
+		}
+	});
+
+	return menu;
+};
+
+Menus.popUp = function (selector, icon) {
+	this.close();
+	let menu = this.elementFor(selector);
+	menu.icon = icon;
+	document.querySelector('.top-bar .menu').appendChild(menu);
+};
+
+Menus.close = function () {
+	document.querySelector('.top-bar .menu nav')?.remove();
 };
 
 document.addEventListener('click', (event) => {
 	// close any open menu when clicking outside its influence area
-	if (IDE.currentMenu) {
+	let currentMenu = document.querySelector('.top-bar .menu nav');
+	if (currentMenu) {
 		if (
-			!IDE.currentMenu.contains(event.target) &&
-			!IDE.currentMenu.icon?.clickable.contains(event.target)
+			!currentMenu.contains(event.target) &&
+			!currentMenu.icon?.contains(event.target)
 		) {
-			IDE.currentMenu.remove();
-			IDE.currentMenu = null;
+			currentMenu.remove();
 		}
 	}
 })

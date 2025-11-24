@@ -9,11 +9,35 @@
 // Bernat Romagosa, 2025
 
 const Buttons = {
+	language: {
+		icon: 'globe',
+		label: 'Language',
+		description: 'Set the language of the IDE, including all the blocks.',
+		menu: 'language'
+	},
+	settings: {
+		icon: 'gear',
+		label: 'Settings',
+		description: 'User preferences and different IDE settings and tweaks.',
+		menu: 'settings'
+	},
+	project: {
+		icon: 'file',
+		label: 'Project',
+		description: 'Actions relating to MicroBlocks projects.',
+		menu: 'project'
+	},
 	graph: {
 		icon: 'graph',
 		label: 'Graph',
 		description: 'Open a graph window. Use the graph block in the Output category to add data points to it.',
 		action: () => { GP.apiCall('ide.showGraph'); }
+	},
+	connect: {
+		icon : 'usb',
+		label: 'Connection',
+		description: 'Connect to a microcontroller via USB or BLE, or open Boardie.',
+		action: () => { Menus.popUp('connect'); }
 	},
 	run: {
 		icon: 'start',
@@ -61,7 +85,13 @@ Buttons.elementFor = function (selector) {
 		descriptor.icon.startsWith('img') ?
 			Icon.forUrl(descriptor.icon) :
 			Icon.forSelector(descriptor.icon);
-	icon.onclick = descriptor.action;
+	icon.classList.add(selector);
+	if (descriptor.menu) {
+		icon.onclick = () => { Menus.popUp(selector, icon); };
+		icon.setAttribute('aria-controls', `menu-${selector}`);
+	} else {
+		icon.onclick = descriptor.action;
+	}
 	icon.ariaLabel = descriptor.label;
 	icon.ariaDescription = descriptor.description; // excuse the alliteration :)
 	return icon;
