@@ -8,9 +8,13 @@ class FloatingWindow extends HTMLElement {
 			h1.innerText = title;
 			this.append(h1);
 		}
-		if (typeof contents == 'string') {
+		if (contents) {
 			let div = document.createElement('div');
-			div.innerText = contents;
+			if (typeof contents == 'string') {
+				div.innerText = contents;
+			} else if (typeof contents == 'object') { // assume DOM element
+				div.append(contents);
+			}
 			this.append(div);
 		}
 	}
@@ -44,4 +48,5 @@ class FloatingWindow extends HTMLElement {
 
 customElements.define('win-', FloatingWindow);
 
-
+// Create a basic window with:
+// document.body.append(new FloatingWindow('My Window', 'The contents of the window'));
