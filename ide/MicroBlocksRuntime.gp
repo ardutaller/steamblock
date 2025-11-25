@@ -812,7 +812,6 @@ method webSerialConnect SmallRuntime action {
 method selectPort SmallRuntime {
 	if (isNil disconnected) { disconnected = false }
 
-<<<<<<< HEAD
 	menu = (menu 'Connect' (action 'webSerialConnect' this) true)
 	if (and (isNil port) ('boardie' != portName)) {
 		if (not (isMobile)) {
@@ -1398,7 +1397,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 	progressInterval = (max 1 (floor (totalScripts / 20)))
 	processedScripts = 0
 	skipHiddenFunctions = true
-	if (saveVariableNames this) { recompileAll = true }
+	saveVariableNamesIfNeeded this
 	if recompileAll {
 		// Clear the source code field of all chunk entries to force script recompilation
 		// and possible re-download since variable offsets have changed.
@@ -1447,6 +1446,12 @@ method saveAllChunks SmallRuntime checkCRCs {
 		processedScripts += 1
 	}
 	if (scriptsSaved > 0) { print 'Downloaded' scriptsSaved 'scripts to board' (join '(' (msecSplit t) ' msecs)') }
+
+	globalVarCount = (count (allVariableNames (project scripter)))
+	if (and (globalVarCount > 128) (scriptsSaved > 0)) {
+		print 'Error: Project has' globalVarCount 'global variables! Limit is 128.'
+		print 'Project will behave unpredicably until this is fixed.'
+	}
 
 	recompileAll = false
 	if checkCRCs { verifyCRCs this }
@@ -1813,11 +1818,12 @@ method allCRCsReceived SmallRuntime data {
 	}
 }
 
-method saveVariableNames SmallRuntime {
+method saveVariableNamesIfNeeded SmallRuntime {
 	// If the variables list has changed, save the new variable names.
 	// Return true if varibles have changed, false otherwise.
 
-	newVarNames = (allVariableNames (project scripter))
+	project = (project scripter)
+	newVarNames = (allVariableNames project)
 	if (oldVarNames == newVarNames) { return false }
 
 	editor = (findMicroBlocksEditor)
@@ -1825,19 +1831,19 @@ method saveVariableNames SmallRuntime {
 	progressInterval = (max 1 (floor (varCount / 20)))
 
 	clearVariableNames this
-	varID = 0
-	for varName newVarNames {
+	for i varCount {
+		varName = (at newVarNames i)
+		varID = (indexForVar project varName)
 		if (notNil port) {
-			if (0 == (varID % 50)) {
-				// send a sync message every N variables
+			if ((i % 32) == 0) {
+				// send a sync message every 32 variables
 				sendMsgSync this 'varNameMsg' varID (toArray (toBinaryData varName))
 			} else {
 				sendMsg this 'varNameMsg' varID (toArray (toBinaryData varName))
 			}
 		}
-		varID += 1
-		if (0 == (varID % progressInterval)) {
-			setProperty api 'ide.downloadProgress' (array 2 (varID / varCount))
+		if ((i % progressInterval) == 0) {
+			setProperty api 'ide.downloadProgress' (array 2 (i / varCount))
 		}
 	}
 	oldVarNames = (copy newVarNames)
@@ -1887,14 +1893,6 @@ method setVar SmallRuntime varID val {
 		}
 	}
 	if (notNil body) { sendMsg this 'setVarMsg' varID body }
-}
-
-method variablesChanged SmallRuntime {
-	// Called by scripter when variables are added or removed.
-
-	sendStopAll this
-	clearVariableNames this
-	scriptChanged scripter
 }
 
 method clearVariableNames SmallRuntime {

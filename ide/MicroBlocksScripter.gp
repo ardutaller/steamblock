@@ -596,7 +596,6 @@ method createVariable MicroBlocksScripter srcObj {
 	varName = (trim (freshPrompt (global 'page') 'New variable name?' ''))
 	if (varName != '') {
 		addVariable (main mbProject) (uniqueVarName this varName)
-		variablesChanged (smallRuntime)
 		updateBlocks this
 		if (isClass srcObj 'InputSlot') {
 			setContents srcObj varName
@@ -634,7 +633,6 @@ method deleteVariableMenu MicroBlocksScripter {
 
 method deleteVariable MicroBlocksScripter varName {
 	deleteVariable mbProject varName
-	variablesChanged (smallRuntime)
 	updateBlocks this
 }
 
