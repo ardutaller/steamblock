@@ -854,6 +854,13 @@ function makeDraggable (element) {
 	// taken from w3schools (https://www.w3schools.com/howto/howto_js_draggable.asp)
 	var lastX = 0, lastY = 0;
 
+	if (!window.maxZIndex) {
+		window.maxZIndex = 999;
+	};
+
+	maxZIndex++;
+	element.style.zIndex = maxZIndex;
+
 	element.onpointerdown = dragMouseDown;
 
 	function dragMouseDown(e) {
@@ -874,9 +881,12 @@ function makeDraggable (element) {
 		e = e || window.event;
 		e.preventDefault();
 
+		maxZIndex++;
+		element.style.zIndex = maxZIndex;
+
 		// compute max position
-		var maxX = document.getElementById('canvas').clientWidth - element.clientWidth;
-		var maxY = document.getElementById('canvas').clientHeight - element.clientHeight;
+		var maxX = document.querySelector('.ide').clientWidth - element.clientWidth;
+		var maxY = document.querySelector('.ide').clientHeight - element.clientHeight;
 
 		// calculate the new cursor position:
 		var newX = Math.round(element.offsetLeft + (e.clientX - lastX));
