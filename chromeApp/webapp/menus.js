@@ -237,8 +237,10 @@ Menus.elementFor = function (selector) {
 				if (item.checked) {
 					// can be checked, so it needs a tick icon
 					let tick = document.createElement('span');
-					fetch('img/checkmark.svg').then(res => res.text()).then(text => tick.innerHTML = text);
-					// we now run the checked callback to see if the item is checked or not
+					fetch('img/checkmark.svg')
+						.then(res => res.text())
+						.then(text => tick.innerHTML = text);
+					// we now run the checked callback to see whether the item is checked
 					tick.classList.add('tick');
 					tick.classList.add(item.checked() ? 'checked' : 'unchecked');
 					a.appendChild(tick);
@@ -265,13 +267,17 @@ Menus.popUp = function (selector, triggerElement) {
 	container.style.top = `${pos.y + triggerElement.clientHeight}px`;
 };
 
+Menus.current = function () {
+	return document.querySelector('.top-bar .menu nav');
+}
+
 Menus.close = function () {
-	document.querySelector('.top-bar .menu nav')?.remove();
+	this.current()?.remove();
 };
 
 document.addEventListener('click', (event) => {
 	// close any open menu when clicking outside its influence area
-	let currentMenu = document.querySelector('.top-bar .menu nav');
+	let currentMenu = Menus.current();
 	if (currentMenu) {
 		if (
 			!currentMenu.contains(event.target) &&

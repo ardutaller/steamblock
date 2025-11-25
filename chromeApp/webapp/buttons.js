@@ -89,6 +89,12 @@ Buttons.elementFor = function (selector) {
 	if (descriptor.menu) {
 		icon.onclick = () => { Menus.popUp(selector, icon); };
 		icon.setAttribute('aria-controls', `menu-${selector}`);
+		icon.onmouseenter = () => {
+			if (Menus.current()) {
+				Menus.close();
+				Menus.popUp(selector, icon);
+			}
+		}
 	} else {
 		icon.onclick = descriptor.action;
 	}
