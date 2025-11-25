@@ -550,6 +550,56 @@ static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
 
+#if defined(DUELink)
+
+#include <stm32c0xx.h>
+#include <stm32c0xx_hal_pwr.h>
+#include <stm32c0xx_hal_pwr_ex.h>
+#include <usbd_cdc_if.h> // for CDC_deInit()
+
+void delay(unsigned long); // Arduino delay function
+
+// These are the only possible wakeup pins on C071:
+// WKUP1 - PA0 - Due P1
+// WKUP2 - PC13 (nc) or PA4 - Due P3
+// WKUP3 - PB6 (SCL) - Due P15
+// WKUP4 - PA2 (UART2 TX) - off limits
+// WKUP5 - PC5 (nc)
+// WKUP6 - PB5 (SPI) - Due P14
+
+static OBJ primDUESleep(int argCount, OBJ *args) {
+	// Some measurments:
+	//	HAL_PWR_EnterSTOPMode(0, 0); // 165 uA
+	//	HAL_PWR_EnterSTANDBYMode(); // 53 uA (can't recall which board; on Snowy it is < 1 uA)
+	//	HAL_PWREx_EnterSHUTDOWNMode(); // < 1 uA (too low to measure)
+	// Note: Boards with voltage regulators consume 1-3 mA even in shutdown mode.
+
+	// The following code appears to unnecessary:
+	//	CDC_deInit();
+	//	delay(100);
+
+	// The following allows a user to recover if they create a script like "when started, sleep"
+	// It gives them ten seconds to connect the IDE to the board so they can change their code.
+	if (totalMicrosecs() < (10 * 1000000)) return falseObj; // do nothing for N secs after startup
+
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1_HIGH);
+	HAL_PWREx_EnablePullUpPullDownConfig();
+	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_A, GPIO_PIN_0);
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF1);
+
+	// E key on Piano; pull down to wake up
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN6_LOW);
+	HAL_PWREx_EnableGPIOPullUp(PWR_GPIO_B, GPIO_PIN_5);
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF6);
+	delay(1); // leave time for pin to go low (it has a capacitor for touch sensing)
+
+	HAL_PWREx_EnterSHUTDOWNMode();
+	__WFI();
+	return falseObj;
+}
+
+#endif
+
 // Primitives
 
 static PrimEntry entries[] = {
@@ -564,8 +614,10 @@ static PrimEntry entries[] = {
 	{"bme680GasResistance", primBMP680GasResistance},
 	{"shapeforChar", primShapeforChar},
 	{"clearGraph", primClearGraph},
+#if defined(DUELink)
 	{"dueLinkPID", primDUELinkPID},
-#if !defined(DUELink)
+	{"dueSleep", primDUESleep},
+#else
 	{"hsvColor", primHSVColor},
 	{"hue", primColorHue},
 	{"saturation", primColorSaturation},
