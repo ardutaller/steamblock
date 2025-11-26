@@ -385,6 +385,20 @@ method decompileAllInProject SmallRuntime {
 	}
 }
 
+method analyzeGlobals SmallRuntime {
+	// analyzeGlobals (smallRuntime)
+	editor = (findMicroBlocksEditor)
+	for fn (listEmbeddedFiles) {
+		if (beginsWith fn 'Examples') {
+			openProjectFromFile editor (join '//' fn)
+			varCount = (count (allVariableNames (project (scripter editor))))
+			if (varCount > 10) {
+				print fn 'globals:' varCount
+			}
+		}
+	}
+}
+
 method analyzeAllExamples SmallRuntime {
 	grandTotal = 0
 	projectCount = 0

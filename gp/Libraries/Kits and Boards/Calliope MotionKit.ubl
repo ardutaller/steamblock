@@ -28,7 +28,7 @@ variables _mk2_i2cAddr _mk2_lastIRcode
   spec ' ' 'mk2_stopAll' 'MotionKit stop all'
   space
   spec ' ' 'mk2_setLED' 'MotionKit set led _ _' 'menu.mk2_motor bool' 'both' true
-  spec ' ' 'mk2_setNeoPixels' 'MotionKit set NeoPixels _ : brightness _' 'color num' nil 50
+  spec ' ' 'mk2_setNeoPixels' 'MotionKit set NeoPixels _ : brightness _' 'color num' 255 50
   spec ' ' 'mk2_setNeoPixels2' 'MotionKit set NeoPixels _ : brightness _' 'menu.mk2_color num' 'blue' 50
   spec ' ' 'mk2_clearNeoPixels' 'MotionKit clear NeoPixels'
   space

@@ -2743,6 +2743,10 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 			if (DUE_HAS_EDGE_CONNECTOR) pin = 21; // DUE Cinco and PixoBit
 			else if (IS_DUE_STEM) pin = 3;
 			else if (IS_DUE_CLIPIT) pin = 7;
+			else if (DUE_PID == 0x0C0001) pin = 3; // Ghizzy
+			else if (DUE_PID == 0x0C0003) pin = 1; // Holiday Tree
+			else if (DUE_PID == 0x00C0005) pin = 3; // Piano
+			else if (DUE_PID == 0x070001) pin = 7; // Buzzer
 			else return trueObj; // no default tone pin on other DUELink boards
 		}
 	#else

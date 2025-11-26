@@ -51,17 +51,8 @@ to openMicroBlocksEditor devMode {
 	developerModeChanged editor
 	browserNotify 'ready'
 	url = (browserURL)
-	if ((findSubstring 'lang=' url) > 0) {
-		start = ((findSubstring 'lang=' url) + 5)
-		end = (findSubstring '&' url start)
-		if (isNil end) {
-			langCode = (substring url start (count url))
-		} else {
-			langCode = (substring url start (end - 1))
-		}
-		setLanguage editor langCode
-	}
-
+	langCode = (urlParameter url 'lang')
+	if (notNil langCode) { setLanguage editor langCode }
 	// attempt to open a project or scripts from URL; does nothing if absent
 	importFromURL editor url
 	startSteppingSafely page
@@ -320,7 +311,7 @@ method copyProjectURLToClipboard MicroBlocksEditor {
 	if (notNil title) {
 		codeString = (join 'projectName ''' title '''' (newline) (newline) codeString)
 	}
-	setClipboard (join (urlPrefix this) '#project='(urlEncode codeString true))
+	setClipboard (join (urlPrefix this) '?project='(urlEncode codeString true))
 }
 
 method saveProject MicroBlocksEditor fName {
@@ -544,28 +535,25 @@ method processDroppedText MicroBlocksEditor text {
 }
 
 method importFromURL MicroBlocksEditor url {
-	i = (findSubstring 'scripts=' url)
-	if (notNil i) { // import scripts embedded in URL
-		scriptString = (urlDecode (substring url (i + 8)))
+	scripts = (urlParameter url 'scripts')
+	if (notNil scripts) { // import scripts embedded in URL
+		scriptString = (urlDecode scripts)
 		pasteScripts scripter scriptString
 		return
 	}
-	i = (findSubstring 'project=' url)
-	if (notNil i) { // open a complete project
-		urlOrData = (substring url (i + 8))
-		if (beginsWith urlOrData 'http') {
-			// project link
-			fileName = (substring urlOrData ((findLast urlOrData '/') + 1) ((findLast urlOrData '.') - 1))
-			if (not (canReplaceCurrentProject this)) { return }
-			openProject this (httpBody (httpGetInBrowser urlOrData)) fileName
+	proj = (urlParameter url 'project')
+	if (not (canReplaceCurrentProject this)) { return }
+	if (notNil proj) { // open a complete project
+		if (beginsWith proj 'http') {
+			// proj is a project link
+			projectString = (toString (httpBody (httpGetInBrowser proj)))
+			projName = (substring proj ((findLast proj '/') + 1) ((findLast proj '.') - 1))
 		} else {
-			// project embedded in URL
-			projectString = (urlDecode (substring url (i + 8)))
-			if (not (canReplaceCurrentProject this)) { return }
+			// proj is a project embedded in the URL
+			projectString = (urlDecode proj)
 			projName = (extractProjectName this projectString)
-			if (not (canReplaceCurrentProject this)) { return }
-			openProject this projectString projName
 		}
+		openProject this projectString projName
 		return
 	}
 }
