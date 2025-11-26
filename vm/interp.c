@@ -486,6 +486,9 @@ static void interpDebug(int ip, int cmd, int arg, int sp) {
 	reportNum("fp", fp - task->stack); \
 }
 
+#define OP_POP 19
+#define OP_DECREMENT_AND_JUMP 26
+
 static void runTask(Task *task) {
 	register int op;
 	register int16 *ip;
@@ -743,12 +746,21 @@ static void runTask(Task *task) {
 		DISPATCH();
 	jmp_op:
 	longJmp_op:
-	exitLoop_op:
 		if (!arg) arg = *ip++; // zero arg means offset is in the next word
 		ip += arg;
 #if USE_TASKS
 		if (arg < 0) goto suspend;
 #endif
+		DISPATCH();
+	exitLoop_op:
+		if (!arg) arg = *ip++; // zero arg means offset is in the next word
+		ip += arg;
+		tmp = CMD(*(ip - 1));
+		if (tmp == OP_POP) { // pop 'for' loop state
+			sp -= 3;
+		} else if (tmp == OP_DECREMENT_AND_JUMP) { // pop 'repeat' loop counter
+			sp -= 1;
+		}
 		DISPATCH();
 	jmpTrue_op:
 		if (!arg) arg = *ip++; // zero arg means offset is in the next word
