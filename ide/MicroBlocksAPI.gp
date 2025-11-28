@@ -5,8 +5,7 @@
 // Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
 
 // MicroBlocksAPI.gp - API for the JS/HTML world to interact with MicroBlocks
-// Bernat Romagosa, 2025
-
+// Bernat Romagosa, July 2025
 
 defineClass MicroBlocksAPI
 
@@ -163,6 +162,15 @@ method setProperty MicroBlocksAPI path value {
 		value = (jsonStringify value)
 	}
 	browserStoreIDEProperty path (toString value)
+}
+
+method notify MicroBlocksAPI event value {
+	if (isClass value 'String') {
+		value = (join '"' value '"')
+	} else {
+		value = (jsonStringify value)
+	}
+	browserNotify event (toString value)
 }
 
 method electronOS MicroBlocksAPI {

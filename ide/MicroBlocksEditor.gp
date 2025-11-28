@@ -49,7 +49,7 @@ to openMicroBlocksEditor devMode {
 	readVersionFile (smallRuntime)
 	applyUserPreferences editor
 	developerModeChanged editor
-	browserNotify 'ready'
+	notify (api (smallRuntime)) 'ready'
 	url = (browserURL)
 	langCode = (urlParameter url 'lang')
 	if (notNil langCode) { setLanguage editor langCode }

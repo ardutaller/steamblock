@@ -559,7 +559,7 @@ static OBJ primBrowserNotify(int nargs, OBJ args[]) {
 	char *value = "";
 	if ((nargs > 1) && (IS_CLASS(args[1], StringClass))) value = obj2str(args[1]);
 	EM_ASM_({
-			let value = $1 ? JSON.parse(UTF8ToString($1)) : '';
+			let value = JSON.parse(UTF8ToString($1));
 			IDE.fireEvent(UTF8ToString($0), value);
 	}, event, value);
 	return nilObj;

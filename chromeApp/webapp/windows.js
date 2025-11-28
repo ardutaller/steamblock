@@ -151,9 +151,10 @@ customElements.define('win-', FloatingWindow);
 
 FloatingWindow.inform = function (title, text) {
 	new FloatingWindow({
-		title: title,
+		title: title ? title : 'Information',
 		body: GetText.localize(text),
-		buttons: [{ label: 'Ok', action: ()=>{} }]
+		buttons: [{ label: 'Ok', action: ()=>{} }],
+		resizable: true
 	}).popUp();
 
 };

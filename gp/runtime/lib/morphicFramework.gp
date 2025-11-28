@@ -1394,7 +1394,10 @@ method confirm Page title question yesLabel noLabel callback {
 }
 
 method inform Page details title yesLabel nonBlocking {
-	browserNotify 'window.inform' title details
+	options = (dictionary)
+	atPut options 'title' title
+	atPut options 'text' details
+	notify (api (smallRuntime)) 'window.inform' options
 	return
 	/*
 	p = (new 'Prompter')
