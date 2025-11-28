@@ -70,6 +70,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.resize') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		browserResize editor (at params 1) (at params 2)
+	} (endPoint == 'ide.version') {
+		respondAPIRequest this id (ideVersion runtime)
+
 
 	// Project
 	} (endPoint == 'project.save') {
@@ -124,6 +127,8 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'board.disconnect') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		closePort runtime
+	} (endPoint == 'board.vmVersion') {
+		respondAPIRequest this id (vmVersion runtime)
 
 	// Localization
 	} (endPoint == 'locale.setLanguage') {
@@ -133,6 +138,7 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		readCustomTranslationFile editor
 
+	// Script edition
 	} (endPoint == 'edit.undo') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		undo scripter

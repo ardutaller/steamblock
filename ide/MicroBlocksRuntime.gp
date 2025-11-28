@@ -20,6 +20,7 @@ method scripter SmallRuntime { return scripter }
 method serialPortOpen SmallRuntime { return (notNil port) }
 method recompileNeeded SmallRuntime { recompileAll = true }
 method api SmallRuntime { return api }
+method vmVersion SmallRuntime { return vmVersion }
 
 method initialize SmallRuntime aScripter {
 	scripter = aScripter
