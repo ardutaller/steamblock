@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle undoStack
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle undoStack redoStack undoing
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -23,7 +23,12 @@ method setSelection MicroBlocksScripter aSelection { selection = aSelection }
 method initialize MicroBlocksScripter aProjectEditor {
 	mbProject = (newMicroBlocksProject)
 	projectEditor = aProjectEditor
+
+	undoing = false
+	redoing = false
 	undoStack = (list)
+	redoStack = (list)
+
 	scale = (global 'scale')
 	morph = (newMorph this)
 	listColor = (gray 240)
@@ -695,21 +700,43 @@ method saveScripts MicroBlocksScripter oldScale {
 }
 
 method storeUndoState MicroBlocksScripter {
+	undoing = false
 	if (count undoStack > 100) { removeFirst undoStack }
 	add undoStack (codeString mbProject)
 }
 
 method undo MicroBlocksScripter {
 	if (notEmpty undoStack) {
-		projectString = (removeLast undoStack)
+		// The first time we undo, at the top of the stack is the current project
+		// state, so reverting to it would just leave things the way they were.
+		// Let's discard it.
+		if (not undoing) { add redoStack (removeLast undoStack) }
+		if (notEmpty undoStack) { projectString = (removeLast undoStack) }
 		if (notNil projectString) {
 			saveNeeded = false // don't save scripts while project is loading
 			loadFromString mbProject projectString false
 			restoreScripts this
+			// Again, the first time we have already added the last state into the
+			// redo stack, so we only do that the subsequent times.
+			if undoing { add redoStack projectString }
+			undoing = true
 		}
 	} else {
 		removeAllParts (morph scriptsPane)
 		restoreScripts this false
+	}
+}
+
+method redo MicroBlocksScripter {
+	undoing = false
+	if (notEmpty redoStack) {
+		projectString = (removeLast redoStack)
+		if (notNil projectString) {
+			add undoStack (codeString mbProject)
+			saveNeeded = false // don't save scripts while project is loading
+			loadFromString mbProject projectString false
+			restoreScripts this
+		}
 	}
 }
 

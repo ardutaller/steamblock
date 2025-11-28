@@ -136,6 +136,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'edit.undo') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		undo scripter
+	} (endPoint == 'edit.redo') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		redo scripter
 
 	// API endpoint not found
 	} else {
