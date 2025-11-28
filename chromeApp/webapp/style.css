@@ -92,6 +92,7 @@ body {
 }
 
 .script-controls {
+	display: flex;
 	position: fixed;
 	z-index: 2;
 	right: 24px;
@@ -106,6 +107,10 @@ body {
 .script-controls.dark-mode {
 	border-color: #454a64;
 	background-color: #454a6466;
+}
+
+.script-controls .vl {
+	margin: 0 5px;
 }
 
 .categories {

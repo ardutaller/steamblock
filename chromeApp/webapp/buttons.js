@@ -51,6 +51,18 @@ const Buttons = {
 		description: 'Stop all running scripts and make sure all scripts have been compiled and uploaded to the microcontroller.',
 		action: () => { GP.apiCall('ide.stopAll'); }
 	},
+	undo: {
+		icon: 'img/undo.svg',
+		label: 'Undo',
+		description: 'Undo the last action',
+		action: () => { GP.apiCall('edit.undo'); }
+	},
+	redo: {
+		icon: 'img/redo.svg',
+		label: 'Redo',
+		description: 'Redo the last undone action',
+		action: () => { GP.apiCall('edit.redo'); }
+	},
 	zoomOut: {
 		icon: 'img/zoomOut.svg',
 		label: 'Zoom out',

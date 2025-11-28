@@ -190,7 +190,7 @@ IDE.tipBar.setTip = function (title, content) {
 
 // Zoom Buttons. Eventually also undo/redo
 IDE.populateScriptControls = function (element) {
-	['zoomOut', 'restoreZoom', 'zoomIn'].forEach(selector => {
+	['undo', 'redo', '|', 'zoomOut', 'restoreZoom', 'zoomIn'].forEach(selector => {
 		element.appendChild(Buttons.elementFor(selector));
 	});
 };
