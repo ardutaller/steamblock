@@ -329,8 +329,6 @@ hr {
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-	min-width: 300px;
-	min-height: 200px;
 	background-color: #aacf;
 	border: 1px solid #ccc;
 	box-shadow: 0 0 10px 0px black;
@@ -359,4 +357,41 @@ hr {
 	padding: 2px;
 	background-color: #f0f0f0;
 	cursor: default !important;
+	overflow: scroll;
+}
+
+.win-buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding: 2px 0;
+	gap: 2px;
+}
+
+.win-button {
+	border: 1px solid #eaeaea;
+	background-color: #acacac;
+	color: white;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.win-button:hover {
+	filter: brightness(80%);
+}
+
+.win-resize {
+	cursor: nwse-resize;
+	position: absolute;
+	right: 1px;
+	bottom: 1px;
+	background-color: transparent;
+	padding: 0;
+	width: 0px;
+	height: 0px;
+	border-left: 0;
+	border-bottom: 0;
+	border-top: 10px solid transparent;
+	border-right: 8px solid white;
+	border-radius: 4px;
 }

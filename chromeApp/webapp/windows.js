@@ -1,21 +1,100 @@
 class FloatingWindow extends HTMLElement {
-	constructor(title, contents) {
+	constructor(descriptor) {
 		super();
 		this.x = 0;
 		this.y = 0;
-		if (typeof title == 'string') {
+
+		let lastX = 0, lastY = 0; // for resize purposes
+
+		// Min and max size
+		this.minWidth = descriptor.minWidth ? descriptor.minWidth : 220;
+		this.minHeight = descriptor.minHeight ? descriptor.minHeight : 120;
+		this.style.minWidth = this.minWidth + 'px';
+		this.style.minHeight = this.minHeight + 'px';
+
+		this.width = this.minWidth;
+		this.height = this.minHeight;
+
+		if (descriptor.id) { this.id = descriptor.id; }
+
+		// Window Title
+		if (typeof descriptor.title == 'string') {
 			let h1 = document.createElement('h1');
-			h1.innerText = title;
+			h1.innerText = descriptor.title;
 			this.append(h1);
 		}
-		if (contents) {
-			let div = document.createElement('div');
-			if (typeof contents == 'string') {
-				div.innerText = contents;
-			} else if (typeof contents == 'object') { // assume DOM element
-				div.append(contents);
+
+		// Window Body
+		let body = document.createElement('div');
+		body.classList.add('win-body');
+		body.setAttribute('data-undraggable', true);
+		if (descriptor.body) {
+			if (typeof descriptor.body == 'string') {
+				body.innerText = descriptor.body;
+			} else if (typeof descriptor.body == 'object') { // assume DOM element
+				body.append(descriptor.body);
 			}
-			this.append(div);
+		}
+		this.append(body);
+
+		// Buttons
+		if (descriptor.buttons) {
+			let buttons = document.createElement('div');
+			buttons.classList.add('win-buttons');
+			descriptor.buttons.forEach(buttonDescriptor => {
+				let button = document.createElement('button');
+				button.innerHTML = `<l->${buttonDescriptor.label}</l->`;
+				button.onclick = () => {
+					buttonDescriptor.action.call(this);
+					this.remove();
+				};
+				button.classList.add('win-button');
+				buttons.append(button);
+			});
+			this.append(buttons);
+		}
+		if (descriptor.resizable) {
+			let handle = document.createElement('button');
+			handle.classList.add('win-resize');
+			handle.setAttribute('data-undraggable', true);
+			handle.onpointerdown = resizeMouseDown;
+
+			let myself = this;
+
+			function resizeMouseDown(e) {
+				e = e || window.event;
+				e.preventDefault();
+				lastX = e.clientX;
+				lastY = e.clientY;
+				document.onpointerup = endResize;
+				document.onpointermove = resize;
+			}
+
+			function resize(e) {
+				e = e || window.event;
+				e.preventDefault();
+				
+				var newX = e.clientX;
+				var newY = e.clientY;
+
+				myself.style.width = Math.max(
+					myself.minWidth,
+					myself.width + (newX - lastX)
+				) + 'px';
+				myself.style.height = Math.max(
+					myself.minHeight,
+					myself.height + (newY - lastY)
+				) + 'px';
+			}
+
+			function endResize(e) {
+				myself.width = parseInt(myself.style.width);
+				myself.height = parseInt(myself.style.height);
+				document.onpointerup = null;
+				document.onpointermove = null;
+			}
+
+			this.append(handle);
 		}
 	}
 
@@ -34,9 +113,6 @@ class FloatingWindow extends HTMLElement {
 		cross.innerText = 'X';
 		cross.onclick = () => { this.remove(); };
 		title.appendChild(cross);
-		let body = this.querySelector('div');
-		body.classList.add('win-body');
-		body.setAttribute('data-undraggable', true);
 
 		this.x = window.innerWidth / 2 - this.clientWidth / 2;
 		this.y = window.innerHeight / 2 - this.clientHeight / 2;
@@ -49,4 +125,21 @@ class FloatingWindow extends HTMLElement {
 customElements.define('win-', FloatingWindow);
 
 // Create a basic window with:
-// document.body.append(new FloatingWindow('My Window', 'The contents of the window'));
+/*
+	document.body.append(
+		new FloatingWindow({
+			title: 'My Window',
+			body: 'The contents of the window',
+			buttons: [
+				{
+					label: 'Ok',
+					action: ()=>{ console.log('accepted!'); }
+				},
+				{
+					label: 'Cancel',
+					action: ()=>{ console.log('cancelled!'); }
+				}
+			]
+		})
+	);
+*/
