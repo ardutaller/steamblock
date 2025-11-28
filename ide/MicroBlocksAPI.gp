@@ -133,6 +133,10 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		readCustomTranslationFile editor
 
+	} (endPoint == 'edit.undo') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		undo scripter
+
 	// API endpoint not found
 	} else {
 		respondAPIRequest this id 'Unknown API endpoint'
