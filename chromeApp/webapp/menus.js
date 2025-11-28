@@ -45,7 +45,7 @@ Menus.settings = {
 	items: [
 		{
 			label: 'about...',
-			action: () => { GP.apiCall('ide.showAboutBox'); }
+			action: () => { FloatingWindow.about(); }
 		},
 		{ label: '-' },
 		{

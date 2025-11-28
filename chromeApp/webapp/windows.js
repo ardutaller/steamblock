@@ -20,7 +20,7 @@ class FloatingWindow extends HTMLElement {
 		// Window Title
 		if (typeof descriptor.title == 'string') {
 			let h1 = document.createElement('h1');
-			h1.innerText = descriptor.title;
+			h1.innerHTML = `<l->${descriptor.title}</l->`;
 			this.append(h1);
 		}
 
@@ -98,6 +98,10 @@ class FloatingWindow extends HTMLElement {
 		}
 	}
 
+	popUp() {
+		document.body.append(this);
+	}
+
 	connectedCallback() {
 		this.addEventListener('mousedown', this.startDragging);
 		this.addEventListener('mouseup', this.stopDragging);
@@ -126,20 +130,56 @@ customElements.define('win-', FloatingWindow);
 
 // Create a basic window with:
 /*
-	document.body.append(
-		new FloatingWindow({
-			title: 'My Window',
-			body: 'The contents of the window',
-			buttons: [
-				{
-					label: 'Ok',
-					action: ()=>{ console.log('accepted!'); }
-				},
-				{
-					label: 'Cancel',
-					action: ()=>{ console.log('cancelled!'); }
-				}
-			]
-		})
-	);
+	new FloatingWindow({
+		title: 'My Window',
+		body: 'The contents of the window',
+		buttons: [
+			{
+				label: 'Ok',
+				action: ()=>{ console.log('accepted!'); }
+			},
+			{
+				label: 'Cancel',
+				action: ()=>{ console.log('cancelled!'); }
+			}
+		]
+	}).popUp();
 */
+
+
+// Window Definitions
+
+FloatingWindow.inform = function (title, text) {
+	new FloatingWindow({
+		title: title,
+		body: GetText.localize(text),
+		buttons: [{ label: 'Ok', action: ()=>{} }]
+	}).popUp();
+
+};
+
+FloatingWindow.about = function() {
+	GP.apiCall('ide.version', [], ideVersion => {
+		GP.apiCall('board.vmVersion',[], vmVersion => {
+			let vmVersionReport = '\n';
+			if (vmVersion) { vmVersionReport = ` (Firmware v${vmVersion})\n`; }
+			let text = `MicroBlocks v${ideVersion} ${vmVersionReport}\n`;
+			text += GetText.localize(
+				'about;by %1, %2 & %3.',
+				'John Maloney',
+				'Bernat Romagosa',
+				'Jens Mönig'
+			);
+			text += '\n';
+			text += GetText.localize('More info at http://microblocks.fun');
+			FloatingWindow.inform('About MicroBlocks', text);
+		});
+	});
+}
+
+
+// Events
+document.addEventListener(
+	'window.inform',
+	(e) => { FloatingWindow.inform(e.detail.value.title, e.detail.value.text); }
+);

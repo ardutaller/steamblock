@@ -1093,18 +1093,6 @@ method readVersionFile SmallRuntime {
 	}
 }
 
-method showAboutBox SmallRuntime {
-	vmVersionReport = (newline)
-	if (notNil vmVersion) {
-		vmVersionReport = (join ' (Firmware v' vmVersion ')' (newline))
-	}
-	(inform (global 'page') (join
-		'MicroBlocks v' (ideVersion this) vmVersionReport (newline)
-		(localized 'about;by %1, %2 & %3.' (array 'John Maloney' 'Bernat Romagosa' 'Jens Mönig')) (newline)
-		(localized 'Created with GP') ' (gpblocks.org)' (newline) (newline)
-		(localized 'More info at http://microblocks.fun')) 'About MicroBlocks')
-}
-
 method checkBoardType SmallRuntime {
 	if (and (isNil boardType) (notNil port)) {
 		vmVersion = nil

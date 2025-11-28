@@ -556,9 +556,12 @@ static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
 static OBJ primBrowserNotify(int nargs, OBJ args[]) {
 	char *event = "";
 	if ((nargs > 0) && (IS_CLASS(args[0], StringClass))) event = obj2str(args[0]);
+	char *value = "";
+	if ((nargs > 1) && (IS_CLASS(args[1], StringClass))) value = obj2str(args[1]);
 	EM_ASM_({
-			IDE.fireEvent(UTF8ToString($0), null);
-	}, event);
+			let value = $1 ? JSON.parse(UTF8ToString($1)) : '';
+			IDE.fireEvent(UTF8ToString($0), value);
+	}, event, value);
 	return nilObj;
 }
 

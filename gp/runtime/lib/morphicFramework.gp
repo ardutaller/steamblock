@@ -1394,6 +1394,9 @@ method confirm Page title question yesLabel noLabel callback {
 }
 
 method inform Page details title yesLabel nonBlocking {
+	browserNotify 'window.inform' title details
+	return
+	/*
 	p = (new 'Prompter')
 	initializeForInform p title details yesLabel
 	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
@@ -1403,6 +1406,7 @@ method inform Page details title yesLabel nonBlocking {
 	while (not (isDone p)) {doOneCycle this}
 	destroy (morph p)
 	return (answer p)
+	*/
 }
 
 // events

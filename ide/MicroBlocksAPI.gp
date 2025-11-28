@@ -28,10 +28,7 @@ method dispatchCall MicroBlocksAPI callObject {
 
 	// dispatch API call
 	// IDE
-	if (endPoint == 'ide.showAboutBox') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
-		showAboutBox runtime
-	} (endPoint == 'ide.showGraph') {
+	if (endPoint == 'ide.showGraph') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		showGraph editor
 	} (endPoint == 'ide.applyUserPreferences') {
