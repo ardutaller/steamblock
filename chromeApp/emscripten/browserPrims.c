@@ -559,8 +559,14 @@ static OBJ primBrowserNotify(int nargs, OBJ args[]) {
 	char *value = "";
 	if ((nargs > 1) && (IS_CLASS(args[1], StringClass))) value = obj2str(args[1]);
 	EM_ASM_({
-			let value = JSON.parse(UTF8ToString($1));
-			IDE.fireEvent(UTF8ToString($0), value);
+			let event = UTF8ToString($0);
+			let value = UTF8ToString($1);
+			try {
+				value = JSON.parse(value);
+			} catch (e) {
+				console.log('event ', event, 'payload is not valid JSON:', value);
+			}
+			IDE.fireEvent(event, value);
 	}, event, value);
 	return nilObj;
 }

@@ -536,7 +536,7 @@ method openCSlot Block {
 // events
 
 method justDropped Block hand {
-	browserNotify 'dragend'
+	notify (api (smallRuntime)) 'dragend'
 	cancelSelection
 	snap this
 }
@@ -588,7 +588,7 @@ method aboutToBeGrabbed Block {
 	hand = (hand page)
 	inset = (10 * (blockScale))
 
-	browserNotify 'dragstart'
+	notify (api (smallRuntime)) 'dragstart'
 
 	// adjust drag offset
 	if ('reporter' == type) {
