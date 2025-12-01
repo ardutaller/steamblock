@@ -696,11 +696,16 @@ method processEvent Keyboard evt {
 					// cmd-S or ctrl-S - save file dialog
 					(saveProjectToFile pe)
 				}
-				if (and (122 == (at evt 'char'))
+				if (and (90 == key)
 					(or (controlKeyDown this) (commandKeyDown this))
+					(notNil pe)
 					(isNil (grabbedObject (hand (global 'page'))))) {
-						// cmd-Z or ctrl-Z - undo last drop
-						if (notNil pe) { undrop (scriptEditor (scripter pe)) }
+					// cmd-Z or ctrl-Z - undo last edit
+					if (shiftKeyDown this) {
+						redo (scripter pe)
+					} else {
+						undo (scripter pe)
+					}
 				}
 			}
 		}
