@@ -547,10 +547,8 @@ method snap Block {
 	if (isClass parent 'ScriptEditor') {
 		b = (targetFor parent this)
 		if (and (isClass b 'Block') ((type b) != 'reporter')) { // command or hat type targets
-			recordDrop parent this b (next b)
 			setNext b this
 		} (isClass b 'Array') {
-			recordDrop parent this b
 			rec = b
 			b = (at rec 1)
 			dropType = (at rec 2)
@@ -564,16 +562,13 @@ method snap Block {
 				setNested cSlot b
 			}
 		} (isClass b 'CommandSlot') {
-			recordDrop parent this b (nested b)
 			setNested b this
 		} (notNil b) { // dropped reporter
 			tb = (handler (owner (morph b)))
 			if (isClass tb 'Block') {
-				recordDrop parent this tb nil b
 				replaceInput tb b this
 			}
 		} else { // no snap target, record drop on scripting area
-			recordDrop parent this
 			if ('reporter' == type) { fixBlockColor this }
 		}
 		tb = (topBlock this)

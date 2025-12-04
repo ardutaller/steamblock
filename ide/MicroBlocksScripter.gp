@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle undoStack redoStack undoing
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle undoStack redoStack
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -24,8 +24,6 @@ method initialize MicroBlocksScripter aProjectEditor {
 	mbProject = (newMicroBlocksProject)
 	projectEditor = aProjectEditor
 
-	undoing = false
-	redoing = false
 	undoStack = (list)
 	redoStack = (list)
 
@@ -132,9 +130,9 @@ method languageChanged MicroBlocksScripter {
 	fixLayout this
 
 	// update the scripts
-	saveScripts this
+	saveScripts this nil true
 	restoreScripts this // calls updateBlocks
-	scriptChanged this
+	scriptChanged this true
 }
 
 // library item menu
@@ -547,13 +545,13 @@ method addSectionLabel MicroBlocksScripter label {
 
 // project creation and loading
 
-method createEmptyProject MicroBlocksScripter {
+method createEmptyProject MicroBlocksScripter fromInitialize {
 	mbProject = (newMicroBlocksProject)
 	clearBoardIfConnected (smallRuntime) true
 	if (notNil scriptsFrame) {
 		removeAllParts (morph (contents scriptsFrame))
 		restoreScripts this
-		saveScripts this
+		saveScripts this nil fromInitialize
 	}
 }
 
@@ -643,10 +641,10 @@ method deleteVariable MicroBlocksScripter varName {
 
 // save and restore scripts in class
 
-method scriptChanged MicroBlocksScripter {
+method scriptChanged MicroBlocksScripter cosmetically {
 	runtime = (smallRuntime)
 	updateHighlights runtime
-	saveNeeded = true
+	if (cosmetically != true) { saveNeeded = true }
 // Check whether the block has just been moved.
 // Commented out for now, since it seems to not be reliable enough, causing some
 // changes to fail to propagate to the board.
@@ -674,7 +672,7 @@ method step MicroBlocksScripter {
 	updateStopping (smallRuntime)
 }
 
-method saveScripts MicroBlocksScripter oldScale {
+method saveScripts MicroBlocksScripter oldScale skipUndoStore {
 	scale = (blockScale)
 	if (notNil oldScale) { scale = oldScale }
 	scriptsPane = (contents scriptsFrame)
@@ -696,47 +694,39 @@ method saveScripts MicroBlocksScripter oldScale {
 		}
 	}
 	setScripts (main mbProject) scriptsCopy
-	storeUndoState this
+	if (skipUndoStore != true) { storeUndoState this }
 }
 
 method storeUndoState MicroBlocksScripter {
-	undoing = false
-	if (count undoStack > 100) { removeFirst undoStack }
+	if ((count undoStack) > 50) { removeFirst undoStack }
 	add undoStack (codeString mbProject)
+	redoStack = (list)
 }
 
 method undo MicroBlocksScripter {
+	saveNeeded = false
 	if (notEmpty undoStack) {
-		// The first time we undo, at the top of the stack is the current project
-		// state, so reverting to it would just leave things the way they were.
-		// Let's discard it.
-		if (not undoing) { add redoStack (removeLast undoStack) }
-		if (notEmpty undoStack) { projectString = (removeLast undoStack) }
-		if (notNil projectString) {
-			saveNeeded = false // don't save scripts while project is loading
-			loadFromString mbProject projectString false
-			restoreScripts this
-			// Again, the first time we have already added the last state into the
-			// redo stack, so we only do that the subsequent times.
-			if undoing { add redoStack projectString }
-			undoing = true
-		}
-	} else {
-		removeAllParts (morph scriptsPane)
-		restoreScripts this false
+		add redoStack (removeLast undoStack)
 	}
+	if (notEmpty undoStack) {
+		loadFromString mbProject (last undoStack)
+	} else {
+		mbProject = (newMicroBlocksProject)
+		if (notNil scriptsFrame) {
+			removeAllParts (morph (contents scriptsFrame))
+			restoreScripts this
+		}
+	}
+	restoreScripts this
 }
 
 method redo MicroBlocksScripter {
-	undoing = false
+	saveNeeded = false
 	if (notEmpty redoStack) {
-		projectString = (removeLast redoStack)
-		if (notNil projectString) {
-			add undoStack (codeString mbProject)
-			saveNeeded = false // don't save scripts while project is loading
-			loadFromString mbProject projectString false
-			restoreScripts this
-		}
+		lastState = (removeLast redoStack)
+		add undoStack lastState
+		loadFromString mbProject lastState
+		restoreScripts this
 	}
 }
 
@@ -757,7 +747,6 @@ method restoreScripts MicroBlocksScripter {
 	scale = (blockScale)
 	scriptsPane = (contents scriptsFrame)
 	removeAllParts (morph scriptsPane)
-	clearDropHistory scriptsPane
 
 	scripts = (scripts (main mbProject))
 	if (notNil scripts) {
@@ -1461,7 +1450,6 @@ method pasteScripts MicroBlocksScripter scriptString atHand {
 	}
 
 	scriptsPane = (contents scriptsFrame)
-	clearDropHistory scriptsPane
 	importScripts (newMicroBlocksExchange) this scriptString dstX dstY
 	scriptChanged this
 	updateBlocks this

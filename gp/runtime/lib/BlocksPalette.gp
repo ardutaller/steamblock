@@ -50,7 +50,6 @@ method justReceivedDrop BlocksPalette aHandler {
 		}
 	}
 	if (and (isClass aHandler 'Block') (notNil pe)) {
-		recordDrop (scriptEditor (scripter pe)) aHandler
 		deleteChunkFor (smallRuntime) aHandler
 	}
 	if (isClass aHandler 'MicroBlocksSelectionContents') {

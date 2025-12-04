@@ -75,7 +75,7 @@ method initialize MicroBlocksEditor {
 	lastProjectFolder = 'Examples'
 	addPart morph (morph scripter)
 	addTipBar this
-	clearProject this
+	clearProject this true
 	fixLayout this
 	setFPS morph 200
 	newerVersion = 'unknown'
@@ -91,7 +91,7 @@ method scaleChanged MicroBlocksEditor {
 
 	// save the state of the current scripter
 	if (2 == (global 'scale')) { oldScale = 1 } else { oldScale = 2 }
-	saveScripts scripter (oldScale * (global 'blockScale'))
+	saveScripts scripter (oldScale * (global 'blockScale')) true
 	oldProject = (project scripter)
 	oldCategory = (currentCategory scripter)
 	oldLibrary = (currentLibrary scripter)
@@ -204,13 +204,13 @@ method newProject MicroBlocksEditor {
 	selectCategory scripter 'cat;Output'
 }
 
-method clearProject MicroBlocksEditor {
+method clearProject MicroBlocksEditor fromInitialize {
 	// Remove old project morphs and classes and reset global state.
 
 	closeAllDialogs this
 	fileName = ''
 	updateTitle this
-	createEmptyProject scripter
+	createEmptyProject scripter fromInitialize
 	clearLoggedData (smallRuntime)
 	setProperty (api (smallRuntime)) 'project.hasCustomBlocks' false
 
@@ -306,7 +306,7 @@ method urlPrefix MicroBlocksEditor {
 method copyProjectURLToClipboard MicroBlocksEditor {
 	// Copy a URL encoding of this project to the clipboard.
 
-	saveScripts scripter
+	saveScripts scripter nil true
 	codeString = (codeString (project scripter))
 	if (notNil title) {
 		codeString = (join 'projectName ''' title '''' (newline) (newline) codeString)
@@ -315,7 +315,7 @@ method copyProjectURLToClipboard MicroBlocksEditor {
 }
 
 method saveProject MicroBlocksEditor fName {
-	saveScripts scripter
+	saveScripts scripter nil true
 
 	if (and (isNil fName) (notNil fileName)) {
 		fName = fileName
@@ -728,7 +728,7 @@ method applyUserPreferences MicroBlocksEditor {
 	if (notNil (at prefs 'darkMode')) {
 		darkMode = (at prefs 'darkMode')
 	}
-	darkModeChanged scripter // applies proper colors to it all
+	darkModeChanged scripter fromInitialize // applies proper colors to it all
 }
 
 method saveToUserPreferences MicroBlocksEditor key value {

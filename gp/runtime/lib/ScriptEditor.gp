@@ -1,6 +1,6 @@
 // ScriptEditor -- Supports constructing and editing block scripts by drag-n-drop.
 
-defineClass ScriptEditor morph feedback scale focus lastDrop
+defineClass ScriptEditor morph feedback scale focus
 
 to newScriptEditor width height {
 	return (initialize (new 'ScriptEditor') width height)
@@ -324,9 +324,6 @@ method contextMenu ScriptEditor {
 	menu = (menu nil this)
 	addItem menu 'set block size...' 'setBlockSize' 'make blocks bigger or smaller'
 	addLine menu
-	if (notNil lastDrop) {
-		addItem menu 'undrop (ctrl-Z)' 'undrop' 'undo the last block drop'
-	}
 	addItem menu 'clean up' 'cleanUp' 'arrange scripts'
 	addLine menu
 	addItem menu 'copy all scripts to clipboard' 'copyScriptsToClipboard'
@@ -351,9 +348,6 @@ method contextMenuForGP ScriptEditor {
 	addItem menu 'set block size...' 'setBlockSize' 'make blocks smaller'
 	addLine menu
 	addItem menu 'clean up' 'cleanUp' 'arrange scripts'
-	if (notNil lastDrop) {
-		addItem menu 'undrop' 'undrop' 'undo last drop'
-	}
 	addLine menu
 	addItem menu 'set exported script scale' 'setExportedScriptScale'
 	addItem menu 'save picture of all scripts' 'saveScriptsImage'
@@ -556,20 +550,6 @@ method cancelled ScriptEditor aText {
 		inp = (handler (ownerThatIsA (morph aText) 'InputSlot'))
 		edit this inp
 	}
-}
-
-// undrop
-
-method clearDropHistory ScriptEditor {lastDrop = nil}
-
-method recordDrop ScriptEditor block target input next {
-	lastDrop = (new 'DropRecord' block target input next)
-}
-
-method undrop ScriptEditor {
-	if (notNil lastDrop) {restore lastDrop this}
-	lastDrop = nil
-	scriptChanged this
 }
 
 method grab ScriptEditor aBlock {

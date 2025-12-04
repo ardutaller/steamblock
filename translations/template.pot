@@ -6067,14 +6067,6 @@ msgid "arrange scripts"
 msgstr ""
 
 #. Scripting area right-click context menu
-msgid "undrop (ctrl-Z)"
-msgstr ""
-
-#. Scripting area right-click context menu
-msgid "undo the last block drop"
-msgstr ""
-
-#. Scripting area right-click context menu
 msgid "copy all scripts to clipboard"
 msgstr ""
 
