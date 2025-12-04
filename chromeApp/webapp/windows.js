@@ -7,8 +7,8 @@ class FloatingWindow extends HTMLElement {
 		let lastX = 0, lastY = 0; // for resize purposes
 
 		// Min and max size
-		this.minWidth = descriptor.minWidth ? descriptor.minWidth : 240;
-		this.minHeight = descriptor.minHeight ? descriptor.minHeight : 120;
+		this.minWidth = descriptor.minWidth ?? 240;
+		this.minHeight = descriptor.minHeight ?? 120;
 		this.style.minWidth = this.minWidth + 'px';
 		this.style.minHeight = this.minHeight + 'px';
 
@@ -34,6 +34,14 @@ class FloatingWindow extends HTMLElement {
 			} else if (typeof descriptor.body == 'object') { // assume DOM element
 				body.append(descriptor.body);
 			}
+			if (descriptor.input) {
+				let input = document.createElement('input');
+				input.classList.add('win-input');
+				input.type = descriptor.input.type ?? 'text';
+				input.default = descriptor.input.defaultValue ?? '';
+				input.placeholder = descriptor.input.placeholder ?? '';
+				body.append(input);
+			}
 		}
 		this.append(body);
 
@@ -45,8 +53,12 @@ class FloatingWindow extends HTMLElement {
 				let button = document.createElement('button');
 				button.innerHTML = `<l->${buttonDescriptor.label}</l->`;
 				button.onclick = () => {
-					buttonDescriptor.action.call(this);
-					this.remove();
+					let value;
+					if (descriptor.input) {
+						value = body.querySelector('.win-input').value;
+					}
+					buttonDescriptor.action.call(this, value);
+					if (buttonDescriptor.closesWindow) { this.remove(); }
 				};
 				button.classList.add('win-button');
 				buttons.append(button);
@@ -128,36 +140,45 @@ class FloatingWindow extends HTMLElement {
 
 customElements.define('win-', FloatingWindow);
 
-// Create a basic window with:
-/*
-	new FloatingWindow({
-		title: 'My Window',
-		body: 'The contents of the window',
-		buttons: [
-			{
-				label: 'Ok',
-				action: ()=>{ console.log('accepted!'); }
-			},
-			{
-				label: 'Cancel',
-				action: ()=>{ console.log('cancelled!'); }
-			}
-		]
-	}).popUp();
-*/
-
-
-// Window Definitions
+// Generic Window Definitions
 
 FloatingWindow.inform = function (title, text) {
 	new FloatingWindow({
-		title: title ? title : 'Information',
+		title: title ?? 'Information',
 		body: GetText.localize(text),
-		buttons: [{ label: 'Ok', action: ()=>{} }],
+		buttons: [{ label: 'Ok', action: ()=>{}, closesWindow: true }],
 		resizable: true
 	}).popUp();
-
 };
+
+FloatingWindow.confirm = function (title, text, onAccept) {
+	new FloatingWindow({
+		title: title ?? 'Confirm',
+		body: GetText.localize(text),
+		buttons: [
+			{ label: 'Yes', action: onAccept, closesWindow: true },
+			{ label: 'No', action: ()=>{}, closesWindow: true }
+		],
+		resizable: true
+	}).popUp();
+};
+
+FloatingWindow.prompt = function (title, text, onAccept, input) {
+	let inputDescriptor =
+		input ?? { type: 'text', placeholder: 'value' };
+	new FloatingWindow({
+		title: title ?? 'Input',
+		body: GetText.localize(text),
+		buttons: [
+			{ label: 'Ok', action: onAccept, closesWindow: true },
+			{ label: 'Cancel', action: ()=>{}, closesWindow: true }
+		],
+		input: inputDescriptor,
+		resizable: true
+	}).popUp();
+};
+
+// Specific Window Definitions
 
 FloatingWindow.about = function() {
 	GP.apiCall('ide.version', [], ideVersion => {

@@ -371,6 +371,15 @@ hr {
 	overflow: scroll;
 	background-color: #ECEDF1;
 	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.win-input {
+	border: 1px solid #B0B3C5;
+	border-radius: 10px;
+	padding: 0 8px;
 }
 
 .win-buttons {
