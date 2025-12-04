@@ -7,7 +7,7 @@ class FloatingWindow extends HTMLElement {
 		let lastX = 0, lastY = 0; // for resize purposes
 
 		// Min and max size
-		this.minWidth = descriptor.minWidth ? descriptor.minWidth : 220;
+		this.minWidth = descriptor.minWidth ? descriptor.minWidth : 240;
 		this.minHeight = descriptor.minHeight ? descriptor.minHeight : 120;
 		this.style.minWidth = this.minWidth + 'px';
 		this.style.minHeight = this.minHeight + 'px';

@@ -240,7 +240,7 @@ body {
 	color: white;
 	display: flex;
 	flex-direction: column;
-	box-shadow: 0 0 10px 0px black;
+	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
 }
 .menu li {
 	list-style: none;
@@ -334,55 +334,68 @@ hr {
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-	background-color: #aacf;
-	border: 1px solid #ccc;
-	box-shadow: 0 0 10px 0px black;
-	padding: 2px;
-	border-radius: 5px;
+	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
+	border-radius: 4px;
+	overflow: hidden;
 }
 
 .win-title {
-	background-color: #aacf;
-	padding: 2px;
+	background-color: #2D3143;
+	line-height: 20px;
+	padding-left: 8px;
 	margin: 0;
 	cursor: grab;
-	color: white;
-	font-size: 24px;
+	color: #ECEDF1;
+	font-size: 12px;
+	font-weight: 700;
 }
 
 .win-close {
 	float: right;
+	margin-right: 2px;
+	line-height: 14px;
+	color: #ECEDF1;
 	background: none;
 	border: none;
 	cursor: pointer;
 }
 
+.win-close:hover {
+	color: gold;
+}
+
 .win-body {
 	flex-grow: 2;
-	padding: 2px;
-	background-color: #f0f0f0;
+	padding: 8px;
 	cursor: default !important;
 	overflow: scroll;
+	background-color: #ECEDF1;
+	font-size: 14px;
 }
 
 .win-buttons {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	padding: 2px 0;
+	padding: 8px 0;
 	gap: 2px;
+	background-color: #ECEDF1;
 }
 
 .win-button {
-	border: 1px solid #eaeaea;
-	background-color: #acacac;
-	color: white;
-	border-radius: 8px;
+	font-weight: 700;
+	border: 1px solid #B0B3C5;
+	padding: 4px 10px;
+	color: #262938;
+	border-radius: 100px;
 	cursor: pointer;
+	font-size: 12px;
 }
 
 .win-button:hover {
-	filter: brightness(80%);
+	color: #ECEDF1;
+	background-color: #262938;
+	border-color: #262938;
 }
 
 .win-resize {
@@ -390,13 +403,8 @@ hr {
 	position: absolute;
 	right: 1px;
 	bottom: 1px;
-	background-color: transparent;
-	padding: 0;
-	width: 0px;
-	height: 0px;
-	border-left: 0;
-	border-bottom: 0;
-	border-top: 10px solid transparent;
-	border-right: 8px solid white;
-	border-radius: 4px;
+	background: url('img/resize.svg') no-repeat;
+	width: 10px;
+	height: 10px;
+	border: 0;
 }
