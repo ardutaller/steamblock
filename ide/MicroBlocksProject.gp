@@ -638,11 +638,13 @@ method removeAllVariables MicroBlocksModule {
 method addVariable MicroBlocksModule newVar {
 	if (not (contains variableNames newVar)) {
 		variableNames = (copyWith variableNames newVar)
+		storeUndoState (scripter (smallRuntime))
 	}
 }
 
 method deleteVariable MicroBlocksModule varName {
 	variableNames = (copyWithout variableNames varName)
+	storeUndoState (scripter (smallRuntime))
 }
 
 // saving
