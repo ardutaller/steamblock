@@ -13,7 +13,6 @@ method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
 method scriptsFrame MicroBlocksScripter { return scriptsFrame }
 method blocksFrame MicroBlocksScripter { return blocksFrame }
 method project MicroBlocksScripter { return mbProject }
-method httpServer MicroBlocksScripter { return (httpServer projectEditor) }
 
 method selection MicroBlocksScripter { return selection }
 method setSelection MicroBlocksScripter aSelection { selection = aSelection }

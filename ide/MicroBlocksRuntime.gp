@@ -2258,7 +2258,8 @@ method handleMessage SmallRuntime msg {
 			showResult this chunkID (returnedValue this msg) false true
 		}
 	} (op == (msgNameToID this 'varValueMsg')) {
-		varValueReceived (httpServer scripter) (byteAt msg 3) (returnedValue this msg)
+		nop // formerly used by the local IDE httpServer
+		// varValueReceived (httpServer scripter) (byteAt msg 3) (returnedValue this msg)
 	} (op == (msgNameToID this 'versionMsg')) {
 		versionReceived this (returnedValue this msg)
 	} (op == (msgNameToID this 'chunkCRCMsg')) {
@@ -2268,7 +2269,8 @@ method handleMessage SmallRuntime msg {
 	} (op == (msgNameToID this 'pingMsg')) {
 		lastPingRecvMSecs = (msecsSinceStart)
 	} (op == (msgNameToID this 'broadcastMsg')) {
-		broadcastReceived (httpServer scripter) (toString (copyFromTo msg 6))
+		nop // formerly used by the local IDE httpServer
+		// broadcastReceived (httpServer scripter) (toString (copyFromTo msg 6))
 	} (op == (msgNameToID this 'chunkCode16Msg')) {
 		receivedChunk this (byteAt msg 3) (byteAt msg 6) (toArray (copyFromTo msg 7))
 	} (op == (msgNameToID this 'varNameMsg')) {
