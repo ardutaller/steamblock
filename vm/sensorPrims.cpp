@@ -99,6 +99,8 @@ static void startWire() {
 		Wire.setSCL(PIN_WIRE_SCL);
 	#elif defined(ARDUINO_ARCH_ESP32)
 		Wire.setPins(PIN_WIRE_SDA, PIN_WIRE_SCL);
+	#elif defined(ESP8266)
+		Wire.pins(PIN_WIRE_SDA, PIN_WIRE_SCL);
 	#endif
 
 	#if defined(ARDUINO_ARCH_SAMD)
@@ -106,6 +108,7 @@ static void startWire() {
 		// To avoid hang on I2C operations, do not start Wire if the I2C lines are not high.
 		if (!hasI2CPullups()) return;
 	#endif
+
 	Wire.begin();
 	Wire.setClock(400000); // i2c fast mode (seems pretty ubiquitous among i2c devices)
 	#if defined(ARDUINO_ARCH_RP2040)
@@ -405,6 +408,10 @@ static OBJ primI2cSetPins(int argCount, OBJ *args) {
 		Wire.end();
 		Wire.setPins(pinSDA, pinSCL);
 		Wire.begin();
+		Wire.setClock(400000);
+	#elif defined(ESP8266)
+		Wire.begin(pinSDA, pinSCL);
+		Wire.setClock(400000);
 	#elif defined(ARDUINO_ARCH_RP2040)
 		if (!legal_rp2040_SDA_pin(pinSDA)) return falseObj;
 		if (!legal_rp2040_SCL_pin(pinSCL)) return falseObj;
@@ -416,7 +423,7 @@ static OBJ primI2cSetPins(int argCount, OBJ *args) {
 
 		// restart Wire
 		Wire.begin();
-		Wire.setClock(400000); // i2c fast mode (seems pretty ubiquitous among i2c devices)
+		Wire.setClock(400000);
 		#if defined(ARDUINO_ARCH_RP2040)
 			// Needed on RP2040 to reset the I2C bus after a timeout
 			Wire.setTimeout(100, true);
