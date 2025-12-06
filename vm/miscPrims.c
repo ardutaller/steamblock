@@ -192,7 +192,7 @@ static OBJ primIntSine(int argCount, OBJ *args) {
 	//	return int2obj((int) round(16384.0 * sin(evalInt(args[0]) * hundrethsToRadians)));
 
 	int angle = evalInt(args[0]) % 36000;
-	if (angle < 0) angle += 36000;  // positive angle in hundreds of a degree [0..35999]
+	if (angle < 0) angle += 36000; // positive angle in hundreds of a degree [0..35999]
 
 	int sign = 1;
 	if (angle < 9000) {
