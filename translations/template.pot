@@ -5258,75 +5258,75 @@ msgstr ""
 msgid "Calliope stop servo _"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "mk2;bright"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "mk2;dark"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "mk2;ok"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "mk2;up"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "mk2;down"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "mk2;S1"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "mk2;S2"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit distance (cm)"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "IR key _ pressed?"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit set NeoPixels _"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit clear NeoPixels"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit stop motor _"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit motor _ dir _ speed _ (0~255)"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit LED _ _"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "color r _ g _ b _ (0~255)"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit line sensor _ _"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "IR code received?"
 msgstr ""
 
-#. Calliope MotionKit2 library block
+#. Calliope MotionKit library block
 msgid "MotionKit set servo _ to _ ° (0~180)"
 msgstr ""
 
