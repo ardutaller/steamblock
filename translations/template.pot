@@ -3676,6 +3676,18 @@ msgstr ""
 msgid "both sensors"
 msgstr ""
 
+#. Generic servo type
+msgid "180°"
+msgstr ""
+
+#. Generic servo type
+msgid "270°"
+msgstr ""
+
+#. Generic servo type
+msgid "360°"
+msgstr ""
+
 #. InnovaDidàctic TdR shield library block
 msgid "TdR test buzzer"
 msgstr ""
@@ -5316,6 +5328,182 @@ msgstr ""
 
 #. Calliope MotionKit2 library block
 msgid "MotionKit set servo _ to _ ° (0~180)"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;left front"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;right front"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;left back"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;right back"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "violett"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "aqua"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;bright"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;dark"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;S1"
+msgstr ""
+
+#. Calliope Callibot library choice
+msgid "callibot;S2"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot2E encoder _"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot2E reset encoder _"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot2 battery (mV)"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot2 bumper _ _"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot clear NeoPixels"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot distance (cm)"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot line sensor _ _"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot set led _ _"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot set motor _ _ speed _ (0~100)"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot set neopixel _ to _ intensity _"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot set servo _ to _ ° (0~180)"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot set _ servo _ to _ °"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot rotate servo _ _ speed _ (0~100)"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot stop all"
+msgstr ""
+
+#. Calliope Callibot library block
+msgid "Callibot stop motor _"
+msgstr ""
+
+#. Nehza Pro library choice
+msgid "M1"
+msgstr ""
+
+#. Nehza Pro library choice
+msgid "M2"
+msgstr ""
+
+#. Nehza Pro library choice
+msgid "M3"
+msgstr ""
+
+#. Nehza Pro library choice
+msgid "M4"
+msgstr ""
+
+#. Nehza Pro library choice
+msgid "nehzaPro;by shortest path"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np angle _"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np move _ for _ mm speed _ %"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np speed _"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np total angle _"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np reset total angle _"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np rotate _ _ by _ degrees speed _ %"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np rotate _ _ to _ degrees speed _ %"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np run motor _ _ speed _ %"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np set _ angle _ to _ degrees"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np set wheels left _ right _ #BR# circumference _ mm axle _ mm"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np stop all motors"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np stop motor _"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np turn _ by _ degrees speed _ %"
+msgstr ""
+
+#. Nehza Pro library block
+msgid "np version"
 msgstr ""
 
 #. LCD 16x2 (Seeed) library block
