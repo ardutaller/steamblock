@@ -559,44 +559,6 @@ static OBJ primDUELinkPID(int argCount, OBJ *args) {
 
 void delay(unsigned long); // Arduino delay function
 
-#include "stm32c0xx_hal_rcc.h" // Adjust for your specific MCU family
-
-void SwitchToLSI_Clock(void) {
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-    // 1. Configure the Oscillators (Enable LSI)
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_HSI;
-    RCC_OscInitStruct.LSIState = RCC_LSI_ON; // Enable Low-Speed Internal Oscillator
-    RCC_OscInitStruct.HSIState = RCC_HSI_ON; // Keep HSI on for now, or disable if you want
-    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        // Error Handling for Oscillator Config
-        Error_Handler();
-    }
-
-    // 2. Configure the Clock System (Set LSI as SYSCLK source)
-    // NOTE: LSI is low speed (around 32kHz), so this is for low-power or RTC/IWDG use,
-    // not high performance. Adjust prescalers as needed for peripherals.
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK |
-                                  RCC_CLOCKTYPE_PCLK1; //  | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_LSI; // Select LSI as System Clock
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;    // Adjust as needed
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;     // Adjust as needed
-
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK) {
-        // Error Handling for Clock Config
-        Error_Handler();
-    }
-
-    // 3. Wait for the switch to complete (optional, HAL usually handles this)
-    // You can poll RCC->CFGR (SWS bits) if needed for bare-metal/LL
-	while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_LSI);
-
-    // 4. (Optional) Disable HSI if no longer needed
-	RCC->CR &= ~RCC_CR_HSION;
-}
-
 // These are the only possible wakeup pins on C071:
 // WKUP1 - PA0 - Due P1
 // WKUP2 - PC13 (nc) or PA4 - Due P3
@@ -615,7 +577,7 @@ static OBJ primDUESleep(int argCount, OBJ *args) {
 
 	// The following allows a user to recover if they create a script like "when started, sleep"
 	// It gives them ten seconds to connect the IDE to the board so they can change their code.
-//	if (totalMicrosecs() < (10 * 1000000)) return falseObj; // do nothing for N secs after startup
+	if (totalMicrosecs() < (5 * 1000000)) return falseObj; // do nothing for N secs after startup
 
 	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1_HIGH);
 	HAL_PWREx_EnablePullUpPullDownConfig();
@@ -634,17 +596,19 @@ static OBJ primDUESleep(int argCount, OBJ *args) {
 	delay(5); // leave time for pin to go low (it has a capacitor for touch sensing)
 
 	if ((argCount > 0) && (args[0] == trueObj)) {
-		HAL_PWREx_EnterSHUTDOWNMode();
-		__WFI(); // shuts down here; restarts on wakeup
-	} else {
+		// STOP mode; wakes up on alarm but uses about 1 mA
 		CDC_deInit();
 		HAL_SuspendTick(); // suspend tick interrupts so we don't spontaneously wake up
-		SwitchToLSI_Clock();
 		HAL_PWR_EnterSTOPMode(0, PWR_STOPENTRY_WFI); // stop; continue from here on wakeup
 		SystemClock_Config(); // necessary; restarts the USB clock, I think
 		HAL_ResumeTick();
 		CDC_init();
 		HAL_PWREx_DisablePullUpPullDownConfig();
+	} else {
+		// default: SHUTDOWN mode; wake up on wakeup pin and uses less than 0.001 mA
+		// on boards without voltage regulators (e.g. Snowy or Chrono)
+		HAL_PWREx_EnterSHUTDOWNMode();
+		__WFI(); // shuts down here; restarts on wakeup
 	}
 
 	return falseObj;
@@ -814,7 +778,7 @@ static PrimEntry entries[] = {
 	{"dueGetTime", primDUEGetDateAndTime},
 	{"dueSetTime", primDUESetTime},
 	{"dueSetDate", primDUESetDate},
-	{"dueSetAlarm", primDUESetAlarm},
+//	{"dueSetAlarm", primDUESetAlarm}, // commented out to save ~300 bytes
 #else
 	{"hsvColor", primHSVColor},
 	{"hue", primColorHue},
