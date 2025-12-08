@@ -5303,19 +5303,19 @@ msgid "MotionKit clear NeoPixels"
 msgstr ""
 
 #. Calliope MotionKit library block
+msgid "MotionKit set motor _ _ speed _ (0~100)"
+msgstr ""
+
+#. Calliope MotionKit library block
 msgid "MotionKit stop motor _"
 msgstr ""
 
 #. Calliope MotionKit library block
-msgid "MotionKit motor _ dir _ speed _ (0~255)"
+msgid "MotionKit stop all"
 msgstr ""
 
 #. Calliope MotionKit library block
-msgid "MotionKit LED _ _"
-msgstr ""
-
-#. Calliope MotionKit library block
-msgid "color r _ g _ b _ (0~255)"
+msgid "MotionKit set led _ _"
 msgstr ""
 
 #. Calliope MotionKit library block
@@ -5327,7 +5327,15 @@ msgid "IR code received?"
 msgstr ""
 
 #. Calliope MotionKit library block
-msgid "MotionKit set servo _ to _ ° (0~180)"
+msgid "MotionKit set servo _ to _ degrees (0-180)"
+msgstr ""
+
+#. Calliope MotionKit library block
+msgid "MotionKit set _ servo _ to _ degrees"
+msgstr ""
+
+#. Calliope MotionKit library block
+msgid "MotionKit rotate servo _ _ speed _ (0~100)"
 msgstr ""
 
 #. Calliope Callibot library choice
