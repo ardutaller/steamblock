@@ -595,21 +595,22 @@ static OBJ primDUESleep(int argCount, OBJ *args) {
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF6);
 	delay(5); // leave time for pin to go low (it has a capacitor for touch sensing)
 
-	if ((argCount > 0) && (args[0] == trueObj)) {
-		// STOP mode; wakes up on alarm but uses about 1 mA
-		CDC_deInit();
-		HAL_SuspendTick(); // suspend tick interrupts so we don't spontaneously wake up
-		HAL_PWR_EnterSTOPMode(0, PWR_STOPENTRY_WFI); // stop; continue from here on wakeup
-		SystemClock_Config(); // necessary; restarts the USB clock, I think
-		HAL_ResumeTick();
-		CDC_init();
-		HAL_PWREx_DisablePullUpPullDownConfig();
-	} else {
+// Commented out to save space (308 bytes)
+// 	if ((argCount > 0) && (args[0] == trueObj)) {
+// 		// STOP mode; wakes up on alarm but uses about 1 mA
+// 		CDC_deInit();
+// 		HAL_SuspendTick(); // suspend tick interrupts so we don't spontaneously wake up
+// 		HAL_PWR_EnterSTOPMode(0, PWR_STOPENTRY_WFI); // stop; continue from here on wakeup
+// 		SystemClock_Config(); // necessary; restarts the USB clock, I think
+// 		HAL_ResumeTick();
+// 		CDC_init();
+// 		HAL_PWREx_DisablePullUpPullDownConfig();
+// 	} else {
 		// default: SHUTDOWN mode; wake up on wakeup pin and uses less than 0.001 mA
 		// on boards without voltage regulators (e.g. Snowy or Chrono)
 		HAL_PWREx_EnterSHUTDOWNMode();
 		__WFI(); // shuts down here; restarts on wakeup
-	}
+// 	}
 
 	return falseObj;
 }
@@ -720,41 +721,42 @@ static OBJ primDUESetDate(int argCount, OBJ *args) {
 	return falseObj;
 }
 
-static OBJ primDUESetAlarm(int argCount, OBJ *args) {
-	// Set the alarm: hours minutes seconds (date and weekday are ignored)
-	// Call without arguments to disable the alarm
-
-	if (argCount < 3) return falseObj; // not enough arguments
-	if (!rtc_initialized) Rtc_Initialize();
-
-	if (argCount < 3) { // disable alarm
-		HAL_NVIC_DisableIRQ(RTC_IRQn);
-		return falseObj;
-	}
-
-	RTC_AlarmTypeDef sAlarm = {0};
-	sAlarm.Alarm = RTC_ALARM_A;
-	sAlarm.AlarmTime.Hours = obj2int(args[0]);
-	sAlarm.AlarmTime.Minutes = obj2int(args[1]);
-	sAlarm.AlarmTime.Seconds = obj2int(args[2]);
-	sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY; // ignore date and weekday
-	sAlarm.AlarmTime.SubSeconds = 0;
- 	sAlarm.AlarmSubSecondMask = 0; // ignore subseconds
-
-	HAL_NVIC_SetPriority(RTC_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(RTC_IRQn);
-
-	int status = HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN);
-	if (status != HAL_OK) {
-		reportNum("HAL_RTC_SetAlarm_IT error", status);
-	}
-
-	return falseObj;
-}
-
-void RTC_IRQHandler(void) {
-	HAL_RTC_AlarmIRQHandler(&hrtc);
-}
+// Commented out to save space (~1000 bytes!):
+// static OBJ primDUESetAlarm(int argCount, OBJ *args) {
+// 	// Set the alarm: hours minutes seconds (date and weekday are ignored)
+// 	// Call without arguments to disable the alarm
+//
+// 	if (argCount < 3) return falseObj; // not enough arguments
+// 	if (!rtc_initialized) Rtc_Initialize();
+//
+// 	if (argCount < 3) { // disable alarm
+// 		HAL_NVIC_DisableIRQ(RTC_IRQn);
+// 		return falseObj;
+// 	}
+//
+// 	RTC_AlarmTypeDef sAlarm = {0};
+// 	sAlarm.Alarm = RTC_ALARM_A;
+// 	sAlarm.AlarmTime.Hours = obj2int(args[0]);
+// 	sAlarm.AlarmTime.Minutes = obj2int(args[1]);
+// 	sAlarm.AlarmTime.Seconds = obj2int(args[2]);
+// 	sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY; // ignore date and weekday
+// 	sAlarm.AlarmTime.SubSeconds = 0;
+//  	sAlarm.AlarmSubSecondMask = 0; // ignore subseconds
+//
+// 	HAL_NVIC_SetPriority(RTC_IRQn, 0, 0);
+// 	HAL_NVIC_EnableIRQ(RTC_IRQn);
+//
+// 	int status = HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN);
+// 	if (status != HAL_OK) {
+// 		reportNum("HAL_RTC_SetAlarm_IT error", status);
+// 	}
+//
+// 	return falseObj;
+// }
+//
+// void RTC_IRQHandler(void) {
+// 	HAL_RTC_AlarmIRQHandler(&hrtc);
+// }
 
 #endif
 
@@ -778,7 +780,7 @@ static PrimEntry entries[] = {
 	{"dueGetTime", primDUEGetDateAndTime},
 	{"dueSetTime", primDUESetTime},
 	{"dueSetDate", primDUESetDate},
-//	{"dueSetAlarm", primDUESetAlarm}, // commented out to save ~300 bytes
+//	{"dueSetAlarm", primDUESetAlarm}, // commented out to save space
 #else
 	{"hsvColor", primHSVColor},
 	{"hue", primColorHue},
