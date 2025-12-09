@@ -265,6 +265,7 @@ Menus.popUp = function (selector, triggerElement) {
 	container.appendChild(nav);
 	container.style.left = `${pos.x}px`;
 	container.style.top = `${pos.y + triggerElement.clientHeight}px`;
+	nav.style.maxHeight = `${window.innerHeight - 80}px`;
 };
 
 Menus.current = function () {

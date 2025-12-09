@@ -143,16 +143,18 @@ customElements.define('win-', FloatingWindow);
 // Generic Window Definitions
 
 FloatingWindow.inform = function (title, text) {
-	new FloatingWindow({
+	let win = new FloatingWindow({
 		title: title ?? 'Information',
 		body: GetText.localize(text),
 		buttons: [{ label: 'Ok', action: ()=>{}, closesWindow: true }],
 		resizable: true
-	}).popUp();
+	});
+	win.popUp();
+	return win;
 };
 
 FloatingWindow.confirm = function (title, text, onAccept) {
-	new FloatingWindow({
+	let win = new FloatingWindow({
 		title: title ?? 'Confirm',
 		body: GetText.localize(text),
 		buttons: [
@@ -160,13 +162,15 @@ FloatingWindow.confirm = function (title, text, onAccept) {
 			{ label: 'No', action: ()=>{}, closesWindow: true }
 		],
 		resizable: true
-	}).popUp();
+	});
+	win.popUp();
+	return win;
 };
 
 FloatingWindow.prompt = function (title, text, onAccept, input) {
 	let inputDescriptor =
 		input ?? { type: 'text', placeholder: 'value' };
-	new FloatingWindow({
+	let win = new FloatingWindow({
 		title: title ?? 'Input',
 		body: GetText.localize(text),
 		buttons: [
@@ -175,7 +179,9 @@ FloatingWindow.prompt = function (title, text, onAccept, input) {
 		],
 		input: inputDescriptor,
 		resizable: true
-	}).popUp();
+	});
+	win.popUp();
+	return win;
 };
 
 // Specific Window Definitions
@@ -203,5 +209,24 @@ FloatingWindow.about = function() {
 // Events
 document.addEventListener(
 	'window.inform',
-	(e) => { FloatingWindow.inform(e.detail.value.title, e.detail.value.text); }
+	(e) => {
+		let descriptor = e.detail.value;
+		FloatingWindow.inform(
+			descriptor .title,
+			descriptor .text
+		);
+	}
+);
+
+document.addEventListener(
+	'window.confirm',
+	(e) => {
+		let descriptor  = e.detail.value,
+			win = FloatingWindow.confirm(
+			descriptor .title,
+			descriptor .text,
+			(value) => {
+			}
+		);
+	}
 );

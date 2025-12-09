@@ -102,6 +102,7 @@ body {
 	padding: 1px 6px;
 	background-color: #FFFFFFDD;
 	border-color: #eff0f2;
+	box-shadow: 0 0 6px 0px rgba(0,0,0,0.10);
 }
 
 .script-controls.dark-mode {
@@ -216,11 +217,12 @@ body {
 .buttons-left, .progress, .buttons-right {
 	display: inline-flex;
 	vertical-align: top;
+	gap: 8px;
 }
 
 .buttons-right {
 	position: absolute;
-	right: 0;
+	right: 10px;
 }
 
 .icon {
@@ -228,10 +230,9 @@ body {
 	vertical-align: top;
 	align-self: center;
 	padding-top: 9px;
-	padding-left: 5px;
 	cursor: pointer;
 }
-.icon svg:hover > path{
+.icon svg:hover > path {
 	fill: gold;
 }
 .menu {
@@ -241,6 +242,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
+	overflow-y: auto;
 }
 .menu li {
 	list-style: none;
@@ -264,6 +266,7 @@ hr {
 }
 .menu-item:hover {
 	background-color: #fed722;
+	color: #2d3143;
 	filter: brightness(1);
 }
 .tick.unchecked {
@@ -287,6 +290,7 @@ hr {
 .buttons-right .connect {
 	cursor: pointer;
 	display: flex;
+	gap: 4px;
 }
 .icon.connected img {
 	filter:	brightness(0) saturate(100%) invert(64%) sepia(12%) saturate(1783%)
@@ -368,7 +372,7 @@ hr {
 	flex-grow: 2;
 	padding: 8px;
 	cursor: default !important;
-	overflow: scroll;
+	overflow: auto;
 	background-color: #ECEDF1;
 	font-size: 14px;
 	display: flex;
