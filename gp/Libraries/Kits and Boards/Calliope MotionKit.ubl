@@ -1,6 +1,6 @@
 module 'Calliope MotionKit'
 author 'Ralf Krause, Michael Klein (kleinswelt)'
-version 1 9 
+version 1 10 
 choices mk2_line 'mk2;bright' 'mk2;dark' 
 choices mk2_color red green blue yellow magenta cyan white black 
 choices mk2_position left right 
@@ -100,7 +100,7 @@ to mk2_IRreceived {
 }
 
 to mk2_clearNeoPixels {
-  mk2_setNeoPixels (colorSwatch 0 0 0 255)
+  mk2_setNeoPixels 0
 }
 
 to mk2_distance {
@@ -133,11 +133,11 @@ to mk2_lineSensor which brightdark {
 to mk2_setLED which on {
   on = ('[data:convertType]' on 'number')
   if (which == 'left') {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0B') on)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt 'B') on)
   } (which == 'right') {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0C') on)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt 'B') on)
   } else {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0B') on on)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt 'B') on on)
   }
 }
 
@@ -146,52 +146,51 @@ to mk2_setMotor motor dir speed {
   speed = ('[misc:rescale]' speed 0 100 0 255)
   dir = ('[data:convertType]' (dir != 'forward') 'number')
   if (motor == 'left') {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') dir speed)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0') dir speed)
   } (motor == 'right') {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '02') dir speed)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '2') dir speed)
   } else {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') dir speed dir speed)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0') dir speed dir speed)
   }
 }
 
 to mk2_setNeoPixels pixelcolor optionalBrightness {
-  local 'brightness' 100
+  local 'c' pixelcolor
+  local 'brightness' 50
   if ((pushArgCount) > 1) {
     brightness = optionalBrightness
   }
   if (brightness < 100) {
-    local 'c' pixelcolor
-    pixelcolor = ('[misc:hsvColor]' ('[misc:hue]' c) ('[misc:saturation]' c) ((('[misc:brightness]' c) * brightness) / 100))
+    c = ('[misc:hsvColor]' ('[misc:hue]' c) ('[misc:saturation]' c) ((('[misc:brightness]' c) * brightness) / 100))
   }
-  local 'r' ((pixelcolor >> 16) & 255)
-  local 'g' ((pixelcolor >> 8) & 255)
-  local 'b' (pixelcolor & 255)
+  local 'r' ((c >> 16) & 255)
+  local 'g' ((c >> 8) & 255)
+  local 'b' (c & 255)
   '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '18') r g b)
 }
 
 to mk2_setNeoPixels2 pixelcolor optionalBrightness {
+  local 'c' 0
   local 'brightness' 50
   if ((pushArgCount) > 1) {
     brightness = optionalBrightness
   }
   if (pixelcolor == 'red') {
-    pixelcolor = (color_colorSwatch (colorSwatch 255 0 0 255))
+    c = ((255 << 16) | ((0 << 8) | 0))
   } (pixelcolor == 'green') {
-    pixelcolor = (color_colorSwatch (colorSwatch 0 255 0 255))
+    c = ((0 << 16) | ((255 << 8) | 0))
   } (pixelcolor == 'blue') {
-    pixelcolor = (color_colorSwatch (colorSwatch 0 0 255 255))
+    c = ((0 << 16) | ((0 << 8) | 255))
   } (pixelcolor == 'yellow') {
-    pixelcolor = (color_colorSwatch (colorSwatch 200 200 0 255))
+    c = ((200 << 16) | ((200 << 8) | 0))
   } (pixelcolor == 'magenta') {
-    pixelcolor = (color_colorSwatch (colorSwatch 234 10 142 255))
+    c = ((234 << 16) | ((10 << 8) | 142))
   } (pixelcolor == 'cyan') {
-    pixelcolor = (color_colorSwatch (colorSwatch 54 160 202 255))
+    c = ((54 << 16) | ((160 << 8) | 202))
   } (pixelcolor == 'white') {
-    pixelcolor = (color_colorSwatch (colorSwatch 200 200 200 255))
-  } else {
-    pixelcolor = (color_colorSwatch (colorSwatch 0 0 0 255))
+    c = ((200 << 16) | ((200 << 8) | 200))
   }
-  mk2_setNeoPixels pixelcolor brightness
+  mk2_setNeoPixels c brightness
 }
 
 to mk2_setServo servo degrees {
@@ -249,11 +248,11 @@ to mk2_stopAll {
 
 to mk2_stopMotor motor {
   if (motor == 'left') {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') 0 0)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0') 0 0)
   } (motor == 'right') {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '02') 0 0)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '2') 0 0)
   } else {
-    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '00') 0 0 0 0)
+    '_mk2_i2cWrite' ('[data:makeList]' (hexToInt '0') 0 0 0 0)
   }
 }
 
