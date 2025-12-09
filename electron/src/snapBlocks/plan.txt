@@ -24,9 +24,6 @@ Tips from Bernat:
 	- click on world in SnapBlocks to enter dev mode
 
 mb-block.js cleanups:
-  - do we need ArgLabelMorph?
-  - do we need both CSlotMorph and CommandSlotMorph?
-  - remove support for rendering label text with dropshadows
   - replace getVarNamesDict
 
 Long term plan:
@@ -55,7 +52,7 @@ GP code that will need to ported:
 	1236	ide/MicroBlocksProject.gp
 
 	1332 	ide/MicroBlocksCompiler.gp
-	1102	ide/MicroBlocksDecompiler.gp
+	1102		ide/MicroBlocksDecompiler.gp
 
 	3216	ide/MicroBlocksRuntime.gp
 	265		ide/MicroBlocksExchange.gp
