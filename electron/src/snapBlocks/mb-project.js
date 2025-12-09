@@ -505,6 +505,7 @@ class MB_Module {
 		// todo: add functions
 		if (!exportedLibName) { // add scripts if not exporting as a library
 			// todo: add scripts
+			result.push(this.scriptString());
 		}
 
 		return result.join('\n');
@@ -576,6 +577,30 @@ class MB_Module {
 	}
 
 	scriptString() {
+		if (this.scripts.length == 0) return '';
+
+		// sort scripts by position so the scriptString does not depend on z-ordering of scripts
+		const sortedScripts = this.scripts.slice().sort( (a, b) => {
+			if (a[1] == b[1]) {
+				return a[0] < b[0]; // y's are equal, sort by x
+			} else {
+				return a[1] < b[1]; // sort by y
+			}
+		});
+
+		let result = [];
+		for (const entry of sortedScripts) {
+			const script = entry[2];
+			if (script instanceof ReporterBlockMorph) {
+				result.push(
+					'script ' + entry[0] + ' ' + entry[1] + ' ' + script.codeString() + '\n');
+			} else {
+				result.push(
+					'script ' + entry[0] + ' ' + entry[1] + ' {\n' + script.codeString() + '}\n');
+			}
+		}
+		return result.join('\n');
+
 	// 	if (isEmpty scripts) { return '' }
 	//
 	// 	// sort scripts so the scriptString does not depend on z-ordering of scripts
