@@ -708,15 +708,15 @@ method undo MicroBlocksScripter {
 		add redoStack (removeLast undoStack)
 	}
 	if (notEmpty undoStack) {
-		loadFromString mbProject (last undoStack)
+		loadFromString mbProject (last undoStack) false
 	} else {
 		mbProject = (newMicroBlocksProject)
 		if (notNil scriptsFrame) {
 			removeAllParts (morph (contents scriptsFrame))
-			restoreScripts this
 		}
 	}
 	restoreScripts this
+	syncScripts (smallRuntime)
 }
 
 method redo MicroBlocksScripter {
@@ -724,8 +724,9 @@ method redo MicroBlocksScripter {
 	if (notEmpty redoStack) {
 		lastState = (removeLast redoStack)
 		add undoStack lastState
-		loadFromString mbProject lastState
+		loadFromString mbProject lastState false
 		restoreScripts this
+		syncScripts (smallRuntime)
 	}
 }
 
