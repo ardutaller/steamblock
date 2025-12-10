@@ -1618,7 +1618,6 @@ OBJ primBrowserNextCallId(int nargs, OBJ args[]) {
 
 OBJ primBrowserWindowResponse(int nargs, OBJ args[]) {
 	int id = obj2int(args[0]);
-	printf("primBrowserWindowResponse id %i\n", id);
 
 	int responseLength = EM_ASM_INT(
 		{ return GP.windowResponses[$0] ? GP.windowResponses[$0].length + 1 : 0; },
@@ -1629,7 +1628,6 @@ OBJ primBrowserWindowResponse(int nargs, OBJ args[]) {
 	OBJ response = allocateString(responseLength);
 	EM_ASM_(
 		{
-			console.log('response:', GP.windowResponses[$0]);
 			stringToUTF8(GP.windowResponses[$0], $1, $2);
 			delete(GP.windowResponses[$0]);
 		},

@@ -1354,34 +1354,58 @@ method freshPrompt Page question default editRule callback details {
 		return (prompt this question default editRule callback details)
 }
 
+//method prompt Page question default editRule callback details {
+//	// prompt can be used either as a reporter or as a command
+//	// if a callback is passed prompt is used as a command, when
+//	// the user accepts the prompter, the callback is called with
+//	// the user's answer
+//	// if no callback is given, this method eclipses the page's
+//	// main loop until the user terminates the prompter.
+//	// the reporter version is much nicer to user in scripts,
+//	// but it doesn't handle multiple prompters gracefully, unless
+//	// the user "backtracks" the prompters in the reverse order
+//	// of having opened them.
+//	// the callback version, otoh, handles any number and
+//	// sequence of prompters gracefully, but is more cumbersome
+//	// to use in scripts
+//	if (isNil editRule) { editRule = 'line' }
+//	p = (new 'Prompter')
+//	initialize p (localized question) (localized default) editRule callback details
+//	fixLayout p
+//	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
+//	addPart morph (morph p)
+//	edit (textBox p) hand
+//	selectAll (textBox p)
+//	if (isNil callback) {
+//		cancelTouchHold hand
+//		while (not (isDone p)) {doOneCycle this}
+//		destroy (morph p)
+//		return (answer p)
+//	}
+//}
+
 method prompt Page question default editRule callback details {
-	// prompt can be used either as a reporter or as a command
-	// if a callback is passed prompt is used as a command, when
-	// the user accepts the prompter, the callback is called with
-	// the user's answer
-	// if no callback is given, this method eclipses the page's
-	// main loop until the user terminates the prompter.
-	// the reporter version is much nicer to user in scripts,
-	// but it doesn't handle multiple prompters gracefully, unless
-	// the user "backtracks" the prompters in the reverse order
-	// of having opened them.
-	// the callback version, otoh, handles any number and
-	// sequence of prompters gracefully, but is more cumbersome
-	// to use in scripts
-	if (isNil editRule) { editRule = 'line' }
-	p = (new 'Prompter')
-	initialize p (localized question) (localized default) editRule callback details
-	fixLayout p
-	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
-	addPart morph (morph p)
-	edit (textBox p) hand
-	selectAll (textBox p)
-	if (isNil callback) {
-		cancelTouchHold hand
-		while (not (isDone p)) {doOneCycle this}
-		destroy (morph p)
-		return (answer p)
+	api = (api (smallRuntime))
+	id = (browserNextCallId api)
+
+	options = (dictionary)
+	atPut options 'title' question
+	atPut options 'text' details
+	atPut options 'id' id
+	atPut options 'default' default
+	atPut options 'editRule' editRule
+
+	notify api 'window.prompt' options
+	response = (windowResponse api id)
+	while (response == nil) {
+		response = (windowResponse api id)
+		doOneCycle this
 	}
+	if (notNil callback) {
+		call callback response
+	}
+
+	return response
 }
 
 method confirm Page title question yesLabel noLabel callback {

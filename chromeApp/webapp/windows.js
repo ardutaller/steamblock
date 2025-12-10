@@ -34,14 +34,16 @@ class FloatingWindow extends HTMLElement {
 			} else if (typeof descriptor.body == 'object') { // assume DOM element
 				body.append(descriptor.body);
 			}
-			if (descriptor.input) {
-				let input = document.createElement('input');
-				input.classList.add('win-input');
-				input.type = descriptor.input.type ?? 'text';
-				input.default = descriptor.input.defaultValue ?? '';
-				input.placeholder = descriptor.input.placeholder ?? '';
-				body.append(input);
-			}
+		}
+		if (descriptor.input) {
+			let input = descriptor.input.multiline ?
+				document.createElement('textarea') :
+				document.createElement('input');
+			input.classList.add('win-input');
+			input.type = descriptor.input.type ?? 'text';
+			input.default = descriptor.input.defaultValue ?? '';
+			input.placeholder = descriptor.input.placeholder ?? '';
+			body.append(input);
 		}
 		this.append(body);
 
@@ -169,12 +171,19 @@ FloatingWindow.confirm =
 	return win;
 };
 
-FloatingWindow.prompt = function (title, text, onAccept, onCancel, input) {
+FloatingWindow.prompt =
+	function (title, text, onAccept, onCancel, input, defaultValue, editRule)
+{
 	let inputDescriptor =
-		input ?? { type: 'text', placeholder: 'value' };
+		input ?? {
+			type: 'text',
+			placeholder: null,
+			defaultValue: defaultValue,
+			multiline: editRule == 'editable'
+		};
 	let win = new FloatingWindow({
 		title: title ?? 'Input',
-		body: GetText.localize(text),
+		body: text ? GetText.localize(text) : '',
 		buttons: [
 			{ label: 'Ok', action: onAccept, closesWindow: true },
 			{ label: 'Cancel', action: onCancel, closesWindow: true }
@@ -228,7 +237,25 @@ document.addEventListener(
 			descriptor.title,
 			descriptor.text,
 			() => { GP.windowResponses[descriptor.id] = JSON.stringify(true); },
-			() => { GP.windowResponses[descriptor.id] = JSON.stringify(false); }
+			() => { GP.windowResponses[descriptor.id] = JSON.stringify(false); },
+			descriptor.yesLabel,
+			descriptor.noLabel,
+		);
+	}
+);
+
+document.addEventListener(
+	'window.prompt',
+	(e) => {
+		let descriptor = e.detail.value,
+			win = FloatingWindow.prompt(
+			descriptor.title,
+			descriptor.text,
+			(value) => { GP.windowResponses[descriptor.id] = JSON.stringify(value); },
+			() => { GP.windowResponses[descriptor.id] = JSON.stringify(null); },
+			null, // default input
+			descriptor.default,
+			descriptor.editRule
 		);
 	}
 );
