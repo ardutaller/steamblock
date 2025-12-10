@@ -592,12 +592,6 @@ static OBJ primDUESleep(int argCount, OBJ *args) {
 	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_A, GPIO_PIN_4);
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF2);
 
-	// E key on Piano; pull down to wake up
-	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN6_LOW);
-	HAL_PWREx_EnableGPIOPullUp(PWR_GPIO_B, GPIO_PIN_5);
-	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF6);
-	delay(5); // leave time for pin to go low (it has a capacitor for touch sensing)
-
 // Commented out to save space (308 bytes)
 // 	if ((argCount > 0) && (args[0] == trueObj)) {
 // 		// STOP mode; wakes up on alarm but uses about 1 mA
