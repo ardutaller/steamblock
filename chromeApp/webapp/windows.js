@@ -153,13 +153,15 @@ FloatingWindow.inform = function (title, text) {
 	return win;
 };
 
-FloatingWindow.confirm = function (title, text, onAccept) {
+FloatingWindow.confirm =
+	function (title, text, onAccept, onCancel, yesLabel, noLabel)
+{
 	let win = new FloatingWindow({
 		title: title ?? 'Confirm',
-		body: GetText.localize(text),
+		body: text ? GetText.localize(text) : '',
 		buttons: [
-			{ label: 'Yes', action: onAccept, closesWindow: true },
-			{ label: 'No', action: ()=>{}, closesWindow: true }
+			{ label: yesLabel ?? 'Yes', action: onAccept, closesWindow: true },
+			{ label: noLabel ?? 'No', action: onCancel, closesWindow: true }
 		],
 		resizable: true
 	});
@@ -167,7 +169,7 @@ FloatingWindow.confirm = function (title, text, onAccept) {
 	return win;
 };
 
-FloatingWindow.prompt = function (title, text, onAccept, input) {
+FloatingWindow.prompt = function (title, text, onAccept, onCancel, input) {
 	let inputDescriptor =
 		input ?? { type: 'text', placeholder: 'value' };
 	let win = new FloatingWindow({
@@ -175,7 +177,7 @@ FloatingWindow.prompt = function (title, text, onAccept, input) {
 		body: GetText.localize(text),
 		buttons: [
 			{ label: 'Ok', action: onAccept, closesWindow: true },
-			{ label: 'Cancel', action: ()=>{}, closesWindow: true }
+			{ label: 'Cancel', action: onCancel, closesWindow: true }
 		],
 		input: inputDescriptor,
 		resizable: true
@@ -221,12 +223,12 @@ document.addEventListener(
 document.addEventListener(
 	'window.confirm',
 	(e) => {
-		let descriptor  = e.detail.value,
+		let descriptor = e.detail.value,
 			win = FloatingWindow.confirm(
-			descriptor .title,
-			descriptor .text,
-			(value) => {
-			}
+			descriptor.title,
+			descriptor.text,
+			() => { GP.windowResponses[descriptor.id] = JSON.stringify(true); },
+			() => { GP.windowResponses[descriptor.id] = JSON.stringify(false); }
 		);
 	}
 );

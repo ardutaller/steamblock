@@ -101,6 +101,7 @@ if test -n "$tools"; then
 		if [ -z `command -v mono` ]; then echo "mono"; fi
 		echo "If you get a Mono/Wine error when packaging for Windows, remove the ~/.wine folder and run winecfg"
 	fi
+	exit 0
 fi
 
 if test -n "$webapp"; then

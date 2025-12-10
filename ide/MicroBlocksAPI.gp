@@ -176,3 +176,14 @@ method notify MicroBlocksAPI event value {
 method electronOS MicroBlocksAPI {
 	return (at (array 'windows' 'mac' 'linux' 'web') (browserElectronOS))
 }
+
+method nextId MicroBlocksAPI { return (browserNextCallId) }
+
+method windowResponse MicroBlocksAPI id {
+	json = (browserWindowResponse id)
+	if (notNil json) {
+		return (jsonParse json)
+	} else {
+		return nil
+	}
+}

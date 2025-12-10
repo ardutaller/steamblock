@@ -1385,17 +1385,24 @@ method prompt Page question default editRule callback details {
 }
 
 method confirm Page title question yesLabel noLabel callback {
-	// see comment for ::prompt
-	p = (new 'Prompter')
-	initializeForConfirm p title question yesLabel noLabel callback
-	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
-	addPart morph (morph p)
-	if (isNil callback) {
-		cancelTouchHold hand
-		while (not (isDone p)) {doOneCycle this}
-		destroy (morph p)
-		return (answer p)
+	api = (api (smallRuntime))
+	id = (browserNextCallId api)
+
+	options = (dictionary)
+	atPut options 'title' title
+	atPut options 'text' question
+	atPut options 'id' id
+	atPut options 'yesLabel' yesLabel
+	atPut options 'noLabel' noLabel
+
+	notify api 'window.confirm' options
+	response = (windowResponse api id)
+	while (response == nil) {
+		response = (windowResponse api id)
+		doOneCycle this
 	}
+
+	return response
 }
 
 method inform Page details title yesLabel nonBlocking {
@@ -1404,17 +1411,6 @@ method inform Page details title yesLabel nonBlocking {
 	atPut options 'text' details
 	notify (api (smallRuntime)) 'window.inform' options
 	return
-	/*
-	p = (new 'Prompter')
-	initializeForInform p title details yesLabel
-	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
-	addPart morph (morph p)
-	cancelTouchHold hand
-	if (nonBlocking == true) { return true }
-	while (not (isDone p)) {doOneCycle this}
-	destroy (morph p)
-	return (answer p)
-	*/
 }
 
 // events
