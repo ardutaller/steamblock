@@ -5340,19 +5340,19 @@ msgstr "MotionKit rotate servo _ _ speed _ (0~100)"
 
 #. Calliope Callibot library choice
 msgid "callibot;left front"
-msgstr "callibot;left front"
+msgstr "left front"
 
 #. Calliope Callibot library choice
 msgid "callibot;right front"
-msgstr "callibot;right front"
+msgstr "right front"
 
 #. Calliope Callibot library choice
 msgid "callibot;left back"
-msgstr "callibot;left back"
+msgstr "left back"
 
 #. Calliope Callibot library choice
 msgid "callibot;right back"
-msgstr "callibot;right back"
+msgstr "right back"
 
 #. Calliope Callibot library choice
 msgid "violett"
@@ -5364,19 +5364,19 @@ msgstr "aqua"
 
 #. Calliope Callibot library choice
 msgid "callibot;bright"
-msgstr "callibot;bright"
+msgstr "bright"
 
 #. Calliope Callibot library choice
 msgid "callibot;dark"
-msgstr "callibot;dark"
+msgstr "dark"
 
 #. Calliope Callibot library choice
 msgid "callibot;S1"
-msgstr "callibot;S1"
+msgstr "S1"
 
 #. Calliope Callibot library choice
 msgid "callibot;S2"
-msgstr "callibot;S2"
+msgstr "S2"
 
 #. Calliope Callibot library block
 msgid "Callibot2E encoder _"
@@ -5456,7 +5456,7 @@ msgstr "M4"
 
 #. Nehza Pro library choice
 msgid "nehzaPro;by shortest path"
-msgstr "nehzaPro;by shortest path"
+msgstr "by shortest path"
 
 #. Nehza Pro library block
 msgid "np angle _"

@@ -159,6 +159,7 @@ method microBlocksSpecs SmallCompiler {
 	'cat;Operators-Advanced'
 		(array 'r' 'ifExpression'		'if _ then _ else _' 'bool auto auto' true 1 0)
 		(array 'r' 'hexToInt'			'hex _' 'str' '3F')
+		(array 'r' '[misc:binToInt]'	'binary _' 'str' '1111')
 		'-'
 		(array 'r' '[misc:rescale]'		'rescale _ from ( _ , _ ) to ( _ , _ )' 'num num num num num' 3 0 10 0 100)
 		(array 'r' '[misc:sqrt]'		'sqrt _' 'num' 9)
