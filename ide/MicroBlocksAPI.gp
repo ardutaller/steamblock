@@ -69,7 +69,6 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.version') {
 		respondAPIRequest this id (ideVersion runtime)
 
-
 	// Project
 	} (endPoint == 'project.save') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
@@ -141,6 +140,23 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'edit.redo') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		redo scripter
+
+	// Library
+	} (endPoint == 'library.showInfoDialog') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		showLibraryInfo scripter (at params 1)
+	} (endPoint == 'library.showDefs') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		showAllLibraryDefinitions scripter (at params 1)
+	} (endPoint == 'library.hideDefs') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		hideAllLibraryDefinitions scripter (at params 1)
+	} (endPoint == 'library.export') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		exportLibrary scripter (at params 1)
+	} (endPoint == 'library.delete') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		removeLibraryNamed scripter (at params 1)
 
 	// API endpoint not found
 	} else {

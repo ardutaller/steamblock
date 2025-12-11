@@ -237,12 +237,19 @@ body {
 }
 .menu {
 	position: fixed;
-	background-color: #2d3143;
-	color: white;
 	display: flex;
 	flex-direction: column;
 	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
 	overflow-y: auto;
+}
+.top-menu {
+	background-color: #2d3143;
+	color: white;
+}
+.context-menu {
+	background-color: #ECEDF1;
+	color: #262938;
+
 }
 .menu li {
 	list-style: none;

@@ -85,6 +85,11 @@ Categories.elementFor = function (descriptor) {
 		button.onclick = () => {
 			GP.apiCall('ide.selectLibrary', [descriptor.label]);
 		};
+		button.oncontextmenu = (e) => {
+			Menus.popUp('library', button, descriptor.label);
+			e.preventDefault();
+		};
+
 	} else {
 		button.onclick = () => {
 			GP.apiCall('ide.selectCategory', [descriptor.label]);
@@ -119,6 +124,9 @@ document.addEventListener(
 	'libraryList',
 	(e) => {
 		if (IDE.libraryList?.length > 0) {
-			IDE.populateLibraries(document.querySelector('.libraries')); }
+			IDE.populateLibraries(document.querySelector('.libraries'));
+		} else {
+			document.querySelector('.libraries').innerHTML = '';
+		}
 	}
 );

@@ -9,7 +9,7 @@
 // Bernat Romagosa, 2025
 
 const Menus = {};
-Menus.language = { items: [] };
+Menus.language = { type: 'top', items: [] };
 
 Menus.language.init = function () {
 	// fill language menu out of available locales
@@ -42,6 +42,7 @@ Menus.language.init = function () {
 Menus.language.init();
 
 Menus.settings = {
+	type: 'top',
 	items: [
 		{
 			label: 'about...',
@@ -124,6 +125,7 @@ Menus.settings = {
 };
 
 Menus.project = {
+	type: 'top',
 	items: [
 		{
 			label: 'Save',
@@ -172,6 +174,7 @@ Menus.project = {
 };
 
 Menus.connection = {
+	type: 'top',
 	items: [
 		{
 			label: 'connect (USB)',
@@ -200,12 +203,40 @@ Menus.connection = {
 	]
 };
 
+Menus.library = {
+	type: 'context',
+	items: [
+		{
+			label: 'library information',
+			action: (libName) => { GP.apiCall('library.showInfoDialog', [libName]); },
+		},
+		{
+			label: 'show all block definitions',
+			action: (libName) => { GP.apiCall('library.showDefs', [libName]); },
+		},
+		{
+			label: 'hide all block definitions',
+			action: (libName) => { GP.apiCall('library.hideDefs', [libName]); },
+		},
+		{
+			label: 'export this library',
+			action: (libName) => { GP.apiCall('library.export', [libName]); },
+		},
+		{ label: '-' },
+		{
+			label: 'delete library',
+			action: (libName) => { GP.apiCall('library.delete', [libName]); },
+		},
+	]
+}
 
-Menus.elementFor = function (selector) {
+
+Menus.elementFor = function (selector, target) {
 	// return an HTML tree containing the menu for a menu selector, and
 	// dynamically generate the menu each time, since it can change depending on
 	// the state of the board, preferences, etc
 	let menu = document.createElement('nav');
+	menu.classList.add(`${this[selector].type}-menu`);
 
 	this[selector].items.forEach((item, index) => {
 		if (!(item.hidden?.())) {
@@ -221,7 +252,7 @@ Menus.elementFor = function (selector) {
 				li.classList.add('menu-item');
 
 				// set the menu item action
-				a.onclick = () => { item.action(); this.close() };
+				a.onclick = () => { item.action(target); this.close() };
 
 				// set the menu item label
 				if (typeof item.label == 'string') {
@@ -256,10 +287,10 @@ Menus.elementFor = function (selector) {
 	return menu;
 };
 
-Menus.popUp = function (selector, triggerElement) {
+Menus.popUp = function (selector, triggerElement, target) {
 	this.close();
 	let container = document.querySelector('.top-bar .menu'),
-		nav = this.elementFor(selector),
+		nav = this.elementFor(selector, target),
 		pos = triggerElement.getClientRects()[0];
 	nav.trigger = triggerElement;
 	container.appendChild(nav);
