@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-12-12 18:05+0000\n"
+"PO-Revision-Date: 2025-12-13 20:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1018,7 +1018,7 @@ msgstr "Scrollen"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "counter-clockwise"
-msgstr "gegen Uhrzeigersinn"
+msgstr "gegen Uhrzeiger"
 
 #. Lists library block
 msgid "sort _"
@@ -1408,7 +1408,7 @@ msgstr "BMX280 Temperatur"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
-msgstr "im Uhrzeigersinn"
+msgstr "mit Uhrzeiger"
 
 #. WiFi library label
 msgid "WiFi"
@@ -7636,11 +7636,11 @@ msgstr "Drehung"
 
 #. KidsIOT library choice
 msgid "kiot;clockwise"
-msgstr "im Uhrzeigersinn"
+msgstr "mit Uhrzeiger"
 
 #. KidsIOT library choice
 msgid "kiot;counter-clockwise"
-msgstr "gegen Uhrzeigersinn"
+msgstr "gegen Uhrzeiger"
 
 #. KidsIOT library choice
 msgid "kiot;stop"
@@ -7904,7 +7904,7 @@ msgstr "np drehe _ _ um _ ° Tempo _ %"
 
 #. Nehza Pro library block
 msgid "np rotate _ _ to _ degrees speed _ %"
-msgstr "np drehe _ _ auf Winkel _ ° Tempo _ %"
+msgstr "np drehe _ _ auf _ ° Tempo _ %"
 
 #. Nehza Pro library block
 msgid "np run motor _ _ speed _ %"
@@ -7935,3 +7935,7 @@ msgstr "np drehe Robot _ um Winkel _ ° Tempo _ %"
 #. Nehza Pro library block
 msgid "np version"
 msgstr "np Version"
+
+#. Nehza Pro library choice
+msgid "nezhaPro;by shortest path"
+msgstr "auf kürzestem Weg"
