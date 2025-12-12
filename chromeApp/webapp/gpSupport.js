@@ -944,6 +944,7 @@ async function webSerialConnect() {
 		{ usbVendorId: 0x2E8A},		// Raspberry Pi Pico RP2040
 		{ usbVendorId: 0x303a},		// Espressif USB JTAG/serial debug unit
 		{ usbVendorId: 0x0483},		// STMicroelectronics
+		{ usbVendorId: 0x1B9F},		// GHI/DUELink
 		{ usbVendorId: 0x1B4F},		// XRP
 		{ usbVendorId: 0x2886},		// Seeed
 	];
