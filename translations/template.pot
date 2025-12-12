@@ -5458,59 +5458,59 @@ msgstr ""
 msgid "nezhaPro;by shortest path"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np angle _"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np move _ for _ mm speed _ %"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np speed _"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np total angle _"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np reset total angle _"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np rotate _ _ by _ degrees speed _ %"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np rotate _ _ to _ degrees speed _ %"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np run motor _ _ speed _ %"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np set _ angle _ to _ degrees"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np set wheels left _ right _ #BR# circumference _ mm axle _ mm"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np stop all motors"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np stop motor _"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np turn _ by _ degrees speed _ %"
 msgstr ""
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np version"
 msgstr ""
 
