@@ -5455,7 +5455,7 @@ msgid "M4"
 msgstr "M4"
 
 #. Nehza Pro library choice
-msgid "nehzaPro;by shortest path"
+msgid "nezhaPro;by shortest path"
 msgstr "by shortest path"
 
 #. Nehza Pro library block
