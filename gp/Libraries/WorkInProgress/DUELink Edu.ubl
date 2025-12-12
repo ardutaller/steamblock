@@ -1,6 +1,6 @@
 module 'DUELink Edu'
 author MicroBlocks
-version 1 11 
+version 1 12 
 choices dueSTEM_pianoPad left right C 'C#' D 'D#' E F 'F#' G 'G#' A 'A#' B 'High C' 
 choices dueSTEM_clipItPad A B left right up down 
 choices dueSTEM_buttonName left right up down 
@@ -245,6 +245,13 @@ to dueSTEM_setTime hour minute second {
 }
 
 to dueSTEM_shutdown {
+  comment 'Enter low-power sleep mode. Can be awoken by a low-to-high
+transition on P1 (PA0) or P3 (PA4). On DUELink boards with edge
+connectors those are the alligator clip holes marked P0 and P2.'
+  comment 'Note: Low power mode cannot be entered for the first five seconds
+after reset or power up The ensure that the IDE can connect to the
+board even if this function is called by a "when started" block.'
+  waitUntil ((secsOp) > 5)
   '[misc:dueSleep]'
 }
 
