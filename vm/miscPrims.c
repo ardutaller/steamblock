@@ -553,6 +553,23 @@ static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
 
+#if defined(ARDUINO_ARCH_ESP32)
+
+#include <esp_sleep.h>
+
+static OBJ primESPSleep(int argCount, OBJ *args) {
+	// Deep sleep for N seconds. When that time elapses, the ESP32 will reset/boot.
+
+	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
+
+    uint64_t usecs = obj2int(args[0]) * 1000000;
+    esp_sleep_enable_timer_wakeup(usecs);
+    esp_deep_sleep_start();
+    return falseObj; // this is never executed
+}
+
+#endif
+
 #if defined(DUELink)
 
 #include <stm32c0xx.h>
@@ -772,6 +789,9 @@ static PrimEntry entries[] = {
 	{"bme680GasResistance", primBMP680GasResistance},
 	{"shapeforChar", primShapeforChar},
 	{"clearGraph", primClearGraph},
+#if defined(ARDUINO_ARCH_ESP32)
+	{"espSleep", primESPSleep},
+#endif
 #if defined(DUELink)
 	{"dueLinkPID", primDUELinkPID},
 	{"dueSleep", primDUESleep},
