@@ -86,7 +86,7 @@ Categories.elementFor = function (descriptor) {
 			GP.apiCall('ide.selectLibrary', [descriptor.label]);
 		};
 		button.oncontextmenu = (e) => {
-			Menus.popUp('library', button, descriptor.label);
+			Menus.popUp('library', button, descriptor.label, e);
 			e.preventDefault();
 		};
 
