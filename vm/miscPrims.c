@@ -590,7 +590,7 @@ void delay(unsigned long); // Arduino delay function
 
 static OBJ primDUESleep(int argCount, OBJ *args) {
 	// Some measurments:
-	//	HAL_PWR_EnterSTOPMode(0, 0); // 165 uA
+	//	HAL_PWR_EnterSTOPMode(0, 0); // 500-750 uA (Snowy)
 	//	HAL_PWR_EnterSTANDBYMode(); // 53 uA (can't recall which board; on Snowy it is < 1 uA)
 	//	HAL_PWREx_EnterSHUTDOWNMode(); // < 1 uA (too low to measure)
 	// Note: Boards with voltage regulators consume 1-3 mA even in shutdown mode.
