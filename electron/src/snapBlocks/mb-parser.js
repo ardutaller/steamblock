@@ -259,10 +259,10 @@ class MB_Parser {
 	}
 
 	isVariableReference(op, isFirstArg) {
-		// Return true if the given operation considers a string argument at the given index
-		// to be a variable reference (the common case). Exceptions include the left-hand
-		// side of assignment operations or 'local', the index variable in a 'for' loop,
-		// and the function name and formal parameters in a 'to' function definition.
+		// Return true if the given operation treats either the first or all arguments
+		// as variable references. Examples include the left-hand sides of assignment
+		// operations or 'local', the index variable of a 'for' loop, and the
+		// function name and formal parameters in a 'to' function definition.
 
 		if ('to' == op) return false;
 		const quoteFirstArg = ['v', '=', '+=', 'local', 'for'];

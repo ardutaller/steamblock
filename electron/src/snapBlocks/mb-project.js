@@ -487,10 +487,13 @@ class MB_Module {
 		if (this.description) {
 			result.push('description \'' + this.fixEmbeddedQuotes(this.description) + '\'');
 		}
+		if (this.variableNames.length > 0) {
+			this.addDeclaration('variables', this.variableNames, result);
+			result.push(''); // add blank line after variables
+		}
 
-		this.addDeclaration('variables', this.variableNames, result);
-		result.push(this.specsString());
-		result.push(this.functionsString());
+		if (this.blockList.length > 0) result.push(this.specsString());
+		if (this.functions.length > 0) result.push(this.functionsString());
 		if (!exportedLibName) { // add scripts if not exporting as a library
 			result.push(this.scriptsString());
 		}
@@ -521,7 +524,6 @@ class MB_Module {
 
 	specsString() {
 		let result = [];
-
 		for (const entry of this.blockList) {
 			if ('-' == entry) {
 				result.push('  space');
@@ -547,6 +549,7 @@ class MB_Module {
 //console.log(entry);
 			}
 		}
+		result.push(''); // empty line after specs
 		return result.join('\n');
 	}
 	// 	projectSpecs = (blockSpecs owningProject)
@@ -568,6 +571,19 @@ class MB_Module {
 	//
 
 	functionsString() {
+		if (this.functions.length == 0) return '';
+
+		// sort scripts by position so the scriptsString does not depend on z-ordering of scripts
+		const sortedScripts = this.functions.slice().sort( (a, b) => {
+			return a.functionName < b.functionName;
+		});
+
+		let result = [];
+		for (const f of this.functions) {
+			result.push(f.codeString());
+		}
+		return result.join('\n');
+	}
 	// 	if (not (isEmpty functions)) {
 	// 		// sort functions by name (this canonicalizes function order)
 	// 		sortedFunctions = (sorted
@@ -594,7 +610,6 @@ class MB_Module {
 	// 			add result (newline)
 	// 		}
 	// 	}
-	}
 
 	scriptsString() {
 		if (this.scripts.length == 0) return '';
@@ -608,7 +623,7 @@ class MB_Module {
 			}
 		});
 
-		let result = [];
+		let result = ['']; // start with an empty line
 		for (const entry of sortedScripts) {
 			const script = entry[2];
 			if (script instanceof ReporterBlockMorph) {

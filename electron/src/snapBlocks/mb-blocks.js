@@ -1923,70 +1923,6 @@ BlockMorph.prototype.userMenu = function () {
 	return menu;
 };
 
-BlockMorph.prototype.codeString = function (indent = 0, result = []) {
-	if (this.selector == 'v') {
-		// variable reporter - just print the variable name
-		result.push(this.blockSpec);
-		return;
-	}
-
-	if (this.type() == 'reporter') {
-		result.push('(');
-	} else { // command or hat block
-		result.push('\t'.repeat(indent));
-	}
-	result.push(this.selector + ' ');
-
-	let args = this.inputs();
-	for (let i = 0; i < args.length; i++) {
-		let arg = args[i];
-		if (arg instanceof BooleanSlotMorph) {
-			result.push(arg.value == true);
-		} else if (arg instanceof CSlotMorph) {
-			let nested = arg.nestedBlock();
-			if (nested == null) {
-				result.push('{}');
-			} else {
-				result.push('{\n');
-				nested.codeString(indent + 1, result);
-				result.push('\t'.repeat(indent));
-				result.push('}');
-			}
-		} else if (arg instanceof ReporterBlockMorph) {
-			arg.codeString(indent, result);
-		} else if (arg instanceof TemplateSlotMorph) {
-			result.push(arg.contents());
-		} else if (arg instanceof MicroBitDisplaySlotMorph) {
-			result.push(arg.contents());
-		} else {
-			let value = arg.contents().text;
-			if ((value.length == 0) && (arg.isNumeric)) {
-				value = '0';
-			}
-			if ((typeof value === 'number') || ((value.length > 0) && (Number(value) != NaN))) { // number
-				result.push(value);
-			} else if ((typeof value) == 'boolean') {
-				result.push(value);
-			} else { // string
-				result.push('"' + value + '"');
-			}
-		}
-		if (i < (args.length - 1)) {
-			result.push(' ');
-		}
-	}
-
-	if (this.type() == 'reporter') {
-		result.push(')');
-	} else { // command or hat block
-		result.push('\n');
-		let next = this.nextBlock();
-		if (this instanceof HatBlockMorph) indent += 1;
-		if (next != null) next.codeString(indent, result); // recursive!
-	}
-	return result.join('');
-}
-
 BlockMorph.prototype.type = function () {
 	// private
 	return this instanceof CommandBlockMorph ? 'command'
@@ -2455,6 +2391,116 @@ BlockMorph.prototype.clearAlpha = function () {
 		}
 	});
 };
+
+// MicroBlocks code printing
+
+BlockMorph.prototype.isInfix = function (op) {
+	const infixOps = [
+		'=', '+=', '+', '-', '*', '/', '%',
+		'<', '<=', '==', '!=', '>=', '>',
+		'&', '|', '^', '<<', '>>', '>>>'];
+	return infixOps.includes(op);
+}
+
+BlockMorph.prototype.addCodeStringForArg = function (arg, indent, result) {
+	if (arg instanceof CSlotMorph) {
+		let nested = arg.nestedBlock();
+		if (nested == null) {
+			result.push('{}');
+		} else {
+			result.push('{\n');
+			nested.codeString(indent + 1, result);
+			result.push('\t'.repeat(indent));
+			result.push('}');
+		}
+	} else if (arg instanceof BooleanSlotMorph) {
+		result.push(arg.value == true);
+	} else if (arg instanceof ReporterBlockMorph) {
+		result.push(arg.codeString());
+	} else if (arg instanceof TemplateSlotMorph) {
+		result.push(arg.contents());
+	} else if (arg instanceof MicroBitDisplaySlotMorph) {
+		result.push(arg.contents());
+	} else if (arg instanceof ColorSlotMorph) {
+result.push('***COLOR***');
+// 	} else if (arg instanceof InputSlotStringMorph) {
+// 		result.push('\'' + arg.contents().text + '\'');
+	} else if (arg instanceof InputSlotMorph) {
+		let value = arg.contents().text;
+		if ((value.length == 0) && (arg.isNumeric)) {
+			result.push('0'); // treat empty input slot as zero
+		} else if (arg.isNumeric && !isNaN(value)) { // value is a number
+			result.push(value);
+		} else if ((typeof value) == 'boolean') {
+			result.push(value);
+		} else { // string
+			result.push('\'' + value + '\'');
+		}
+	} else {
+console.log('unknown arg type:', arg);
+	}
+	return result.join('');
+}
+
+BlockMorph.prototype.codeString = function (indent = 0, result = []) {
+	if (this.selector == 'v') {
+		// variable reporter - just return the variable name
+		return this.quoteIfNeeded(this.blockSpec);
+	}
+
+	if (this.type() == 'reporter') {
+		result.push('(');
+	} else { // command or hat block
+		result.push('\t'.repeat(indent));
+	}
+
+	let args = this.inputs();
+	if (this.isInfix(this.selector) && (args.length == 2)) { // infix operator
+		const firstArgIsVarName = ['v', '=', '+=', 'local', 'for'];
+		if (firstArgIsVarName.includes(this.selector)) {
+			result.push(this.quoteIfNeeded(args[0].contents().text)); // variable name
+		} else {
+			this.addCodeStringForArg(args[0], indent, result);
+		}
+		result.push(' ' + this.selector + ' ');
+		this.addCodeStringForArg(args[1], indent, result);
+	} else {
+		result.push(this.selector + ' ');
+		for (let i = 0; i < args.length; i++) {
+			this.addCodeStringForArg(args[i], indent, result);
+			if (i < (args.length - 1)) {
+				result.push(' ');
+			}
+		}
+	}
+
+	if (this.type() == 'reporter') {
+		result.push(')');
+	} else { // command or hat block
+		result.push('\n');
+		let next = this.nextBlock();
+		if (this instanceof HatBlockMorph) indent += 1;
+		if (next != null) next.codeString(indent, result); // recursive!
+	}
+	return result.join('');
+}
+
+BlockMorph.prototype.quoteIfNeeded = function (s) {
+	// Return a quoted version of the given string if necessary for parsing.
+	// Otherwise, return the original string.
+
+	let mustQuote = false;
+	if ((s.length == 0) || !/[a-zA-Z_]/.test(s[0])) { // does not start with a letter or underscore
+		mustQuote = true;
+	}
+	for (const ch of s) {
+		if (!/[a-zA-Z0-9_]/.test(ch)) {
+			mustQuote = true; // contains a non-alphanumeric character
+			break;
+		}
+	}
+	return mustQuote ? ('\'' + s + '\'') : s;
+}
 
 // BlockMorph drawing
 

@@ -136,6 +136,17 @@ class MB_Function {
 			f.cmdList.codeString() == this.cmdList.codeString());
 	}
 
+	codeString() {
+		let result = 'to ' + this.functionName + ' ';
+		for (const arg of this.argNames) {
+			result += arg + ' ';
+		}
+		result += '{\n';
+		if (this.cmdList) { result += this.cmdList.codeString(1); }
+		result += '}\n';
+		return result;
+	}
+
 }
 
 function functest() {
