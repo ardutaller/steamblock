@@ -302,23 +302,11 @@ class MB_Project {
 		}
 		return result.join('\n');
 	}
-// 		// sort libraries by name (this canonicalizes their order)
-// 		sortedLibs = (sorted
-// 			(values libraries)
-// 			(function a b {return ((moduleName a) < (moduleName b))}))
-//
-// 		result = (list)
-// 		add result (codeString main this)
-// 		for lib sortedLibs {
-// 			add result (newline)
-// 			add result (codeString lib this)
-// 		}
-// 		return (joinStrings result)
 
 	// Post-load processing
 
 	fixFunctionLocals() {
-		// Remove project variables for function locals.
+		// Remove global variables from function locals.
 
 // 		projectVars = (allVariableNames this)
 // 		for f (allFunctions this) { removeFieldsFromLocals f projectVars }
@@ -382,7 +370,7 @@ class MB_Module {
 		this.blockList = [];
 		this.blockSpecs = new Map();
 		this.functions = [];
-		this.scripts = []; // an array of [x, y, <cmds>]
+		this.scripts = []; // an array of [x, y, BlockMorph]
 		this.translationSources = new Map();
 	}
 
@@ -499,15 +487,66 @@ class MB_Module {
 		if (this.description) {
 			result.push('description \'' + this.fixEmbeddedQuotes(this.description) + '\'');
 		}
-		this.addDeclaration('variables', this.variableNames, result);
 
-		// todo: add specs
-		// todo: add functions
+		this.addDeclaration('variables', this.variableNames, result);
+		result.push(this.specsString());
+		result.push(this.functionsString());
 		if (!exportedLibName) { // add scripts if not exporting as a library
-			// todo: add scripts
-			result.push(this.scriptString());
+			result.push(this.scriptsString());
 		}
 
+		return result.join('\n');
+	}
+
+	addDeclaration(title, items, result) {
+		if (items.length == 0) return;
+
+		let line = [title];
+		for (const word of items) {
+			line.push(this.quoteIfNeeded(word));
+		}
+		result.push(line.join(' '));
+	}
+
+	quoteIfNeeded(s) {
+		// Return a quoted version of the given string if necessary for parsing.
+		// Otherwise, return the original string.
+
+		return this.needsQuotes(s) ? ('\'' + s + '\'') : s;
+	}
+
+// 	quoted(s) {
+// 		return '\'' + s + '\'';
+// 	}
+
+	specsString() {
+		let result = [];
+
+		for (const entry of this.blockList) {
+			if ('-' == entry) {
+				result.push('  space');
+			} else if ('advanced' == entry) {
+				result.push('  advanced');
+			} else {
+				let specLine = ['  spec'];
+				specLine.push('\'' + entry[0] + '\'');
+				specLine.push('\'' + entry[1] + '\'');
+				specLine.push('\'' + entry[2] + '\'');
+				if (entry.length > 3) {
+					specLine.push('\'' + entry[3] + '\'');
+					for (let i = 4; i < entry.length; i++) {
+						const v = entry[i];
+						if (typeof v  === 'string') {
+							specLine.push('\'' + v + '\'');
+						} else {
+							specLine.push(v);
+						}
+					}
+				}
+				result.push(specLine.join(' '));
+//console.log(entry);
+			}
+		}
 		return result.join('\n');
 	}
 	// 	projectSpecs = (blockSpecs owningProject)
@@ -527,6 +566,8 @@ class MB_Module {
 	// 		}
 	// 	}
 	//
+
+	functionsString() {
 	// 	if (not (isEmpty functions)) {
 	// 		// sort functions by name (this canonicalizes function order)
 	// 		sortedFunctions = (sorted
@@ -553,33 +594,12 @@ class MB_Module {
 	// 			add result (newline)
 	// 		}
 	// 	}
-	//
-	// 	// Add scripts if not exporting as a library
-	// 	if (isNil exportedLibName) {
-	// 		add result (scriptString this)
-	// 	}
-
-	addDeclaration(title, items, result) {
-		if (items.length == 0) return;
-
-		let line = [title];
-		for (const word of items) {
-			line.push(this.quoteIfNeeded(word));
-		}
-		result.push(line.join(' '));
 	}
 
-	quoteIfNeeded(s) {
-		// Return a quoted version of the given string if necessary for parsing.
-		// Otherwise, return the original string.
-
-		return this.needsQuotes(s) ? ('\'' + s + '\'') : s;
-	}
-
-	scriptString() {
+	scriptsString() {
 		if (this.scripts.length == 0) return '';
 
-		// sort scripts by position so the scriptString does not depend on z-ordering of scripts
+		// sort scripts by position so the scriptsString does not depend on z-ordering of scripts
 		const sortedScripts = this.scripts.slice().sort( (a, b) => {
 			if (a[1] == b[1]) {
 				return a[0] < b[0]; // y's are equal, sort by x
@@ -600,37 +620,6 @@ class MB_Module {
 			}
 		}
 		return result.join('\n');
-
-	// 	if (isEmpty scripts) { return '' }
-	//
-	// 	// sort scripts so the scriptString does not depend on z-ordering of scripts
-	// 	sortedScripts = (sorted scripts
-	// 		(function e1 e2 {
-	// 			if ((at e1 2) == (at e2 2)) {
-	// 				return ((at e1 1) < (at e2 1)) // y's equal, sort by x
-	// 			} else {
-	// 				return ((at e1 2) < (at e2 2)) // sort by y
-	// 			}
-	// 		}))
-	//
-	// 	result = (list)
-	// 	pp = (new 'PrettyPrinter')
-	// 	for entry sortedScripts {
-	// 		x = (toInteger (at entry 1))
-	// 		y = (toInteger (at entry 2))
-	// 		expr = (at entry 3)
-	// 		add result (join 'script ' x ' ' y ' ')
-	// 		if (isClass expr 'Reporter') {
-	// 			add result (join '(' (prettyPrint pp expr) ')')
-	// 			add result (newline)
-	// 		} else {
-	// 			add result (join '{' (newline))
-	// 			add result (prettyPrintList pp expr)
-	// 			add result (join '}' (newline))
-	// 		}
-	// 		add result (newline)
-	// 	}
-	// 	return (joinStrings result)
 	}
 
 	needsQuotes(s) {
