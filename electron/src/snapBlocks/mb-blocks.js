@@ -1899,14 +1899,25 @@ BlockMorph.prototype.userMenu = function () {
 		shiftClicked = this.world().currentKey === 16;
 
 	menu.addItem(
+		'copy to clipboard',
+		() => {
+			let s = 'GP Script\n\n' +
+				'script ' + Math.round(this.left() - 200) + ' ' + Math.round(this.top()) + ' {\n' +
+				this.codeString() +
+				'\n}';
+			navigator.clipboard.writeText(s);
+		},
+		'copy this script to the clipboard'
+	);
+	menu.addItem(
 		'print code',
 		() => { console.log(this.codeString(0, [])); },
-		'test coverting scripts to pseudocode'
+		'log the code string for this script to the console'
 	);
 	menu.addItem(
 		'log',
 		() => { console.log(this); },
-		'log this object to the console'
+		'log this script to the console'
 	);
 	menu.addItem(
 		'duplicate',

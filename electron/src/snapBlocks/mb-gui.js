@@ -73,10 +73,10 @@ MB_GUI.handlePaste = function (event) {
 
 	let p = new MB_Parser(s.slice(i));
 	while (true) {
-		let b = p.readCmd(false);
-		if (b === null) break;
-		if (b.inputs().length == 3) {
-			this.addBlockToScripts(b.inputs()[2]);
+		let script = p.readCmd(false);
+		if (script === null) break;
+		if (script.length == 4) {
+			this.addBlockToScripts(MB_Parser.blockFor(script[3]));
 		}
 	}
 }
