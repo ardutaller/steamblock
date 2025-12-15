@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-12-10 18:00+0000\n"
+"PO-Revision-Date: 2025-12-12 15:19+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2755,11 +2755,11 @@ msgstr "Eingabe"
 
 #. Block in Input category
 msgid "timer"
-msgstr "Systemzeit"
+msgstr "Zeitgeber"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr "setze Systemzeit zurück"
+msgstr "setze Zeitgeber zurück"
 
 #. Block in Input category
 msgid "microseconds"
@@ -5831,7 +5831,7 @@ msgstr "Nezha Trimmpoti _"
 
 #. NeZha2 robot library block
 msgid "Nezha crash sensor _"
-msgstr "Nezha Unfallsensor _"
+msgstr "Nezha Stoßsensor _"
 
 #. NeZha2 robot library block
 msgid "Nezha line sensor _ sees line on left _ right _"
@@ -7816,7 +7816,7 @@ msgstr "Callibot2 Stoßsensor _ _"
 
 #. Calliope Callibot library block
 msgid "Callibot clear NeoPixels"
-msgstr "Callibot lösche NeoPixels"
+msgstr "Callibot lösche NeoPixel"
 
 #. Calliope Callibot library block
 msgid "Callibot distance (cm)"

@@ -5455,62 +5455,62 @@ msgid "M4"
 msgstr "M4"
 
 #. Nehza Pro library choice
-msgid "nehzaPro;by shortest path"
+msgid "nezhaPro;by shortest path"
 msgstr "by shortest path"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np angle _"
 msgstr "np angle _"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np move _ for _ mm speed _ %"
 msgstr "np move _ for _ mm speed _ %"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np speed _"
 msgstr "np speed _"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np total angle _"
 msgstr "np total angle _"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np reset total angle _"
 msgstr "np reset total angle _"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np rotate _ _ by _ degrees speed _ %"
 msgstr "np rotate _ _ by _ degrees speed _ %"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np rotate _ _ to _ degrees speed _ %"
 msgstr "np rotate _ _ to _ degrees speed _ %"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np run motor _ _ speed _ %"
 msgstr "np run motor _ _ speed _ %"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np set _ angle _ to _ degrees"
 msgstr "np set _ angle _ to _ degrees"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np set wheels left _ right _ #BR# circumference _ mm axle _ mm"
 msgstr "np set wheels left _ right _ #BR# circumference _ mm axle _ mm"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np stop all motors"
 msgstr "np stop all motors"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np stop motor _"
 msgstr "np stop motor _"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np turn _ by _ degrees speed _ %"
 msgstr "np turn _ by _ degrees speed _ %"
 
-#. Nehza Pro library block
+#. Nezha Pro library block
 msgid "np version"
 msgstr "np version"
 
@@ -6261,6 +6261,14 @@ msgstr "clean up"
 #. Scripting area right-click context menu
 msgid "arrange scripts"
 msgstr "arrange scripts"
+
+#. Scripting area right-click context menu
+msgid "undrop (ctrl-Z)"
+msgstr "undrop (ctrl-Z)"
+
+#. Scripting area right-click context menu
+msgid "undo the last block drop"
+msgstr "undo the last block drop"
 
 #. Scripting area right-click context menu
 msgid "copy all scripts to clipboard"
