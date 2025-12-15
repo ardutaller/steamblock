@@ -2446,6 +2446,8 @@ BlockMorph.prototype.addCodeStringForArg = function (arg, indent, result) {
 		} else { // string
 			result.push('\'' + value + '\'');
 		}
+	} else if (arg instanceof MultiArgMorph) {
+		// ignore here; handled by codeString() method
 	} else {
 		console.log('unknown arg type:', arg);
 	}
@@ -2481,6 +2483,20 @@ BlockMorph.prototype.codeString = function (indent = 0, result = []) {
 			if (i < (args.length - 1)) {
 				result.push(' ');
 			}
+		}
+		if ((args.length > 0) && (args.at(-1) instanceof MultiArgMorph)) {
+			if (result.at(-1) == ' ') result.pop(); // remove space before MultiArgMorph
+			let multiArg = args.at(-1);
+			for (const c of multiArg.children) {
+				if (c instanceof BlockLabelMorph) {
+					result.push(c.text.trim());
+					result.push(' ');
+				} else if ((c instanceof ReporterBlockMorph) || (c instanceof ArgMorph)) {
+					this.addCodeStringForArg(c, indent, result);
+					result.push(' ');
+				}
+			}
+			if (result.at(-1) == ' ') result.pop(); // remove trailing space
 		}
 	}
 
