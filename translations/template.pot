@@ -5438,6 +5438,10 @@ msgstr ""
 msgid "Callibot stop motor _"
 msgstr ""
 
+#. Nezha Pro library label
+msgid "Nezha Pro"
+msgstr ""
+
 #. Nehza Pro library choice
 msgid "M1"
 msgstr ""
