@@ -947,6 +947,7 @@ async function webSerialConnect() {
 		{ usbVendorId: 0x1B9F},		// GHI/DUELink
 		{ usbVendorId: 0x1B4F},		// XRP
 		{ usbVendorId: 0x2886},		// Seeed
+		{ usbVendorId: 0x0005},		// HC-05
 	];
 	webSerialDisconnect();
 	GP_webSerialPort = await navigator.serial.requestPort({filters: vendorIDs}).catch((e) => { console.log(e); });
