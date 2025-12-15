@@ -325,29 +325,6 @@ method showReporterDropFeedback ScriptEditor target {
 
 // context menu
 
-method contextMenu ScriptEditor {
-	menu = (menu nil this)
-	addItem menu 'set block size...' 'setBlockSize' 'make blocks bigger or smaller'
-	addLine menu
-	addItem menu 'clean up' 'cleanUp' 'arrange scripts'
-	addLine menu
-	addItem menu 'copy all scripts to clipboard' 'copyScriptsToClipboard'
-	addItem menu 'copy all scripts to clipboard as URL' 'copyScriptsToClipboardAsURL'
-	addLine menu
-	clip = (readClipboard)
-	if (beginsWith clip 'GP Scripts') {
-		addItem menu 'paste all scripts from clipboard' 'pasteScripts'
-	} (beginsWith clip 'GP Script') {
-		addItem menu 'paste script from clipboard' 'pasteScripts'
-	}
-	addLine menu
-	addItem menu 'save a picture of all visible scripts' 'saveScriptsImage'
-	if (devMode) {
-		addItem menu 'set exported script scale' 'setExportedScriptScale'
-	}
-	return menu
-}
-
 method contextMenuForGP ScriptEditor {
 	menu = (menu nil this)
 	addItem menu 'set block size...' 'setBlockSize' 'make blocks smaller'

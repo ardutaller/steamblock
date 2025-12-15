@@ -144,9 +144,28 @@ method dispatchCall MicroBlocksAPI callObject {
 	// Scripting area
 	} (endPoint == 'scripts.selectBlockSize') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
+		setBlockSize (scriptEditor scripter)
 	} (endPoint == 'scripts.cleanUp') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
-
+		cleanUp (scriptEditor scripter)
+	} (endPoint == 'scripts.copyToClipboard') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		copyScriptsToClipboard (scriptEditor scripter)
+	} (endPoint == 'scripts.copyToClipboardAsURL') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		copyScriptsToClipboardAsURL (scriptEditor scripter)
+	} (endPoint == 'scripts.paste') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		pasteScripts (scriptEditor scripter)
+	} (endPoint == 'scripts.paste') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		pasteScripts (scriptEditor scripter)
+	} (endPoint == 'scripts.saveImage') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		saveScriptsImage (scriptEditor scripter)
+	} (endPoint == 'scripts.setExportedScriptScale') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		setExportedScriptScale (scriptEditor scripter)
 
 	// Library
 	} (endPoint == 'library.showInfoDialog') {

@@ -255,18 +255,18 @@ Menus.scriptingArea = {
 		{ label: '-' },
 		{
 			label: 'paste all scripts from clipboard',
-			action: () => { GP.apiCall('scripts.saveImage'); },
+			action: () => { GP.apiCall('scripts.paste'); },
 			hidden: () => {
 				return GP.clipboardBytes.length == 0 ||
-					!clipboardText().beginsWith('GP Scripts');
+					!clipboardText().startsWith('GP Scripts');
 			}
 		},
 		{
 			label: 'paste script from clipboard',
-			action: () => { GP.apiCall('scripts.saveImage'); },
+			action: () => { GP.apiCall('scripts.paste'); },
 			hidden: () => {
 				return GP.clipboardBytes.length == 0 ||
-					!clipboardText().beginsWith('GP Script');
+					!clipboardText().startsWith('GP Script\n');
 			}
 		},
 		{
