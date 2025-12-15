@@ -1,10 +1,11 @@
 module 'DUELink Edu'
 author MicroBlocks
-version 1 10 
+version 1 12 
 choices dueSTEM_pianoPad left right C 'C#' D 'D#' E F 'F#' G 'G#' A 'A#' B 'High C' 
 choices dueSTEM_clipItPad A B left right up down 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
+choices dueSTEM_timeComponent 'time (H:M:S)' 'date (Y-M-D)' second minute hour day month year 'day of week' 
 description 'Library for DUELink Educational boards: CincoBit, PixoBit, ClipIt, and DueSTEM.
 
 The "due PID" works on all DUELink boards.
@@ -28,6 +29,12 @@ variables dueSTEM_accelAddr dueSTEM_touchAdjustments
   spec 'r' 'dueSTEM_button' 'DueSTEM _ button' 'menu.dueSTEM_buttonName' 'left'
   spec 'r' 'dueSTEM_tilt' 'DueSTEM tilt _' 'menu.dueSTEM_axis' 'x'
   spec 'r' 'dueSTEM_temperature' 'DueSTEM temperature (x10)'
+  space
+  spec 'r' 'dueSTEM_getTimeOrDate' 'due clock _' 'menu.dueSTEM_timeComponent' 'time (H:M:S)'
+  spec ' ' 'dueSTEM_setTime' 'due set hours _ minutes _ seconds _' 'num num num' 9 30 0
+  spec ' ' 'dueSTEM_setDate' 'due set year _ month _ day _ weekday _' 'num num num num' 2025 1 1 1
+  advanced
+  spec ' ' 'dueSTEM_shutdown' 'low power shutdown'
   space
   spec ' ' '_dueSTEM_accelInit' '_dueSTEM_accelInit'
   spec 'r' '_dueSTEM_accelRead16BitReg' '_dueSTEM_accelRead16BitReg _' 'auto' 13
@@ -160,6 +167,29 @@ to dueSTEM_clipitPadPin padName {
   return 10
 }
 
+to dueSTEM_getTimeOrDate what {
+  local 'timeArray' ('[misc:dueGetTime]')
+  if ('time (H:M:S)' == what) {
+    return ('[data:join]' (at 5 timeArray) ':' (at 6 timeArray) ':' (at 7 timeArray))
+  } ('date (Y-M-D)' == what) {
+    return ('[data:join]' (at 1 timeArray) ':' (at 2 timeArray) ':' (at 3 timeArray))
+  } ('year' == what) {
+    return (at 1 timeArray)
+  } ('month' == what) {
+    return (at 2 timeArray)
+  } ('day' == what) {
+    return (at 3 timeArray)
+  } ('day of week' == what) {
+    return (at 4 timeArray)
+  } ('hour' == what) {
+    return (at 5 timeArray)
+  } ('minute' == what) {
+    return (at 6 timeArray)
+  } ('second' == what) {
+    return (at 7 timeArray)
+  }
+}
+
 to dueSTEM_light {
   return (minimum ('[display:lightLevel]') 1000)
 }
@@ -199,11 +229,30 @@ to dueSTEM_pianoPadPin padName {
   return 23
 }
 
+to dueSTEM_setDate year month day dayOfWeek {
+  '[misc:dueSetDate]' year month day dayOfWeek
+}
+
 to dueSTEM_setLED r g b {
   if ((boardType) != 'DueSTEM') {return 0}
   analogWriteOp 11 r
   analogWriteOp 4 g
   analogWriteOp 2 b
+}
+
+to dueSTEM_setTime hour minute second {
+  '[misc:dueSetTime]' hour minute second
+}
+
+to dueSTEM_shutdown {
+  comment 'Enter low-power sleep mode. Can be awoken by a low-to-high
+transition on P1 (PA0) or P3 (PA4). On DUELink boards with edge
+connectors those are the alligator clip holes marked P0 and P2.'
+  comment 'Note: Low power mode cannot be entered for the first five seconds
+after reset or power up The ensure that the IDE can connect to the
+board even if this function is called by a "when started" block.'
+  waitUntil ((secsOp) > 5)
+  '[misc:dueSleep]'
 }
 
 to dueSTEM_temperature {

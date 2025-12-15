@@ -553,6 +553,23 @@ static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
 
+#if defined(ARDUINO_ARCH_ESP32)
+
+#include <esp_sleep.h>
+
+static OBJ primESPSleep(int argCount, OBJ *args) {
+	// Deep sleep for N seconds. When that time elapses, the ESP32 will reset/boot.
+
+	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
+
+    uint64_t usecs = obj2int(args[0]) * 1000000;
+    esp_sleep_enable_timer_wakeup(usecs);
+    esp_deep_sleep_start();
+    return falseObj; // this is never executed
+}
+
+#endif
+
 #if defined(DUELink)
 
 #include <stm32c0xx.h>
@@ -573,7 +590,7 @@ void delay(unsigned long); // Arduino delay function
 
 static OBJ primDUESleep(int argCount, OBJ *args) {
 	// Some measurments:
-	//	HAL_PWR_EnterSTOPMode(0, 0); // 165 uA
+	//	HAL_PWR_EnterSTOPMode(0, 0); // 500-750 uA (Snowy)
 	//	HAL_PWR_EnterSTANDBYMode(); // 53 uA (can't recall which board; on Snowy it is < 1 uA)
 	//	HAL_PWREx_EnterSHUTDOWNMode(); // < 1 uA (too low to measure)
 	// Note: Boards with voltage regulators consume 1-3 mA even in shutdown mode.
@@ -591,12 +608,6 @@ static OBJ primDUESleep(int argCount, OBJ *args) {
 	HAL_PWREx_EnablePullUpPullDownConfig();
 	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_A, GPIO_PIN_4);
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF2);
-
-	// E key on Piano; pull down to wake up
-	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN6_LOW);
-	HAL_PWREx_EnableGPIOPullUp(PWR_GPIO_B, GPIO_PIN_5);
-	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF6);
-	delay(5); // leave time for pin to go low (it has a capacitor for touch sensing)
 
 // Commented out to save space (308 bytes)
 // 	if ((argCount > 0) && (args[0] == trueObj)) {
@@ -778,6 +789,9 @@ static PrimEntry entries[] = {
 	{"bme680GasResistance", primBMP680GasResistance},
 	{"shapeforChar", primShapeforChar},
 	{"clearGraph", primClearGraph},
+#if defined(ARDUINO_ARCH_ESP32)
+	{"espSleep", primESPSleep},
+#endif
 #if defined(DUELink)
 	{"dueLinkPID", primDUELinkPID},
 	{"dueSleep", primDUESleep},
