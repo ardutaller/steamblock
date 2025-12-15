@@ -336,6 +336,7 @@ method processEvent Hand evt {
 	}
 	x = (at evt 'x')
 	y = (at evt 'y')
+
 	if (and (hasActiveMenu page) (isMobile)) {
 		y += (-12 * (global 'scale')) // offset vertically so menu item is not under finger
 	}

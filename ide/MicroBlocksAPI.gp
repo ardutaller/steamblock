@@ -141,6 +141,13 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		redo scripter
 
+	// Scripting area
+	} (endPoint == 'scripts.selectBlockSize') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+	} (endPoint == 'scripts.cleanUp') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+
+
 	// Library
 	} (endPoint == 'library.showInfoDialog') {
 		respondAPIRequest this id 0 // respond first so the request is deleted

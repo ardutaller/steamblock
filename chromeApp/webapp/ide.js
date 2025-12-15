@@ -195,7 +195,7 @@ IDE.populateScriptControls = function (element) {
 	});
 };
 
-document.addEventListener('preference.darkMode', (e) =>
+document.addEventListener('preference.darkMode', e =>
 	{
 		if (e.detail.value) {
 			document.querySelector('.script-controls').classList.add('dark-mode');
@@ -233,9 +233,9 @@ IDE.build = function () {
 	this.populateScriptControls(document.querySelector('.script-controls'));
 	this.tipBar.init();
 	// check connection every 500ms
-	setInterval(()=>{ GP.apiCall('ide.updateConnection'); },500);
+	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
-	setTimeout(()=>
+	setTimeout(() =>
 		{ document.querySelector('.loading').classList.add('loaded'); },
 		500 // it takes a bit for all elements to position and show themselves
 	);

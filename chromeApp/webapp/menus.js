@@ -228,7 +228,62 @@ Menus.library = {
 			action: (libName) => { GP.apiCall('library.delete', [libName]); },
 		},
 	]
-}
+};
+
+Menus.scriptingArea = {
+	type: 'context',
+	items: [
+		{
+			label: 'set block size...',
+			// should just be another context menu!
+			action: () => { GP.apiCall('scripts.selectBlockSize'); }
+		},
+		{ label: '-' },
+		{
+			label: 'clean up',
+			action: () => { GP.apiCall('scripts.cleanUp'); }
+		},
+		{ label: '-' },
+		{
+			label: 'copy all scripts to clibboard',
+			action: () => { GP.apiCall('scripts.copyToClipboard'); }
+		},
+		{
+			label: 'copy all scripts to clibboard as URL',
+			action: () => { GP.apiCall('scripts.copyToClipboardAsURL'); }
+		},
+		{ label: '-' },
+		{
+			label: 'paste all scripts from clipboard',
+			action: () => { GP.apiCall('scripts.saveImage'); },
+			hidden: () => {
+				return GP.clipboardBytes.length == 0 ||
+					!clipboardText().beginsWith('GP Scripts');
+			}
+		},
+		{
+			label: 'paste script from clipboard',
+			action: () => { GP.apiCall('scripts.saveImage'); },
+			hidden: () => {
+				return GP.clipboardBytes.length == 0 ||
+					!clipboardText().beginsWith('GP Script');
+			}
+		},
+		{
+			label: '-',
+			hidden: () => { return GP.clipboardBytes.length == 0; }
+		},
+		{
+			label: 'save a picture of all visible scripts',
+			action: () => { GP.apiCall('scripts.saveImage'); }
+		},
+		{
+			label: 'set exported script scale',
+			action: () => { GP.apiCall('scripts.setExportedScriptScale'); },
+			hidden: () => { return !IDE.userPreference('devMode'); }
+		}
+	]
+};
 
 
 Menus.elementFor = function (selector, target) {
@@ -298,7 +353,8 @@ Menus.popUp = function (selector, triggerElement, target, event) {
 	nav.trigger = triggerElement;
 	container.appendChild(nav);
 	container.style.left = `${pos.x}px`;
-	container.style.top = `${pos.y + triggerElement.clientHeight}px`;
+	container.style.top =
+		`${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
 	nav.style.maxHeight = `${window.innerHeight - 80}px`;
 };
 
@@ -321,4 +377,16 @@ document.addEventListener('click', (event) => {
 			currentMenu.remove();
 		}
 	}
-})
+});
+
+document.addEventListener('context', (e) => {
+	let descriptor = e.detail.value;
+	if (descriptor.x) { // this comes from GP
+		// we have to offset it by the GP canvas position
+		let canvas = document.querySelector('#canvas.emscripten');
+		e.clientX = descriptor.x + canvas.offsetLeft;
+		e.clientY = descriptor.y + canvas.offsetTop;
+	}
+	Menus.popUp(descriptor.selector, null, null, e);
+	e.preventDefault();
+});
