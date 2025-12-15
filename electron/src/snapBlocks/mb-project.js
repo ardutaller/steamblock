@@ -573,7 +573,7 @@ class MB_Module {
 	functionsString() {
 		if (this.functions.length == 0) return '';
 
-		// sort scripts by position so the scriptsString does not depend on z-ordering of scripts
+		// sort functions by name
 		const sortedScripts = this.functions.slice().sort( (a, b) => {
 			return a.functionName < b.functionName;
 		});

@@ -2422,9 +2422,8 @@ BlockMorph.prototype.addCodeStringForArg = function (arg, indent, result) {
 	} else if (arg instanceof MicroBitDisplaySlotMorph) {
 		result.push(arg.contents());
 	} else if (arg instanceof ColorSlotMorph) {
-result.push('***COLOR***');
-// 	} else if (arg instanceof InputSlotStringMorph) {
-// 		result.push('\'' + arg.contents().text + '\'');
+		let c = arg.evaluate();
+		result.push((c.r << 16) | (c.g << 8) | c.b);
 	} else if (arg instanceof InputSlotMorph) {
 		let value = arg.contents().text;
 		if ((value.length == 0) && (arg.isNumeric)) {
@@ -2437,7 +2436,7 @@ result.push('***COLOR***');
 			result.push('\'' + value + '\'');
 		}
 	} else {
-console.log('unknown arg type:', arg);
+		console.log('unknown arg type:', arg);
 	}
 	return result.join('');
 }
@@ -6269,6 +6268,7 @@ function ColorSlotMorph(clr) {
 
 ColorSlotMorph.prototype.init = function (clr) {
 	ColorSlotMorph.uber.init.call(this);
+	if (!clr) clr = new Color(35, 190, 30); // MicroBlocks default ColorSlot color
 	this.alpha = 1;
 	this.setColor(clr);
 	this.fixLayout();
