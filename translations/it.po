@@ -278,11 +278,11 @@ msgstr "valore assoluto _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr "minimo _"
+msgstr "minimo _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr "massimo _"
+msgstr "massimo _ _"
 
 #. Block in Operators category
 msgid "random _ to _"
