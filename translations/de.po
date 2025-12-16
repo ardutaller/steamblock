@@ -4268,7 +4268,7 @@ msgstr "_ mit Farbton _ (0-360)"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "drehe Display flip _"
+msgstr "_drehe Display flip _"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" light

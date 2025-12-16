@@ -1682,7 +1682,7 @@ msgstr "显示图像 _"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "反转显示 上 _"
+msgstr "_反转显示 上 _"
 
 #. NeZha robot library label
 msgid "NeZha"
@@ -2191,7 +2191,7 @@ msgstr "Finch 喙部 红 _ 绿 _ 蓝 _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Tail _ Red _ Green _ Blue _"
-msgstr "Finch 尾部 红 _ 绿 _ 蓝 _"
+msgstr "Finch 尾部 _ 红 _ 绿 _ 蓝 _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Battery"
