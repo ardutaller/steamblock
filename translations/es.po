@@ -485,7 +485,7 @@ msgstr "Tipo de placa:"
 
 #. Sphero-RVR robot library block
 msgid "set RGB LED _ to red _ green _ blue _"
-msgstr "pon el LED RGB a rojo _ verde _ azul _"
+msgstr "pon el LED RGB _ a rojo _ verde _ azul _"
 
 #. MicroBlocks IDE message
 msgid "Plug in the board."
@@ -2007,7 +2007,7 @@ msgstr "ESC"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Tail _ Red _ Green _ Blue _"
-msgstr "enciende la cola de color R _ % V _ % A _ %"
+msgstr "enciende la cola _ de color R _ % V _ % A _ %"
 
 #. Turtle Geometry library block
 msgid "turn _ degrees"

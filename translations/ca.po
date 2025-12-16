@@ -956,7 +956,7 @@ msgstr "encén el bec de color R _ % G _ % B _ %"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Tail _ Red _ Green _ Blue _"
-msgstr "encén la cua de color R _ % G _ % B _ %"
+msgstr "encén la cua _ de color R _ % G _ % B _ %"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Move _ _ cm at _ %"
