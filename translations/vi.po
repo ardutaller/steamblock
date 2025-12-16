@@ -144,7 +144,7 @@ msgstr "mãi _"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr "lặp lại _"
+msgstr "lặp lại _ _"
 
 #. Block in Control category
 msgid "wait _ millisecs"
@@ -152,15 +152,15 @@ msgstr "chờ đã _ mili giây"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr "nếu như _"
+msgstr "nếu như _ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr "nếu _ khác _"
+msgstr "nếu _ _ khác _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr "nếu không thì _"
+msgstr "nếu không thì _ _"
 
 #. Block in Control category
 msgid "else"
@@ -212,11 +212,11 @@ msgstr "qua _"
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr "cho _ trong _"
+msgstr "cho _ trong _ _"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr "lặp lại cho đến khi _"
+msgstr "lặp lại cho đến khi _ _"
 
 #. Block in Control category
 msgid "stop this task"
@@ -276,11 +276,11 @@ msgstr "cơ bụng _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr "phút _"
+msgstr "phút _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr "tối đa _"
+msgstr "tối đa _ _"
 
 #. Block in Operators category
 msgid "random _ to _"
@@ -425,7 +425,7 @@ msgstr "thêm _ vào danh sách _"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr "tham gia _"
+msgstr "tham gia _ _"
 
 #. Block in Data category
 msgid "copy _ from _"
@@ -828,11 +828,11 @@ msgstr "Động cơ bước ED1"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ steps _"
-msgstr "di chuyển động cơ _ bước _"
+msgstr "di chuyển động cơ _ _ bước _"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor 1 _ and motor 2 _ _ steps"
-msgstr "di chuyển động cơ 1 _ và động cơ 2 _ bước"
+msgstr "di chuyển động cơ 1 _ và động cơ 2 _ _ bước"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ angle _ °"
@@ -840,7 +840,7 @@ msgstr "di chuyển động cơ _ góc _ °"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ complete turns"
-msgstr "di chuyển động cơ _ hoàn thành lượt"
+msgstr "di chuyển động cơ _ _ hoàn thành lượt"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "stop steppers"
@@ -868,7 +868,7 @@ msgstr "đặt ngưỡng điện dung thành _"
 
 #. BirdBrain Technologies Hummingbird kit library label
 msgid "Hummingbird LED _ _ %"
-msgstr "LED chim ruồi _ %"
+msgstr "LED chim ruồi _ _ %"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
@@ -876,15 +876,15 @@ msgstr "Hummingbird Tri-LED _ R _ % G _ % B _ %"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Position Servo _ _ °"
-msgstr "Servo vị trí chim ruồi _ °"
+msgstr "Servo vị trí chim ruồi _ _ °"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Rotation Servo _ _ %"
-msgstr "Servo xoay chim ruồi _ %"
+msgstr "Servo xoay chim ruồi _ _ %"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird _ _"
-msgstr "Chim ruồi _"
+msgstr "Chim ruồi _ _"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Battery (mV)"
@@ -912,19 +912,19 @@ msgstr "Khác"
 
 #. BirdBrain Technologies Finch library label
 msgid "Finch Beak Red _ Green _ Blue _"
-msgstr "Mỏ chim sẻ Đỏ _ Xanh lam _"
+msgstr "Mỏ chim sẻ Đỏ _ Xanh _ lam _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Tail _ Red _ Green _ Blue _"
-msgstr "Đuôi Finch _ Đỏ _ Xanh _"
+msgstr "Đuôi _ Finch _ Đỏ _ Xanh _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Move _ _ cm at _ %"
-msgstr "Chim di chuyển _ cm tại _ %"
+msgstr "Chim di chuyển _ _ cm tại _ %"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Turn _ _ ° at _ %"
-msgstr "Finch Quay _ ° tại _ %"
+msgstr "Finch Quay _ _ ° tại _ %"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Wheels L _ % R _ %"
@@ -1872,11 +1872,11 @@ msgstr "mẫu số của phân số _"
 
 #. Fractions library block
 msgid "gcd _ _"
-msgstr "gcd _"
+msgstr "gcd _ _"
 
 #. Fractions library block
 msgid "lcm _ _"
-msgstr "lcm _"
+msgstr "lcm _ _"
 
 #. Tone library label
 #. Generates music tones on buzzers
@@ -2671,7 +2671,7 @@ msgstr "và _ bước mỗi hợp âm"
 
 #. Scales & Chords library block
 msgid "rotation _ of circle of 5ths _ M _ m _ º"
-msgstr "vòng quay _ của đường tròn thứ 5 _ M _ º"
+msgstr "vòng quay _ của đường tròn thứ 5 _ M _ m _ º"
 
 #. Chiptune library block
 msgid "kick for _ ms on pin _"
@@ -3427,7 +3427,7 @@ msgstr "sb quay động cơ DC M- _ (1-4) _ tại _ %"
 
 #. Shield:bit library block
 msgid "sb turn Stepper- _ (1-2) motor _ for _ _"
-msgstr "sb quay động cơ bước- _ (1-2) _ cho _"
+msgstr "sb quay động cơ bước- _ (1-2) _ cho _ _"
 
 #. Shield:bit library block
 msgid "sb set pin S- _ (1-8) to _ %"
@@ -4401,7 +4401,7 @@ msgstr "dừng lại với tiêu đề _"
 
 #. Sphero-RVR robot library block
 msgid "set RGB LED _ to red _ green _ blue _"
-msgstr "đặt đèn LED RGB _ thành đỏ _ xanh _"
+msgstr "đặt đèn LED RGB _ thành _ đỏ _ xanh _"
 
 #. Sphero-RVR robot library block
 msgid "set all LEDs to red _ green _ blue _"
@@ -4469,7 +4469,7 @@ msgstr "Nezha đặt _ servo _ góc thành _"
 
 #. NeZha2 robot library block
 msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
-msgstr "Nezha đặt tốc độ servo liên tục thành _ (-100 đến 100)"
+msgstr "Nezha đặt tốc độ servo _ liên tục thành _ (-100 đến 100)"
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
@@ -4889,7 +4889,7 @@ msgstr "LCD viết văn bản _ vào dòng _"
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD generate custom char _ _"
-msgstr "LCD tạo ký tự tùy chỉnh _"
+msgstr "LCD tạo ký tự tùy chỉnh _ _"
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD custom char _"
@@ -4973,7 +4973,7 @@ msgstr "RoboESP32 đặt RGB _ màu _"
 
 #. Robo ESP32 library block
 msgid "RoboESP32 set GPIO _ _"
-msgstr "RoboESP32 đặt GPIO _"
+msgstr "RoboESP32 đặt GPIO _ _"
 
 #. In MicroBlocks IDE project menu
 msgid "New"
@@ -7089,7 +7089,7 @@ msgstr "MotionKit xóa NeoPixels"
 
 #. Calliope MotionKit library block
 msgid "MotionKit set motor _ _ speed _ (0~100)"
-msgstr "MotionKit đặt động cơ _ tốc độ _ (0~100)"
+msgstr "MotionKit đặt động cơ _ _ tốc độ _ (0~100)"
 
 #. Calliope MotionKit library block
 msgid "MotionKit stop motor _"
@@ -7101,11 +7101,11 @@ msgstr "MotionKit dừng tất cả"
 
 #. Calliope MotionKit library block
 msgid "MotionKit set led _ _"
-msgstr "Bộ đèn LED MotionKit _"
+msgstr "Bộ đèn LED MotionKit _ _"
 
 #. Calliope MotionKit library block
 msgid "MotionKit line sensor _ _"
-msgstr "Cảm biến dòng MotionKit _"
+msgstr "Cảm biến dòng MotionKit _ _"
 
 #. Calliope MotionKit library block
 msgid "IR code received?"
@@ -7121,7 +7121,7 @@ msgstr "MotionKit được đặt _ servo _ thành _ độ"
 
 #. Calliope MotionKit library block
 msgid "MotionKit rotate servo _ _ speed _ (0~100)"
-msgstr "MotionKit xoay servo _ tốc độ _ (0~100)"
+msgstr "MotionKit xoay servo _ _ tốc độ _ (0~100)"
 
 #. Calliope Callibot library choice
 msgid "callibot;left front"
@@ -7177,7 +7177,7 @@ msgstr "Pin Callibot2 (mV)"
 
 #. Calliope Callibot library block
 msgid "Callibot2 bumper _ _"
-msgstr "Cản trước Callibot2 _"
+msgstr "Cản trước Callibot2 _ _"
 
 #. Calliope Callibot library block
 msgid "Callibot clear NeoPixels"
@@ -7189,15 +7189,15 @@ msgstr "Khoảng cách Callibot (cm)"
 
 #. Calliope Callibot library block
 msgid "Callibot line sensor _ _"
-msgstr "Cảm biến dòng Callibot _"
+msgstr "Cảm biến dòng Callibot _ _"
 
 #. Calliope Callibot library block
 msgid "Callibot set led _ _"
-msgstr "Bộ đèn led Callibot _"
+msgstr "Bộ đèn led Callibot _ _"
 
 #. Calliope Callibot library block
 msgid "Callibot set motor _ _ speed _ (0~100)"
-msgstr "Callibot đặt động cơ _ tốc độ _ (0~100)"
+msgstr "Callibot đặt động cơ _ _ tốc độ _ (0~100)"
 
 #. Calliope Callibot library block
 msgid "Callibot set neopixel _ to _ intensity _"
@@ -7213,7 +7213,7 @@ msgstr "Callibot đặt _ servo _ thành _ °"
 
 #. Calliope Callibot library block
 msgid "Callibot rotate servo _ _ speed _ (0~100)"
-msgstr "Callibot xoay servo _ tốc độ _ (0~100)"
+msgstr "Callibot xoay servo _ _ tốc độ _ (0~100)"
 
 #. Calliope Callibot library block
 msgid "Callibot stop all"
@@ -7265,15 +7265,15 @@ msgstr "np đặt lại tổng góc _"
 
 #. Nehza Pro library block
 msgid "np rotate _ _ by _ degrees speed _ %"
-msgstr "np xoay _ theo _ độ tốc độ _ %"
+msgstr "np xoay _ _ theo _ độ tốc độ _ %"
 
 #. Nehza Pro library block
 msgid "np rotate _ _ to _ degrees speed _ %"
-msgstr "np xoay _ đến _ độ tốc độ _ %"
+msgstr "np xoay _ _ đến _ độ tốc độ _ %"
 
 #. Nehza Pro library block
 msgid "np run motor _ _ speed _ %"
-msgstr "np chạy động cơ _ tốc độ _ %"
+msgstr "np chạy động cơ _ _ tốc độ _ %"
 
 #. Nehza Pro library block
 msgid "np set _ angle _ to _ degrees"
@@ -7345,7 +7345,7 @@ msgstr "fb xóa NeoPixels"
 
 #. Foxbit library block
 msgid "fb scroll text _ _"
-msgstr "văn bản cuộn fb _"
+msgstr "văn bản cuộn fb _ _"
 
 #. Coding Box library block
 msgid "cb stop fan"
@@ -7601,7 +7601,7 @@ msgstr "#SVG#square11#0070ff đặt NeoPixels _ cổng _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#0070ff set _ _ port _"
-msgstr "#SVG#square11#0070ff được đặt _ cổng _"
+msgstr "#SVG#square11#0070ff được đặt _ _ cổng _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#fff000 set motor _ port _"
