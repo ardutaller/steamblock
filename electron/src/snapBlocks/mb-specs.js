@@ -179,6 +179,13 @@ MB_Specs.blockForSpec = function (spec, category) {
 	return undefined; // error; spec should be an array
 }
 
+MB_Specs.snapSpecForSelector = function (selector) {
+	// Return a Snap! block spec string for given selector or null if not found.
+
+	let specArray = this.specArrayForSelector(selector);
+	return specArray ? this.snapSpecFrom(specArray) : null;
+}
+
 MB_Specs.snapSpecFrom = function (spec) {
 	// Return a Snap! block spec string for the given MicroBlocks spec array.
 
@@ -409,6 +416,7 @@ MB_Specs.mbBlockSpecs = function () {
 ["r", "[misc:hue]", "hue _", "color"], // xxx test color input slot
 		"cat;Output",
 [" ", "[display:mbDisplay]", "display #BR# _", "microbitDisplay"], // xxx test microbitDisplay input slot
+[" ", "script", "script x _ y _ _", "num num cmd"], // template for pasted scripts
 
 		"Prims-Deprecated (not in palette)",
 			["r", "newArray", "new list length _", "num", 10],

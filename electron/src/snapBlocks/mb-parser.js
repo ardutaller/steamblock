@@ -98,6 +98,8 @@ class MB_Parser {
 
 		let buf = [];
 		this.skipWhiteSpace();
+		if (this.atEnd()) return null;
+
 		if (isReporter && ('(' == this.peek())) {
 			this.skip(1);
 		}
@@ -539,6 +541,10 @@ function parser_test7() {
 
 function parser_test8() {
 	parser_test("digitalReadOp 'hello' 1 true false 'foo'");
+}
+
+function parser_test9() {
+	parser_test("\n\nscript 206 288 {\nspiSend 0\n\n}\n\n");
 }
 
 function parser_testFile() {
