@@ -194,38 +194,69 @@ class MB_Parser {
 			b = new CommandBlockMorph();
 		}
 		b.selector = selector;
-		b.setSpec(MB_Specs.specFor(selector, args));
+		let spec = MB_Specs.snapSpecForSelector(selector);
+		if (!spec) {
+			// no spe for selector; create one
+			spec = MB_Specs.specFor(selector, args);
+		}
+		b.setSpec(spec);
 		let cat = MB_Specs.categoryForSelector(selector);
 		if (cat.includes('Display')) cat = 'Output'; // xxx remove when libraries work
 		b.setCategory(cat);
 		b.isDraggable = true;
 		let inputs = b.inputs();
-		for (let i = 0; i < inputs.length; i++) {
+
+		if ((inputs.length > 0) && (inputs.at(-1) instanceof MultiArgMorph)) {
+			inputs.at(-1).expandTo(args.length - (inputs.length - 1));
+		}
+
+		for (let i = 0; i < args.length; i++) {
 			let arg = args[i];
 			if ((typeof arg) == 'string') {
 				arg = this.argOrVarRef(selector, arg, (i == 0));
-			}
-			if (Array.isArray(arg)) {
+			} else if (Array.isArray(arg)) {
 				if (Array.isArray(arg[0])) {
 					arg = this.makeBlockList(arg);
 				} else {
 					arg = this.makeBlock(arg, true);
 				}
-				if (inputs[i] instanceof CommandSlotMorph) {
-					inputs[i].nestedBlock(arg);
+			}
+			this.setBlockArg(b, arg, i);
+		}
+		b.fixBlockColor();
+		return b;
+	}
+
+	setBlockArg(b, arg, i) {
+		let inputs = b.inputs();
+		if (inputs.length < 1) return; // shouldn't happen
+		if ((inputs.at(-1) instanceof MultiArgMorph) &&
+			(i >= (inputs.length - 1))) {
+				// store into multiArg
+				let multiArg = inputs.at(-1);
+				let j = i - (inputs.length - 1);
+				if (multiArg[j] instanceof CommandSlotMorph) {
+					if (arg instanceof CommandBlockMorph) {
+						multiArg[j].nestedBlock(arg);
+					}
+				} else if (arg instanceof ReporterBlockMorph) {
+					// xxx todo: figure out how to add a reporter block input
+//					multiArg.replaceInput(multiArg[j], arg);
+					multiArg.inputs()[j].setContents(arg); // doesn't actually work
 				} else {
-					// needed? this case would be unusual and may never happen
-					b.replaceInput(inputs[i], arg);
+					multiArg.inputs()[j].setContents(arg);
 				}
-				arg.fixBlockColor();
+		} else {
+			if (inputs[i] instanceof CommandSlotMorph) {
+				if (arg instanceof CommandBlockMorph) {
+					inputs[i].nestedBlock(arg);
+				}
 			} else if (arg instanceof ReporterBlockMorph) {
 				b.replaceInput(inputs[i], arg);
 			} else {
 				inputs[i].setContents(arg);
 			}
 		}
-		b.fixBlockColor();
-		return b;
 	}
 
 	makeBlockList(bufList) {
