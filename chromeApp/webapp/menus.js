@@ -295,7 +295,7 @@ Menus.blockZoomLevels = {
 	items: [50,75,100,125,150,200,250].map(level => {
 		return {
 			label: level + '%',
-			action: (target) => { GP.apiCall('ide.setZoom', [level]); }
+			action: (target) => { GP.apiCall('scripts.setZoom', [level]); }
 		}
 	})
 };

@@ -45,18 +45,6 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.updateConnection') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		updateConnection runtime
-	} (endPoint == 'ide.zoomIn') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
-		zoomIn editor
-	} (endPoint == 'ide.zoomOut') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
-		zoomOut editor
-	} (endPoint == 'ide.restoreZoom') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
-		restoreZoom editor
-	} (endPoint == 'ide.setZoom') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
-		setBlockScalePercent editor (at params 1)
 	} (endPoint == 'ide.selectCategory') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		selectCategory scripter (at params 1)
@@ -169,6 +157,18 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'scripts.setExportedScriptScale') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		setExportScale (scriptEditor scripter) (at params 1)
+	} (endPoint == 'scripts.zoomIn') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		zoomIn editor
+	} (endPoint == 'scripts.zoomOut') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		zoomOut editor
+	} (endPoint == 'scripts.restoreZoom') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		restoreZoom editor
+	} (endPoint == 'scripts.setZoom') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		setBlockScalePercent editor (at params 1)
 
 	// Library
 	} (endPoint == 'library.showInfoDialog') {

@@ -53,6 +53,7 @@ var GP = {
 	audioInReady: false,
 	audioInSource: null,
 	audioInCapture: null,
+
 	lastCallId: 0,
 	callQueue: [],
 	windowResponses: {},

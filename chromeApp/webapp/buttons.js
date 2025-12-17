@@ -67,19 +67,19 @@ const Buttons = {
 		icon: 'img/zoomOut.svg',
 		label: 'Zoom out',
 		description: 'Decrease block size',
-		action: () => { GP.apiCall('ide.zoomOut'); }
+		action: () => { GP.apiCall('scripts.zoomOut'); }
 	},
 	restoreZoom: {
 		icon: 'img/restoreZoom.svg',
 		label: 'Restore zoom',
 		description: 'Restore block size to 100%',
-		action: () => { GP.apiCall('ide.restoreZoom'); }
+		action: () => { GP.apiCall('scripts.restoreZoom'); }
 	},
 	zoomIn: {
 		icon: 'img/zoomIn.svg',
 		label: 'Zoom in',
 		description: 'Increase block size',
-		action: () => { GP.apiCall('ide.zoomIn'); }
+		action: () => { GP.apiCall('scripts.zoomIn'); }
 	}
 };
 
