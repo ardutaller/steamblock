@@ -281,7 +281,10 @@ Menus.scriptingArea = {
 		},
 		{
 			label: 'set exported script scale',
-			action: () => { GP.apiCall('scripts.setExportedScriptScale'); },
+			action: (target, event) => {
+				Menus.popUp('exportedScriptScale', null, target, event);
+			},
+			keepOpenAfterClick: true,
 			hidden: () => { return !IDE.userPreference('devMode'); }
 		}
 	]
@@ -296,6 +299,18 @@ Menus.blockZoomLevels = {
 		}
 	})
 };
+
+Menus.exportedScriptScale = {
+	type: 'context',
+	items: [50,65,100,200].map((level, index) => {
+		return {
+			label: `${['small', 'normal', 'large', 'printable'][index]} (${level}%)`,
+			action: (target) => {
+				GP.apiCall('scripts.setExportedScriptScale', [level]);
+			}
+		}
+	})
+}
 
 Menus.elementFor = function (selector, target) {
 	// return an HTML tree containing the menu for a menu selector, and

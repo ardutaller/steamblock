@@ -546,17 +546,6 @@ method scriptChanged ScriptEditor {
 
 // saving script image
 
-method setExportedScriptScale ScriptEditor {
-	// Set the scale used for exported scripts.
-
-	menu = (menu nil (action 'setExportScale' this) true)
-	addItem menu 'small (50%)' 50
-	addItem menu 'normal (65%)' 65
-	addItem menu 'large (100%)' 100
-	addItem menu 'printable (200%)' 200
-	popUpAtHand menu (global 'page')
-}
-
 method setExportScale ScriptEditor percent {
 	setGlobal 'blockExportScale' (percent / 100)
 }

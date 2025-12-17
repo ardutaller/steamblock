@@ -168,7 +168,7 @@ method dispatchCall MicroBlocksAPI callObject {
 		saveScriptsImage (scriptEditor scripter)
 	} (endPoint == 'scripts.setExportedScriptScale') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
-		setExportedScriptScale (scriptEditor scripter)
+		setExportScale (scriptEditor scripter) (at params 1)
 
 	// Library
 	} (endPoint == 'library.showInfoDialog') {
