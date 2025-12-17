@@ -64,12 +64,7 @@ method justReceivedDrop ScriptEditor aHandler {
 }
 
 method rightClicked ScriptEditor aHand {
-	scale = (global 'scale')
-	options = (dictionary)
-	atPut options 'selector' 'scriptingArea'
-	atPut options 'x' (/ (x aHand) scale)
-	atPut options 'y' (/ (y aHand) scale)
-	notify (api (smallRuntime)) 'context' options
+	contextMenu (api (smallRuntime)) 'scriptingArea' aHand
 	return true
 }
 

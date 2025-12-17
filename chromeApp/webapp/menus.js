@@ -235,8 +235,10 @@ Menus.scriptingArea = {
 	items: [
 		{
 			label: 'set block size...',
-			// should just be another context menu!
-			action: () => { GP.apiCall('scripts.selectBlockSize'); }
+			action: (target, event) => {
+				Menus.popUp('blockZoomLevels', null, target, event);
+			},
+			keepOpenAfterClick: true
 		},
 		{ label: '-' },
 		{
@@ -285,6 +287,15 @@ Menus.scriptingArea = {
 	]
 };
 
+Menus.blockZoomLevels = {
+	type: 'context',
+	items: [50,75,100,125,150,200,250].map(level => {
+		return {
+			label: level + '%',
+			action: (target) => { GP.apiCall('ide.setZoom', [level]); }
+		}
+	})
+};
 
 Menus.elementFor = function (selector, target) {
 	// return an HTML tree containing the menu for a menu selector, and
@@ -307,7 +318,11 @@ Menus.elementFor = function (selector, target) {
 				li.classList.add('menu-item');
 
 				// set the menu item action
-				a.onclick = () => { item.action(target); this.close() };
+				a.onclick = (event) => {
+					event.ignoreGlobalListener = true;
+					item.action(target, event);
+					if (!item.keepOpenAfterClick) { this.close(); }
+				};
 
 				// set the menu item label
 				if (typeof item.label == 'string') {
@@ -372,7 +387,8 @@ document.addEventListener('click', (event) => {
 	if (currentMenu) {
 		if (
 			!currentMenu.contains(event.target) &&
-			!currentMenu.trigger?.contains(event.target)
+			!currentMenu.trigger?.contains(event.target) &&
+			!event.ignoreGlobalListener
 		) {
 			currentMenu.remove();
 		}

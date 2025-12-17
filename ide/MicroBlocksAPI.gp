@@ -54,6 +54,9 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.restoreZoom') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		restoreZoom editor
+	} (endPoint == 'ide.setZoom') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		setBlockScalePercent editor (at params 1)
 	} (endPoint == 'ide.selectCategory') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		selectCategory scripter (at params 1)
@@ -219,8 +222,9 @@ method electronOS MicroBlocksAPI {
 	return (at (array 'windows' 'mac' 'linux' 'web') (browserElectronOS))
 }
 
-method nextId MicroBlocksAPI { return (browserNextCallId) }
+// Windows
 
+method nextId MicroBlocksAPI { return (browserNextCallId) }
 method windowResponse MicroBlocksAPI id {
 	json = (browserWindowResponse id)
 	if (notNil json) {
@@ -228,4 +232,15 @@ method windowResponse MicroBlocksAPI id {
 	} else {
 		return nil
 	}
+}
+
+// Menus
+
+method contextMenu MicroBlocksAPI selector aHand {
+	scale = (global 'scale')
+	options = (dictionary)
+	atPut options 'selector' selector
+	atPut options 'x' (/ (x aHand) scale)
+	atPut options 'y' (/ (y aHand) scale)
+	notify (api (smallRuntime)) 'context' options
 }
