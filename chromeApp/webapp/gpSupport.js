@@ -55,7 +55,9 @@ var GP = {
 	audioInCapture: null,
 	lastCallId: 0,
 	callQueue: [],
-	windowResponses: {}
+	windowResponses: {},
+
+	delegateKeyboardEvents: false
 };
 
 
@@ -263,6 +265,7 @@ function initGPEventHandlers() {
 		GP.events.push([MOUSE_MOVE, p[0], p[1]]);
 	}
 	document.onkeydown = function(evt) {
+		if (GP.delegateKeyboardEvents) { return; }
 		var key = evt.which;
 		if ((13 == key) && (/Android/i.test(navigator.userAgent))) {
 			// On Android, generate text input events for entire string when the enter key is pressed

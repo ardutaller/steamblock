@@ -43,6 +43,8 @@ class FloatingWindow extends HTMLElement {
 			input.type = descriptor.input.type ?? 'text';
 			input.default = descriptor.input.defaultValue ?? '';
 			input.placeholder = descriptor.input.placeholder ?? '';
+			input.onfocus = () => { GP.delegateKeyboardEvents = true; };
+			input.onblur = () => { GP.delegateKeyboardEvents = false; };
 			body.append(input);
 		}
 		this.append(body);
@@ -61,6 +63,7 @@ class FloatingWindow extends HTMLElement {
 					}
 					buttonDescriptor.action.call(this, value);
 					if (buttonDescriptor.closesWindow) { this.remove(); }
+					GP.delegateKeyboardEvents = false;
 				};
 				button.classList.add('win-button');
 				buttons.append(button);
