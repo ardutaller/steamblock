@@ -39,6 +39,7 @@ OBJ primHexToInt(int argCount, OBJ *args) {
 
 	char *s = obj2str(args[0]);
 	if ('#' == *s) s++; // skip leading # if there is one
+	if (('0' == *s) && (('x' == s[1]) || ('X' == s[1]))) s += 2; // skip leading '0x' or '0X'
 	long result = strtol(s, NULL, 16);
 	result = (result << 1) >> 1; // extend sign bit if bit 31 is set
 	if ((result < -0x40000000) || (result > 0x3FFFFFFF)) return fail(hexRangeError);
@@ -553,19 +554,30 @@ static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
 
-#if defined(ARDUINO_ARCH_ESP32)
+#if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
 
-#include <esp_sleep.h>
+#if defined(ARDUINO_ARCH_ESP32)
+	#include <esp_sleep.h>
+#else
+	// Defined in ioPrims.cpp because it needs to use the ESP C++ class.
+	void esp8266DeepSleep(uint64_t usecs);
+#endif
 
 static OBJ primESPSleep(int argCount, OBJ *args) {
 	// Deep sleep for N seconds. When that time elapses, the ESP32 will reset/boot.
+	// Note: on ESP8266, you must connect GPIO16 ("Wake" pin) to the RST to use deep sleep:
+	//	https://randomnerdtutorials.com/esp8266-deep-sleep-with-arduino-ide/
 
 	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
 
-    uint64_t usecs = obj2int(args[0]) * 1000000;
-    esp_sleep_enable_timer_wakeup(usecs);
-    esp_deep_sleep_start();
-    return falseObj; // this is never executed
+	uint64_t usecs = obj2int(args[0]) * 1000000;
+	#if defined(ARDUINO_ARCH_ESP32)
+		esp_sleep_enable_timer_wakeup(usecs);
+		esp_deep_sleep_start();
+	#else
+		esp8266DeepSleep(usecs);
+	#endif
+	return falseObj; // this is never executed
 }
 
 #endif
@@ -755,7 +767,7 @@ static OBJ primDUESetDate(int argCount, OBJ *args) {
 // 	sAlarm.AlarmTime.Seconds = obj2int(args[2]);
 // 	sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY; // ignore date and weekday
 // 	sAlarm.AlarmTime.SubSeconds = 0;
-//  	sAlarm.AlarmSubSecondMask = 0; // ignore subseconds
+//	sAlarm.AlarmSubSecondMask = 0; // ignore subseconds
 //
 // 	HAL_NVIC_SetPriority(RTC_IRQn, 0, 0);
 // 	HAL_NVIC_EnableIRQ(RTC_IRQn);
@@ -789,7 +801,7 @@ static PrimEntry entries[] = {
 	{"bme680GasResistance", primBMP680GasResistance},
 	{"shapeforChar", primShapeforChar},
 	{"clearGraph", primClearGraph},
-#if defined(ARDUINO_ARCH_ESP32)
+#if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
 	{"espSleep", primESPSleep},
 #endif
 #if defined(DUELink)
