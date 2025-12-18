@@ -56,7 +56,7 @@ var GP = {
 
 	lastCallId: 0,
 	callQueue: [],
-	windowResponses: {},
+	apiResponses: {},
 
 	delegateKeyboardEvents: false
 };

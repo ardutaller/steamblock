@@ -9,7 +9,10 @@
 // Bernat Romagosa, 2025
 
 const Menus = {};
-Menus.language = { type: 'top', items: [] };
+
+// TOP BAR MENUS
+
+Menus.language = { selector: 'language', type: 'top', items: [] };
 
 Menus.language.init = function () {
 	// fill language menu out of available locales
@@ -42,6 +45,7 @@ Menus.language.init = function () {
 Menus.language.init();
 
 Menus.settings = {
+	selector: 'settings',
 	type: 'top',
 	items: [
 		{
@@ -125,6 +129,7 @@ Menus.settings = {
 };
 
 Menus.project = {
+	selector: 'project',
 	type: 'top',
 	items: [
 		{
@@ -174,6 +179,7 @@ Menus.project = {
 };
 
 Menus.connection = {
+	selector: 'connection',
 	type: 'top',
 	items: [
 		{
@@ -203,7 +209,10 @@ Menus.connection = {
 	]
 };
 
+// CONTEXT MENUS
+
 Menus.library = {
+	selector: 'library',
 	type: 'context',
 	items: [
 		{
@@ -231,6 +240,7 @@ Menus.library = {
 };
 
 Menus.scriptingArea = {
+	selector: 'scriptingArea',
 	type: 'context',
 	items: [
 		{
@@ -291,6 +301,7 @@ Menus.scriptingArea = {
 };
 
 Menus.blockZoomLevels = {
+	selector: 'blockZoomLevels',
 	type: 'context',
 	items: [50,75,100,125,150,200,250].map(level => {
 		return {
@@ -301,6 +312,7 @@ Menus.blockZoomLevels = {
 };
 
 Menus.exportedScriptScale = {
+	selector: 'exportedScriptScale',
 	type: 'context',
 	items: [50,65,100,200].map((level, index) => {
 		return {
@@ -310,16 +322,19 @@ Menus.exportedScriptScale = {
 			}
 		}
 	})
-}
+};
 
-Menus.elementFor = function (selector, target) {
-	// return an HTML tree containing the menu for a menu selector, and
-	// dynamically generate the menu each time, since it can change depending on
-	// the state of the board, preferences, etc
+// MENU HTML GENERATION
+
+Menus.elementFor = function (descriptor, target) {
+	// return an HTML tree containing the menu for a menu selector or menu
+	// descriptor, and dynamically generate the menu each time, since it can
+	// change depending on the state of the board, preferences, etc
 	let menu = document.createElement('nav');
-	menu.classList.add(`${this[selector].type}-menu`);
 
-	this[selector].items.forEach((item, index) => {
+	menu.classList.add(`${descriptor.type}-menu`);
+
+	descriptor.items.forEach((item, index) => {
 		if (!(item.hidden?.())) {
 			let li = document.createElement('li');
 			if (item.label == '-') {
@@ -329,7 +344,7 @@ Menus.elementFor = function (selector, target) {
 				let a = document.createElement('a');
 				let text = document.createElement('l-'); // localizable
 
-				menu.id = `menu-${selector}`;
+				menu.id = `menu-${descriptor.selector}`;
 				li.classList.add('menu-item');
 
 				// set the menu item action
@@ -373,10 +388,16 @@ Menus.elementFor = function (selector, target) {
 };
 
 Menus.popUp = function (selector, triggerElement, target, event) {
+	this.popUpFromDescriptor(this[selector], triggerElement, target, event);
+};
+
+Menus.popUpFromDescriptor = function (
+	descriptor, triggerElement, target, event
+) {
 	this.close();
 	let container = document.querySelector('.top-bar .menu'),
-		nav = this.elementFor(selector, target),
-		type = this[selector].type,
+		nav = this.elementFor(descriptor, target),
+		type = descriptor.type,
 		pos = type == 'context'
 			? { x: event.clientX, y: event.clientY }
 			: triggerElement.getClientRects()[0];
@@ -386,7 +407,7 @@ Menus.popUp = function (selector, triggerElement, target, event) {
 	container.style.top =
 		`${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
 	nav.style.maxHeight = `${window.innerHeight - 80}px`;
-};
+}
 
 Menus.current = function () {
 	return document.querySelector('.top-bar .menu nav');
@@ -395,6 +416,8 @@ Menus.current = function () {
 Menus.close = function () {
 	this.current()?.remove();
 };
+
+// MENU EVENTS
 
 document.addEventListener('click', (event) => {
 	// close any open menu when clicking outside its influence area
@@ -419,5 +442,26 @@ document.addEventListener('context', (e) => {
 		e.clientY = descriptor.y + canvas.offsetTop;
 	}
 	Menus.popUp(descriptor.selector, null, null, e);
+	e.preventDefault();
+});
+
+document.addEventListener('choices', (e) => {
+	let descriptor = e.detail.value;
+	this.popUpFromDescriptor(
+		{
+			type: 'context',
+			items: descriptor.items.map(item => {
+				return {
+					label: item,
+					action: () => {
+						GP.apiResponses[descriptor.id] = JSON.stringify(item);
+					}
+				}
+			})
+		},
+		null,
+		null,
+		e
+	);
 	e.preventDefault();
 });

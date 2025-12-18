@@ -225,8 +225,8 @@ method electronOS MicroBlocksAPI {
 // Windows
 
 method nextId MicroBlocksAPI { return (browserNextCallId) }
-method windowResponse MicroBlocksAPI id {
-	json = (browserWindowResponse id)
+method browserResponse MicroBlocksAPI id {
+	json = (browserResponse id)
 	if (notNil json) {
 		return (jsonParse json)
 	} else {
@@ -243,4 +243,22 @@ method contextMenu MicroBlocksAPI selector aHand {
 	atPut options 'x' (/ (x aHand) scale)
 	atPut options 'y' (/ (y aHand) scale)
 	notify (api (smallRuntime)) 'context' options
+}
+
+method menuFor MicroBlocksAPI items callback {
+	// TODO untested!
+	id = (nextId this)
+
+	options = (dictionary)
+	atPut options 'id' id
+	atPut options 'items' items
+
+	notify api 'choices' options
+	response = (browserResponse api id)
+	while (response == nil) {
+		response = (browserResponse api id)
+		doOneCycle this
+	}
+
+	call callback response
 }

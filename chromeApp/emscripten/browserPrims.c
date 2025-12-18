@@ -1616,11 +1616,11 @@ OBJ primBrowserNextCallId(int nargs, OBJ args[]) {
 	}));
 };
 
-OBJ primBrowserWindowResponse(int nargs, OBJ args[]) {
+OBJ primBrowserResponse(int nargs, OBJ args[]) {
 	int id = obj2int(args[0]);
 
 	int responseLength = EM_ASM_INT(
-		{ return GP.windowResponses[$0] ? GP.windowResponses[$0].length + 1 : 0; },
+		{ return GP.apiResponses[$0] ? GP.apiResponses[$0].length + 1 : 0; },
 		id
 	);
 	if (responseLength == 0) { return nilObj; }
@@ -1628,8 +1628,8 @@ OBJ primBrowserWindowResponse(int nargs, OBJ args[]) {
 	OBJ response = allocateString(responseLength);
 	EM_ASM_(
 		{
-			stringToUTF8(GP.windowResponses[$0], $1, $2);
-			delete(GP.windowResponses[$0]);
+			stringToUTF8(GP.apiResponses[$0], $1, $2);
+			delete(GP.apiResponses[$0]);
 		},
 		id,
 		&FIELD(response, 0),
@@ -1672,7 +1672,7 @@ static PrimEntry browserPrimList[] = {
 	{"browserCloseBoardie",		primBrowserCloseBoardie,		"Disconnect boardie."},
 	{"browserStoreIDEProperty",	primBrowserStoreIDEProperty,		"Store a property for the browser version to use. Args: GPobjectPropertyName, propertyValue"},
 	{"browserNotify",					primBrowserNotify,					"Trigger a custom event to the document. Args: eventName"},
-	{"browserWindowResponse",			primBrowserWindowResponse,	"Get the response from a window action."},
+	{"browserResponse",				primBrowserResponse,				"Get the response from a browser action."},
 	{"browserNextCallId",			primBrowserNextCallId,			"Get the next API call identifier so it can be used to track a response from the browser to GP."},
 	{"boardiePutFile",				primBoardiePutFile,					"Store a file in boardie's file system."},
 	{"boardieGetFile",				primBoardieGetFile,					"Read a file from boardie's file system."},

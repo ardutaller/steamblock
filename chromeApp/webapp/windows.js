@@ -239,8 +239,8 @@ document.addEventListener(
 			win = FloatingWindow.confirm(
 			descriptor.title,
 			descriptor.text,
-			() => { GP.windowResponses[descriptor.id] = JSON.stringify(true); },
-			() => { GP.windowResponses[descriptor.id] = JSON.stringify(false); },
+			() => { GP.apiResponses[descriptor.id] = JSON.stringify(true); },
+			() => { GP.apiResponses[descriptor.id] = JSON.stringify(false); },
 			descriptor.yesLabel,
 			descriptor.noLabel,
 		);
@@ -254,8 +254,8 @@ document.addEventListener(
 			win = FloatingWindow.prompt(
 			descriptor.title,
 			descriptor.text,
-			(value) => { GP.windowResponses[descriptor.id] = JSON.stringify(value); },
-			() => { GP.windowResponses[descriptor.id] = JSON.stringify(null); },
+			(value) => { GP.apiResponses[descriptor.id] = JSON.stringify(value); },
+			() => { GP.apiResponses[descriptor.id] = JSON.stringify(null); },
 			null, // default input
 			descriptor.default,
 			descriptor.editRule

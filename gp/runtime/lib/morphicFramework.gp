@@ -1387,7 +1387,7 @@ method freshPrompt Page question default editRule callback details {
 
 method prompt Page question default editRule callback details {
 	api = (api (smallRuntime))
-	id = (browserNextCallId api)
+	id = (nextId api)
 
 	options = (dictionary)
 	atPut options 'title' question
@@ -1397,9 +1397,9 @@ method prompt Page question default editRule callback details {
 	atPut options 'editRule' editRule
 
 	notify api 'window.prompt' options
-	response = (windowResponse api id)
+	response = (browserResponse api id)
 	while (response == nil) {
-		response = (windowResponse api id)
+		response = (browserResponse api id)
 		doOneCycle this
 	}
 	if (notNil callback) {
@@ -1411,7 +1411,7 @@ method prompt Page question default editRule callback details {
 
 method confirm Page title question yesLabel noLabel callback {
 	api = (api (smallRuntime))
-	id = (browserNextCallId api)
+	id = (nextId api)
 
 	options = (dictionary)
 	atPut options 'title' title
@@ -1421,9 +1421,9 @@ method confirm Page title question yesLabel noLabel callback {
 	atPut options 'noLabel' noLabel
 
 	notify api 'window.confirm' options
-	response = (windowResponse api id)
+	response = (browserResponse api id)
 	while (response == nil) {
-		response = (windowResponse api id)
+		response = (browserResponse api id)
 		doOneCycle this
 	}
 
