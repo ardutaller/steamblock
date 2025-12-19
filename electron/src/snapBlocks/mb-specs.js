@@ -157,10 +157,6 @@ MB_Specs.snapSpecForSelector = function (selector) {
 	let specArray = this.specArrayForSelector(selector);
 	if (!specArray) return null; // not found
 
-	if (specArray[1] == 'if') { // special case for "if"
-		return 'if %b %cmd %elseif';
-	}
-
 	let mbSpec = specArray[2];
 	let mbArgTypes = (specArray.length > 3) ? specArray[3].split(/\s+/) : [];
 	let parts = mbSpec.split(/\s+/);

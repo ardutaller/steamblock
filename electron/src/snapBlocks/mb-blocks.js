@@ -363,13 +363,6 @@ SyntaxElementMorph.prototype.labelParts = {
 		group: (optional) a block spec describing a group of inputs with labels
 	*/
 
-	'%elseif': {
-		type: 'multi',
-		tags: 'static widget',
-		group: 'else if %b %cmd',
-		dflt: [true, null]
-	},
-
 	// following are MicroBlocks types prefixed with %
 	'%num': {
 		type: 'input',
@@ -1758,10 +1751,10 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 		}
 	}
 	this.blockSpec = spec;
-	this.fixLayout();
-	this.rerender();
 	this.cachedInputs = null;
 	if (this.blockSpec.includes(':')) this.addExpander();
+	this.fixLayout();
+	this.rerender();
 };
 
 BlockMorph.prototype.userSetSpec = function (spec) {

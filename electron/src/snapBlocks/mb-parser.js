@@ -206,8 +206,9 @@ class MB_Parser {
 		b.isDraggable = true;
 		let inputs = b.inputs();
 
-		if ((inputs.length > 0) && (inputs.at(-1) instanceof MultiArgMorph)) {
-			inputs.at(-1).expandTo(args.length - (inputs.length - 1));
+		while ((inputs.length < args.length) && b.canExpand()) {
+			b.expand();
+			inputs = b.inputs();
 		}
 
 		for (let i = 0; i < args.length; i++) {
@@ -229,33 +230,15 @@ class MB_Parser {
 
 	setBlockArg(b, arg, i) {
 		let inputs = b.inputs();
-		if (inputs.length < 1) return; // shouldn't happen
-		if ((inputs.at(-1) instanceof MultiArgMorph) &&
-			(i >= (inputs.length - 1))) {
-				// store into multiArg
-				let multiArg = inputs.at(-1);
-				let j = i - (inputs.length - 1);
-				if (multiArg[j] instanceof CommandSlotMorph) {
-					if (arg instanceof CommandBlockMorph) {
-						multiArg[j].nestedBlock(arg);
-					}
-				} else if (arg instanceof ReporterBlockMorph) {
-					// xxx todo: figure out how to add a reporter block input
-//					multiArg.replaceInput(multiArg[j], arg);
-					multiArg.inputs()[j].setContents(arg); // doesn't actually work
-				} else {
-					multiArg.inputs()[j].setContents(arg);
-				}
-		} else {
-			if (inputs[i] instanceof CommandSlotMorph) {
-				if (arg instanceof CommandBlockMorph) {
-					inputs[i].nestedBlock(arg);
-				}
-			} else if (arg instanceof ReporterBlockMorph) {
-				b.replaceInput(inputs[i], arg);
-			} else {
-				inputs[i].setContents(arg);
+		if (i >= inputs.length) return; // ignore extra arguments; shouldn't happen
+		if (inputs[i] instanceof CommandSlotMorph) {
+			if (arg instanceof CommandBlockMorph) {
+				inputs[i].nestedBlock(arg);
 			}
+		} else if (arg instanceof ReporterBlockMorph) {
+			b.replaceInput(inputs[i], arg);
+		} else {
+			inputs[i].setContents(arg);
 		}
 	}
 
