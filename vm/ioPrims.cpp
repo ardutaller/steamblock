@@ -552,6 +552,15 @@ void hardwareInit() {
 	#define PIN_LED LED_BUILTIN
 	#define PIN_BUTTON_A 0
 
+
+#include <ESP.h>
+
+extern "C" void esp8266DeepSleep(uint64_t usecs) {
+	uint64_t maxSleep = ESP.deepSleepMax() - 10000;
+	if (usecs > maxSleep) usecs = maxSleep;
+	ESP.deepSleep(usecs);
+}
+
 #elif defined(ARDUINO_CITILAB_ED1)
 
 	#define BOARD_TYPE "Citilab ED1"
