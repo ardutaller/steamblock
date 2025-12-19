@@ -297,14 +297,16 @@ SyntaxElementMorph.prototype.partInfo = function (partSpec) {
 		if ('auto' == specParts[1]) result.tags = 'numstring';
 		if ('num' == specParts[1]) result.tags = 'numeric';
 		return result;
-	} else if (partSpec.startsWith('%ex')) {
-		return this.mbMultipartInfo(partSpec);
+// xxx can delete:
+// 	} else if (partSpec.startsWith('%ex')) {
+// 		return this.mbMultipartInfo(partSpec);
 	} else {
 		return this.labelParts[partSpec];
 	}
 }
 
 SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
+	// xxx delete this!
 	// Return the info object for an optional part spec starting with either:
 	//	'%ex' (non-repeatable) or
 	//	'%exr' (repeatable).
@@ -367,11 +369,9 @@ SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
 SyntaxElementMorph.prototype.labelParts = {
 	/*
 	Input slots
-
-	type: 'input'
-	tags: 'numeric numstring alphanum read-only landscape static'
-	menu: dictionary or selector
-	value: string, number or Array for localized strings / constants
+		type: input, boolean, c, text entry, color, mbDisplay, break
+		tags: numeric numstring alphanum read-only landscape static
+		menu: menu selector
 	*/
 
 	'%s': {
@@ -409,16 +409,17 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'text entry',
 	},
 
-	// other single types
-	'%br': {
-		type: 'break'
-	},
-	'%clr': {
-		type: 'color'
-	},
-	'%mbDisplay': {
-		type: 'mbDisplay'
-	},
+// xxx
+// 	// other single types
+// 	'%br': {
+// 		type: 'break'
+// 	},
+// 	'%clr': {
+// 		type: 'color'
+// 	},
+// 	'%mbDisplay': {
+// 		type: 'mbDisplay'
+// 	},
 
 	// specialized variadic inputs
 	/*
@@ -440,6 +441,39 @@ SyntaxElementMorph.prototype.labelParts = {
 		tags: 'static widget',
 		group: 'else if %b %cmd',
 		dflt: [true, null]
+	},
+
+	// following are MicroBlocks types prefixed with %
+	'%num': {
+		type: 'input',
+		tags: 'numeric'
+	},
+	'%auto': {
+		type: 'input',
+		tags: 'numstring'
+	},
+	'%bool': {
+		type: 'boolean'
+	},
+	'%str': {
+		type: 'text entry',
+	},
+	'%color': {
+		type: 'color'
+	},
+	'%var': {
+		type: 'template',
+		label: '\xa0' // non-breaking space, appears blank
+	},
+	'%cmd': {
+		type: 'c',
+		tags: 'static'
+	},
+	'%microbitDisplay': {
+		type: 'mbDisplay'
+	},
+	'#BR#': {
+		type: 'break'
 	}
 };
 
@@ -1029,18 +1063,6 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 			});
 			part.fixLayout();
 		}
-
-		// apply the default value
-		// -----------------------
-		// only for input slots and Boolean inputs,
-		// and only for rare exceptions where we cannot
-		// specify the default values in the block specs,
-		// e.g. for expandable "reeiver" slots in "broadcast"
-
-		if (!isNil(info.value)) {
-			part.setContents(info.value);
-		}
-
 	} else {
 		part = new BlockLabelMorph(
 			spec, // text
@@ -1054,7 +1076,6 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 			WHITE, // color
 			this.labelFontName // fontName
 		);
-
 	}
 	return part;
 };
@@ -1769,7 +1790,10 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 	if (this.isPrototype) {
 		this.add(this.placeHolder());
 	}
-	this.parseSpec(spec).forEach((word, idx, arr) => {
+
+	for (word of this.parseSpec(spec)) {
+ 		if (':' == word) break; // stop at start of option extensions
+
 		if (word[0] === '%' && (word !== '%br')) {
 			inputIdx += 1;
 		}
@@ -1804,7 +1828,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 				part.canBeEmpty = !part.isStatic;
 			}
 		}
-	});
+	}
 	this.blockSpec = spec;
 	this.fixLayout();
 	this.rerender();
@@ -1916,7 +1940,7 @@ BlockMorph.prototype.userMenu = function () {
 	);
 	menu.addItem(
 		'log',
-		() => { console.log(this); },
+		() => { tmp = this; console.log(this); },
 		'log this script to the console'
 	);
 	menu.addItem(
@@ -2203,6 +2227,80 @@ BlockMorph.prototype.restoreInputs = function (oldInputs, offset = 0) {
 	this.cachedInputs = null;
 	return leftOver;
 };
+
+// BlockMorph expand/collapse
+
+BlockMorph.prototype.canExpand = function () {
+	return (this.inputs().length < this.maxInputCount());
+}
+
+BlockMorph.prototype.canContract = function () {
+	return (this.inputs().length > this.minInputCount());
+}
+
+BlockMorph.prototype.expand = function () {
+	// Expand the given block if possible.
+
+	if (!this.canExpand()) return;
+
+	for (const p of this.specForExpand().split(/\s+/)) {
+		this.addChild(this.labelPart(p));
+	}
+	this.cachedInputs = null;
+	this.fixLayout();
+}
+
+BlockMorph.prototype.maxInputCount = function () {
+	// Return the number of inputs for this blocks maximum expansion (may be Infinity).
+
+	if (this.blockSpec.endsWith('...')) return Infinity;
+
+	let count = 0;
+	for (p of this.blockSpec.split(/\s+/)) {
+		if ('%' == p.at(0)) count += 1;
+	}
+	return count;
+}
+
+BlockMorph.prototype.minInputCount = function () {
+	// Return the number of input slots for this block when not expanded.
+
+	let specSections = this.blockSpec.split(':');
+	return this.inputCountForSpecSection(specSections[0]);
+}
+
+BlockMorph.prototype.inputCountForSpecSection = function (specSection) {
+	if ('...' == specSection) return Infinity;
+
+	let count = 0;
+	for (p of specSection.split(/\s+/)) {
+		if ('%' == p.at(0)) count += 1;
+	}
+	return count;
+}
+
+BlockMorph.prototype.specForExpand = function () {
+	// Return a string containing the block spec section for the next level of expansion.
+
+	let currentInputCount = this.inputs().length;
+	let specSections = this.blockSpec.split(':').map(s => s.trim());
+
+for (const sec of specSections) {
+	console.log('   ', ('|' + sec + '|'), this.inputCountForSpecSection(sec));
+}
+console.log('currentInputCount', currentInputCount);
+
+	let count = this.inputCountForSpecSection(specSections[0]);
+	for (i = 1; i < specSections.length; i++) {
+		count += this.inputCountForSpecSection(specSections[i]);
+		if (count > currentInputCount) {
+			let result = specSections[i];
+console.log('i', i, 'count', count, 'result', result);
+			return (result == '...') ? specSections[i - 1] : result;
+		}
+	}
+	return '';
+}
 
 // BlockMorph exporting picture with result bubble
 
@@ -7358,9 +7456,6 @@ MultiArgMorph.prototype.userMenu = function () {
 	var menu = new MenuMorph(this),
 		block = this.parentThatIsA(BlockMorph),
 		key = '';
-	if (!StageMorph.prototype.enableCodeMapping) {
-		return this.parent.userMenu();
-	}
 	if (block) {
 		if (block.selector === 'doDeclareVariables') {
 			key = 'tempvars_';

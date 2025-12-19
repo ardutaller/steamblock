@@ -74,10 +74,9 @@ MB_Specs.specFor = function (selector, args) {
 				if (p == '_') {
 					spec += this.snapTypeForMBType(mbTypes[typeIndex++]);
 				} else if (p.startsWith('#')) {
-					spec += this.snapSymbolOrBreak(p);
-				} else if ((p != ':') && (p != '...')) {
 					spec += p;
-				// xxx todo: exit if p == ':' and there are no more args
+				} else {
+					spec += p;
 				}
 			}
 		}
@@ -90,33 +89,6 @@ MB_Specs.specFor = function (selector, args) {
 	spec = this.extendSpecForArgs(spec, args);
 	if (spec == '') return 'unknown'; // shouldn't happen
 	return spec;
-}
-
-MB_Specs.snapTypeForMBType = function (mbType) {
-	// Return the Snap! slot type for the given MicroBlocks slot type or '%ns' if mbType is null.
-	// MicroBlocks types: 'num' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
-
-	if (mbType == null) return '%ns'; // default
-
-	let typeParts = mbType.split('.');
-	if (typeParts.length > 1) { // this is a menu (e.g. menu.buttonMenu)
-		return ('%menu.' + typeParts[0] + '.' + typeParts[1]);
-	}
-
-	if ('num' == mbType) return '%n';
-	if ('str' == mbType) return '%mlt';
-	if ('auto' == mbType) return '%ns';
-	if ('bool' == mbType) return '%b';
-	if ('color' == mbType) return '%clr';
-	if ('cmd' == mbType) return '%cmd';
-	if ('var' == mbType) return '%t';
-	if ('microbitDisplay' == mbType) return '%mbDisplay';
-	return '%ns'; // default
-}
-
-MB_Specs.snapSymbolOrBreak = function (spec) {
-	if (spec == '#BR#') return '%br';
-	return spec; // not recognized; return original
 }
 
 MB_Specs.specForArg = function (arg) {
@@ -160,7 +132,7 @@ MB_Specs.blockForSpec = function (spec, category) {
 			b = new HatBlockMorph();
 		}
 		b.selector = spec[1];
-		b.setSpec(this.snapSpecFrom(spec));
+		b.setSpec(this.snapSpecForSelector(b.selector));
 		b.setCategory(category);
 		let defaults = spec.slice(4);
 		if ('v' == b.selector) {
@@ -183,17 +155,14 @@ MB_Specs.snapSpecForSelector = function (selector) {
 	// Return a Snap! block spec string for given selector or null if not found.
 
 	let specArray = this.specArrayForSelector(selector);
-	return specArray ? this.snapSpecFrom(specArray) : null;
-}
+	if (!specArray) return null; // not found
 
-MB_Specs.snapSpecFrom = function (spec) {
-	// Return a Snap! block spec string for the given MicroBlocks spec array.
-
-	if (spec[1] == 'if') { // special case for "if"
+	if (specArray[1] == 'if') { // special case for "if"
 		return 'if %b %cmd %elseif';
 	}
-	let mbSpec = spec[2];
-	let mbArgTypes = (spec.length > 3) ? spec[3].split(/\s+/) : [];
+
+	let mbSpec = specArray[2];
+	let mbArgTypes = (specArray.length > 3) ? specArray[3].split(/\s+/) : [];
 	let parts = mbSpec.split(/\s+/);
 
 	let argIndex = 0;
@@ -202,40 +171,25 @@ MB_Specs.snapSpecFrom = function (spec) {
 		if (p == '_') {
 			parts[i] = this.snapTypeForMBType(mbArgTypes[argIndex++]);
 		} else if (p.startsWith('#')) {
-			parts[i] = this.snapSymbolOrBreak(p);
-		} else if (p == ':') {
-			// spec has optional parts; add a part spec encoding those parts and exit loop
-			parts[i] = this.optionalInputsSpec(parts.slice(i + 1), mbArgTypes.slice(argIndex));
-
-			parts = parts.slice(0, i + 1);
-			break;
+			parts[i] = p;
 		}
 	}
 	return parts.join(' ');
 }
 
-MB_Specs.optionalInputsSpec = function (parts, mbArgTypes) {
-	// Return a string the encodes the given list of optional inputs.
-	// Spec prefix is '%exr' if the optional inputs are repeated, '%ex' if not.
-	// The result has no spaces; labels and input specs are separated by periods.
-	// Mutiple input slot groups are separated by colons.
+MB_Specs.snapTypeForMBType = function (mbType) {
+	// Return the Snap! slot type for the given MicroBlocks slot type or '%ns' if mbType is null.
+	// The Snap! types are the MicroBlocks types prefixed by '%'.
+	// MicroBlocks types: 'num' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
 
-	let prefix = '%ex,';
-	if (parts[parts.length - 1] == '...') {
-		parts = parts.slice(0, -2);
-		prefix = '%exr,'; // %exr repeats the last input group
+	if (mbType == null) return '%ns'; // default
+
+	let typeParts = mbType.split('.');
+	if (typeParts.length > 1) { // this is a menu (e.g. menu.buttonMenu)
+		return ('%menu.' + typeParts[0] + '.' + typeParts[1]);
 	}
 
-	let argIndex = 0;
-	for (let i = 0; i < parts.length; i++) {
-		let p = parts[i];
-		if (p == '_') {
-			parts[i] = this.snapTypeForMBType(mbArgTypes[argIndex++]);
-		} else if (p.startsWith('#')) {
-			parts[i] = this.snapSymbolOrBreak(p);
-		}
-	}
-	return prefix + parts.join(',');
+	return ('%' + mbType)
 }
 
 // ***** MicroBlocks built-in block specs *****
