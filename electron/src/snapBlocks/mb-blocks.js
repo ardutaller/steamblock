@@ -40,6 +40,7 @@
 
 				Morph*
 						ArrowMorph
+						BlockExpanderMorph
 						BlockHighlightMorph
 						ScriptsMorph
 						SyntaxElementMorph
@@ -91,6 +92,7 @@
 				TextSlotMorph
 				ColorSlotMorph
 				TemplateSlotMorph
+				BlockExpanderMorph
 				BlockHighlightMorph
 				MicroBitDisplaySlotMorph
 				MultiArgMorph
@@ -167,6 +169,7 @@ var BooleanSlotMorph;
 var ArrowMorph;
 var ColorSlotMorph;
 var HatBlockMorph;
+var BlockExpanderMorph;
 var BlockHighlightMorph;
 var MultiArgMorph;
 var MicroBitDisplaySlotMorph;
@@ -284,7 +287,7 @@ SyntaxElementMorph.prototype.partInfo = function (partSpec) {
 	// Return the info object for the given part spec string.
 	// The partSpec may be:
 	//	- a simple spec (e.g. '%n')
-	//	- a menu (e.g. 'menu.buttonMenu')
+	//	- a menu (e.g. 'menu.menu.buttonMenu')
 	//	- a string encoding a set of optional input slots and their labels
 
 	if (partSpec.startsWith('%menu')) {
@@ -297,73 +300,9 @@ SyntaxElementMorph.prototype.partInfo = function (partSpec) {
 		if ('auto' == specParts[1]) result.tags = 'numstring';
 		if ('num' == specParts[1]) result.tags = 'numeric';
 		return result;
-// xxx can delete:
-// 	} else if (partSpec.startsWith('%ex')) {
-// 		return this.mbMultipartInfo(partSpec);
 	} else {
 		return this.labelParts[partSpec];
 	}
-}
-
-SyntaxElementMorph.prototype.mbMultipartInfo = function (partSpec) {
-	// xxx delete this!
-	// Return the info object for an optional part spec starting with either:
-	//	'%ex' (non-repeatable) or
-	//	'%exr' (repeatable).
-	// Multiple input groups are separated by colons.
-	// Commas separate the labels and input slot specs within each group.
-
-	let repeatLast = false;
-	if (partSpec.startsWith('%exr')) {
-		repeatLast = true;
-		partSpec = partSpec.slice(5); // remove '%exr.' prefix
-	} else {
-		partSpec = partSpec.slice(4); // remove '%ex.' prefix
-	}
-
-	let result;
-	if (partSpec.indexOf(':') < 0) {
-		// Single input group, possibly repeating
-		let group = partSpec.replaceAll(',', ' ');
-		group = group.replaceAll('%br ', ''); // Snap! does handle line breaks in MultiArgMorphs
-		result = {
-			type: 'multi',
-			tags: 'static widget',
-			group: group
-		};
-		if (!repeatLast) result.max = 1;
-	} else {
-		// Multiple input groups (each block expansion adds another group)
-		// Used for multiple sets of optional input. Usually non-repeating.
-		let slots = [];
-		let labels = [];
-		let groups = partSpec.split(':');
-		for (let i = 0; i < groups.length; i++) {
-			let slotsForGroup = [];
-			let labelsForGroup = [];
-			let groupParts = groups[i].split(',');
-			for (let j = 0; j < groupParts.length; j++) {
-				if (groupParts[j].startsWith('%')) {
-					if (groupParts[j] != '%br') {
-						// Snap! does not handle line breaks in MultiArgMorphs
-						slotsForGroup.push(groupParts[j]);
-					}
-				} else {
-					labelsForGroup.push(groupParts[j]);
-				}
-			}
-			slots.push(slotsForGroup.join(' '));
-			labels.push(labelsForGroup.join(' '));
-		}
-		result = {
-			type: 'multi',
-			tags: 'static widget',
-			slots: slots,
-			label: labels
-		};
-		if (!repeatLast) result.max = slots.length;
-	}
-	return result;
 }
 
 SyntaxElementMorph.prototype.labelParts = {
@@ -408,18 +347,6 @@ SyntaxElementMorph.prototype.labelParts = {
 	'%mlt': {
 		type: 'text entry',
 	},
-
-// xxx
-// 	// other single types
-// 	'%br': {
-// 		type: 'break'
-// 	},
-// 	'%clr': {
-// 		type: 'color'
-// 	},
-// 	'%mbDisplay': {
-// 		type: 'mbDisplay'
-// 	},
 
 	// specialized variadic inputs
 	/*
@@ -1704,6 +1631,7 @@ BlockMorph.prototype.init = function () {
 	this.comment = null; // optional "sticky" comment morph
 
 	// not to be persisted:
+	this.expander = null;
 	this.instantiationSpec = null; // spec to set upon fullCopy() of template
 	this.category = null; // for zebra coloring (non persistent)
 	this.afterglow = 0; // frame count-down for displaying the "active" halo
@@ -1792,7 +1720,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 	}
 
 	for (word of this.parseSpec(spec)) {
- 		if (':' == word) break; // stop at start of option extensions
+ 		if (':' == word) break; // stop at start of optional arguments
 
 		if (word[0] === '%' && (word !== '%br')) {
 			inputIdx += 1;
@@ -1833,6 +1761,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 	this.fixLayout();
 	this.rerender();
 	this.cachedInputs = null;
+	if (this.blockSpec.includes(':')) this.addExpander();
 };
 
 BlockMorph.prototype.userSetSpec = function (spec) {
@@ -2243,10 +2172,26 @@ BlockMorph.prototype.expand = function () {
 
 	if (!this.canExpand()) return;
 
+	if (this.expander) this.expander.destroy(); // remove the expander before appending parts
 	for (const p of this.specForExpand().split(/\s+/)) {
 		this.addChild(this.labelPart(p));
 	}
 	this.cachedInputs = null;
+	this.addExpander();
+	this.fixLayout();
+}
+
+BlockMorph.prototype.contract = function () {
+	// Expand the given block if possible.
+
+	if (!this.canContract()) return;
+
+	if (this.expander) this.expander.destroy(); // remove the expander before appending parts
+	for (const p of this.specForContract().split(/\s+/)) {
+		this.removeChild(this.children.at(-1));
+	}
+	this.cachedInputs = null;
+	this.addExpander();
 	this.fixLayout();
 }
 
@@ -2285,21 +2230,36 @@ BlockMorph.prototype.specForExpand = function () {
 	let currentInputCount = this.inputs().length;
 	let specSections = this.blockSpec.split(':').map(s => s.trim());
 
-for (const sec of specSections) {
-	console.log('   ', ('|' + sec + '|'), this.inputCountForSpecSection(sec));
-}
-console.log('currentInputCount', currentInputCount);
-
 	let count = this.inputCountForSpecSection(specSections[0]);
 	for (i = 1; i < specSections.length; i++) {
 		count += this.inputCountForSpecSection(specSections[i]);
 		if (count > currentInputCount) {
 			let result = specSections[i];
-console.log('i', i, 'count', count, 'result', result);
 			return (result == '...') ? specSections[i - 1] : result;
 		}
 	}
 	return '';
+}
+
+BlockMorph.prototype.specForContract = function () {
+	// Return a string containing the block spec section for the next level of expansion.
+
+	let currentInputCount = this.inputs().length;
+	let specSections = this.blockSpec.split(':').map(s => s.trim());
+
+	let count = this.inputCountForSpecSection(specSections[0]);
+	for (i = 1; i < specSections.length; i++) {
+		count += this.inputCountForSpecSection(specSections[i]);
+		if (count >= currentInputCount) {
+			return specSections[i - 1];
+		}
+	}
+	return specSections.at(-1);
+}
+
+BlockMorph.prototype.addExpander = function () {
+	this.expander = new BlockExpanderMorph(this);
+	this.addChild(this.expander);
 }
 
 // BlockMorph exporting picture with result bubble
@@ -2309,82 +2269,6 @@ BlockMorph.prototype.exportResultPic = function () {
 	return;
 	var top = this.topBlock();
 	if (top !== this) {return; }
-};
-
-// BlockMorph syntax analysis
-
-BlockMorph.prototype.toLisp = function (indentation = 0) {
-	return Process.prototype.toTextSyntax(
-		this.components()
-	).encode(0, indentation);
-};
-
-BlockMorph.prototype.components = function (parameterNames = []) {
-	if (this instanceof ReporterBlockMorph) {
-		return this.syntaxTree(parameterNames);
-	}
-	var seq = new List(this.blockSequence(true)).map((block, i) =>
-		block.syntaxTree(i < 1 ? parameterNames : [])
-	);
-	return seq.length() === 1 ? seq.at(1) : seq;
-};
-
-BlockMorph.prototype.syntaxTree = function (parameterNames) {
-	var expr = this.fullCopy(),
-		nb = expr.nextBlock ? expr.nextBlock() : null,
-		inputs, parts;
-	if (nb) {
-		nb.destroy();
-	}
-	expr.fixBlockColor(null, true);
-	inputs = expr.inputs();
-	parts = new List([expr.reify()]);
-	inputs.forEach(inp => {
-		var val;
-		if (inp instanceof BlockMorph) {
-			parts.add(inp.components());
-			expr.revertToEmptyInput(inp);
-		} else if (inp.isEmptySlot()) {
-			parts.add();
-		} else if (inp instanceof MultiArgMorph) {
-			if (!inp.inputs().length) {
-				parts.add();
-			}
-			inp.inputs().forEach((slot, i) => {
-				var entry;
-				if (slot instanceof BlockMorph) {
-					parts.add(slot.components());
-				} else if (slot.isEmptySlot()) {
-					parts.add();
-				} else {
-					entry = slot.evaluate();
-					parts.add(entry instanceof BlockMorph ?
-						entry.components() : entry);
-				}
-				inp.revertToEmptyInput(slot);
-			});
-		} else if (inp instanceof ArgLabelMorph) {
-			parts.add(inp.argMorph().components());
-			expr.revertToEmptyInput(inp).collapseAll();
-		} else {
-			val = inp.evaluate();
-			if (val instanceof Array) {
-				val = '[' + val + ']';
-			}
-			if (inp instanceof ColorSlotMorph) {
-				val = val.toString();
-			}
-			parts.add(val instanceof BlockMorph ? val.components() : val);
-			expr.revertToEmptyInput(inp, true);
-		}
-	});
-	parts.at(1).updateEmptySlots();
-	if (expr.selector === 'v') {
-		parts.add(expr.blockSpec);
-		expr.setSpec('\xa0'); // non-breaking space, appears blank
-	}
-	parameterNames.forEach(name => parts.add(name));
-	return parts;
 };
 
 BlockMorph.prototype.equalTo = function (other) {
@@ -5417,7 +5301,7 @@ InputSlotMorph.prototype.mbMenu = function (slotMenuName) {
 	}
 	// todo when we have a runtime: allVarsMenu, broadcastMenu, functionNameMenu
 
-	console.log('unhandled slot menu:', slotMenuName); // xxx
+	console.log('unhandled slot menu:', slotMenuName);
 	return null;
 }
 
@@ -6505,6 +6389,85 @@ ColorSlotMorph.prototype.render = function (ctx) {
 		this.height() - this.edge * 2
 	);
 };
+
+// BlockExpanderMorph //////////////////////////////////////////////////////
+
+/*
+	I am used to expand and contract blocks with optional arguments.
+*/
+
+// BlockExpanderMorph inherits from ArgMorph:
+
+BlockExpanderMorph.prototype = new Morph();
+BlockExpanderMorph.prototype.constructor = BlockExpanderMorph;
+BlockExpanderMorph.uber = Morph.prototype;
+
+// BlockExpanderMorph instance creation:
+
+function BlockExpanderMorph(aBlock) {
+	this.init(aBlock);
+}
+
+BlockExpanderMorph.prototype.init = function (aBlock) {
+	BlockExpanderMorph.uber.init.call(this);
+	this.color = new Color(0, 0, 0);
+	this.showLeft = aBlock.canContract();
+	this.showRight = aBlock.canExpand();
+	const w = (this.showLeft && this.showRight) ? 18 : 10;
+	this.bounds.setWidth(w * aBlock.scale);
+	this.bounds.setHeight(14 * aBlock.scale);
+};
+
+// BlockExpanderMorph drawing:
+
+BlockExpanderMorph.prototype.render = function (ctx) {
+
+	const w = this.width();
+	const h = this.height();
+	ctx.fillStyle = this.color.toString();
+
+// this.showLeft = false;
+// this.showRight = true;
+
+	if (this.showLeft) {
+		const right = h / 2;
+		ctx.beginPath();
+		ctx.moveTo(right, 0);
+		ctx.lineTo(0, (h / 2));
+		ctx.lineTo(right, h);
+		ctx.closePath();
+		ctx.fill();
+	}
+
+	if (this.showRight) {
+		const left = w - (h / 2);
+		ctx.beginPath();
+		ctx.moveTo(left, 0);
+		ctx.lineTo(w, (h / 2));
+		ctx.lineTo(left, h);
+		ctx.closePath();
+		ctx.fill();
+	}
+};
+
+// BlockExpanderMorph user input:
+
+BlockExpanderMorph.prototype.mouseClickLeft = function (pos) {
+	const aBlock = this.parent;
+	if (!aBlock instanceof BlockMorph) return; // should not happen
+
+	if (!this.showLeft) {
+		aBlock.expand();
+	} else if (!this.showRight) {
+		aBlock.contract();
+	} else {
+		if ((pos.x - this.left()) > (this.width() / 2)) {
+			aBlock.expand();
+		} else {
+			aBlock.contract();
+		}
+	}
+}
 
 // BlockHighlightMorph /////////////////////////////////////////////////
 

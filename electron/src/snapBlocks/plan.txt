@@ -16,7 +16,8 @@ To do:
 [ ] implement collapse
 
 Block cleanups:
-  - remove: comment support, Lisp support, MutiArgMorph support
+  - remove: comment support (comment slot, "allComments()"
+  - remove Lisp support, MutiArgMorph support
 
 multi-arg: look for labelText and slotSpec
 
