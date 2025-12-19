@@ -12,14 +12,11 @@ To do:
 [x] optional block sections (see e.g. Snap! "broadcast" block)
 [ ] fix: if-else blocks are expanded (don't extend args for option sections?)
 
-[ ] BlockExpander morph
-[ ] implement collapse
+[x] BlockExpander morph
+[x] implement collapse
 
-Block cleanups:
-  - remove: comment support (comment slot, "allComments()"
-  - remove Lisp support, MutiArgMorph support
-
-multi-arg: look for labelText and slotSpec
+Block cleanup:
+  [ ] finish removing block comment code
 
 Issues:
 [x] Snap! seems to allow arg slots to contain null, MicroBlocks assumes they always have some value.
