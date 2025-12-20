@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-12-16 10:21+0000\n"
+"PO-Revision-Date: 2025-12-21 19:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1-dev\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -7700,7 +7700,7 @@ msgstr "#SVG#square11#0070ff setze _ _ Port _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#fff000 set motor _ port _"
-msgstr "#SVG#square11#fff000 setze Motor _ Port _"
+msgstr "#SVG#square11#fff000 drehe Motor _ Port _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#00c612 set year _ month _ day _"
@@ -7832,7 +7832,7 @@ msgstr "Callibot setze LED _ _"
 
 #. Calliope Callibot library block
 msgid "Callibot set motor _ _ speed _ (0~100)"
-msgstr "Callibot setze Motor _ _ Tempo _ (0~100)"
+msgstr "Callibot drehe Motor _ _ Tempo _ (0~100)"
 
 #. Calliope Callibot library block
 msgid "Callibot set neopixel _ to _ intensity _"
