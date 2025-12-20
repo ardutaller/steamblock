@@ -414,13 +414,12 @@ static int functionNameMatches(int chunkIndex, char *functionName, int nameLengt
 	return true;
 }
 
-static int chunkIndexForFunction(char *functionName) {
+int chunkIndexForFunction(char *functionName) {
 	// Return the chunk index for the function with the given name or -1 if not found.
 
 	int nameLength = strlen(functionName);
 	for (int i = 0; i < MAX_CHUNKS; i++) {
-		int chunkType = chunks[i].chunkType;
-		if ((functionHat == chunkType) &&
+		if ((functionHat == chunks[i].chunkType) &&
 			 functionNameMatches(i, functionName, nameLength)) {
 				return i;
 		}

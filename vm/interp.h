@@ -283,6 +283,8 @@ uint32 millisecs(void);
 uint32 seconds();
 void handleMicosecondClockWrap();
 
+int chunkIndexForFunction(char *functionName);
+
 int ideConnected();
 int recvBytes(uint8 *buf, int count);
 int sendBytes(uint8 *buf, int start, int end);
