@@ -185,6 +185,9 @@ class MB_Parser {
 
 		let selector = buf[0];
 		let args = buf.slice(1);
+		if ('v' == selector) {
+			return this.makeVariableReporter(args[0]);
+		}
 		let b, blockType = MB_Specs.blockTypeForSelector(selector);
 		if (isReporter || ('r' == blockType)) {
 			b = new ReporterBlockMorph();
@@ -223,8 +226,8 @@ class MB_Parser {
 				}
 			}
 			this.setBlockArg(b, arg, i);
+			if (arg instanceof ReporterBlockMorph) arg.fixBlockColor();
 		}
-		b.fixBlockColor();
 		return b;
 	}
 
@@ -286,6 +289,10 @@ class MB_Parser {
 	}
 
 	makeVariableReporter(varName) {
+		if (varName[0] == "'") {
+			// quoted variable name; remove the quotes
+			varName = varName.slice(1, -1);
+		}
 		let b = new ReporterBlockMorph();
 		b.setCategory('Variables');
 		b.selector = 'v';
@@ -534,9 +541,7 @@ function parser_test4() {
 
 function parser_test(s) {
 	let cmds = MB_Parser.parse(s);
-	console.log(cmds);
 	cmds.forEach( (cmd) => {
-		console.log(MB_Parser.blockFor(cmd));
 		MB_GUI.addBlockToScripts(MB_Parser.blockFor(cmd));
 	});
 }
@@ -559,6 +564,10 @@ function parser_test8() {
 
 function parser_test9() {
 	parser_test("\n\nscript 206 288 {\nspiSend 0\n\n}\n\n");
+}
+
+function parser_test10() {
+	parser_test("x = (v 'foo')");
 }
 
 function parser_testFile() {
