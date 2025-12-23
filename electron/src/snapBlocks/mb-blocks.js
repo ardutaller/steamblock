@@ -1355,11 +1355,9 @@ function BlockMorph() {
 BlockMorph.prototype.init = function () {
 	this.selector = null; // name of method to be triggered
 	this.blockSpec = ''; // formal description of label and arguments
-	this.comment = null; // optional "sticky" comment morph
 
 	// not to be persisted:
 	this.expander = null;
-	this.instantiationSpec = null; // spec to set upon fullCopy() of template
 	this.category = null; // for zebra coloring (non persistent)
 	this.afterglow = 0; // frame count-down for displaying the "active" halo
 
@@ -2430,21 +2428,10 @@ BlockMorph.prototype.fullCopy = function () {
 	var ans = BlockMorph.uber.fullCopy.call(this);
 	ans.removeHighlight();
 	ans.isDraggable = true;
-	if (this.instantiationSpec) {
-		ans.setSpec(this.instantiationSpec);
-	}
-	ans.allChildren().filter(block => {
+	ans.allChildren().forEach((block) => {
 		if (block instanceof SyntaxElementMorph) {
 			block.cachedInputs = null;
-			if (block.isCustomBlock) {
-				block.initializeVariables(block.variables.names());
-			}
 		}
-		return !isNil(block.comment);
-	}).forEach(block => {
-		var cmnt = block.comment.fullCopy();
-		block.comment = cmnt;
-		cmnt.block = block;
 	});
 	ans.cachedInputs = null;
 	return ans;
@@ -2553,8 +2540,6 @@ BlockMorph.prototype.situation = function () {
 	return BlockMorph.uber.situation.call(this);
 };
 
-// BlockMorph sticky comments
-
 BlockMorph.prototype.prepareToBeGrabbed = function (hand) {
 	var wrld = hand ? hand.world : this.world();
 
@@ -2565,14 +2550,6 @@ BlockMorph.prototype.prepareToBeGrabbed = function (hand) {
 
 BlockMorph.prototype.justDropped = function () {
 	delete this.alpha;
-};
-
-BlockMorph.prototype.allComments = function () {
-	return this.allChildren().filter(block =>
-		!isNil(block.comment)
-	).map(block =>
-		block.comment
-	);
 };
 
 BlockMorph.prototype.destroy = function (justThis) {
@@ -2868,7 +2845,6 @@ CommandBlockMorph.prototype.snap = function (hand) {
 
 	if (target === null) {
 		this.fixBlockColor();
-		CommandBlockMorph.uber.snap.call(this); // align stuck comments
 		return;
 	}
 	if (target.loc === 'bottom') {
@@ -2924,7 +2900,6 @@ CommandBlockMorph.prototype.snap = function (hand) {
 		);
 	}
 	this.fixBlockColor();
-	CommandBlockMorph.uber.snap.call(this); // align stuck comments
 	if (this.snapSound) {
 		this.snapSound.play();
 	}
@@ -3549,7 +3524,7 @@ ScriptsMorph.prototype.fullCopy = function () {
 		this.focus.stopEditing();
 	}
 	this.children.forEach(morph => {
-		if (!morph.block) { // omit anchored comments
+		if (!morph.block) {
 			child = morph.fullCopy();
 			cpy.add(child);
 			child.setPosition(morph.position().subtract(pos));
@@ -3679,29 +3654,6 @@ ScriptsMorph.prototype.showCommandDropFeedback = function (block) {
 	));
 };
 
-ScriptsMorph.prototype.showCommentDropFeedback = function (comment, hand) {
-	var target = this.closestBlock(comment, hand);
-	if (!target) {
-		return null;
-	}
-
-	this.feedbackMorph.bounds = target.bounds
-		.expandBy(Math.max(
-			BlockMorph.prototype.edge * 2,
-			BlockMorph.prototype.reporterDropFeedbackPadding
-		));
-	this.feedbackMorph.edge = SyntaxElementMorph.prototype.rounding;
-	this.feedbackMorph.border = Math.max(
-		SyntaxElementMorph.prototype.edge,
-		3
-	);
-	this.add(this.feedbackMorph);
-	this.feedbackMorph.color = comment.color.copy();
-	this.feedbackMorph.color.a = 0.25;
-	this.feedbackMorph.borderColor = comment.titleBar.color;
-	this.feedbackMorph.rerender();
-};
-
 ScriptsMorph.prototype.showCSlotWrapFeedback = function (srcBlock, trgBlock) {
 	var clr;
 	this.feedbackMorph.bounds = trgBlock.fullBounds()
@@ -3798,45 +3750,6 @@ ScriptsMorph.prototype.closestInput = function (reporter, hand) {
 	);
 };
 
-ScriptsMorph.prototype.closestBlock = function (comment, hand) {
-	// passing the hand is optional (when dragging comments)
-	var fb = comment.bounds,
-		stacks = this.children.filter(child =>
-			(child instanceof BlockMorph) &&
-				(child.fullBounds().intersects(fb))
-		),
-		handPos,
-		target,
-		all;
-
-	all = [];
-	stacks.forEach(stack => {
-		all = all.concat(stack.allChildren().slice(0).reverse().filter(
-			child => child instanceof BlockMorph && !child.isTemplate
-		));
-	});
-	if (all.length === 0) {return null; }
-
-	if (hand) {
-		handPos = hand.position();
-		target = detect(
-			all,
-			block => !block.comment &&
-				!block.isPrototype &&
-					block.bounds.containsPoint(handPos)
-		);
-		if (target) {
-			return target;
-		}
-	}
-	return detect(
-		all,
-		block => !block.comment &&
-			!block.isPrototype &&
-				block.bounds.intersects(fb)
-	);
-};
-
 // ScriptsMorph user menu
 
 ScriptsMorph.prototype.userMenu = function () {
@@ -3920,10 +3833,10 @@ ScriptsMorph.prototype.scriptsPicture = function () {
 	return pic;
 };
 
-// ScriptsMorph sorting blocks and comments
+// ScriptsMorph sorting blocks
 
 ScriptsMorph.prototype.sortedElements = function () {
-	// return all scripts and unattached comments
+	// return all scripts
 	var scripts = this.children.slice(); // make a copy
 	scripts.sort((a, b) =>
 		// make sure the prototype hat block always stays on top
