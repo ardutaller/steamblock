@@ -93,15 +93,15 @@ MB_Specs.specFor = function (selector, args) {
 
 MB_Specs.specForArg = function (arg) {
 	if ((typeof arg) == 'number') {
-		return '%n';
+		return '%num';
 	} else if (((typeof arg) == 'string') || (arg == null)) {
-		return '%s';
+		return '%auto';
 	} else if ((arg == true) || (arg == false)) {
-		return '%b';
+		return '%bool';
 	} else if (arg instanceof CommandBlockMorph) {
 		return '%cmd';
 	}
-	return '%ns';
+	return '%auto';
 }
 
 MB_Specs.extendSpecForArgs = function (spec, args) {
@@ -174,11 +174,11 @@ MB_Specs.snapSpecForSelector = function (selector) {
 }
 
 MB_Specs.snapTypeForMBType = function (mbType) {
-	// Return the Snap! slot type for the given MicroBlocks slot type or '%ns' if mbType is null.
+	// Return the Snap! slot type for the given MicroBlocks slot type or '%auto' if mbType is null.
 	// The Snap! types are the MicroBlocks types prefixed by '%'.
 	// MicroBlocks types: 'num' 'str' 'auto' 'bool' 'color' 'cmd' 'var' 'menu' 'microbitDisplay'
 
-	if (mbType == null) return '%ns'; // default
+	if (mbType == null) return '%auto'; // default
 
 	let typeParts = mbType.split('.');
 	if (typeParts.length > 1) { // this is a menu (e.g. menu.buttonMenu)

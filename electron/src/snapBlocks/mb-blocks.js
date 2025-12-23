@@ -280,7 +280,7 @@ SyntaxElementMorph.prototype.alpha = 1;
 SyntaxElementMorph.prototype.partInfo = function (partSpec) {
 	// Return the info object for the given part spec string.
 	// The partSpec may be:
-	//	- a simple spec (e.g. '%n')
+	//	- a simple spec (e.g. '%num')
 	//	- a menu (e.g. 'menu.menu.buttonMenu')
 	//	- a string encoding a set of optional input slots and their labels
 
@@ -306,41 +306,6 @@ SyntaxElementMorph.prototype.labelParts = {
 		tags: numeric numstring alphanum read-only landscape static
 		menu: menu selector
 	*/
-
-	'%s': {
-		type: 'input'
-	},
-	'%n': {
-		type: 'input',
-		tags: 'numeric'
-	},
-	'%ns': {
-		type: 'input',
-		tags: 'numstring'
-	},
-	'%var': {
-		type: 'input',
-		tags: 'read-only static', // if "static" is removed, enable auto-ringify
-		menu: 'getVarNamesDict'
-	},
-	'%b': {
-		type: 'boolean'
-	},
-	'%cmd': {
-		type: 'c',
-		tags: 'static'
-	},
-	'%t': {
-		type: 'template',
-		label: '\xa0' // non-breaking space, appears blank
-	},
-	'%txt': {
-		type: 'input',
-		tags: 'landscape'
-	},
-	'%mlt': {
-		type: 'text entry',
-	},
 
 	// following are MicroBlocks types prefixed with %
 	'%num': {
@@ -779,7 +744,7 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 				part = new Morph();
 				part.setExtent(ZERO);
 				part.isBlockLabelBreak = true;
-				part.getSpec = () => '%br';
+				part.getSpec = () => '#BR#';
 				break;
 			case 'variable':
 				part = new TemplateSlotMorph(info.label);
@@ -1347,21 +1312,18 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 
 		arity: single
 
-		%br		- user-forced line break
-		%s		- white rectangular type-in slot ("string-type")
-		%n		- white roundish type-in slot ("numerical")
-		%b		- chameleon colored hexagonal slot (for predicates)
+		%str	- white rectangular type-in slot (multi-line string)
+		%num	- white roundish type-in slot (number)
+		%auto	- white roundish type-in slot (number or string)
 		%cmd	- C-shaped, auto-reifying, accepts reporter drops
-		%txt	- white rectangular type-in slot ("text-type")
-		%mlt	- white rectangular type-in slot ("multi-line-text-type")
-		%var	- chameleon colored rectangular drop-down for variable names
-		%clr	- interactive color slot
-		%t		- inline variable reporter template
-		%r		- round reporter slot
+		%var	- inline variable reporter template
+		#BR#	- user-forced line break
+		%color	- interactive color slot
+		%mbdisplay	- editor for 5x5 LED display
 
 		examples:
-			'if %b %c else %c'			- creates Scratch's If/Else block
-			'set pen color to %clr'		- creates Scratch's Pen color block
+			'if %bool %cmd else %cmd'
+			'set pen color to %color'
 */
 
 // BlockMorph inherits from SyntaxElementMorph:
@@ -1512,7 +1474,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 	for (word of this.parseSpec(spec)) {
  		if (':' == word) break; // stop at start of optional arguments
 
-		if (word[0] === '%' && (word !== '%br')) {
+		if (word[0] === '%') {
 			inputIdx += 1;
 		}
 		part = this.labelPart(word);
@@ -3426,7 +3388,7 @@ ReporterBlockMorph.prototype.blockSequence = function () {
 
 ReporterBlockMorph.prototype.isLocked = function () {
 	// answer true if I can be exchanged by a dropped reporter
-	return this.isStatic || (this.getSlotSpec() === '%t');
+	return this.isStatic || (this.getSlotSpec() === '%var');
 };
 
 ReporterBlockMorph.prototype.getSlotSpec = function () {
@@ -4198,7 +4160,7 @@ ArgMorph.prototype.justDropped = function () {
 // ArgMorph spec extrapolation (for demo purposes)
 
 ArgMorph.prototype.getSpec = function () {
-	return this.type === 'list' ? '%l' : '%s'; // default
+	return '%auto';
 };
 
 // ArgMorph menu
@@ -4683,12 +4645,13 @@ CSlotMorph.prototype.outlinePath = function (ctx, inset, offset) {
 	contents().text			- get the displayed string
 	choices					- a key/value list for my optional drop-down
 	isReadOnly				- governs whether I am editable or not
-	isNumeric				- governs my outer shape (round or rect)
+	isNumeric				- governs my shape (round or rect)
 
 	my block specs are:
 
-	%s		- string input, rectangular
-	%n		- numerical input, semi-circular vertical edges
+	%str	- string input, rectangular
+	%num	- numerical input, semi-circular
+	%auto	- string or number input, changes shape depending on value
 
 	evaluate() returns my displayed string, cast to float if I'm numerical
 
@@ -4751,10 +4714,7 @@ InputSlotMorph.prototype.init = function (
 // InputSlotMorph accessing:
 
 InputSlotMorph.prototype.getSpec = function () {
-	if (this.isNumeric) {
-		return '%n';
-	}
-	return '%s'; // default
+	return (this.isNumeric) ? '%num' : '%auto'; // default
 };
 
 InputSlotMorph.prototype.contents = function () {
@@ -5225,10 +5185,10 @@ InputSlotTextMorph.prototype.getShadowRenderColor =
 // TemplateSlotMorph ///////////////////////////////////////////////////
 
 /*
-	I am a reporter block template sitting on a pedestal.
+	I am a variable reporter block template sitting on a pedestal.
 	My block spec is
 
-	%t		- template
+	%var - inline variable reporter template
 
 	evaluate returns the embedded reporter template's label string
 */
@@ -5263,7 +5223,7 @@ TemplateSlotMorph.prototype.init = function (name) {
 // TemplateSlotMorph accessing:
 
 TemplateSlotMorph.prototype.getSpec = function () {
-	return '%t';
+	return '%var';
 };
 
 TemplateSlotMorph.prototype.template = function () {
@@ -5341,7 +5301,7 @@ TemplateSlotMorph.prototype.cSlots = function () {
 	I am a diamond-shaped argument slot.
 	My block spec is
 
-	%b			- Boolean
+	%bool	- Boolean
 
 	I can be directly edited. When the user clicks on me I toggle
 	between <true>, <false> and <null> values.
@@ -5380,7 +5340,7 @@ BooleanSlotMorph.prototype.init = function (initialValue) {
 };
 
 BooleanSlotMorph.prototype.getSpec = function () {
-	return '%b';
+	return '%bool';
 };
 
 BooleanSlotMorph.prototype.isWide = function () {
@@ -5825,7 +5785,7 @@ TextSlotMorph.prototype.init = function (
 // TextSlotMorph accessing:
 
 TextSlotMorph.prototype.getSpec = function () {
-	return '%mlt';
+	return '%str';
 };
 
 TextSlotMorph.prototype.contents = function () {
@@ -5850,7 +5810,7 @@ TextSlotMorph.prototype.layoutChanged = function () {
 	restricted to selecting a color from the palette, any color from
 	anywhere within the World can be chosen.
 
-	my block spec is %clr
+	my block spec is %color
 
 	evaluate() returns my color
 */
@@ -5876,7 +5836,7 @@ ColorSlotMorph.prototype.init = function (clr) {
 };
 
 ColorSlotMorph.prototype.getSpec = function () {
-	return '%clr';
+	return '%color';
 };
 
 ColorSlotMorph.prototype.setContents = function (clr) {
@@ -6877,12 +6837,9 @@ ScriptFocusMorph.prototype.blockTypes = function () {
 		return ['command'];
 	}
 	if (this.element instanceof ReporterBlockMorph) {
-		if (this.element.getSlotSpec() === '%n') {
-			return ['reporter'];
-		}
-		return ['reporter', 'predicate'];
+		return ['reporter'];
 	}
-	if (this.element.getSpec() === '%n') {
+	if (this.element.getSpec() === '%num') {
 		return ['reporter'];
 	}
 	if (this.element.isStatic) {
