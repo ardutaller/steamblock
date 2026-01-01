@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2025-12-21 19:00+0000\n"
+"PO-Revision-Date: 2026-01-01 18:33+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -4115,7 +4115,7 @@ msgstr "linker"
 
 #. OLED Graphics library block
 msgid "draw circle at x _ y _ radius _ erase _"
-msgstr "zeichne Kreis bei x _ y _ Radius _ löschen _"
+msgstr "zeichne Kreis um x _ y _ Radius _ löschen _"
 
 #. Keyestudio Smart Farm library block
 msgid "current (mA)"
@@ -4224,7 +4224,7 @@ msgstr "setze Video _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "initialisiere i2c _ Adresse (hex) _ ResetPin _ flip _"
+msgstr "init i2c _ Adresse (hex) _ ResetPin _ flip _"
 
 #. General MIDI control change
 msgid "hold"
@@ -4232,7 +4232,7 @@ msgstr "Halten"
 
 #. OLED Graphics library block
 msgid "draw line from x _ y _ to x _ y _ erase _"
-msgstr "zeichne Linie von x _ y _ nach x _ y _ löschen _"
+msgstr "zeichne Linie x _ y _ nach x _ y _ löschen _"
 
 #. Option in ( pick (some) from (aList) ) block in Lists library
 msgid "some"
@@ -4322,7 +4322,7 @@ msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "initialisiere spi _ D/C-Pin _ ResetPin _ flip _"
+msgstr "init spi _ D/C-Pin _ ResetPin _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -7128,7 +7128,7 @@ msgstr "S2"
 
 #. OLED Graphics library block
 msgid "initialize i2c(auto) reset pin# _ flip _"
-msgstr "initialisiere i2c (auto) Reset-Pin _ flip _"
+msgstr "init i2c (auto) ResetPin _ flip _"
 
 #. Files library block
 msgid "contents of file _"
