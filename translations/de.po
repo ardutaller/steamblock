@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-01 18:53+0000\n"
+"PO-Revision-Date: 2026-01-01 19:00+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -3406,7 +3406,7 @@ msgstr "schaltet die Benutzer-LED ein oder aus."
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the timer was last reset."
 msgstr ""
-"gibt die Millisekunden (ms) seit dem Zurücksetzen der Systemzeit zurück."
+"gibt die Millisekunden seit dem letzten Zurücksetzen der Systemzeit aus."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the last broadcast message received."
@@ -4337,7 +4337,7 @@ msgstr "Cursorposition"
 
 #. OLED Graphics library block
 msgid "defer display updates"
-msgstr "verschiebe Displayaktualisierung"
+msgstr "schreibe in Displaypuffer"
 
 #. Color library block
 msgid "_ with brightness _ %"
