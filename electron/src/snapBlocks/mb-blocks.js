@@ -6,12 +6,13 @@
 		based on morphic.js
 		inspired by Scratch
 
-		written by Jens Mönig
+		written by Jens Mönig for Snap!
+		modified by John Maloney and Bernat Romagosa
 		jens@moenig.org
 
 		Copyright (C) 2025 by Jens Mönig
 
-		This file is part of Snap!.
+		This file is part of MicroBlocks, derived from the Snap! file blocks.js.
 
 		Snap! is free software: you can redistribute it and/or modify
 		it under the terms of the GNU Affero General Public License as
@@ -26,11 +27,9 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
 		prerequisites:
 		--------------
 		needs morphic.js
-
 
 		hierarchy
 		---------
@@ -66,7 +65,6 @@
 
  * from morphic.js
 
-
 		toc
 		---
 		the following list shows the order in which all constructors are
@@ -93,7 +91,6 @@
 				BlockExpanderMorph
 				BlockHighlightMorph
 				MicroBitDisplaySlotMorph
-
 
 		structure of syntax elements
 		----------------------------

@@ -1,3 +1,13 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+
+/*
+	MB_Parser - Parser for the MicroBlocks language textual representation.
+*/
+
 class MB_Parser {
 	constructor(srcString, fileName = '<string>') {
 		this.buf = Array.from(srcString);

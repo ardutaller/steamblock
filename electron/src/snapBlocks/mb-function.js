@@ -1,9 +1,18 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+
+/*
+	MB_Function - MicroBlocks function representation.
+*/
+
 class MB_Function {
-	constructor(functionName, argNames, cmdList, module = '') {
+	constructor(functionName, argNames, cmdList) {
 		this.functionName = functionName;
 		this.argNames = argNames;
 		this.cmdList = cmdList;
-		this.module = module;
 		this.localVars = this.collectLocalVars(cmdList);
 	}
 
@@ -130,7 +139,6 @@ class MB_Function {
 		}
 		return (
 			(f.functionName == this.functionName) &&
-			(f.module == this.module) &&
  			arraysEqual(f.argNames, this.argNames) &&
 			arraysEqual(f.localVars, this.localVars) &&
 			f.cmdList.codeString() == this.cmdList.codeString());

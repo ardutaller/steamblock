@@ -1,3 +1,17 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+
+/*
+	MB_Project - MicroBlocks project and library operations.
+
+	A MicroBlocks project consists of a main MB_Module objects containing the
+	top-level scripts and function definitions and zero or more MB_Modules for
+	the libraries it uses.
+*/
+
 class MB_Project {
 	constructor() {
 		this.main = new MB_Module('main');
