@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-01 18:49+0000\n"
+"PO-Revision-Date: 2026-01-01 18:53+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -196,7 +196,7 @@ msgstr "lösche Graphen"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Reset the timer."
-msgstr "setzt den Zeitgeber zurück."
+msgstr "setzt den Systemzeit zurück."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Script"
@@ -2755,11 +2755,11 @@ msgstr "Eingabe"
 
 #. Block in Input category
 msgid "timer"
-msgstr "Zeitgeber"
+msgstr "Systemzeit"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr "setze Zeitgeber zurück"
+msgstr "setze Systemzeit zurück"
 
 #. Block in Input category
 msgid "microseconds"
@@ -3406,8 +3406,7 @@ msgstr "schaltet die Benutzer-LED ein oder aus."
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the timer was last reset."
 msgstr ""
-"gibt die Zeit in Millisekunden (ms) seit dem Zurücksetzen des Zeitgebers "
-"zurück."
+"gibt die Millisekunden (ms) seit dem Zurücksetzen der Systemzeit zurück."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the last broadcast message received."
