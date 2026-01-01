@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-01 19:00+0000\n"
+"PO-Revision-Date: 2026-01-01 19:43+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -4219,7 +4219,7 @@ msgstr "MQTT verbunden"
 
 #. OLED Graphics library block
 msgid "set video _"
-msgstr "setze Video _"
+msgstr "setze Display _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
@@ -4325,7 +4325,7 @@ msgstr "init spi _ D/C _ Reset _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
-msgstr "schreibe _ bei x _ y _ invers _"
+msgstr "schreibe Text _ bei x _ y _ invers _"
 
 #. OLED Graphics library block
 msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
