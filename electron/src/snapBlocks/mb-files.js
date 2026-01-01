@@ -13,18 +13,19 @@ MB_Files = {
 }
 
 MB_Files.initialize = async function () {
-	// Return a set of all local variables used in this function.
+	// Create a list of available files by reading files.txt.
 
 	if (this.fileNames) return; // already initialized
 
 	this.fileNames = [];
-	let s = await this.readFileFromServer('files.txt');
+	let s = await this.readFile('files.txt');
 	if (!s) return; // could not read files.txt from server; empty file system
 
 	this.fileNames = s.split('\n');
+	if (this.fileNames.at(-1) == '') this.fileNames.pop();
 }
 
-MB_Files.readFileFromServer = async function (url) {
+MB_Files.readFile = async function (url) {
 	if (!url) return undefined;
 	try {
 		const response = await fetch(url);
@@ -48,12 +49,26 @@ MB_Files.listFiles = function (dir) {
 	return result;
 }
 
-MB_Files.listFolders = function (dir) {
-	const prefixEnd = dir.length;
+MB_Files.allFilesIn = function (dir) {
+	// Return an array of files with the given directory prefix including files in subfolders.
+
 	let result = [];
 	for (const path of this.fileNames) {
-		if (path.startsWith(dir) && (path.indexOf('/', prefixEnd) >= 0)) {
-			result.push(path);
+		if (path.startsWith(dir)) result.push(path);
+	}
+	return result;
+}
+
+MB_Files.listFolders = function (dir) {
+	const prefixEnd = dir.length + 1;
+	let result = [];
+	for (const path of this.fileNames) {
+		if (path.startsWith(dir)) {
+			let nextSlash = path.indexOf('/', prefixEnd);
+			if (nextSlash != -1) {
+				let folderName = path.substring(0, nextSlash);
+				if (!result.includes(folderName)) result.push(folderName);
+			}
 		}
 	}
 	return result;
