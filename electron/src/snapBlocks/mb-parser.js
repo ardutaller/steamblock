@@ -193,6 +193,8 @@ class MB_Parser {
 	makeBlock(buf, isReporter = false) {
 		// Make a command or reporter block from the given array of selector and arguments.
 
+		if (buf.length == 0) return null; // empty command list (e.g. in an if-else)
+
 		let selector = buf[0];
 		let args = buf.slice(1);
 		if ('v' == selector) {
