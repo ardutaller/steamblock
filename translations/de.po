@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-01 18:35+0000\n"
+"PO-Revision-Date: 2026-01-01 18:49+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -3721,8 +3721,8 @@ msgstr "Soll dies im Projekt aktualisiert werden?"
 #. MicroBlocks IDE information
 msgid "For AdaFruit boards, double-click reset button and try again."
 msgstr ""
-"Bei AdaFruit-Boards musst du die Reset-Taste zweimal drücken und es dann "
-"nochmal versuchen."
+"Bei AdaFruit-Boards musst du die Reset-Taste zweimal drücken und es nochmal "
+"versuchen."
 
 #. Scripting area right-click context menu
 msgid "make blocks bigger or smaller"
@@ -4240,7 +4240,7 @@ msgstr "manche"
 
 #. OLED Graphics library block
 msgid "make image _"
-msgstr "erzeuge Bild _"
+msgstr "Bild _"
 
 #. Color library label
 msgid "Color Operators"
