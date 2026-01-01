@@ -927,7 +927,7 @@ scriptCount++;
 					(scriptCmds[0][0] == 'to')) {
 						// todo: figure out how to represent function references
 						// for now, don't add them to scripting area
-						console.log('function ref:', scriptCmds[0][1]);
+//						console.log('function ref:', scriptCmds[0][1]);
 				} else {
 					this.scripts.push([
 						entry[1], // x position
@@ -1045,18 +1045,14 @@ scriptCount++;
 
 // Testing...
 
-// Counters to be removed later...
-var scriptCount = 0, functionCount = 0, blockCount = 0;
-
 function testLoad() {
 	function loadFile(fileName, contents) {
 		let project = new MB_Project();
-scriptCount = functionCount = blockCount = 0;
+		scriptCount = functionCount = 0;
 		let startT = Date.now();
 		project.loadFromString(contents);
 		let msecs = Date.now() - startT;
-		console.log(fileName, functionCount, 'functions', scriptCount, 'scripts', blockCount, 'blocks',
-				msecs, 'msecs', Math.round(blockCount / msecs), 'blocks/msec');
+		console.log(fileName, functionCount, 'functions', scriptCount, 'scripts', msecs, 'msecs');
 		MB_GUI.removeAllScripts();
 		project.main.scripts.forEach( (entry) => {
 			let x = entry[0], y = entry[1], script = entry[2];
@@ -1112,7 +1108,6 @@ function testPerf() {
 	startT = Date.now();
 	for (const n of a) { result += n; if (n == 5000000) break; }
 	console.log('forOfWithBreak', Date.now() - startT, 'msecs', 'result = ', result);
-
 }
 
 function testLoad2() {
@@ -1124,3 +1119,15 @@ function testLoad2() {
 	MB_GUI.importLocalFile(loadFile);
 }
 
+async function testLoadExamples() {
+	for (const fileName of MB_Files.allFilesIn('Examples')) {
+		let data = await MB_Files.readFile(fileName);
+
+		scriptCount = functionCount = 0;
+		let startT = Date.now();
+		let project = new MB_Project();
+		project.loadFromString(data);
+		let msecs = Date.now() - startT;
+		console.log(fileName, functionCount, 'functions', scriptCount, 'scripts', msecs, 'msecs');
+	}
+}
