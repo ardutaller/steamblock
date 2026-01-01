@@ -10,10 +10,12 @@ To do:
 [x] fix: remove quotes from quoted strings (but may need for 'var' slots...)
 [x] slot dropdown menu support
 [x] optional block sections (see e.g. Snap! "broadcast" block)
-[ ] fix: if-else blocks are expanded (don't extend args for option sections?)
-
 [x] BlockExpander morph
 [x] implement collapse
+[ ] fix: if-else blocks are expanded (don't extend args for option sections?)
+[ ] handle default values from specs
+[ ] handle expand/collapse of if-else
+[ ] lookup specs in project as well as "mb-specs" (need global for project)
 
 Block cleanup:
   [ ] finish removing block comment code
@@ -26,9 +28,6 @@ Tips from Bernat:
   - how get a Morphic inspector in Snap! (both MB Snap and actual Snap!)
 	- shift-click on Snap logo to enter dev mode
 	- click on world in SnapBlocks to enter dev mode
-
-mb-block.js cleanups:
-  - replace getVarNamesDict
 
 Long term plan:
   [x] basic block mechanics for MicroBlocks blocks
