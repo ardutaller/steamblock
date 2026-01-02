@@ -247,9 +247,9 @@ Body contains the 16-bit binary code for the given chunkID.
 This message is also used to return chunk code to the IDE
 in response to the Get All Code message.
 
-### *Reserved* (OpCodes 0x20-0x25)
+### *Reserved* (OpCodes 0x21-0x25)
 
-Reserved for additional Bidirectional messages.
+Reserved for additional messages.
 
 
 ## CRC Exchange
