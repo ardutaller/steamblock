@@ -431,6 +431,20 @@ method analyzeProject SmallRuntime {
 	return totalBytes
 }
 
+method analyzeUncalledFunctions SmallRuntime {
+	for fn (listEmbeddedFiles) {
+		if (beginsWith fn 'Examples') {
+			startT = (msecsSinceStart)
+			openProjectFromFile (findMicroBlocksEditor) (join '//' fn)
+			readT = ((msecsSinceStart) - startT)
+			startT = (msecsSinceStart)
+			unused = (unusedFunctions (project scripter))
+			unusedT = ((msecsSinceStart) - startT)
+			print fn 'uncalled msecs:' unusedT 'unused count:' (count unused) 'of' (count (allFunctions (project scripter)))
+		}
+	}
+}
+
 method metadataBytesInAllLibraries SmallRuntime {
 //	metadataBytesInAllProjects (smallRuntime)
 
@@ -1531,12 +1545,15 @@ method saveAllChunks SmallRuntime checkCRCs {
 	assignFunctionIDs this
 	removeObsoleteChunks this
 
+	unusedFuncs = (unusedFunctions (project scripter))
 	functionsSaved = 0
 	for aFunction (allFunctions (project scripter)) {
-		if (saveChunk this aFunction skipHiddenFunctions) {
-			functionsSaved += 1
-			if (0 == (functionsSaved % progressInterval)) {
-				showDownloadProgress editor 3 (processedScripts / totalScripts)
+		if (not (contains unusedFuncs (functionName aFunction))) {
+			if (saveChunk this aFunction skipHiddenFunctions) {
+				functionsSaved += 1
+				if (0 == (functionsSaved % progressInterval)) {
+					showDownloadProgress editor 3 (processedScripts / totalScripts)
+				}
 			}
 		}
 		if (not (connectedToBoard this)) { // connection closed
@@ -1764,16 +1781,24 @@ method verifyCRCs SmallRuntime {
 		collectCRCsIndividually this
 	}
 
-	// build dictionaries:
-	//  ideChunks: maps chunkID -> block or functionName
-	//  crcForChunkID: maps chunkID -> CRC
+
+	// build dictionaries and unused function list
+	//	ideChunks: maps chunkID -> block or functionName
+	//	crcForChunkID: maps chunkID -> CRC
+	//	unusedFuncs: list of unused function names
 	ideChunks = (dictionary)
 	crcForChunkID = (dictionary)
+	unusedFuncs = (unusedFunctions (project scripter))
 	for pair (sortedPairs chunkIDs) {
 		id = (first (first pair))
 		key = (last pair)
-		if (and (isClass key 'String') (isNil (functionNamed (project scripter) key))) {
-			remove chunkIDs key // remove reference to deleted function (rarely needed)
+		if (isClass key 'String') {
+			if (isNil (functionNamed (project scripter) key)) {
+				remove chunkIDs key // remove reference to deleted function (rarely needed)
+			}
+			if (contains unusedFuncs key) {
+				remove chunkIDs key // unused function; does not need to be saved to board
+			}
 		} else {
 			atPut ideChunks id (last pair)
 			atPut crcForChunkID id (at (first pair) 2)
