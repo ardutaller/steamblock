@@ -183,22 +183,22 @@ void primsInit() {
 	memset(primSets, 0, sizeof(primSets));
 
 #if defined(DUELink)
-	addDataPrims();
-	addDisplayPrims();
+	addDataPrims();		// ~5600 bytes
+	addDisplayPrims();	// ~1500 bytes
 //	addFilePrims();
-	addIOPrims();
-	addMiscPrims();
+	addIOPrims();		// ~2900 bytes
+	addMiscPrims();		// ~6000 bytes (could be reduced?)
 // 	addNetPrims();
 // 	addBLEPrims();
 // 	addRadioPrims();
-	addSensorPrims();
-	addSerialPrims();
+	addSensorPrims();	// ~3000 bytes
+	addSerialPrims();	// ~3500 bytes
 //	addTFTPrims();
-	addVarPrims();
+	addVarPrims();		// ~300 bytes
 // 	addHIDPrims();
-	addOneWirePrims();
+//	addOneWirePrims();	// ~200 bytes
 // 	addCameraPrims();
-	addEncoderPrims();
+	addEncoderPrims();	// ~1650 bytes
 //	addSDCardPrims();
 #else
 	addDataPrims();
