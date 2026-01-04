@@ -1079,7 +1079,6 @@ int * appendPersistentRecord(int recordType, int id, int extra, int byteCount, u
 		end = (0 == current) ? end0 : end1;
 		if ((freeStart + 2 + wordCount) > end) {
 			sendCodeStoreFull();
-outputString("Not enough room even after compaction"); // xxx
 			return NULL;
 		}
 	}
