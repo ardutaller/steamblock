@@ -141,6 +141,7 @@ extern int extraByteDelay;
 #define versionMsg				22
 #define chunkCRCMsg				23
 #define clearGraphMsg			24
+#define codeStoreFullMsg		25
 
 // Serial Protocol Messages: Bidirectional
 
@@ -228,6 +229,7 @@ void sendTaskDone(uint8 chunkIndex);
 void sendTaskError(uint8 chunkIndex, uint8 errorCode, int where);
 void sendTaskReturnValue(uint8 chunkIndex, OBJ returnValue);
 void sendBroadcastToIDE(char *s, int len);
+void sendCodeStoreFull();
 int broadcastMatches(uint8 chunkIndex, char *msg, int byteCount);
 void sendSayForChunk(char *s, int len, uint8 chunkIndex);
 void vmLoop(void);

@@ -872,6 +872,10 @@ void sendSayForChunk(char *s, int len, uint8 chunkIndex) {
 	sendMessage(outputValueMsg, chunkIndex, len, s);
 }
 
+void sendCodeStoreFull() {
+	sendMessage(codeStoreFullMsg, 0, 0, NULL);
+}
+
 // Code chunk error checking (CRC-32)
 
 const uint32_t crcTable[] = {
