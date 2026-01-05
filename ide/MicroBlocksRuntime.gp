@@ -14,7 +14,7 @@ to smallRuntime aScripter {
 	return (global 'smallRuntime')
 }
 
-defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler
+defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler codeStoreFull
 
 method scripter SmallRuntime { return scripter }
 method serialPortOpen SmallRuntime { return (notNil port) }
@@ -40,6 +40,10 @@ method evalOnBoard SmallRuntime aBlock showBytes {
 	}
 	if ('not connected' == (updateConnection this)) {
 		showError (morph aBlock) (localized 'Board not connected')
+		return
+	}
+	if codeStoreFull {
+		showError (morph aBlock) (localized 'Program is too large to store on board.')
 		return
 	}
 	if (or (isNil vmVersion) (vmVersion < 300)) {
@@ -513,7 +517,7 @@ method readCodeFromNextBoardConnected SmallRuntime {
 	disconnected = false
 	if ('Browser' == (platform)) {
 		// in browser, cannot add the spinner before user has clicked connect icon
-		inform 'Connect board to proceed.'
+		inform (localized 'Connect board to proceed.')
 		return
 	}
 	decompilerStatus = (localized 'Plug in the board.')
@@ -1453,6 +1457,16 @@ method startAll SmallRuntime {
 	if (and (notNil vmVersion) (vmVersion < 300)) {
 		return (vmIncomptabibleWithIDE this)
 	}
+
+	if ('not connected' == (updateConnection this)) {
+		inform (localized 'Board not connected')
+		return
+	}
+	if codeStoreFull {
+		inform (localized 'Program is too large to store on board.')
+		return
+	}
+
 	sendStartAll this
 }
 
@@ -1532,6 +1546,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 	processedScripts = 0
 	skipHiddenFunctions = true
 	saveVariableNamesIfNeeded this
+	codeStoreFull = false
 	if recompileAll {
 		// Clear the source code field of all chunk entries to force script recompilation
 		// and possible re-download since variable offsets have changed.
@@ -1556,6 +1571,11 @@ method saveAllChunks SmallRuntime checkCRCs {
 				}
 			}
 		}
+		if codeStoreFull {
+			setCursor 'default'
+			inform (localized 'Program is too large to store on board.')
+			return
+		}
 		if (not (connectedToBoard this)) { // connection closed
 			print 'Lost communication to the board in saveAllChunks'
 			setCursor 'default'
@@ -1573,6 +1593,11 @@ method saveAllChunks SmallRuntime checkCRCs {
 				if (0 == (scriptsSaved % progressInterval)) {
 					showDownloadProgress editor 3 (processedScripts / totalScripts)
 				}
+			}
+			if codeStoreFull {
+				setCursor 'default'
+				inform (localized 'Program is too large to store on board.')
+				return
 			}
 			if (not (connectedToBoard this)) { // connection closed
 				print 'Lost communication to the board in saveAllChunks'
@@ -1628,6 +1653,8 @@ method sourceForChunk SmallRuntime aBlockOrFunction {
 method saveChunk SmallRuntime aBlockOrFunction skipHiddenFunctions {
 	// Save the given script or function as an executable code "chunk".
 	// Also save the source code (in GP format) and the script position.
+
+	if codeStoreFull { return }
 
 	if (isNil skipHiddenFunctions) { skipHiddenFunctions = true } // optimize by default
 
@@ -1746,6 +1773,7 @@ method storeChunkOnBoard SmallRuntime chunkID data chunkCRC {
 	startT = (msecsSinceStart)
 	while (and (lastCRC != chunkCRC) (((msecsSinceStart) - startT) < timeout)) {
 		processMessages this
+		if codeStoreFull { return false }
 		waitMSecs 1
 	}
 	return (lastCRC == chunkCRC)
@@ -1987,6 +2015,10 @@ method saveVariableNamesIfNeeded SmallRuntime {
 				sendMsg this 'varNameMsg' varID (toArray (toBinaryData varName))
 			}
 		}
+		if codeStoreFull {
+			inform (localized 'Program is too large to store on board.')
+			return true
+		}
 		if ((i % progressInterval) == 0) {
 			showDownloadProgress editor 2 (i / varCount)
 		}
@@ -2055,7 +2087,6 @@ method librariesChanged SmallRuntime {
 	scriptChanged scripter
 }
 
-
 // Serial Delay
 
 method serialDelayMenu SmallRuntime {
@@ -2108,6 +2139,7 @@ method msgNameToID SmallRuntime msgName {
 		atPut msgDict 'versionMsg' 22
 		atPut msgDict 'chunkCRCMsg' 23
 		atPut msgDict 'clearGraphMsg' 24
+		atPut msgDict 'codeStoreFullMsg' 25
 		atPut msgDict 'pingMsg' 26
 		atPut msgDict 'broadcastMsg' 27
 		atPut msgDict 'chunkAttributeMsg' 28
@@ -2409,6 +2441,8 @@ method handleMessage SmallRuntime msg {
 		allCRCsReceived this (copyFromTo (toArray msg) 6)
 	} (op == (msgNameToID this 'pingMsg')) {
 		lastPingRecvMSecs = (msecsSinceStart)
+	} (op == (msgNameToID this 'codeStoreFullMsg')) {
+		codeStoreFull = true
 	} (op == (msgNameToID this 'broadcastMsg')) {
 		broadcastReceived (httpServer scripter) (toString (copyFromTo msg 6))
 	} (op == (msgNameToID this 'chunkCode16Msg')) {
