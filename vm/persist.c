@@ -1069,15 +1069,16 @@ void clearPersistentMemory() {
 }
 
 int * appendPersistentRecord(int recordType, int id, int extra, int byteCount, uint8 *data) {
-	// Append the given record at the end of the current half-space and return it's address.
+	// Append the given record at the end of the current half-space and return its address.
 	// Header word: <tag = 'R'><record type><id of chunk/variable/comment><extra> (8-bits each)
 	// Perform a compaction if necessary.
 	int wordCount = (byteCount + 3) / 4;
+	int needed = wordCount + 2 + 4; // add 4 extra words for DUELink rounding
 	int *end = (0 == current) ? end0 : end1;
-	if ((freeStart + 2 + wordCount + 3) > end) { // add 3 extra words for DUELink
+	if ((freeStart + needed) > end) {
 		compactCodeStore();
 		end = (0 == current) ? end0 : end1;
-		if ((freeStart + 2 + wordCount) > end) {
+		if ((freeStart + needed) > end) {
 			sendCodeStoreFull();
 			return NULL;
 		}

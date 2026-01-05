@@ -470,7 +470,7 @@ static void storeCodeChunk(uint8 chunkIndex, int byteCount, uint8 *data) {
 	int chunkType = data[0]; // first byte is the chunk type
 	int *persistentChunk = appendPersistentRecord(chunkCode, chunkIndex, chunkType, byteCount - 1, &data[1]);
 	chunks[chunkIndex].code = persistentChunk;
-	chunks[chunkIndex].chunkType = chunkType;
+	chunks[chunkIndex].chunkType = persistentChunk ? chunkType : unusedChunk;
 }
 
 static void storeVarName(uint8 varIndex, int byteCount, uint8 *data) {
