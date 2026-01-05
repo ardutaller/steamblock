@@ -1074,7 +1074,7 @@ int * appendPersistentRecord(int recordType, int id, int extra, int byteCount, u
 	// Perform a compaction if necessary.
 	int wordCount = (byteCount + 3) / 4;
 	int *end = (0 == current) ? end0 : end1;
-	if ((freeStart + 2 + wordCount) > end) {
+	if ((freeStart + 2 + wordCount + 3) > end) { // add 3 extra words for DUELink
 		compactCodeStore();
 		end = (0 == current) ? end0 : end1;
 		if ((freeStart + 2 + wordCount) > end) {
