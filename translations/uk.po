@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-12-26 22:00+0000\n"
+"PO-Revision-Date: 2026-01-06 01:52+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -621,8 +621,9 @@ msgid "anIntegerStringListOrByteArray"
 msgstr "цеЦілеАбоСписокРядківАбоМасивБайтів"
 
 #. Block in Comm category
+#, fuzzy
 msgid "serial write _ starting at _"
-msgstr ""
+msgstr "послідовний порт: записати _ починаючи з позиції _"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 #, fuzzy
@@ -746,56 +747,62 @@ msgid "radio send packet _"
 msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
+#, fuzzy
 msgid "disable radio"
-msgstr ""
+msgstr "відключити радіозв'язок"
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr ""
+msgstr "Базові Сенсори"
 
 #. Block in Basic Sensors library
 msgid "tilt x"
-msgstr ""
+msgstr "нахил за віссю x"
 
 #. Block in Basic Sensors library
 msgid "tilt y"
-msgstr ""
+msgstr "нахил за віссю y"
 
 #. Block in Basic Sensors library
 msgid "tilt z"
-msgstr ""
+msgstr "нахил за віссю z"
 
 #. Block in Basic Sensors library
 msgid "acceleration"
-msgstr ""
+msgstr "прискорення"
 
 #. Block in Basic Sensors library
+#, fuzzy
 msgid "light level"
-msgstr ""
+msgstr "рівень освітлення"
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
-msgstr ""
+msgstr "температура (°C)"
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
-msgstr ""
+msgstr "магнітне поле"
 
 #. Block in Basic Sensors library
+#, fuzzy
 msgid "set acceleration range _ g = 100"
-msgstr ""
+msgstr "задати прискорення діапазону _ g = 100"
 
 #. NeoPixel library label
+#, fuzzy
 msgid "NeoPixel"
-msgstr ""
+msgstr "NeoPixel"
 
 #. NeoPixel library block
+#, fuzzy
 msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
-msgstr ""
+msgstr "встановити НеоПікселі _ _ _ _ _ _ _ _ _ _"
 
 #. NeoPixel library block
+#, fuzzy
 msgid "clear NeoPixels"
-msgstr ""
+msgstr "очистити НеоПікселі"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
