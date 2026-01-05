@@ -294,6 +294,7 @@ void captureIncomingBytes();
 void restartSerial();
 
 const char *boardType();
+int hasPSRAM();
 void hardwareInit(void);
 
 int readI2CReg(int deviceID, int reg);

@@ -80,8 +80,15 @@
 
 #if defined(ARDUINO_ARCH_ESP32)
 	static OBJ *objstore = NULL; // allocated from heap on ESP32
+
+	#include <esp_heap_caps.h>
+	int hasPSRAM() {
+		heap_caps_get_total_size(MALLOC_CAP_SPIRAM) > 0;
+	}
 #else
 	static OBJ objstore[OBJSTORE_WORDS];
+
+	int hasPSRAM() { return false; }
 #endif
 
 static OBJ memStart = NULL;
@@ -101,7 +108,11 @@ void memInit() {
 	}
 
 	#if defined(ARDUINO_ARCH_ESP32)
-		objstore = (OBJ *) malloc(4 * OBJSTORE_WORDS);
+		int objStoreWords = hasPSRAM() ?
+			(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM) / 4) :
+			OBJSTORE_WORDS;
+		if (objStoreWords > 65525) objStoreWords = 65525; // maximum object store size
+		objstore = (OBJ *) malloc(4 * objStoreWords);
 		if (!objstore) vmPanic("ESP32 could not allocate objectstore");
 	#endif
 

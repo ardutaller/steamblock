@@ -34,6 +34,7 @@
 static void initPins(void); // forward reference
 static void initRandomSeed(void); // forward reference
 static void stopRF(); // forward reference
+static void reservePinsForPSRAM(); // forward reference
 
 #if (defined(ARDUINO_SAMD_MKR1000) || defined(ESP32)) && !defined(ESP32_C3) && !defined(ESP32_C6)
 	#include <I2S.h>
@@ -161,6 +162,9 @@ void hardwareInit() {
 			NRF_UICR->NFCPINS = 0xFFFFFFFE;
 			NRF_NVMC->CONFIG = 0; // disable Flash write
 		}
+	#endif
+	#if defined(ESP32)
+		if (hasPSRAM()) reservePinsForPSRAM();
 	#endif
 	initPins();
 	initRandomSeed();
@@ -1414,6 +1418,14 @@ void setPinMode(int pin, int newMode) {
 	// Function to set pin modes from other modules. (The SET_MODE macro is local to this file.)
 
 	SET_MODE(pin, newMode);
+}
+
+static void reservePinsForPSRAM() {
+	#if defined(ESP32_ORIGINAL)
+		// pin 16 and 17 are used by PSRAM; not available as GPIOs
+		reservedPin[16] = 1;
+		reservedPin[17] = 1;
+	#endif
 }
 
 static void initPins(void) {
