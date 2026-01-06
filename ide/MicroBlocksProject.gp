@@ -302,11 +302,12 @@ method allBroadcasts MicroBlocksProject {
 
 // Collect unused functions
 
-method unusedFunctions MicroBlocksProject {
+method unusedFunctions MicroBlocksProject paletteBlock {
 	// Return a list of functions that are not used by this project (directly or indirectly).
 	// If the project contains a custom call block, trace the function call if the argument
-	// to the call block is a string constant. Otherise, we must assume that any function could
-	// be called so there are no unused functions.
+	// to the call block is a string constant. Otherise, assume that any function could be
+	// called so there are no unused functions.
+	// The optional paletteBlock argument supports running blocks in the palette.
 
 	// create dictionary with all functions
 	functionCalled = (dictionary)
@@ -314,9 +315,15 @@ method unusedFunctions MicroBlocksProject {
 		atPut functionCalled (functionName f) false
 	}
 
+	scriptsToScan = (scripts main)
+	if (notNil paletteBlock) {
+		scriptsToScan = (copyWith scriptsToScan (list 0 0 (expression paletteBlock)))
+	}
+
 	// mark functions called by scripts
 	todo = (list)
-	for entry (scripts main) {
+	for entry scriptsToScan {
+		// a script entry is a three-element list: x, y, script
 		for b (allBlocks (at entry 3)) {
 			op = (primName b)
 			if (isOneOf op 'callCustomCommand' 'callCustomReporter' 'sendBroadcast') {

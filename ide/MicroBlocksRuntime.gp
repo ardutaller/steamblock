@@ -42,16 +42,16 @@ method evalOnBoard SmallRuntime aBlock showBytes {
 		showError (morph aBlock) (localized 'Board not connected')
 		return
 	}
+	if (or (isNil vmVersion) (vmVersion < 300)) {
+		return (vmIncomptabibleWithIDE this)
+	}
 	if codeStoreFull {
 		showError (morph aBlock) (localized 'Program is too large to store on board.')
 		return
 	}
-	if (or (isNil vmVersion) (vmVersion < 300)) {
-		return (vmIncomptabibleWithIDE this)
-	}
 	if (isNil (ownerThatIsA (morph aBlock) 'ScriptEditor')) {
-		// running a block from the palette, not included in saveAllChunks
-		saveChunk this aBlock
+		// running a block from the palette
+		saveAllChunks this true aBlock
 	}
 	runChunk this (lookupChunkID this aBlock)
 }
@@ -1528,7 +1528,7 @@ method saveAllChunksAfterLoad SmallRuntime {
 	showDownloadProgress (findMicroBlocksEditor) 3 1
 }
 
-method saveAllChunks SmallRuntime checkCRCs {
+method saveAllChunks SmallRuntime checkCRCs paletteBlock {
 	// Save the code for all scripts and user-defined functions.
 
 	if (isNil checkCRCs) { checkCRCs = true }
@@ -1560,7 +1560,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 	assignFunctionIDs this
 	removeObsoleteChunks this
 
-	unusedFuncs = (unusedFunctions (project scripter))
+	unusedFuncs = (unusedFunctions (project scripter) paletteBlock)
 	functionsSaved = 0
 	for aFunction (allFunctions (project scripter)) {
 		if (not (contains unusedFuncs (functionName aFunction))) {
@@ -1586,6 +1586,10 @@ method saveAllChunks SmallRuntime checkCRCs {
 	if (functionsSaved > 0) { print 'Downloaded' functionsSaved 'functions to board' (join '(' (msecSplit t) ' msecs)') }
 
 	scriptsSaved = 0
+	if (notNil paletteBlock) {
+		saveChunk this paletteBlock skipHiddenFunctions
+		scriptsSaved += 1
+	}
 	for aBlock (sortedScripts (scriptEditor scripter)) {
 		if (not (isPrototypeHat aBlock)) { // skip function def hat; functions get saved above
 			if (saveChunk this aBlock skipHiddenFunctions) {
