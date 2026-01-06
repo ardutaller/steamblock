@@ -557,8 +557,6 @@ void hardwareInit() {
 	#define PIN_BUTTON_A 0
 
 
-#include <ESP.h>
-
 extern "C" void esp8266DeepSleep(uint64_t usecs) {
 	uint64_t maxSleep = ESP.deepSleepMax() - 10000;
 	if (usecs > maxSleep) usecs = maxSleep;
