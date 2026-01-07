@@ -2081,13 +2081,13 @@ method clearVariableNames SmallRuntime {
 	oldVarNames = nil
 }
 
-// CodeStore Used
+// Report program size
 
 method receivedCodeStoreUsed SmallRuntime msg {
 	if ((count msg) < 8) { return } // bad message; should have 8-byte payload
 	used  = (+ (at msg 1) ((at msg 2) << 8) ((at msg 3) << 16) ((at msg 4) << 24) )
 	total = (+ (at msg 5) ((at msg 6) << 8) ((at msg 7) << 16) ((at msg 8) << 24) )
-	print 'Code store used:' used 'bytes out of' total
+	inform (join 'Using ' used ' out of ' total ' bytes (' (round ((100 * used) / total) 0.1) '%)')
 }
 
 // Library changes

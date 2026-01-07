@@ -1164,6 +1164,10 @@ method gearMenu MicroBlocksEditor {
 	addLine menu
 	addItem menu 'update firmware on board' (action 'installVM' (smallRuntime) false false) // do not wipe flash, do not download VM from server
 	addLine menu
+	if ('connected' == (updateConnection (smallRuntime))) {
+		addItem menu 'show program size on board' (action 'sendMsg' (smallRuntime) 'systemResetMsg' 2 nil)
+		addLine menu
+	}
 	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addItem menu 'dark mode' (action 'toggleDarkMode' this false) 'make the IDE darker' (newCheckmark this (darkModeEnabled this))
 	addItem menu 'advanced mode' 'toggleAdvancedMode' 'show advanced blocks, menu items and editor functionalities' (newCheckmark this (devMode))
@@ -1181,7 +1185,6 @@ method gearMenu MicroBlocksEditor {
 		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (smallRuntime))
 		addItem menu 'erase flash and update firmware on ESP board' (action 'installVM' (smallRuntime) true false) // wipe flash first, do not download VM from server
 		addLine menu
-		addItem menu 'compact code store' (action 'sendMsg' (smallRuntime) 'systemResetMsg' 2 nil)
 
 		if (boardIsBLECapable (smallRuntime)) {
 			addLine menu
@@ -1473,7 +1476,7 @@ method projectMenu MicroBlocksEditor {
 	if ('connected' != (updateConnection (smallRuntime))) {
 		addItem menu 'Open from board' 'openFromBoard'
 	} else {
-			checkBoardType (smallRuntime)
+		checkBoardType (smallRuntime)
 	}
 	addLine menu
 	addItem menu 'Copy project URL to clipboard' 'copyProjectURLToClipboard'
