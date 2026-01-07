@@ -108,11 +108,7 @@ void memInit() {
 	}
 
 	#if defined(ARDUINO_ARCH_ESP32)
-		int objStoreWords = hasPSRAM() ?
-			(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM) / 4) :
-			OBJSTORE_WORDS;
-		if (objStoreWords > 65525) objStoreWords = 65525; // maximum object store size
-		objstore = (OBJ *) malloc(4 * objStoreWords);
+		objstore = (OBJ *) malloc(4 * OBJSTORE_WORDS);
 		if (!objstore) vmPanic("ESP32 could not allocate objectstore");
 	#endif
 
