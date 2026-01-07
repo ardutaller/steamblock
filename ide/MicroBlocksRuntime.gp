@@ -2081,6 +2081,15 @@ method clearVariableNames SmallRuntime {
 	oldVarNames = nil
 }
 
+// CodeStore Used
+
+method receivedCodeStoreUsed SmallRuntime msg {
+	if ((count msg) < 8) { return } // bad message; should have 8-byte payload
+	used  = (+ (at msg 1) ((at msg 2) << 8) ((at msg 3) << 16) ((at msg 4) << 24) )
+	total = (+ (at msg 5) ((at msg 6) << 8) ((at msg 7) << 16) ((at msg 8) << 24) )
+	print 'Code store used:' used 'bytes out of' total
+}
+
 // Library changes
 
 method librariesChanged SmallRuntime {
@@ -2151,6 +2160,7 @@ method msgNameToID SmallRuntime msgName {
 		atPut msgDict 'extendedMsg' 30
 		atPut msgDict 'enableBLEMsg' 31
 		atPut msgDict 'chunkCode16Msg' 32
+		atPut msgDict 'codeStoreUsedMsg' 33
 		atPut msgDict 'getAllCRCsMsg' 38
 		atPut msgDict 'allCRCsMsg' 39
 		atPut msgDict 'deleteFile' 200
@@ -2451,6 +2461,8 @@ method handleMessage SmallRuntime msg {
 		broadcastReceived (httpServer scripter) (toString (copyFromTo msg 6))
 	} (op == (msgNameToID this 'chunkCode16Msg')) {
 		receivedChunk this (byteAt msg 3) (byteAt msg 6) (toArray (copyFromTo msg 7))
+	} (op == (msgNameToID this 'codeStoreUsedMsg')) {
+		receivedCodeStoreUsed this (toArray (copyFromTo msg 6))
 	} (op == (msgNameToID this 'varNameMsg')) {
 		receivedVarName this (byteAt msg 3) (toString (copyFromTo msg 6)) ((byteCount msg) - 5)
 	} (op == (msgNameToID this 'fileInfo')) {
