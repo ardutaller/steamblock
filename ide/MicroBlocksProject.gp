@@ -315,9 +315,9 @@ method unusedFunctions MicroBlocksProject paletteBlock {
 		atPut functionCalled (functionName f) false
 	}
 
-	scriptsToScan = (scripts main)
+	scriptsToScan = (toList (copy (scripts main)))
 	if (notNil paletteBlock) {
-		scriptsToScan = (copyWith scriptsToScan (list 0 0 (expression paletteBlock)))
+		add scriptsToScan (list 0 0 (expression paletteBlock))
 	}
 
 	// mark functions called by scripts
@@ -361,6 +361,11 @@ method unusedFunctions MicroBlocksProject paletteBlock {
 				add todo op
 			}
 		}
+	}
+
+	// remove project user functions from unused list so the decompiler can recover them
+	for f (functions main) {
+		remove functionCalled (functionName f)
 	}
 
 	// return list of uncalled functions
