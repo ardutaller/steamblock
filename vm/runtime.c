@@ -1206,7 +1206,14 @@ static void processShortMessage() {
 	case systemResetMsg:
 		// non-zero chunkIndex is used for debugging operations
 		if (1 == chunkIndex) { outputRecordHeaders(); break; }
-		if (2 == chunkIndex) { compactCodeStore(); break; }
+		if (2 == chunkIndex) {
+			// compact the code store and return the code usage stats
+			char msgBody[8];
+			compactCodeStore((int *) &msgBody[0], (int *) &msgBody[4]);
+			sendMessage(codeStoreUsedMsg, 0, 8, msgBody);
+			sendData();
+			break;
+		}
 		if (3 == chunkIndex) { primMBDisplayOff(0, NULL); } // used by Boardie reset
 		if (199 == chunkIndex) {
 			clearAllVariables(); // do a Flash write operation to enable DFU after reset

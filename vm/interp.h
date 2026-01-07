@@ -152,6 +152,7 @@ extern int extraByteDelay;
 #define extendedMsg				30
 #define enableBLEMsg			31
 #define chunkCode16Msg			32
+#define codeStoreUsedMsg		33
 
 // Serial Protocol Messages: CRC Exchange
 
@@ -273,9 +274,6 @@ void runTasksUntilDone(void);
 
 void interpTests1(void);
 void taskTest(void);
-
-void compactCodeStore();
-void outputRecordHeaders();
 
 // Platform Specific Operations
 

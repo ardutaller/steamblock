@@ -1076,7 +1076,7 @@ int * appendPersistentRecord(int recordType, int id, int extra, int byteCount, u
 	int needed = wordCount + 2 + 4; // add 4 extra words for DUELink rounding
 	int *end = (0 == current) ? end0 : end1;
 	if ((freeStart + needed) > end) {
-		compactCodeStore();
+		compactCodeStore(NULL, NULL);
 		end = (0 == current) ? end0 : end1;
 		if ((freeStart + needed) > end) {
 			sendCodeStoreFull();
@@ -1121,12 +1121,18 @@ int * appendPersistentRecord(int recordType, int id, int extra, int byteCount, u
 	return result;
 }
 
-void compactCodeStore() {
+void compactCodeStore(int *codeStoreUsed, int *codeStoreTotal) {
+	// Compact the code store. If arguments are not NULL, use them to report the code stats.
+
 	#ifdef RAM_CODE_STORE
 		compactRAM(true);
 	#else
 		compactFlash();
 	#endif
+	if (codeStoreUsed && codeStoreTotal) { // report code store stats
+		*codeStoreUsed = 4 * (freeStart - ((0 == current) ? start0 : start1));
+		*codeStoreTotal = HALF_SPACE;
+	}
 }
 
 void restoreScripts() {
@@ -1253,7 +1259,7 @@ void persistTest() {
 	for (int i = 0; i < 3000; i++) {
 		appendPersistentRecord(chunkCode, i % 100, 0, (i % 5) * 4, (uint8 *) dummyData);
 	}
-	compactCodeStore();
+	compactCodeStore(NULL, NULL);
 
 	dumpWords(current, 150);
 	showRecordHeaders();
