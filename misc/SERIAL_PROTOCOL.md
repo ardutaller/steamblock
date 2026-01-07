@@ -247,7 +247,12 @@ Body contains the 16-bit binary code for the given chunkID.
 This message is also used to return chunk code to the IDE
 in response to the Get All Code message.
 
-### *Reserved* (OpCodes 0x21-0x25)
+### Code Space Used (OpCode: 0x21; long message; board -> IDE)
+
+Body contains two 32-bit integers (LSB first):
+<code space used (bytes)><total code space (bytes)>
+
+### *Reserved* (OpCodes 0x22-0x25)
 
 Reserved for additional messages.
 
