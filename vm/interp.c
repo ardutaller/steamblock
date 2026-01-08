@@ -414,13 +414,12 @@ static int functionNameMatches(int chunkIndex, char *functionName, int nameLengt
 	return true;
 }
 
-static int chunkIndexForFunction(char *functionName) {
+int chunkIndexForFunction(char *functionName) {
 	// Return the chunk index for the function with the given name or -1 if not found.
 
 	int nameLength = strlen(functionName);
 	for (int i = 0; i < MAX_CHUNKS; i++) {
-		int chunkType = chunks[i].chunkType;
-		if ((functionHat == chunkType) &&
+		if ((functionHat == chunks[i].chunkType) &&
 			 functionNameMatches(i, functionName, nameLength)) {
 				return i;
 		}
@@ -646,7 +645,7 @@ static void runTask(Task *task) {
 			}
 			goto suspend;
 		}
-		// tmp encodes the error location: <22 bit ip><8 bit chunkIndex>
+		// tmp encodes the error location: <16 bit ip><8 bit chunkIndex>
 		tmp = ((ip - (int16 *) task->code) << 8) | (task->currentChunkIndex & 0xFF);
 		sendTaskError(task->taskChunkIndex, errorCode, tmp);
 		task->status = unusedTask;

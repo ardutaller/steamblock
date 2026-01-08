@@ -31,11 +31,15 @@ JohnWorkInProgress
 *.pem
 
 # ignore snapBlocks copies of Examples and Libraries folders
+<<<<<<< HEAD
 
+=======
+>>>>>>> 75599e27cfa63e394ff3483bc937ee626ce5f21c
 electron/src/snapBlocks/files.txt
 electron/src/snapBlocks/Examples
 electron/src/snapBlocks/Libraries
 
+<<<<<<< HEAD
 # ELECTRON STUFF BELOW
 # probably overkill, but this is what the official docs recommend
 
@@ -83,6 +87,8 @@ build/Release
 
 # Dependency directories
 node_modules/
+=======
+>>>>>>> 75599e27cfa63e394ff3483bc937ee626ce5f21c
 electron/node_modules/*
 jspm_packages/
 

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2025-12-01 05:51+0000\n"
+"PO-Revision-Date: 2026-01-06 01:52+0000\n"
 "Last-Translator: Andriy Utkin <andriy_utkin@fastmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -11,10 +11,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural="
-"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
-"1 : 2);\n"
-"X-Generator: Weblate 5.15-dev\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -622,8 +621,9 @@ msgid "anIntegerStringListOrByteArray"
 msgstr "цеЦілеАбоСписокРядківАбоМасивБайтів"
 
 #. Block in Comm category
+#, fuzzy
 msgid "serial write _ starting at _"
-msgstr ""
+msgstr "послідовний порт: записати _ починаючи з позиції _"
 
 #. Example string. Tells the user this input accepts a string list or a byte array
 #, fuzzy
@@ -747,56 +747,62 @@ msgid "radio send packet _"
 msgstr ""
 
 #. Primitive block. Mostly hidden from end users.
+#, fuzzy
 msgid "disable radio"
-msgstr ""
+msgstr "відключити радіозв'язок"
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr ""
+msgstr "Базові Сенсори"
 
 #. Block in Basic Sensors library
 msgid "tilt x"
-msgstr ""
+msgstr "нахил за віссю x"
 
 #. Block in Basic Sensors library
 msgid "tilt y"
-msgstr ""
+msgstr "нахил за віссю y"
 
 #. Block in Basic Sensors library
 msgid "tilt z"
-msgstr ""
+msgstr "нахил за віссю z"
 
 #. Block in Basic Sensors library
 msgid "acceleration"
-msgstr ""
+msgstr "прискорення"
 
 #. Block in Basic Sensors library
+#, fuzzy
 msgid "light level"
-msgstr ""
+msgstr "рівень освітлення"
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
-msgstr ""
+msgstr "температура (°C)"
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
-msgstr ""
+msgstr "магнітне поле"
 
 #. Block in Basic Sensors library
+#, fuzzy
 msgid "set acceleration range _ g = 100"
-msgstr ""
+msgstr "задати прискорення діапазону _ g = 100"
 
 #. NeoPixel library label
+#, fuzzy
 msgid "NeoPixel"
-msgstr ""
+msgstr "NeoPixel"
 
 #. NeoPixel library block
+#, fuzzy
 msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
-msgstr ""
+msgstr "встановити НеоПікселі _ _ _ _ _ _ _ _ _ _"
 
 #. NeoPixel library block
+#, fuzzy
 msgid "clear NeoPixels"
-msgstr ""
+msgstr "очистити НеоПікселі"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
@@ -6392,3 +6398,92 @@ msgstr "Calliope: встановити НеоПікселі _ _ _"
 #. Option in dropdown menu of editable input slots on mobile devices:
 msgid "edit"
 msgstr "редагувати"
+
+#. Nezha Pro library label
+msgid "Nezha Pro"
+msgstr "Nezha Pro"
+
+#. Nehza Pro library choice
+msgid "M1"
+msgstr "M1"
+
+#. Nehza Pro library choice
+msgid "M2"
+msgstr "M2"
+
+#. Nehza Pro library choice
+msgid "M3"
+msgstr "M3"
+
+#. Nehza Pro library choice
+msgid "M4"
+msgstr "M4"
+
+#. Nehza Pro library choice
+msgid "nezhaPro;by shortest path"
+msgstr "найкоротшим шляхом"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np angle _"
+msgstr "кут _"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np move _ for _ mm speed _ %"
+msgstr "посунути _ на _ мм зі швидкістю _ %"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np speed _"
+msgstr "швидкість _"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np total angle _"
+msgstr "загалом кут _"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np reset total angle _"
+msgstr "скинути загальний кут _"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np rotate _ _ by _ degrees speed _ %"
+msgstr "повернути _ _ на _ градусів зі швидкістю _ %"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np rotate _ _ to _ degrees speed _ %"
+msgstr "повернути _ _ на азимут _ градусів зі швидкістю _ %"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np run motor _ _ speed _ %"
+msgstr "рушити мотор _ _ зі швидкістю _ %"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np set _ angle _ to _ degrees"
+msgstr "встановити _ кут _ на азимут _ градусів"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np set wheels left _ right _ #BR# circumference _ mm axle _ mm"
+msgstr "встановити колеса ліве _ праве _ #BR# окружність _ мм довжина вісі _ мм"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np stop all motors"
+msgstr "зупинити всі мотори"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np stop motor _"
+msgstr "зупинити мотор _"
+
+#. Nezha Pro library block
+#, fuzzy
+msgid "np turn _ by _ degrees speed _ %"
+msgstr "повернути _ на _ градусів зі швидкістю _ %"

@@ -14,7 +14,8 @@ to smallRuntime aScripter {
 	return (global 'smallRuntime')
 }
 
-defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler api
+
+defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler api codeStoreFull
 
 method scripter SmallRuntime { return scripter }
 method serialPortOpen SmallRuntime { return (notNil port) }
@@ -48,9 +49,13 @@ method evalOnBoard SmallRuntime aBlock showBytes {
 	if (or (isNil vmVersion) (vmVersion < 300)) {
 		return (vmIncomptabibleWithIDE this)
 	}
+	if codeStoreFull {
+		showError (morph aBlock) (localized 'Program is too large to store on board.')
+		return
+	}
 	if (isNil (ownerThatIsA (morph aBlock) 'ScriptEditor')) {
-		// running a block from the palette, not included in saveAllChunks
-		saveChunk this aBlock
+		// running a block from the palette
+		saveAllChunks this true aBlock
 	}
 	runChunk this (lookupChunkID this aBlock)
 }
@@ -432,6 +437,20 @@ method analyzeProject SmallRuntime {
 	print '  Total:' totalBytes
 	print '-----------'
 	return totalBytes
+}
+
+method analyzeUncalledFunctions SmallRuntime {
+	for fn (listEmbeddedFiles) {
+		if (beginsWith fn 'Examples') {
+			startT = (msecsSinceStart)
+			openProjectFromFile (findMicroBlocksEditor) (join '//' fn)
+			readT = ((msecsSinceStart) - startT)
+			startT = (msecsSinceStart)
+			unused = (unusedFunctions (project scripter))
+			unusedT = ((msecsSinceStart) - startT)
+			print fn 'uncalled msecs:' unusedT 'unused count:' (count unused) 'of' (count (allFunctions (project scripter)))
+		}
+	}
 }
 
 method metadataBytesInAllLibraries SmallRuntime {
@@ -1322,6 +1341,16 @@ method startAll SmallRuntime {
 	if (and (notNil vmVersion) (vmVersion < 300)) {
 		return (vmIncomptabibleWithIDE this)
 	}
+
+	if ('not connected' == (updateConnection this)) {
+		inform (localized 'Board not connected')
+		return
+	}
+	if codeStoreFull {
+		inform (localized 'Program is too large to store on board.')
+		return
+	}
+
 	sendStartAll this
 }
 
@@ -1383,7 +1412,7 @@ method saveAllChunksAfterLoad SmallRuntime {
 	setProperty api 'ide.downloadProgress' (array 3 1)
 }
 
-method saveAllChunks SmallRuntime checkCRCs {
+method saveAllChunks SmallRuntime checkCRCs paletteBlock {
 	// Save the code for all scripts and user-defined functions.
 
 	if (isNil checkCRCs) { checkCRCs = true }
@@ -1401,6 +1430,7 @@ method saveAllChunks SmallRuntime checkCRCs {
 	processedScripts = 0
 	skipHiddenFunctions = true
 	saveVariableNamesIfNeeded this
+	codeStoreFull = false
 	if recompileAll {
 		// Clear the source code field of all chunk entries to force script recompilation
 		// and possible re-download since variable offsets have changed.
@@ -1414,13 +1444,21 @@ method saveAllChunks SmallRuntime checkCRCs {
 	assignFunctionIDs this
 	removeObsoleteChunks this
 
+	unusedFuncs = (unusedFunctions (project scripter) paletteBlock)
 	functionsSaved = 0
 	for aFunction (allFunctions (project scripter)) {
-		if (saveChunk this aFunction skipHiddenFunctions) {
-			functionsSaved += 1
-			if (0 == (functionsSaved % progressInterval)) {
-				setProperty api 'ide.downloadProgress' (array 3 (processedScripts / totalScripts))
+		if (not (contains unusedFuncs (functionName aFunction))) {
+			if (saveChunk this aFunction skipHiddenFunctions) {
+				functionsSaved += 1
+				if (0 == (functionsSaved % progressInterval)) {
+					setProperty api 'ide.downloadProgress' (array 3 (processedScripts / totalScripts))
+				}
 			}
+		}
+		if codeStoreFull {
+			setCursor 'default'
+			inform (localized 'Program is too large to store on board.')
+			return
 		}
 		if (not (connectedToBoard this)) { // connection closed
 			print 'Lost communication to the board in saveAllChunks'
@@ -1432,6 +1470,10 @@ method saveAllChunks SmallRuntime checkCRCs {
 	if (functionsSaved > 0) { print 'Downloaded' functionsSaved 'functions to board' (join '(' (msecSplit t) ' msecs)') }
 
 	scriptsSaved = 0
+	if (notNil paletteBlock) {
+		saveChunk this paletteBlock skipHiddenFunctions
+		scriptsSaved += 1
+	}
 	for aBlock (sortedScripts (scriptEditor scripter)) {
 		if (not (isPrototypeHat aBlock)) { // skip function def hat; functions get saved above
 			if (saveChunk this aBlock skipHiddenFunctions) {
@@ -1439,6 +1481,11 @@ method saveAllChunks SmallRuntime checkCRCs {
 				if (0 == (scriptsSaved % progressInterval)) {
 					setProperty api 'ide.downloadProgress' (array 3 (processedScripts / totalScripts))
 				}
+			}
+			if codeStoreFull {
+				setCursor 'default'
+				inform (localized 'Program is too large to store on board.')
+				return
 			}
 			if (not (connectedToBoard this)) { // connection closed
 				print 'Lost communication to the board in saveAllChunks'
@@ -1494,6 +1541,8 @@ method sourceForChunk SmallRuntime aBlockOrFunction {
 method saveChunk SmallRuntime aBlockOrFunction skipHiddenFunctions {
 	// Save the given script or function as an executable code "chunk".
 	// Also save the source code (in GP format) and the script position.
+
+	if codeStoreFull { return }
 
 	if (isNil skipHiddenFunctions) { skipHiddenFunctions = true } // optimize by default
 
@@ -1612,6 +1661,7 @@ method storeChunkOnBoard SmallRuntime chunkID data chunkCRC {
 	startT = (msecsSinceStart)
 	while (and (lastCRC != chunkCRC) (((msecsSinceStart) - startT) < timeout)) {
 		processMessages this
+		if codeStoreFull { return false }
 		waitMSecs 1
 	}
 	return (lastCRC == chunkCRC)
@@ -1647,16 +1697,24 @@ method verifyCRCs SmallRuntime {
 		collectCRCsIndividually this
 	}
 
-	// build dictionaries:
-	//  ideChunks: maps chunkID -> block or functionName
-	//  crcForChunkID: maps chunkID -> CRC
+
+	// build dictionaries and unused function list
+	//	ideChunks: maps chunkID -> block or functionName
+	//	crcForChunkID: maps chunkID -> CRC
+	//	unusedFuncs: list of unused function names
 	ideChunks = (dictionary)
 	crcForChunkID = (dictionary)
+	unusedFuncs = (unusedFunctions (project scripter))
 	for pair (sortedPairs chunkIDs) {
 		id = (first (first pair))
 		key = (last pair)
-		if (and (isClass key 'String') (isNil (functionNamed (project scripter) key))) {
-			remove chunkIDs key // remove reference to deleted function (rarely needed)
+		if (isClass key 'String') {
+			if (isNil (functionNamed (project scripter) key)) {
+				remove chunkIDs key // remove reference to deleted function (rarely needed)
+			}
+			if (contains unusedFuncs key) {
+				remove chunkIDs key // unused function; does not need to be saved to board
+			}
 		} else {
 			atPut ideChunks id (last pair)
 			atPut crcForChunkID id (at (first pair) 2)
@@ -1845,6 +1903,10 @@ method saveVariableNamesIfNeeded SmallRuntime {
 				sendMsg this 'varNameMsg' varID (toArray (toBinaryData varName))
 			}
 		}
+		if codeStoreFull {
+			inform (localized 'Program is too large to store on board.')
+			return true
+		}
 		if ((i % progressInterval) == 0) {
 			setProperty api 'ide.downloadProgress' (array 2 (i / varCount))
 		}
@@ -1903,6 +1965,15 @@ method clearVariableNames SmallRuntime {
 	oldVarNames = nil
 }
 
+// Report program size
+
+method receivedCodeStoreUsed SmallRuntime msg {
+	if ((count msg) < 8) { return } // bad message; should have 8-byte payload
+	used  = (+ (at msg 1) ((at msg 2) << 8) ((at msg 3) << 16) ((at msg 4) << 24) )
+	total = (+ (at msg 5) ((at msg 6) << 8) ((at msg 7) << 16) ((at msg 8) << 24) )
+	inform (join 'Using ' used ' out of ' total ' bytes (' (round ((100 * used) / total) 0.1) '%)')
+}
+
 // Library changes
 
 method librariesChanged SmallRuntime {
@@ -1912,7 +1983,6 @@ method librariesChanged SmallRuntime {
 	clearVariableNames this
 	scriptChanged scripter
 }
-
 
 // Serial Delay
 
@@ -1966,6 +2036,7 @@ method msgNameToID SmallRuntime msgName {
 		atPut msgDict 'versionMsg' 22
 		atPut msgDict 'chunkCRCMsg' 23
 		atPut msgDict 'clearGraphMsg' 24
+		atPut msgDict 'codeStoreFullMsg' 25
 		atPut msgDict 'pingMsg' 26
 		atPut msgDict 'broadcastMsg' 27
 		atPut msgDict 'chunkAttributeMsg' 28
@@ -1973,6 +2044,7 @@ method msgNameToID SmallRuntime msgName {
 		atPut msgDict 'extendedMsg' 30
 		atPut msgDict 'enableBLEMsg' 31
 		atPut msgDict 'chunkCode16Msg' 32
+		atPut msgDict 'codeStoreUsedMsg' 33
 		atPut msgDict 'getAllCRCsMsg' 38
 		atPut msgDict 'allCRCsMsg' 39
 		atPut msgDict 'deleteFile' 200
@@ -2268,11 +2340,15 @@ method handleMessage SmallRuntime msg {
 		allCRCsReceived this (copyFromTo (toArray msg) 6)
 	} (op == (msgNameToID this 'pingMsg')) {
 		lastPingRecvMSecs = (msecsSinceStart)
+	} (op == (msgNameToID this 'codeStoreFullMsg')) {
+		codeStoreFull = true
 	} (op == (msgNameToID this 'broadcastMsg')) {
 		nop // formerly used by the local IDE httpServer
 		// broadcastReceived (httpServer scripter) (toString (copyFromTo msg 6))
 	} (op == (msgNameToID this 'chunkCode16Msg')) {
 		receivedChunk this (byteAt msg 3) (byteAt msg 6) (toArray (copyFromTo msg 7))
+	} (op == (msgNameToID this 'codeStoreUsedMsg')) {
+		receivedCodeStoreUsed this (toArray (copyFromTo msg 6))
 	} (op == (msgNameToID this 'varNameMsg')) {
 		receivedVarName this (byteAt msg 3) (toString (copyFromTo msg 6)) ((byteCount msg) - 5)
 	} (op == (msgNameToID this 'fileInfo')) {
@@ -2336,7 +2412,7 @@ method boardHasFileSystem SmallRuntime {
 	if (and (isWebSerial this) (not (isOpenSerialPort 1))) { return false }
 	if (not (connectedToBoard this)) { return false }
 	if (isNil boardType) { getVersion this }
-	if (and (notNil boardType) (notNil (findSubstring boardType 'ESP'))) { return true }
+	if (and (notNil boardType) (notNil (findSubstring 'ESP' boardType))) { return true }
 	return (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix'
 		'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040'

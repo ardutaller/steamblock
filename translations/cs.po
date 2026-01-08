@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2025-09-19 16:02+0000\n"
+"PO-Revision-Date: 2026-01-03 20:01+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklim@centrum.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/cs/"
-">\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
+"cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -1817,7 +1817,7 @@ msgstr "zlomek _ > _"
 
 #. Fractions library block
 msgid "simplify fraction _"
-msgstr "zjednoduš zlomek _"
+msgstr "zjednodušit zlomek _"
 
 #. Fractions library block
 msgid "integer part of fraction _"
@@ -3614,163 +3614,163 @@ msgstr ""
 
 #. Keyestudio Smart Farm library block
 msgid "voltage (V)"
-msgstr ""
+msgstr "napětí (V)"
 
 #. Keyestudio Smart Farm library block
 msgid "current (mA)"
-msgstr ""
+msgstr "proud (mA)"
 
 #. Keyestudio Smart Farm library block
 msgid "power (mW)"
-msgstr ""
+msgstr "výkon (mW)"
 
 #. Keyestudio Smart Farm library block
 msgid "open"
-msgstr ""
+msgstr "otevřít"
 
 #. Keyestudio Smart Farm library block
 msgid "close"
-msgstr ""
+msgstr "zavřít"
 
 #. Keyestudio Smart Farm library block
 msgid "on"
-msgstr ""
+msgstr "zapnuto"
 
 #. Keyestudio Smart Farm library block
 msgid "off"
-msgstr ""
+msgstr "vypnuto"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm fan _"
-msgstr ""
+msgstr "farma ventilátor _"
 
 #. Keyestudio Smart Farm library block
 msgid "start"
-msgstr ""
+msgstr "start"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm display _ in line _"
-msgstr ""
+msgstr "farma zobraz _ v řádku _"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm _ the trapdoor"
-msgstr ""
+msgstr "farma _ tajné dveře"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm play _ octave _ for _ ms"
-msgstr ""
+msgstr "farma tón _ oktáva _ po _ ms"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm set light _"
-msgstr ""
+msgstr "farma nastav světlo _"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm water pump _"
-msgstr ""
+msgstr "farma vodní pumpa _"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm temperature ºC"
-msgstr ""
+msgstr "farma teplota ºC"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm humidity"
-msgstr ""
+msgstr "farma vlhkost"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm movement detected?"
-msgstr ""
+msgstr "farma detekován pohyb?"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm button pressed?"
-msgstr ""
+msgstr "farma stisknuto tlačítko?"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm distance (cm)"
-msgstr ""
+msgstr "farma vzdálenost (cm)"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm light level"
-msgstr ""
+msgstr "farma intenzita světla"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm water level"
-msgstr ""
+msgstr "farma hladina vody"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm soil moisture"
-msgstr ""
+msgstr "farma vlhkost půdy"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm steam level"
-msgstr ""
+msgstr "farma intenzita páry"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm electric consumption _"
-msgstr ""
+msgstr "farma spotřeba elektřiny _"
 
 #. Keyestudio Smart Home library block
 msgid "Home fan _"
-msgstr ""
+msgstr "domovní ventilátor _"
 
 #. Keyestudio Smart Home library block
 msgid "Home display _ in line _"
-msgstr ""
+msgstr "domov zobraz _ v řádku _"
 
 #. Keyestudio Smart Home library block
 msgid "Home _ the window"
-msgstr ""
+msgstr "domov _ okno"
 
 #. Keyestudio Smart Home library block
 msgid "Home activate the door"
-msgstr ""
+msgstr "domov aktivuj dveře"
 
 #. Keyestudio Smart Home library block
 msgid "Home play _ octave _ for _ ms"
-msgstr ""
+msgstr "domov tón _ oktáva _ po _ ms"
 
 #. Keyestudio Smart Home library block
 msgid "Home set light _"
-msgstr ""
+msgstr "domov nastav světlo _"
 
 #. Keyestudio Smart Home library block
 msgid "Home temperature ºC"
-msgstr ""
+msgstr "domov teplota ºC"
 
 #. Keyestudio Smart Home library block
 msgid "Home humidity"
-msgstr ""
+msgstr "domov vlhkost"
 
 #. Keyestudio Smart Home library block
 msgid "Home steam level"
-msgstr ""
+msgstr "domov intenzita páry"
 
 #. Keyestudio Smart Home library block
 msgid "Home read RFID card"
-msgstr ""
+msgstr "domov čti RFID"
 
 #. Keyestudio Smart Home library block
 msgid "Home movement detected?"
-msgstr ""
+msgstr "domov pohyb detekován?"
 
 #. Keyestudio Smart Home library block
 msgid "Home _ button pressed?"
-msgstr ""
+msgstr "domov _ tlačítko stisknuto?"
 
 #. Keyestudio Smart Home library block
 msgid "Home gas detected?"
-msgstr ""
+msgstr "domov indikován plyn?"
 
 #. Keyestudio Smart Home library block
 msgid "Home set NeoPixels _ _ _ _"
-msgstr ""
+msgstr "domov nastav neopixels _ _ _ _"
 
 #. Keyestudio Smart Home library block
 msgid "Home clear leds"
-msgstr ""
+msgstr "domov zhasni LED"
 
 #. Keyestudio Smart Home library block
 msgid "Home electric consumption _"
-msgstr ""
+msgstr "domov spotřeba elektřiny _"
 
 #. MQTT library block
 msgid "MQTT connect to broker _"
@@ -3903,7 +3903,7 @@ msgstr "nastav skupinu WiFi _ (0-255)"
 
 #. Cutebot library label
 msgid "Cutebot"
-msgstr ""
+msgstr "Cutebot"
 
 #. Cutebot library block
 msgid "Cutebot set wheel left _ right _ (-100 to 100)"
@@ -6480,3 +6480,113 @@ msgstr "ms gyro _ deg/s"
 #. micro:STEAMakers library block
 msgid "ms;stop"
 msgstr "stop"
+
+#. Option in dropdown menu of editable input slots on mobile devices:
+msgid "edit"
+msgstr "upravit"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "aktivuj i2c(auto) reset pin# _ překlopit _"
+
+#. Fractions library block
+msgid "fract _ − _"
+msgstr "zlomek _ - _"
+
+#. Files library block
+msgid "contents of file _"
+msgstr "obsah souboru _"
+
+#. Generic servo type
+msgid "180°"
+msgstr "180°"
+
+#. Generic servo type
+msgid "270°"
+msgstr "270°"
+
+#. Generic servo type
+msgid "360°"
+msgstr "360°"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr "vlevo"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr "vpravo"
+
+#. BLE Scanner library block
+msgid "RSSI"
+msgstr "RSSI"
+
+#. Foxbit library block
+msgid "logo"
+msgstr "logo"
+
+#. Foxbit library block
+msgid "fb loudness"
+msgstr "fb hlasitost"
+
+#. Foxbit library block
+msgid "fb light level"
+msgstr "fb intenzita světla"
+
+#. Foxbit library block
+msgid "fb set all NeoPixels _"
+msgstr "fb nastav věechny NeoPixely _"
+
+#. Foxbit library block
+msgid "fb pin _ touched?"
+msgstr "fb dotyk pinu _ ?"
+
+#. Foxbit library block
+msgid "fb temperature"
+msgstr "fb teplota"
+
+#. Foxbit library block
+msgid "fb beep for _ millisecs"
+msgstr "fb pípnutí po dobu _ ms"
+
+#. Foxbit library block
+msgid "fb humidity"
+msgstr "fb vlhkost"
+
+#. Foxbit library block
+msgid "fb set NeoPixels #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+msgstr ""
+"fb nastav NeoPixely #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _ "
+"#BR# _ _ _ _ _ _ _ #BR# _ _ _ _ _ _ _"
+
+#. Foxbit library block
+msgid "fb current"
+msgstr "fb proud"
+
+#. Foxbit library block
+msgid "fb clear NeoPixels"
+msgstr "fb zhasni NeoPixely"
+
+#. Foxbit library block
+msgid "fb scroll text _ _"
+msgstr "fb roluj text __"
+
+#. Coding Box library block
+msgid "cb stop fan"
+msgstr "cb zastav ventilátor"
+
+#. Coding Box library block
+msgid "cb clear oled"
+msgstr "cb smaž OLED"
+
+#. Library button, abbreviated
+msgid "LIBS"
+msgstr "LIBS"
+
+#. Examples folder
+msgid "folder;MakerPort"
+msgstr "Složka příkladů"
+
+#. Examples folder
+msgid "folder;CoCube"
+msgstr "CoCube"

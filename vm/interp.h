@@ -141,6 +141,7 @@ extern int extraByteDelay;
 #define versionMsg				22
 #define chunkCRCMsg				23
 #define clearGraphMsg			24
+#define codeStoreFullMsg		25
 
 // Serial Protocol Messages: Bidirectional
 
@@ -151,6 +152,7 @@ extern int extraByteDelay;
 #define extendedMsg				30
 #define enableBLEMsg			31
 #define chunkCode16Msg			32
+#define codeStoreUsedMsg		33
 
 // Serial Protocol Messages: CRC Exchange
 
@@ -228,6 +230,7 @@ void sendTaskDone(uint8 chunkIndex);
 void sendTaskError(uint8 chunkIndex, uint8 errorCode, int where);
 void sendTaskReturnValue(uint8 chunkIndex, OBJ returnValue);
 void sendBroadcastToIDE(char *s, int len);
+void sendCodeStoreFull();
 int broadcastMatches(uint8 chunkIndex, char *msg, int byteCount);
 void sendSayForChunk(char *s, int len, uint8 chunkIndex);
 void vmLoop(void);
@@ -272,9 +275,6 @@ void runTasksUntilDone(void);
 void interpTests1(void);
 void taskTest(void);
 
-void compactCodeStore();
-void outputRecordHeaders();
-
 // Platform Specific Operations
 
 uint64 totalMicrosecs();
@@ -283,6 +283,8 @@ uint32 millisecs(void);
 uint32 seconds();
 void handleMicosecondClockWrap();
 
+int chunkIndexForFunction(char *functionName);
+
 int ideConnected();
 int recvBytes(uint8 *buf, int count);
 int sendBytes(uint8 *buf, int start, int end);
@@ -290,6 +292,7 @@ void captureIncomingBytes();
 void restartSerial();
 
 const char *boardType();
+int hasPSRAM();
 void hardwareInit(void);
 
 int readI2CReg(int deviceID, int reg);

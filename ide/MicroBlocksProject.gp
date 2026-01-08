@@ -300,6 +300,82 @@ method allBroadcasts MicroBlocksProject {
 	return (toList (sorted (keys result)))
 }
 
+// Collect unused functions
+
+method unusedFunctions MicroBlocksProject paletteBlock {
+	// Return a list of functions that are not used by this project (directly or indirectly).
+	// If the project contains a custom call block, trace the function call if the argument
+	// to the call block is a string constant. Otherise, assume that any function could be
+	// called so there are no unused functions.
+	// The optional paletteBlock argument supports running blocks in the palette.
+
+	// create dictionary with all functions
+	functionCalled = (dictionary)
+	for f (allFunctions this) {
+		atPut functionCalled (functionName f) false
+	}
+
+	scriptsToScan = (toList (copy (scripts main)))
+	if (notNil paletteBlock) {
+		add scriptsToScan (list 0 0 (expression paletteBlock))
+	}
+
+	// mark functions called by scripts
+	todo = (list)
+	for entry scriptsToScan {
+		// a script entry is a three-element list: x, y, script
+		for b (allBlocks (at entry 3)) {
+			op = (primName b)
+			if (isOneOf op 'callCustomCommand' 'callCustomReporter' 'sendBroadcast') {
+				// if argument is a string the call is known; otherwise any function could be called
+				callArg = (first (argList b))
+				if (isClass callArg 'String') {
+					op = callArg
+				} else {
+					return (list)
+				}
+			}
+			if ((at functionCalled op 'notAFunction') == false) {
+				atPut functionCalled op true
+				add todo op
+			}
+		}
+	}
+
+	// mark all reachable functions
+	while (notEmpty todo) {
+		f = (functionNamed this (removeFirst todo))
+		for b (allBlocks (cmdList f)) {
+			op = (primName b)
+			if (isOneOf op 'callCustomCommand' 'callCustomReporter' 'sendBroadcast') {
+				// if argument is a string the call is known; otherwise any function could be called
+				callArg = (first (argList b))
+				if (isClass callArg 'String') {
+					op = callArg
+				} else {
+					return (list)
+				}
+			}
+			if ((at functionCalled op 'notAFunction') == false) {
+				atPut functionCalled op true
+				add todo op
+			}
+		}
+	}
+
+	// remove project user functions from unused list so the decompiler can recover them
+	for f (functions main) {
+		remove functionCalled (functionName f)
+	}
+
+	// return list of uncalled functions
+	result = (list)
+	for k (keys functionCalled) {
+		if (not (at functionCalled k)) { add result k }
+	}
+	return result
+}
+
 // Loading
 
 method loadFromOldProjectClassAndSpecs MicroBlocksProject aClass specList {

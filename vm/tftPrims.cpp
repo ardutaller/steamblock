@@ -1507,7 +1507,11 @@ OBJ primDeferUpdates(int argCount, OBJ *args) {
 OBJ primResumeUpdates(int argCount, OBJ *args) {
 	if (!useTFT) return falseObj;
 	deferUpdates = false;
-	UPDATE_DISPLAY();
+	#if !defined(OLED_128_64) || defined(KIDS_BITS)
+		// only do this for built-in displays, not for optional OLED displays
+		// (KidsBits is the currently the only board with a built-in OLED display)
+		UPDATE_DISPLAY();
+	#endif
 	return falseObj;
 }
 

@@ -550,6 +550,12 @@ static OBJ primClearGraph(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+static OBJ primFunctionExists(int argCount, OBJ *args) {
+	if ((argCount < 1) || !IS_TYPE(args[0], StringType)) return fail(needsStringError);
+
+	return (chunkIndexForFunction(obj2str(args[0])) < 0) ? falseObj : trueObj;
+}
+
 static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
@@ -798,9 +804,9 @@ static PrimEntry entries[] = {
 	{"rescale", primRescale},
 	{"connectedToIDE", primConnectedToIDE},
 	{"broadcastToIDE", primBroadcastToIDEOnly},
-	{"bme680GasResistance", primBMP680GasResistance},
 	{"shapeforChar", primShapeforChar},
 	{"clearGraph", primClearGraph},
+	{"functionExists", primFunctionExists},
 #if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
 	{"espSleep", primESPSleep},
 #endif
@@ -818,6 +824,7 @@ static PrimEntry entries[] = {
 	{"brightness", primColorBrightness},
 	{"atan2", primArctan},
 	{"pressureToAltitude", primPressureToAltitude},
+	{"bme680GasResistance", primBMP680GasResistance},
 #endif
 	{"jsonGet", primJSONGet},
 	{"jsonCount", primJSONCount},
