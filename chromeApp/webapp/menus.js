@@ -447,7 +447,13 @@ document.addEventListener('context', (e) => {
 
 document.addEventListener('choices', (e) => {
 	let descriptor = e.detail.value;
-	this.popUpFromDescriptor(
+	if (descriptor.x) { // this comes from GP
+		// we have to offset it by the GP canvas position
+		let canvas = document.querySelector('#canvas.emscripten');
+		e.clientX = descriptor.x + canvas.offsetLeft;
+		e.clientY = descriptor.y + canvas.offsetTop;
+	}
+	Menus.popUpFromDescriptor(
 		{
 			type: 'context',
 			items: descriptor.items.map(item => {

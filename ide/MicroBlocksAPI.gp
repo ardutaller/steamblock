@@ -246,19 +246,40 @@ method contextMenu MicroBlocksAPI selector aHand {
 }
 
 method menuFor MicroBlocksAPI items callback {
-	// TODO untested!
+	// callback is an action that gets called with the chosen item as a param,
+	// however, if items is a 2-dimensional list, then the first items are treated
+	// as menu labels and the second ones are treated as individual item callbacks
+
+	page = (global 'page')
+	scale = (global 'scale')
 	id = (nextId this)
 
 	options = (dictionary)
 	atPut options 'id' id
-	atPut options 'items' items
+	atPut options 'x' (/ (x (hand page)) scale)
+	atPut options 'y' (/ (y (hand page)) scale)
+	if (isClass (first items) 'String') {
+		atPut options 'items' items
+	} else {
+		// this is a 2D list, let's extract the labels
+		labels = (list)
+		for item items { add labels (at item 1) }
+		atPut options 'items' labels
 
-	notify api 'choices' options
-	response = (browserResponse api id)
-	while (response == nil) {
-		response = (browserResponse api id)
-		doOneCycle this
 	}
 
-	call callback response
+	notify this 'choices' options
+
+	response = (browserResponse this id)
+	while (response == nil) {
+		response = (browserResponse this id)
+		doOneCycle page
+	}
+
+	if (isClass (first items) 'String') {
+		call callback response
+	} else {
+		// this is a 2D list, let's find the selected item and run its action
+		for item items { if ((at item 1) == response) { call (at item 2) } }
+	}
 }
