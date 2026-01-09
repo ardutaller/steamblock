@@ -395,7 +395,7 @@ hr {
 
 .win-buttons {
 	display: flex;
-	flex-direction: row;
+	flex-direction: row-reverse; /* easier to revert in style than in code */
 	justify-content: center;
 	padding: 8px 0;
 	gap: 2px;
@@ -412,10 +412,17 @@ hr {
 	font-size: 12px;
 }
 
-.win-button:hover {
+.win-button:focus, .win-button.default {
 	color: #ECEDF1;
 	background-color: #262938;
 	border-color: #262938;
+	outline: none;
+}
+
+.win-button:hover {
+	color: #262938;
+	background-color: #FED722;
+	border-color: #FED722;
 }
 
 .win-resize {

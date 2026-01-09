@@ -43,8 +43,6 @@ class FloatingWindow extends HTMLElement {
 			input.type = descriptor.input.type ?? 'text';
 			input.default = descriptor.input.defaultValue ?? '';
 			input.placeholder = descriptor.input.placeholder ?? '';
-			input.onfocus = () => { GP.delegateKeyboardEvents = true; };
-			input.onblur = () => { GP.delegateKeyboardEvents = false; };
 			body.append(input);
 		}
 		this.append(body);
@@ -68,6 +66,7 @@ class FloatingWindow extends HTMLElement {
 				button.classList.add('win-button');
 				buttons.append(button);
 			});
+			buttons.children[0].classList.add('default');
 			this.append(buttons);
 		}
 		if (descriptor.resizable) {
@@ -117,6 +116,20 @@ class FloatingWindow extends HTMLElement {
 
 	popUp() {
 		document.body.append(this);
+		this.onfocus = () => { GP.delegateKeyboardEvents = true; };
+		this.onblur = () => { GP.delegateKeyboardEvents = false; };
+		this.onkeydown = (e) => {
+			if (e.key == 'Enter') {
+				this.querySelector('.win-button').click(); // first button is OK
+			} else if (e.key == 'Escape') {
+				this.remove();
+			}
+		}
+		if (this.querySelector('.win-input')) {
+			this.querySelector('.win-input').focus();
+		} else {
+			this.querySelector('.win-button').focus();
+		}
 	}
 
 	connectedCallback() {
