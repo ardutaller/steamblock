@@ -172,7 +172,7 @@ method clicked BlockDefinition {
 
 method rightClicked BlockDefinition aHand {
 	if (isNil (ownerThatIsA morph 'Block')) {return false}
-	popUp (contextMenu this) (global 'page')
+	contextMenu this
 	return true
 }
 
@@ -192,24 +192,25 @@ method contextMenu BlockDefinition {
 		return (contextMenu selection true)
 	}
 
-	menu = (menu nil this)
-	addItem menu 'hide block definition' 'hideDefinition'
-	addLine menu
-	addItem menu 'copy to clipboard' (action 'copyToClipboard' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard'
-	addItem menu 'copy to clipboard as URL' (action 'copyToClipboardAsURL' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard as a URL'
-	addLine menu
-	addItem menu 'save picture of script' 'exportAsImage' 'save a picture of this block definition as a PNG file'
+	items = (list)
+	add items (array 'hide block definition' (action 'hideDefinition' this))
+	add items '-'
+	add items (array 'copy to clipboard' (action 'copyToClipboard' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard')
+	add items (array 'copy to clipboard as URL' (action 'copyToClipboardAsURL' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard as a URL')
+	add items '-'
+	add items (array 'save picture of script' (action 'exportAsImage' this) 'save a picture of this block definition as a PNG file')
 	if (devMode) {
-		addLine menu
-		addItem menu 'show instructions' (action 'showInstructions' this)
-		addItem menu 'show compiled bytes' (action 'showCompiledBytes' this)
-		addItem menu 'show call tree' (action 'showCallTree' this)
-		addLine menu
-		addItem menu 'add to library' (action 'addToLibraryMenu' this)
+		add items '-'
+		add items (array 'show instructions' (action 'showInstructions' this))
+		add items (array 'show compiled bytes' (action 'showCompiledBytes' this))
+		add items (array 'show call tree' (action 'showCallTree' this))
+		add items '-'
+		add items (array 'add to library' (action 'addToLibraryMenu' this))
 	}
-	addLine menu
-	addItem menu 'delete block definition...' 'deleteBlockDefinition'
-	return menu
+	add items '-'
+	add items (array 'delete block definition...' (action 'deleteBlockDefinition' this))
+	menuFor (api (smallRuntime)) items
+	return nil
 }
 
 method exportAsImage BlockDefinition {
@@ -229,14 +230,14 @@ method showCallTree BlockDefinition {
 }
 
 method addToLibraryMenu BlockDefinition {
-	menu = (menu nil this)
+	items = (list)
 	project = (project (findMicroBlocksEditor))
 	for lib (values (libraries project)) {
-		addItem menu (moduleName lib) (action 'addToLibrary' this lib)
+		add items (array (moduleName lib) (action 'addToLibrary' this lib))
 	}
-	addLine menu
-	addItem menu 'My Blocks' (action 'addToLibrary' this (main project))
-	popUpAtHand menu (global 'page')
+	add items '-'
+	add items (array 'My Blocks' (action 'addToLibrary' this (main project)))
+	menuFor (api (smallRuntime)) items
 }
 
 method addToLibrary BlockDefinition library {
@@ -581,10 +582,10 @@ method collapse BlockSectionDefinition {
 }
 
 method expansionMenu BlockSectionDefinition {
-	menu = (menu nil this)
-	addItem menu 'label' 'addLabel'
-	addItem menu 'input' 'addInput'
-	popUp menu (global 'page') (left (morph drawer)) (bottom (morph drawer))
+	items = (list)
+	add items (array 'label' (action 'addLabel' this))
+	add items (array 'input' (action 'addInput' this))
+	menuFor (api (smallRuntime)) items
 }
 
 // showing and hiding details
