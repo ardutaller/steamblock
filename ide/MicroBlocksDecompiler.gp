@@ -96,6 +96,10 @@ method decompileProject MicroBlocksDecompiler {
 	updatePrimitives project
 	fixFunctionLocals project
 
+	for varName (unusedGlobals project) {
+		deleteVariable project varName
+	}
+
 	return project
 }
 
