@@ -258,30 +258,31 @@ method drawLabel MicroBlocksDataGraph ctx label left y {
 // context menu
 
 method rightClicked MicroBlocksDataGraph aHand {
-	popUpAtHand (contextMenu this) (global 'page')
+	contextMenu this
 	return true
 }
 
 method contextMenu MicroBlocksDataGraph {
-	menu = (menu 'Graph' this)
-	addItem menu 'clear graph' 'clearGraph'
-	addLine menu
-	addItem menu 'increase range' 'decreaseGraphScale'
-	addItem menu 'decrease range' 'increaseGraphScale'
+	items = (list)
+	add items (array 'clear graph' (action 'clearGraph' this))
+	add items '-'
+	add items (array 'increase range' (action 'decreaseGraphScale' this))
+	add items (array 'decrease range' (action 'increaseGraphScale' this))
 	if zeroAtBottom {
-		addItem menu 'zero in middle' 'toggleZeroAtBottom'
+		add items (array 'zero in middle' (action 'toggleZeroAtBottom' this))
 	} else {
-		addItem menu 'zero at bottom' 'toggleZeroAtBottom'
+		add items (array 'zero at bottom' (action 'toggleZeroAtBottom' this))
 	}
-	addLine menu
-	addItem menu 'export data to CSV file' 'exportData'
-	addItem menu 'import data from CSV file' 'importData'
+	add items '-'
+	add items (array 'export data to CSV file' (action 'exportData' this))
+	add items (array 'import data from CSV file' (action 'importData' this))
 	if (devMode) {
-		addItem menu 'copy graph data to clipboard' 'copyDataToClipboard'
-		addLine menu
-		addItem menu 'set serial delay' (action 'serialDelayMenu' (smallRuntime))
+		add items (array 'copy graph data to clipboard' (action 'copyDataToClipboard' this))
+		add items '-'
+		add items (array 'set serial delay' (action 'serialDelayMenu' (smallRuntime)))
 	}
-	return menu
+	menuFor (api (smallRuntime)) items
+	return nil
 }
 
 method clearGraph MicroBlocksDataGraph {
