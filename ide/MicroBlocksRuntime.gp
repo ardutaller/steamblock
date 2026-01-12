@@ -1423,7 +1423,7 @@ method boardIsBLECapable SmallRuntime {
 	if ('connected' != status) { return false }
 	if (isNil boardType) { getVersion this }
 	if (isOneOf boardType
-		'Citilab ED1' 'CoCube' 'Databot' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers' 'CodingBox' 'Foxbit' 'KidsIOT') {
+		'Citilab ED1' 'CoCube' 'Databot' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers' 'CodingBox' 'Foxbit' 'KidsIOT' 'IOT-BUS') {
 		return true
 	}
 	if (notNil (findSubstring 'ESP' boardType)) {
@@ -2535,7 +2535,7 @@ method boardHasFileSystem SmallRuntime {
 		'Citilab ED1' 'CoCube' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix'
 		'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040'
 		'Boardie' 'Databot' 'Mbits' 'micro:STEAMakers' 'RP2040 XRP'
-		'CodingBox' 'Foxbit' 'KidsIOT'
+		'CodingBox' 'Foxbit' 'KidsIOT' 'IOT-BUS'
 		'M5AtomS3-Lite' 'M5Atom-Lite')
 }
 
