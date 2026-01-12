@@ -338,8 +338,11 @@ Menus.elementFor = function (descriptor, target) {
 		if (!(item.hidden?.())) {
 			let li = document.createElement('li');
 			if (item.label == '-') {
-				// vertical separator, unless this is the last item
-				li.appendChild(document.createElement('hr'));
+				// vertical separator, unless this is the last item or the previous one
+				// was also a separator
+				if (descriptor.items[index - 1].label != '-') {
+					li.appendChild(document.createElement('hr'));
+				}
 			} else {
 				let a = document.createElement('a');
 				let text = document.createElement('l-'); // localizable
