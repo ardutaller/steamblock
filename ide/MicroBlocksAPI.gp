@@ -267,7 +267,7 @@ method menuFor MicroBlocksAPI items callback {
 		atPut options 'items' labels
 	}
 
-	notify this 'choices' options
+	notify this 'menu' options
 
 	response = (browserResponse this id)
 	while (response == nil) {

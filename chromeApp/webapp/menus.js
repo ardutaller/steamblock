@@ -410,11 +410,11 @@ Menus.popUpFromDescriptor = function (
 	container.style.top =
 		`${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
 	nav.style.maxHeight = `${window.innerHeight - 80}px`;
-}
+};
 
 Menus.current = function () {
 	return document.querySelector('.top-bar .menu nav');
-}
+};
 
 Menus.close = function () {
 	this.current()?.remove();
@@ -448,7 +448,7 @@ document.addEventListener('context', (e) => {
 	e.preventDefault();
 });
 
-document.addEventListener('choices', (e) => {
+document.addEventListener('menu', (e) => {
 	let descriptor = e.detail.value;
 	if (descriptor.x) { // this comes from GP
 		// we have to offset it by the GP canvas position

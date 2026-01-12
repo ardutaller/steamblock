@@ -2463,11 +2463,11 @@ method getFileFromBoard SmallRuntime {
 		inform 'No files on board.'
 		return
 	}
-	menu = (menu 'File to read from board:' this)
+	items = (list)
 	for fn fileNames {
-		addItem menu fn (action 'getAndSaveFile' this fn (at fileList fn))
+		add items (array fn (action 'getAndSaveFile' this fn (at fileList fn)))
 	}
-	popUpAtHand menu (global 'page')
+	menuFor api items
 }
 
 method getAndSaveFile SmallRuntime remoteFileName remoteFileSize {
@@ -2975,43 +2975,43 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 	} else {
-		menu = (menu 'Select board type:' (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag) true)
+		items = (list)
 		if eraseFlashFlag {
-			addItem menu 'Citilab ED1'
-			addItem menu 'micro:STEAMakers'
-			addItem menu 'KidsBits'
-			addItem menu 'Foxbit'
-			addItem menu 'CoCube'
-			addItem menu 'Databot'
-//			addItem menu 'M5Stack-Core'
-			addItem menu 'ESP32'
-			addItem menu 'ESP8266'
+			add items 'Citilab ED1'
+			add items 'micro:STEAMakers'
+			add items 'KidsBits'
+			add items 'Foxbit'
+			add items 'CoCube'
+			add items 'Databot'
+//			add items 'M5Stack-Core'
+			add items 'ESP32'
+			add items 'ESP8266'
 		} else {
-			addItem menu 'micro:bit'
-			addItem menu 'Calliope mini'
-			addLine menu
-			addItem menu 'Citilab ED1'
-			addItem menu 'micro:STEAMakers'
-			addItem menu 'KidsBits'
-			addItem menu 'Foxbit'
-			addItem menu 'CoCube'
-			addItem menu 'Databot'
-			addLine menu
-//			addItem menu 'ELECFREAKS Pico:ed'
-			addItem menu 'ELECFREAKS Wukong2040'
-			addItem menu 'RP2040 (Pico or Pico W)'
-			addLine menu
-			addItem menu 'MakerPort'
-			addLine menu
-			addItem menu 'Circuit Playground Express'
-			addItem menu 'Circuit Playground Bluefruit'
-//			addItem menu 'Clue'
-			addLine menu
-//			addItem menu 'M5Stack-Core'
-			addItem menu 'ESP32'
-			addItem menu 'ESP8266'
+			add items 'micro:bit'
+			add items 'Calliope mini'
+			add items '-'
+			add items 'Citilab ED1'
+			add items 'micro:STEAMakers'
+			add items 'KidsBits'
+			add items 'Foxbit'
+			add items 'CoCube'
+			add items 'Databot'
+			add items '-'
+//			add items 'ELECFREAKS Pico:ed'
+			add items 'ELECFREAKS Wukong2040'
+			add items 'RP2040 (Pico or Pico W)'
+			add items '-'
+			add items 'MakerPort'
+			add items '-'
+			add items 'Circuit Playground Express'
+			add items 'Circuit Playground Bluefruit'
+//			add items 'Clue'
+			add items '-'
+//			add items 'M5Stack-Core'
+			add items 'ESP32'
+			add items 'ESP8266'
 		}
-		popUpAtHand menu (global 'page')
+		menuFor api items (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag)
 	}
 }
 
@@ -3296,7 +3296,7 @@ method installESPFirmwareFromRepo SmallRuntime {
 	} else {
 		version = (join 'v' ideVersion)
 	}
-	menu = (menu 'Select firmware:' this)
+	items = (list)
 	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
 	for line (lines html) {
 		if (beginsWith line '<a href="vm_') {
@@ -3304,12 +3304,12 @@ method installESPFirmwareFromRepo SmallRuntime {
 			if (binIndex > 0) { // it is an ESP firmware
 				boardName = (substring line 13 (binIndex - 1))
 				url = (join 'http://microblocks.fun/downloads/' version '/vm/vm_' boardName '.bin')
-				addItem menu boardName (action 'flashESPFirmwareFromURL' this boardName url)
+				add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
 			}
 		}
 	}
 	setCursor 'normal'
-	popUpAtHand menu (global 'page')
+	menuFor api items
 }
 
 // Install ESP firmware from file
