@@ -938,6 +938,10 @@ method connectedToBoard SmallRuntime {
 	return (((msecsSinceStart) - lastPingRecvMSecs) < pingTimeout)
 }
 
+method connectedViaBLE SmallRuntime {
+	return (portName == 'webBLE')
+}
+
 method updateConnection SmallRuntime {
 	pingSendInterval = 2000 // msecs between pings
 	pingTimeout = 8000

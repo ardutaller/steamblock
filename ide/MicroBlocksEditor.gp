@@ -834,16 +834,13 @@ method fixScripterLayout MicroBlocksEditor {
 // gear menu
 
 method gearMenu MicroBlocksEditor {
+	isConnected = ('connected' == (updateConnection (smallRuntime)))
 	menu = (menu 'MicroBlocks' this)
 	setIsTopMenu menu true
 	addItem menu 'about...' (action 'showAboutBox' (smallRuntime))
 	addLine menu
 	addItem menu 'update firmware on board' (action 'installVM' (smallRuntime) false false) // do not wipe flash, do not download VM from server
 	addLine menu
-	if ('connected' == (updateConnection (smallRuntime))) {
-		addItem menu 'show program size on board' (action 'sendMsg' (smallRuntime) 'systemResetMsg' 2 nil)
-		addLine menu
-	}
 	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addItem menu 'dark mode' (action 'toggleDarkMode' this false) 'make the IDE darker' (newCheckmark this (darkModeEnabled this))
 	addItem menu 'advanced mode' 'toggleAdvancedMode' 'show advanced blocks, menu items and editor functionalities' (newCheckmark this (devMode))
@@ -861,11 +858,28 @@ method gearMenu MicroBlocksEditor {
 		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (smallRuntime))
 		addItem menu 'erase flash and update firmware on ESP board' (action 'installVM' (smallRuntime) true false) // wipe flash first, do not download VM from server
 		addLine menu
-
-		if (boardIsBLECapable (smallRuntime)) {
-			addLine menu
-			addItem menu 'enable or disable BLE' (action 'setBLEFlag' (smallRuntime))
+		if (and
+				isConnected
+				(boardIsBLECapable (smallRuntime))
+				(not (connectedViaBLE (smallRuntime)))
+			) {
+				addLine menu
+				addItem menu 'enable or disable BLE' (action 'setBLEFlag' (smallRuntime))
 		}
+		addLine menu
+		addItem menu 'show program size on board' (action 'sendMsg' (smallRuntime) 'systemResetMsg' 2 nil) nil nil true (not isConnected)
+
+// Let's deprecate the HTTP server since it doesn't work in browser?
+// Don't think anyone is using it now that we have so many other ways to communicate.
+// And we might not want to -- or be able to -- implement it when we rewrite MicroBlocks.
+//		if ('Browser' != (platform)) {
+//			addLine menu
+//			if (not (isRunning httpServer)) {
+//				addItem menu 'start HTTP server' 'startHTTPServer'
+//			} else {
+//				addItem menu 'stop HTTP server' 'stopHTTPServer'
+//			}
+//		}
 	}
 	return menu
 }

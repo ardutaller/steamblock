@@ -376,6 +376,47 @@ method unusedFunctions MicroBlocksProject paletteBlock {
 	return result
 }
 
+method unusedGlobals MicroBlocksProject {
+	// Return a list of global variables that are not used by this project.
+
+	// make a list of globals not owned by any library
+	unusedGlobals = (toList (variableNames main))
+	for lib (values libraries) {
+		for varName (variableNames lib) {
+			remove unusedGlobals varName
+		}
+	}
+
+	// scan scripts
+	for entry (scripts main) {
+		// a script entry is a three-element list: x, y, script
+		for b (allBlocks (at entry 3)) {
+			op = (primName b)
+			if (isOneOf op 'v' '=' '+=') {
+				varName = (first (argList b))
+				remove unusedGlobals varName
+			}
+		}
+	}
+
+	// scan functions
+	for f (allFunctions this) {
+		for b (allBlocks (cmdList f)) {
+			op = (primName b)
+			if (isOneOf op 'v' '=' '+=') {
+				varName = (first (argList b))
+				if (not (or
+					(contains (argNames f) varName)
+					(contains (localNames f) varName))) {
+						remove unusedGlobals varName
+				}
+			}
+		}
+	}
+
+	return unusedGlobals
+}
+
 // Loading
 
 method loadFromOldProjectClassAndSpecs MicroBlocksProject aClass specList {

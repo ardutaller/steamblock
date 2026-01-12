@@ -96,6 +96,10 @@ method decompileProject MicroBlocksDecompiler {
 	updatePrimitives project
 	fixFunctionLocals project
 
+	for varName (unusedGlobals project) {
+		deleteVariable project varName
+	}
+
 	return project
 }
 
@@ -148,14 +152,26 @@ method addFunctionToProject MicroBlocksDecompiler aFunc chunkID project {
 
 method addEmbeddedLibrary MicroBlocksDecompiler libName project {
 	// Try to add the embedded library with the given name.
-	// Return true if successful, false if embedded library was not found.
 
-	libFileName = (join libName '.ubl')
-	for filePath (allFilesInDir (scripter (smallRuntime)) 'Libraries') {
-		if (endsWith filePath (substring filePath 3)) {
-			data = (readEmbeddedFile filePath)
-			addLibraryFromString project (toString data) libName filePath
-			return true
+	isImplementation = false
+	if (beginsWith libName '_') {
+		libName = (substring libName 2)
+		isImplementation = true
+	}
+	libFileName = (join '/' libName '.ubl')
+		for filePath (allFilesInDir (scripter (smallRuntime)) 'Libraries') {
+			if (endsWith filePath libFileName) {
+				data = (readEmbeddedFile filePath)
+				addLibraryFromString project (toString data) libName filePath
+			}
+		}
+	lib = (libraryNamed project libName)
+	if (notNil lib) { // add dependencies
+		if isImplementation { beImplementation lib }
+		for dependency (dependencies lib) {
+			if (isNil (libraryNamed project dependency)) { // dependent lib not yet loaded
+				addEmbeddedLibrary this dependency project
+			}
 		}
 	}
 	return false
