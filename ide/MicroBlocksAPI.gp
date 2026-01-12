@@ -263,9 +263,8 @@ method menuFor MicroBlocksAPI items callback {
 	} else {
 		// this is a 2D list, let's extract the labels
 		labels = (list)
-		for item items { add labels (at item 1) }
+		for item items { add labels (toString (at item 1)) }
 		atPut options 'items' labels
-
 	}
 
 	notify this 'choices' options

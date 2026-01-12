@@ -1991,12 +1991,12 @@ method librariesChanged SmallRuntime {
 // Serial Delay
 
 method serialDelayMenu SmallRuntime {
-	menu = (menu (join 'Serial delay' (newline) '(smaller is faster, but may fail if computer cannot keep up)') (action 'setSerialDelay' this) true)
-	for i (range 1 5) { addItem menu i }
-	for i (range 6 20 2) { addItem menu i }
-	addLine menu
-	addItem menu 'reset to default (10)'
-	popUpAtHand menu (global 'page')
+	items = (list)
+	for i (range 1 5) { add items (array i (action 'setSerialDelay' this i)) }
+	for i (range 6 20 2) { add items (array i (action 'setSerialDelay' this i)) }
+	add items '-'
+	add items (array 'reset to default (10)' (action 'setDefaultSerialDelay' this))
+	menuFor api items
 }
 
 method setDefaultSerialDelay SmallRuntime {
