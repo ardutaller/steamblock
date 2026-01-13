@@ -1010,6 +1010,7 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 #elif defined(ARDUINO_ARCH_ESP32)
 	#ifdef ARDUINO_IOT_BUS
 		#define BOARD_TYPE "IOT-BUS"
+		#define LED_BUILTIN 5
 		#define PIN_BUTTON_A 15
 		#define PIN_BUTTON_B 14
 	#elif defined(KIDS_BITS)

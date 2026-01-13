@@ -26,8 +26,8 @@ sayIt (getLastBroadcast)
 
 module CoCube
 author 'Liang Shuai'
-version 2 16 
-depends Tone Display TFT '_Motors/PID' 
+version 2 17 
+depends Tone Display TFT '_Motors/PID' 'Robots/CoCube Module' 
 tags 'cocube robot' 
 choices cocube_rotate_Menu 'cocube;left' 'cocube;right' 
 choices cocube_move_Menu 'cocube;forward' 'cocube;backward' 
@@ -52,6 +52,7 @@ v2.13 Optimize "set wheel" function
 v2.14 Improve the accuracy of move_to_target and optimize the loop exit mechanism
 v2.15 Remove "set TFT backlight" function
 v2.16 Change PID global variables into local
+v2.17 Modify the movement function on the map
 '
 variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _cocube_pid_flag _cocube_error_distance _cocube_error_y _cocube_error_x _cocube_target_angle 
 
@@ -88,10 +89,10 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' '_cocube_pid_control' '_cocube_pid_control'
   spec ' ' '_cocube_calculate_angle_error_' '_cocube_calculate_angle_error angle _' 'num' 0
   spec ' ' '_cocube_calculate_distance_error target_x _ target_y _' '_cocube_calculate_distance_error Target_X _ Target_Y _' 'num num' 0 0
-  spec ' ' 'CoCube set TFT backlight' 'obsolete set TFT backlight _' 'bool' false
-  spec ' ' '_cocube_pid_init' 'obsolete _cocube_pid_init'
-  spec ' ' '_cocube_pid_right_motor' 'obsolete _cocube_pid_right_motor'
-  spec ' ' '_cocube_pid_left_motor' 'obsolete _cocube_pid_left_motor'
+  spec ' ' 'CoCube set TFT backlight' 'obsolete obsolete set TFT backlight _' 'bool' false
+  spec ' ' '_cocube_pid_init' 'obsolete obsolete _cocube_pid_init'
+  spec ' ' '_cocube_pid_right_motor' 'obsolete obsolete _cocube_pid_right_motor'
+  spec ' ' '_cocube_pid_left_motor' 'obsolete obsolete _cocube_pid_left_motor'
 
 to 'CoCube battery percentage' {
   return (minimum (((254 * ('[misc:rescale]' (analogReadOp 34) 0 1023 0 3300)) - 680000) / 1600) 100)
@@ -132,20 +133,26 @@ to 'CoCube move' direction speed {
 }
 
 to 'CoCube move by step' direction speed steps {
+  _cocube_move_flag = (booleanConstant true)
   if ('CoCube on the mat') {
     local 'begin_x' ('CoCube position_X')
     local 'begin_y' ('CoCube position_Y')
     'CoCube move' direction speed
     forever {
-      '_cocube_calculate_distance_error target_x _ target_y _' begin_x begin_y
-      if ((steps - _cocube_error_distance) < 2) {
-        'CoCube wheels break'
+      if _cocube_move_flag {
+        '_cocube_calculate_distance_error target_x _ target_y _' begin_x begin_y
+        if ((steps - _cocube_error_distance) < 2) {
+          'CoCube wheels break'
+          exitLoop
+        }
+      } else {
         exitLoop
       }
     }
   } else {
     sayIt 'Please put CoCube on CoMaps'
   }
+  _cocube_move_flag = (booleanConstant false)
 }
 
 to 'CoCube move for msecs' direction speed time {
@@ -155,22 +162,24 @@ to 'CoCube move for msecs' direction speed time {
 }
 
 to 'CoCube move to' target_x target_y speed {
-  if ('CoCube on the mat') {
-    '_cocube_calculate_distance_error target_x _ target_y _' target_x target_y
-    if (_cocube_error_distance > 2) {
-      'CoCube point towards' target_x target_y speed
-      repeatUntil (_cocube_error_distance < 2) {
+  _cocube_move_flag = (booleanConstant true)
+  '_cocube_calculate_distance_error target_x _ target_y _' target_x target_y
+  if (_cocube_error_distance > 3) {
+    'CoCube point towards' target_x target_y speed
+    repeatUntil (_cocube_error_distance < 3) {
+      if _cocube_move_flag {
         '_cocube_calculate_distance_error target_x _ target_y _' target_x target_y
         _cocube_target_angle = (('[misc:atan2]' _cocube_error_y _cocube_error_x) / 100)
         '_cocube_calculate_angle_error_' _cocube_target_angle
         'CoCube set wheel' (speed - ((speed * _cocube_error_angle) / 20)) (speed + ((speed * _cocube_error_angle) / 20))
         waitMillis 10
+      } else {
+        exitLoop
       }
-      'CoCube wheels break'
     }
-  } else {
-    sayIt 'Please put CoCube on CoMaps'
+    'CoCube wheels break'
   }
+  _cocube_move_flag = (booleanConstant false)
 }
 
 to 'CoCube on the mat' {
@@ -199,29 +208,35 @@ to 'CoCube rotate' direction speed {
 }
 
 to 'CoCube rotate by degree' direction speed degree {
+  _cocube_move_flag = (booleanConstant true)
   if ('CoCube on the mat') {
     local 'begin_degree' ('CoCube direction')
     forever {
-      if (direction == 'cocube;left') {
-        '_cocube_calculate_angle_error_' (begin_degree + degree)
+      if _cocube_move_flag {
+        if (direction == 'cocube;left') {
+          '_cocube_calculate_angle_error_' (begin_degree + degree)
+        } else {
+          '_cocube_calculate_angle_error_' (begin_degree - degree)
+        }
+        if (_cocube_error_angle > 1) {
+          comment 'turn left'
+          '_cocube_motors_speed' (0 - speed) speed
+        } (_cocube_error_angle < -1) {
+          comment 'turn right'
+          '_cocube_motors_speed' speed (0 - speed)
+        } else {
+          comment 'motors break'
+          'CoCube wheels break'
+          exitLoop
+        }
       } else {
-        '_cocube_calculate_angle_error_' (begin_degree - degree)
-      }
-      if (_cocube_error_angle > 1) {
-        comment 'turn left'
-        '_cocube_motors_speed' (0 - speed) speed
-      } (_cocube_error_angle < -1) {
-        comment 'turn right'
-        '_cocube_motors_speed' speed (0 - speed)
-      } else {
-        comment 'motors break'
-        'CoCube wheels break'
         exitLoop
       }
     }
   } else {
     sayIt 'Please put CoCube on CoMaps'
   }
+  _cocube_move_flag = (booleanConstant false)
 }
 
 to 'CoCube rotate for msecs' direction speed time {
@@ -231,9 +246,10 @@ to 'CoCube rotate for msecs' direction speed time {
 }
 
 to 'CoCube rotate to angle' angle speed {
-  if ('CoCube on the mat') {
-    local 'abs_speed' (absoluteValue speed)
-    forever {
+  local 'abs_speed' (absoluteValue speed)
+  _cocube_move_flag = (booleanConstant true)
+  forever {
+    if _cocube_move_flag {
       '_cocube_calculate_angle_error_' angle
       if (_cocube_error_angle > 1) {
         comment 'turn left'
@@ -243,12 +259,20 @@ to 'CoCube rotate to angle' angle speed {
         '_cocube_motors_speed' abs_speed (0 - abs_speed)
       } else {
         comment 'motors break'
-        'CoCube wheels break'
+        digitalWriteOp 9 true
+        digitalWriteOp 10 true
+        digitalWriteOp 26 true
+        digitalWriteOp 25 true
+        waitMillis 99
+        digitalWriteOp 9 false
+        digitalWriteOp 10 false
+        digitalWriteOp 26 false
+        digitalWriteOp 25 false
         exitLoop
       }
+    } else {
+      exitLoop
     }
-  } else {
-    sayIt 'Please put CoCube on CoMaps'
   }
 }
 
@@ -267,6 +291,7 @@ to 'CoCube set wheel' speed_left speed_right {
 
 to 'CoCube wheels break' {
   _cocube_pid_flag = (booleanConstant false)
+  _cocube_move_flag = (booleanConstant false)
   waitMillis 1
   digitalWriteOp 9 true
   digitalWriteOp 10 true
@@ -281,6 +306,8 @@ to 'CoCube wheels break' {
 
 to 'CoCube wheels stop' {
   _cocube_pid_flag = (booleanConstant false)
+  _cocube_move_flag = (booleanConstant false)
+  waitMillis 1
   digitalWriteOp 9 false
   digitalWriteOp 10 false
   digitalWriteOp 26 false
@@ -363,8 +390,8 @@ to '_cocube_pid_control' {
 
 module 'CoCube Module'
 author 'Liang Shuai'
-version 1 12 
-depends _Servo NeoPixel 'Robots/CoCube' '_Sensing/Distance (VL53L0X)' '_Sensing/Gesture (PAJ7620)' 
+version 1 13 
+depends _Servo NeoPixel 
 description 'External modules of CoCube.
 
 CoCube is a tabletop modular multi-robot platform for education and research.
@@ -393,13 +420,12 @@ variables _cc_cam_init_flag _cc_asr_snc
   spec 'r' 'ccmodule_ASR get command' 'ASR get command'
   spec ' ' 'ccmodule_ASR play command' 'ASR play command _' 'num' 19
   space
-  spec 'r' 'ccmodule_gesture connected' '3D gesture connected'
-  spec 'r' 'ccmodule_gesture read' '3D gesture read'
-  space
   spec ' ' 'ccmodule_power on module' 'power on module'
   space
   spec ' ' '_ccmodule_check_camera' 'check_camera'
-  spec 'r' '_ccmodule_ultrasonic distance' 'obsolete ultrasonic distance (mm)'
+  spec 'r' 'ccmodule_gesture connected' 'obsolete 3D gesture connected'
+  spec 'r' 'ccmodule_gesture read' 'obsolete 3D gesture read'
+  spec 'r' '_ccmodule_ultrasonic distance' 'obsolete obsolete ultrasonic distance (mm)'
 
 to '_ccmodule_check_camera' {
   if (_cc_cam_init_flag == 1) {
@@ -445,12 +471,25 @@ to 'ccmodule_DLight level' {
 
 to 'ccmodule_ToF connected' {
   '_ccmodule_check_camera'
-  return ('VL53L0X connected')
+  return ((i2cGet 41 (hexToInt 'C0')) == (hexToInt 'EE'))
 }
 
 to 'ccmodule_ToF distance' {
   '_ccmodule_check_camera'
-  return ('VL53L0X distance (mm)')
+  i2cSet 41 0 1
+  waitMillis 70
+  if (((i2cGet 41 (hexToInt '14')) & 1) == 1) {
+    '[sensors:i2cWrite]' 41 ('[data:makeList]' (hexToInt '14'))
+    local 'buf' (newList 12)
+    '[sensors:i2cRead]' 41 buf
+    if ((at 1 buf) == 95) {
+      return (((at 11 buf) << 8) | (at 12 buf))
+    } else {
+      return -1
+    }
+  } else {
+    return -2
+  }
 }
 
 to 'ccmodule_attach NeoPixels' {
@@ -467,16 +506,6 @@ to 'ccmodule_attach NeoPixels' {
 to 'ccmodule_clear NeoPixels' {
   digitalWriteOp 13 true
   clearNeoPixels
-}
-
-to 'ccmodule_gesture connected' {
-  '_ccmodule_check_camera'
-  return ('paj7620 connected')
-}
-
-to 'ccmodule_gesture read' {
-  '_ccmodule_check_camera'
-  return ('paj7620 read')
 }
 
 to 'ccmodule_gripper close' {
