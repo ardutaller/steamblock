@@ -6427,11 +6427,23 @@ msgid "erase flash and update firmware on ESP board"
 msgstr ""
 
 #. Settings menu option
+msgid "open vm folder on microblocks.fun"
+msgstr ""
+
+#. Settings menu option
 msgid "install ESP firmware from URL"
 msgstr ""
 
 #. Settings menu option
 msgid "install ESP firmware from microblocks.fun"
+msgstr ""
+
+#. Settings menu option
+msgid "show program size on board"
+msgstr ""
+
+#. Program size information
+msgid "Using %1 out of %2 bytes"
 msgstr ""
 
 #. Firmware install board type confirmation. As in "Use board type micro:bit?"
