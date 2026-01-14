@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-01 19:43+0000\n"
+"PO-Revision-Date: 2026-01-14 16:26+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -1901,7 +1901,7 @@ msgstr "Pins"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr "sende _"
+msgstr "Broadcast _"
 
 #. Block in Control category
 msgid "range _ to _"
@@ -2412,11 +2412,11 @@ msgstr "füge Skript aus der Zwischenablage ein"
 
 #. Scripting area right-click context menu
 msgid "save a picture of all visible scripts"
-msgstr "speichere ein Bild aller sichtbaren Skripte"
+msgstr "exportiere ein Bild aller sichtbaren Skripte"
 
 #. Scripting area right-click context menu
 msgid "set exported script scale"
-msgstr "setze Größenmaßstab für Export"
+msgstr "skaliere die Bildgröße für den Skriptexport"
 
 #. Settings menu option
 msgid "enable or disable BLE"
@@ -4337,7 +4337,7 @@ msgstr "Cursorposition"
 
 #. OLED Graphics library block
 msgid "defer display updates"
-msgstr "schreibe in Displaypuffer"
+msgstr "verhindere Display-Updates"
 
 #. Color library block
 msgid "_ with brightness _ %"
@@ -4562,7 +4562,7 @@ msgstr "grün _"
 
 #. OLED Graphics library block
 msgid "show display buffer"
-msgstr "zeige Displaypuffer"
+msgstr "zeige Display-Updates"
 
 #. TFT Display library block
 msgid "scale _"
