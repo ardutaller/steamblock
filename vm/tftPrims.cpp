@@ -516,9 +516,10 @@ static int deferUpdates = false;
 			uint16_t x, y;
 			uint8_t pressure;
 			ts.readData(&x, &y, &pressure);
-// 			x = (320 * (x - 256)) / 10;
-// 			if (x < 0) x = 0;
-// 			if (x > 320) x = 320;
+			x -= 460;
+			x = (320 * x) / 3150;
+			if (x < 0) x = 0;
+			if (x > 320) x = 320;
 			return x;
 		}
 
@@ -528,18 +529,20 @@ static int deferUpdates = false;
 			uint16_t x, y;
 			uint8_t pressure;
 			ts.readData(&x, &y, &pressure);
-// 			y = (240 * (y - 274)) / 14;
-// 			if (y < 0) y = 0;
-// 			if (y > 240) y = 240;
+			y -= 580;
+			y = 240 - ((240 * y) / 2900);
+			if (y < 0) y = 0;
+			if (y > 240) y = 240;
 			return y;
 		}
 
 		static int screenTouchPressure() {
 			if (!touchEnabled) touchInit();
 			if (!ts.touched()) { return -1; }
-			uint16_t x, y;
-			uint8_t pressure;
-			ts.readData(&x, &y, &pressure);
+			TS_Point p = ts.getPoint();
+			int pressure = (100 * (p.z - 1000)) / 2000; // pressure: 0-100
+			if (pressure < 0) pressure = 0;
+			if (pressure > 100) pressure = 100;
 			return pressure;
 		}
 
