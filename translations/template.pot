@@ -1434,7 +1434,7 @@ msgid "set display color _"
 msgstr ""
 
 #. 5x5 LED Display library block
-msgid "led image _"
+msgid "LED image _"
 msgstr ""
 
 #. 5x5 LED Display library block
