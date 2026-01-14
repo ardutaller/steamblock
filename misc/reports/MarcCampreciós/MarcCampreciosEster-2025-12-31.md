@@ -1,6 +1,6 @@
-**Marc Campreciós Ester** 
-December 31, 2025 
-Funding source: MicroBlocks donation funds 
+**Marc Campreciós Ester**  
+December 31, 2025  
+Funding source: MicroBlocks donation funds  
 
 | Date       | Hours | What | Relevant Commits |
 |------------|------:|------|-----|
