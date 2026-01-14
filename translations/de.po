@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-14 16:26+0000\n"
+"PO-Revision-Date: 2026-01-14 20:17+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -7942,3 +7942,19 @@ msgstr "auf kürzestem Weg"
 #. Nezha Pro library label
 msgid "Nezha Pro"
 msgstr "Nezha Pro"
+
+#. 5x5 LED Display library block
+msgid "LED image _"
+msgstr "LED Bild _"
+
+#. Settings menu option
+msgid "open vm folder on microblocks.fun"
+msgstr "öffne vm-Verzeichnis auf microblocks.fun"
+
+#. Settings menu option
+msgid "show program size on board"
+msgstr "zeige Programmgröße auf dem Board"
+
+#. Program size information
+msgid "Using %1 out of %2 bytes"
+msgstr "%1 von %2 Bytes werden verwendet"
