@@ -1434,7 +1434,7 @@ msgid "set display color _"
 msgstr ""
 
 #. 5x5 LED Display library block
-msgid "LED image _"
+msgid "LED image #BR# _"
 msgstr ""
 
 #. 5x5 LED Display library block
@@ -6565,6 +6565,14 @@ msgstr ""
 
 #. Graph context menu option
 msgid "clear graph"
+msgstr ""
+
+#. Graph context menu option
+msgid "increase range"
+msgstr ""
+
+#. Graph context menu option
+msgid "decrease range"
 msgstr ""
 
 #. Graph context menu option
