@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-14 20:17+0000\n"
+"PO-Revision-Date: 2026-01-15 09:17+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -168,7 +168,7 @@ msgstr "Zahl/Text"
 
 #. Graph button tooltip
 msgid "Graph"
-msgstr "Graph"
+msgstr "zeige Diagramm"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
@@ -192,7 +192,7 @@ msgstr "Das Skript ist zu groß, um es zum Board zu senden."
 
 #. Graph context menu option
 msgid "clear graph"
-msgstr "lösche Graphen"
+msgstr "lösche Diagramm"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Reset the timer."
@@ -225,7 +225,7 @@ msgstr "Firmware-Version"
 
 #. Graph window title
 msgid "Data Graph"
-msgstr "Daten-Graph"
+msgstr "Diagramm"
 
 #. Library folder
 msgid "folder;Libraries"
@@ -3135,7 +3135,7 @@ msgstr "importiere Daten aus CSV-Datei"
 
 #. Graph context menu option
 msgid "copy graph data to clipboard"
-msgstr "kopiere Graph in Zwischenablage"
+msgstr "kopiere Daten in Zwischenablage"
 
 #. Variable right-click context menu
 msgid "rename..."
@@ -3389,7 +3389,7 @@ msgstr "Cloud"
 
 #. Block size button tooltip
 msgid "Decrease block size"
-msgstr "kleinere Blockgröße"
+msgstr "Blockgröße kleiner"
 
 #. Block size button tooltip
 msgid "Restore block size to 100%"
@@ -3446,7 +3446,7 @@ msgstr "trennen"
 
 #. Block size button tooltip
 msgid "Increase block size"
-msgstr "größere Blockgröße"
+msgstr "Blockgröße größer"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte (0-255) to an SPI device."
