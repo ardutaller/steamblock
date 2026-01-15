@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-15 09:17+0000\n"
+"PO-Revision-Date: 2026-01-16 10:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -897,7 +897,7 @@ msgstr "Circuit Playground setze Lautsprecher _"
 
 #. TFT Display library block
 msgid "filled _"
-msgstr "gefüllt _"
+msgstr "füllen _"
 
 #. MIDI library block
 msgid "set MIDI note _ to _ on channel _ volume _"
@@ -3312,14 +3312,14 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new list of the given length filled with zero or the optional value."
 msgstr ""
-"Gibt eine neue Liste der angegebenen Länge zurück, die mit Nullen oder dem "
-"optionalen Wert gefüllt ist."
+"Erzeuge eine neue Liste der angegebenen Länge und fülle sie mit Null oder "
+"dem optionalen Wert."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new byte array of the given length filled with zero or the optional value."
 msgstr ""
-"Gibt ein neues ByteArray der angegebenen Länge zurück, das mit Nullen oder "
-"dem optionalen Wert gefüllt ist."
+"Erzeuge ein neues ByteArray der angegebenen Länge und fülle es mit Null oder "
+"dem optionalen Wert."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
@@ -4337,7 +4337,7 @@ msgstr "Cursorposition"
 
 #. OLED Graphics library block
 msgid "defer display updates"
-msgstr "verhindere Display-Updates"
+msgstr "stoppe Display-Updates"
 
 #. Color library block
 msgid "_ with brightness _ %"
@@ -7958,3 +7958,15 @@ msgstr "zeige Programmgröße auf dem Board"
 #. Program size information
 msgid "Using %1 out of %2 bytes"
 msgstr "%1 von %2 Bytes werden verwendet"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "LED-Bild #BR# _"
+
+#. Graph context menu option
+msgid "increase range"
+msgstr "größerer Bereich"
+
+#. Graph context menu option
+msgid "decrease range"
+msgstr "verkleinere den Bereich"
