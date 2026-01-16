@@ -1,289 +1,293 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-01-16 14:07+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-01-17 01:12+0000\n"
+"Last-Translator: Alikhan Yessaly <alikhan.yessaly@gmail.com>\n"
+"Language-Team: Kazakh <https://hosted.weblate.org/projects/microblocks/ide/"
+"kk/>\n"
 "Language: kk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Translate Toolkit 3.18.0\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Шығыс"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "пайдаланушы LED-ін _ орнату"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "_ айту"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "_ графигін құру"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "Кіріс"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "А батырмасы"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "В батырмасы"
 
 #. Block in Input category
 msgid "timer"
-msgstr ""
+msgstr "таймер"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr ""
+msgstr "таймерді жаңарту"
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "секунд"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "микросекунд"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "миллисекунд"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "тақша түрі"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "нұсқа"
 
 #. Block in Input category
+#, fuzzy
 msgid "milliseconds since _"
-msgstr ""
+msgstr "_ кейінгі миллисекунд"
 
 #. Block in Input category
+#, fuzzy
 msgid "end time _"
-msgstr ""
+msgstr "аяқталу уақыты _"
 
 #. Block in Input category
+#, fuzzy
 msgid "microseconds since _"
-msgstr ""
+msgstr "_ кейінгі микросекунд"
 
 #. Block in Input category
 msgid "BLE id"
-msgstr ""
+msgstr "BLE идентификаторы"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr ""
+msgstr "BLE қосылды"
 
 #. Block in Input category
 msgid "connected to IDE"
-msgstr ""
+msgstr "IDE-ге қосылды"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr ""
+msgstr "Түйреуіштер"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr ""
+msgstr "_ цифрлық түйреуішін оқу"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr ""
+msgstr "_ аналогтық түйреуішін оқу"
 
 #. Block in Pins category
 msgid "pullup _"
-msgstr ""
+msgstr "_ жоғары тарту"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr ""
+msgstr "_ цифрлық түйреуішін _ күйіне орнату"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr ""
+msgstr "_ түйреуішін _ күйіне орнату"
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr ""
+msgstr "аналогтық түйреуіштер"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr ""
+msgstr "цифрлық түйреуіштер"
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr ""
+msgstr "Басқару"
 
 #. Block in Control category
 msgid "when started"
-msgstr ""
+msgstr "қосылған кезде"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr ""
+msgstr "_ батырмасы басылған кезде"
 
 #. Block in Control category
 msgid "forever _"
-msgstr ""
+msgstr "әрқашан _"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr ""
+msgstr "_ рет қайтала _"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr ""
+msgstr "_ миллисекунд күту"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr ""
+msgstr "егер _ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr ""
+msgstr "егер _ _ әйтпесе _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr ""
+msgstr "әйтпесе егер _ _"
 
 #. Block in Control category
 msgid "else"
-msgstr ""
+msgstr "әйтпесе"
 
 #. Block in Control category
 msgid "when _"
-msgstr ""
+msgstr "_ кезде"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr ""
+msgstr "_ дейін күту"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr ""
+msgstr "_ микросекунд күту"
 
 #. Block in Control category
 msgid "return _"
-msgstr ""
+msgstr "_ қайтару"
 
 #. Block in Control category
 msgid "when _ received"
-msgstr ""
+msgstr "_ қабылданғанда"
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr ""
+msgstr "іске қос!"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr ""
+msgstr "_ тарату"
 
 #. Block in Control category
 msgid "comment _"
-msgstr ""
+msgstr "түсіндірме _"
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr ""
+msgstr "Бұл қалай жұмыс істейді…"
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr ""
+msgstr "_ пен _ аралығы"
 
 #. Block in Control category
 msgid "by _"
-msgstr ""
+msgstr "_ арқылы"
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr ""
+msgstr "_ ішінде _ үшін _"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr ""
+msgstr "_ болғанша қайталау _"
 
 #. Block in Control category
 msgid "stop this task"
-msgstr ""
+msgstr "бұл тапсырманы тоқтату"
 
 #. Block in Control category
 msgid "stop other tasks"
-msgstr ""
+msgstr "басқа тапсырмаларды тоқтату"
 
 #. Block in Control category
 msgid "stop all"
-msgstr ""
+msgstr "барлығын тоқтату"
 
 #. Block in Control category
 msgid "last message"
-msgstr ""
+msgstr "соңғы хабарлама"
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr ""
+msgstr "_ аргументі, әдепкі _"
 
 #. Block in Control category
 msgid "exit loop"
-msgstr ""
+msgstr "циклден шығу"
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr ""
+msgstr "әдепкі"
 
 #. Block in Control category
 msgid "call _"
-msgstr ""
+msgstr "_ шақыру"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr ""
+msgstr "функция атауы"
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr ""
+msgstr "параметрлер тізімі"
 
 #. Block in Control category
 msgid "with _"
-msgstr ""
+msgstr "_ көмегімен"
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr ""
+msgstr "Операторлар"
 
 #. Block in Operators category
 msgid "_ mod _"
-msgstr ""
+msgstr "_ модуль _"
 
 #. Block in Operators category
 msgid "abs _"
-msgstr ""
+msgstr "_ абсолют мәні"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr ""
+msgstr "ең кіші _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr ""
+msgstr "ең үлкен _ _"
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr ""
+msgstr "кездейсоқ _ пен _ арасы"
 
 #. Block in Operators category
 msgid "not _"
