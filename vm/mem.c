@@ -83,7 +83,7 @@
 
 	#include <esp_heap_caps.h>
 	int hasPSRAM() {
-		heap_caps_get_total_size(MALLOC_CAP_SPIRAM) > 0;
+		return heap_caps_get_total_size(MALLOC_CAP_SPIRAM) > 0;
 	}
 #else
 	static OBJ objstore[OBJSTORE_WORDS];
