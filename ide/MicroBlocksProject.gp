@@ -417,6 +417,56 @@ method unusedGlobals MicroBlocksProject {
 	return unusedGlobals
 }
 
+method globalVarRefsByFunction MicroBlocksProject {
+	// Return a string showing the number of scripts and/or functions use each global variable.
+
+	// make a dictionary of globals not owned by any library
+	// each entry is a list, initially empty, of the functions that use the variable
+	varUsers = (dictionary)
+	for v (variableNames main) {
+		atPut varUsers v (list)
+	}
+	for lib (values libraries) {
+		for varName (variableNames lib) {
+			remove varUsers varName
+		}
+	}
+
+	// scan scripts
+	for entry (scripts main) {
+		// a script entry is a three-element list: x, y, script
+		for b (allBlocks (at entry 3)) {
+			op = (primName b)
+			if (isOneOf op 'v' '=' '+=') {
+				varName = (first (argList b))
+				varUserList = (at varUsers varName)
+				if (notNil varUserList) {
+					add varUserList 'script'
+				}
+			}
+		}
+	}
+
+	// scan functions
+	for f (allFunctions this) {
+		for v (globalVarsUsed f) {
+			varUserList = (at varUsers v)
+			if (notNil varUserList) {
+				add varUserList (functionName f)
+			}
+		}
+	}
+
+	result = (list)
+	for v (sorted (keys varUsers)) {
+		varUserList = (at varUsers v)
+		if ((count varUserList) < 2) {
+			add result (join '''' v ''' -> ' (joinStrings varUserList ' '))
+		}
+	}
+	return (joinStrings result (newline))
+}
+
 // Loading
 
 method loadFromOldProjectClassAndSpecs MicroBlocksProject aClass specList {
