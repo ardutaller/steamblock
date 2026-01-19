@@ -6596,6 +6596,10 @@ msgid "copy graph data to clipboard"
 msgstr "copy graph data to clipboard"
 
 #. Script right-click context menu
+msgid "copy callable name"
+msgstr "copy callable name"
+
+#. Script right-click context menu
 msgid "show instructions"
 msgstr "show instructions"
 
