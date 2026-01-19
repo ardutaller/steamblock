@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2025-12-19 12:00+0000\n"
+"PO-Revision-Date: 2026-01-19 23:58+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -7806,3 +7806,31 @@ msgstr "Callibot atura tots els motors"
 #. Calliope Callibot library block
 msgid "Callibot stop motor _"
 msgstr "Callibot atura el motor _"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "imatge LED #BR# _"
+
+#. Settings menu option
+msgid "open vm folder on microblocks.fun"
+msgstr "obre la carpeta de màquines virtuals a microblocks.fun"
+
+#. Settings menu option
+msgid "show program size on board"
+msgstr "mostra la mida del programa de la placa"
+
+#. Program size information
+msgid "Using %1 out of %2 bytes"
+msgstr "Ocupant %1 dels %2 bytes disponibles"
+
+#. Graph context menu option
+msgid "increase range"
+msgstr "augmenta el rang"
+
+#. Graph context menu option
+msgid "decrease range"
+msgstr "redueix el rang"
+
+#. Script right-click context menu
+msgid "copy callable name"
+msgstr "copia el nom de la funció"
