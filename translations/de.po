@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-18 23:01+0000\n"
+"PO-Revision-Date: 2026-01-19 23:58+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -4267,7 +4267,7 @@ msgstr "_ mit Farbton _ (0-360)"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "_drehe Display flip _"
+msgstr "drehe Display _"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" light
@@ -7969,7 +7969,7 @@ msgstr "größerer Bereich"
 
 #. Graph context menu option
 msgid "decrease range"
-msgstr "verkleinere den Bereich"
+msgstr "Kleinerer Bereich"
 
 #. Script right-click context menu
 msgid "copy callable name"
