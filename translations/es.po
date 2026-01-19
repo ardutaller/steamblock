@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2025-12-19 12:00+0000\n"
+"PO-Revision-Date: 2026-01-19 23:58+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -7864,3 +7864,31 @@ msgstr "np gira _ grados _ velocidad _ %"
 #. Nezha Pro library block
 msgid "np version"
 msgstr "np versión"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "imagen LED #BR# _"
+
+#. Settings menu option
+msgid "open vm folder on microblocks.fun"
+msgstr "abre la carpeta de las máquinas virtuales en microblocks.fun"
+
+#. Settings menu option
+msgid "show program size on board"
+msgstr "muestra el tamaño del programa de la placa"
+
+#. Program size information
+msgid "Using %1 out of %2 bytes"
+msgstr "Ocupando %1 de los %2 bytes disponibles"
+
+#. Graph context menu option
+msgid "increase range"
+msgstr "aumenta el rango"
+
+#. Graph context menu option
+msgid "decrease range"
+msgstr "reduce el rango"
+
+#. Script right-click context menu
+msgid "copy callable name"
+msgstr "copia el nombre de la función"
