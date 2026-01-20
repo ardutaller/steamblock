@@ -10,13 +10,19 @@
 
 const LiveReload = {
 	watchedFiles: [
-      'style.css',
-      'microblocks.html',
-      'buttons.js',
-      'ide.js',
-      'menus.js',
-      'buttons.js',
-      'categories.js'
+		'microblocks.html',
+
+		'styles/styles.css',
+		'styles/prototype.css',
+		'styles/components/_wysiwyg.css',
+		'styles/config/_config.css',
+		'styles/generic/minireset.css',
+
+		'buttons.js',
+		'ide.js',
+		'menus.js',
+		'buttons.js',
+		'categories.js'
   ],
 	lastVersions: {},
 	interval: null,
