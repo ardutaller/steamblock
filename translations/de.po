@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-01 19:43+0000\n"
+"PO-Revision-Date: 2026-01-19 23:58+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -168,7 +168,7 @@ msgstr "Zahl/Text"
 
 #. Graph button tooltip
 msgid "Graph"
-msgstr "Graph"
+msgstr "zeige Diagramm"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
@@ -192,7 +192,7 @@ msgstr "Das Skript ist zu groß, um es zum Board zu senden."
 
 #. Graph context menu option
 msgid "clear graph"
-msgstr "lösche Graphen"
+msgstr "lösche Diagramm"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Reset the timer."
@@ -225,7 +225,7 @@ msgstr "Firmware-Version"
 
 #. Graph window title
 msgid "Data Graph"
-msgstr "Daten-Graph"
+msgstr "Diagramm"
 
 #. Library folder
 msgid "folder;Libraries"
@@ -897,7 +897,7 @@ msgstr "Circuit Playground setze Lautsprecher _"
 
 #. TFT Display library block
 msgid "filled _"
-msgstr "gefüllt _"
+msgstr "füllen _"
 
 #. MIDI library block
 msgid "set MIDI note _ to _ on channel _ volume _"
@@ -1901,7 +1901,7 @@ msgstr "Pins"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr "sende _"
+msgstr "Broadcast _"
 
 #. Block in Control category
 msgid "range _ to _"
@@ -2412,11 +2412,11 @@ msgstr "füge Skript aus der Zwischenablage ein"
 
 #. Scripting area right-click context menu
 msgid "save a picture of all visible scripts"
-msgstr "speichere ein Bild aller sichtbaren Skripte"
+msgstr "exportiere ein Bild aller sichtbaren Skripte"
 
 #. Scripting area right-click context menu
 msgid "set exported script scale"
-msgstr "setze Größenmaßstab für Export"
+msgstr "skaliere die Bildgröße für den Skriptexport"
 
 #. Settings menu option
 msgid "enable or disable BLE"
@@ -3135,7 +3135,7 @@ msgstr "importiere Daten aus CSV-Datei"
 
 #. Graph context menu option
 msgid "copy graph data to clipboard"
-msgstr "kopiere Graph in Zwischenablage"
+msgstr "kopiere Daten in Zwischenablage"
 
 #. Variable right-click context menu
 msgid "rename..."
@@ -3312,14 +3312,14 @@ msgstr ""
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new list of the given length filled with zero or the optional value."
 msgstr ""
-"Gibt eine neue Liste der angegebenen Länge zurück, die mit Nullen oder dem "
-"optionalen Wert gefüllt ist."
+"Erzeuge eine neue Liste der angegebenen Länge und fülle sie mit Null oder "
+"dem optionalen Wert."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a new byte array of the given length filled with zero or the optional value."
 msgstr ""
-"Gibt ein neues ByteArray der angegebenen Länge zurück, das mit Nullen oder "
-"dem optionalen Wert gefüllt ist."
+"Erzeuge ein neues ByteArray der angegebenen Länge und fülle es mit Null oder "
+"dem optionalen Wert."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the number of words of memory available. Stop button frees up memory."
@@ -3389,7 +3389,7 @@ msgstr "Cloud"
 
 #. Block size button tooltip
 msgid "Decrease block size"
-msgstr "kleinere Blockgröße"
+msgstr "Blockgröße kleiner"
 
 #. Block size button tooltip
 msgid "Restore block size to 100%"
@@ -3446,7 +3446,7 @@ msgstr "trennen"
 
 #. Block size button tooltip
 msgid "Increase block size"
-msgstr "größere Blockgröße"
+msgstr "Blockgröße größer"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Send a byte (0-255) to an SPI device."
@@ -4267,7 +4267,7 @@ msgstr "_ mit Farbton _ (0-360)"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "_drehe Display flip _"
+msgstr "drehe Display _"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" light
@@ -4337,7 +4337,7 @@ msgstr "Cursorposition"
 
 #. OLED Graphics library block
 msgid "defer display updates"
-msgstr "schreibe in Displaypuffer"
+msgstr "stoppe Display-Updates"
 
 #. Color library block
 msgid "_ with brightness _ %"
@@ -4562,7 +4562,7 @@ msgstr "grün _"
 
 #. OLED Graphics library block
 msgid "show display buffer"
-msgstr "zeige Displaypuffer"
+msgstr "zeige Display-Updates"
 
 #. TFT Display library block
 msgid "scale _"
@@ -7942,3 +7942,35 @@ msgstr "auf kürzestem Weg"
 #. Nezha Pro library label
 msgid "Nezha Pro"
 msgstr "Nezha Pro"
+
+#. 5x5 LED Display library block
+msgid "LED image _"
+msgstr "LED Bild _"
+
+#. Settings menu option
+msgid "open vm folder on microblocks.fun"
+msgstr "öffne vm-Verzeichnis auf microblocks.fun"
+
+#. Settings menu option
+msgid "show program size on board"
+msgstr "zeige Programmgröße auf dem Board"
+
+#. Program size information
+msgid "Using %1 out of %2 bytes"
+msgstr "%1 von %2 Bytes werden verwendet"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "LED-Bild #BR# _"
+
+#. Graph context menu option
+msgid "increase range"
+msgstr "größerer Bereich"
+
+#. Graph context menu option
+msgid "decrease range"
+msgstr "Kleinerer Bereich"
+
+#. Script right-click context menu
+msgid "copy callable name"
+msgstr "kopiere aufrufbaren Namen"

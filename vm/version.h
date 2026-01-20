@@ -1,1 +1,1 @@
-#define VM_VERSION "v373"
+#define VM_VERSION "v374"
