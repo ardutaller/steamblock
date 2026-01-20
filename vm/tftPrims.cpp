@@ -994,7 +994,6 @@ static int deferUpdates = false;
 
 static int hasTFT() {
 	#if defined(OLED_128_64)
-		if (!hasOLED) tftInit();
 		return hasOLED;
 	#endif
 	return useTFT;
