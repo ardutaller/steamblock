@@ -206,7 +206,7 @@ document.addEventListener('preference.darkMode', e =>
 );
 
 document.addEventListener('dragstart', () => {
-	// To Do: Bernat review change
+	// TODO Bernat review change
 	// document.querySelectorAll('.--can-drag-through').forEach(
 	// 	e => e.classList.add('--dragging')
 	// );
@@ -214,7 +214,7 @@ document.addEventListener('dragstart', () => {
 });
 
 document.addEventListener('dragend', () => {
-	// To Do: Bernat review change
+	// TODO Bernat review change
 	// document.querySelectorAll('.--can-drag-through').forEach(
 	// 	e => e.classList.remove('--dragging')
 	// );

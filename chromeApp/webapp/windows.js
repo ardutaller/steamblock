@@ -91,7 +91,7 @@ class FloatingWindow extends HTMLElement {
 			function resize(e) {
 				e = e || window.event;
 				e.preventDefault();
-				
+
 				var newX = e.clientX;
 				var newY = e.clientY;
 
@@ -138,7 +138,7 @@ class FloatingWindow extends HTMLElement {
 		this.addEventListener('mousemove', this.drag);
 		makeDraggable(this);
 
-		this.classList.add('window');
+		this.classList.add('window','--can-drag-through');
 
 		let title = this.querySelector('h1');
 		title.classList.add('win-title');
