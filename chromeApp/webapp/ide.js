@@ -206,15 +206,19 @@ document.addEventListener('preference.darkMode', e =>
 );
 
 document.addEventListener('dragstart', () => {
-	document.querySelectorAll('.can-drag-through').forEach(
-		e => e.classList.add('dragging')
-	);
+	// To Do: Bernat review change
+	// document.querySelectorAll('.--can-drag-through').forEach(
+	// 	e => e.classList.add('--dragging')
+	// );
+	document.querySelector('body').classList.add('--is-dragging');
 });
 
 document.addEventListener('dragend', () => {
-	document.querySelectorAll('.can-drag-through').forEach(
-		e => e.classList.remove('dragging')
-	);
+	// To Do: Bernat review change
+	// document.querySelectorAll('.--can-drag-through').forEach(
+	// 	e => e.classList.remove('--dragging')
+	// );
+	document.querySelector('body').classList.remove('--is-dragging');
 });
 
 // Category and library lists

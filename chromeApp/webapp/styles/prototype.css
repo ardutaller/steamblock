@@ -245,14 +245,7 @@ hr {
 	border-radius: 50%;
 }
 
-/* allow dragging blocks through these elements */
-.can-drag-through {
-	pointer-events: all;
-}
 
-.can-drag-through.dragging {
-	pointer-events: none;
-}
 
 /* Windows */
 
