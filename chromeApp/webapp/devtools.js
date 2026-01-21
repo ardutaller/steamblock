@@ -12,7 +12,6 @@ const LiveReload = {
 	watchedFiles: [
 		'microblocks.html',
 
-		'styles/styles.css',
 		'styles/prototype.css',
 		'styles/components/_wysiwyg.css',
 		'styles/config/_config.css',
