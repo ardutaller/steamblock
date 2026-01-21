@@ -1,3 +1,8 @@
+@keyframes rotation {
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+
 .emscripten {
 	padding-right: 0;
 	margin-left: auto;
@@ -56,4 +61,3 @@ canvas.emscripten { border: 0px none; }
 	font-family: 'Lucida Console', Monaco, monospace;
 	outline: none;
 }
-
