@@ -199,9 +199,9 @@ IDE.populateScriptControls = function (element) {
 document.addEventListener('preference.darkMode', e =>
 	{
 		if (e.detail.value) {
-			document.querySelector('.script-controls').classList.add('dark-mode');
+			document.querySelector('.scripts-pane-controls').classList.add('dark-mode');
 		} else {
-			document.querySelector('.script-controls').classList.remove('dark-mode');
+			document.querySelector('.scripts-pane-controls').classList.remove('dark-mode');
 		}
 	}
 );
@@ -235,7 +235,7 @@ IDE.populateLibraries = function (element) {
 IDE.build = function () {
 	this.populateTopBar(document.querySelector('.ide__top'));
 	this.populateCategories(document.querySelector('.categories'));
-	this.populateScriptControls(document.querySelector('.script-controls'));
+	this.populateScriptControls(document.querySelector('.scripts-pane-controls'));
 	this.tipBar.init();
 	// check connection every 500ms
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);

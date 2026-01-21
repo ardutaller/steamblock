@@ -1,0 +1,39 @@
+/*
+ * Scripts Control
+**/
+
+
+.scripts-pane-controls {
+	display: flex;
+	position: fixed;
+	z-index: 2;
+	right: 24px;
+	bottom: 48px;
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 1px 6px;
+	background-color: #FFFFFFDD;
+	border-color: #eff0f2;
+	box-shadow: 0 0 6px 0px rgba(0,0,0,0.10);
+}
+
+
+.scripts-pane-controls.dark-mode {
+	border-color: #454a64;
+	background-color: #454a6466;
+}
+
+
+.scripts-pane-controls .vl {
+	margin: 0 5px;
+}
+
+
+.scripts-pane-controls .icon {
+	padding: 8px 5px 4px 5px;
+}
+
+
+.scripts-pane-controls .icon img {
+	height: 22px;
+}
