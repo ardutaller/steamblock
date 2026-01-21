@@ -82,8 +82,6 @@ build/Release
 
 # Dependency directories
 node_modules/
-=======
->>>>>>> 75599e27cfa63e394ff3483bc937ee626ce5f21c
 electron/node_modules/*
 jspm_packages/
 
