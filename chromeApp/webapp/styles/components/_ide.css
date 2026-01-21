@@ -1,0 +1,46 @@
+/*
+ * IDE
+**/
+
+
+.ide {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+
+.ide__top {
+	width: 100%;
+	height: var(--space-48);
+	background-color: #262938;
+	border-bottom: 1px solid #454A64;
+	z-index: 1;
+}
+
+
+.ide__workspace {
+	display: flex;
+	flex-direction: row;
+}
+
+
+.ide__workspace-left {
+	background-color: #2d3143;
+	width: 192px;
+	min-width: 192px; /* Should change to 65 when the final layout is done */
+	max-width: 300px;
+	display: flex;
+	flex-direction: column;
+}
+
+
+.ide__bottom {
+	width: 100%;
+	height: 24px;
+	background-color: #2d3143;
+}

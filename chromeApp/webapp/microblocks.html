@@ -23,6 +23,7 @@
 		<link rel="stylesheet" href="styles/prototype.css"> <!-- To Do: Delete -->
 		<link rel="stylesheet" href="styles/config/_config.css">
 		<link rel="stylesheet" href="styles/generic/minireset.css">
+		<link rel="stylesheet" href="styles/components/_ide.css">
 		<link rel="stylesheet" href="styles/components/_wysiwyg.css">
 
 		<!-- Developer tools. Disable on live instances -->
@@ -76,7 +77,8 @@
 
 		<!-- IDE -->
 		<div class="ide">
-			<nav class="top-bar">
+
+			<nav class="ide__top">
 				<img src="img/logo.svg" class="logo" aria-label="MicroBlocks"
 					aria-description="Rosa, the MicroBlocks bunny, is named after
 					Rózsa Péter, a great mathematician.">
@@ -88,8 +90,10 @@
 				</div>
 				<div class="menu"></div>
 			</nav>
-			<div class="workspace">
-				<div class="left-bar">
+
+			<div class="ide__workspace">
+
+				<div class="ide__workspace-left">
 					<div class="categories"></div>
 					<span class="lib-header"><l->LIBRARIES</l-></span>
 					<nav class="lib-button-holder">
@@ -97,15 +101,19 @@
 					</nav>
 					<div class="libraries"></div>
 				</div>
+
 				<div class="emscripten">
-					<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
+					<canvas id="canvas" class="emscripten" width="100px" height="100px"></canvas>
 					<div class="script-controls can-drag-through"></div>
 				</div>
+
 			</div>
-			<div class="tip-bar">
+
+			<div class="ide__bottom">
 				<span class="tip-title"></span>
 				<span class="tip-content"></span>
 			</div>
+
 		</div>
 
 

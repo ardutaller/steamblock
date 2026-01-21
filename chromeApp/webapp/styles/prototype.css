@@ -53,43 +53,6 @@ body {
 	background-position-x: 50%;
 	background-position-y: 33%;
 }
-.ide {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	display: flex;
-	flex-direction: column;
-}
-
-.top-bar {
-	width: 100%;
-	height: 48px;
-	background-color: #262938;
-	border-bottom: 1px solid #454A64;
-	z-index: 1;
-}
-
-.workspace {
-	display: flex;
-	flex-direction: row;
-}
-
-.left-bar {
-	background-color: #2d3143;
-	width: 192px;
-	min-width: 192px; /* Should change to 65 when the final layout is done */
-	max-width: 300px;
-	display: flex;
-	flex-direction: column;
-}
-
-.tip-bar {
-	width: 100%;
-	height: 24px;
-	background-color: #2d3143;
-}
 
 .script-controls {
 	display: flex;
@@ -181,7 +144,7 @@ body {
 	color: #3e4259;
 }
 
-.tip-bar span {
+.ide__bottom span {
 	color: white;
 	font-size: 14px;
 	vertical-align: bottom;

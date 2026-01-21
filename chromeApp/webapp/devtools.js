@@ -13,16 +13,17 @@ const LiveReload = {
 		'microblocks.html',
 
 		'styles/prototype.css',
-		'styles/components/_wysiwyg.css',
 		'styles/config/_config.css',
 		'styles/generic/minireset.css',
+		'styles/components/_ide.css',
+		'styles/components/_wysiwyg.css',
 
 		'buttons.js',
 		'ide.js',
 		'menus.js',
 		'buttons.js',
 		'categories.js'
-  ],
+  	],
 	lastVersions: {},
 	interval: null,
 	watchInterval: 1000,
@@ -88,7 +89,7 @@ LiveReload.reloadPage = function (contents) {
 		newPage.innerHTML = contents;
 		let canvas = document.querySelector('#canvas');
 		newPage.querySelector('#canvas').remove();
-		newPage.querySelector('.workspace .emscripten').appendChild(canvas);
+		newPage.querySelector('.ide__workspace .emscripten').appendChild(canvas);
 		document.documentElement.innerHTML = newPage.innerHTML;
 		IDE.fireEvent('ready');
 		initGPEventHandlers();
