@@ -31,6 +31,7 @@ IDE.init = function () {
 };
 
 IDE.resize = function () {
+	// TODO Rename vars to match CSS classes (new naming)
 	let winHeight = window.innerHeight,
 		topBarHeight = document.querySelector('.ide__top').clientHeight,
 		tipBarHeight = document.querySelector('.ide__bottom').clientHeight,
@@ -149,8 +150,8 @@ IDE.tipBar.init = function () {
 	this.icons['(-o)'] = 'bool_true';
 	this.icons['(o-)'] = 'bool_false';
 
-	this.titleElement = document.querySelector('.tip-title');
-	this.contentElement = document.querySelector('.tip-content');
+	this.titleElement = document.querySelector('.tips__title');
+	this.contentElement = document.querySelector('.tips__content');
 
 	document.addEventListener(
 		'ide.tip',
@@ -180,7 +181,7 @@ IDE.tipBar.setTip = function (title, content) {
 			tipHTML =
 				tipHTML.replaceAll(
 					key,
-					'<img src="img/' + this.icons[key] + '.svg" class="tip-icon"></img>'
+					'<img src="img/' + this.icons[key] + '.svg" class="tips__icon"></img>'
 				);
 		});
 	}

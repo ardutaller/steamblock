@@ -102,19 +102,6 @@
 	vertical-align: bottom;
 }
 
-.tip-title {
-	font-weight: 600;
-	padding-left: 7px;
-}
-
-.tip-content {
-	padding-left: 6px;
-}
-
-.tip-icon {
-	vertical-align: bottom;
-}
-
 .script-controls .icon {
 	padding: 8px 5px 4px 5px;
 }
@@ -150,6 +137,7 @@
 .icon svg:hover > path {
 	fill: gold;
 }
+
 .menu {
 	position: fixed;
 	display: flex;

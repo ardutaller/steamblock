@@ -18,6 +18,7 @@ const LiveReload = {
 		'styles/generic/_body.css',
 		'styles/components/_app-preloader.css',
 		'styles/components/_ide.css',
+		'styles/components/_tips.css',
 		'styles/components/_window.css',
 		'styles/components/_wysiwyg.css',
 		'styles/utilities/_drag.css',
