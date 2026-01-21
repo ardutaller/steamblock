@@ -21,6 +21,7 @@ const LiveReload = {
 		'styles/components/_ide.css',
 		'styles/components/_scripts-pane-control.css',
 		'styles/components/_tips.css',
+		'styles/components/_top-bar.css',
 		'styles/components/_window.css',
 		'styles/components/_wysiwyg.css',
 		'styles/utilities/_drag.css',
