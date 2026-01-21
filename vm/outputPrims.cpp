@@ -521,7 +521,7 @@ void updateMicrobitDisplay() {
 OBJ primMBSetColor(int argCount, OBJ *args) {
 	mbDisplayColor = evalInt(args[0]);
 #if defined(HAS_LED_MATRIX)
-	displaySnapshot = 0; // update the display on the next cycle
+	displaySnapshot = -1; // update the display on the next cycle
 #else
 	tftSetHugePixelBits(microBitDisplayBits);
 #endif
