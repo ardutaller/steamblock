@@ -34,85 +34,101 @@
 		<!-- Window Component -->
 		<script type="text/javascript" src="windows.js" defer></script>
 	</head>
+
 	<body>
-	<script>
-		// Force HTTPS. Otherwise WebSerial can't be accessed.
-		if (location.protocol === 'http:') { location.protocol = 'https:'; }
-	</script>
-	<span id='controls' style="display: none">
-		<input type="button" value="Keyboard" id="KeyboardButton">
-		<input type="button" value="Backspace" id="BackspaceButton">
-		<input type="button" value="Toggle Fullscreen" id="FullscreenButton">
-		<input type="button" value="Upload" id="UploadButton">
-		<input type="button" value="Enable Microphone" id="EnableMicrophoneButton">
-		<input type="button" value="See Inside" id="SeeInsideButton">
-		<input type="button" value="Present" id="PresentButton">
-		<input type="button" value="Go" id="GoButton">
-		<input type="button" value="Stop" id="StopButton">
-		<input type="file" id="FileUploader" multiple style="display:none">
-	</span>
 
-	<div class="loading">
-		<div class="big-logo"></div>
-		<h1>Loading...</h1>
-	</div>
 
-	<div class="spinner" id='spinner'></div>
-	<div class="emscripten" id="status"></div>
-	<div class="emscripten">
-		<progress value="0" max="100" id="progress" hidden=1></progress>
-	</div>
+		<!-- Force HTTPS. Otherwise WebSerial can't be accessed. -->
+		<script>
+			if (location.protocol === 'http:') { location.protocol = 'https:'; }
+		</script>
 
-	<div class="ide">
-		<nav class="top-bar">
-			<img src="img/logo.svg" class="logo" aria-label="MicroBlocks"
-				aria-description="Rosa, the MicroBlocks bunny, is named after
-				Rózsa Péter, a great mathematician.">
-			</img>
-			<div class="buttons-left"></div>
-			<span class="title"></span>
-			<div class="buttons-right">
-				<div class="progress"></div>
+
+		<!-- Controls -->
+		<span id='controls' style="display: none">
+			<input type="button" value="Keyboard" id="KeyboardButton">
+			<input type="button" value="Backspace" id="BackspaceButton">
+			<input type="button" value="Toggle Fullscreen" id="FullscreenButton">
+			<input type="button" value="Upload" id="UploadButton">
+			<input type="button" value="Enable Microphone" id="EnableMicrophoneButton">
+			<input type="button" value="See Inside" id="SeeInsideButton">
+			<input type="button" value="Present" id="PresentButton">
+			<input type="button" value="Go" id="GoButton">
+			<input type="button" value="Stop" id="StopButton">
+			<input type="file" id="FileUploader" multiple style="display:none">
+		</span>
+
+
+		<!-- Loader -->
+		<div class="loading">
+			<div class="big-logo"></div>
+			<h1>Loading...</h1>
+		</div>
+
+
+		<!-- Emcripten -->
+		<div class="spinner" id='spinner'></div>
+		<div class="emscripten" id="status"></div>
+		<div class="emscripten">
+			<progress value="0" max="100" id="progress" hidden="1"></progress>
+		</div>
+
+
+		<!-- IDE -->
+		<div class="ide">
+			<nav class="top-bar">
+				<img src="img/logo.svg" class="logo" aria-label="MicroBlocks"
+					aria-description="Rosa, the MicroBlocks bunny, is named after
+					Rózsa Péter, a great mathematician.">
+				</img>
+				<div class="buttons-left"></div>
+				<span class="title"></span>
+				<div class="buttons-right">
+					<div class="progress"></div>
+				</div>
+				<div class="menu"></div>
+			</nav>
+			<div class="workspace">
+				<div class="left-bar">
+					<div class="categories"></div>
+					<span class="lib-header"><l->LIBRARIES</l-></span>
+					<nav class="lib-button-holder">
+						<a class="round-button" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
+					</nav>
+					<div class="libraries"></div>
+				</div>
+				<div class="emscripten">
+					<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
+					<div class="script-controls can-drag-through"></div>
+				</div>
 			</div>
-			<div class="menu"></div>
-		</nav>
-		<div class="workspace">
-			<div class="left-bar">
-				<div class="categories"></div>
-				<span class="lib-header"><l->LIBRARIES</l-></span>
-				<nav class="lib-button-holder">
-					<a class="round-button" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
-				</nav>
-				<div class="libraries"></div>
-			</div>
-			<div class="emscripten">
-				<canvas class="emscripten" id="canvas" width="100px" height="100px"></canvas>
-				<div class="script-controls can-drag-through"></div>
+			<div class="tip-bar">
+				<span class="tip-title"></span>
+				<span class="tip-content"></span>
 			</div>
 		</div>
-		<div class="tip-bar">
-			<span class="tip-title"></span>
-			<span class="tip-content"></span>
-		</div>
-	</div>
-
-	<!-- <win-><h1>Window</h1><div>Contents here</div></win-> -->
-	<script type="text/javascript" src="emModule.js"></script>
-	<script type="text/javascript" src="gpSupport.js"></script>
-	<script type="text/javascript" src="FileSaver.js"></script>
-	<script type="text/javascript" src="gp_wasm.js"></script>
 
 
-	<!-- IDE -->
-	<script type="text/javascript" src="ide.js"></script>
-	<script type="text/javascript" src="menus.js"></script>
-	<script type="text/javascript" src="buttons.js"></script>
-	<script type="text/javascript" src="categories.js"></script>
+		<!-- Functional JS -->
+		<script type="text/javascript" src="emModule.js"></script>
+		<script type="text/javascript" src="gpSupport.js"></script>
+		<script type="text/javascript" src="FileSaver.js"></script>
+		<script type="text/javascript" src="gp_wasm.js"></script>
 
-	<script>
-		// emitted by GP (MicroBlocksEditor.gp → openMicroBlocksEditor)
-		document.addEventListener('ready', () => { IDE.init(); });
-	</script>
+
+		<!-- IDE -->
+		<script type="text/javascript" src="ide.js"></script>
+		<script type="text/javascript" src="menus.js"></script>
+		<script type="text/javascript" src="buttons.js"></script>
+		<script type="text/javascript" src="categories.js"></script>
+
+
+		<!-- GP Init -->
+		<script>
+			// emitted by GP (MicroBlocksEditor.gp → openMicroBlocksEditor)
+			document.addEventListener('ready', () => { IDE.init(); });
+		</script>
+
 
 	</body>
 </html>
