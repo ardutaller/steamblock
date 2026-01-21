@@ -236,7 +236,7 @@ IDE.build = function () {
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
 	setTimeout(() =>
-		{ document.querySelector('.loading').classList.add('loaded'); },
+		{ document.querySelector('.app-preloader').classList.add('--is-loaded'); },
 		500 // it takes a bit for all elements to position and show themselves
 	);
 };
