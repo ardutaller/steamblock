@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-19 23:58+0000\n"
+"PO-Revision-Date: 2026-01-20 05:40+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -3135,7 +3135,7 @@ msgstr "importiere Daten aus CSV-Datei"
 
 #. Graph context menu option
 msgid "copy graph data to clipboard"
-msgstr "kopiere Daten in Zwischenablage"
+msgstr "kopiere Daten in die Zwischenablage"
 
 #. Variable right-click context menu
 msgid "rename..."
@@ -3155,7 +3155,7 @@ msgstr "nur diesen Block"
 
 #. Block right-click context menu
 msgid "copy to clipboard as URL"
-msgstr "kopiere als URL in Zwischenablage"
+msgstr "kopiere als URL in die Zwischenablage"
 
 #. Block right-click context menu tooltip
 msgid "copy these blocks to the clipboard as a URL"
@@ -3769,7 +3769,7 @@ msgstr "lösche Block"
 
 #. Block right-click context menu
 msgid "copy to clipboard"
-msgstr "kopiere in Zwischenablage"
+msgstr "kopiere in die Zwischenablage"
 
 #. String in file picker and library dialogs
 msgid "Path, name or URL for library?"
@@ -7965,11 +7965,11 @@ msgstr "LED-Bild #BR# _"
 
 #. Graph context menu option
 msgid "increase range"
-msgstr "größerer Bereich"
+msgstr "vergrößere den Bereich"
 
 #. Graph context menu option
 msgid "decrease range"
-msgstr "Kleinerer Bereich"
+msgstr "verkleinere den Bereich"
 
 #. Script right-click context menu
 msgid "copy callable name"
