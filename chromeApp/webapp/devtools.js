@@ -17,6 +17,7 @@ const LiveReload = {
 		'styles/generic/minireset.css',
 		'styles/generic/_body.css',
 		'styles/components/_app-preloader.css',
+		'styles/components/_categories.css',
 		'styles/components/_ide.css',
 		'styles/components/_scripts-pane-control.css',
 		'styles/components/_tips.css',
