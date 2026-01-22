@@ -94,7 +94,7 @@
 	position: absolute;
 	right: 1px;
 	bottom: 1px;
-	background: url('../img/resize.svg') no-repeat;
+	background: url('../../img/resize.svg') no-repeat;
 	width: 10px;
 	height: 10px;
 	border: 0;
