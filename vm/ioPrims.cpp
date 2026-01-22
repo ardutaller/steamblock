@@ -1222,12 +1222,14 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 		 2, 27,  7,  9,  5,  4, 33, 255, 255,  0,
 		 1, 13, 29, 12, 15, 14, 32}; // unused pins: 12, 15, 14, 32
 
-	// PA_9, D8, edge pin 21 is UART1_TX
-	// PA_10, D2, edge pin 22 is UART1_RX
+	// PA_9, D8, edge pin 21 is UART1_TX (uplink UART and often USB, too)
+	// PA_10, D2, edge pin 22 is UART1_RX (uplink UART and often USB, too)
+	// 52 (PA_2) - Downlink TX (downlink UART)
+	// 47 (PA_3) - Downlink RX (downlink UART)
 	static const char dueStandardPin[DIGITAL_PINS] = {
 		15, 16, 17, 18, 13, 12, 11,  7, 54, 19,
 		33, 29,  9,  5,  4,  1,  0, 37, 14, 10,
-		28,  8,  2, 27, 32, 255, 255};
+		28,  8,  2, 27, 32, 52, 47};
 
 	// Analog pin names for DUELink boards
 	// Note: CincoBit edge pins 3, 4, and 12 are not analog capable

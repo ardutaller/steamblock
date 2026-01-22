@@ -3298,6 +3298,9 @@ method installESPFirmwareFromRepo SmallRuntime {
 		version = (join 'v' ideVersion)
 	}
 	items = (list)
+	if (endsWith version '-pilot') {
+		version = (substring version 1 ((count version) - 6))
+	}
 	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
 	for line (lines html) {
 		if (beginsWith line '<a href="vm_') {
