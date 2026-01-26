@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-01-20 05:40+0000\n"
+"PO-Revision-Date: 2026-01-27 05:36+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -4194,7 +4194,7 @@ msgstr "die meisten"
 
 #. TFT Display library block
 msgid "draw vector x _ y _ angle _ length _ color _"
-msgstr "zeichne Vektor auf TFT von x _ y _ Winkel _ Länge _ Farbe _"
+msgstr "zeichne Vektor von x _ y _ Winkel _ Länge _ Farbe _"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to speed _ (-100 to 100)"
@@ -4704,7 +4704,7 @@ msgstr "BLE setze Gruppe _ (0-255)"
 
 #. BLE Radio library block
 msgid "ble send pair _ = _"
-msgstr "BLE send Paar _ = _"
+msgstr "BLE sende Paar _ = _"
 
 #. BLE Radio library block
 msgid "ble message received?"
