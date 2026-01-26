@@ -1090,7 +1090,7 @@ method contextMenu Block {
 				if (and (notNil spec) (op != myOp)) {
 					b = (blockForSpec spec)
 					fixLayout b
-					add items (array (fullCostume (morph b)) (action 'changeOperator' this op))
+					add items (array (join 'data:image/png;base64,' (base64Encode (encodePNG (fullCostume (morph b))))) (action 'changeOperator' this op))
 				}
 			}
 		}
