@@ -3,11 +3,23 @@
 **/
 
 
-.logo {
-	margin-right: 26px;
-	margin-left: 4px;
-	margin-top: 3px;
+.ide__top {
+	display: flex;
 }
+
+
+.ide__top-logo {
+	display: block;
+	width: var(--space-160);
+	height: 100%;
+	padding: var(--space-6);
+}
+
+
+
+
+
+
 
 .buttons-left, .progress, .buttons-right {
 	display: inline-flex;
