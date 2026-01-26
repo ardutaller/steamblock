@@ -4,19 +4,49 @@
 
 
 .ide__top {
+	height: var(--space-48);
 	display: flex;
+	align-items: stretch;
 }
 
 
 .ide__top-logo {
 	display: block;
-	width: var(--space-160);
 	height: 100%;
-	padding: var(--space-6);
+	padding: var(--space-6) var(--space-24) var(--space-6) var(--space-6);
+
+	border-right: 1px solid var(--color-blue-grey-700);
 
 	img {
+		width: var(--space-160);
 		pointer-events: none;
 	}
+}
+
+
+.ide__top-menu {
+	padding: 0 var(--space-24);
+	display: flex;
+	align-items: center;
+}
+
+
+.ide__top-menu-button {
+
+}
+
+
+.icon {
+	display: inline-block;
+	vertical-align: top;
+	align-self: center;
+
+	cursor: pointer;
+}
+
+
+.icon svg:hover > path {
+	fill: gold;
 }
 
 
@@ -25,7 +55,7 @@
 
 
 
-.buttons-left, .progress, .buttons-right {
+.progress, .buttons-right {
 	display: inline-flex;
 	vertical-align: top;
 	gap: 8px;
@@ -36,16 +66,7 @@
 	right: 10px;
 }
 
-.icon {
-	display: inline-block;
-	vertical-align: top;
-	align-self: center;
-	padding-top: 9px;
-	cursor: pointer;
-}
-.icon svg:hover > path {
-	fill: gold;
-}
+
 
 .menu {
 	position: fixed;
@@ -105,10 +126,7 @@ hr {
 	top: 0;
 	right: 12px;
 }
-.buttons .icon {
-	margin-left: 6px;
-	margin-right: 6px;
-}
+
 .buttons-right .connect {
 	cursor: pointer;
 	display: flex;
