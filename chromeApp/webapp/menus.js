@@ -383,7 +383,8 @@ Menus.elementFor = function (descriptor, target) {
 
 				// set the menu item label
 				if (!item.label && item.image) {
-					text.innerHTML = `<img src="img/${item.image}.svg"></img>`;
+					text = document.createElement('img');
+					text.src = item.image;
 				} else if (typeof item.label == 'string') {
 					text.innerText = item.label;
 				} else if (typeof item.label == 'function') {
@@ -486,12 +487,15 @@ document.addEventListener('menu', (e) => {
 		{
 			type: 'context',
 			items: descriptor.items.map(item => {
-				return {
-					label: item,
-					action: () => {
-						GP.apiResponses[descriptor.id] = JSON.stringify(item);
-					}
-				}
+				let object =
+					{
+						action: () => {
+							GP.apiResponses[descriptor.id] = JSON.stringify(item);
+						}
+					},
+					type = item.startsWith('data:image') ? 'image' : 'label';
+				object[type] = item;
+				return object;
 			})
 		},
 		null,
