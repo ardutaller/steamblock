@@ -263,7 +263,13 @@ method menuFor MicroBlocksAPI items callback {
 	} else {
 		// this is a 2D list, let's extract the labels
 		labels = (list)
-		for item items { add labels (toString (at item 1)) }
+		for item items {
+			if (isClass (at item 1) 'Bitmap') {
+				add labels (join 'data:image/png;base64,' (base64Encode (encodePNG (at item 1))))
+			} else {
+				add labels (toString (at item 1))
+			}
+		}
 		atPut options 'items' labels
 	}
 
