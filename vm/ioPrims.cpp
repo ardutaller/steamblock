@@ -946,9 +946,9 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 
 #elif defined(ESP32_S3)
 	#define BOARD_TYPE "ESP32-S3"
-	#define DIGITAL_PINS 43
+	#define DIGITAL_PINS 49
 	#define ANALOG_PINS 20
-	#define TOTAL_PINS 43
+	#define TOTAL_PINS 49
 	static const int analogPin[] = {};
 	#ifdef LED_BUILTIN
 		#define PIN_LED LED_BUILTIN
@@ -963,16 +963,15 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 		#endif
 	#endif
 	// See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
-	// strapping pins 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG)
-	// SPI (26-32); also 33-37 on boards with Octal SPI Flash PSRAM
+	// Reserved FLASH and RAM SPI: 26-32 plus 33-37 on boards with Octal SPI Flash PSRAM
 	// USB pins: 19 (USB D-), 20 (USB D+)
-	// also possibly: 39-42 (JTAG pins)
+	// Strapping pins: 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG) (useable with care)
 	static const char reservedPin[TOTAL_PINS] = {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-		0, 0, 0};
+		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #elif defined(ESP32_C3)
 	#define BOARD_TYPE "ESP32-C3"
