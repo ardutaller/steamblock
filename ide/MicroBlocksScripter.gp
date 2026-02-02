@@ -626,11 +626,11 @@ method uniqueVarName MicroBlocksScripter varName forScriptVar {
 
 method deleteVariableMenu MicroBlocksScripter {
 	if (isEmpty (visibleVars this)) { return }
-	menu = (menu nil (action 'deleteVariable' this) true)
+	items = (list)
 	for v (visibleVars this) {
-		addItem menu v
+		add items v
 	}
-	popUpAtHand menu (global 'page')
+	menuFor (api (smallRuntime)) items (action 'deleteVariable' this)
 }
 
 method deleteVariable MicroBlocksScripter varName {

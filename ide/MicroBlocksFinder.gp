@@ -138,18 +138,18 @@ method showResults BlockFinder purpose {
 		return
 	}
 
-	menu = (menu (menuTitleFor this purpose) this)
+	items = (list)
 	for entry functions {
 		b = (blockForFunction entry)
 		fixLayout b
-		addItem menu (fullCostume (morph b)) (action 'jumpTo' this entry purpose)
+		add items (array (fullCostume (morph b)) (action 'jumpTo' this entry purpose))
 	}
-	if (notNil functions) { addLine menu }
+	if (and (notNil functions) (notEmpty functions)) { add items '-' }
 	for entry scripts {
 		// entries are 2-item arrays with topBlock and actual found block
-		addItem menu (fullCostume (at entry 1) 600 200) (action 'jumpTo' this (at entry 2))
+		add items (array (fullCostume (at entry 1) 600 200) (action 'jumpTo' this (at entry 2)))
 	}
-	popUp menu page
+	menuFor (api (smallRuntime)) items
 }
 
 method jumpTo BlockFinder entry purpose {

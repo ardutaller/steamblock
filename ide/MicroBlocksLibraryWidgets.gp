@@ -263,11 +263,15 @@ method queryNewItem MicroBlocksListItemViewer {
 }
 
 method queryRemoveItem MicroBlocksListItemViewer {
-	menu = (menu nil (action 'removeItem' this) true)
+	items = (list)
 	for lib contents {
-		addItem menu lib
+		if (beginsWith lib '_') {
+			add items (substring lib 2)
+		} else {
+			add items lib
+		}
 	}
-	popUpAtHand menu (global 'page')
+	menuFor (api (smallRuntime)) items (action 'removeItem' this)
 }
 
 method removeItem MicroBlocksListItemViewer itemName {
@@ -431,12 +435,12 @@ method setCategory MicroBlocksLibraryCategoryPicker aCategory {
 
 method pickCategory MicroBlocksLibraryCategoryPicker {
 	scripter = (scripter (smallRuntime))
-	menu = (menu)
+	items = (list)
 	for cat (categories scripter) {
-		addItem menu (localized cat) (action 'setCategory' this cat) '' (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) cat))))
+		add items (array (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) cat)))) (localized cat) (action 'setCategory' this cat))
 	}
-	addItem menu (localized 'Generic') (action 'setCategory' this 'Library') '' (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) 'Library'))))
-	popUp menu (global 'page') (left morph) (bottom morph)
+	add items (array (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) 'Library')))) (localized 'Generic') (action 'setCategory' this 'Library'))
+	menuFor (api (smallRuntime)) items
 }
 
 method clicked MicroBlocksLibraryCategoryPicker aCategory {
