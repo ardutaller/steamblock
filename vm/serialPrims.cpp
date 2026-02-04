@@ -267,6 +267,8 @@ static void serialOpen(int baudRate) {
 		} else {
 			SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
 		}
+	#elif defined(METRO_S3)
+		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 41, 40);
 	#elif defined(ESP32)
 		// all ESP32 boards that do not have cases above
 		SERIAL_PORT.begin(baudRate, SERIAL_8N1, 16, 17);
