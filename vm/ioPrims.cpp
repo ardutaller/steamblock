@@ -950,7 +950,9 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 	#define ANALOG_PINS 20
 	#define TOTAL_PINS 49
 	static const int analogPin[] = {};
-	#ifdef LED_BUILTIN
+	#ifdef METRO_S3
+		#define PIN_LED 13
+	#elif defined(LED_BUILTIN)
 		#define PIN_LED LED_BUILTIN
 	#elif !defined(PIN_LED)
 		#define PIN_LED -1
