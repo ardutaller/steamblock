@@ -49,8 +49,8 @@
 	#define OBJSTORE_BYTES 11000
 #elif defined(HAS_CAMERA)
 	#define OBJSTORE_BYTES 230000 // will be allocated from PSRAM
-#elif defined(ESP32_S3) || defined(ESP32_C3)
-	#define OBJSTORE_BYTES 77000
+#elif defined(ESP32_S2) || defined(ESP32_S3) || defined(ESP32_C3)
+	#define OBJSTORE_BYTES 100000
 #elif defined(ARDUINO_ARCH_ESP32)
 	// object store is allocated from heap on ESP32
 	#if defined(USE_NIMBLE)
@@ -108,7 +108,7 @@ void memInit() {
 	}
 
 	#if defined(ARDUINO_ARCH_ESP32)
-		objstore = (OBJ *) malloc(4 * OBJSTORE_WORDS);
+		objstore = (OBJ *) heap_caps_malloc(4 * OBJSTORE_WORDS, MALLOC_CAP_INTERNAL);
 		if (!objstore) vmPanic("ESP32 could not allocate objectstore");
 	#endif
 
