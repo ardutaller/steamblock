@@ -342,6 +342,7 @@ OBJ primButtonA(OBJ *args);
 OBJ primButtonB(OBJ *args);
 void primSetUserLED(OBJ *args);
 
+OBJ primI2cExists(int argCount, OBJ *args);
 OBJ primI2cGet(OBJ *args);
 OBJ primI2cSet(OBJ *args);
 OBJ primSPISend(OBJ *args);

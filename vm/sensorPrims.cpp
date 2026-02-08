@@ -271,7 +271,7 @@ static OBJ primInternalI2cSet(int argCount, OBJ *args) { return fail(primitiveNo
 
 #endif
 
-static OBJ primI2cExists(int argCount, OBJ *args) {
+OBJ primI2cExists(int argCount, OBJ *args) {
 	// Return true if there is an i2c device at the given address. Used for i2c scanning.
 
 	if ((argCount < 1) || !isInt(args[0])) return falseObj;
