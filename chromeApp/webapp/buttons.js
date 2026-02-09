@@ -106,7 +106,7 @@ Buttons.elementFor = function (selector) {
 	// Separators and Connect
 	if (selector == '|') {
 		let separator = document.createElement('div');
-		separator.classList.add('vl');
+		separator.classList.add('top-bar__separator');
 		return separator;
 	} else if (selector == 'connect') {
 		return this.connectWidget();

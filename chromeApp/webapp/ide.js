@@ -97,24 +97,24 @@ IDE.toggleAdvancedMode = function () {
 // Top Bar
 IDE.populateTopBar = function (container) {
 
-	// add main menu buttons
+	// Add main menu buttons
 	const mainMenuButtons = container.querySelector('[data-ide="main-menu"]');
 	['language', 'settings', 'project'].forEach(selector => {
 		mainMenuButtons.appendChild(Buttons.elementFor(selector));
 	});
 
-	// add listener to title
-	let title = container.querySelector('.title');
+	// Add listener to title
+	let title = container.querySelector('[data-ide="title"]');
 	document.addEventListener(
 		'project.title',
-		(e) => { title.innerText = e.detail.value; }
+		(e) => {
+			title.innerText = e.detail.value;
+			title.classList.add('--has-title');
+		}
 	);
 
-	// add right buttons
-	let rightButtons = container.querySelector('.buttons-right');
-
-	// progress indicator
-	let progress =  container.querySelector('.progress');
+	// Progress indicator
+	let progress =  container.querySelector('[data-ide="progress"]');
 	document.addEventListener(
 		'ide.downloadProgress',
 		(e) => {
@@ -137,8 +137,10 @@ IDE.populateTopBar = function (container) {
 		}
 	);
 
+	// Add controls buttons
+	let controlsButtons = container.querySelector('[data-ide="controls"]');
 	['graph', '|', 'connect', '|', 'run', 'stop' ].forEach(selector => {
-		rightButtons.appendChild(Buttons.elementFor(selector));
+		controlsButtons.appendChild(Buttons.elementFor(selector));
 	});
 };
 
