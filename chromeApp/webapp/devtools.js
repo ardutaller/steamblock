@@ -96,7 +96,7 @@ LiveReload.reloadPage = function (contents) {
 		newPage.innerHTML = contents;
 		let canvas = document.querySelector('#canvas');
 		newPage.querySelector('#canvas').remove();
-		newPage.querySelector('.ide__workspace .emscripten').appendChild(canvas);
+		newPage.querySelector('.workspace .emscripten').appendChild(canvas);
 		document.documentElement.innerHTML = newPage.innerHTML;
 		IDE.fireEvent('ready');
 		initGPEventHandlers();

@@ -425,7 +425,7 @@ Menus.popUpFromDescriptor = function (
 	descriptor, triggerElement, target, event
 ) {
 	this.close();
-	let container = document.querySelector('.ide__top .menu'),
+	let container = document.querySelector('.top-bar .menu'),
 		nav = this.elementFor(descriptor, target),
 		type = descriptor.type,
 		pos = type == 'context'
@@ -440,7 +440,7 @@ Menus.popUpFromDescriptor = function (
 };
 
 Menus.current = function () {
-	return document.querySelector('.ide__top .menu nav');
+	return document.querySelector('.top-bar .menu nav');
 };
 
 Menus.close = function () {

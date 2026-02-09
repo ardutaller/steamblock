@@ -33,13 +33,13 @@ IDE.init = function () {
 IDE.resize = function () {
 	// TODO Rename vars to match CSS classes (new naming)
 	let winHeight = window.innerHeight,
-		topBarHeight = document.querySelector('.ide__top').clientHeight,
-		tipBarHeight = document.querySelector('.ide__bottom').clientHeight,
+		topBarHeight = document.querySelector('.top-bar').clientHeight,
+		tipBarHeight = document.querySelector('.bottom-bar').clientHeight,
 		winWidth = window.innerWidth,
-		leftBarWidth = document.querySelector('.ide__workspace-left').clientWidth,
+		leftBarWidth = document.querySelector('.workspace__left').clientWidth,
 		newHeight = winHeight - (topBarHeight + tipBarHeight);
 
-	document.querySelector('.ide__workspace').style.height = newHeight + 'px';
+	document.querySelector('.workspace').style.height = newHeight + 'px';
 	GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
 };
 
@@ -234,7 +234,7 @@ IDE.populateLibraries = function (element) {
 
 // Build the IDE
 IDE.build = function () {
-	this.populateTopBar(document.querySelector('.ide__top'));
+	this.populateTopBar(document.querySelector('.top-bar'));
 	this.populateCategories(document.querySelector('.categories'));
 	this.populateScriptControls(document.querySelector('.scripts-pane-controls'));
 	this.tipBar.init();

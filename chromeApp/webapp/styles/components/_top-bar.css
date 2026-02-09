@@ -1,16 +1,16 @@
 /*
- * Top bar contents
+ * Top Bar
 **/
 
 
-.ide__top {
+.top-bar {
 	height: var(--space-48);
 	display: flex;
 	align-items: stretch;
 }
 
 
-.ide__top-logo {
+.top-bar__logo {
 	display: block;
 	height: 100%;
 	padding: var(--space-6) var(--space-24) var(--space-6) var(--space-6);
@@ -24,14 +24,14 @@
 }
 
 
-.ide__top-menu {
+.top-bar__menu {
 	padding: 0 var(--space-24);
 	display: flex;
 	align-items: center;
 }
 
 
-.ide__top-menu-button {
+.top-bar__menu-button {
 
 }
 
