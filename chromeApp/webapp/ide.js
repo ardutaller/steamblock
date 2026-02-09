@@ -97,10 +97,10 @@ IDE.toggleAdvancedMode = function () {
 // Top Bar
 IDE.populateTopBar = function (container) {
 
-	// add left-side buttons
-	const topMenuButtons = container.querySelector('[data-ide="top-menu"]');
+	// add main menu buttons
+	const mainMenuButtons = container.querySelector('[data-ide="main-menu"]');
 	['language', 'settings', 'project'].forEach(selector => {
-		topMenuButtons.appendChild(Buttons.elementFor(selector));
+		mainMenuButtons.appendChild(Buttons.elementFor(selector));
 	});
 
 	// add listener to title

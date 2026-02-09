@@ -24,25 +24,40 @@
 }
 
 
-.top-bar__menu {
+.top-bar__main-menu {
 	padding: 0 var(--space-24);
 	display: flex;
 	align-items: center;
+	gap: var(--space-8);
 }
 
 
-.top-bar__menu-button {
 
+
+
+/* Buttons */
+
+
+.top-bar__main-menu-button {
+	height: var(--space-24);
+	width: var(--space-24);
+
+	color: var(--color-blue-grey-500);
+
+	&:hover {
+		color: var(--color-yellow-action);
+	}
+
+	svg {
+		transition: color var(--duration-100) ease-in;
+	}
 }
 
 
-.icon {
-	display: inline-block;
-	vertical-align: top;
-	align-self: center;
 
-	cursor: pointer;
-}
+
+
+
 
 
 .icon svg:hover > path {
@@ -75,7 +90,7 @@
 	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
 	overflow-y: auto;
 }
-.top-menu {
+.main-menu {
 	background-color: #2d3143;
 	color: white;
 }
