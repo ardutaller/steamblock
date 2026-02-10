@@ -65,10 +65,12 @@
   --color-blocks-comment:           #F2EEBF;
   --color-blocks-comment-border:    #E1D86B;
 
-  --color-boolean---green:          #61D14E;
-  --color-boolean---red:            #E03B3B;
+  --color-boolean-green:            #61D14E;
+  --color-boolean-red:              #E03B3B;
+  --color-boolean-red--hover:       #F46B6B;
 
   --color-yellow-action:            #FED722;
+  --color-yellow-action--hover:     #FFE881;
   --color-yellow-action-border:     #B79701;
   --helpers-blue:                   #358FCD;
 
@@ -146,9 +148,9 @@
 
   /* Border Radius */
 
-  -borderRadius-2:   2px;
-  -borderRadius-4:   4px;
-  -borderRadius-max: 50%;
+  --borderRadius-2:   2px;
+  --borderRadius-4:   4px;
+  --borderRadius-max: 50%;
 
 
 
@@ -156,6 +158,8 @@
 
   /* Transition Durations */
 
+  --duration-50:    0.05s;
+  --duration-75:    0.07s;
   --duration-100:   0.1s;
   --duration-200:   0.2s;
   --duration-400:   0.4s;

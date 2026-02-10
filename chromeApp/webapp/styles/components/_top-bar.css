@@ -72,7 +72,36 @@
 	}
 
 	svg {
-		transition: color var(--duration-100) ease-in;
+		transition: color var(--duration-75) ease-in;
+	}
+}
+
+
+.top-bar__rounded-button {
+	width: var(--space-32);
+	height: var(--space-32);
+	border-radius: var(--borderRadius-max);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	color: var(--color-blue-grey-50);
+	background-color: var(--color-blue-grey-700);
+	transition:
+		color var(--duration-75) ease-in,
+		background-color var(--duration-75) ease-in;
+
+	&:hover {
+		color: var(--color-blue-grey-900);
+		background-color: var(--color-yellow-action);
+	}
+
+	svg {
+		width: var(--space-16);
+		height: var(--space-16);
+
+		transition: color var(--duration-75) ease-in;
 	}
 }
 
@@ -83,6 +112,73 @@
 	margin: 0 var(--space-8);
 
 	background-color: var(--color-blue-grey-700);
+}
+
+
+.top-bar__controls-connect {
+	display: flex;
+	align-items: center;
+
+	.top-bar__controls-connect-label {
+		margin: 0 var(--space-6) 0 var(--space-8);
+
+		font-size: var(--fontSize-14);
+		color: var(--color-blue-grey-50);
+	}
+
+	.top-bar__controls-connect-dropdown {
+		color: var(--color-blue-grey-500);
+		transition: color var(--duration-75) ease-in;
+	}
+
+	&:hover {
+		cursor: pointer;
+
+		.top-bar__rounded-button {
+			color: var(--color-blue-grey-900);
+			background-color: var(--color-yellow-action);
+		}
+
+		.top-bar__controls-connect-dropdown {
+			color: var(--color-yellow-action);
+		}
+	}
+
+
+	/* Connected */
+	&.--is-connected {
+
+		.top-bar__rounded-button {
+			color: var(--color-blue-grey-900);
+			background-color: var(--color-boolean-green);
+		}
+	}
+}
+
+
+.top-bar__controls-run {
+	width: var(--space-24);
+	height: var(--space-24);
+
+	color: var(--color-yellow-action);
+	transition: color var(--duration-75) ease-in;
+
+	&:hover {
+		color: var(--color-yellow-action--hover);
+	}
+}
+
+
+.top-bar__controls-stop {
+	width: var(--space-24);
+	height: var(--space-24);
+
+	color: var(--color-blue-grey-700);
+	transition: color var(--duration-75) ease-in;
+
+	&:hover {
+		color: var(--color-boolean-red--hover);
+	}
 }
 
 

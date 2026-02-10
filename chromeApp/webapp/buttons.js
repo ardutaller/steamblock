@@ -35,31 +35,31 @@ const Buttons = {
 
 	// Controls
 	graph: {
-		icon: 'graph',
+		icon: 'graph--16x16',
 		label: 'Graph',
 		description: 'Open a graph window. Use the graph block in the Output category to add data points to it.',
-		class: 'top-bar__controls-button',
-		action: () => { GP.apiCall('ide.showGraph'); }
+		class: 'top-bar__rounded-button',
+		action: () => { GP.apiCall('ide.showGraph'); } // TODO: Bernat, class --active when is... active!
 	},
 	connect: {
-		icon : 'usb',
+		icon : 'plug--16x16',
 		label: 'Connection',
 		description: 'Connect to a microcontroller via USB or BLE, or open Boardie.',
-		class: 'top-bar__controls-button',
+		class: 'top-bar__controls-connect',
 		action: () => { Menus.popUp('connect'); }
 	},
 	run: {
-		icon: 'start',
+		icon: 'start--24x24',
 		label: 'Start',
 		description: 'Trigger all scripts under a "when started" hat block or a generic "when" block.',
-		class: 'top-bar__controls-button',
+		class: 'top-bar__controls-run',
 		action: () => { GP.apiCall('ide.startAll'); }
 	},
 	stop: {
-		icon: 'stop',
+		icon: 'stop--24x24',
 		label: 'Stop',
 		description: 'Stop all running scripts and make sure all scripts have been compiled and uploaded to the microcontroller.',
-		class: 'top-bar__controls-button',
+		class: 'top-bar__controls-stop',
 		action: () => { GP.apiCall('ide.stopAll'); }
 	},
 
@@ -101,6 +101,7 @@ const Buttons = {
 	}
 };
 
+
 Buttons.elementFor = function (selector) {
 
 	// Separators and Connect
@@ -139,44 +140,48 @@ Buttons.elementFor = function (selector) {
 	return icon;
 };
 
-Buttons.connectWidget = function () {
-	// special case, as this is a slightly more complex element
-	let container = document.createElement('div'),
-		descriptor = this['connect'],
-		icon = Icon.forSelector(descriptor.icon);
-	container.classList.add('connect');
 
+// Connect
+// Special case, as this is a slightly more complex element
+Buttons.connectWidget = function () {
+
+	let container = document.createElement('button'),
+		descriptor = this['connect'],
+		icon = Icon.forSelector(descriptor.icon, 'div'),
+		label = document.createElement('span'),
+		arrow = Icon.forUrl('img/icon-dropdown--12x6.svg', 'div');
+
+	container.classList.add(descriptor.class);
 	container.ariaLabel = descriptor.ariaLabel;
 	container.ariaDescription = descriptor.ariaDescription;
-
-	document.addEventListener(
-		'board.connected',
-		(e) => {
-			if (e.detail.value) {
-				container.classList.add('connected');
-			} else {
-				container.classList.remove('connected');
-			}
-		}
-	);
-
-	let label = document.createElement('span');
-	label.classList.add('label');
+	icon.classList.add('top-bar__rounded-button');
 	label.innerText = GetText.localize('Connect');
-	document.addEventListener(
-		'board.type',
-		(e) => { label.innerText = GetText.localize(e.detail.value); }
-	);
-
-	let arrow = Icon.forUrl('img/dropdown-arrow.svg');
-	arrow.classList.add('dropdown');
+	label.classList.add('top-bar__controls-connect-label');
+	arrow.classList.add('top-bar__controls-connect-dropdown'); // TODO Dropdown global styles?
 
 	container.appendChild(icon);
 	container.appendChild(label);
 	container.appendChild(arrow);
 
-	// clicking anywhere in the widget triggers the menu
+	// Localization
+	document.addEventListener(
+		'board.type',
+		(e) => { label.innerText = GetText.localize(e.detail.value); }
+	);
+
+	// Clicking anywhere in the widget triggers the menu
 	container.onclick = () => { Menus.popUp('connection', container); };
+
+	document.addEventListener(
+		'board.connected',
+		(e) => {
+			if (e.detail.value) {
+				container.classList.add('--is-connected');
+			} else {
+				container.classList.remove('--is-connected');
+			}
+		}
+	);
 
 	return container;
 };
@@ -185,16 +190,14 @@ Buttons.connectWidget = function () {
 // Icons
 const Icon = {};
 
-Icon.forSelector = function (selector) {
+Icon.forSelector = function (selector, html = 'button') {
 	// TODO: Rename files to avoid 'icon-'?
-	return this.forUrl('img/icon-' + selector + '.svg');
+	return this.forUrl('img/icon-' + selector + '.svg', html);
 };
 
-Icon.forUrl = function (url) {
-	let icon = document.createElement('button');
-	// TODO: Remove
-	// icon.setAttribute('role', 'button');
-	// icon.classList.add('icon');
+Icon.forUrl = function (url, html = 'button') {
+	let icon = document.createElement(html);
 	fetch(url).then(res => res.text()).then(text => icon.innerHTML = text);
+
 	return icon;
 };
