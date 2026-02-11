@@ -15,9 +15,11 @@ const LiveReload = {
 		'styles/config/_config.css',
 		'styles/generic/minireset.css',
 		'styles/generic/_body.css',
+		'styles/generic/_button.css',
 		'styles/components/_app-preloader.css',
 		'styles/components/_categories.css',
 		'styles/components/_ide.css',
+		'styles/components/_menus.css',
 		'styles/components/_scripts-pane-control.css',
 		'styles/components/_tips.css',
 		'styles/components/_top-bar.css',
@@ -96,7 +98,7 @@ LiveReload.reloadPage = function (contents) {
 		newPage.innerHTML = contents;
 		let canvas = document.querySelector('#canvas');
 		newPage.querySelector('#canvas').remove();
-		newPage.querySelector('.ide__workspace .emscripten').appendChild(canvas);
+		newPage.querySelector('.workspace .emscripten').appendChild(canvas);
 		document.documentElement.innerHTML = newPage.innerHTML;
 		IDE.fireEvent('ready');
 		initGPEventHandlers();

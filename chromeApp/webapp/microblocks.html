@@ -23,9 +23,11 @@
 		<link rel="stylesheet" href="styles/config/_config.css">
 		<link rel="stylesheet" href="styles/generic/minireset.css">
 		<link rel="stylesheet" href="styles/generic/_body.css">
+		<link rel="stylesheet" href="styles/generic/_button.css">
 		<link rel="stylesheet" href="styles/components/_app-preloader.css">
 		<link rel="stylesheet" href="styles/components/_categories.css">
 		<link rel="stylesheet" href="styles/components/_ide.css">
+		<link rel="stylesheet" href="styles/components/_menus.css">
 		<link rel="stylesheet" href="styles/components/_scripts-pane-control.css">
 		<link rel="stylesheet" href="styles/components/_tips.css">
 		<link rel="stylesheet" href="styles/components/_top-bar.css">
@@ -85,23 +87,27 @@
 		<!-- IDE -->
 		<div class="ide">
 
-			<nav class="ide__top">
+			<nav class="top-bar">
 
-				<a href="https://microblocks.fun/" target="_blank" class="ide__top-logo" aria-label="MicroBlocks website">
+				<a href="https://microblocks.fun/" target="_blank" class="top-bar__logo" aria-label="MicroBlocks website">
 					<img src="img/microblocks-ide-logo.svg" alt="">
 				</a>
 
-				<div class="ide__top-menu" data-ide="top-menu"></div>
-				<span class="title"></span>
-				<div class="buttons-right">
-					<div class="progress"></div>
+				<div class="top-bar__main-menu" data-ide="main-menu"></div>
+
+				<div class="top-bar__title" data-ide="title"></div>
+
+				<div class="top-bar__controls" data-ide="controls">
+					<div class="top-bar__controls-progress" data-ide="progress"></div>
 				</div>
+
 				<div class="menu"></div>
+
 			</nav>
 
-			<div class="ide__workspace">
+			<div class="workspace">
 
-				<div class="ide__workspace-left">
+				<div class="workspace__left">
 					<div class="categories"></div>
 					<span class="lib-header"><l->LIBRARIES</l-></span>
 					<nav class="lib-button-holder">
@@ -117,7 +123,7 @@
 
 			</div>
 
-			<div class="ide__bottom">
+			<div class="bottom-bar">
 				<div class="tips">
 					<span class="tips__title"></span>
 					<span class="tips__content"></span>

@@ -33,13 +33,13 @@ IDE.init = function () {
 IDE.resize = function () {
 	// TODO Rename vars to match CSS classes (new naming)
 	let winHeight = window.innerHeight,
-		topBarHeight = document.querySelector('.ide__top').clientHeight,
-		tipBarHeight = document.querySelector('.ide__bottom').clientHeight,
+		topBarHeight = document.querySelector('.top-bar').clientHeight,
+		tipBarHeight = document.querySelector('.bottom-bar').clientHeight,
 		winWidth = window.innerWidth,
-		leftBarWidth = document.querySelector('.ide__workspace-left').clientWidth,
+		leftBarWidth = document.querySelector('.workspace__left').clientWidth,
 		newHeight = winHeight - (topBarHeight + tipBarHeight);
 
-	document.querySelector('.ide__workspace').style.height = newHeight + 'px';
+	document.querySelector('.workspace').style.height = newHeight + 'px';
 	GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
 };
 
@@ -97,24 +97,24 @@ IDE.toggleAdvancedMode = function () {
 // Top Bar
 IDE.populateTopBar = function (container) {
 
-	// add left-side buttons
-	const topMenuButtons = container.querySelector('[data-ide="top-menu"]');
+	// Add main menu buttons
+	const mainMenuButtons = container.querySelector('[data-ide="main-menu"]');
 	['language', 'settings', 'project'].forEach(selector => {
-		topMenuButtons.appendChild(Buttons.elementFor(selector));
+		mainMenuButtons.appendChild(Buttons.elementFor(selector));
 	});
 
-	// add listener to title
-	let title = container.querySelector('.title');
+	// Add listener to title
+	let title = container.querySelector('[data-ide="title"]');
 	document.addEventListener(
 		'project.title',
-		(e) => { title.innerText = e.detail.value; }
+		(e) => {
+			title.innerText = e.detail.value;
+			title.classList.add('--has-title');
+		}
 	);
 
-	// add right buttons
-	let rightButtons = container.querySelector('.buttons-right');
-
-	// progress indicator
-	let progress =  container.querySelector('.progress');
+	// Progress indicator
+	let progress =  container.querySelector('[data-ide="progress"]');
 	document.addEventListener(
 		'ide.downloadProgress',
 		(e) => {
@@ -137,8 +137,10 @@ IDE.populateTopBar = function (container) {
 		}
 	);
 
+	// Add controls buttons
+	let controlsButtons = container.querySelector('[data-ide="controls"]');
 	['graph', '|', 'connect', '|', 'run', 'stop' ].forEach(selector => {
-		rightButtons.appendChild(Buttons.elementFor(selector));
+		controlsButtons.appendChild(Buttons.elementFor(selector));
 	});
 };
 
@@ -234,7 +236,7 @@ IDE.populateLibraries = function (element) {
 
 // Build the IDE
 IDE.build = function () {
-	this.populateTopBar(document.querySelector('.ide__top'));
+	this.populateTopBar(document.querySelector('.top-bar'));
 	this.populateCategories(document.querySelector('.categories'));
 	this.populateScriptControls(document.querySelector('.scripts-pane-controls'));
 	this.tipBar.init();

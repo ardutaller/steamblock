@@ -14,7 +14,7 @@
 }
 
 
-.ide__top {
+.top-bar {
 	width: 100%;
 	height: var(--space-48);
 	background-color: #262938;
@@ -23,13 +23,13 @@
 }
 
 
-.ide__workspace {
+.workspace {
 	display: flex;
 	flex-direction: row;
 }
 
 
-.ide__workspace-left {
+.workspace__left {
 	background-color: #2d3143;
 	width: 192px;
 	min-width: 192px; /* Should change to 65 when the final layout is done */
@@ -39,7 +39,7 @@
 }
 
 
-.ide__bottom {
+.bottom-bar {
 	width: 100%;
 	height: 24px;
 	background-color: #2d3143;

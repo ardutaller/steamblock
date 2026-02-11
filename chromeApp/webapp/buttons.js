@@ -9,95 +9,121 @@
 // Bernat Romagosa, 2025
 
 const Buttons = {
+
+	// Main Menu
 	language: {
-		icon: 'globe',
+		icon: 'globe--24x24',
 		label: 'Language',
 		description: 'Set the language of the IDE, including all the blocks.',
-		menu: 'language'
+		menu: 'language',
+		class: 'top-bar__main-menu-button'
 	},
 	settings: {
-		icon: 'gear',
+		icon: 'gear--24x24',
 		label: 'Settings',
 		description: 'User preferences and different IDE settings and tweaks.',
-		menu: 'settings'
+		menu: 'settings',
+		class: 'top-bar__main-menu-button'
 	},
 	project: {
-		icon: 'file',
+		icon: 'file--24x24',
 		label: 'Project',
 		description: 'Actions relating to MicroBlocks projects.',
-		menu: 'project'
+		menu: 'project',
+		class: 'top-bar__main-menu-button'
 	},
+
+	// Controls
 	graph: {
-		icon: 'graph',
+		icon: 'graph--16x16',
 		label: 'Graph',
 		description: 'Open a graph window. Use the graph block in the Output category to add data points to it.',
-		action: () => { GP.apiCall('ide.showGraph'); }
+		class: 'top-bar__rounded-button',
+		action: () => { GP.apiCall('ide.showGraph'); } // TODO: Bernat, class --active when is... active!
 	},
 	connect: {
-		icon : 'usb',
+		icon : 'plug--16x16',
 		label: 'Connection',
 		description: 'Connect to a microcontroller via USB or BLE, or open Boardie.',
+		class: 'top-bar__controls-connect',
 		action: () => { Menus.popUp('connect'); }
 	},
 	run: {
-		icon: 'start',
+		icon: 'start--24x24',
 		label: 'Start',
 		description: 'Trigger all scripts under a "when started" hat block or a generic "when" block.',
+		class: 'top-bar__controls-run',
 		action: () => { GP.apiCall('ide.startAll'); }
 	},
 	stop: {
-		icon: 'stop',
+		icon: 'stop--24x24',
 		label: 'Stop',
 		description: 'Stop all running scripts and make sure all scripts have been compiled and uploaded to the microcontroller.',
+		class: 'top-bar__controls-stop',
 		action: () => { GP.apiCall('ide.stopAll'); }
 	},
+
+	// Workspace tools
 	undo: {
 		icon: 'img/undo.svg',
 		label: 'Undo',
 		description: 'Undo the last action',
-		action: () => { GP.apiCall('edit.undo'); }
+		class: 'workspace__tool',
+		action: () => { GP.apiCall('edit.undo'); },
 	},
 	redo: {
 		icon: 'img/redo.svg',
 		label: 'Redo',
 		description: 'Redo the last undone action',
-		action: () => { GP.apiCall('edit.redo'); }
+		class: 'workspace__tool',
+		action: () => { GP.apiCall('edit.redo'); },
 	},
 	zoomOut: {
 		icon: 'img/zoomOut.svg',
 		label: 'Zoom out',
 		description: 'Decrease block size',
-		action: () => { GP.apiCall('scripts.zoomOut'); }
+		class: 'workspace__tool',
+		action: () => { GP.apiCall('scripts.zoomOut'); },
 	},
 	restoreZoom: {
 		icon: 'img/restoreZoom.svg',
 		label: 'Restore zoom',
 		description: 'Restore block size to 100%',
-		action: () => { GP.apiCall('scripts.restoreZoom'); }
+		class: 'workspace__tool',
+		action: () => { GP.apiCall('scripts.restoreZoom'); },
 	},
 	zoomIn: {
 		icon: 'img/zoomIn.svg',
 		label: 'Zoom in',
 		description: 'Increase block size',
-		action: () => { GP.apiCall('scripts.zoomIn'); }
+		class: 'workspace__tool',
+		action: () => { GP.apiCall('scripts.zoomIn'); },
 	}
 };
 
+
 Buttons.elementFor = function (selector) {
+
+	// Separators and Connect
 	if (selector == '|') {
-		// vertical separator
 		let separator = document.createElement('div');
-		separator.classList.add('vl');
+		separator.classList.add('top-bar__separator');
 		return separator;
 	} else if (selector == 'connect') {
 		return this.connectWidget();
 	}
+
+	// Other buttons
 	let descriptor = this[selector];
-	let icon =
-		descriptor.icon.startsWith('img') ?
-			Icon.forUrl(descriptor.icon) :
-			Icon.forSelector(descriptor.icon);
-	icon.classList.add(selector);
+	let icon = descriptor.icon.startsWith('img') ?
+		Icon.forUrl(descriptor.icon) :
+		Icon.forSelector(descriptor.icon);
+	icon.classList.add(descriptor.class);
+	icon.classList.add(`--${selector}`);
+	icon.ariaLabel = descriptor.label;
+	icon.ariaDescription = descriptor.description; // excuse the alliteration :)
+
+	// Button action
 	if (descriptor.menu) {
 		icon.onclick = () => { Menus.popUp(selector, icon); };
 		icon.setAttribute('aria-controls', `menu-${selector}`);
@@ -110,49 +136,52 @@ Buttons.elementFor = function (selector) {
 	} else {
 		icon.onclick = descriptor.action;
 	}
-	icon.ariaLabel = descriptor.label;
-	icon.ariaDescription = descriptor.description; // excuse the alliteration :)
+
 	return icon;
 };
 
-Buttons.connectWidget = function () {
-	// special case, as this is a slightly more complex element
-	let container = document.createElement('div'),
-		descriptor = this['connect'],
-		icon = Icon.forSelector(descriptor.icon);
-	container.classList.add('connect');
 
+// Connect
+// Special case, as this is a slightly more complex element
+Buttons.connectWidget = function () {
+
+	let container = document.createElement('button'),
+		descriptor = this['connect'],
+		icon = Icon.forSelector(descriptor.icon, 'div'),
+		label = document.createElement('span'),
+		arrow = Icon.forUrl('img/icon-dropdown--12x6.svg', 'div');
+
+	container.classList.add(descriptor.class);
 	container.ariaLabel = descriptor.ariaLabel;
 	container.ariaDescription = descriptor.ariaDescription;
-
-	document.addEventListener(
-		'board.connected',
-		(e) => {
-			if (e.detail.value) {
-				container.classList.add('connected');
-			} else {
-				container.classList.remove('connected');
-			}
-		}
-	);
-
-	let label = document.createElement('span');
-	label.classList.add('label');
+	icon.classList.add('top-bar__rounded-button');
 	label.innerText = GetText.localize('Connect');
-	document.addEventListener(
-		'board.type',
-		(e) => { label.innerText = GetText.localize(e.detail.value); }
-	);
-
-	let arrow = Icon.forUrl('img/dropdown-arrow.svg');
-	arrow.classList.add('dropdown');
+	label.classList.add('top-bar__controls-connect-label');
+	arrow.classList.add('top-bar__controls-connect-dropdown'); // TODO Dropdown global styles?
 
 	container.appendChild(icon);
 	container.appendChild(label);
 	container.appendChild(arrow);
 
-	// clicking anywhere in the widget triggers the menu
+	// Localization
+	document.addEventListener(
+		'board.type',
+		(e) => { label.innerText = GetText.localize(e.detail.value); }
+	);
+
+	// Clicking anywhere in the widget triggers the menu
 	container.onclick = () => { Menus.popUp('connection', container); };
+
+	document.addEventListener(
+		'board.connected',
+		(e) => {
+			if (e.detail.value) {
+				container.classList.add('--is-connected');
+			} else {
+				container.classList.remove('--is-connected');
+			}
+		}
+	);
 
 	return container;
 };
@@ -161,14 +190,14 @@ Buttons.connectWidget = function () {
 // Icons
 const Icon = {};
 
-Icon.forSelector = function (selector) {
-	return this.forUrl('img/icon-' + selector + '.svg');
+Icon.forSelector = function (selector, html = 'button') {
+	// TODO: Rename files to avoid 'icon-'?
+	return this.forUrl('img/icon-' + selector + '.svg', html);
 };
 
-Icon.forUrl = function (url) {
-	let icon = document.createElement('div');
-	icon.setAttribute('role', 'button');
-	icon.classList.add('icon');
+Icon.forUrl = function (url, html = 'button') {
+	let icon = document.createElement(html);
 	fetch(url).then(res => res.text()).then(text => icon.innerHTML = text);
+
 	return icon;
 };
