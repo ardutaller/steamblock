@@ -248,7 +248,7 @@ method contextMenu MicroBlocksAPI selector aHand {
 method menuFor MicroBlocksAPI items callback {
 	// callback is an action that gets called with the chosen item as a param,
 	// however, if items is a 2-dimensional list, then the first items are treated
-	// as menu labels and the last ones are treated as individual item callbacks
+	// as menu labels and the second ones are treated as individual item callbacks
 
 	page = (global 'page')
 	scale = (global 'scale')
@@ -286,6 +286,6 @@ method menuFor MicroBlocksAPI items callback {
 		call callback response
 	} else {
 		// this is a 2D list, let's find the selected item and run its action
-		call (last (at items (indexOf labels response)))
+		call (at (at items (indexOf labels response)) 2)
 	}
 }
