@@ -24,11 +24,11 @@ msgstr "set user LED _"
 
 #. Block in Output category
 msgid "say _"
-msgstr "tampil_"
+msgstr "tampil _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr "grafik_"
+msgstr "grafik _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
@@ -72,15 +72,15 @@ msgstr "versi"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr "milidetik sejak_"
+msgstr "milidetik sejak _"
 
 #. Block in Input category
 msgid "end time _"
-msgstr "waktu akhir_"
+msgstr "waktu akhir _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr "mikrodetik sejak_"
+msgstr "mikrodetik sejak _"
 
 #. Block in Input category
 msgid "BLE id"
@@ -100,23 +100,23 @@ msgstr "Pins"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr "baca digital pin_"
+msgstr "baca digital pin _"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr "baca analog pin_"
+msgstr "baca analog pin _"
 
 #. Block in Pins category
 msgid "pullup _"
-msgstr "pullup_"
+msgstr "pullup _"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr "set digital pin_to_"
+msgstr "set digital pin _ to _"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr "set pin_ke_"
+msgstr "set pin _ ke _"
 
 #. Block in Pins category
 msgid "analog pins"
@@ -136,31 +136,31 @@ msgstr "ketika mulai"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr "ketika tombol_ditekan"
+msgstr "ketika tombol _ ditekan"
 
 #. Block in Control category
 msgid "forever _"
-msgstr "selamanya_"
+msgstr "selamanya _"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr "ulangi__"
+msgstr "ulangi _ _"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr "tunggu_milidetik"
+msgstr "tunggu _ milidetik"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr "jika_ _"
+msgstr "jika _ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr "jika__kalu-tidak_"
+msgstr "jika _ _ kalu-tidak _"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr "kalau-tidak jika_ _"
+msgstr "kalau-tidak jika _ _"
 
 #. Block in Control category
 msgid "else"
@@ -168,19 +168,19 @@ msgstr "kalau-tidak"
 
 #. Block in Control category
 msgid "when _"
-msgstr "ketika_"
+msgstr "ketika _"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr "tunggu sampai_"
+msgstr "tunggu sampai _"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr "tunggu_mikrodetik"
+msgstr "tunggu _ mikrodetik"
 
 #. Block in Control category
 msgid "return _"
-msgstr "kembali_"
+msgstr "kembali _"
 
 #. Block in Control category
 msgid "when _ received"
