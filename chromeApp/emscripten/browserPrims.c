@@ -534,19 +534,19 @@ static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
 			let parts = path.split('.');
 			let obj = window['IDE'];
 			let value = JSON.parse(UTF8ToString($1));
+			let previous = null;
+			// make sure IDE object has that path set up
 			parts.forEach(
 				function (part) {
-					if (typeof obj[part] == 'object') {
-						if (Array.isArray(obj[part])) {
-							obj[part] = value;
-						} else {
-							obj = obj[part];
-						}
-					} else {
-						obj[part] = value;
+					previous = obj;
+					if (!obj.hasOwnProperty(part)) {
+						obj[part] = {};
 					}
+					obj = obj[part];
 				}
 			);
+			// now set the value to the proper path
+			previous[parts.pop()] = value;
 			// dispatch a custom event so elements can listen to changes
 			IDE.fireEvent(path, value);
 	}, path, value);

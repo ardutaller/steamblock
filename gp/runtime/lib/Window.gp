@@ -26,11 +26,18 @@ method initialize Window labelString {
 	addPart morph (morph label)
 	buttonW = (20 * scale)
 	buttonH  = (15 * scale)
-	closeBtn = (pushButton 'X' (action 'destroy' (morph this)) buttonW buttonH)
+	closeBtn = (pushButton 'X' (action 'close' this) buttonW buttonH)
 	addPart morph (morph closeBtn)
 	resizer = (resizeHandle this)
 
 	blurSize = (scale * 10)
+
+	setProperty (api (smallRuntime)) (join 'windows.' (copyReplacing (labelString this) ' ' '') '.active') true
+}
+
+method close Window {
+	setProperty (api (smallRuntime)) (join 'windows.' (copyReplacing (labelString this) ' ' '') '.active') false
+	destroy (morph this)
 }
 
 method updateScale Window {
