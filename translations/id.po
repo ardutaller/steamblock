@@ -1,185 +1,186 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-02-11 08:26+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-02-11 07:37+0000\n"
+"Last-Translator: Spider Tekno <spidertekno@gmail.com>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/microblocks/"
+"ide/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Translate Toolkit 3.18.1\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Output"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "set user LED _"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "tampil_"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "grafik_"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "Input"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "tombol A"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "tombol B"
 
 #. Block in Input category
 msgid "timer"
-msgstr ""
+msgstr "waktu"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr ""
+msgstr "reset waktu"
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "detik"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "mikrodetik"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "milidetik"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "tipe board"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "versi"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr ""
+msgstr "milidetik sejak_"
 
 #. Block in Input category
 msgid "end time _"
-msgstr ""
+msgstr "waktu akhir_"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr ""
+msgstr "mikrodetik sejak_"
 
 #. Block in Input category
 msgid "BLE id"
-msgstr ""
+msgstr "BLE id"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr ""
+msgstr "BLE Tersambung"
 
 #. Block in Input category
 msgid "connected to IDE"
-msgstr ""
+msgstr "tersambung ke IDE"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr ""
+msgstr "Pins"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr ""
+msgstr "baca digital pin_"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr ""
+msgstr "baca analog pin_"
 
 #. Block in Pins category
 msgid "pullup _"
-msgstr ""
+msgstr "pullup_"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr ""
+msgstr "set digital pin_to_"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr ""
+msgstr "set pin_ke_"
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr ""
+msgstr "pin analog"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr ""
+msgstr "pin digital"
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr ""
+msgstr "Control"
 
 #. Block in Control category
 msgid "when started"
-msgstr ""
+msgstr "ketika mulai"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr ""
+msgstr "ketika tombol_ditekan"
 
 #. Block in Control category
 msgid "forever _"
-msgstr ""
+msgstr "selamanya_"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr ""
+msgstr "ulangi__"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr ""
+msgstr "tunggu_milidetik"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr ""
+msgstr "jika_ _"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr ""
+msgstr "jika__kalu-tidak_"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr ""
+msgstr "kalau-tidak jika_ _"
 
 #. Block in Control category
 msgid "else"
-msgstr ""
+msgstr "kalau-tidak"
 
 #. Block in Control category
 msgid "when _"
-msgstr ""
+msgstr "ketika_"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr ""
+msgstr "tunggu sampai_"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr ""
+msgstr "tunggu_mikrodetik"
 
 #. Block in Control category
 msgid "return _"
-msgstr ""
+msgstr "kembali_"
 
 #. Block in Control category
 msgid "when _ received"
