@@ -41,6 +41,22 @@ method lastItemIsLine Menu {
 method popUp Menu page x y noFocus {
 	if (or (isNil noFocus) (not (isClass noFocus 'Boolean'))) {noFocus = false}
 	if (isEmpty items) { return }
+
+	// Find instance that triggered this menu so we can hijack its callback for
+	// the web UI
+	db = (new 'Debugger' (currentTask))
+	stack = (stack (currentTask))
+	frames = (frameList db)
+	currentFrame = (last frames)
+	args = (argsForCall db currentFrame)
+	while (== (first args) this) {
+		frames = (copyFromTo frames 1 (- (count frames) 1))
+		currentFrame = (last frames)
+		args = (argsForCall db currentFrame)
+	}
+	caller = (first args)
+	//TODO rework items into new menu structure, rework callback if needed
+
 	buildMorph this page y
 	showMenu page this x y
 	if (not noFocus) {focus this}
