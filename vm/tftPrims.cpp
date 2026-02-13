@@ -2,138 +2,128 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// Copyright 2018 John Maloney, Bernat Romagosa, and Jens Mönig
+// Copyright 2026 John Maloney, Bernat Romagosa, and Jens Mönig
 
 // tftPrims.cpp - Microblocks TFT screen primitives and touch screen input
 // Bernat Romagosa, November 2018
-
-#include <Arduino.h>
-#include <SPI.h>
-#include <Wire.h>
-#include <stdio.h>
-#include <stdlib.h>
+// Converted to Arduino GFX, John Maloney, February 2026
 
 #include "mem.h"
 #include "interp.h"
 
-int useTFT = false; // simulate 5x5 LED display on TFT display
+#if defined(KIDS_BITS) || defined(FAB_SPARKLE) || defined(SCOUT_MAKES_AZUL)
+	#define ADAFRUIT_OLED true // comment this out to use Arduino GFX OLED
+#endif
+
+#if defined(ARDUINO_WEACT) || defined(NRF51)
+
+// TFT primitives not supported
+
+#elif defined(PICO_ED) || defined(ADAFRUIT_OLED)
+
+#include <Adafruit_GFX.h>
+#define draw16bitRGBBitmap drawRGBBitmap
+
+Adafruit_GFX *tft;
+#define HAS_TFT_PRIMS true
+
+#else
+
+#include <Arduino_GFX_Library.h>
+
+Arduino_TFT *tft;
+#define HAS_TFT_PRIMS true
+
+#endif
+
+int useTFT = false; // true means simulate 5x5 LED display on TFT display
 int isOLED1106 = false;
 
-static int hasOLED = false;
 static int touchEnabled = false;
 static int deferUpdates = false;
 
 // Redefine this macro for displays that must explicitly push offscreen changes to the display
 #define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow TFT operations
 
-#if defined(ARDUINO_CITILAB_ED1) || defined(ARDUINO_M5Stack_Core_ESP32) || \
-	defined(ARDUINO_M5Stick_C) || defined(ARDUINO_ESP8266_WEMOS_D1MINI) || \
-	defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_IOT_BUS) || defined(SCOUT_MAKES_AZUL) || \
-	defined(TTGO_RP2040) || defined(TTGO_DISPLAY) || defined(ARDUINO_M5STACK_Core2) || \
-	defined(GAMEPAD_DISPLAY) || defined(PICO_ED) || defined(OLED_128_64) || defined(COCUBE) || \
-	defined(M5Atom_S3_TFT)
-
-	#define BLACK 0
-	#define WHITE 65535
-
 	#if defined(ARDUINO_CITILAB_ED1)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ST7735.h"
-
 		#define TFT_CS	5
 		#define TFT_DC	9
 		#define TFT_RST	10
 		#define TFT_WIDTH 128
 		#define TFT_HEIGHT 128
-		Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 		void tftInit() {
-			tft.initR(INITR_144GREENTAB);
-			tft.setRotation(0);
-			tftClear();
-			useTFT = true;
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
+ 			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 0, false,
+ 					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				tftClear();
+				useTFT = true;
+			}
 		}
 
-	#elif defined(ARDUINO_ESP8266_WEMOS_D1MINI)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ST7735.h"
-
-		#define TFT_CS	D4
-		#define TFT_DC	D3
-		#define TFT_RST	-1
-		#define TFT_WIDTH 128
-		#define TFT_HEIGHT 128
-		Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-
-		void tftInit() {
-			tft.initR(INITR_144GREENTAB);
-			tft.setRotation(1);
-			tftClear();
-			useTFT = true;
-		}
+// do we need this? Could be handled by new configuration prims...
+// 	#elif defined(ARDUINO_ESP8266_WEMOS_D1MINI)
+// 		#define TFT_CS D4
+// 		#define TFT_DC D3
+// 		#define TFT_RST GFX_NOT_DEFINED
+// 		#define TFT_WIDTH 128
+// 		#define TFT_HEIGHT 128
+//
+// 		void tftInit() {
+// 			Arduino_DataBus *bus = new Arduino_ESP8266SPI(TFT_DC, TFT_CS);
+//  			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 1, false,
+//  					TFT_WIDTH, TFT_HEIGHT);
+// 			if (!tft->begin()) {
+// 				outputString("TFT initialization failed!");
+// 			} else {
+// 				// Turn on backlight:
+// 				tftClear();
+// 				useTFT = true;
+// 			}
+// 		}
 
 	#elif defined(ARDUINO_M5Stack_Core_ESP32)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ILI9341.h"
 		#define TFT_CS	14
 		#define TFT_DC	27
 		#define TFT_RST	33
 		#define TFT_WIDTH 320
 		#define TFT_HEIGHT 240
-		Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+
 		void tftInit() {
-			// test TFT_RST to see if we need to invert the display
-			// (from https://github.com/m5stack/M5Stack/blob/master/src/utility/In_eSPI.cpp)
-			pinMode(TFT_RST, INPUT_PULLDOWN);
-			delay(1);
-			bool invertFlag = digitalRead(TFT_RST);
-			pinMode(TFT_RST, OUTPUT);
+// xxx
+// 			display.begin(40000000); // Run SPI at 80MHz/2
+// 			display.setRotation(1);
+// 			display.invertDisplay(true);
+// 			uint8_t m = 0x08 | 0x04; // RGB pixel order, refresh LCD right to left
+// 			display.sendCommand(ILI9341_MADCTL, &m, 1);
 
-			tft.begin(40000000); // Run SPI at 80MHz/2
-			tft.setRotation(1);
-			tft.invertDisplay(invertFlag);
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
+ 			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
-			uint8_t m = 0x08 | 0x04; // RGB pixel order, refresh LCD right to left
-			tft.sendCommand(ILI9341_MADCTL, &m, 1);
-			tftClear();
-			// Turn on backlight:
-			pinMode(32, OUTPUT);
-			digitalWrite(32, HIGH);
-			useTFT = true;
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				// Turn on backlight:
+				pinMode(32, OUTPUT);
+				digitalWrite(32, HIGH);
+
+				bus->beginWrite();
+				bus->writeC8D8(ILI9341_MADCTL, 0x08 | 0x04); // RGB pixel order, refresh LCD right to left
+				bus->endWrite();
+				tftClear();
+				useTFT = true;
+			}
 		}
 
-	#elif defined(ARDUINO_M5Stick_C)
-		// Preliminary: this is not yet working...
-		#include "Adafruit_GFX.h"
-
+	#elif defined(ARDUINO_M5Stick_Plus)
 		#define TFT_CS		5
 		#define TFT_DC		23
 		#define TFT_RST		18
-
-		#ifdef ARDUINO_M5Stick_Plus
-			#include "Adafruit_ST7789.h"
-			#define TFT_WIDTH	240
-			#define TFT_HEIGHT	135
-		#else
-			#include "Adafruit_ST7735.h"
-			#define TFT_WIDTH	160
-			#define TFT_HEIGHT	80
-		#endif
-
-		#ifdef ARDUINO_M5Stick_Plus
-			Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
-		#else
-			// make a subclass so we can adjust the x/y offsets
-			class M5StickLCD : public Adafruit_ST7735 {
-			public:
-				M5StickLCD(int8_t cs, int8_t dc, int8_t rst) : Adafruit_ST7735(cs, dc, rst) {}
-				void setOffsets(int colOffset, int rowOffset) {
-					_xstart = _colstart = colOffset;
-					_ystart = _rowstart = rowOffset;
-				}
-			};
-			M5StickLCD tft = M5StickLCD(TFT_CS, TFT_DC, TFT_RST);
-		#endif
+		#define TFT_WIDTH	240
+		#define TFT_HEIGHT	135
 
 		int readAXP(int reg) {
 			Wire1.beginTransmission(0x34);
@@ -151,16 +141,15 @@ static int deferUpdates = false;
 		}
 
 		void tftInit() {
-			#ifdef ARDUINO_M5Stick_Plus
-				tft.init(TFT_HEIGHT, TFT_WIDTH);
-				tft.setRotation(3);
-			#else
-				tft.initR(INITR_MINI160x80);
-				tft.setOffsets(26, 1);
-				tft.setRotation(1);
-			#endif
-			tft.invertDisplay(true); // display must be inverted to give correct colors...
-			tftClear();
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, 13, 15);
+			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 1, true,
+					TFT_HEIGHT, TFT_WIDTH, 53, 40, 53, 40);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				tftClear();
+				useTFT = true;
+			}
 
 			Wire1.begin(21, 22);
 			Wire1.setClock(400000);
@@ -173,20 +162,9 @@ static int deferUpdates = false;
 			int brightness = 12; // useful range: 7-12 (12 is max)
 			n = readAXP(0x28);
 			writeAXP(0x28, (brightness << 4) | (n & 0x0f)); // set brightness
-
-			useTFT = true;
 		}
 
 	#elif defined(ARDUINO_M5STACK_Core2)
-		// Preliminary: this is not yet working...
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ILI9341.h"
-		#define TFT_CS	5
-		#define TFT_DC	15
-		#define TFT_WIDTH 320
-		#define TFT_HEIGHT 240
-		Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-
 		int readAXP(int reg) {
 			Wire1.beginTransmission(0x34);
 			Wire1.write(reg);
@@ -362,17 +340,27 @@ static int deferUpdates = false;
 			}
 		}
 
+		#define TFT_CS	5
+		#define TFT_DC	15
+		#define TFT_RST GFX_NOT_DEFINED
+		#define TFT_WIDTH 320
+		#define TFT_HEIGHT 240
+
 		void tftInit() {
 			AXP192_begin();
 
-			tft.begin(40000000); // Run SPI at 80MHz/2
-			tft.setRotation(1);
-			tft.invertDisplay(true);
-			uint8_t m = 0x08 | 0x04; // RGB pixel order, refresh LCD right to left
-			tft.sendCommand(ILI9341_MADCTL, &m, 1);
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
+ 			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 1, true);
 
-			tftClear();
-			useTFT = true;
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				bus->beginWrite();
+				bus->writeC8D8(ILI9341_MADCTL, 0x08 | 0x04); // RGB pixel order, refresh LCD right to left
+				bus->endWrite();
+				tftClear();
+				useTFT = true;
+			}
 		}
 
 		// M5 Core2 touchscreen support
@@ -442,39 +430,37 @@ static int deferUpdates = false;
 		}
 
 	#elif defined(ARDUINO_NRF52840_CLUE)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ST7789.h"
-
 		#define TFT_CS		31
 		#define TFT_DC		32
 		#define TFT_RST		33
 		#define TFT_WIDTH	240
 		#define TFT_HEIGHT	240
-		Adafruit_ST7789 tft = Adafruit_ST7789(&SPI1, TFT_CS, TFT_DC, TFT_RST);
+		#define TFT_BL		34
 
 		void tftInit() {
-			tft.init(240, 240);
-			tft.setRotation(1);
-			tft.fillScreen(0);
-			uint8_t rtna = 0x01; // Screen refresh rate control (datasheet 9.2.18, FRCTRL2)
-			tft.sendCommand(0xC6, &rtna, 1);
+			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
+			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 1, false,
+					TFT_WIDTH, TFT_HEIGHT);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+// xxx is the following code still needed? if so, convert to Arduino GFX bus writes.
+// 				uint8_t rtna = 0x01; // Screen refresh rate control (datasheet 9.2.18, FRCTRL2)
+// 				display.sendCommand(0xC6, &rtna, 1);
+//
+// 				// fix for display gamma glitch on some Clue boards:
+// 				uint8_t gamma = 2;
+// 				display.sendCommand(0x26, &gamma, 1);
 
-			// fix for display gamma glitch on some Clue boards:
-			uint8_t gamma = 2;
-			tft.sendCommand(0x26, &gamma, 1);
-
-			// Turn on backlight
-			pinMode(34, OUTPUT);
-			digitalWrite(34, HIGH);
-
-			useTFT = true;
+				pinMode(TFT_BL, OUTPUT);
+				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftClear();
+				useTFT = true;
+			}
 		}
 
 	#elif defined(ARDUINO_IOT_BUS)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ILI9341.h"
-		#include <XPT2046_Touchscreen.h>
-		#include <SPI.h>
+ 		#include <XPT2046_Touchscreen.h>
 
 		#define HAS_TOUCH_SCREEN 1
 		#define TOUCH_CS_PIN 16
@@ -482,21 +468,23 @@ static int deferUpdates = false;
 
 		#define TFT_CS	5
 		#define TFT_DC	27
-
+		#define TFT_RST GFX_NOT_DEFINED
 		#define TFT_WIDTH 320
 		#define TFT_HEIGHT 240
-		Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 		void tftInit() {
-			tft.begin();
-			tft.setRotation(1);
-//			tft._freq = 80000000; // this requires moving _freq to public in AdaFruit_SITFT.h
-			tftClear();
-			// Turn on backlight on IoT-Bus
-			pinMode(33, OUTPUT);
-			digitalWrite(33, HIGH);
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
+ 			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
-			useTFT = true;
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				// Turn on backlight on IoT-Bus
+				pinMode(33, OUTPUT);
+				digitalWrite(33, HIGH);
+				tftClear();
+				useTFT = true;
+			}
 		}
 
 		static void touchInit() {
@@ -546,73 +534,48 @@ static int deferUpdates = false;
 			return pressure;
 		}
 
-	#elif defined(SCOUT_MAKES_AZUL)
-		#undef BLACK // defined in SSD1306 header
-		#include "Adafruit_GFX.h"
+	#elif defined(ADAFRUIT_OLED)
 		#include "Adafruit_SSD1306.h"
 
-		#define TFT_WIDTH 128
-		#define TFT_HEIGHT 32
 		#define IS_MONOCHROME true
-
-		Adafruit_SSD1306 tft = Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT);
-
-		#undef UPDATE_DISPLAY
-		#define UPDATE_DISPLAY() { if (!deferUpdates) { tft.display(); taskSleep(-1); }}
-
-		void tftInit() {
-			tft.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-			useTFT = true;
-			tftClear();
-		}
-
-	#elif defined(OLED_128_64)
-		#undef BLACK // defined in SSD1306 header
-		#undef WHITE // defined in SSD1306 header
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_SSD1306.h"
-
-		#define TFT_ADDR 0x3C
+		#define OLED_ADDR 0x3C
 		#define TFT_WIDTH 128
-		#define TFT_HEIGHT 64
-		#define IS_MONOCHROME true
-
-		Adafruit_SSD1306 tft = Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT, &Wire, -1, 400000, 400000);
+		#if defined(SCOUT_MAKES_AZUL)
+			#define TFT_HEIGHT 32
+		#else
+			#define TFT_HEIGHT 64
+		#endif
 
 		static void oledCmd(uint8 cmd) {
-			Wire.beginTransmission(TFT_ADDR);
+			Wire.beginTransmission(OLED_ADDR);
 			Wire.write(0x80);
 			Wire.write(cmd);
 			Wire.endTransmission(true);
 		}
 
+		Adafruit_SSD1306 display = Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT, &Wire, -1, 400000, 400000);
+
 		void tftInit() {
 			delay(5); // need 2 msecs minimum for micro:bit PicoBricks board power up I2C pullups
 			if (!hasI2CPullups()) return; // no OLED connected and no I2C pullups
 
-			// Ping the DUELink address so DUELink modules will use I2C mode
-			// (This must be the first I2C transaction after power up.)
-			readI2CReg(82, 0);
-
-			int response = readI2CReg(TFT_ADDR, 0); // test if OLED responds at TFT_ADDR
+			int response = readI2CReg(OLED_ADDR, 0); // test if OLED responds at OLED_ADDR
 			if (response < 0) return; // no OLED display detected
 			isOLED1106 = (8 == (response & 15));
 
-			tft.begin(SSD1306_SWITCHCAPVCC, TFT_ADDR);
+			display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
 
 			// set to medium brightness
 			oledCmd(0x81);
 			oledCmd(0x80);
 
-			hasOLED = true;
-			#if defined(KIDS_BITS)
-				useTFT = true; // simulate TFT on KidsBits OLED display
-			#endif
+			useTFT = true;
+			tft = (Adafruit_GFX *) &display;
 			tftClear();
 		}
 
 		static void i2cWriteBytes(uint8 *bytes, int byteCount) {
-			Wire.beginTransmission(TFT_ADDR);
+			Wire.beginTransmission(OLED_ADDR);
 			for (int i = 0; i < byteCount; i++) Wire.write(bytes[i]);
 			Wire.endTransmission(true);
 		}
@@ -628,8 +591,8 @@ static int deferUpdates = false;
 			i2cWriteBytes(setupCmds, sizeof(setupCmds));
 			uint8 buffer[65];
 			buffer[0] = 0x40;
-			uint8 *src = tft.getBuffer();
-			for (int i = 0; i < 8; i++) {
+			uint8 *src = display.getBuffer();
+			for (int i = 0; i < (TFT_HEIGHT / 8); i++) {
 				// do time-sensitive background tasks
 				captureIncomingBytes();
 				updateMicrobitDisplay();
@@ -651,10 +614,47 @@ static int deferUpdates = false;
 		#undef UPDATE_DISPLAY
 		#define UPDATE_DISPLAY() { if (!deferUpdates) { oledUpdate(); taskSleep(-1); }}
 
-	#elif defined(TTGO_DISPLAY)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ST7789.h"
+	#elif defined(ARDUINO_OLED)
+		// xxx *** This crashes at startup (tested on KidsBits ESP32) ***
+		#define IS_MONOCHROME true
+		#define OLED_ADDR 0x3C
+		#define TFT_RST GFX_NOT_DEFINED
+		#define TFT_WIDTH 128
+		#if defined(SCOUT_MAKES_AZUL)
+			#define TFT_HEIGHT 32
+		#else
+			#define TFT_HEIGHT 64
+		#endif
 
+		void tftInit() {
+			delay(5); // need 2 msecs minimum for micro:bit PicoBricks board power up I2C pullups
+			if (!hasI2CPullups()) return; // no OLED connected and no I2C pullups
+
+			int response = readI2CReg(OLED_ADDR, 0); // test if OLED responds at OLED_ADDR
+			if (response < 0) return; // no OLED display detected
+			isOLED1106 = (8 == (response & 15));
+
+ 			Arduino_DataBus *bus = new Arduino_Wire(OLED_ADDR, 0x00, 0x40);
+			Arduino_G *oledController;
+ 			if (isOLED1106) {
+ 				oledController = new Arduino_SH1106(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
+			} else {
+				oledController = new Arduino_SSD1306(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
+			}
+			tft = (Arduino_TFT *) new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, oledController, 0 /* output_x */, 0 /* output_y */, false /* verticalByte */);
+
+			if (!tft->begin(400000)) {
+				outputString("TFT initialization failed!");
+			} else {
+				tftClear();
+				useTFT = true;
+			}
+		}
+
+		#undef UPDATE_DISPLAY
+		#define UPDATE_DISPLAY() { if (!deferUpdates) { oledUpdate(); taskSleep(-1); }}
+
+	#elif defined(TTGO_DISPLAY)
 		#define TFT_MOSI 19
 		#define TFT_SCLK 18
 		#define TFT_CS 5
@@ -663,22 +663,22 @@ static int deferUpdates = false;
 		#define TFT_BL 4
 		#define TFT_WIDTH 240
 		#define TFT_HEIGHT 135
-		#define TFT_PWR 22
-		Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
 		void tftInit() {
-			pinMode(TFT_BL, OUTPUT);
-			digitalWrite(TFT_BL, 1);
-			tft.init(TFT_HEIGHT, TFT_WIDTH);
-			tft.setRotation(1);
-			tftClear();
-			useTFT = true;
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
+			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 3, true,
+					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40); // reverse height and width because of rotation
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				pinMode(TFT_BL, OUTPUT);
+				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftClear();
+				useTFT = true;
+			}
 		}
 
 	#elif defined(GAMEPAD_DISPLAY)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ST7735.h"
-
 		#define TFT_MOSI 13
 		#define TFT_SCLK 14
 		#define TFT_CS 18
@@ -686,39 +686,45 @@ static int deferUpdates = false;
 		#define TFT_RST 17
 		#define TFT_WIDTH 128
 		#define TFT_HEIGHT 128
-		Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
 		void tftInit() {
-			tft.initR(INITR_144GREENTAB);
-			tft.setRotation(3);
-			tft.fillScreen(BLACK);
-			useTFT = true;
+ 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
+			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 3, false,
+					TFT_WIDTH, TFT_HEIGHT);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				// Turn on backlight:
+				tftClear();
+				useTFT = true;
+			}
 		}
 
 	#elif defined(TTGO_RP2040)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ST7789.h"
-
 		#define TFT_MOSI 3
 		#define TFT_SCLK 2
 		#define TFT_CS 5
 		#define TFT_DC 1
 		#define TFT_RST 0
-		#define TFT_BL 4
 		#define TFT_WIDTH 240
 		#define TFT_HEIGHT 135
 		#define TFT_PWR 22
-		Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+		#define TFT_BL 4
 
 		void tftInit() {
-			pinMode(TFT_PWR, OUTPUT);
-			pinMode(TFT_BL, OUTPUT);
-			digitalWrite(TFT_PWR, 1);
-			tft.init(TFT_HEIGHT, TFT_WIDTH);
-			analogWrite(TFT_BL, 250);
-			tft.setRotation(1);
-			tftClear();
-			useTFT = true;
+			Arduino_DataBus *bus = new Arduino_RPiPicoSPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
+			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 0, true,
+					TFT_WIDTH, TFT_HEIGHT);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				pinMode(TFT_PWR, OUTPUT);
+				digitalWrite(TFT_PWR, 1); // turn on display
+				pinMode(TFT_BL, OUTPUT);
+				analogWrite(TFT_BL, 250); // turn on backlight
+				tftClear();
+				useTFT = true;
+			}
 		}
 
 	#elif defined(PICO_ED)
@@ -735,9 +741,6 @@ static int deferUpdates = false;
 		#define IS31FL_SHUTDOWN_REG 0x0A
 		#define IS31FL_CONFIG_REG 0x00
 		#define IS31FL_PICTUREFRAME_REG 0x01
-
-		#undef UPDATE_DISPLAY
-		#define UPDATE_DISPLAY() { if (!deferUpdates) tft.updateDisplay(); }
 
 		class IS31FL3731 : public Adafruit_GFX {
 		public:
@@ -856,21 +859,23 @@ static int deferUpdates = false;
 		}
 
 		// pretend display is 7 pixels wider so GFX will display partial characters
-		IS31FL3731 tft = IS31FL3731(TFT_WIDTH + 7, TFT_HEIGHT);
+		IS31FL3731 display = IS31FL3731(TFT_WIDTH + 7, TFT_HEIGHT);
 
 		void tftInit() {
-			tft.begin();
+			display.begin();
+			tft = &display;
 			useTFT = true;
 		}
 
+		#undef UPDATE_DISPLAY
+		#define UPDATE_DISPLAY() { if (!deferUpdates) display.updateDisplay(); }
+
 	void showMicroBitPixels(int microBitDisplayBits, int xPos, int yPos) {
 		// Used by scrolling text; don't clear display.
-		tft.showMicroBitPixels(microBitDisplayBits, xPos, yPos);
+		display.showMicroBitPixels(microBitDisplayBits, xPos, yPos);
 	}
 
 	#elif defined(COCUBE)
-		#include "Adafruit_GFX.h"
-		#include "Adafruit_ST7789.h"
 		#include <LittleFS.h>
 
 		#define TFT_MOSI 19
@@ -883,9 +888,8 @@ static int deferUpdates = false;
 		#define TFT_HEIGHT 240
 		#define DEFAULT_BATTERY_PIN 34
 		#define LOGO_PATH "/logo.raw"
-
-		SPIClass CoCubeSPI(VSPI);
-		Adafruit_ST7789 tft = Adafruit_ST7789(&CoCubeSPI, TFT_CS, TFT_DC, TFT_RST);
+		#define BLACK 0
+		#define WHITE 65535
 
 		void drawRawImage(const char* filename, int x0, int y0, int width, int height) {
 			if (!LittleFS.begin()) return;
@@ -897,7 +901,7 @@ static int deferUpdates = false;
 			for (int y = 0; y < height; y++) {
 				size_t read = file.read((uint8_t*)lineBuf, width * 2);
 				if (read != width * 2) break;
-				tft.drawRGBBitmap(x0, y0 + y, lineBuf, width, 1);
+				tft->draw16bitRGBBitmap(x0, y0 + y, lineBuf, width, 1);
 			}
 			file.close();
 		}
@@ -911,10 +915,10 @@ static int deferUpdates = false;
 			uint16_t textColor = 0x0000;   // BLACK by default
 
 			int level = map(percentage, 0, 100, 0, width - 4);
-			tft.drawRoundRect(x, y, width, height, 3, borderColor);
+			tft->drawRoundRect(x, y, width, height, 3, borderColor);
 			int headW = width / 10;
-			tft.fillRect(x + width, y + height / 4, headW, height / 2, 0x4208);
-			tft.fillRect(x + 2, y + 2, level, height - 4, fillColor);
+			tft->fillRect(x + width, y + height / 4, headW, height / 2, 0x4208);
+			tft->fillRect(x + 2, y + 2, level, height - 4, fillColor);
 
 			char buf[6];
 			sprintf(buf, "%d%%", percentage);
@@ -926,19 +930,24 @@ static int deferUpdates = false;
 			int textX = x + (width - textLen * charW) / 2;
 			int textY = y + (height - charH) / 2;
 
-			tft.setTextColor(textColor);
-			tft.setTextSize(textSize);
-			tft.setCursor(textX, textY);
-			tft.print(buf);
+			tft->setTextColor(textColor);
+			tft->setTextSize(textSize);
+			tft->setCursor(textX, textY);
+			tft->print(buf);
 		}
 
 		void tftInit() {
-			CoCubeSPI.begin(TFT_SCLK, -1, TFT_MOSI, -1);
-			tft.init(TFT_HEIGHT, TFT_WIDTH, SPI_MODE3);
-			tft.setRotation(1);
-			pinMode(TFT_BL, OUTPUT);
-			digitalWrite(TFT_BL, HIGH);
-			useTFT = true;
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
+			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 3, true,
+					TFT_HEIGHT, TFT_WIDTH, 0, 80, 0, 80);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				pinMode(TFT_BL, OUTPUT);
+				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftClear();
+				useTFT = true;
+			}
 
 			int batteryRaw = 0;
 			for (int i = 0; i < 5; i++) {
@@ -959,18 +968,14 @@ static int deferUpdates = false;
 			}
 
 			if (!logoDisplayed) {
-				tft.fillScreen(WHITE);
+				tft->fillScreen(WHITE);
 				drawBatteryStatus(battery_percentage, 85, 100, 70, 40, 3);
 				delay(1000);
 			}
-			tft.fillScreen(BLACK);
+			tft->fillScreen(BLACK);
 		}
 
 	#elif defined(M5Atom_S3_TFT)
-		#undef BLACK // defined GFX
-		#undef WHITE // defined GFX
-		#define drawRGBBitmap draw16bitRGBBitmap
-		#include <Arduino_GFX_Library.h>
 		#define TFT_MOSI 21
 		#define TFT_SCLK 17
 		#define TFT_CS   15
@@ -979,25 +984,118 @@ static int deferUpdates = false;
 		#define TFT_BL   16
 		#define TFT_WIDTH 128
 		#define TFT_HEIGHT 128
-		Arduino_ESP32SPI bus = Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, -1);
-		Arduino_GC9107 tft = Arduino_GC9107(&bus, TFT_RST, 0 /* rotation */, true /* IPS */);
 
 		void tftInit() {
-			tft.begin();
-			tftClear();
+			Arduino_ESP32SPI *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, -1);
+			tft = (Arduino_TFT *) new Arduino_GC9107(bus, TFT_RST, 0 /* rotation */, true /* IPS */);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				pinMode(TFT_BL, OUTPUT);
+				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftClear();
+				useTFT = true;
+			}
+		}
+
+	#elif defined(GFX_TEST)
+// 		#define TFT_MOSI MISO
+// 		#define TFT_SCLK SCK
+// 		#define TFT_CS SS
+// 		#define TFT_DC 32
+// 		#define TFT_RST 2
+// 		#define TFT_BL 33
+		#define TFT_MOSI 4
+		#define TFT_SCLK 5
+		#define TFT_CS 6
+		#define TFT_DC 7
+		#define TFT_RST 8
+		#define TFT_BL 9
+		#define TFT_WIDTH 128
+		#define TFT_HEIGHT 128
+
+		static void init_7735() {
+			Arduino_DataBus *bus = create_default_Arduino_DataBus();
+			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 0 /* rotation */);
+//			Adafruit_ST7735 *display = new Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+// 			display->initR(INITR_144GREENTAB);
+// 			display->setRotation(0);
+// 			tft = (Arduino_GFX *) display;
+		}
+
+		static void init_7789() {
+			Arduino_DataBus *bus = create_default_Arduino_DataBus();
+			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 0 /* rotation */);
+//			Adafruit_ST7789 *display = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 			pinMode(TFT_BL, OUTPUT);
 			digitalWrite(TFT_BL, HIGH);
+// 			display->init(TFT_HEIGHT, TFT_WIDTH);
+// 			display->setRotation(1);
+// 			tft = (Arduino_GFX *) display;
+		}
+
+		static void init_9341() {
+			Arduino_DataBus *bus = create_default_Arduino_DataBus();
+			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 0 /* rotation */, false /* IPS */);
+//			Adafruit_ILI9341 *display = new Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+			// Turn on backlight on IoT-Bus
+			pinMode(TFT_BL, OUTPUT);
+			digitalWrite(TFT_BL, HIGH);
+// 			display->begin();
+// 			display->setRotation(1);
+// 			tft = (Arduino_GFX *) display;
+		}
+
+		static void init_1306() {
+			Arduino_DataBus *bus = create_default_Arduino_DataBus();
+			tft = (Arduino_TFT *) new Arduino_SSD1351(bus, TFT_RST, 0 /* rotation */);
+//			Adafruit_SSD1306 *display = new Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT);
+//			Adafruit_SSD1306 *display = new Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT);
+// 			display->begin(SSD1306_SWITCHCAPVCC, 0x3C);
+// 			tft = (Arduino_GFX *) display;
+		}
+
+		void tftInit() { } // stub
+
+extern "C" void recordHeapSpace();
+extern "C" void reportHeapDiff(char *s);
+
+extern "C" void tftInit2() {
+	recordHeapSpace();
+		Arduino_DataBus *tmpBus = create_default_Arduino_DataBus();
+	reportHeapDiff("Arduino_DataBus");
+			init_7735();
+	reportHeapDiff("7735");
+			init_7789();
+	reportHeapDiff("7789");
+			init_9341();
+	reportHeapDiff("9341");
+			init_1306();
+	reportHeapDiff("1306");
+			tftClear();
 			useTFT = true;
 		}
 
-#endif // end of board-specific sections
+	#else
 
-static int hasTFT() {
-	#if defined(OLED_128_64)
-		return hasOLED;
-	#endif
-	return useTFT;
-}
+		void tftInit() { } // stub
+
+#endif
+
+#if defined(HAS_TFT_PRIMS)
+
+#if !defined(BLACK)
+	#define BLACK 0
+#endif
+#if !defined(WHITE)
+	#define WHITE 65535
+#endif
+#if !defined(TFT_WIDTH)
+	#define TFT_WIDTH 0
+#endif
+#if !defined(TFT_HEIGHT)
+	#define TFT_HEIGHT 0
+#endif
 
 #define BUFFER_PIXELS_SIZE (TFT_WIDTH * 8)
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE]; // used by primPixelRow and primDrawBuffer
@@ -1025,17 +1123,13 @@ static int color24to16b(int color24b) {
 	r = (color24b >> 19) & 0x1F; // 5 bits
 	g = (color24b >> 10) & 0x3F; // 6 bits
 	b = (color24b >> 3) & 0x1F; // 5 bits
-	#if defined(ARDUINO_M5Stick_C) && !defined(ARDUINO_M5Stick_Plus)
-		return (b << 11) | (g << 5) | r; // color order: BGR
-	#else
-		return (r << 11) | (g << 5) | b; // color order: RGB
-	#endif
+	return (r << 11) | (g << 5) | b; // color order: RGB
 }
 
 void tftClear() {
-	if (!hasTFT()) return;
+	if (!useTFT) return;
 
-	tft.fillScreen(BLACK);
+	tft->fillScreen(BLACK);
 	UPDATE_DISPLAY();
 }
 
@@ -1046,22 +1140,22 @@ void tftSetHugePixel(int x, int y, int state) {
 	#if defined(PICO_ED)
 		if ((1 <= x) && (x <= 5) && (1 <= y) && (y <= 5)) {
 			int brightness = (state ? 100 : 0);
-			tft.drawPixel((x + 5), y, brightness);
+			tft->drawPixel((x + 5), y, brightness);
 			UPDATE_DISPLAY();
 		}
 		return;
 	#endif
 	int minDimension, xInset = 0, yInset = 0;
-	if (tft.width() > tft.height()) {
-		minDimension = tft.height();
-		xInset = (tft.width() - tft.height()) / 2;
+	if (tft->width() > tft->height()) {
+		minDimension = tft->height();
+		xInset = (tft->width() - tft->height()) / 2;
 	} else {
-		minDimension = tft.width();
-		yInset = (tft.height() - tft.width()) / 2;
+		minDimension = tft->width();
+		yInset = (tft->height() - tft->width()) / 2;
 	}
 	int lineWidth = (minDimension > 60) ? 3 : 1;
 	int squareSize = (minDimension - (6 * lineWidth)) / 5;
-	tft.fillRect(
+	tft->fillRect(
 		xInset + ((x - 1) * squareSize) + (x * lineWidth), // x
 		yInset + ((y - 1) * squareSize) + (y * lineWidth), // y
 		squareSize, squareSize,
@@ -1073,8 +1167,8 @@ void tftSetHugePixelBits(int bits) {
 	if (!useTFT) return;
 
 	#if defined(PICO_ED)
-		tft.clearDisplayBuffer();
-		tft.showMicroBitPixels(bits, 1, 1);
+		display.clearDisplayBuffer();
+		display.showMicroBitPixels(bits, 1, 1);
 		return;
 	#endif
 	if (0 == bits) {
@@ -1092,7 +1186,7 @@ void tftSetHugePixelBits(int bits) {
 }
 
 OBJ primSetBacklight(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	if ((argCount < 1) || !isInt(args[0])) return falseObj;
 	int brightness = obj2int(args[0]);
@@ -1109,7 +1203,7 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 	#elif defined(ARDUINO_M5Stack_Core_ESP32)
 		pinMode(32, OUTPUT);
 		digitalWrite(32, (brightness > 0) ? HIGH : LOW);
-	#elif defined(ARDUINO_M5Stick_C) || defined(ARDUINO_M5Stick_Plus)
+	#elif defined(ARDUINO_M5Stick_Plus)
 		brightness = (brightness <= 0) ? 0 : brightness + 7; // 8 is lowest setting that turns on backlight
 		if (brightness > 15) brightness = 15;
 		int n = readAXP(0x28);
@@ -1122,18 +1216,18 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		if (brightness < 0) brightness = 0;
 		if (brightness > 10) brightness = 10;
 		analogWrite(TFT_BL, brightness * 25);
-	#elif defined(OLED_128_64)
+	#elif defined(OLED_ADDR)
 		int oledLevel = (255 * brightness) / 10;
 		if (oledLevel < 0) oledLevel = 0;
 		if (oledLevel > 255) oledLevel = 255;
-		writeI2CReg(TFT_ADDR, 0x80, 0x81);
-		writeI2CReg(TFT_ADDR, 0x80, oledLevel);
+		writeI2CReg(OLED_ADDR, 0x80, 0x81);
+		writeI2CReg(OLED_ADDR, 0x80, oledLevel);
 	#endif
 	return falseObj;
 }
 
 static OBJ primGetWidth(int argCount, OBJ *args) {
-	if (!hasTFT()) return zeroObj;
+	if (!useTFT) return zeroObj;
 
 	#ifdef TFT_WIDTH
 		return int2obj(TFT_WIDTH);
@@ -1143,7 +1237,7 @@ static OBJ primGetWidth(int argCount, OBJ *args) {
 }
 
 static OBJ primGetHeight(int argCount, OBJ *args) {
-	if (!hasTFT()) return zeroObj;
+	if (!useTFT) return zeroObj;
 
 	#ifdef TFT_HEIGHT
 		return int2obj(TFT_HEIGHT);
@@ -1153,12 +1247,12 @@ static OBJ primGetHeight(int argCount, OBJ *args) {
 }
 
 static OBJ primSetPixel(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
 	int color16b = color24to16b(obj2int(args[2]));
-	tft.drawPixel(x, y, color16b);
+	tft->drawPixel(x, y, color16b);
 	UPDATE_DISPLAY();
 	return falseObj;
 }
@@ -1171,7 +1265,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 	// 32 and 24 bit pixels are RGB(A) byte order. (Alpha of 32-bit pixels is ignored).
 	// Used to accelerate BMP file display and other bitmap operations.
 
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	OBJ pixelDataObj = args[0];
 	int x = obj2int(args[1]);
@@ -1202,7 +1296,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 			OBJ pixelObj = FIELD(pixelDataObj, (i + 1));
 			bufferPixels[i] = (isInt(pixelObj)) ? color24to16b(obj2int(pixelObj)) : 0;
 		}
-		tft.drawRGBBitmap(x, y, bufferPixels, pixelCount, 1);
+		tft->draw16bitRGBBitmap(x, y, bufferPixels, pixelCount, 1);
 	} else if (IS_TYPE(pixelDataObj, ByteArrayType)) {
 		int isRGB565 = true;
 		if (bytesPerPixel < 0) {
@@ -1234,27 +1328,27 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 				byte += bytesPerPixel;
 			}
 		}
-		tft.drawRGBBitmap(x, y, bufferPixels, pixelCount, 1);
+		tft->draw16bitRGBBitmap(x, y, bufferPixels, pixelCount, 1);
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primLine(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int x0 = obj2int(args[0]);
 	int y0 = obj2int(args[1]);
 	int x1 = obj2int(args[2]);
 	int y1 = obj2int(args[3]);
 	int color16b = color24to16b(obj2int(args[4]));
-	tft.drawLine(x0, y0, x1, y1, color16b);
+	tft->drawLine(x0, y0, x1, y1, color16b);
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primRect(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
@@ -1263,16 +1357,16 @@ static OBJ primRect(int argCount, OBJ *args) {
 	int color16b = color24to16b(obj2int(args[4]));
 	int fill = (argCount > 5) ? (trueObj == args[5]) : true;
 	if (fill) {
-		tft.fillRect(x, y, width, height, color16b);
+		tft->fillRect(x, y, width, height, color16b);
 	} else {
-		tft.drawRect(x, y, width, height, color16b);
+		tft->drawRect(x, y, width, height, color16b);
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primRoundedRect(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
@@ -1282,16 +1376,16 @@ static OBJ primRoundedRect(int argCount, OBJ *args) {
 	int color16b = color24to16b(obj2int(args[5]));
 	int fill = (argCount > 6) ? (trueObj == args[6]) : true;
 	if (fill) {
-		tft.fillRoundRect(x, y, width, height, radius, color16b);
+		tft->fillRoundRect(x, y, width, height, radius, color16b);
 	} else {
-		tft.drawRoundRect(x, y, width, height, radius, color16b);
+		tft->drawRoundRect(x, y, width, height, radius, color16b);
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primCircle(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
@@ -1299,16 +1393,16 @@ static OBJ primCircle(int argCount, OBJ *args) {
 	int color16b = color24to16b(obj2int(args[3]));
 	int fill = (argCount > 4) ? (trueObj == args[4]) : true;
 	if (fill) {
-		tft.fillCircle(x, y, radius, color16b);
+		tft->fillCircle(x, y, radius, color16b);
 	} else {
-		tft.drawCircle(x, y, radius, color16b);
+		tft->drawCircle(x, y, radius, color16b);
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primTriangle(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int x0 = obj2int(args[0]);
 	int y0 = obj2int(args[1]);
@@ -1319,16 +1413,16 @@ static OBJ primTriangle(int argCount, OBJ *args) {
 	int color16b = color24to16b(obj2int(args[6]));
 	int fill = (argCount > 7) ? (trueObj == args[7]) : true;
 	if (fill) {
-		tft.fillTriangle(x0, y0, x1, y1, x2, y2, color16b);
+		tft->fillTriangle(x0, y0, x1, y1, x2, y2, color16b);
 	} else {
-		tft.drawTriangle(x0, y0, x1, y1, x2, y2, color16b);
+		tft->drawTriangle(x0, y0, x1, y1, x2, y2, color16b);
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primText(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	OBJ value = args[0];
 	int x = obj2int(args[1]);
@@ -1337,35 +1431,35 @@ static OBJ primText(int argCount, OBJ *args) {
 	int scale = (argCount > 4) ? obj2int(args[4]) : 2;
 	int wrap = (argCount > 5) ? (trueObj == args[5]) : true;
 	int bgColor = (argCount > 6) ? color24to16b(obj2int(args[6])) : -1;
-	tft.setCursor(x, y);
-	tft.setTextColor(color16b);
-	tft.setTextSize(scale);
-	tft.setTextWrap(wrap);
+	tft->setCursor(x, y);
+	tft->setTextColor(color16b);
+	tft->setTextSize(scale);
+	tft->setTextWrap(wrap);
 
 	int lineH = 8 * scale;
 	int letterW = 6 * scale;
 	if (IS_TYPE(value, StringType)) {
 	char *str = obj2str(value);
-	if (bgColor != -1) tft.fillRect(x, y, strlen(str) * letterW, lineH, bgColor);
-		tft.print(obj2str(value));
+	if (bgColor != -1) tft->fillRect(x, y, strlen(str) * letterW, lineH, bgColor);
+		tft->print(obj2str(value));
 	} else if (trueObj == value) {
-		if (bgColor != -1) tft.fillRect(x, y, 4 * letterW, lineH, bgColor);
-		tft.print("true");
+		if (bgColor != -1) tft->fillRect(x, y, 4 * letterW, lineH, bgColor);
+		tft->print("true");
 	} else if (falseObj == value) {
-		if (bgColor != -1) tft.fillRect(x, y, 5 * letterW, lineH, bgColor);
-		tft.print("false");
+		if (bgColor != -1) tft->fillRect(x, y, 5 * letterW, lineH, bgColor);
+		tft->print("false");
 	} else if (isInt(value)) {
 		char s[50];
 		sprintf(s, "%d", obj2int(value));
-		if (bgColor != -1) tft.fillRect(x, y, strlen(s) * letterW, lineH, bgColor);
-		tft.print(s);
+		if (bgColor != -1) tft->fillRect(x, y, strlen(s) * letterW, lineH, bgColor);
+		tft->print(s);
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primClear(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 	tftClear();
 	return falseObj;
 }
@@ -1412,13 +1506,13 @@ const int april_bit_y[52] = {
 	9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 6, 5, 9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 5, 4, 5};
 
 static OBJ primAruco(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int aruco_id = evalInt(args[0]);
 	if (aruco_id >= 100) {
 		return falseObj;
 	}
-	tft.drawRect(0, 0, TFT_HEIGHT, TFT_HEIGHT, BLACK);
+	tft->drawRect(0, 0, TFT_HEIGHT, TFT_HEIGHT, BLACK);
 	const int cellSize = TFT_HEIGHT/8;
 	const int startX = TFT_WIDTH/2 - (4 * cellSize);
 	uint16_t tag = aruco_tags[aruco_id];
@@ -1438,46 +1532,46 @@ static OBJ primAruco(int argCount, OBJ *args) {
 				isBlack = tag & (1 << (15 - bitIndex));
 			}
 			if (isBlack) {
-				tft.fillRect(startX + j * cellSize, i * cellSize, cellSize, cellSize, BLACK);
+				tft->fillRect(startX + j * cellSize, i * cellSize, cellSize, cellSize, BLACK);
 			} else {
-				tft.fillRect(startX + j * cellSize, i * cellSize, cellSize, cellSize, WHITE);
+				tft->fillRect(startX + j * cellSize, i * cellSize, cellSize, cellSize, WHITE);
 			}
 		}
 	}
-	tft.setCursor(startX + 2, 2);
-	tft.setTextColor(BLACK);
-	tft.setTextSize(2);
-	tft.print(aruco_id);
+	tft->setCursor(startX + 2, 2);
+	tft->setTextColor(BLACK);
+	tft->setTextSize(2);
+	tft->print(aruco_id);
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
 static OBJ primAprilTag(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	int tag_id = evalInt(args[0]);
 	if (tag_id >= 100) {
 		return falseObj;
 	}
-	tft.drawRect(0, 0, TFT_HEIGHT, TFT_HEIGHT, BLACK);
+	tft->drawRect(0, 0, TFT_HEIGHT, TFT_HEIGHT, BLACK);
 	const int cellSize = TFT_HEIGHT/10;
 	const int startX = TFT_WIDTH/2 - (5 * cellSize);
 	uint64_t codedata = april_tags[tag_id];
 
 	// 绘制外圈的黑色方块 (draw outer black square)
 	for (int i = 1; i < 9; i++) {
-		tft.fillRect(startX + i * cellSize, 1 * cellSize, cellSize, cellSize, BLACK); // 左边界 (left)
-		tft.fillRect(startX + i * cellSize, 8 * cellSize, cellSize, cellSize, BLACK); // 右边界 (right)
-		tft.fillRect(startX + 1 * cellSize, i * cellSize, cellSize, cellSize, BLACK); // 上边界 (top)
-		tft.fillRect(startX + 8 * cellSize, i * cellSize, cellSize, cellSize, BLACK); // 下边界 (bottom)
+		tft->fillRect(startX + i * cellSize, 1 * cellSize, cellSize, cellSize, BLACK); // 左边界 (left)
+		tft->fillRect(startX + i * cellSize, 8 * cellSize, cellSize, cellSize, BLACK); // 右边界 (right)
+		tft->fillRect(startX + 1 * cellSize, i * cellSize, cellSize, cellSize, BLACK); // 上边界 (top)
+		tft->fillRect(startX + 8 * cellSize, i * cellSize, cellSize, cellSize, BLACK); // 下边界 (bottom)
 	}
 
 	// 绘制内圈的白色方块 (draw inner ring of white squares)
 	for (int i = 2; i < 8; i++) {
-		tft.fillRect(startX + i * cellSize, 2 * cellSize, cellSize, cellSize, WHITE); // 左边界 (left)
-		tft.fillRect(startX + i * cellSize, 7 * cellSize, cellSize, cellSize, WHITE); // 右边界 (right)
-		tft.fillRect(startX + 2 * cellSize, i * cellSize, cellSize, cellSize, WHITE); // 上边界 (top)
-		tft.fillRect(startX + 7 * cellSize, i * cellSize, cellSize, cellSize, WHITE); // 下边界 (bottom)
+		tft->fillRect(startX + i * cellSize, 2 * cellSize, cellSize, cellSize, WHITE); // 左边界 (left)
+		tft->fillRect(startX + i * cellSize, 7 * cellSize, cellSize, cellSize, WHITE); // 右边界 (right)
+		tft->fillRect(startX + 2 * cellSize, i * cellSize, cellSize, cellSize, WHITE); // 上边界 (top)
+		tft->fillRect(startX + 7 * cellSize, i * cellSize, cellSize, cellSize, WHITE); // 下边界 (bottom)
 	}
 
 	// 绘制编码的标签图像 (draw encoded label)
@@ -1486,7 +1580,7 @@ static OBJ primAprilTag(int argCount, OBJ *args) {
 		int y = april_bit_y[i];
 		bool bit = (codedata >> (51 - i)) & 1;
 		uint16_t color = bit ? WHITE : BLACK;
-		tft.fillRect(startX + x * cellSize, y * cellSize, cellSize, cellSize, color);
+		tft->fillRect(startX + x * cellSize, y * cellSize, cellSize, cellSize, color);
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
@@ -1495,13 +1589,13 @@ static OBJ primAprilTag(int argCount, OBJ *args) {
 // display update control
 
 OBJ primDeferUpdates(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 	deferUpdates = true;
 	return falseObj;
 }
 
 OBJ primResumeUpdates(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 	deferUpdates = false;
 	UPDATE_DISPLAY();
 	return falseObj;
@@ -1510,7 +1604,7 @@ OBJ primResumeUpdates(int argCount, OBJ *args) {
 // 8 bit bitmap ops
 
 static OBJ primMergeBitmap(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	OBJ bitmap = args[0];
 	int bitmapWidth = obj2int(args[1]);
@@ -1543,7 +1637,7 @@ static OBJ primMergeBitmap(int argCount, OBJ *args) {
 }
 
 static OBJ primDrawBuffer(int argCount, OBJ *args) {
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 
 	OBJ buffer = args[0];
 	OBJ palette = args[1]; // List, index-1 based
@@ -1581,7 +1675,7 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 				}
 			}
 		}
-		tft.drawRGBBitmap(
+		tft->draw16bitRGBBitmap(
 			originX * scale,
 			(originY + y) * scale,
 			bufferPixels,
@@ -1597,7 +1691,7 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 static OBJ primDrawBitmap(int argCount, OBJ *args) {
 	// Draw an 8-bit bitmap at a given position without scaling.
 
-	if (!hasTFT()) return falseObj;
+	if (!useTFT) return falseObj;
 	uint32 palette[256];
 
 	if (argCount < 4) return fail(notEnoughArguments);
@@ -1651,17 +1745,15 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 		for (int j = 0; j < srcW; j++) {
 			uint8 pix = row[srcX + j]; // 8-bit color index
 			uint32 rgb = palette[pix]; // 24 bit RGB color
-			tft.drawPixel(dstX + j, dstY + i, color24to16b(rgb));
+			tft->drawPixel(dstX + j, dstY + i, color24to16b(rgb));
 		}
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
 }
 
-
 #else // stubs
 
-void tftInit() { }
 void tftClear() { }
 void tftSetHugePixel(int x, int y, int state) { }
 void tftSetHugePixelBits(int bits) { }

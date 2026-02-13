@@ -1987,9 +1987,7 @@ void primSetUserLED(OBJ *args) {
 		} else {
 			primMBUnplot(2, coords);
 		}
-	#elif defined(ARDUINO_CITILAB_ED1) || defined(ARDUINO_M5Stack_Core_ESP32) || \
-		defined(ARDUINO_M5STACK_Core2) || defined(TTGO_DISPLAY)|| defined(COCUBE) || \
-		defined(BUILT_IN_DISPLAY)
+	#elif defined(BUILT_IN_DISPLAY)
 			tftSetHugePixel(3, 1, (trueObj == args[0]));
 	#else
 		if (PIN_LED < 0) return; // board does not have a user LED
