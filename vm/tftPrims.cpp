@@ -438,9 +438,9 @@ static int deferUpdates = false;
 		#define TFT_BL		34
 
 		void tftInit() {
-			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
-			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 1, false,
-					TFT_WIDTH, TFT_HEIGHT);
+			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS, &SPI1);
+			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 3, true,
+					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
@@ -451,6 +451,15 @@ static int deferUpdates = false;
 // 				// fix for display gamma glitch on some Clue boards:
 // 				uint8_t gamma = 2;
 // 				display.sendCommand(0x26, &gamma, 1);
+
+// 	bus->beginWrite();
+// 	bus.writeCommand(0xC6);
+// 	bus.write(1);
+// 	bus.write(1);
+// 	bus.writeCommand(0x26);
+// 	bus.write(2);
+// 	bus.write(1);
+// 	bus->endWrite();
 
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
