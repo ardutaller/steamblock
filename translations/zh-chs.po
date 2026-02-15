@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-15 03:09+0000\n"
+"PO-Revision-Date: 2026-02-16 08:09+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -36,7 +36,7 @@ msgstr "_ 的长度"
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr "串口打开 _ 波特率"
+msgstr "串口 打开 波特率 _"
 
 #. NeoPanel library label
 msgid "NeoPanel"
@@ -285,7 +285,7 @@ msgstr "我的积木"
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr "串口写入 _"
+msgstr "串口 写入 _"
 
 #. Block in Operators category
 msgid "sqrt _"
@@ -298,7 +298,7 @@ msgstr "随机"
 
 #. Block in Comm category
 msgid "serial read"
-msgstr "串口读取"
+msgstr "串口 读取"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
@@ -422,7 +422,7 @@ msgstr "i2c 设备 _ 写入列表 _"
 
 #. Block in Comm category
 msgid "soft serial write byte _ pin _ baud _"
-msgstr "软串口写入 字节 _ 引脚 _ 速率 _"
+msgstr "软串口 写入 字节 _ 引脚 _ 速率 _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last string"
@@ -470,7 +470,7 @@ msgstr "广播发送数字 _"
 
 #. Block in Comm category
 msgid "serial write _ starting at _"
-msgstr "串口写入 _ 开始于 _"
+msgstr "串口 写入 _ 开始于 _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio send pair _ = _"
@@ -567,7 +567,7 @@ msgstr "新建一个变量"
 
 #. Block in Comm category
 msgid "serial close"
-msgstr "串口关闭"
+msgstr "串口 关闭"
 
 #. Block in Data category
 msgid "as byte array _"
@@ -1152,7 +1152,6 @@ msgid "move motor _ angle _ °"
 msgstr "转动马达 _ 角度 _ °"
 
 #. General MIDI drum instrument name
-#, fuzzy
 msgid "Open Hi-Hat"
 msgstr "开击踩镲"
 
@@ -1681,7 +1680,7 @@ msgstr "显示图像 _"
 
 #. OLED Graphics library block
 msgid "_flip display top _"
-msgstr "_反转显示 上 _"
+msgstr "_ 反转显示 上 _"
 
 #. NeZha robot library label
 msgid "NeZha"
@@ -1715,7 +1714,7 @@ msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Tags:"
-msgstr "标签:"
+msgstr "标签："
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -1924,7 +1923,7 @@ msgstr "示例"
 #. String in file picker and library dialogs
 #. as in dependencies of this library
 msgid "Depends:"
-msgstr "依赖于:"
+msgstr "依赖于："
 
 #. String in file picker and library dialogs
 msgid "library information"
@@ -2539,7 +2538,7 @@ msgstr "节奏"
 
 #. Rhythm library block
 msgid "set tempo to _ bpm at _ / _ signature"
-msgstr "设置节拍 _ bpm 以 _ / _ 拍"
+msgstr "设置速度为 _ bpm，拍号为 _ / _"
 
 #. General MIDI drum instrument name
 msgid "Side Stick"
@@ -3324,7 +3323,6 @@ msgid "Low Floor Tom"
 msgstr "低音嗵鼓 2"
 
 #. General MIDI drum instrument name
-#, fuzzy
 msgid "Closed Hi-Hat"
 msgstr "闭击踩镲"
 
@@ -3800,7 +3798,7 @@ msgstr "主板类型:"
 
 #. About window info
 msgid "Created with GP"
-msgstr "使用GP开发"
+msgstr "使用 GP 开发"
 
 #. About window info
 msgid "More info at http://microblocks.fun"
@@ -3838,7 +3836,7 @@ msgstr "放弃当前项目?"
 
 #. MicroBlocks IDE error message.
 msgid "Only recent Chrome and Edge browsers support WebSerial."
-msgstr "请使用支持 WebSerial 的浏览器(Chrome 和 Edge 浏览器)"
+msgstr "请使用支持 WebSerial 的浏览器 (Chrome 和 Edge 浏览器)"
 
 #. MicroBlocks IDE error message.
 msgid "The board is not responding."
@@ -4126,7 +4124,7 @@ msgstr "文件 保存"
 
 #. String in file picker and library dialogs
 msgid "File name:"
-msgstr "文件名称:"
+msgstr "文件名称："
 
 #. String in file picker and library dialogs
 #. as in "by Jane Doe", the author of this library
@@ -4135,7 +4133,7 @@ msgstr "作者"
 
 #. String in file picker and library dialogs
 msgid "Path, name or URL for library?"
-msgstr "积木库的路径,名称或URL地址?"
+msgstr "积木库的路径，名称或 URL 地址?"
 
 #. String in file picker and library dialogs
 msgid "Could not fetch library."
@@ -4624,19 +4622,19 @@ msgstr "退出循环"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr "猫"
+msgstr "cat"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr "狗"
+msgstr "dog"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr "鸟"
+msgstr "bird"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr "鱼"
+msgstr "fish"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
@@ -4701,7 +4699,7 @@ msgstr "该积木仍然在使用中"
 
 #. In MicroBlocks IDE connection menu
 msgid "connect (USB)"
-msgstr "连接（USB）"
+msgstr "有线连接 (USB)"
 
 #. MicroBlocks IDE message
 msgid "Connect board to proceed."
@@ -5121,7 +5119,7 @@ msgstr "ASR 获取指令"
 
 #. WiFi library block
 msgid "allow WiFi while using BLE _"
-msgstr "在使用 BLE 时允许 WiFi_"
+msgstr "在使用 BLE 时允许 WiFi _"
 
 #. WiFi library block
 msgid "wifi set local domain name _ .local"
@@ -5320,7 +5318,7 @@ msgstr "伪随机数 从 _ 到 _ ，种子为"
 
 #. Pseudorandomness library block
 msgid "_ pseudorandom numbers _ to _ with seed _"
-msgstr "_ 个伪随机书 从 _ 到 _ ，种子为 _"
+msgstr "_ 个伪随机数 从 _ 到 _ ，种子为 _"
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "light"
@@ -5712,7 +5710,6 @@ msgid "_ chord root _"
 msgstr "_ 和弦 根音 _"
 
 #. Scales & Chords library block
-#, fuzzy
 msgid "_ chord for root _"
 msgstr "_ 和弦 对应根音 _"
 
@@ -5751,3 +5748,84 @@ msgstr "设置读取位置 _ 对应文件 _"
 #. File System library block
 msgid "skip _ bytes of file _"
 msgstr "跳过 _ 字节 对应文件 _"
+
+#. Example text for Scrolling library.
+msgid "HELLO ROSA!"
+msgstr "HELLO ROSA!"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "LED 图像 #BR# _"
+
+#. HTTP Client library example data to send to a server
+msgid "MicroBlocks is fun"
+msgstr "MicroBlocks is fun"
+
+#. Octostudio communication library block
+msgid "Octo stop"
+msgstr "Octo 停止"
+
+#. Octostudio shape names
+msgid "octo;circle"
+msgstr "圆形"
+
+#. Octostudio shape names
+msgid "octo;square"
+msgstr "正方形"
+
+#. Octostudio shape names
+msgid "octo;star"
+msgstr "星星"
+
+#. Octostudio shape names
+msgid "octo;heart"
+msgstr "心形"
+
+#. Octostudio shape names
+msgid "octo;triangle"
+msgstr "三角形"
+
+#. Octostudio shape names
+msgid "octo;clover"
+msgstr "三叶草"
+
+#. Octostudio shape names
+msgid "octo;diamond"
+msgstr "钻石"
+
+#. Octostudio shape names
+msgid "octo;moon"
+msgstr "月亮"
+
+#. Image name for the "display image" block
+msgid "yes"
+msgstr "对钩"
+
+#. Rhythm library block
+msgid "set pattern to _ bars"
+msgstr "设置循环长度为 _ 小节"
+
+#. Rhythm library block
+msgid "wait until next _ duration"
+msgstr "等待直到下一个 _ 时值"
+
+#. Rhythm library block
+msgid "wait until beat _"
+msgstr "等待直到第 _ 拍"
+
+#. Rhythm library block
+msgid "wait until bar _"
+msgstr "等待直到第 _ 小节"
+
+#. Analog Synthesis library label
+#. Generate synthesized sound waves to play on a DAC, over PWM, or any other analog means
+msgid "Analog Synthesis"
+msgstr "模拟合成"
+
+#. Analog Synthesis library block menu option
+msgid "asy;MCP4725"
+msgstr "MCP4725 I2C DAC"
+
+#. Scales & Chords library block
+msgid "chord progression _ with root _"
+msgstr "和弦进行 _ 根音 _"
