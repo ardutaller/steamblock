@@ -11,15 +11,11 @@
 #include "mem.h"
 #include "interp.h"
 
-#if defined(KIDS_BITS) || defined(FAB_SPARKLE) || defined(SCOUT_MAKES_AZUL)
-	#define ADAFRUIT_OLED true // comment this out to use Arduino GFX OLED
-#endif
-
 #if defined(ARDUINO_WEACT) || defined(NRF51)
 
 // TFT primitives not supported
 
-#elif defined(PICO_ED) || defined(ADAFRUIT_OLED)
+#elif defined(PICO_ED)
 
 #include <Adafruit_GFX.h>
 #define draw16bitRGBBitmap drawRGBBitmap
@@ -31,7 +27,7 @@ Adafruit_GFX *tft;
 
 #include <Arduino_GFX_Library.h>
 
-Arduino_TFT *tft;
+Arduino_GFX *tft;
 #define HAS_TFT_PRIMS true
 
 #endif
@@ -54,7 +50,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 0, false,
+ 			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
  					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -74,7 +70,7 @@ static int deferUpdates = false;
 //
 // 		void tftInit() {
 // 			Arduino_DataBus *bus = new Arduino_ESP8266SPI(TFT_DC, TFT_CS);
-//  			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 1, false,
+//  			tft = new Arduino_ST7735(bus, TFT_RST, 1, false,
 //  					TFT_WIDTH, TFT_HEIGHT);
 // 			if (!tft->begin()) {
 // 				outputString("TFT initialization failed!");
@@ -101,7 +97,7 @@ static int deferUpdates = false;
 // 			display.sendCommand(ILI9341_MADCTL, &m, 1);
 
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 1, false);
+ 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -142,7 +138,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, 13, 15);
-			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 1, true,
+			tft = new Arduino_ST7789(bus, TFT_RST, 1, true,
 					TFT_HEIGHT, TFT_WIDTH, 53, 40, 53, 40);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -350,7 +346,7 @@ static int deferUpdates = false;
 			AXP192_begin();
 
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 1, true);
+ 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, true);
 
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -439,7 +435,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS, &SPI1);
-			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 3, true,
+			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -483,7 +479,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 1, false);
+ 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -543,88 +539,7 @@ static int deferUpdates = false;
 			return pressure;
 		}
 
-	#elif defined(ADAFRUIT_OLED)
-		#include "Adafruit_SSD1306.h"
-
-		#define IS_MONOCHROME true
-		#define OLED_ADDR 0x3C
-		#define TFT_WIDTH 128
-		#if defined(SCOUT_MAKES_AZUL)
-			#define TFT_HEIGHT 32
-		#else
-			#define TFT_HEIGHT 64
-		#endif
-
-		static void oledCmd(uint8 cmd) {
-			Wire.beginTransmission(OLED_ADDR);
-			Wire.write(0x80);
-			Wire.write(cmd);
-			Wire.endTransmission(true);
-		}
-
-		Adafruit_SSD1306 display = Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT, &Wire, -1, 400000, 400000);
-
-		void tftInit() {
-			delay(5); // need 2 msecs minimum for micro:bit PicoBricks board power up I2C pullups
-			if (!hasI2CPullups()) return; // no OLED connected and no I2C pullups
-
-			int response = readI2CReg(OLED_ADDR, 0); // test if OLED responds at OLED_ADDR
-			if (response < 0) return; // no OLED display detected
-			isOLED1106 = (8 == (response & 15));
-
-			display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
-
-			// set to medium brightness
-			oledCmd(0x81);
-			oledCmd(0x80);
-
-			useTFT = true;
-			tft = (Adafruit_GFX *) &display;
-			tftClear();
-		}
-
-		static void i2cWriteBytes(uint8 *bytes, int byteCount) {
-			Wire.beginTransmission(OLED_ADDR);
-			for (int i = 0; i < byteCount; i++) Wire.write(bytes[i]);
-			Wire.endTransmission(true);
-		}
-
-		static void oledUpdate() {
-			// Send the entire OLED buffer to the display via i2c. Takes about 30 msecs.
-			// Periodically update the LED display to avoid flicker.
-			uint8 setupCmds[] = {
-				0x20, 0,		// Horizontal mode
-				0x21, 0, 0x7F,	// Column start and end address
-				0x22, 0, 7		// Page start and end address
-			};
-			i2cWriteBytes(setupCmds, sizeof(setupCmds));
-			uint8 buffer[65];
-			buffer[0] = 0x40;
-			uint8 *src = display.getBuffer();
-			for (int i = 0; i < (TFT_HEIGHT / 8); i++) {
-				// do time-sensitive background tasks
-				captureIncomingBytes();
-				updateMicrobitDisplay();
-
-				oledCmd(0x10);
-				oledCmd(isOLED1106 ? 0x02 : 0); // column offset
-				oledCmd(0xB0 + i);
-
-				// write 128 bytes of data in two i2c writes
-				memcpy(&buffer[1], src, 64);
-				i2cWriteBytes(buffer, 65);
-				src += 64;
-				memcpy(&buffer[1], src, 64);
-				i2cWriteBytes(buffer, 65);
-				src += 64;
-			}
-		}
-
-		#undef UPDATE_DISPLAY
-		#define UPDATE_DISPLAY() { if (!deferUpdates) { oledUpdate(); taskSleep(-1); }}
-
-	#elif defined(ARDUINO_OLED)
-		// xxx *** This crashes at startup (tested on KidsBits ESP32) ***
+	#elif defined(KIDS_BITS) || defined(FAB_SPARKLE) || defined(SCOUT_MAKES_AZUL)
 		#define IS_MONOCHROME true
 		#define OLED_ADDR 0x3C
 		#define TFT_RST GFX_NOT_DEFINED
@@ -643,14 +558,14 @@ static int deferUpdates = false;
 			if (response < 0) return; // no OLED display detected
 			isOLED1106 = (8 == (response & 15));
 
- 			Arduino_DataBus *bus = new Arduino_Wire(OLED_ADDR, 0x00, 0x40);
-			Arduino_G *oledController;
+			Arduino_DataBus *bus = new Arduino_Wire(OLED_ADDR, 0x00, 0x40);
+			Arduino_G *g;
  			if (isOLED1106) {
- 				oledController = new Arduino_SH1106(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
+ 				g = new Arduino_SH1106(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
 			} else {
-				oledController = new Arduino_SSD1306(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
+				g = new Arduino_SSD1306(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
 			}
-			tft = (Arduino_TFT *) new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, oledController, 0 /* output_x */, 0 /* output_y */, false /* verticalByte */);
+			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, g, 0, 0, true);
 
 			if (!tft->begin(400000)) {
 				outputString("TFT initialization failed!");
@@ -661,7 +576,7 @@ static int deferUpdates = false;
 		}
 
 		#undef UPDATE_DISPLAY
-		#define UPDATE_DISPLAY() { if (!deferUpdates) { oledUpdate(); taskSleep(-1); }}
+		#define UPDATE_DISPLAY() { if (!deferUpdates) { tft->flush(); taskSleep(-1); }}
 
 	#elif defined(TTGO_DISPLAY)
 		#define TFT_MOSI 19
@@ -675,7 +590,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
-			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 3, true,
+			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40); // reverse height and width because of rotation
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -698,7 +613,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
  			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
-			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 3, false,
+			tft = new Arduino_ST7735(bus, TFT_RST, 3, false,
 					TFT_WIDTH, TFT_HEIGHT);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -722,7 +637,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_RPiPicoSPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
-			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 0, true,
+			tft = new Arduino_ST7789(bus, TFT_RST, 0, true,
 					TFT_WIDTH, TFT_HEIGHT);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -947,7 +862,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
-			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 3, true,
+			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_HEIGHT, TFT_WIDTH, 0, 80, 0, 80);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
@@ -996,7 +911,7 @@ static int deferUpdates = false;
 
 		void tftInit() {
 			Arduino_ESP32SPI *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, -1);
-			tft = (Arduino_TFT *) new Arduino_GC9107(bus, TFT_RST, 0 /* rotation */, true /* IPS */);
+			tft = new Arduino_GC9107(bus, TFT_RST, 0 /* rotation */, true /* IPS */);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
@@ -1025,7 +940,7 @@ static int deferUpdates = false;
 
 		static void init_7735() {
 			Arduino_DataBus *bus = create_default_Arduino_DataBus();
-			tft = (Arduino_TFT *) new Arduino_ST7735(bus, TFT_RST, 0 /* rotation */);
+			tft = new Arduino_ST7735(bus, TFT_RST, 0 /* rotation */);
 //			Adafruit_ST7735 *display = new Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 // 			display->initR(INITR_144GREENTAB);
 // 			display->setRotation(0);
@@ -1034,7 +949,7 @@ static int deferUpdates = false;
 
 		static void init_7789() {
 			Arduino_DataBus *bus = create_default_Arduino_DataBus();
-			tft = (Arduino_TFT *) new Arduino_ST7789(bus, TFT_RST, 0 /* rotation */);
+			tft = new Arduino_ST7789(bus, TFT_RST, 0 /* rotation */);
 //			Adafruit_ST7789 *display = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 			pinMode(TFT_BL, OUTPUT);
 			digitalWrite(TFT_BL, HIGH);
@@ -1045,7 +960,7 @@ static int deferUpdates = false;
 
 		static void init_9341() {
 			Arduino_DataBus *bus = create_default_Arduino_DataBus();
-			tft = (Arduino_TFT *) new Arduino_ILI9341(bus, TFT_RST, 0 /* rotation */, false /* IPS */);
+			tft = new Arduino_ILI9341(bus, TFT_RST, 0 /* rotation */, false /* IPS */);
 //			Adafruit_ILI9341 *display = new Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 			// Turn on backlight on IoT-Bus
 			pinMode(TFT_BL, OUTPUT);
@@ -1057,7 +972,7 @@ static int deferUpdates = false;
 
 		static void init_1306() {
 			Arduino_DataBus *bus = create_default_Arduino_DataBus();
-			tft = (Arduino_TFT *) new Arduino_SSD1351(bus, TFT_RST, 0 /* rotation */);
+			tft = new Arduino_SSD1351(bus, TFT_RST, 0 /* rotation */);
 //			Adafruit_SSD1306 *display = new Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT);
 //			Adafruit_SSD1306 *display = new Adafruit_SSD1306(TFT_WIDTH, TFT_HEIGHT);
 // 			display->begin(SSD1306_SWITCHCAPVCC, 0x3C);
@@ -1116,7 +1031,7 @@ static int color24to16b(int color24b) {
 	int r, g, b;
 
 	#ifdef IS_MONOCHROME
-		return color24b ? 1 : 0;
+		return color24b ? RGB565_RED : 0;
 	#endif
 
 	#ifdef IS_GRAYSCALE
