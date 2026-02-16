@@ -1051,7 +1051,7 @@ static int color24to16b(int color24b) {
 }
 
 void tftClear() {
-	if (!useTFT) return;
+	if (!tft) return;
 
 	tft->fillScreen(BLACK);
 	UPDATE_DISPLAY();
@@ -1110,7 +1110,7 @@ void tftSetHugePixelBits(int bits) {
 }
 
 OBJ primSetBacklight(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	if ((argCount < 1) || !isInt(args[0])) return falseObj;
 	int brightness = obj2int(args[0]);
@@ -1151,7 +1151,7 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 }
 
 static OBJ primGetWidth(int argCount, OBJ *args) {
-	if (!useTFT) return zeroObj;
+	if (!tft) return zeroObj;
 
 	#ifdef TFT_WIDTH
 		return int2obj(TFT_WIDTH);
@@ -1161,7 +1161,7 @@ static OBJ primGetWidth(int argCount, OBJ *args) {
 }
 
 static OBJ primGetHeight(int argCount, OBJ *args) {
-	if (!useTFT) return zeroObj;
+	if (!tft) return zeroObj;
 
 	#ifdef TFT_HEIGHT
 		return int2obj(TFT_HEIGHT);
@@ -1171,7 +1171,7 @@ static OBJ primGetHeight(int argCount, OBJ *args) {
 }
 
 static OBJ primSetPixel(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
@@ -1189,7 +1189,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 	// 32 and 24 bit pixels are RGB(A) byte order. (Alpha of 32-bit pixels is ignored).
 	// Used to accelerate BMP file display and other bitmap operations.
 
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	OBJ pixelDataObj = args[0];
 	int x = obj2int(args[1]);
@@ -1259,7 +1259,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 }
 
 static OBJ primLine(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int x0 = obj2int(args[0]);
 	int y0 = obj2int(args[1]);
@@ -1272,7 +1272,7 @@ static OBJ primLine(int argCount, OBJ *args) {
 }
 
 static OBJ primRect(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
@@ -1290,7 +1290,7 @@ static OBJ primRect(int argCount, OBJ *args) {
 }
 
 static OBJ primRoundedRect(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
@@ -1309,7 +1309,7 @@ static OBJ primRoundedRect(int argCount, OBJ *args) {
 }
 
 static OBJ primCircle(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int x = obj2int(args[0]);
 	int y = obj2int(args[1]);
@@ -1326,7 +1326,7 @@ static OBJ primCircle(int argCount, OBJ *args) {
 }
 
 static OBJ primTriangle(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int x0 = obj2int(args[0]);
 	int y0 = obj2int(args[1]);
@@ -1346,7 +1346,7 @@ static OBJ primTriangle(int argCount, OBJ *args) {
 }
 
 static OBJ primText(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	OBJ value = args[0];
 	int x = obj2int(args[1]);
@@ -1383,7 +1383,7 @@ static OBJ primText(int argCount, OBJ *args) {
 }
 
 static OBJ primClear(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 	tftClear();
 	return falseObj;
 }
@@ -1430,7 +1430,7 @@ const int april_bit_y[52] = {
 	9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 6, 5, 9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 5, 4, 5};
 
 static OBJ primAruco(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int aruco_id = evalInt(args[0]);
 	if (aruco_id >= 100) {
@@ -1471,7 +1471,7 @@ static OBJ primAruco(int argCount, OBJ *args) {
 }
 
 static OBJ primAprilTag(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	int tag_id = evalInt(args[0]);
 	if (tag_id >= 100) {
@@ -1513,13 +1513,13 @@ static OBJ primAprilTag(int argCount, OBJ *args) {
 // display update control
 
 OBJ primDeferUpdates(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 	deferUpdates = true;
 	return falseObj;
 }
 
 OBJ primResumeUpdates(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 	deferUpdates = false;
 	UPDATE_DISPLAY();
 	return falseObj;
@@ -1528,7 +1528,7 @@ OBJ primResumeUpdates(int argCount, OBJ *args) {
 // 8 bit bitmap ops
 
 static OBJ primMergeBitmap(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	OBJ bitmap = args[0];
 	int bitmapWidth = obj2int(args[1]);
@@ -1561,7 +1561,7 @@ static OBJ primMergeBitmap(int argCount, OBJ *args) {
 }
 
 static OBJ primDrawBuffer(int argCount, OBJ *args) {
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 
 	OBJ buffer = args[0];
 	OBJ palette = args[1]; // List, index-1 based
@@ -1615,7 +1615,7 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 static OBJ primDrawBitmap(int argCount, OBJ *args) {
 	// Draw an 8-bit bitmap at a given position without scaling.
 
-	if (!useTFT) return falseObj;
+	if (!tft) return falseObj;
 	uint32 palette[256];
 
 	if (argCount < 4) return fail(notEnoughArguments);
