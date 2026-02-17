@@ -73,13 +73,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_RST	33
 
 		void tftInit() {
-// xxx
-// 			display.begin(40000000); // Run SPI at 80MHz/2
-// 			display.setRotation(1);
-// 			display.invertDisplay(true);
-// 			uint8_t m = 0x08 | 0x04; // RGB pixel order, refresh LCD right to left
-// 			display.sendCommand(ILI9341_MADCTL, &m, 1);
-
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
@@ -422,23 +415,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
-// xxx is the following code still needed? if so, convert to Arduino GFX bus writes.
-// 				uint8_t rtna = 0x01; // Screen refresh rate control (datasheet 9.2.18, FRCTRL2)
-// 				display.sendCommand(0xC6, &rtna, 1);
-//
-// 				// fix for display gamma glitch on some Clue boards:
-// 				uint8_t gamma = 2;
-// 				display.sendCommand(0x26, &gamma, 1);
-
-// 	bus->beginWrite();
-// 	bus.writeCommand(0xC6);
-// 	bus.write(1);
-// 	bus.write(1);
-// 	bus.writeCommand(0x26);
-// 	bus.write(2);
-// 	bus.write(1);
-// 	bus->endWrite();
-
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
 				tftClear();
@@ -902,8 +878,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 	#else // no built-in display
 
-	#define HAS_TFT true
-
 	void tftInit() { } // stub; no display is initialized at startup time
 
 	static Arduino_DataBus* makeDataBus(int dc, int cs) {
@@ -971,6 +945,26 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		}
 	}
 
+	static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
+			int resetPin = GFX_NOT_DEFINED, int invertColors = false,
+			int xOffset = 0, int yOffset = 0) {
+		if ((w < 32) || (w > 240) || (h < 32) || (h > 320)) return;
+		if (!tft) delete tft;
+		Arduino_DataBus *bus = makeDataBus(dcPin, csPin);
+		tft = new Arduino_ST7796(bus, resetPin, rotation, invertColors,
+			w, h, xOffset, yOffset, xOffset, yOffset);
+		tft = new Arduino_ST7789(bus, resetPin, 0 /* rotation */);
+		if (!tft->begin()) {
+			freeDisplayController();
+			outputString("Display initialization failed!");
+		} else {
+			tftWidth = (rotation & 1) ? h : w;
+			tftHeight = (rotation & 1) ? w : h;
+			turnOnBacklight(backlightPin);
+			tftClear();
+		}
+	}
+
 	static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
 			int resetPin = GFX_NOT_DEFINED, int invertColors = false) {
 		if (!tft) delete tft;
@@ -1023,36 +1017,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tftClear();
 		}
 	}
-
-// extern "C" void recordHeapSpace();
-// extern "C" void reportHeapDiff(char *s);
-//
-// #define TFT_CS 5
-// #define TFT_DC 27
-// #define TFT_RST GFX_NOT_DEFINED
-// #define TFT_BL 33
-// #define TFT_WIDTH 320
-// #define TFT_HEIGHT 240
-//
-// extern "C" void tftInit2() {
-// 	init_9341(1, false, TFT_DC, TFT_CS, TFT_BL, TFT_RST);
-// }
-//
-// extern "C" void tftInitAllocTest() {
-// 	recordHeapSpace();
-// 		Arduino_DataBus *tmpBus = create_default_Arduino_DataBus();
-// 	reportHeapDiff("Arduino_DataBus");
-// 			init_7735(128, 128, 0, false, TFT_DC, TFT_CS, TFT_BL, TFT_RST);
-// 	reportHeapDiff("7735");
-// 			init_7789(128, 128, 0, false, TFT_DC, TFT_CS, TFT_BL, TFT_RST);
-// 	reportHeapDiff("7789");
-// 			init_9341(0, false, TFT_DC, TFT_CS, TFT_BL, TFT_RST);
-// 	reportHeapDiff("9341");
-// 			init_1306(128, 128);
-// 	reportHeapDiff("1306");
-// 			freeDisplayController();
-// 	reportHeapDiff("display controller freed");
-// }
 
 #endif
 
@@ -1740,6 +1704,29 @@ static OBJ primInitST7789(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+static OBJ primInitST7796(int argCount, OBJ *args) {
+	if (argCount < 6) return fail(notEnoughArguments);
+	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]) &&
+		  isInt(args[3]) && isInt(args[4]) && isInt(args[5]))) {
+				return fail(needsIntegerError);
+	}
+	int w = obj2int(args[0]);
+	int h = obj2int(args[1]);
+	int rotation = obj2int(args[2]);
+	if (rotation < 0) rotation = 0;
+	if (rotation > 3) rotation = 3;
+	int dcPin = obj2int(args[3]);
+	int csPin = obj2int(args[4]);
+	int blPin = obj2int(args[5]);
+	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
+	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
+	int xOffset = ((argCount > 8) && isInt(args[8])) ? obj2int(args[8]) : 0;
+	int yOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
+
+	init_7796(w, h, rotation, dcPin, csPin, blPin, rstPin, invertDisplay, xOffset, yOffset);
+	return falseObj;
+}
+
 static OBJ primInitILI9341(int argCount, OBJ *args) {
 	if (argCount < 4) return fail(notEnoughArguments);
 	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]) && isInt(args[3]))) {
@@ -1805,6 +1792,7 @@ static OBJ primAprilTag(int argCount, OBJ *args) { return falseObj; }
 
 static OBJ primInitST7735(int argCount, OBJ *args) { return falseObj; }
 static OBJ primInitST7789(int argCount, OBJ *args) { return falseObj; }
+static OBJ primInitST7796(int argCount, OBJ *args) { return falseObj; }
 static OBJ primInitILI9341(int argCount, OBJ *args) { return falseObj; }
 static OBJ primInitOLED(int argCount, OBJ *args) { return falseObj; }
 static OBJ primCloseDisplay(int argCount, OBJ *args) { return falseObj; }
@@ -1873,6 +1861,7 @@ static PrimEntry entries[] = {
 
 	{"init7735", primInitST7735},
 	{"init7789", primInitST7789},
+	{"init7796", primInitST7796},
 	{"init9341", primInitILI9341},
 	{"initOLED", primInitOLED},
 	{"closeDisplay", primCloseDisplay},
