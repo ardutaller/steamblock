@@ -65,7 +65,7 @@
 	height: var(--space-24);
 	width: var(--space-24);
 
-	color: var(--color-blue-grey-500);
+	color: var(--color-blue-grey-400);
 
 	&:hover {
 		color: var(--color-yellow-action);
