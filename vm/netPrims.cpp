@@ -506,16 +506,18 @@ static Client *activeHttpClient = &httpClient;
 #endif
 
 static OBJ primHttpConnect(int argCount, OBJ *args) {
-	// Connect to an HTTP server and port.
+	// Connect to an HTTP server. The port number is optional.
 
 	if (NO_WIFI()) return fail(noWiFi);
-	if (argCount < 2) return fail(notEnoughArguments);
+	if (argCount < 1) return fail(notEnoughArguments);
 	if (!IS_TYPE(args[0], StringType)) return fail(needsStringError);
 
 	const char* host = obj2str(args[0]);
 	int port = 80;
-	if (isInt(args[1])) port = obj2int(args[1]);
-	if (IS_TYPE(args[1], StringType)) port = atoi(obj2str(args[1]));
+	if (argCount > 1) {
+		if (isInt(args[1])) port = obj2int(args[1]);
+		if (IS_TYPE(args[1], StringType)) port = atoi(obj2str(args[1]));
+	}
 
 	uint32 start = millisecs();
 	const int timeout = 3000;
@@ -548,17 +550,19 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 }
 
 static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
-	// Connect to an HTTPS server and port.
+	// Connect to an HTTPS server. The port number is optional.
 
 	if (NO_WIFI()) return fail(noWiFi);
 	if (!HAS_HTTPS_CLIENT) return fail(primitiveNotImplemented);
-	if (argCount < 2) return fail(notEnoughArguments);
+	if (argCount < 1) return fail(notEnoughArguments);
 	if (!IS_TYPE(args[0], StringType)) return fail(needsStringError);
 
 	const char* host = obj2str(args[0]);
 	int port = 443;
-	if (isInt(args[1])) port = obj2int(args[1]);
-	if (IS_TYPE(args[1], StringType)) port = atoi(obj2str(args[1]));
+	if (argCount > 1) {
+		if (isInt(args[1])) port = obj2int(args[1]);
+		if (IS_TYPE(args[1], StringType)) port = atoi(obj2str(args[1]));
+	}
 
 	uint32 start = millisecs();
 	const int timeout = 8000;
