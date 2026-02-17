@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with GetText
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at http://mozillbutton.org/MPL/2.0/.
 
 // Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
 
@@ -330,62 +330,82 @@ Menus.elementFor = function (descriptor, target) {
 	// return an HTML tree containing the menu for a menu selector or menu
 	// descriptor, and dynamically generate the menu each time, since it can
 	// change depending on the state of the board, preferences, etc
-	let menu = document.createElement('nav');
-
-	menu.classList.add(`${descriptor.type}-menu`);
+	let menu = document.createElement('ul');
+	menu.classList.add('menu', `--${descriptor.type}-menu`);
 
 	descriptor.items.forEach((item, index) => {
+
 		if (!(item.hidden?.())) {
 			let li = document.createElement('li');
+
 			if (item.label == '-') {
-				// vertical separator, unless this is the last item or the previous one
-				// was also a separator
+				// vertical separator, unless this is the last item
+				// or the previous one was also a separator
 				if (descriptor.items[index - 1].label != '-') {
+					li.classList.add('menu__separator');
 					li.appendChild(document.createElement('hr'));
 				}
+
 			} else {
-				let a = document.createElement('a');
-				let text = document.createElement('l-'); // localizable
+				let button = document.createElement('button');
+				let text, textLocalization;
 
 				menu.id = `menu-${descriptor.selector}`;
-				li.classList.add('menu-item');
+				li.classList.add('menu__list-item');
+				button.classList.add('menu__button');
 
-				// set the menu item action
-				a.onclick = (event) => {
+				// Set the menu item action
+				button.onclick = (event) => {
 					event.ignoreGlobalListener = true;
 					item.action(target, event);
 					if (!item.keepOpenAfterClick) { this.close(); }
 				};
 
-				// set the menu item label
+
+				// Set the item text or image contents
 				if (!item.label && item.image) {
 					text = document.createElement('img');
 					text.src = item.image;
-				} else if (typeof item.label == 'string') {
-					text.innerText = item.label;
-				} else if (typeof item.label == 'function') {
-					text.innerText = item.label();
+
+				} else {
+					// Create a span element with a <l-> inside
+					text = document.createElement('span');
+					text.classList.add('menu__button-text');
+					textLocalization = document.createElement('l-');
+					text.appendChild(textLocalization);
+
+					if (typeof item.label == 'string') {
+						textLocalization.innerText = item.label;
+					} else if (typeof item.label == 'function') {
+						textLocalization.innerText = item.label();
+					}
 				}
 
-				// states: disabled and checked
+
+				// State: disabled
 				if (item.disabled?.()) {
-					a.classList.add('disabled');
+					button.classList.add('--is-disabled');
 				}
+
+				// States: checked and unchecked
 				if (item.checked) {
-					// can be checked, so it needs a tick icon
+
+					// Can be checked, so it needs a tick icon
 					let tick = document.createElement('span');
-					fetch('img/checkmark.svg')
+					fetch('img/icon-checkmark--16x16.svg')
 						.then(res => res.text())
 						.then(text => tick.innerHTML = text);
-					// we now run the checked callback to see whether the item is checked
-					tick.classList.add('tick');
-					tick.classList.add(item.checked() ? 'checked' : 'unchecked');
-					a.appendChild(tick);
+
+					// We now run the checked callback to see whether the item is checked
+					tick.classList.add('menu__button-tick');
+					button.appendChild(tick);
+					button.classList.add(item.checked() ? '--is-checked' : '--is-unchecked');
 				}
 
-				a.appendChild(text);
-				li.appendChild(a);
+				button.appendChild(text);
+				li.appendChild(button);
 			}
+
 			menu.appendChild(li);
 		}
 	});
@@ -401,7 +421,7 @@ Menus.popUpFromDescriptor = function (
 	descriptor, triggerElement, target, event
 ) {
 	this.close();
-	let container = document.querySelector('.top-bar .menu'),
+	let container = document.querySelector('[data-ide="menu-container"]'),
 		nav = this.elementFor(descriptor, target),
 		type = descriptor.type,
 		pos = type == 'context'
@@ -416,7 +436,7 @@ Menus.popUpFromDescriptor = function (
 };
 
 Menus.current = function () {
-	return document.querySelector('.top-bar .menu nav');
+	return document.querySelector('[data-ide="menu-container"] ul');
 };
 
 Menus.close = function () {
