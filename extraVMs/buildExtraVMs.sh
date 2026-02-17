@@ -3,8 +3,8 @@
 rm -f *.hex *.bin *.uf2
 cd ..
 
-pio run -e clue
-python precompiled/uf2conv.py -c -f 0xada52840 .pio/build/clue/firmware.hex -o extraVMs/vm_clue.uf2
+pio run -e clue-ble
+python precompiled/uf2conv.py -c -f 0xada52840 .pio/build/clue-ble/firmware.hex -o extraVMs/vm_clue.uf2
 pio run -e pico-ed
 cp .pio/build/pico-ed/firmware.uf2 extraVMs/vm_pico_ed.uf2
 pio run -e m5stack
@@ -46,8 +46,6 @@ cp .pio/build/m5atom-s3-lite/firmware.bin extraVMs/vm_m5atom_s3_lite.bin
 pio run -e m5atom-s3-tft
 cp .pio/build/m5atom-s3-tft/firmware.bin extraVMs/vm_m5atom_s3_tft.bin
 
-pio run -e m5stick
-cp .pio/build/m5stick/firmware.bin extraVMs/vm_m5stick.bin
 pio run -e m5stick-plus
 cp .pio/build/m5stick-plus/firmware.bin extraVMs/vm_m5stick_plus.bin
 

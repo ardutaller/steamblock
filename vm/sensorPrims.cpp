@@ -123,6 +123,10 @@ static void startWire() {
 		Wire.setTimeout(100, true);
 	#endif
 	wireStarted = true;
+
+	// Ping the DUELink address so any connected DUELink modules will use I2C mode.
+	// This must be the first I2C transaction after power up.
+	readI2CReg(82, 0);
 }
 
 int readI2CReg(int deviceID, int reg) {

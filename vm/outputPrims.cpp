@@ -539,7 +539,7 @@ OBJ primMBDisplay(int argCount, OBJ *args) {
 
 OBJ primMBDisplayOff(int argCount, OBJ *args) {
 	microBitDisplayBits = 0;
-	#if !defined(OLED_128_64) || defined(BUILT_IN_DISPLAY)
+	#if defined(BUILT_IN_DISPLAY)
 		if (useTFT) tftClear();
 	#endif
 	return falseObj;
@@ -1176,14 +1176,6 @@ void setAllNeoPixels(int pin, int ledCount, int color) {
 	}
 }
 
-static int isCodingBox() {
-	// Detect coding bux by checking for an I2C magnetometer.
-
-	OBJ arg = int2obj(14); // AK9575 magetometer address = 14
-	OBJ result = primI2cExists(1, &arg);
-	return result == trueObj;
-}
-
 void turnOffInternalNeoPixels() {
 	int count = 0;
 	#if defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
@@ -1191,7 +1183,7 @@ void turnOffInternalNeoPixels() {
 	#elif defined(FOXBIT)
 		count = 35;
 	#elif defined(KIDS_BITS)
-		if (isCodingBox()) count = 12;
+		if (isOLED1106) count = 12; // this is a CodingBox
 	#elif defined(M5Atom_Matrix) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 		count = 25;
 		// sending neopixel data twice on the Atom Matrix eliminates green pixel at startup
