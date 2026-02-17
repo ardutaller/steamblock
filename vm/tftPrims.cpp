@@ -23,21 +23,12 @@
 Adafruit_GFX *tft;
 #define HAS_TFT_PRIMS true
 
-#define BUFFER_PIXELS_SIZE (17 * 8)
-uint16_t bufferPixels[BUFFER_PIXELS_SIZE]; // used by primPixelRow and primDrawBuffer
-
 #else
 
 #include <Arduino_GFX_Library.h>
 
 Arduino_GFX *tft;
 #define HAS_TFT_PRIMS true
-
-// Buffer used by primPixelRow and primDrawBuffer
-// Allocate enough space for maximum dispay width: 320 * 8 2-byte pixels, 5120 bytes
-// xxx allocate this buffer only when display is first created
-#define BUFFER_PIXELS_SIZE (320 * 8)
-uint16_t bufferPixels[BUFFER_PIXELS_SIZE]; // used by primPixelRow and primDrawBuffer
 
 #endif
 
@@ -49,6 +40,10 @@ static int tftHeight = 0;
 
 static int touchEnabled = false;
 static int deferUpdates = false;
+
+// Buffer used by primPixelRow
+#define BUFFER_PIXELS_SIZE 320 // maximum display width
+uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 // Redefine this macro for displays that must explicitly push offscreen changes to the display
 #define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow TFT operations
@@ -1598,24 +1593,13 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 	uint8 *bufferBytes = (uint8 *) &FIELD(buffer, 0);
 	// Read the indices from the buffer and turn them into color values from the
 	// palette, and paint them onto the TFT
-	for (int y = 0; y < originHeight; y ++) {
-		for (int x = 0; x < originWidth; x ++) {
+	for (int y = 0; y < originHeight; y++) {
+		for (int x = 0; x < originWidth; x++) {
 			int colorIndex = bufferBytes[
 				(y + originY) * bufferWidth + (x + originX)];
 			int color = color24to16b(obj2int(FIELD(palette, colorIndex + 1)));
-			for (int i = 0; i < scale; i ++) {
-				for (int j = 0; j < scale; j ++) {
-					bufferPixels[(j * originWidth * scale) + x * scale + i] = color;
-				}
-			}
+			tft->fillRect((originX + x) * scale, (originY + y) * scale, scale, scale, color);
 		}
-		tft->draw16bitRGBBitmap(
-			originX * scale,
-			(originY + y) * scale,
-			bufferPixels,
-			originWidth * scale,
-			scale
-		);
 	}
 
 	UPDATE_DISPLAY();
