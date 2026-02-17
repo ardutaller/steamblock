@@ -41,7 +41,17 @@ method lastItemIsLine Menu {
 method popUp Menu page x y noFocus {
 	if (or (isNil noFocus) (not (isClass noFocus 'Boolean'))) {noFocus = false}
 	if (isEmpty items) { return }
+	callbackReceiver = (creator this) // who created this menu?
 
+	// items look like:
+	// itemLabel itemAction itemHint itemThumb localizeFlag disabledFlag
+
+	buildMorph this page y
+	showMenu page this x y
+	if (not noFocus) {focus this}
+}
+
+method creator Menu {
 	// Find instance that triggered this menu so we can hijack its callback for
 	// the web UI
 	db = (new 'Debugger' (currentTask))
@@ -54,12 +64,7 @@ method popUp Menu page x y noFocus {
 		currentFrame = (last frames)
 		args = (argsForCall db currentFrame)
 	}
-	caller = (first args)
-	//TODO rework items into new menu structure, rework callback if needed
-
-	buildMorph this page y
-	showMenu page this x y
-	if (not noFocus) {focus this}
+	return (first args)
 }
 
 method popUpAtHand Menu page noFocus {

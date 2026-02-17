@@ -324,30 +324,6 @@ Menus.exportedScriptScale = {
 	})
 };
 
-Menus.inputType = {
-	selector: 'inputType',
-	type: 'context',
-	items: [
-		/*
-		{
-			image: 'empty_input'
-		},
-		{
-			image: 'num_input'
-		},
-		{
-			image: 'text_input'
-		},
-		{ label: '-' },*/
-		{
-			image: 'bool_true'
-		}/*,
-		{
-			image: 'color_input'
-		},*/
-	]
-}
-
 // MENU HTML GENERATION
 
 Menus.elementFor = function (descriptor, target) {
