@@ -531,9 +531,8 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 		ok = httpClient.connect(host, port);
 	#endif
 
-	#if defined(ESP8266) // || defined(ARDUINO_ARCH_ESP32)
-		// xxx fails on ESP32 due to an error in their code
-		client.setNoDelay(true);
+	#if defined(ESP8266)
+		client.setNoDelay(true); // does not work on ESP32
 	#endif
 
 	while (ok && !httpClient.connected()) { // wait for connection to be fully established
