@@ -114,6 +114,9 @@ IDE.populateTopBar = function (container) {
 	);
 
 	// Progress indicator
+	// To test, execute in console: IDE.fireEvent('ide.downloadProgress',[1, 0.33])
+	// - First number is the phase number out of three (compile, send, sync)
+	// - Second number is the percentage of the phase
 	let progress =  container.querySelector('[data-ide="progress"]');
 	document.addEventListener(
 		'ide.downloadProgress',
