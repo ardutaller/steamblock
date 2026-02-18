@@ -75,7 +75,7 @@ to scroll_text text optionalDelay {
       '[tft:text]' text (17 - position) 0 (colorSwatch 125 125 125 255) 1 true
       waitMillis (delay / 2)
     }
-  } ('KidsIOT' == (boardType)) {
+  } (or ('KidsIOT' == (boardType)) ('CodingBox' == (boardType))) {
     for position (((size text) * 6) + 21) {
       if _stop_scrolling_text {return 0}
       '[tft:deferUpdates]'
