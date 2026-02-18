@@ -64,6 +64,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -88,6 +90,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 				bus->beginWrite();
 				bus->writeC8D8(ILI9341_MADCTL, 0x08 | 0x04); // RGB pixel order, refresh LCD right to left
 				bus->endWrite();
+				tftWidth = 320;
+				tftHeight = 240;
 				tftClear();
 				useTFT = true;
 			}
@@ -122,6 +126,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -331,6 +337,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 				bus->beginWrite();
 				bus->writeC8D8(ILI9341_MADCTL, 0x08 | 0x04); // RGB pixel order, refresh LCD right to left
 				bus->endWrite();
+				tftWidth = 320;
+				tftHeight = 240;
 				tftClear();
 				useTFT = true;
 			}
@@ -419,6 +427,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -445,6 +455,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 				// Turn on backlight on IoT-Bus
 				pinMode(33, OUTPUT);
 				digitalWrite(33, HIGH);
+				tftWidth = 320;
+				tftHeight = 240;
 				tftClear();
 				useTFT = true;
 			}
@@ -527,6 +539,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (!tft->begin(400000)) {
 				outputString("TFT initialization failed!");
 			} else {
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				isMonochrome = true;
 				useTFT = true;
@@ -555,6 +569,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -576,7 +592,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
-				// Turn on backlight:
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -596,14 +613,16 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_RPiPicoSPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
 			tft = new Arduino_ST7789(bus, TFT_RST, 0, true,
-					TFT_WIDTH, TFT_HEIGHT);
+					TFT_HEIGHT, TFT_WIDTH); // reverse height and width because of rotation
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
 				pinMode(TFT_PWR, OUTPUT);
-				digitalWrite(TFT_PWR, 1); // turn on display
+				digitalWrite(TFT_PWR, 1); // turn on display power
 				pinMode(TFT_BL, OUTPUT);
 				analogWrite(TFT_BL, 250); // turn on backlight
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -821,12 +840,14 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
-					TFT_HEIGHT, TFT_WIDTH, 0, 80, 0, 80);
+					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -873,6 +894,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
 				tftClear();
 				useTFT = true;
 			}
@@ -1631,6 +1654,8 @@ static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
 		tftHeight = 240;
 		isMonochrome = false;
 		turnOnBacklight(backlightPin);
+		tftWidth = 320;
+		tftHeight = 240;
 		tftClear();
 	}
 }
@@ -1669,6 +1694,8 @@ static void init_1306(int w, int h, int resetPin = GFX_NOT_DEFINED) {
 		outputString("Display initialization failed!");
 	} else {
 		isMonochrome = true;
+		tftWidth = w;
+		tftHeight = h;
 		tftClear();
 	}
 }
