@@ -8,15 +8,24 @@
 	z-index: var(--zindex-menu);
 
 	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
-	overflow-y: auto;
+	/* overflow-y: auto; */
 }
 
 
 .menu {
+	min-width: max-content;
+	max-height: calc(100vh - 100px);
+	overflow-y: auto;
+	padding: var(--space-6) 0;
 
 	&.--top-menu {
+		/* TODO: Translate down */
 		color: var(--color-blue-grey-50);
 		background-color: var(--color-blue-grey-900);
+
+		scrollbar-width: auto;
+		scrollbar-color: var(--color-blue-grey-500) var(--color-blue-grey-900);
+		/* scrollbar-gutter: stable; */
 	}
 
 	&.--context-menu {
@@ -26,11 +35,21 @@
 }
 
 
+
+
+
+/* Buttons */
+
+
 .menu__button {
-	padding: var(--space-6) var(--space-8);
+	/* Somehow browser UA overwrites minireset's setting */
+	box-sizing: border-box;
+
+	padding: var(--space-6) var(--space-24) var(--space-6) var(--space-12);
 	width: 100%;
 
 	display: flex;
+	align-items: stretch;
 	gap: var(--space-8);
 
 	line-height: 1;
@@ -51,9 +70,14 @@
 
 
 .menu__button-tick {
-	display: block;
-	width: var(--space-16);
-	height: var(--space-16);
+
+	svg {
+		display: block;
+		width: var(--space-16);
+		height: var(--space-16);
+	}
+
+	/* By context */
 
 	.--top-menu & {
 		color: var(--color-blue-grey-500);
@@ -63,7 +87,55 @@
 		color: var(--color-blue-grey-300);
 	}
 
+	/* States */
+
 	.--is-checked & {
 		color: var(--color-boolean-green);
+	}
+
+	.--is-checked:hover & {
+		color: var(--color-blue-grey-900);
+	}
+
+	.--is-unchecked:hover & {
+		color: var(--color-blue-grey-500);
+	}
+}
+
+
+.menu__button-text {
+	height: var(--space-16);
+	min-width: max-content;
+
+	display: flex;
+	align-items: center;
+
+	font-size: var(--fontSize-14);
+	letter-spacing: 0.025em;
+
+	l- {
+		display: block;
+	}
+}
+
+
+
+
+
+/* Separators */
+
+
+.menu__separator {
+	margin: var(--space-6) 0;
+
+	border-width: 1px;
+	border-style: solid;
+
+	.--top-menu & {
+		border-color: var(--color-blue-grey-800);
+	}
+
+	.--context-menu & {
+		border-color: var(--color-blue-grey-75);
 	}
 }

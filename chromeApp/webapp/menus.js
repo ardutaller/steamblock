@@ -343,7 +343,7 @@ Menus.elementFor = function (descriptor, target) {
 				// or the previous one was also a separator
 				if (descriptor.items[index - 1].label != '-') {
 					li.classList.add('menu__separator');
-					li.appendChild(document.createElement('hr'));
+					li.setAttribute('role', 'presentation');
 				}
 
 			} else {
@@ -432,11 +432,11 @@ Menus.popUpFromDescriptor = function (
 	container.style.left = `${pos.x}px`;
 	container.style.top =
 		`${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
-	nav.style.maxHeight = `${window.innerHeight - 80}px`;
+	// nav.style.maxHeight = `${window.innerHeight - 80}px`;
 };
 
 Menus.current = function () {
-	return document.querySelector('[data-ide="menu-container"] ul');
+	return document.querySelector('[data-ide="menu-container"] .menu');
 };
 
 Menus.close = function () {
