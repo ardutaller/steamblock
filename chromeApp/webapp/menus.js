@@ -331,7 +331,7 @@ Menus.elementFor = function (descriptor, target) {
 	// descriptor, and dynamically generate the menu each time, since it can
 	// change depending on the state of the board, preferences, etc
 	let menu = document.createElement('ul');
-	menu.classList.add('menu', `--${descriptor.type}-menu`);
+	menu.classList.add('menu');
 
 	descriptor.items.forEach((item, index) => {
 
@@ -427,12 +427,20 @@ Menus.popUpFromDescriptor = function (
 		pos = type == 'context'
 			? { x: event.clientX, y: event.clientY }
 			: triggerElement.getClientRects()[0];
+
 	nav.trigger = triggerElement;
 	container.appendChild(nav);
+
+	if (type == 'context') {
+		container.classList.add('--context-menu');
+		container.classList.remove('--top-menu');
+	} else {
+		container.classList.remove('--context-menu');
+		container.classList.add('--top-menu');
+	}
+
 	container.style.left = `${pos.x}px`;
-	container.style.top =
-		`${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
-	// nav.style.maxHeight = `${window.innerHeight - 80}px`;
+	container.style.top = `${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
 };
 
 Menus.current = function () {

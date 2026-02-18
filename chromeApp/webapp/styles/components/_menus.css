@@ -7,8 +7,11 @@
 	position: fixed;
 	z-index: var(--zindex-menu);
 
-	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
-	/* overflow-y: auto; */
+	/* Pasition based on the element triggering the menu */
+	&.--top-menu {
+		padding: var(--space-16) 0 0 var(--space-4);
+		padding: 14px 0 0 0;
+	}
 }
 
 
@@ -18,19 +21,20 @@
 	overflow-y: auto;
 	padding: var(--space-6) 0;
 
-	&.--top-menu {
-		/* TODO: Translate down */
+	.--top-menu & {
 		color: var(--color-blue-grey-50);
 		background-color: var(--color-blue-grey-900);
+		box-shadow: 0 0 var(--space-12) 0 rgba(0, 0, 0, 0.4);
 
 		scrollbar-width: auto;
 		scrollbar-color: var(--color-blue-grey-500) var(--color-blue-grey-900);
 		/* scrollbar-gutter: stable; */
 	}
 
-	&.--context-menu {
+	.--context-menu & {
 		color: var(--color-blue-grey-900);
 		background-color: var(--color-blue-grey-050);
+		box-shadow: 0 0 var(--space-12) 0 rgba(0, 0, 0, 0.25);
 	}
 }
 
