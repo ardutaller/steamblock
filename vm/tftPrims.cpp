@@ -44,7 +44,7 @@ static int touchEnabled = false;
 static int deferUpdates = false;
 
 // Buffer used by primPixelRow
-#define BUFFER_PIXELS_SIZE 320 // maximum display width
+#define BUFFER_PIXELS_SIZE 480 // maximum display width
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 // Redefine this macro for displays that must explicitly push offscreen changes to the display
@@ -612,8 +612,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_RPiPicoSPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
-			tft = new Arduino_ST7789(bus, TFT_RST, 0, true,
-					TFT_HEIGHT, TFT_WIDTH); // reverse height and width because of rotation
+			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
+					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40); // reverse height and width because of rotation
 			if (!tft->begin()) {
 				outputString("TFT initialization failed!");
 			} else {
@@ -894,8 +894,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
-				tftWidth = TFT_WIDTH;
-				tftHeight = TFT_HEIGHT;
+				tftWidth = 128;
+				tftHeight = 128;
 				tftClear();
 				useTFT = true;
 			}
