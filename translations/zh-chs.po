@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-16 08:09+0000\n"
+"PO-Revision-Date: 2026-02-18 11:56+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.16.1-dev\n"
 
 #. Block in Control category
 msgid "by _"
@@ -4943,7 +4943,7 @@ msgstr "25H9"
 
 #. CoCube Sengo2 library choice
 msgid "16H5"
-msgstr "16H5"
+msgstr "16H5`````"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 set color recog area x _ y _ width _ height _ (0-100)"
