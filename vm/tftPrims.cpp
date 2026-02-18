@@ -10,6 +10,7 @@
 
 #include "mem.h"
 #include "interp.h"
+#include <inttypes.h>.
 
 #if defined(ARDUINO_WEACT) || defined(NRF51)
 
@@ -877,10 +878,17 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			}
 		}
 
-	#else // no built-in display
+	#elif defined(ARDUINO_WEACT) || defined(NRF51)
+		// no external display primitives
 
-		#define HAS_EXTERNAL_DISPLAY_PRIMS
 		void tftInit() { } // stub; no display is initialized at startup time
+
+	#else
+		// no built-in display but support external display prims
+		#define HAS_EXTERNAL_DISPLAY_PRIMS
+
+		void tftInit() { } // stub; no display is initialized at startup time
+
 #endif
 
 
@@ -899,7 +907,7 @@ static int color24to16b(int color24b) {
 
 	int r, g, b;
 
-	if (isMonochrome) return color24b ? RGB565_RED : 0;
+	if (isMonochrome) return color24b ? WHITE : 0;
 
 	#ifdef IS_GRAYSCALE
 		r = (color24b >> 16) & 0xFF;
