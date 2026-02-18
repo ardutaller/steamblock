@@ -566,8 +566,10 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 	uint32 start = millisecs();
 	const int timeout = 8000;
 
-	httpsClient.setInsecure();
-	activeHttpClient = &httpsClient;
+	#if HAS_HTTPS_CLIENT
+		httpsClient.setInsecure();
+		activeHttpClient = &httpsClient;
+	#endif
 	activeHttpClient->stop();
 	activeHttpClient->setTimeout(timeout);
 
@@ -883,6 +885,7 @@ static OBJ primSetDomainName(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpServerGetRequest(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primRespondToHttpRequest(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpConnect(int argCount, OBJ *args) { return fail(noWiFi); }
+static OBJ primHttpSecureConnect(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpIsConnected(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpRequest(int argCount, OBJ *args) { return fail(noWiFi); }
 static OBJ primHttpResponse(int argCount, OBJ *args) { return fail(noWiFi); }
