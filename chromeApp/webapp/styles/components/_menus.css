@@ -21,19 +21,20 @@
 	overflow-y: auto;
 	padding: var(--space-6) 0;
 
-	.--top-menu & {
+	.--top-menu &,
+	.ide.--dark-mode .--context-menu & {
 		color: var(--color-blue-grey-50);
 		background-color: var(--color-blue-grey-900);
 		box-shadow: 0 0 var(--space-12) 0 rgba(0, 0, 0, 0.4);
 
-		scrollbar-width: auto;
+		scrollbar-width: thin;
 		scrollbar-color: var(--color-blue-grey-500) var(--color-blue-grey-900);
 		/* scrollbar-gutter: stable; */
 	}
 
-	.--context-menu & {
+	.ide:not(.--dark-mode) .--context-menu & {
 		color: var(--color-blue-grey-900);
-		background-color: var(--color-blue-grey-050);
+		background-color: var(--color-blue-grey-50);
 		box-shadow: 0 0 var(--space-12) 0 rgba(0, 0, 0, 0.25);
 	}
 }
@@ -135,7 +136,8 @@
 	border-width: 1px;
 	border-style: solid;
 
-	.--top-menu & {
+	.--top-menu &,
+	.ide.--dark-mode .--context-menu & {
 		border-color: var(--color-blue-grey-800);
 	}
 

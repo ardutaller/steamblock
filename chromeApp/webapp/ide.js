@@ -145,6 +145,7 @@ IDE.populateTopBar = function (container) {
 	['graph', '|', 'connect', '|', 'run', 'stop' ].forEach(selector => {
 		controlsButtons.appendChild(Buttons.elementFor(selector));
 	});
+
 	// Add listener to graph button
 	document.addEventListener(
 		'windows.DataGraph.active',
@@ -214,16 +215,20 @@ IDE.populateScriptControls = function (element) {
 	});
 };
 
+
+// Dark Mode
 document.addEventListener('preference.darkMode', e =>
 	{
 		if (e.detail.value) {
-			document.querySelector('.scripts-pane-controls').classList.add('dark-mode');
+			document.querySelector('[data-ide="ide"]').classList.add('--dark-mode');
 		} else {
-			document.querySelector('.scripts-pane-controls').classList.remove('dark-mode');
+			document.querySelector('[data-ide="ide"]').classList.remove('--dark-mode');
 		}
 	}
 );
 
+
+// Dragging
 document.addEventListener('dragstart', () => {
 	// TODO Bernat review change
 	// document.querySelectorAll('.--can-drag-through').forEach(
@@ -240,6 +245,7 @@ document.addEventListener('dragend', () => {
 	document.querySelector('body').classList.remove('--is-dragging');
 });
 
+
 // Category and library lists
 IDE.populateCategories = function (element) {
 	element.replaceWith(Categories.buildStandard());
@@ -248,6 +254,7 @@ IDE.populateCategories = function (element) {
 IDE.populateLibraries = function (element) {
 	element.replaceWith(Categories.buildLibraries(this.libraryList));
 };
+
 
 // Build the IDE
 IDE.build = function () {
