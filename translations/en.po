@@ -231,18 +231,6 @@ msgid "default"
 msgstr "default"
 
 #. Block in Control category
-msgid "call _"
-msgstr "call _"
-
-#. Example value for ( call _ ) block
-msgid "function name"
-msgstr "function name"
-
-#. Example string. Tells the user this input accepts a list of parameters.
-msgid "parameter list"
-msgstr "parameter list"
-
-#. Block in Control category
 msgid "with _"
 msgstr "with _"
 
@@ -693,6 +681,22 @@ msgstr "magnetic field"
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
 msgstr "set acceleration range _ g = 100"
+
+#. Block in Function Calls library
+msgid "call _"
+msgstr "call _"
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr "function name"
+
+#. Example string. Tells the user this input accepts a list of parameters.
+msgid "parameter list"
+msgstr "parameter list"
+
+#. Block in Function Calls library
+msgid "function _ exists"
+msgstr "function _ exists"
 
 #. NeoPixel library label
 msgid "NeoPixel"
@@ -1769,6 +1773,135 @@ msgstr "draw pixel row _ x _ y _"
 msgid "gray _ %"
 msgstr "gray _ %"
 
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _"
+msgstr "#BR# reset pin _ invert colors _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# x offset _ y offset _"
+msgstr "#BR# x offset _ y offset _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+
+#. External Displays Library block
+msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
+msgstr "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
+
+#. External Displays Library block
+msgid "attach OLED w _ h _"
+msgstr "attach OLED w _ h _"
+
+#. External Displays Library block
+msgid "reset pin _"
+msgstr "reset pin _"
+
+#. External Displays Library block
+msgid "detach display"
+msgstr "detach display"
+
+#. 8 Bit Graphics Library block
+msgid "set scale _"
+msgstr "set scale _"
+
+#. 8 Bit Graphics Library block
+msgid "draw buffer"
+msgstr "draw buffer"
+
+#. 8 Bit Graphics Library block
+msgid "starting at x _ y _ width _ height _"
+msgstr "starting at x _ y _ width _ height _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap from BMP file _"
+msgstr "bitmap from BMP file _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from raw indexed file _"
+msgstr "bitmap of width _ from raw indexed file _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from string _"
+msgstr "bitmap of width _ from string _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ rotated _ º"
+msgstr "bitmap _ rotated _ º"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ mirrored across _ axis"
+msgstr "bitmap _ mirrored across _ axis"
+
+#. 8 Bit Graphics Library block
+msgid "merge bitmap _ at _ , _"
+msgstr "merge bitmap _ at _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ from _ , _ to _ , _"
+msgstr "merge tile _ from _ , _ to _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ at tile position _ , _"
+msgstr "merge tile _ at tile position _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "set palette _"
+msgstr "set palette _"
+
+#. 8 Bit Graphics Library block
+msgid "set transparent color index _"
+msgstr "set transparent color index _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from pal file _"
+msgstr "palette from pal file _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from BMP file _"
+msgstr "palette from BMP file _"
+
+#. 8 Bit Graphics Library block
+msgid "4 bit _ palette"
+msgstr "4 bit _ palette"
+
+#. 8 Bit Graphics Library block
+msgid "8 bit _ palette"
+msgstr "8 bit _ palette"
+
+#. 8 Bit Graphics Library block
+msgid "color number for r _ g _ b _ (0-255)"
+msgstr "color number for r _ g _ b _ (0-255)"
+
+#. 8 Bit Graphics Library block
+msgid "draw palette table _"
+msgstr "draw palette table _"
+
+#. 8 Bit Graphics Library block
+msgid "current palette"
+msgstr "current palette"
+
+#. 8 Bit Graphics Library block
+msgid "screen width"
+msgstr "screen width"
+
+#. 8 Bit Graphics Library block
+msgid "screen height"
+msgstr "screen height"
+
 #. BMP library block
 msgid "display BMP file _ at x _ y _"
 msgstr "display BMP file _ at x _ y _"
@@ -2364,40 +2497,136 @@ msgid "standard"
 msgstr "standard"
 
 #. General MIDI drum set
-msgid "room"
-msgstr "room"
+msgid "Standard 1"
+msgstr "Standard 1"
 
 #. General MIDI drum set
-msgid "power"
-msgstr "power"
+msgid "Standard 2"
+msgstr "Standard 2"
 
 #. General MIDI drum set
-msgid "electronic"
-msgstr "electronic"
+msgid "Standard L/R"
+msgstr "Standard L/R"
+
+#. General MIDI drum set
+msgid "Room"
+msgstr "Room"
+
+#. General MIDI drum set
+msgid "Hip Hop"
+msgstr "Hip Hop"
+
+#. General MIDI drum set
+msgid "Jungle Techno"
+msgstr "Jungle Techno"
+
+#. General MIDI drum set
+msgid "Room L/R"
+msgstr "Room L/R"
+
+#. General MIDI drum set
+msgid "House Power Electronic"
+msgstr "House Power Electronic"
 
 #. General MIDI drum set
 msgid "TR-808"
 msgstr "TR-808"
 
 #. General MIDI drum set
-msgid "jazz"
-msgstr "jazz"
+msgid "Dance"
+msgstr "Dance"
 
 #. General MIDI drum set
-msgid "brush"
-msgstr "brush"
+msgid "CR-78"
+msgstr "CR-78"
 
 #. General MIDI drum set
-msgid "orchestra"
-msgstr "orchestra"
+msgid "TR-606"
+msgstr "TR-606"
 
 #. General MIDI drum set
-msgid "drumkit;SFX"
+msgid "TR-707"
+msgstr "TR-707"
+
+#. General MIDI drum set
+msgid "TR-909"
+msgstr "TR-909"
+
+#. General MIDI drum set
+msgid "Jazz"
+msgstr "Jazz"
+
+#. General MIDI drum set
+msgid "Jazz L/R"
+msgstr "Jazz L/R"
+
+#. General MIDI drum set
+msgid "Brush"
+msgstr "Brush"
+
+#. General MIDI drum set
+msgid "Brush 2"
+msgstr "Brush 2"
+
+#. General MIDI drum set
+msgid "Brush 2 L/R"
+msgstr "Brush 2 L/R"
+
+#. General MIDI drum set
+msgid "Orchestra Ethnic"
+msgstr "Orchestra Ethnic"
+
+#. General MIDI drum set
+msgid "Kick & Snare"
+msgstr "Kick & Snare"
+
+#. General MIDI drum set
+msgid "Kick & Snare 2"
+msgstr "Kick & Snare 2"
+
+#. General MIDI drum set
+msgid "Asia"
+msgstr "Asia"
+
+#. General MIDI drum set
+msgid "Cymbal&claps"
+msgstr "Cymbal&claps"
+
+#. General MIDI drum set
+msgid "Gamelan 1"
+msgstr "Gamelan 1"
+
+#. General MIDI drum set
+msgid "Gamelan 2"
+msgstr "Gamelan 2"
+
+#. General MIDI drum set
+msgid "SFX"
 msgstr "SFX"
 
 #. General MIDI drum set
-msgid "CM-64/CM-32L"
-msgstr "CM-64/CM-32L"
+msgid "Rhythm FX"
+msgstr "Rhythm FX"
+
+#. General MIDI drum set
+msgid "Rhythm FX 2"
+msgstr "Rhythm FX 2"
+
+#. General MIDI drum set
+msgid "Rhythm FX 3"
+msgstr "Rhythm FX 3"
+
+#. General MIDI drum set
+msgid "SFX 2"
+msgstr "SFX 2"
+
+#. General MIDI drum set
+msgid "Voice"
+msgstr "Voice"
+
+#. General MIDI drum set
+msgid "Cym&Claps 2"
+msgstr "Cym&Claps 2"
 
 #. General MIDI control change
 msgid "bank select 1"
@@ -2492,8 +2721,8 @@ msgid "play MIDI note _ for _ ms on channel _ volume _"
 msgstr "play MIDI note _ for _ ms on channel _ volume _"
 
 #. MIDI library block
-msgid "stop all notes on channel _"
-msgstr "stop all notes on channel _"
+msgid "stop all notes on channel _ in _ ms"
+msgstr "stop all notes on channel _ in _ ms"
 
 #. MIDI library block
 msgid "set MIDI note _ to _ on channel _ volume _"
@@ -2600,6 +2829,14 @@ msgstr "aeolian"
 msgid "locrian"
 msgstr "locrian"
 
+#. Musical scale name
+msgid "chromatic"
+msgstr "chromatic"
+
+#. Musical scale name
+msgid "tonal"
+msgstr "tonal"
+
 #. Music chord type
 msgid "major"
 msgstr "major"
@@ -2631,6 +2868,10 @@ msgstr "MIDI channel"
 #. Sound destination for arpeggiate block in Scales & Chords library
 msgid "tone pin"
 msgstr "tone pin"
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "gate trigger"
+msgstr "gate trigger"
 
 #. Scales & Chords library block
 msgid "_ scale root _"
@@ -2944,6 +3185,10 @@ msgstr "WiFi"
 #. WiFi library block
 msgid "wifi connect to _ password _"
 msgstr "wifi connect to _ password _"
+
+#. WiFi library block
+msgid "stop wifi"
+msgstr "stop wifi"
 
 #. Example WiFi network name
 msgid "Network_Name"
@@ -4685,6 +4930,10 @@ msgstr "Octo beam received?"
 #. Octostudio communication library block
 msgid "Octo last beam"
 msgstr "Octo last beam"
+
+#. Octostudio communication library block
+msgid "Octo last beam group"
+msgstr "Octo last beam group"
 
 #. Octostudio communication library block
 msgid "Octo set group _ (0-99)"
@@ -6962,6 +7211,50 @@ msgstr "Sound"
 #. Library folder
 msgid "folder;System"
 msgstr "System"
+
+#. Library name
+msgid "8 Bit Graphics"
+msgstr "8 Bit Graphics"
+
+#. Library name
+msgid "BMP"
+msgstr "BMP"
+
+#. Library name
+msgid "Color"
+msgstr "Color"
+
+#. Library name
+msgid "External Displays"
+msgstr "External Displays"
+
+#. Library name
+msgid "Four Digit Display (TM1637)"
+msgstr "Four Digit Display (TM1637)"
+
+#. Library name
+msgid "Four Digit Display (TM1650)"
+msgstr "Four Digit Display (TM1650)"
+
+#. Library name
+msgid "TFT"
+msgstr "TFT"
+
+#. Library name
+msgid "CoCube Module"
+msgstr "CoCube Module"
+
+#. Library name
+msgid "CoCube"
+msgstr "CoCube"
+
+#. Library name
+msgid "MIDI"
+msgstr "MIDI"
+
+#. Library name
+msgid "Function Calls"
+msgstr "Function Calls"
 
 #. Library folder
 msgid "folder;WorkInProgress"
