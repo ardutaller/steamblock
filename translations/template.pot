@@ -231,18 +231,6 @@ msgid "default"
 msgstr ""
 
 #. Block in Control category
-msgid "call _"
-msgstr ""
-
-#. Example value for ( call _ ) block
-msgid "function name"
-msgstr ""
-
-#. Example string. Tells the user this input accepts a list of parameters.
-msgid "parameter list"
-msgstr ""
-
-#. Block in Control category
 msgid "with _"
 msgstr ""
 
@@ -692,6 +680,22 @@ msgstr ""
 
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
+msgstr ""
+
+#. Block in Function Calls library
+msgid "call _"
+msgstr ""
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr ""
+
+#. Example string. Tells the user this input accepts a list of parameters.
+msgid "parameter list"
+msgstr ""
+
+#. Block in Function Calls library
+msgid "function _ exists"
 msgstr ""
 
 #. NeoPixel library label
@@ -1767,6 +1771,47 @@ msgstr ""
 
 #. TFT Display library and Color library block
 msgid "gray _ %"
+msgstr ""
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _"
+msgstr ""
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# x offset _ y offset _"
+msgstr ""
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+
+#. External Displays Library block
+msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
+msgstr ""
+
+#. External Displays Library block
+msgid "attach OLED w _ h _"
+msgstr ""
+
+#. External Displays Library block
+msgid "reset pin _"
+msgstr ""
+
+#. External Displays Library block
+msgid "detach display"
 msgstr ""
 
 #. 8 Bit Graphics Library block

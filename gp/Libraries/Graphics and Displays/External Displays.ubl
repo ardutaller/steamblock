@@ -9,9 +9,9 @@ description 'This library supports connecting selected external displays to Micr
 * OLED displays must be connected to the MicroBlocks I2C pins.
 '
 
-  spec ' ' '[tft:init7735]' 'attach ST7735 w _ h _ rotation _ #BR# dcPin _ csPin _ backlightPin _ : #BR# resetPin _ invertColors _ : #BR# xOffset _ yOffset _' 'num num num num num num num bool num num' 128 128 0 0 0 0 0 false 0 0
-  spec ' ' '[tft:init7789]' 'attach ST7789 w _ h _ rotation _ #BR# dcPin _ csPin _ backlightPin _ : #BR# resetPin _ invertColors _ : #BR# xOffset _ yOffset _' 'num num num num num num num bool num num' 240 135 0 0 0 0 0 false 0 0
-  spec ' ' '[tft:init7796]' 'attach ST7796 w _ h _ rotation _ #BR# dcPin _ csPin _ backlightPin _ : #BR# resetPin _ invertColors _ : #BR# xOffset _ yOffset _' 'num num num num num num num bool num num' 480 320 0 0 0 0 0 false 0 0
-  spec ' ' '[tft:init9341]' 'attach ILI9341 rotation _ dcPin _ csPin _ backlightPin _ : #BR# resetPin _ invertColors _' 'num num num num num bool' 0 0 0 0 0 false
-  spec ' ' '[tft:initOLED]' 'attach OLED w _ h _ : resetPin _' 'num num num' 128 64 0
+  spec ' ' '[tft:init7735]' 'attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _ : #BR# reset pin _ invert colors _ : #BR# x offset _ y offset _' 'num num num num num num num bool num num' 128 128 0 0 0 0 0 false 0 0
+  spec ' ' '[tft:init7789]' 'attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _ : #BR# reset pin _ invert colors _ : #BR# x offset _ y offset _' 'num num num num num num num bool num num' 240 135 0 0 0 0 0 false 0 0
+  spec ' ' '[tft:init7796]' 'attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _ : #BR# reset pin _ invert colors _ : #BR# x offset _ y offset _' 'num num num num num num num bool num num' 480 320 0 0 0 0 0 false 0 0
+  spec ' ' '[tft:init9341]' 'attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _ : #BR# reset pin _ invert colors _' 'num num num num num bool' 0 0 0 0 0 false
+  spec ' ' '[tft:initOLED]' 'attach OLED w _ h _ : reset pin _' 'num num num' 128 64 0
   spec ' ' '[tft:closeDisplay]' 'detach display'
