@@ -525,12 +525,8 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 	const int timeout = 3000;
 	int ok;
 
-	#ifdef ARDUINO_ARCH_ESP32
-		ok = httpClient.connect(host, port, timeout);
-	#else
-		httpClient.setTimeout(timeout);
-		ok = httpClient.connect(host, port);
-	#endif
+	httpClient.setTimeout(timeout);
+	ok = httpClient.connect(host, port);
 
 	#if defined(ESP8266)
 		httpClient.setNoDelay(true); // does not work on ESP32
@@ -579,18 +575,10 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 	const int timeout = 3000;
 	int ok;
 
-	#ifdef ARDUINO_ARCH_ESP32
-		ok = httpsClient.connect(host, port, timeout);
-	#else
-		httpsClient.setTimeout(timeout);
-		ok = httpsClient.connect(host, port);
-	#endif
+	activeHttpClient->setTimeout(timeout);
+	ok = activeHttpClient->connect(host, port);
 
-	#if defined(ESP8266)
-		httpsClient.setNoDelay(true); // does not work on ESP32
-	#endif
-
-	while (ok && !httpsClient.connected()) {
+	while (ok && !activeHttpClient->connected()) {
 		processMessage(); // process messages now
 		uint32 now = millisecs();
 		uint32 elapsed = (now >= start) ? (now - start) : now;
@@ -598,10 +586,9 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 		delay(1);
 	}
 
-	if (ok && httpsClient.connected()) {
-		activeHttpClient = &httpsClient;
-	} else {
-		httpsClient.stop();
+	if (!(ok && activeHttpClient->connected())) {
+		activeHttpClient->stop();
+		activeHttpClient = &httpClient;
 	}
 
 	processMessage(); // process messages now
