@@ -7204,10 +7204,6 @@ msgid "CoCube"
 msgstr "CoCube"
 
 #. Library name
-msgid "NeoPixel"
-msgstr "NeoPixel"
-
-#. Library name
 msgid "MIDI"
 msgstr "MIDI"
 
