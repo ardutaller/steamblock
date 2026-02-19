@@ -7079,6 +7079,54 @@ msgstr ""
 msgid "folder;System"
 msgstr ""
 
+#. Library name
+msgid "8 Bit Graphics"
+msgstr ""
+
+#. Library name
+msgid "BMP"
+msgstr ""
+
+#. Library name
+msgid "Color"
+msgstr ""
+
+#. Library name
+msgid "External Displays"
+msgstr ""
+
+#. Library name
+msgid "Four Digit Display (TM1637)"
+msgstr ""
+
+#. Library name
+msgid "Four Digit Display (TM1650)"
+msgstr ""
+
+#. Library name
+msgid "TFT"
+msgstr ""
+
+#. Library name
+msgid "CoCube Module"
+msgstr ""
+
+#. Library name
+msgid "CoCube"
+msgstr ""
+
+#. Library name
+msgid "NeoPixel"
+msgstr ""
+
+#. Library name
+msgid "MIDI"
+msgstr ""
+
+#. Library name
+msgid "Function Calls"
+msgstr ""
+
 #. Library folder
 msgid "folder;WorkInProgress"
 msgstr ""
