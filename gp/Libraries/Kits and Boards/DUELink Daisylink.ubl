@@ -1,13 +1,12 @@
 module 'DUELink Daisylink' Comm
 author 'GHI Electronics'
-version 0 13 
+version 0 14 
 choices due_combx b0 b1 b2 b3 b4 b5 b6 b7 
-description 'DUELink base library used by all other DUELink libraries.
+description 'Handles tethered communications via I2C or serial (UART) to DUELink Daisylink module(s).
 
-Handles daisylink communications via I2C or serial (UART).
 By default, this library uses serial over the Downlink port on DUELink boards and I2C on other boards but that can be changed by using the advanced "use I2C" block.
 
-See https://www.duelink.com/docs/engine/stdlib
+See https://www.duelink.com/docs/language/microblocks on how tethering works.
 
 '
 variables _dueUseI2C _dueReadTimeout 
@@ -33,8 +32,8 @@ variables _dueUseI2C _dueReadTimeout
   spec 'r' 'due_stream_read_bytes' 'stream read from _ count _' 'menu.due_combx auto' 'b1' 3
   space
   space
-  spec ' ' 'due_stop' 'stop'
   spec ' ' 'due_exec' 'run'
+  spec ' ' 'due_stop' 'stopall'
   space
   space
   spec ' ' '_due_init' '_due_init'
@@ -134,12 +133,12 @@ to '_due_init' {
       if ('[serial:dueSend]' ('[data:unicodeString]' 10) 1) {
         comment 'Serial need first byte is 10, 13 or ''s'', ''S'''
       }
-      comment 'Wait a bit because device will see multiple commands'
-      return 0
     } else {
       comment 'Not a DUELink board; use I2C.'
       _dueUseI2C = (booleanConstant true)
     }
+    comment 'Wait a bit because device will see multiple commands'
+    waitMillis 300
   }
 }
 
@@ -168,7 +167,6 @@ to '_due_send' s {
 }
 
 to due_connected {
-  '_due_send' ('[data:unicodeString]' 27)
   local 'n' ('[data:convertType]' (random 1 9) 'string')
   return ((due_returnStr n) == n)
 }
@@ -361,16 +359,26 @@ to due_stream_read_bytes 'array name' count {
 to due_useI2C useI2C {
   comment 'DUELink defaults to using the serial Downlink port on DUELink boards
 
+
+
 and I2C on non-DUELink board. This advanced block is only needed
 
+
+
 when one wants to force different behavior from the default
+
+
 
 (e.g. to use I2C edge connector pins on a DUE CincoBit or PixoBit).'
   _dueUseI2C = useI2C
   if _dueUseI2C {
+    comment 'Send new line for enumeration'
+    '[sensors:i2cRead]' 82 ('[data:newByteArray]' 64)
+    '[sensors:i2cWrite]' 82 ('[data:unicodeString]' 10)
   } else {
     comment 'If Uart we need to send 10 or 13 or 27 or ''s'' or ''S'''
     due_select_device 1
   }
+  waitMillis 100
 }
 
