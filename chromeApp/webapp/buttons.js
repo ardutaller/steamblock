@@ -39,7 +39,7 @@ const Buttons = {
 		label: 'Graph',
 		description: 'Open a graph window. Use the graph block in the Output category to add data points to it.',
 		class: 'top-bar__rounded-button',
-		action: () => { GP.apiCall('ide.showGraph'); } // TODO: Bernat, class --active when is... active!
+		action: () => { GP.apiCall('ide.showGraph'); }
 	},
 	connect: {
 		icon : 'plug--16x16',
@@ -157,7 +157,7 @@ Buttons.connectWidget = function () {
 	icon.classList.add('top-bar__rounded-button');
 	label.innerText = GetText.localize('Connect');
 	label.classList.add('top-bar__controls-connect-label');
-	arrow.classList.add('top-bar__controls-connect-dropdown'); // TODO Dropdown global styles?
+	arrow.classList.add('top-bar__controls-connect-dropdown');
 
 	container.appendChild(icon);
 	container.appendChild(label);

@@ -239,6 +239,21 @@ Menus.library = {
 	]
 };
 
+Menus.myBlocks = {
+	selector: 'myBlocks',
+	type: 'context',
+	items: [
+		{
+			label: 'show all block definitions',
+			action: () => { GP.apiCall('project.showAllMyBlocks'); },
+		},
+		{
+			label: 'hide all block definitions',
+			action: () => { GP.apiCall('project.hideAllMyBlocks'); },
+		}
+	]
+};
+
 Menus.scriptingArea = {
 	selector: 'scriptingArea',
 	type: 'context',

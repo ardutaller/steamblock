@@ -76,6 +76,12 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'project.exportBlocksLibrary') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		exportAsLibrary scripter
+	} (endPoint == 'project.showAllMyBlocks') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		showAllMyBlocks scripter
+	} (endPoint == 'project.hideAllMyBlocks') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		hideAllMyBlocks scripter
 
 	// Board
 	} (endPoint == 'board.installVM') {

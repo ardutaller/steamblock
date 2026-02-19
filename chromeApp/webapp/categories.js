@@ -91,6 +91,12 @@ Categories.elementFor = function (descriptor) {
 		};
 
 	} else {
+		if (descriptor.label == 'cat;My Blocks') {
+			button.oncontextmenu = (e) => {
+				Menus.popUp('myBlocks', button, null, e);
+				e.preventDefault();
+			};
+		}
 		button.onclick = () => {
 			GP.apiCall('ide.selectCategory', [descriptor.label]);
 		};

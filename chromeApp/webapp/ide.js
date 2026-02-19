@@ -230,18 +230,10 @@ document.addEventListener('preference.darkMode', e =>
 
 // Dragging
 document.addEventListener('dragstart', () => {
-	// TODO Bernat review change
-	// document.querySelectorAll('.--can-drag-through').forEach(
-	// 	e => e.classList.add('--dragging')
-	// );
 	document.querySelector('body').classList.add('--is-dragging');
 });
 
 document.addEventListener('dragend', () => {
-	// TODO Bernat review change
-	// document.querySelectorAll('.--can-drag-through').forEach(
-	// 	e => e.classList.remove('--dragging')
-	// );
 	document.querySelector('body').classList.remove('--is-dragging');
 });
 
