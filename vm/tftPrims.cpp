@@ -10,7 +10,7 @@
 
 #include "mem.h"
 #include "interp.h"
-#include <inttypes.h>.
+#include <inttypes.h>
 
 #if defined(ARDUINO_WEACT) || defined(NRF51)
 
@@ -35,6 +35,7 @@ Arduino_GFX *tft;
 
 int useTFT = false; // true means simulate 5x5 LED display on TFT display
 int isMonochrome = false;
+int colorBGR = false;
 int isOLED1106 = false;
 
 static int tftWidth = 0;
@@ -945,6 +946,9 @@ static int color24to16b(int color24b) {
 	r = (color24b >> 19) & 0x1F; // 5 bits
 	g = (color24b >> 10) & 0x3F; // 6 bits
 	b = (color24b >> 3) & 0x1F; // 5 bits
+	if (colorBGR) {
+		return (b << 11) | (g << 5) | r; // color order: BGR
+	}
 	return (r << 11) | (g << 5) | b; // color order: RGB
 }
 
@@ -1607,7 +1611,6 @@ static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int back
 	Arduino_DataBus *bus = makeDataBus(dcPin, csPin);
 	tft = new Arduino_ST7789(bus, resetPin, rotation, invertColors,
 		w, h, xOffset, yOffset, xOffset, yOffset);
-	tft = new Arduino_ST7789(bus, resetPin, 0 /* rotation */);
 	if (!tft->begin()) {
 		freeDisplayController();
 		outputString("Display initialization failed!");
@@ -1623,12 +1626,11 @@ static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int back
 static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false,
 		int xOffset = 0, int yOffset = 0) {
-	if ((w < 32) || (w > 240) || (h < 32) || (h > 320)) return;
+	if ((w < 32) || (w > 480) || (h < 32) || (h > 480)) return;
 	if (!tft) delete tft;
 	Arduino_DataBus *bus = makeDataBus(dcPin, csPin);
 	tft = new Arduino_ST7796(bus, resetPin, rotation, invertColors,
 		w, h, xOffset, yOffset, xOffset, yOffset);
-	tft = new Arduino_ST7789(bus, resetPin, 0 /* rotation */);
 	if (!tft->begin()) {
 		freeDisplayController();
 		outputString("Display initialization failed!");
@@ -1716,8 +1718,9 @@ static OBJ primInitST7735(int argCount, OBJ *args) {
 	int blPin = obj2int(args[5]);
 	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
-	int xOffset = ((argCount > 8) && isInt(args[8])) ? obj2int(args[8]) : 0;
-	int yOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
+	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
+	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
+	int yOffset = ((argCount > 10) && isInt(args[10])) ? obj2int(args[10]) : 0;
 
 	init_7735(w, h, rotation, dcPin, csPin, blPin, rstPin, invertDisplay, xOffset, yOffset);
 	return falseObj;
@@ -1739,8 +1742,9 @@ static OBJ primInitST7789(int argCount, OBJ *args) {
 	int blPin = obj2int(args[5]);
 	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
-	int xOffset = ((argCount > 8) && isInt(args[8])) ? obj2int(args[8]) : 0;
-	int yOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
+	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
+	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
+	int yOffset = ((argCount > 10) && isInt(args[10])) ? obj2int(args[10]) : 0;
 
 	init_7789(w, h, rotation, dcPin, csPin, blPin, rstPin, invertDisplay, xOffset, yOffset);
 	return falseObj;
@@ -1762,8 +1766,9 @@ static OBJ primInitST7796(int argCount, OBJ *args) {
 	int blPin = obj2int(args[5]);
 	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
-	int xOffset = ((argCount > 8) && isInt(args[8])) ? obj2int(args[8]) : 0;
-	int yOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
+	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
+	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
+	int yOffset = ((argCount > 10) && isInt(args[10])) ? obj2int(args[10]) : 0;
 
 	init_7796(w, h, rotation, dcPin, csPin, blPin, rstPin, invertDisplay, xOffset, yOffset);
 	return falseObj;
