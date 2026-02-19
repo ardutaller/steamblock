@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-18 11:56+0000\n"
+"PO-Revision-Date: 2026-02-19 11:50+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -40,7 +40,7 @@ msgstr "串口 打开 波特率 _"
 
 #. NeoPanel library label
 msgid "NeoPanel"
-msgstr "像素屏"
+msgstr "NenPanel 像素屏"
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
@@ -3534,7 +3534,7 @@ msgstr "HTTP 服务器请求"
 
 #. HTTP Server library block
 msgid "respond _ to HTTP request"
-msgstr "回应 _ 至HTTP请求"
+msgstr "回应 _ 至 HTTP 请求"
 
 #. HTTP Server library example response
 msgid "Welcome to the MicroBlocks HTTP server"
@@ -4574,7 +4574,7 @@ msgstr "ToF 距离(mm)"
 
 #. Block in Input category
 msgid "BLE id"
-msgstr "蓝牙ID"
+msgstr "蓝牙 ID"
 
 #. CoCube library block
 msgid "point towards X _ Y _ at _ speed (0-50)"
@@ -4711,31 +4711,31 @@ msgstr "积木库"
 
 #. BLE Radio library block
 msgid "ble set group _ (0-255)"
-msgstr "设置BLE组为_(0-255)"
+msgstr "设置 BLE 组为 _ (0-255)"
 
 #. BLE Radio library block
 msgid "ble last string"
-msgstr "ble 最后一个字符串"
+msgstr "BLE 最后一个字符串"
 
 #. BLE Radio library block
 msgid "ble last number"
-msgstr "ble 最后一个数字"
+msgstr "BLE 最后一个数字"
 
 #. BLE Radio library block
 msgid "ble message received?"
-msgstr "ble 消息已收到？"
+msgstr "BLE 消息已收到？"
 
 #. BLE Radio library block
 msgid "ble send pair _ = _"
-msgstr "ble 发送配对_ =_"
+msgstr "BLE 发送消息对 _ = _"
 
 #. BLE Radio library block
 msgid "ble send string _"
-msgstr "ble 发送字符串_"
+msgstr "BLE 发送字符串 _"
 
 #. BLE Radio library block
 msgid "ble send number _"
-msgstr "ble 发送数字_"
+msgstr "BLE 发送数字 _"
 
 #. Settings menu option
 msgid "open vm folder on microblocks.fun"
@@ -5259,7 +5259,7 @@ msgstr "停止通道 _ 的所有音符"
 
 #. MIDI library block
 msgid "set MIDI note _ to _ on channel _ volume _"
-msgstr "将 MIDI 音符 _ 设置为通道 _ 音量 _"
+msgstr "设置 MIDI 音符 _ 为 _ 通道 _ 音量 _"
 
 #. MIDI library block
 msgid "note _ octave _ to MIDI key"
