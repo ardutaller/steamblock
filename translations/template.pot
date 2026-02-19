@@ -2364,15 +2364,35 @@ msgid "standard"
 msgstr ""
 
 #. General MIDI drum set
-msgid "room"
+msgid "Standard 1"
 msgstr ""
 
 #. General MIDI drum set
-msgid "power"
+msgid "Standard 2"
 msgstr ""
 
 #. General MIDI drum set
-msgid "electronic"
+msgid "Standard L/R"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Room"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Hip Hop"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Jungle Techno"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Room L/R"
+msgstr ""
+
+#. General MIDI drum set
+msgid "House Power Electronic"
 msgstr ""
 
 #. General MIDI drum set
@@ -2380,23 +2400,99 @@ msgid "TR-808"
 msgstr ""
 
 #. General MIDI drum set
-msgid "jazz"
+msgid "Dance"
 msgstr ""
 
 #. General MIDI drum set
-msgid "brush"
+msgid "CR-78"
 msgstr ""
 
 #. General MIDI drum set
-msgid "orchestra"
+msgid "TR-606"
 msgstr ""
 
 #. General MIDI drum set
-msgid "drumkit;SFX"
+msgid "TR-707"
 msgstr ""
 
 #. General MIDI drum set
-msgid "CM-64/CM-32L"
+msgid "TR-909"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Jazz"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Jazz L/R"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Brush"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Brush 2"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Brush 2 L/R"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Orchestra Ethnic"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Kick & Snare"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Kick & Snare 2"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Asia"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Cymbal&claps"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Gamelan 1"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Gamelan 2"
+msgstr ""
+
+#. General MIDI drum set
+msgid "SFX"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Rhythm FX"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Rhythm FX 2"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Rhythm FX 3"
+msgstr ""
+
+#. General MIDI drum set
+msgid "SFX 2"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Voice"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Cym&Claps 2"
 msgstr ""
 
 #. General MIDI control change
@@ -2492,7 +2588,7 @@ msgid "play MIDI note _ for _ ms on channel _ volume _"
 msgstr ""
 
 #. MIDI library block
-msgid "stop all notes on channel _"
+msgid "stop all notes on channel _ in _ ms"
 msgstr ""
 
 #. MIDI library block
@@ -2600,6 +2696,14 @@ msgstr ""
 msgid "locrian"
 msgstr ""
 
+#. Musical scale name
+msgid "chromatic"
+msgstr ""
+
+#. Musical scale name
+msgid "tonal"
+msgstr ""
+
 #. Music chord type
 msgid "major"
 msgstr ""
@@ -2630,6 +2734,10 @@ msgstr ""
 
 #. Sound destination for arpeggiate block in Scales & Chords library
 msgid "tone pin"
+msgstr ""
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "gate trigger"
 msgstr ""
 
 #. Scales & Chords library block
@@ -2943,6 +3051,10 @@ msgstr ""
 
 #. WiFi library block
 msgid "wifi connect to _ password _"
+msgstr ""
+
+#. WiFi library block
+msgid "stop wifi"
 msgstr ""
 
 #. Example WiFi network name
@@ -4684,6 +4796,10 @@ msgstr ""
 
 #. Octostudio communication library block
 msgid "Octo last beam"
+msgstr ""
+
+#. Octostudio communication library block
+msgid "Octo last beam group"
 msgstr ""
 
 #. Octostudio communication library block
