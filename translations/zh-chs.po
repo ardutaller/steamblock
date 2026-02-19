@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-19 11:50+0000\n"
+"PO-Revision-Date: 2026-02-19 12:12+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -5829,3 +5829,7 @@ msgstr "MCP4725 I2C DAC"
 #. Scales & Chords library block
 msgid "chord progression _ with root _"
 msgstr "和弦进行 _ 根音 _"
+
+#. Library name
+msgid "Function Calls"
+msgstr "调用函数"
