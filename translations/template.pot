@@ -1769,6 +1769,94 @@ msgstr ""
 msgid "gray _ %"
 msgstr ""
 
+#. 8 Bit Graphics Library block
+msgid "set scale _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "draw buffer"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "starting at x _ y _ width _ height _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "bitmap from BMP file _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from raw indexed file _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from string _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ rotated _ º"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ mirrored across _ axis"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "merge bitmap _ at _ , _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ from _ , _ to _ , _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ at tile position _ , _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "set palette _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "set transparent color index _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "palette from pal file _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "palette from BMP file _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "4 bit _ palette"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "8 bit _ palette"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "color number for r _ g _ b _ (0-255)"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "draw palette table _"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "current palette"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "screen width"
+msgstr ""
+
+#. 8 Bit Graphics Library block
+msgid "screen height"
+msgstr ""
+
 #. BMP library block
 msgid "display BMP file _ at x _ y _"
 msgstr ""
