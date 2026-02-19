@@ -1,17 +1,17 @@
 module 'DUELink Edu'
 author MicroBlocks
-version 1 12 
+version 1 13 
 choices dueSTEM_pianoPad left right C 'C#' D 'D#' E F 'F#' G 'G#' A 'A#' B 'High C' 
 choices dueSTEM_clipItPad A B left right up down 
 choices dueSTEM_buttonName left right up down 
 choices dueSTEM_axis x y z 
 choices dueSTEM_timeComponent 'time (H:M:S)' 'date (Y-M-D)' second minute hour day month year 'day of week' 
-description 'Library for DUELink Educational boards: CincoBit, PixoBit, ClipIt, and DueSTEM.
+description 'Library for DUELink Educational boards, and with additional helper methods. 
 
-The "due PID" works on all DUELink boards.
-Blocks labeled "dueSTEM" work only on the DueSTEM board.
+Blocks with no product name, like "due PID", work on all modules.
+Blocks labeled a product name, like "dueSTEM", work only on specific board.
 
-Touch sensing works only on pins with capacitive touch circuits including pins 0, 1, 2 of the CincoBit and PixoBit and all but the SCL/SDA pins of the ClipIt.
+Touch sensing works only on pins with capacitive touch circuits, including pins 0, 1, 2 of the CincoBit and PixoBit, and all but the SCL/SDA pins of the ClipIt.
 '
 variables dueSTEM_accelAddr dueSTEM_touchAdjustments 
 
