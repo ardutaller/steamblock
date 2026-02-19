@@ -61,7 +61,9 @@ Menus.settings = {
 		{
 			label: 'inform of new versions',
 			checked: () => { return IDE.userPreference('versionCheckOnStartup'); },
-			action: () => { IDE.toggleUserPreference('versionCheckOnStartup'); }
+			action: () => { IDE.toggleUserPreference('versionCheckOnStartup'); },
+			tip: 'when opening the IDE, show a notification if a new version of ' +
+						'MicroBlocks has been released'
 		},
 		{
 			label: 'dark mode',
@@ -71,14 +73,17 @@ Menus.settings = {
 		{
 			label: 'advanced mode',
 			checked: () => { return IDE.userPreference('devMode'); },
-			action: () => { IDE.toggleAdvancedMode(); }
+			action: () => { IDE.toggleAdvancedMode(); },
+			tip: 'show advanced blocks, menu items and editor functionalities'
 		},
 		{ label: '-', hidden: () => { return !IDE.userPreference('devMode'); } },
 		{
 			label: 'show implementation blocks',
 			checked: () => { return IDE.userPreference('showImplementationBlocks'); },
 			action: () => { IDE.toggleUserPreference('showImplementationBlocks'); },
-			hidden: () => { return !IDE.userPreference('devMode'); }
+			hidden: () => { return !IDE.userPreference('devMode'); },
+			tip: 'show blocks and variables that are internal to libraries (i.e. ' +
+						'those whose name begins with underscore)'
 		},
 		{
 			label: 'autoload board libraries',
@@ -396,6 +401,12 @@ Menus.elementFor = function (descriptor, target) {
 					}
 				}
 
+				// Tip Bar data
+				if (item.tip) {
+					button.ariaLabel = 'Menu option';
+					button.ariaDescription = item.tip;
+					IDE.tipBar.enableFor(button);
+				}
 
 				// State: disabled
 				if (item.disabled?.()) {

@@ -180,16 +180,18 @@ IDE.tipBar.init = function () {
 		}
 	);
 
-	document.querySelectorAll('*').forEach(element => {
-		// preserve previous onmouseenter behavior
-		let onmouseenter = element.onmouseenter;
-		element.onmouseenter = () => {
-			if (onmouseenter) { onmouseenter.call(element); }
-			if (element.ariaLabel && element.ariaDescription) {
-				this.setTip(element.ariaLabel, element.ariaDescription);
-			}
+	document.querySelectorAll('*').forEach(element => this.enableFor(element));
+};
+
+IDE.tipBar.enableFor = function (element) {
+	// preserve previous onmouseenter behavior
+	let onmouseenter = element.onmouseenter;
+	element.onmouseenter = () => {
+		if (onmouseenter) { onmouseenter.call(element); }
+		if (element.ariaLabel && element.ariaDescription) {
+			this.setTip(element.ariaLabel, element.ariaDescription);
 		}
-	});
+	}
 };
 
 IDE.tipBar.setTip = function (title, content) {
