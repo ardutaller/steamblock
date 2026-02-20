@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-02-06 12:01+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2026-02-20 14:09+0000\n"
+"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.16.1-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -7834,3 +7834,82 @@ msgstr "redueix el rang"
 #. Script right-click context menu
 msgid "copy callable name"
 msgstr "copia el nom de la funció"
+
+#. Block in Function Calls library
+msgid "function _ exists"
+msgstr "la funció _ existeix"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"connecta ST7735 amplada _ alçada _ rotació _ #BR# pin dc _ pin cs _ pin de "
+"retroil·luminació _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _"
+msgstr "#BR# reinicia el pin _ invertir colors _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# x offset _ y offset _"
+msgstr "#BR# desplaçament x _ desplaçament y _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"connecta ST7789 amplada _ alçada _ rotació _ #BR# pin dc _ pin cs _ pin de "
+"retroil·luminació _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"connecta ST7796 amplada _ alçada _ rotació _ #BR# pin dc _ pin cs _ pin de "
+"retroil·luminació _"
+
+#. External Displays Library block
+msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
+msgstr "connecta ILI9341 rotació _ pin dc _ pin cs _ pin de retroil·luminació _"
+
+#. External Displays Library block
+msgid "attach OLED w _ h _"
+msgstr "connecta OLED amplada _ alçada _"
+
+#. External Displays Library block
+msgid "reset pin _"
+msgstr "reinicia el pin _"
+
+#. External Displays Library block
+msgid "detach display"
+msgstr "desconnecta la pantalla"
+
+#. 8 Bit Graphics Library block
+msgid "set scale _"
+msgstr "escala _"
+
+#. 8 Bit Graphics Library block
+msgid "draw buffer"
+msgstr "actualitza la pantalla"
+
+#. 8 Bit Graphics Library block
+msgid "starting at x _ y _ width _ height _"
+msgstr "comença a x _ y _ amplada _ alçada _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap from BMP file _"
+msgstr "mapa de bits del fitxer BMP _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from raw indexed file _"
+msgstr "mapa de bits d'amplada _ del fitxer cru indexat _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from string _"
+msgstr "mapa de bits d'amplada _ de la cadena _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ rotated _ º"
+msgstr "mapa de bits _ girat _ º"
