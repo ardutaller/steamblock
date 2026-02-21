@@ -17,7 +17,7 @@
 #include "interp.h"
 
 #if defined(PICO_ED) || defined(XRP) || defined(GIZMO_MECHATRONICS) || \
-	defined(ARDUINO_SEEED_XIAO_RP2350)
+	defined(ARDUINO_SEEED_XIAO_RP2350) || defined(PI_BODY)
 		#define Wire Wire1
 #endif
 

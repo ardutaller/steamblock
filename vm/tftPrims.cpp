@@ -600,6 +600,28 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			}
 		}
 
+	#elif defined(PI_BODY)
+		#define TFT_DC 14
+		#define TFT_CS 15
+		#define TFT_SCLK 10
+		#define TFT_MOSI 11
+		#define TFT_RST 13
+		#define TFT_WIDTH 240
+		#define TFT_HEIGHT 320
+
+		void tftInit() {
+			Arduino_DataBus *bus = new Arduino_RPiPicoSPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, GFX_NOT_DEFINED, spi1);
+			tft = new Arduino_ST7789(bus, TFT_RST, 2, true, TFT_WIDTH, TFT_HEIGHT);
+			if (!tft->begin()) {
+				outputString("TFT initialization failed!");
+			} else {
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
+				tftClear();
+				useTFT = true;
+			}
+		}
+
 	#elif defined(TTGO_RP2040)
 		#define TFT_MOSI 3
 		#define TFT_SCLK 2

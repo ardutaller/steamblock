@@ -1158,6 +1158,22 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+#elif defined(PI_BODY)
+
+	#define BOARD_TYPE "PiBody"
+	#define DIGITAL_PINS 30
+	#define ANALOG_PINS 4
+	#define TOTAL_PINS DIGITAL_PINS
+	static const int analogPin[] = {A0, A1, A2, A3};
+	#define PIN_BUTTON_A 20
+	#define PIN_BUTTON_B 21
+	#undef BUTTON_PRESSED
+	#define BUTTON_PRESSED HIGH
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 1, 1, 0, 0, 0, 0};
+
 #elif defined(ARDUINO_ARCH_RP2040)
 
 	#define BOARD_TYPE "RP2040"
