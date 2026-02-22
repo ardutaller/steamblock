@@ -79,7 +79,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
  					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -98,7 +98,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				// Turn on backlight:
 				pinMode(32, OUTPUT);
@@ -141,7 +141,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 1, true,
 					TFT_HEIGHT, TFT_WIDTH, 53, 40, 53, 40);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -349,7 +349,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, true);
 
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				bus->beginWrite();
 				bus->writeC8D8(ILI9341_MADCTL, 0x08 | 0x04); // RGB pixel order, refresh LCD right to left
@@ -440,7 +440,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
@@ -467,7 +467,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				// Turn on backlight on IoT-Bus
 				pinMode(33, OUTPUT);
@@ -554,7 +554,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, g, 0, 0, true);
 
 			if (!tft->begin(400000)) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -579,7 +579,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40); // reverse height and width because of rotation
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
@@ -604,7 +604,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7735(bus, TFT_RST, 3, false,
 					TFT_WIDTH, TFT_HEIGHT);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -626,7 +626,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			Arduino_DataBus *bus = new Arduino_RPiPicoSPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, GFX_NOT_DEFINED, spi1);
 			tft = new Arduino_ST7789(bus, TFT_RST, 2, true, TFT_WIDTH, TFT_HEIGHT);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -651,7 +651,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40); // reverse height and width because of rotation
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_PWR, OUTPUT);
 				digitalWrite(TFT_PWR, 1); // turn on display power
@@ -879,7 +879,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
@@ -927,7 +927,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			Arduino_ESP32SPI *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, -1);
 			tft = new Arduino_GC9107(bus, TFT_RST, 0 /* rotation */, true /* IPS */);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
