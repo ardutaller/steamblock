@@ -55,8 +55,17 @@ static int deferUpdates = false;
 #define BUFFER_PIXELS_SIZE 480 // maximum display width
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
-// Redefine this macro for displays that must explicitly push offscreen changes to the display
-#define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow TFT operations
+#if !defined(PICO_ED)
+	// Helper function to flush canvas-based OLED displays and yield after slow TFT operations.
+	static void inline UPDATE_DISPLAY() {
+		if (isMonochrome && !deferUpdates) {
+			tft->flush();
+			taskSleep(3);
+		} else {
+			taskSleep(-1);
+		}
+	}
+#endif
 
 	#if defined(ARDUINO_CITILAB_ED1)
 		#define TFT_CS	5
@@ -554,9 +563,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 				useTFT = true;
 			}
 		}
-
-		#undef UPDATE_DISPLAY
-		#define UPDATE_DISPLAY() { if (!deferUpdates) { tft->flush(); taskSleep(1); }}
 
 	#elif defined(TTGO_DISPLAY)
 		#define TFT_MOSI 19
@@ -1742,7 +1748,7 @@ static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
 	}
 }
 
-static void init_1306(int w, int h, int resetPin = GFX_NOT_DEFINED) {
+static void init_1306(int w, int h, int resetPin) {
 	if ((w < 32) || (w > 128) || (h < 16) || (h > 128)) return;
 	if (!tft) delete tft;
 
@@ -1771,7 +1777,8 @@ static void init_1306(int w, int h, int resetPin = GFX_NOT_DEFINED) {
 	} else {
 		g = new Arduino_SSD1306(bus, resetPin, w, h);
 	}
-	if (!tft->begin()) {
+	tft = new Arduino_Canvas_Mono(w, h, g, 0, 0, true);
+	if (!tft->begin(400000)) {
 		freeDisplayController();
 		outputString("Display initialization failed!");
 	} else {
