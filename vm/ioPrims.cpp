@@ -412,14 +412,6 @@ void hardwareInit() {
 	#define INVERT_USER_LED true
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5};
 
-#elif defined(ARDUINO_TEENSY31)
-	#define BOARD_TYPE "Teensy 3.1"
-	#define DIGITAL_PINS 24
-	#define ANALOG_PINS 10
-	#define TOTAL_PINS 34
-	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9};
-	#define PIN_LED 13
-
 #elif defined(ARDUINO_TEENSY40)
 	// placeholder; not tested
 	#define BOARD_TYPE "Teensy 4.0"
