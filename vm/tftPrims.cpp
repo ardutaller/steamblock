@@ -550,7 +550,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		}
 
 		#undef UPDATE_DISPLAY
-		#define UPDATE_DISPLAY() { if (!deferUpdates) { tft->flush(); taskSleep(-1); }}
+		#define UPDATE_DISPLAY() { if (!deferUpdates) { tft->flush(); taskSleep(1); }}
 
 	#elif defined(TTGO_DISPLAY)
 		#define TFT_MOSI 19
@@ -1736,10 +1736,10 @@ static OBJ primInitST7735(int argCount, OBJ *args) {
 	int rotation = obj2int(args[2]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[3]);
-	int csPin = obj2int(args[4]);
-	int blPin = obj2int(args[5]);
-	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[3]));
+	int csPin = mapDigitalPinNum(obj2int(args[4]));
+	int blPin = mapDigitalPinNum(obj2int(args[5]));
+	int rstPin = mapDigitalPinNum(((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1);
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
 	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
 	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
@@ -1760,10 +1760,10 @@ static OBJ primInitST7789(int argCount, OBJ *args) {
 	int rotation = obj2int(args[2]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[3]);
-	int csPin = obj2int(args[4]);
-	int blPin = obj2int(args[5]);
-	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[3]));
+	int csPin = mapDigitalPinNum(obj2int(args[4]));
+	int blPin = mapDigitalPinNum(obj2int(args[5]));
+	int rstPin = mapDigitalPinNum(((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1);
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
 	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
 	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
@@ -1784,10 +1784,10 @@ static OBJ primInitST7796(int argCount, OBJ *args) {
 	int rotation = obj2int(args[2]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[3]);
-	int csPin = obj2int(args[4]);
-	int blPin = obj2int(args[5]);
-	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[3]));
+	int csPin = mapDigitalPinNum(obj2int(args[4]));
+	int blPin = mapDigitalPinNum(obj2int(args[5]));
+	int rstPin = mapDigitalPinNum(((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1);
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
 	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
 	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
@@ -1805,10 +1805,10 @@ static OBJ primInitILI9341(int argCount, OBJ *args) {
 	int rotation = obj2int(args[0]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[1]);
-	int csPin = obj2int(args[2]);
-	int blPin = obj2int(args[3]);
-	int rstPin = ((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[1]));
+	int csPin = mapDigitalPinNum(obj2int(args[2]));
+	int blPin = mapDigitalPinNum(obj2int(args[3]));
+	int rstPin = mapDigitalPinNum(((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1);
 	int invertDisplay = ((argCount > 5) && (args[5] == trueObj)) ? true : false;
 
 	init_9341(rotation, dcPin, csPin, blPin, rstPin, invertDisplay);
@@ -1820,7 +1820,7 @@ static OBJ primInitOLED(int argCount, OBJ *args) {
 	if (!(isInt(args[0]) && isInt(args[1]))) return fail(needsIntegerError);
 	int w = obj2int(args[0]);
 	int h = obj2int(args[1]);
-	int rstPin = ((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1;
+	int rstPin = mapDigitalPinNum(((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1);
 
 	init_1306(w, h, rstPin);
 	return falseObj;
