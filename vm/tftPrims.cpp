@@ -12,9 +12,10 @@
 #include "interp.h"
 #include <inttypes.h>
 
-#if defined(ARDUINO_WEACT) || defined(NRF51)
+#if defined(ARDUINO_WEACT) || defined(NRF51) || defined(__ZEPHYR__) || defined(DUELink)
 
 // TFT primitives are not supported
+#define NO_EXTERNAL_DISPLAY_PRIMS
 
 #elif defined(PICO_ED)
 
@@ -924,7 +925,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			}
 		}
 
-	#elif defined(ARDUINO_WEACT) || defined(NRF51)
+	#elif defined(NO_EXTERNAL_DISPLAY_PRIMS)
 		// no external display primitives
 
 		void tftInit() { } // stub; no display is initialized at startup time
