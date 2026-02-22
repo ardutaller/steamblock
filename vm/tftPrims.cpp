@@ -1292,22 +1292,21 @@ static void drawText(OBJ value, int x, int y, int color16b, int scale, int wrap,
 
 	if (unicodeFont) {
 		lineH = 16 * scale;
-		letterW = 16 * scale;
-		useUnicodeFont(true);
+		letterW = 8 * scale;
 		tft->setCursor(x, y + (14 * scale)); // offset to baseline
 	} else {
 		lineH = 8 * scale;
 		letterW = 6 * scale;
-		useUnicodeFont(false);
 		tft->setCursor(x, y);
 	}
+	useUnicodeFont(unicodeFont);
 	tft->setTextColor(color16b);
 	tft->setTextSize(scale);
 	tft->setTextWrap(wrap);
 
 	if (IS_TYPE(value, StringType)) {
 		char *str = obj2str(value);
-		if (bgColor != -1) tft->fillRect(x, y, strlen(str) * letterW, lineH, bgColor);
+		if (bgColor != -1) tft->fillRect(x, y, countUTF8(str) * letterW, lineH, bgColor);
 		tft->print(obj2str(value));
 	} else if (trueObj == value) {
 		if (bgColor != -1) tft->fillRect(x, y, 4 * letterW, lineH, bgColor);
@@ -1355,6 +1354,60 @@ static OBJ primUnicode(int argCount, OBJ *args) {
 
 	UPDATE_DISPLAY();
 	return falseObj;
+}
+
+static OBJ primTextWidth(int argCount, OBJ *args) {
+	// May not need this primitive since Unicode font turns out to be monospaced.
+	if (!tft) return falseObj;
+	if (argCount < 2) return fail(notEnoughArguments);
+	if (!IS_TYPE(args[0], StringType)) return fail(needsStringError);
+	if (!isInt(args[1])) return fail(needsIntegerError);
+
+	char *s = obj2str(args[0]);
+	int scale = obj2int(args[1]);
+	int useUnicode = ((argCount > 2) && (args[2] == trueObj)); // optional 'useUnicode' flag
+
+	useUnicodeFont(useUnicode);
+	tft->setTextWrap(false);
+	tft->setTextSize(scale);
+
+	int result = 0;
+	if (useUnicode) {
+		int16_t x, y;
+		uint16_t w, h;
+		tft->getTextBounds(s, 0, (14 * scale), &x, &y, &w, &h);
+		result = x + w;
+	} else {
+		result = 8 * strlen(s) * scale;
+	}
+	return int2obj(result);
+}
+
+static OBJ primTextHeight(int argCount, OBJ *args) {
+	// May not need this primitive since Unicode font turns out to be monospaced.
+	if (!tft) return falseObj;
+	if (argCount < 2) return fail(notEnoughArguments);
+	if (!IS_TYPE(args[0], StringType)) return fail(needsStringError);
+	if (!isInt(args[1])) return fail(needsIntegerError);
+
+	char *s = obj2str(args[0]);
+	int scale = obj2int(args[1]);
+	int useUnicode = ((argCount > 2) && (args[2] == trueObj)); // optional 'useUnicode' flag
+
+	useUnicodeFont(useUnicode);
+	tft->setTextWrap(false);
+	tft->setTextSize(scale);
+
+	int result = 0;
+	if (useUnicode) {
+		int16_t x, y;
+		uint16_t w, h;
+		tft->getTextBounds(s, 0, (14 * scale), &x, &y, &w, &h);
+		result = y + h;
+	} else {
+		result = 8 * scale;
+	}
+	return int2obj(result);
 }
 
 static OBJ primClear(int argCount, OBJ *args) {
@@ -1665,7 +1718,8 @@ static void turnOnBacklight(int blPin) {
 
 static void freeDisplayController() {
 	if (!tft) delete tft;
-	tftWidth = tftWidth = 0;
+	tftWidth = 0;
+	tftHeight = 0;
 }
 
 static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
@@ -1913,8 +1967,12 @@ static OBJ primRect(int argCount, OBJ *args) { return falseObj; }
 static OBJ primRoundedRect(int argCount, OBJ *args) { return falseObj; }
 static OBJ primCircle(int argCount, OBJ *args) { return falseObj; }
 static OBJ primTriangle(int argCount, OBJ *args) { return falseObj; }
+
 static OBJ primText(int argCount, OBJ *args) { return falseObj; }
 static OBJ primUnicode(int argCount, OBJ *args) { return falseObj; }
+static OBJ primTextWidth(int argCount, OBJ *args) { return falseObj; }
+static OBJ primTextHeight(int argCount, OBJ *args) { return falseObj; }
+
 static OBJ primClear(int argCount, OBJ *args) { return falseObj; }
 
 OBJ primDeferUpdates(int argCount, OBJ *args) { return falseObj; }
@@ -1974,6 +2032,8 @@ static PrimEntry entries[] = {
 	{"triangle", primTriangle},
 	{"text", primText},
 	{"unicode", primUnicode},
+	{"textWidth", primTextWidth},
+	{"textHeight", primTextHeight},
 	{"clear", primClear},
 	{"deferUpdates", primDeferUpdates},
 	{"resumeUpdates", primResumeUpdates},
