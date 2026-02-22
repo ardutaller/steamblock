@@ -569,6 +569,50 @@ OBJ primSPIExchange(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+OBJ primSPISetPins(int argCount, OBJ *args) {
+	// Set the SPI clock, MOSI, and MISO pins.
+	// Note: This changes the pins for the default SPI device on boards that support that.
+	// On the Raspberry Pi Pico and Pico2 boards you just use possible SPI0 pins.
+
+	if (argCount < 3) return fail(notEnoughArguments);
+	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]))) return fail(needsIntegerError);
+
+	#if defined(ESP8266) || defined(NRF51) || defined(ARDUINO_WEACT) || defined(__ZEPHYR__) || \
+		defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_SAM_DUE)
+			// Changing SPI pins is not supported.
+			return fail(primitiveNotImplemented);
+	#else
+		int clkPin = mapDigitalPinNum(obj2int(args[0]));
+		int mosiPin = mapDigitalPinNum(obj2int(args[1]));
+		int misoPin = mapDigitalPinNum(obj2int(args[2]));
+
+		setPinMode(clkPin, OUTPUT);
+		setPinMode(mosiPin, OUTPUT);
+		setPinMode(misoPin, INPUT);
+
+		SPI.end(); // stop SPI on current pins
+
+		#if defined(ESP32)
+			SPI.begin(clkPin, misoPin, mosiPin);
+		#elif defined(NRF52)
+			SPI.setPins(misoPin, clkPin, mosiPin);
+			SPI.begin();
+		#elif defined(TARGET_RP2040) || defined(PICO_RP2350)
+			SPI.setSCK(clkPin);
+			SPI.setMOSI(mosiPin);
+			SPI.setMISO(misoPin);
+			SPI.begin();
+		#elif defined(ARDUINO_TEENSY40) || defined(ARDUINO_TEENSY41)
+			SPI.setSCK(clkPin);
+			SPI.setMOSI(mosiPin);
+			SPI.setMISO(misoPin);
+			SPI.begin();
+		#endif
+	#endif
+
+	return falseObj;
+}
+
 // Accelerometer and Temperature
 
 int accelStarted = false;
@@ -2506,6 +2550,7 @@ static PrimEntry entries[] = {
 	{"internalI2cSet", primInternalI2cSet},
 	{"spiExchange", primSPIExchange},
 	{"spiSetup", primSPISetup},
+	{"spiSetPins", primSPISetPins},
 	{"readDHT", primReadDHT},
 	{"microphone", primMicrophone},
 
