@@ -1735,6 +1735,7 @@ static void freeDisplayController() {
 	if (!tft) delete tft;
 	tftWidth = 0;
 	tftHeight = 0;
+	useTFT = false;
 }
 
 static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
@@ -1755,6 +1756,7 @@ static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int back
 		isMonochrome = false;
 		turnOnBacklight(backlightPin);
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1775,6 +1777,7 @@ static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int back
 		isMonochrome = false;
 		turnOnBacklight(backlightPin);
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1795,6 +1798,7 @@ static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int back
 		isMonochrome = false;
 		turnOnBacklight(backlightPin);
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1814,6 +1818,7 @@ static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
 		tftWidth = 320;
 		tftHeight = 240;
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1855,6 +1860,7 @@ static void init_1306(int w, int h, int resetPin) {
 		tftWidth = w;
 		tftHeight = h;
 		tftClear();
+		useTFT = true;
 	}
 }
 

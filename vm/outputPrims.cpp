@@ -539,7 +539,12 @@ OBJ primMBDisplay(int argCount, OBJ *args) {
 
 OBJ primMBDisplayOff(int argCount, OBJ *args) {
 	microBitDisplayBits = 0;
-	#if defined(BUILT_IN_DISPLAY)
+	#if !defined(HAS_LED_MATRIX)
+		// If the board does not have a built-in LED matrix but does have a TFT display
+		// then it simulates an LED matrix on the TFT display. In that case, this operation
+		// should clear the simulated the simulates an LED matrix on the TFT screen.
+		// If the boards has a built-in LED matrix AND a TFT display just clear the LED matrix
+		// so that the two displays are independent.
 		if (useTFT) tftClear();
 	#endif
 	return falseObj;
