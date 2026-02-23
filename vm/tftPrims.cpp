@@ -27,16 +27,10 @@ Adafruit_GFX *tft;
 
 #else
 
-#if !defined(NO_UNICODE_FONT)
-	// U8g2lib is not supported on the CircuitPlayground Express and RP2040 and RP2350 boards.
-	// However, it *is* supported on RP2040-W and RP2350-W boards (i.e. versions with WiFi).
-	#include <U8g2lib.h>
-#endif
 #include <Arduino_GFX_Library.h>
 
 Arduino_GFX *tft;
 #define HAS_TFT_PRIMS true
-static void useUnicodeFont(int useUnicode); // forward reference
 
 #endif
 
@@ -867,7 +861,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			int textX = x + (width - textLen * charW) / 2;
 			int textY = y + (height - charH) / 2;
 
-			useUnicodeFont(false);
 			tft->setTextColor(textColor);
 			tft->setTextSize(textSize);
 			tft->setCursor(textX, textY);
@@ -1270,36 +1263,11 @@ static OBJ primTriangle(int argCount, OBJ *args) {
 	return falseObj;
 }
 
-static void useUnicodeFont(int useUnicode) {
-	#if defined(U8G2_FONT_SUPPORT)
-		if (useUnicode) {
-			tft->setFont(u8g2_font_unifont_te);
-			tft->setUTF8Print(true);
-		} else {
-			tft->setFont();
-			tft->setUTF8Print(false);
-		}
-	#endif
-}
+static void drawText(OBJ value, int x, int y, int color16b, int scale, int wrap, int bgColor) {
+	int lineH = 8 * scale;
+	int letterW = 6 * scale;
 
-static void drawText(OBJ value, int x, int y, int color16b, int scale, int wrap, int bgColor, int unicodeFont) {
-	int lineH, letterW;
-
-	#if !defined(U8G2_FONT_SUPPORT)
-		unicodeFont = false;
-		scale = 2 * scale;
-	#endif
-
-	if (unicodeFont) {
-		lineH = 16 * scale;
-		letterW = 8 * scale;
-		tft->setCursor(x, y + (14 * scale)); // offset to baseline
-	} else {
-		lineH = 8 * scale;
-		letterW = 6 * scale;
-		tft->setCursor(x, y);
-	}
-	useUnicodeFont(unicodeFont);
+	tft->setCursor(x, y);
 	tft->setTextColor(color16b);
 	tft->setTextSize(scale);
 	tft->setTextWrap(wrap);
@@ -1333,81 +1301,10 @@ static OBJ primText(int argCount, OBJ *args) {
 	int wrap = (argCount > 5) ? (trueObj == args[5]) : true;
 	int bgColor = (argCount > 6) ? color24to16b(obj2int(args[6])) : -1;
 
-	drawText(value, x, y, color16b, scale, wrap, bgColor, false);
+	drawText(value, x, y, color16b, scale, wrap, bgColor);
 
 	UPDATE_DISPLAY();
 	return falseObj;
-}
-
-static OBJ primUnicode(int argCount, OBJ *args) {
-	if (!tft) return falseObj;
-
-	OBJ value = args[0];
-	int x = obj2int(args[1]);
-	int y = obj2int(args[2]);
-	int color16b = color24to16b(obj2int(args[3]));
-	int scale = (argCount > 4) ? obj2int(args[4]) : 1;
-	int wrap = (argCount > 5) ? (trueObj == args[5]) : true;
-	int bgColor = (argCount > 6) ? color24to16b(obj2int(args[6])) : -1;
-
-	drawText(value, x, y, color16b, scale, wrap, bgColor, true);
-
-	UPDATE_DISPLAY();
-	return falseObj;
-}
-
-static OBJ primTextWidth(int argCount, OBJ *args) {
-	// May not need this primitive since Unicode font turns out to be monospaced.
-	if (!tft) return falseObj;
-	if (argCount < 2) return fail(notEnoughArguments);
-	if (!IS_TYPE(args[0], StringType)) return fail(needsStringError);
-	if (!isInt(args[1])) return fail(needsIntegerError);
-
-	char *s = obj2str(args[0]);
-	int scale = obj2int(args[1]);
-	int useUnicode = ((argCount > 2) && (args[2] == trueObj)); // optional 'useUnicode' flag
-
-	useUnicodeFont(useUnicode);
-	tft->setTextWrap(false);
-	tft->setTextSize(scale);
-
-	int result = 0;
-	if (useUnicode) {
-		int16_t x, y;
-		uint16_t w, h;
-		tft->getTextBounds(s, 0, (14 * scale), &x, &y, &w, &h);
-		result = x + w;
-	} else {
-		result = 8 * strlen(s) * scale;
-	}
-	return int2obj(result);
-}
-
-static OBJ primTextHeight(int argCount, OBJ *args) {
-	// May not need this primitive since Unicode font turns out to be monospaced.
-	if (!tft) return falseObj;
-	if (argCount < 2) return fail(notEnoughArguments);
-	if (!IS_TYPE(args[0], StringType)) return fail(needsStringError);
-	if (!isInt(args[1])) return fail(needsIntegerError);
-
-	char *s = obj2str(args[0]);
-	int scale = obj2int(args[1]);
-	int useUnicode = ((argCount > 2) && (args[2] == trueObj)); // optional 'useUnicode' flag
-
-	useUnicodeFont(useUnicode);
-	tft->setTextWrap(false);
-	tft->setTextSize(scale);
-
-	int result = 0;
-	if (useUnicode) {
-		int16_t x, y;
-		uint16_t w, h;
-		tft->getTextBounds(s, 0, (14 * scale), &x, &y, &w, &h);
-		result = y + h;
-	} else {
-		result = 8 * scale;
-	}
-	return int2obj(result);
 }
 
 static OBJ primClear(int argCount, OBJ *args) {
@@ -1490,7 +1387,6 @@ static OBJ primAruco(int argCount, OBJ *args) {
 			}
 		}
 	}
-	useUnicodeFont(false);
 	tft->setCursor(startX + 2, 2);
 	tft->setTextColor(BLACK);
 	tft->setTextSize(2);
@@ -1990,10 +1886,6 @@ static OBJ primCircle(int argCount, OBJ *args) { return falseObj; }
 static OBJ primTriangle(int argCount, OBJ *args) { return falseObj; }
 
 static OBJ primText(int argCount, OBJ *args) { return falseObj; }
-static OBJ primUnicode(int argCount, OBJ *args) { return falseObj; }
-static OBJ primTextWidth(int argCount, OBJ *args) { return falseObj; }
-static OBJ primTextHeight(int argCount, OBJ *args) { return falseObj; }
-
 static OBJ primClear(int argCount, OBJ *args) { return falseObj; }
 
 OBJ primDeferUpdates(int argCount, OBJ *args) { return falseObj; }
@@ -2052,9 +1944,6 @@ static PrimEntry entries[] = {
 	{"circle", primCircle},
 	{"triangle", primTriangle},
 	{"text", primText},
-	{"unicode", primUnicode},
-	{"textWidth", primTextWidth},
-	{"textHeight", primTextHeight},
 	{"clear", primClear},
 	{"deferUpdates", primDeferUpdates},
 	{"resumeUpdates", primResumeUpdates},
