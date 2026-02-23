@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-02-23 13:58+0000\n"
+"PO-Revision-Date: 2026-02-23 14:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2927,7 +2927,7 @@ msgstr "fabelhaft"
 
 #. TFT Display library block
 msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
-msgstr "zeichne abgerundetes Rechteck auf TFT x _ y _ b _ h _ Radius _ Farbe _"
+msgstr "zeichne gerundetes Rechteck auf TFT x _ y _ b _ h _ Radius _ Farbe _"
 
 #. TFT Display library block
 msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
