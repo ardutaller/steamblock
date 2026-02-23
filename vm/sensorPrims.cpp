@@ -17,7 +17,7 @@
 #include "interp.h"
 
 #if defined(PICO_ED) || defined(XRP) || defined(GIZMO_MECHATRONICS) || \
-	defined(ARDUINO_SEEED_XIAO_RP2350) || defined(PI_BODY)
+	defined(ARDUINO_SEEED_XIAO_RP2350)
 		#define Wire Wire1
 #endif
 
@@ -39,6 +39,9 @@
 #elif defined(WUKONG2040)
 	#define PIN_WIRE_SCL 17
 	#define PIN_WIRE_SDA 16
+#elif defined(PI_BODY)
+	#define PIN_WIRE_SCL 1
+	#define PIN_WIRE_SDA 0
 #elif defined(ARDUINO_Mbits)
 	// Note: SDA and SCL are reversed from most other ESP32 boards!
 	#define PIN_WIRE_SCL 21
