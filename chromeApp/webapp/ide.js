@@ -39,7 +39,7 @@ IDE.resize = function () {
 		leftBarWidth = document.querySelector('[data-ide="workspace-left"]').clientWidth,
 		newHeight = winHeight - (topBarHeight + tipBarHeight);
 
-	document.querySelector('[data-ide="workspace"]').style.height = newHeight + 'px';
+	// document.querySelector('[data-ide="workspace"]').style.height = newHeight + 'px';
 	GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
 };
 
@@ -202,7 +202,7 @@ IDE.tipBar.setTip = function (title, content) {
 			tipHTML =
 				tipHTML.replaceAll(
 					key,
-					'<img src="img/' + this.icons[key] + '.svg" class="tips__icon"></img>'
+					'<span class="tips__icon"><img src="img/' + this.icons[key] + '.svg"></span>'
 				);
 		});
 	}

@@ -4,23 +4,57 @@
 
 
 .tips {
-	color: white;
-	font-size: 14px;
-	vertical-align: bottom;
+	height: var(--space-16);
+
+	display: flex;
+	align-items: center;
+
+	font-size: var(--fontSize-12);
+	line-height: var(--lineHeight-100);
 }
 
 
 .tips__title {
+	height: var(--space-16);
+	padding-left: var(--space-12);
+
+	display: flex;
+	align-items: center;
+
+	color: var(--color-white);
 	font-weight: 600;
-	padding-left: 7px;
 }
 
 
 .tips__content {
-	padding-left: 6px;
+	position: relative;
+	height: var(--space-16);
+	padding-left: var(--space-8);
+
+	display: flex;
+	align-items: center;
+	gap: var(--space-4); /* Between text and img */
+
+	color: var(--color-blue-grey-100);
+
+	&::before {
+		content: '';
+		display: block;
+		margin-right: var(--space-6);
+		width: var(--space-16);
+		height: var(--space-1);
+		top: 50%;
+		left: 0;
+		background-color: var(--color-blue-grey-600);
+	}
 }
 
 
 .tips__icon {
-	vertical-align: bottom;
+	display: inline-block;
+	height: var(--space-16);
+
+	img {
+		height: var(--space-16);
+	}
 }

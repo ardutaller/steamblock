@@ -20,7 +20,7 @@ const LiveReload = {
 		'styles/components/_categories.css',
 		'styles/components/_ide.css',
 		'styles/components/_menus.css',
-		'styles/components/_scripts-pane-control.css',
+		'styles/components/_scripts-pane-controls.css',
 		'styles/components/_tips.css',
 		'styles/components/_top-bar.css',
 		'styles/components/_window.css',
