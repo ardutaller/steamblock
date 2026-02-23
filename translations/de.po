@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-02-23 13:49+0000\n"
+"PO-Revision-Date: 2026-02-23 13:51+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8005,7 +8005,7 @@ msgstr ""
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 msgstr ""
-"verbinde ST7796 b _ h _ Rotation _ #BR# dc Pin _ cs- Pin _ backlight Pin _"
+"verbinde ST7796 b _ h _ Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
 
 #. External Displays Library block
 msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
