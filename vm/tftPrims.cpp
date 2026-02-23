@@ -1617,12 +1617,27 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 	uint8 *bufferBytes = (uint8 *) &FIELD(buffer, 0);
 	// Read the indices from the buffer and turn them into color values from the
 	// palette, and paint them onto the TFT
+	uint16_t palette16[256];
+	int paletteSize = obj2int(FIELD(palette, 0));
+	for (int i = 0; i < 256; i++) {
+		if (i < paletteSize) {
+			palette16[i] = (uint16_t)color24to16b(obj2int(FIELD(palette, i + 1)));
+		} else {
+			palette16[i] = 0;
+		}
+	}
+
 	for (int y = 0; y < originHeight; y++) {
 		for (int x = 0; x < originWidth; x++) {
-			int colorIndex = bufferBytes[
-				(y + originY) * bufferWidth + (x + originX)];
-			int color = color24to16b(obj2int(FIELD(palette, colorIndex + 1)));
-			tft->fillRect((originX + x) * scale, (originY + y) * scale, scale, scale, color);
+			int colorIndex = bufferBytes[(y + originY) * bufferWidth + (x + originX)];
+			uint16_t color = palette16[colorIndex];
+			for (int i = 0; i < scale; i++) {
+				bufferPixels[x * scale + i] = color;
+			}
+		}
+
+		for (int i = 0; i < scale; i++) {
+			tft->draw16bitRGBBitmap(originX * scale, (originY + y) * scale + i, bufferPixels, originWidth * scale, 1);
 		}
 	}
 
