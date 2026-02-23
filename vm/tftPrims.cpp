@@ -55,7 +55,7 @@ static int deferUpdates = false;
 #define BUFFER_PIXELS_SIZE 480 // maximum display width
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
-#if !defined(PICO_ED)
+#if !(defined(PICO_ED) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
 	// Helper function to flush canvas-based OLED displays and yield after slow TFT operations.
 	static void inline UPDATE_DISPLAY() {
 		if (isMonochrome && !deferUpdates) {
