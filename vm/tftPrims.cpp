@@ -848,8 +848,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (percentage < 67) fillColor = 0xFD20; // YELLOW
 			if (percentage < 34) fillColor = 0xF800; // RED
 
-			uint16_t borderColor = 0x0000; // BLACK
-			uint16_t textColor = 0x0000;   // BLACK by default
+			uint16_t borderColor = 0x0000;	// BLACK
+			uint16_t textColor = 0x0000;	// BLACK by default
 
 			int level = map(percentage, 0, 100, 0, width - 4);
 			tft->drawRoundRect(x, y, width, height, 3, borderColor);
@@ -918,10 +918,10 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 	#elif defined(M5Atom_S3_TFT)
 		#define TFT_MOSI 21
 		#define TFT_SCLK 17
-		#define TFT_CS   15
-		#define TFT_DC   33
-		#define TFT_RST  34
-		#define TFT_BL   16
+		#define TFT_CS 15
+		#define TFT_DC 33
+		#define TFT_RST 34
+		#define TFT_BL 16
 
 		void tftInit() {
 			Arduino_ESP32SPI *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, -1);
