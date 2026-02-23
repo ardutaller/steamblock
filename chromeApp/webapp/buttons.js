@@ -65,38 +65,38 @@ const Buttons = {
 
 	// Workspace tools
 	undo: {
-		icon: 'img/undo.svg',
+		icon: 'undo--16x16',
 		label: 'Undo',
 		description: 'Undo the last action',
-		class: 'workspace__tool',
+		class: 'scripts-pane-controls__button',
 		action: () => { GP.apiCall('edit.undo'); },
 	},
 	redo: {
-		icon: 'img/redo.svg',
+		icon: 'redo--16x16',
 		label: 'Redo',
 		description: 'Redo the last undone action',
-		class: 'workspace__tool',
+		class: 'scripts-pane-controls__button',
 		action: () => { GP.apiCall('edit.redo'); },
 	},
 	zoomOut: {
-		icon: 'img/zoomOut.svg',
+		icon: 'zoom-out--16x16',
 		label: 'Zoom out',
 		description: 'Decrease block size',
-		class: 'workspace__tool',
+		class: 'scripts-pane-controls__button',
 		action: () => { GP.apiCall('scripts.zoomOut'); },
 	},
 	restoreZoom: {
-		icon: 'img/restoreZoom.svg',
+		icon: 'zoom-restore--16x16',
 		label: 'Restore zoom',
 		description: 'Restore block size to 100%',
-		class: 'workspace__tool',
+		class: 'scripts-pane-controls__button',
 		action: () => { GP.apiCall('scripts.restoreZoom'); },
 	},
 	zoomIn: {
-		icon: 'img/zoomIn.svg',
+		icon: 'zoom-in--16x16',
 		label: 'Zoom in',
 		description: 'Increase block size',
-		class: 'workspace__tool',
+		class: 'scripts-pane-controls__button',
 		action: () => { GP.apiCall('scripts.zoomIn'); },
 	}
 };

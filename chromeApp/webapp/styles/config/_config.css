@@ -151,7 +151,17 @@
 
   --borderRadius-2:   2px;
   --borderRadius-4:   4px;
+  --borderRadius-6:   6px;
+  --borderRadius-8:   8px;
   --borderRadius-max: 50%;
+
+
+
+
+
+  /* Box Shadow */
+
+  --boxShadow-scriptsPanel:   0 0 6px 0px rgba(0, 0, 0, 0.1);
 
 
 

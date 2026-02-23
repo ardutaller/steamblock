@@ -4,36 +4,60 @@
 
 
 .scripts-pane-controls {
-	display: flex;
 	position: fixed;
+	height: var(--space-32);
 	z-index: 2;
-	right: 24px;
-	bottom: 48px;
-	border: 1px solid;
-	border-radius: 5px;
-	padding: 1px 6px;
-	background-color: #FFFFFFDD;
-	border-color: #eff0f2;
-	box-shadow: 0 0 6px 0px rgba(0,0,0,0.10);
+	right: var(--space-12);
+	bottom: 44px;
+	padding: var(--space-8) var(--space-10);
+
+	display: flex;
+	align-items: stretch;
+	gap: var(--space-6);
+
+	background-color: var(--color-white);
+	border: 1px solid var(--color-blue-grey-75);
+	border-radius: var(--borderRadius-6);
+
+	box-shadow: var(--boxShadow-scriptsPanel);
+
+	.--dark-mode & {
+		background-color: var(--color-blue-grey-850);
+		border-color: var(--color-blue-grey-700);
+	}
 }
 
 
-.scripts-pane-controls.dark-mode {
-	border-color: #454a64;
-	background-color: #454a6466;
+.scripts-pane-controls__button {
+	width: var(--space-16);
+	height: var(--space-16);
+
+	color: var(--color-blue-grey-500);
+	transition: color var(--duration-100);
+
+	&:hover {
+		color: var(--color-blue-grey-900);
+	}
+
+	.--dark-mode & {
+		color: var(--color-blue-grey-300);
+
+		&:hover {
+			color: var(--color-blue-grey-50);
+			color: var(--color-white);
+		}
+	}
 }
 
 
-.scripts-pane-controls .vl {
-	margin: 0 5px;
-}
+/* TODO This is not a top bar separator... */
+.scripts-pane-controls .top-bar__separator {
+	height: var(--space-32);
+	margin: 0 var(--space-4);
+	transform: translateY(-9px);
+	background-color: var(--color-blue-grey-75);
 
-
-.scripts-pane-controls .icon {
-	padding: 8px 5px 4px 5px;
-}
-
-
-.scripts-pane-controls .icon img {
-	height: 22px;
+	.--dark-mode & {
+		background-color: var(--color-blue-grey-700);
+	}
 }
