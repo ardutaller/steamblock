@@ -33,13 +33,13 @@ IDE.init = function () {
 IDE.resize = function () {
 	// TODO Rename vars to match CSS classes (new naming)
 	let winHeight = window.innerHeight,
-		topBarHeight = document.querySelector('.top-bar').clientHeight,
-		tipBarHeight = document.querySelector('.bottom-bar').clientHeight,
+		topBarHeight = document.querySelector('[data-ide="top-bar"]').clientHeight,
+		tipBarHeight = document.querySelector('[data-ide="bottom-bar"]').clientHeight,
 		winWidth = window.innerWidth,
-		leftBarWidth = document.querySelector('.workspace__left').clientWidth,
+		leftBarWidth = document.querySelector('[data-ide="workspace-left"]').clientWidth,
 		newHeight = winHeight - (topBarHeight + tipBarHeight);
 
-	document.querySelector('.workspace').style.height = newHeight + 'px';
+	document.querySelector('[data-ide="workspace"]').style.height = newHeight + 'px';
 	GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
 };
 
@@ -90,7 +90,7 @@ IDE.applyUserPreferences = function () {
 IDE.toggleAdvancedMode = function () {
 	this.toggleUserPreference('devMode')
 	// rebuild categories
-	this.populateCategories(document.querySelector('.categories'));
+	this.populateCategories(document.querySelector('[data-ide="categories"]'));
 };
 
 
@@ -169,8 +169,8 @@ IDE.tipBar.init = function () {
 	this.icons['(-o)'] = 'bool_true';
 	this.icons['(o-)'] = 'bool_false';
 
-	this.titleElement = document.querySelector('.tips__title');
-	this.contentElement = document.querySelector('.tips__content');
+	this.titleElement = document.querySelector('[data-ide="tips-title"]');
+	this.contentElement = document.querySelector('[data-ide="tips-content"]');
 
 	document.addEventListener(
 		'ide.tip',
@@ -252,15 +252,15 @@ IDE.populateLibraries = function (element) {
 
 // Build the IDE
 IDE.build = function () {
-	this.populateTopBar(document.querySelector('.top-bar'));
-	this.populateCategories(document.querySelector('.categories'));
-	this.populateScriptControls(document.querySelector('.scripts-pane-controls'));
+	this.populateTopBar(document.querySelector('[data-ide="top-bar"]'));
+	this.populateCategories(document.querySelector('[data-ide="categories"]'));
+	this.populateScriptControls(document.querySelector('[data-ide="scripts-pane-controls"]'));
 	this.tipBar.init();
 	// check connection every 500ms
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
 	setTimeout(() =>
-		{ document.querySelector('.app-preloader').classList.add('--is-loaded'); },
+		{ document.querySelector('[data-ide="app-preloader"]').classList.add('--is-loaded'); },
 		500 // it takes a bit for all elements to position and show themselves
 	);
 };

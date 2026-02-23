@@ -70,7 +70,7 @@
 
 
 		<!-- Loader -->
-		<div class="app-preloader">
+		<div class="app-preloader" data-ide="app-preloader">
 			<div class="app-preloader__big-logo"></div>
 			<h1 class="app-preloader__title">Loading...</h1>
 		</div>
@@ -87,7 +87,7 @@
 		<!-- IDE -->
 		<div class="ide" data-ide="ide">
 
-			<nav class="top-bar">
+			<nav class="top-bar" data-ide="top-bar">
 
 				<a href="https://microblocks.fun/" target="_blank" class="top-bar__logo" aria-label="MicroBlocks website">
 					<img src="img/microblocks-ide-logo.svg" alt="">
@@ -103,10 +103,10 @@
 
 			</nav>
 
-			<div class="workspace">
+			<div class="workspace" data-ide="workspace">
 
-				<div class="workspace__left">
-					<div class="categories"></div>
+				<div class="workspace__left" data-ide="workspace-left">
+					<div class="categories" data-ide="categories"></div>
 					<span class="lib-header"><l->LIBRARIES</l-></span>
 					<nav class="lib-button-holder">
 						<a class="round-button" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
@@ -116,15 +116,15 @@
 
 				<div class="emscripten">
 					<canvas id="canvas" class="emscripten" width="100px" height="100px"></canvas>
-					<div class="scripts-pane-controls --can-drag-through"></div>
+					<div class="scripts-pane-controls --can-drag-through" data-ide="scripts-pane-controls"></div>
 				</div>
 
 			</div>
 
-			<div class="bottom-bar">
+			<div class="bottom-bar" data-ide="bottom-bar">
 				<div class="tips">
-					<span class="tips__title"></span>
-					<span class="tips__content"></span>
+					<span class="tips__title" data-ide="tips-title"></span>
+					<span class="tips__content" data-ide="tips-content"></span>
 				</div>
 			</div>
 
