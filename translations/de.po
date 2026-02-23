@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-02-21 17:09+0000\n"
+"PO-Revision-Date: 2026-02-23 13:49+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -4223,7 +4223,7 @@ msgstr "setze Display _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "init i2c _ Adresse (hex) _ Reset _ flip _"
+msgstr "init i2c _ Adresse (hex) _ reset Pin _ flip _"
 
 #. General MIDI control change
 msgid "hold"
@@ -4321,7 +4321,7 @@ msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "init spi _ D/C _ Reset _ flip _"
+msgstr "init spi _ dc Pin _ reset Pin _ flip _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -7127,7 +7127,7 @@ msgstr "S2"
 
 #. OLED Graphics library block
 msgid "initialize i2c(auto) reset pin# _ flip _"
-msgstr "init i2c (auto) Reset _ flip _"
+msgstr "init i2c (auto) reset Pin _ flip _"
 
 #. Files library block
 msgid "contents of file _"
@@ -7983,12 +7983,12 @@ msgstr "Funktion _ existiert?"
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 msgstr ""
-"verbinde ST7735 b _ h _ Rotation _ #BR# dc-Pin _ cs-Pin _ backlight-Pin _"
+"verbinde ST7735 b _ h _ Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "#BR# reset pin _ invert colors _"
-msgstr "#BR# reset-Pin _ invertierte Farben _"
+msgstr "#BR# reset Pin _ invertierte Farben _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
@@ -7999,17 +7999,17 @@ msgstr "#BR# x-Offset _ y-Offset _"
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 msgstr ""
-"verbinde ST7789 b _ h _ Rotation _ #BR# dc-Pin _ cs-Pin _ backlight-Pin _"
+"verbinde ST7789 b _ h _ Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 msgstr ""
-"verbinde ST7796 b _ h _ Rotation _ #BR# dc-Pin _ cs-Pin _ backlight-Pin _"
+"verbinde ST7796 b _ h _ Rotation _ #BR# dc Pin _ cs- Pin _ backlight Pin _"
 
 #. External Displays Library block
 msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
-msgstr "verbinde ILI9341 Rotation _ dc-Pin _ cs-Pin _ backlight-Pin _"
+msgstr "verbinde ILI9341 Rotation _ dc Pin _ cs Pin _ backlight Pin _"
 
 #. External Displays Library block
 msgid "attach OLED w _ h _"
