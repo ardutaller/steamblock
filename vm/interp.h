@@ -275,6 +275,11 @@ void runTasksUntilDone(void);
 void interpTests1(void);
 void taskTest(void);
 
+// UTF-8 Utility
+
+int countUTF8(char *s);
+OBJ charAt(OBJ stringObj, int i);
+
 // Platform Specific Operations
 
 uint64 totalMicrosecs();

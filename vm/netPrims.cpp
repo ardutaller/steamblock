@@ -572,7 +572,7 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 	#endif
 
 	uint32 start = millisecs();
-	const int timeout = 3000;
+	const int timeout = 5000; // increased from 3 to 5 secs to try to reduce failed connections
 	int ok;
 
 	activeHttpClient->setTimeout(timeout);

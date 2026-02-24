@@ -412,14 +412,6 @@ void hardwareInit() {
 	#define INVERT_USER_LED true
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5};
 
-#elif defined(ARDUINO_TEENSY31)
-	#define BOARD_TYPE "Teensy 3.1"
-	#define DIGITAL_PINS 24
-	#define ANALOG_PINS 10
-	#define TOTAL_PINS 34
-	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9};
-	#define PIN_LED 13
-
 #elif defined(ARDUINO_TEENSY40)
 	// placeholder; not tested
 	#define BOARD_TYPE "Teensy 4.0"
@@ -723,6 +715,7 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 40
 	static const int analogPin[] = {};
+	#define PIN_LED -1 // no built-in LED
 	#define DEFAULT_TONE_PIN 2
 	// Pins 5 and 15 are reserved for use by the M5Stack Core2 TFT display
 	static char reservedPin[TOTAL_PINS] = {
@@ -1157,6 +1150,22 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+#elif defined(PI_BODY)
+
+	#define BOARD_TYPE "PiBody"
+	#define DIGITAL_PINS 30
+	#define ANALOG_PINS 4
+	#define TOTAL_PINS DIGITAL_PINS
+	static const int analogPin[] = {A0, A1, A2, A3};
+	#define PIN_BUTTON_A 20
+	#define PIN_BUTTON_B 21
+	#undef BUTTON_PRESSED
+	#define BUTTON_PRESSED HIGH
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 1, 1, 0, 0, 0, 0};
 
 #elif defined(ARDUINO_ARCH_RP2040)
 
@@ -1987,9 +1996,11 @@ void primSetUserLED(OBJ *args) {
 		} else {
 			primMBUnplot(2, coords);
 		}
-	#elif defined(BUILT_IN_DISPLAY)
-			tftSetHugePixel(3, 1, (trueObj == args[0]));
 	#else
+		if (useTFT) {
+			tftSetHugePixel(3, 1, (trueObj == args[0]));
+			return;
+		}
 		if (PIN_LED < 0) return; // board does not have a user LED
 		if (PIN_LED < TOTAL_PINS) {
 			SET_MODE(PIN_LED, OUTPUT);

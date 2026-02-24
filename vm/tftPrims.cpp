@@ -12,9 +12,11 @@
 #include "interp.h"
 #include <inttypes.h>
 
-#if defined(ARDUINO_WEACT) || defined(NRF51)
+#if defined(ARDUINO_WEACT) || defined(NRF51)  || defined(ARDUINO_ARCH_SAMD) || \
+	defined(__ZEPHYR__) || defined(DUELink)
 
 // TFT primitives are not supported
+#define NO_EXTERNAL_DISPLAY_PRIMS
 
 #elif defined(PICO_ED)
 
@@ -48,8 +50,17 @@ static int deferUpdates = false;
 #define BUFFER_PIXELS_SIZE 480 // maximum display width
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
-// Redefine this macro for displays that must explicitly push offscreen changes to the display
-#define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow TFT operations
+#if !(defined(PICO_ED) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
+	// Helper function to flush canvas-based OLED displays and yield after slow TFT operations.
+	static void inline UPDATE_DISPLAY() {
+		if (isMonochrome && !deferUpdates) {
+			tft->flush();
+			taskSleep(3);
+		} else {
+			taskSleep(-1);
+		}
+	}
+#endif
 
 	#if defined(ARDUINO_CITILAB_ED1)
 		#define TFT_CS	5
@@ -63,7 +74,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
  					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -82,7 +93,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				// Turn on backlight:
 				pinMode(32, OUTPUT);
@@ -125,7 +136,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 1, true,
 					TFT_HEIGHT, TFT_WIDTH, 53, 40, 53, 40);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -333,7 +344,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, true);
 
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				bus->beginWrite();
 				bus->writeC8D8(ILI9341_MADCTL, 0x08 | 0x04); // RGB pixel order, refresh LCD right to left
@@ -424,7 +435,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
@@ -451,7 +462,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				// Turn on backlight on IoT-Bus
 				pinMode(33, OUTPUT);
@@ -538,7 +549,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, g, 0, 0, true);
 
 			if (!tft->begin(400000)) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -547,9 +558,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 				useTFT = true;
 			}
 		}
-
-		#undef UPDATE_DISPLAY
-		#define UPDATE_DISPLAY() { if (!deferUpdates) { tft->flush(); taskSleep(-1); }}
 
 	#elif defined(TTGO_DISPLAY)
 		#define TFT_MOSI 19
@@ -566,7 +574,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40); // reverse height and width because of rotation
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
@@ -591,7 +599,29 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7735(bus, TFT_RST, 3, false,
 					TFT_WIDTH, TFT_HEIGHT);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
+			} else {
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
+				tftClear();
+				useTFT = true;
+			}
+		}
+
+	#elif defined(PI_BODY)
+		#define TFT_DC 14
+		#define TFT_CS 15
+		#define TFT_SCLK 10
+		#define TFT_MOSI 11
+		#define TFT_RST 13
+		#define TFT_WIDTH 240
+		#define TFT_HEIGHT 320
+
+		void tftInit() {
+			Arduino_DataBus *bus = new Arduino_RPiPicoSPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, GFX_NOT_DEFINED, spi1);
+			tft = new Arduino_ST7789(bus, TFT_RST, 2, true, TFT_WIDTH, TFT_HEIGHT);
+			if (!tft->begin()) {
+				outputString("tftInit() failed!");
 			} else {
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -616,7 +646,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40); // reverse height and width because of rotation
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_PWR, OUTPUT);
 				digitalWrite(TFT_PWR, 1); // turn on display power
@@ -813,8 +843,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (percentage < 67) fillColor = 0xFD20; // YELLOW
 			if (percentage < 34) fillColor = 0xF800; // RED
 
-			uint16_t borderColor = 0x0000; // BLACK
-			uint16_t textColor = 0x0000;   // BLACK by default
+			uint16_t borderColor = 0x0000;	// BLACK
+			uint16_t textColor = 0x0000;	// BLACK by default
 
 			int level = map(percentage, 0, 100, 0, width - 4);
 			tft->drawRoundRect(x, y, width, height, 3, borderColor);
@@ -843,7 +873,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
 					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
@@ -882,16 +912,16 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 	#elif defined(M5Atom_S3_TFT)
 		#define TFT_MOSI 21
 		#define TFT_SCLK 17
-		#define TFT_CS   15
-		#define TFT_DC   33
-		#define TFT_RST  34
-		#define TFT_BL   16
+		#define TFT_CS 15
+		#define TFT_DC 33
+		#define TFT_RST 34
+		#define TFT_BL 16
 
 		void tftInit() {
 			Arduino_ESP32SPI *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, -1);
 			tft = new Arduino_GC9107(bus, TFT_RST, 0 /* rotation */, true /* IPS */);
 			if (!tft->begin()) {
-				outputString("TFT initialization failed!");
+				outputString("tftInit() failed!");
 			} else {
 				pinMode(TFT_BL, OUTPUT);
 				digitalWrite(TFT_BL, HIGH); // turn on backlight
@@ -902,7 +932,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			}
 		}
 
-	#elif defined(ARDUINO_WEACT) || defined(NRF51)
+	#elif defined(NO_EXTERNAL_DISPLAY_PRIMS)
 		// no external display primitives
 
 		void tftInit() { } // stub; no display is initialized at startup time
@@ -910,7 +940,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 	#else
 		// no built-in display but support external display prims
 		#define HAS_EXTERNAL_DISPLAY_PRIMS
-
 		void tftInit() { } // stub; no display is initialized at startup time
 
 #endif
@@ -1235,26 +1264,18 @@ static OBJ primTriangle(int argCount, OBJ *args) {
 	return falseObj;
 }
 
-static OBJ primText(int argCount, OBJ *args) {
-	if (!tft) return falseObj;
+static void drawText(OBJ value, int x, int y, int color16b, int scale, int wrap, int bgColor) {
+	int lineH = 8 * scale;
+	int letterW = 6 * scale;
 
-	OBJ value = args[0];
-	int x = obj2int(args[1]);
-	int y = obj2int(args[2]);
-	int color16b = color24to16b(obj2int(args[3]));
-	int scale = (argCount > 4) ? obj2int(args[4]) : 2;
-	int wrap = (argCount > 5) ? (trueObj == args[5]) : true;
-	int bgColor = (argCount > 6) ? color24to16b(obj2int(args[6])) : -1;
 	tft->setCursor(x, y);
 	tft->setTextColor(color16b);
 	tft->setTextSize(scale);
 	tft->setTextWrap(wrap);
 
-	int lineH = 8 * scale;
-	int letterW = 6 * scale;
 	if (IS_TYPE(value, StringType)) {
-	char *str = obj2str(value);
-	if (bgColor != -1) tft->fillRect(x, y, strlen(str) * letterW, lineH, bgColor);
+		char *str = obj2str(value);
+		if (bgColor != -1) tft->fillRect(x, y, countUTF8(str) * letterW, lineH, bgColor);
 		tft->print(obj2str(value));
 	} else if (trueObj == value) {
 		if (bgColor != -1) tft->fillRect(x, y, 4 * letterW, lineH, bgColor);
@@ -1268,6 +1289,21 @@ static OBJ primText(int argCount, OBJ *args) {
 		if (bgColor != -1) tft->fillRect(x, y, strlen(s) * letterW, lineH, bgColor);
 		tft->print(s);
 	}
+}
+
+static OBJ primText(int argCount, OBJ *args) {
+	if (!tft) return falseObj;
+
+	OBJ value = args[0];
+	int x = obj2int(args[1]);
+	int y = obj2int(args[2]);
+	int color16b = color24to16b(obj2int(args[3]));
+	int scale = (argCount > 4) ? obj2int(args[4]) : 2;
+	int wrap = (argCount > 5) ? (trueObj == args[5]) : true;
+	int bgColor = (argCount > 6) ? color24to16b(obj2int(args[6])) : -1;
+
+	drawText(value, x, y, color16b, scale, wrap, bgColor);
+
 	UPDATE_DISPLAY();
 	return falseObj;
 }
@@ -1478,12 +1514,27 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 	uint8 *bufferBytes = (uint8 *) &FIELD(buffer, 0);
 	// Read the indices from the buffer and turn them into color values from the
 	// palette, and paint them onto the TFT
+	uint16_t palette16[256];
+	int paletteSize = obj2int(FIELD(palette, 0));
+	for (int i = 0; i < 256; i++) {
+		if (i < paletteSize) {
+			palette16[i] = (uint16_t)color24to16b(obj2int(FIELD(palette, i + 1)));
+		} else {
+			palette16[i] = 0;
+		}
+	}
+
 	for (int y = 0; y < originHeight; y++) {
 		for (int x = 0; x < originWidth; x++) {
-			int colorIndex = bufferBytes[
-				(y + originY) * bufferWidth + (x + originX)];
-			int color = color24to16b(obj2int(FIELD(palette, colorIndex + 1)));
-			tft->fillRect((originX + x) * scale, (originY + y) * scale, scale, scale, color);
+			int colorIndex = bufferBytes[(y + originY) * bufferWidth + (x + originX)];
+			uint16_t color = palette16[colorIndex];
+			for (int i = 0; i < scale; i++) {
+				bufferPixels[x * scale + i] = color;
+			}
+		}
+
+		for (int i = 0; i < scale; i++) {
+			tft->draw16bitRGBBitmap(originX * scale, (originY + y) * scale + i, bufferPixels, originWidth * scale, 1);
 		}
 	}
 
@@ -1579,7 +1630,9 @@ static void turnOnBacklight(int blPin) {
 
 static void freeDisplayController() {
 	if (!tft) delete tft;
-	tftWidth = tftWidth = 0;
+	tftWidth = 0;
+	tftHeight = 0;
+	useTFT = false;
 }
 
 static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
@@ -1600,6 +1653,7 @@ static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int back
 		isMonochrome = false;
 		turnOnBacklight(backlightPin);
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1620,6 +1674,7 @@ static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int back
 		isMonochrome = false;
 		turnOnBacklight(backlightPin);
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1640,6 +1695,7 @@ static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int back
 		isMonochrome = false;
 		turnOnBacklight(backlightPin);
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1659,10 +1715,11 @@ static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
 		tftWidth = 320;
 		tftHeight = 240;
 		tftClear();
+		useTFT = true;
 	}
 }
 
-static void init_1306(int w, int h, int resetPin = GFX_NOT_DEFINED) {
+static void init_1306(int w, int h, int resetPin) {
 	if ((w < 32) || (w > 128) || (h < 16) || (h > 128)) return;
 	if (!tft) delete tft;
 
@@ -1691,7 +1748,8 @@ static void init_1306(int w, int h, int resetPin = GFX_NOT_DEFINED) {
 	} else {
 		g = new Arduino_SSD1306(bus, resetPin, w, h);
 	}
-	if (!tft->begin()) {
+	tft = new Arduino_Canvas_Mono(w, h, g, 0, 0, true);
+	if (!tft->begin(400000)) {
 		freeDisplayController();
 		outputString("Display initialization failed!");
 	} else {
@@ -1699,6 +1757,7 @@ static void init_1306(int w, int h, int resetPin = GFX_NOT_DEFINED) {
 		tftWidth = w;
 		tftHeight = h;
 		tftClear();
+		useTFT = true;
 	}
 }
 
@@ -1713,10 +1772,10 @@ static OBJ primInitST7735(int argCount, OBJ *args) {
 	int rotation = obj2int(args[2]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[3]);
-	int csPin = obj2int(args[4]);
-	int blPin = obj2int(args[5]);
-	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[3]));
+	int csPin = mapDigitalPinNum(obj2int(args[4]));
+	int blPin = mapDigitalPinNum(obj2int(args[5]));
+	int rstPin = mapDigitalPinNum(((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1);
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
 	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
 	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
@@ -1737,10 +1796,10 @@ static OBJ primInitST7789(int argCount, OBJ *args) {
 	int rotation = obj2int(args[2]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[3]);
-	int csPin = obj2int(args[4]);
-	int blPin = obj2int(args[5]);
-	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[3]));
+	int csPin = mapDigitalPinNum(obj2int(args[4]));
+	int blPin = mapDigitalPinNum(obj2int(args[5]));
+	int rstPin = mapDigitalPinNum(((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1);
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
 	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
 	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
@@ -1761,10 +1820,10 @@ static OBJ primInitST7796(int argCount, OBJ *args) {
 	int rotation = obj2int(args[2]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[3]);
-	int csPin = obj2int(args[4]);
-	int blPin = obj2int(args[5]);
-	int rstPin = ((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[3]));
+	int csPin = mapDigitalPinNum(obj2int(args[4]));
+	int blPin = mapDigitalPinNum(obj2int(args[5]));
+	int rstPin = mapDigitalPinNum(((argCount > 6) && isInt(args[6])) ? obj2int(args[6]) : -1);
 	int invertDisplay = ((argCount > 7) && (args[7] == trueObj)) ? true : false;
 	colorBGR = ((argCount > 8) && (args[8] == trueObj)) ? true : false;
 	int xOffset = ((argCount > 9) && isInt(args[9])) ? obj2int(args[9]) : 0;
@@ -1782,10 +1841,10 @@ static OBJ primInitILI9341(int argCount, OBJ *args) {
 	int rotation = obj2int(args[0]);
 	if (rotation < 0) rotation = 0;
 	if (rotation > 3) rotation = 3;
-	int dcPin = obj2int(args[1]);
-	int csPin = obj2int(args[2]);
-	int blPin = obj2int(args[3]);
-	int rstPin = ((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1;
+	int dcPin = mapDigitalPinNum(obj2int(args[1]));
+	int csPin = mapDigitalPinNum(obj2int(args[2]));
+	int blPin = mapDigitalPinNum(obj2int(args[3]));
+	int rstPin = mapDigitalPinNum(((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1);
 	int invertDisplay = ((argCount > 5) && (args[5] == trueObj)) ? true : false;
 
 	init_9341(rotation, dcPin, csPin, blPin, rstPin, invertDisplay);
@@ -1797,7 +1856,7 @@ static OBJ primInitOLED(int argCount, OBJ *args) {
 	if (!(isInt(args[0]) && isInt(args[1]))) return fail(needsIntegerError);
 	int w = obj2int(args[0]);
 	int h = obj2int(args[1]);
-	int rstPin = ((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1;
+	int rstPin = mapDigitalPinNum(((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1);
 
 	init_1306(w, h, rstPin);
 	return falseObj;
@@ -1826,6 +1885,7 @@ static OBJ primRect(int argCount, OBJ *args) { return falseObj; }
 static OBJ primRoundedRect(int argCount, OBJ *args) { return falseObj; }
 static OBJ primCircle(int argCount, OBJ *args) { return falseObj; }
 static OBJ primTriangle(int argCount, OBJ *args) { return falseObj; }
+
 static OBJ primText(int argCount, OBJ *args) { return falseObj; }
 static OBJ primClear(int argCount, OBJ *args) { return falseObj; }
 

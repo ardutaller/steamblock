@@ -58,13 +58,27 @@ static inline char * nextUTF8(char *s) {
 	return s;
 }
 
-static int countUTF8(char *s) {
+int countUTF8(char *s) {
 	int count = 0;
 	while (*s) {
 		s = nextUTF8(s);
 		count++;
 	}
 	return count;
+}
+
+OBJ charAt(OBJ stringObj, int i) {
+	char *start = obj2str(stringObj);
+	while (i-- > 1) { // find start of the ith Unicode character
+		if (!*start) return fail(indexOutOfRangeError); // end of string
+		start = nextUTF8(start);
+	}
+	int byteCount = nextUTF8(start) - start;
+	OBJ result = newString(byteCount);
+	if (result) {
+		memcpy(obj2str(result), start, byteCount);
+	}
+	return result;
 }
 
 static int unicodeCodePoint(char *s) {

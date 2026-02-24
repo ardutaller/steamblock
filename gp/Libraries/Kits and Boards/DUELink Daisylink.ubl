@@ -1,6 +1,6 @@
 module 'DUELink Daisylink' Comm
 author 'GHI Electronics'
-version 0 14 
+version 0 15 
 choices due_combx b0 b1 b2 b3 b4 b5 b6 b7 
 description 'Handles tethered communications via I2C or serial (UART) to DUELink Daisylink module(s).
 
@@ -37,6 +37,7 @@ variables _dueUseI2C _dueReadTimeout
   space
   space
   spec ' ' '_due_init' '_due_init'
+  spec 'r' '_due_isDUELink' '_due_isDUELink'
   spec ' ' '_due_send' '_due send _' 'str'
   spec ' ' '_dueSendRaw' '_due send raw _' 'auto' '10'
   spec 'r' '_due_awaitResult' '_due await result'
@@ -127,7 +128,7 @@ to '_due_init' {
   if (_dueReadTimeout == 0) {_dueReadTimeout = 1000}
   if (not (isType _dueUseI2C 'boolean')) {
     comment 'Not yet initialized, set _dueUseI2C.'
-    if (('[misc:dueLinkPID]') > 0) {
+    if ('_due_isDUELink') {
       comment 'This is a DUELink board; use serial.'
       _dueUseI2C = (booleanConstant false)
       if ('[serial:dueSend]' ('[data:unicodeString]' 10) 1) {
@@ -140,6 +141,10 @@ to '_due_init' {
     comment 'Wait a bit because device will see multiple commands'
     waitMillis 300
   }
+}
+
+to '_due_isDUELink' {
+  return ('[serial:isDUELink]')
 }
 
 to '_due_send' s {
