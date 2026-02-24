@@ -39,3 +39,5 @@ electron/src/snapBlocks/Examples
 electron/src/snapBlocks/Libraries
 
 electron/node_modules/*
+**/node_modules/*
+
