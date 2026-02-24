@@ -1515,13 +1515,10 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 	// Read the indices from the buffer and turn them into color values from the
 	// palette, and paint them onto the TFT
 	uint16_t palette16[256];
+	memset(palette16, 0, sizeof(palette16));
 	int paletteSize = obj2int(FIELD(palette, 0));
-	for (int i = 0; i < 256; i++) {
-		if (i < paletteSize) {
-			palette16[i] = (uint16_t)color24to16b(obj2int(FIELD(palette, i + 1)));
-		} else {
-			palette16[i] = 0;
-		}
+	for (int i = 0; i < paletteSize; i++) {
+		palette16[i] = (uint16_t)color24to16b(obj2int(FIELD(palette, i + 1)));
 	}
 
 	for (int y = 0; y < originHeight; y++) {
