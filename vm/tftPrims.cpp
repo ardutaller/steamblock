@@ -820,8 +820,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_HEIGHT 240
 		#define DEFAULT_BATTERY_PIN 34
 		#define LOGO_PATH "/logo.raw"
-		#define BLACK 0
-		#define WHITE 65535
 
 		void drawRawImage(const char* filename, int x0, int y0, int width, int height) {
 			if (!LittleFS.begin()) return;
@@ -1489,9 +1487,15 @@ static OBJ primMergeBitmap(int argCount, OBJ *args) {
 static OBJ primDrawBuffer(int argCount, OBJ *args) {
 	if (!tft) return falseObj;
 
+	if (argCount < 3) return fail(notEnoughArguments);
+
 	OBJ buffer = args[0];
 	OBJ palette = args[1]; // List, index-1 based
 	int scale = max(min(obj2int(args[2]), 8), 1);
+
+	if (!IS_TYPE(buffer, ByteArrayType)) return fail(needsByteArray);
+	if (!IS_TYPE(palette, ListType)) return fail(needsListError);
+	if (!isInt(args[2])) return fail(needsIntegerError);
 
 	int originX = 0;
 	int originY = 0;
@@ -1517,8 +1521,9 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 	uint16_t palette16[256];
 	memset(palette16, 0, sizeof(palette16));
 	int paletteSize = obj2int(FIELD(palette, 0));
+	if (paletteSize > 256) paletteSize = 256;
 	for (int i = 0; i < paletteSize; i++) {
-		palette16[i] = (uint16_t)color24to16b(obj2int(FIELD(palette, i + 1)));
+		palette16[i] = color24to16b(obj2int(FIELD(palette, i + 1)));
 	}
 
 	for (int y = 0; y < originHeight; y++) {
@@ -1540,10 +1545,10 @@ static OBJ primDrawBuffer(int argCount, OBJ *args) {
 }
 
 static OBJ primDrawBitmap(int argCount, OBJ *args) {
-	// Draw an 8-bit bitmap at a given position without scaling.
+	// Draw an 8-bit bitmap the given color palette at a given position without scaling.
 
 	if (!tft) return falseObj;
-	uint32 palette[256];
+	uint16_t palette16[256];
 
 	if (argCount < 4) return fail(notEnoughArguments);
 	OBJ bitmapObj = args[0]; // bitmap: a two-item list of [width (int), pixels (byte array)]
@@ -1570,12 +1575,9 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 	if (!IS_TYPE(paletteObj, ListType)) return fail(badColorPalette);
 	int colorCount = obj2int(FIELD(paletteObj, 0)); // list size
 	if (colorCount > 256) colorCount = 256;
-	memset(palette, 0, sizeof(palette)); // initialize to all black RGB values
+	memset(palette16, 0, sizeof(palette16)); // initialize to all black RGB values
 	for (int i = 0; i < colorCount; i++) {
-		int rgb = obj2int(FIELD(paletteObj, i + 1));
-		if (rgb < 0) rgb = 0;
-		if (rgb > 0xFFFFFF) rgb = 0xFFFFFF;
-		palette[i] = rgb;
+		palette16[i] = color24to16b(obj2int(FIELD(paletteObj, i + 1)));
 	}
 
 	int srcX = 0;
@@ -1595,9 +1597,9 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 		uint8 *row = bitmapBytes + ((srcY + i) * bitmapWidth);
 		for (int j = 0; j < srcW; j++) {
 			uint8 pix = row[srcX + j]; // 8-bit color index
-			uint32 rgb = palette[pix]; // 24 bit RGB color
-			tft->drawPixel(dstX + j, dstY + i, color24to16b(rgb));
+			bufferPixels[j] = palette16[pix];
 		}
+		tft->draw16bitRGBBitmap(dstX, dstY + i, bufferPixels, srcW, 1); // draw pixel row
 	}
 	UPDATE_DISPLAY();
 	return falseObj;
