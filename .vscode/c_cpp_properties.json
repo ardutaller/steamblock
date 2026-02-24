@@ -1,0 +1,61 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/Users/bg/Documents/domino4/MicroBlocks/dev/vm",
+                "/Users/bg/Documents/domino4/MicroBlocks/dev/.pio/libdeps/microbit/GFX Library for Arduino/src",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/libraries/Wire",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/libraries/SPI",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/drivers_nrf/delay",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/device",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/toolchain",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/toolchain/CMSIS/Include",
+                "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/variants/BBCmicrobit",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/Users/bg/Documents/domino4/MicroBlocks/dev/vm",
+                    "/Users/bg/Documents/domino4/MicroBlocks/dev/.pio/libdeps/microbit/GFX Library for Arduino/src",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/libraries/Wire",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/libraries/SPI",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/drivers_nrf/delay",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/device",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/toolchain",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/cores/nRF5/SDK/components/toolchain/CMSIS/Include",
+                    "/Users/bg/.platformio/packages/framework-arduinonordicnrf5@1.700.240108/variants/BBCmicrobit",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60119",
+                "ARDUINO_BBC_MICROBIT",
+                "USE_LFRC",
+                "ARDUINO=10805",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_NRF5",
+                "NRF5",
+                "NRF51",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "/Users/bg/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin/arm-none-eabi-gcc",
+            "compilerArgs": [
+                "-mthumb",
+                "-mcpu=cortex-m0",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
