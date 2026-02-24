@@ -666,14 +666,14 @@ static OBJ primTftTouched(int argCount, OBJ *args) {
 static OBJ primTftTouchX(int argCount, OBJ *args) {
 	initMouseHandler();
 	return int2obj(EM_ASM_INT({
-		return window.mouseDown ? window.mouseX : -1
+		return window.mouseX;
 	}));
 }
 
 static OBJ primTftTouchY(int argCount, OBJ *args) {
 	initMouseHandler();
 	return int2obj(EM_ASM_INT({
-		return window.mouseDown ? window.mouseY : -1
+		return window.mouseY;
 	}));
 }
 
