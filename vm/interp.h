@@ -275,10 +275,12 @@ void runTasksUntilDone(void);
 void interpTests1(void);
 void taskTest(void);
 
-// UTF-8 Utility
+// UTF-8 Utilities (from dataPrims.c)
 
 int countUTF8(char *s);
 OBJ charAt(OBJ stringObj, int i);
+int unicodeCodePoint(char *s);
+char *nextUTF8(char *s);
 
 // Platform Specific Operations
 
