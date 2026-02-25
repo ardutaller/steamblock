@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-19 12:12+0000\n"
+"PO-Revision-Date: 2026-02-25 07:09+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -5350,7 +5350,7 @@ msgstr "蓝色分量 _"
 
 #. Color library block
 msgid "color hue _ (0-360) saturation _ % brightness _ %"
-msgstr "颜色 色调 _ (0-360) 饱和度 _ (%)亮度 _ (%)"
+msgstr "颜色 色调 _ (0-360) 饱和度 _ (%) 亮度 _ (%)"
 
 #. Color library block
 msgid "hue _"
@@ -5832,4 +5832,276 @@ msgstr "和弦进行 _ 根音 _"
 
 #. Library name
 msgid "Function Calls"
-msgstr "调用函数"
+msgstr "调用方法"
+
+#. Block in Function Calls library
+msgid "function _ exists"
+msgstr "方法 _ 存在"
+
+#. 8 Bit Graphics Library block
+msgid "set scale _"
+msgstr "设置比例 _"
+
+#. 8 Bit Graphics Library block
+msgid "draw buffer"
+msgstr "绘制缓冲区"
+
+#. 8 Bit Graphics Library block
+msgid "starting at x _ y _ width _ height _"
+msgstr "开始于 x _ y _ 宽度 _ 高度 _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap from BMP file _"
+msgstr "位图 来自 BMP 文件 _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from raw indexed file _"
+msgstr "位图 宽度 _ 来自 原始索引文件 _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from string _"
+msgstr "位图 宽度 _ 来自 字符串 _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ rotated _ º"
+msgstr "位图 _ 旋转 _ 度"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ mirrored across _ axis"
+msgstr "位图 _ 沿 _ 轴镜像"
+
+#. 8 Bit Graphics Library block
+msgid "merge bitmap _ at _ , _"
+msgstr "合并 位图 _ 在 _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ from _ , _ to _ , _"
+msgstr "合并 图块 _ 从 _ , _ 到 _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ at tile position _ , _"
+msgstr "合并 图块 _ 在 图块位置 _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "set palette _"
+msgstr "设置 调色板 _"
+
+#. 8 Bit Graphics Library block
+msgid "set transparent color index _"
+msgstr "设置 透明色索引 _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from pal file _"
+msgstr "调色板 来自 pal 文件 _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from BMP file _"
+msgstr "调色板 来自 BMP 文件 _"
+
+#. 8 Bit Graphics Library block
+msgid "4 bit _ palette"
+msgstr "4 位 _ 调色板"
+
+#. 8 Bit Graphics Library block
+msgid "8 bit _ palette"
+msgstr "8 位 _ 调色板"
+
+#. 8 Bit Graphics Library block
+msgid "color number for r _ g _ b _ (0-255)"
+msgstr "颜色数值 红色 _ 绿色 _ 蓝色 _ (0-255)"
+
+#. 8 Bit Graphics Library block
+msgid "draw palette table _"
+msgstr "绘制 调色板表格 _"
+
+#. 8 Bit Graphics Library block
+msgid "current palette"
+msgstr "当前调色板"
+
+#. 8 Bit Graphics Library block
+msgid "screen width"
+msgstr "屏幕宽度"
+
+#. 8 Bit Graphics Library block
+msgid "screen height"
+msgstr "屏幕高度"
+
+#. Radio library block
+msgid "radio last sender ID"
+msgstr "广播 最后发送者 ID"
+
+#. Radio library block
+msgid "radio my ID"
+msgstr "广播 我的 ID"
+
+#. MIDI library block
+msgid "stop all notes on channel _ in _ ms"
+msgstr "停止通道 _ 上的所有音符，在 _ 毫秒内"
+
+#. General MIDI drum set
+msgid "Standard 1"
+msgstr "标准 1"
+
+#. General MIDI drum set
+msgid "Standard 2"
+msgstr "标准 2"
+
+#. General MIDI drum set
+msgid "Standard L/R"
+msgstr "标准 左右声道"
+
+#. General MIDI drum set
+msgid "Room"
+msgstr "房间"
+
+#. General MIDI drum set
+msgid "Hip Hop"
+msgstr "嘻哈"
+
+#. General MIDI drum set
+msgid "Jungle Techno"
+msgstr "丛林音乐"
+
+#. General MIDI drum set
+msgid "Room L/R"
+msgstr "房间 左右声道"
+
+#. General MIDI drum set
+msgid "House Power Electronic"
+msgstr "浩室 电力电子"
+
+#. General MIDI drum set
+msgid "Dance"
+msgstr "舞曲"
+
+#. General MIDI drum set
+msgid "CR-78"
+msgstr "CR-78"
+
+#. General MIDI drum set
+msgid "TR-606"
+msgstr "TR-606"
+
+#. General MIDI drum set
+msgid "TR-707"
+msgstr "TR-707"
+
+#. General MIDI drum set
+msgid "TR-909"
+msgstr "TR-909"
+
+#. General MIDI drum set
+msgid "Jazz"
+msgstr "爵士"
+
+#. General MIDI drum set
+msgid "Jazz L/R"
+msgstr "爵士 左右声道"
+
+#. General MIDI drum set
+msgid "Brush"
+msgstr "钢丝刷"
+
+#. General MIDI drum set
+msgid "Brush 2"
+msgstr "钢丝刷 2"
+
+#. General MIDI drum set
+msgid "Brush 2 L/R"
+msgstr "钢丝刷 2 左右声道"
+
+#. General MIDI drum set
+msgid "Orchestra Ethnic"
+msgstr "民族管弦乐"
+
+#. General MIDI drum set
+msgid "Kick & Snare"
+msgstr "底鼓 & 军鼓"
+
+#. General MIDI drum set
+msgid "Kick & Snare 2"
+msgstr "底鼓 & 军鼓 2"
+
+#. General MIDI drum set
+msgid "Asia"
+msgstr "亚洲"
+
+#. General MIDI drum set
+msgid "Cymbal&claps"
+msgstr "镲片 & 击掌"
+
+#. General MIDI drum set
+msgid "Gamelan 1"
+msgstr "甘美兰 1"
+
+#. General MIDI drum set
+msgid "Gamelan 2"
+msgstr "甘美兰 2"
+
+#. General MIDI drum set
+msgid "SFX"
+msgstr "音效"
+
+#. General MIDI drum set
+msgid "Rhythm FX"
+msgstr "节奏音效"
+
+#. General MIDI drum set
+msgid "Rhythm FX 2"
+msgstr "节奏音效 2"
+
+#. General MIDI drum set
+msgid "Rhythm FX 3"
+msgstr "节奏音效 3"
+
+#. General MIDI drum set
+msgid "SFX 2"
+msgstr "音效 2"
+
+#. General MIDI drum set
+msgid "Voice"
+msgstr "人声"
+
+#. General MIDI drum set
+msgid "Cym&Claps 2"
+msgstr "镲片 & 击掌 2"
+
+#. Library name
+msgid "8 Bit Graphics"
+msgstr "8 Bit 图形"
+
+#. Library name
+msgid "BMP"
+msgstr "BMP 图片"
+
+#. Library name
+msgid "Color"
+msgstr "颜色"
+
+#. Library name
+msgid "External Displays"
+msgstr "外接显示器"
+
+#. Library name
+msgid "Four Digit Display (TM1637)"
+msgstr "四位数码管 (TM1637)"
+
+#. Library name
+msgid "Four Digit Display (TM1650)"
+msgstr "四位数码管 (TM1650)"
+
+#. Library name
+msgid "TFT"
+msgstr "TFT 屏幕"
+
+#. Library name
+msgid "CoCube Module"
+msgstr "CoCube 外接模块"
+
+#. Library name
+msgid "CoCube"
+msgstr "CoCube 机器人"
+
+#. Library name
+msgid "MIDI"
+msgstr "MIDI 合成器"
