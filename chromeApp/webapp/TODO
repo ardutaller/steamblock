@@ -6,3 +6,4 @@ TODO
 [ ] Canvi textos tips (treure punts finals)
 [x] Alçada del canvas inconsistent (CSS vs JS?)
 [ ] Classes d'estat de les script-pane-tools (--disabled)
+[ ] Proposar la opció d'amagar els tips (Advanced mode?)
