@@ -306,6 +306,8 @@ void hardwareInit(void);
 int readI2CReg(int deviceID, int reg);
 void writeI2CReg(int deviceID, int reg, int value);
 
+void initSPI();
+
 // I/O Support
 
 extern int mbDisplayColor;

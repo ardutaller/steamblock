@@ -12,7 +12,7 @@
 #include "interp.h"
 #include <inttypes.h>
 
-#if defined(ARDUINO_WEACT) || defined(NRF51)  || defined(ARDUINO_ARCH_SAMD) || \
+#if defined(ARDUINO_WEACT) || defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
 	defined(__ZEPHYR__) || defined(DUELink)
 
 // TFT primitives are not supported
@@ -521,7 +521,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			return pressure;
 		}
 
-	#elif defined(KIDS_BITS) || defined(FAB_SPARKLE) || defined(SCOUT_MAKES_AZUL)
+	#elif defined(SCOUT_MAKES_AZUL) || defined(OLED_128_64)
 		#define OLED_ADDR 0x3C
 		#define TFT_RST GFX_NOT_DEFINED
 		#define TFT_WIDTH 128

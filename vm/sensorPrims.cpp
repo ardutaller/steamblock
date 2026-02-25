@@ -68,6 +68,9 @@
 #elif defined(DOMINO4_CWA)
 	#define PIN_WIRE_SCL 18
 	#define PIN_WIRE_SDA 17
+#elif defined(SPRINGBOT)
+	#define PIN_WIRE_SCL 4
+	#define PIN_WIRE_SDA 5
 #elif !defined(PIN_WIRE_SCL)
 	#if defined(PIN_WIRE0_SCL)
 		#define PIN_WIRE_SCL PIN_WIRE0_SCL
@@ -489,7 +492,7 @@ static int spiSpeed = 1000000;
 static int spiMode = SPI_MODE0;
 static BitOrder spiBitOrder = MSBFIRST;
 
-static void initSPI() {
+void initSPI() {
 	#if defined(ARDUINO_ARCH_ESP32)
 		setPinMode(MISO, INPUT);
 		setPinMode(MOSI, OUTPUT);
@@ -608,7 +611,7 @@ OBJ primSPISetPins(int argCount, OBJ *args) {
 
 		SPI.end(); // stop SPI on current pins
 
-		#if defined(ESP32) || defined(SPRINGBOT)
+		#if defined(ESP32)
 			SPI.begin(clkPin, misoPin, mosiPin);
 		#elif defined(NRF52)
 			SPI.setPins(misoPin, clkPin, mosiPin);

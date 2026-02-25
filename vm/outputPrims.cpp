@@ -79,20 +79,6 @@ int mbDisplayColor = 0x00FF00; // Green by default
 #define COL4 6
 #define COL5 10
 
-#elif defined(SPRINGBOT)
-
-#define ROW1 8
-#define ROW2 17
-#define ROW3 10
-#define ROW4 38
-#define ROW5 6
-
-#define COL1 3
-#define COL2 2
-#define COL3 14
-#define COL4 15
-#define COL5 16
-
 #endif
 
 static int microBitDisplayBits = 0;
@@ -392,14 +378,10 @@ void updateMicrobitDisplay() {
 }
 #elif defined(SPRINGBOT_GREEN)
 
-static int lightReadingStarted = false;
-static uint32 lightReadingStartTime = 0;
-
 static int displaySnapshot = 0;
 static int displayCycle = 0;
-static int rowPins[5] = {ROW1, ROW2, ROW3, ROW4, ROW5};
-static int columnPins[5] = {COL1, COL2, COL3, COL4, COL5};
-static int columnOffsets[5] = {0, 1, 2, 3, 4};
+static int rowPins[5] = {8, 17, 10, 38, 6};
+static int columnPins[5] = {3, 2, 14, 15, 16};
 
 #define DISPLAY_BIT(n) (((displaySnapshot >> (n - 1)) & 1) ? LOW : HIGH)
 
@@ -417,6 +399,7 @@ static void turnDisplayOff() {
         digitalWrite(columnPins[i], HIGH); // Was LOW
     }
 }
+
 void updateMicrobitDisplay() {
     // Update the display by cycling through the three columns, turning on the rows
     // for each column. To minimize display artifacts, the display bits are snapshot
@@ -425,13 +408,10 @@ void updateMicrobitDisplay() {
     if (disableLEDDisplay) return;
 
     if (!microBitDisplayBits && !displaySnapshot) { // display is off
-        // if (lightReadingRequested) updateLightLevel();
         return;
     }
 
     if (0 == displayCycle) { // starting a new cycle
-        // if (lightReadingRequested && !updateLightLevel()) return; // reading light level
-
         if (displaySnapshot && !microBitDisplayBits) { // display just became off
             displaySnapshot = 0;
             turnDisplayOff();
@@ -443,9 +423,9 @@ void updateMicrobitDisplay() {
         turnDisplayOn();
     }
     int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
-    digitalWrite(columnPins[previousColumn], HIGH); 
+    digitalWrite(columnPins[previousColumn], HIGH);
 
-    int offset = columnOffsets[displayCycle];
+    int offset = displayCycle;
     for (int i = 0; i < 5; i++) {
         digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i) + 1));
     }
@@ -663,7 +643,7 @@ static OBJ primLightLevel(int argCount, OBJ *args) {
 		// log makes the function more linear, 27.684 takes it to a ~0-100 range
 		lightLevel = (int) (log10((float) analogRead(39)) * 27.684);
 	#elif defined(FOXBIT)
-		lightLevel = analogRead(39) * 1000 / 4095; // output range 0-100
+		lightLevel = analogRead(39) * 1000 / 4095; // output range 0-1000
 	#elif defined(SPRINGBOT_GREEN) || defined(SPRINGBOT_GOLD)
 		lightLevel = analogRead(7) * 1000 / 4095; // output range 0-1000
 	#elif defined(DUELink)
