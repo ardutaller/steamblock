@@ -465,6 +465,16 @@ static OBJ primI2cSetPins(int argCount, OBJ *args) {
 	#define PIN_SPI_SS   (5u)
 	#define PIN_SPI_SCK  (2u)
 	#define PIN_SPI_MOSI (3u)
+#elif defined(DOMINO4_CWA)
+	#define PIN_SPI_MISO (38u)
+	#define PIN_SPI_SS   (35u)
+	#define PIN_SPI_SCK  (36u)
+	#define PIN_SPI_MOSI (37u)
+#elif defined(SPRINGBOT)
+	#define PIN_SPI_MISO (37u)
+	#define PIN_SPI_SS   (34u)
+	#define PIN_SPI_SCK  (36u)
+	#define PIN_SPI_MOSI (35u)
 #elif defined(ARDUINO_ARCH_RP2040) && !defined(PIN_SPI_MISO)
 	#define PIN_SPI_MISO PIN_SPI0_MISO
 	#define PIN_SPI_MOSI PIN_SPI0_MOSI
@@ -598,7 +608,7 @@ OBJ primSPISetPins(int argCount, OBJ *args) {
 
 		SPI.end(); // stop SPI on current pins
 
-		#if defined(ESP32)
+		#if defined(ESP32) || defined(SPRINGBOT)
 			SPI.begin(clkPin, misoPin, mosiPin);
 		#elif defined(NRF52)
 			SPI.setPins(misoPin, clkPin, mosiPin);
