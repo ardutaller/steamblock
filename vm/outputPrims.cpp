@@ -386,52 +386,52 @@ static int columnPins[5] = {3, 2, 14, 15, 16};
 #define DISPLAY_BIT(n) (((displaySnapshot >> (n - 1)) & 1) ? LOW : HIGH)
 
 static void turnDisplayOn() {
-    for (int i = 0; i < 5; i++) {
-        setPinMode(columnPins[i], OUTPUT);
-        digitalWrite(columnPins[i], HIGH);
-        setPinMode(rowPins[i], OUTPUT);
-        digitalWrite(rowPins[i], LOW);
-    }
+	for (int i = 0; i < 5; i++) {
+		setPinMode(columnPins[i], OUTPUT);
+		digitalWrite(columnPins[i], HIGH);
+		setPinMode(rowPins[i], OUTPUT);
+		digitalWrite(rowPins[i], LOW);
+	}
 }
 
 static void turnDisplayOff() {
-    for (int i = 0; i < 5; i++) {
-        digitalWrite(columnPins[i], HIGH); // Was LOW
-    }
+	for (int i = 0; i < 5; i++) {
+		digitalWrite(columnPins[i], HIGH); // Was LOW
+	}
 }
 
 void updateMicrobitDisplay() {
-    // Update the display by cycling through the three columns, turning on the rows
-    // for each column. To minimize display artifacts, the display bits are snapshot
-    // at the start of each cycle and the snapshot is not changed during the cycle.
+	// Update the display by cycling through the three columns, turning on the rows
+	// for each column. To minimize display artifacts, the display bits are snapshot
+	// at the start of each cycle and the snapshot is not changed during the cycle.
 
-    if (disableLEDDisplay) return;
+	if (disableLEDDisplay) return;
 
-    if (!microBitDisplayBits && !displaySnapshot) { // display is off
-        return;
-    }
+	if (!microBitDisplayBits && !displaySnapshot) { // display is off
+		return;
+	}
 
-    if (0 == displayCycle) { // starting a new cycle
-        if (displaySnapshot && !microBitDisplayBits) { // display just became off
-            displaySnapshot = 0;
-            turnDisplayOff();
-            return;
-        }
+	if (0 == displayCycle) { // starting a new cycle
+		if (displaySnapshot && !microBitDisplayBits) { // display just became off
+			displaySnapshot = 0;
+			turnDisplayOff();
+			return;
+		}
 
-        // take a snapshot of the display bits for the next cycle
-        displaySnapshot = microBitDisplayBits;
-        turnDisplayOn();
-    }
-    int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
-    digitalWrite(columnPins[previousColumn], HIGH);
+		// take a snapshot of the display bits for the next cycle
+		displaySnapshot = microBitDisplayBits;
+		turnDisplayOn();
+	}
+	int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
+	digitalWrite(columnPins[previousColumn], HIGH);
 
-    int offset = displayCycle;
-    for (int i = 0; i < 5; i++) {
-        digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i) + 1));
-    }
-    setPinMode(columnPins[displayCycle], OUTPUT);
-    digitalWrite(columnPins[displayCycle], LOW);
-    displayCycle = (displayCycle + 1) % 5;
+	int offset = displayCycle;
+	for (int i = 0; i < 5; i++) {
+		digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i) + 1));
+	}
+	setPinMode(columnPins[displayCycle], OUTPUT);
+	digitalWrite(columnPins[displayCycle], LOW);
+	displayCycle = (displayCycle + 1) % 5;
 }
 
 #elif defined(DUELink)
