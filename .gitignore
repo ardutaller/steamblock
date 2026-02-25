@@ -45,3 +45,7 @@ electron/node_modules/*
 .DS_Store
 **/.DS_Store
 
+# Local IDE + OS junk
+.vscode/
+.DS_Store
+**/.DS_Store
