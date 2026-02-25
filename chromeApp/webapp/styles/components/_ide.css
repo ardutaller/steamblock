@@ -44,10 +44,16 @@
 }
 
 
+.workspace__canvas-wrapper {
+	line-height: 0;
+}
+
+
 .bottom-bar {
 	width: 100%;
 	height: var(--space-32);
 	flex-shrink: 0;
+	padding-left: var(--space-192);
 
 	display: flex;
 	align-items: center;
