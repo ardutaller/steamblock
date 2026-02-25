@@ -7,3 +7,4 @@ TODO
 [x] Alçada del canvas inconsistent (CSS vs JS?)
 [ ] Classes d'estat de les script-pane-tools (--disabled)
 [ ] Proposar la opció d'amagar els tips (Advanced mode?)
+[ ] Discutir si els colors de les categories van a JS o CSS (libraries...)
