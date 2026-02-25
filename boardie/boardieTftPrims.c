@@ -403,15 +403,11 @@ static void drawText(OBJ value, int x, int y, int textColor, int scale, int wrap
 			fontSize = (scale * 10);
 			window.ctx.font = fontSize + 'px monospace';
 			window.ctx.fillText(text, x + (scale * 0.9), y + (scale * 2.45));
-let textMetrics = window.ctx.measureText(text);
-console.log("unicode", textMetrics);
 		} else {
 			window.ctx.font = fontSize + 'px adafruit';
 			text.split("").forEach(
 				(c) => {
 					window.ctx.fillText(c, x, y);
-let textMetrics = window.ctx.measureText(text);
-console.log("adafruit", textMetrics);
 					x += scale * 6;
 					if (wrap && (x + scale * 6 >= window.ctx.canvas.width)) {
 						// wrap
@@ -670,14 +666,14 @@ static OBJ primTftTouched(int argCount, OBJ *args) {
 static OBJ primTftTouchX(int argCount, OBJ *args) {
 	initMouseHandler();
 	return int2obj(EM_ASM_INT({
-		return window.mouseDown ? window.mouseX : -1
+		return window.mouseX;
 	}));
 }
 
 static OBJ primTftTouchY(int argCount, OBJ *args) {
 	initMouseHandler();
 	return int2obj(EM_ASM_INT({
-		return window.mouseDown ? window.mouseY : -1
+		return window.mouseY;
 	}));
 }
 

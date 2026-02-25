@@ -47,7 +47,7 @@ static inline int matches(const char *s, OBJ obj) {
 	return IS_TYPE(obj, StringType) && (0 == strcmp(s, obj2str(obj)));
 }
 
-static inline char * nextUTF8(char *s) {
+inline char * nextUTF8(char *s) {
 	// Return a pointer to the start of the UTF8 character following the given one.
 	// If s points to a null byte (i.e. end of the string) return it unchanged.
 
@@ -81,7 +81,7 @@ OBJ charAt(OBJ stringObj, int i) {
 	return result;
 }
 
-static int unicodeCodePoint(char *s) {
+int unicodeCodePoint(char *s) {
 	// Return the Unicode code point starting at the given start byte.
 
 	int result = -1; // bad unicode character; should not happen
