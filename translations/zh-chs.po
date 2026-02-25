@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-25 07:09+0000\n"
+"PO-Revision-Date: 2026-02-26 08:09+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -64,7 +64,7 @@ msgstr "IP 地址"
 
 #. Touch Screen library block
 msgid "TFT touched"
-msgstr "TFT被点击"
+msgstr "TFT 被点击"
 
 #. MQTT library block
 msgid "MQTT event"
@@ -816,7 +816,7 @@ msgstr "回到起点"
 
 #. WiFi library block
 msgid "wifi connect to _ password _"
-msgstr "连接 wifi 至 _ 密码 _"
+msgstr "连接 WiFi 至 _ 密码 _"
 
 #. Image name for the "display image" block
 msgid "skull"
@@ -1157,7 +1157,7 @@ msgstr "开击踩镲"
 
 #. Pluck library block
 msgid "set pluck pin _"
-msgstr "set pluck pin _"
+msgstr "设置拨弦输出引脚 _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Turn _ _ ° at _ %"
@@ -1173,7 +1173,7 @@ msgstr "步数"
 
 #. Touch Screen library block
 msgid "TFT touch Y position"
-msgstr "TFT点击 Y 坐标"
+msgstr "TFT 点击 Y 坐标"
 
 #. Touch Screen library block
 msgid "TFT touch pressure"
@@ -1341,7 +1341,7 @@ msgstr "图像设置 _"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 altitude (feet)"
-msgstr "BMX280 高度（英尺）"
+msgstr "bmx280 高度 (英尺)"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Battery (mV)"
@@ -1952,7 +1952,7 @@ msgstr "积木扩展"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] right arrow to show optional inputs, left arrow to hide."
-msgstr "[l] 点击右箭头添加额外的输入框，点击左箭头删除"
+msgstr "[l] 点击右箭头添加额外的输入框，点击左箭头删除。"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Reporter Block"
@@ -1962,7 +1962,7 @@ msgstr "报告类积木"
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to see value, or drop into an input slot. [r] menu."
-msgstr "[l] 点击查看数值，或用鼠标拖拽出来嵌入输出框内。 [r] 打开菜单"
+msgstr "[l] 点击查看数值，或用鼠标拖拽出来嵌入输出框内。 [r] 打开菜单。"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Block Category"
@@ -2410,11 +2410,11 @@ msgstr "电机"
 
 #. MicroBlocks IDE information
 msgid "Save the firmware file when prompted."
-msgstr "出现提示时保存固件文件"
+msgstr "出现提示时保存固件文件。"
 
 #. MicroBlocks IDE information
 msgid "Drag the firmware file you just saved to the %1 drive."
-msgstr "将刚刚保存的固件文件拖到%1驱动器"
+msgstr "将刚刚保存的固件文件拖到%1驱动器。"
 
 #. MicroBlocks IDE message
 #. %1 holds the name of a library
@@ -2809,7 +2809,7 @@ msgstr "缩小积木"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] toggle value, or drop a reporter into it."
-msgstr "[l] 切换布尔值，或嵌入报告类积木"
+msgstr "[l] 切换布尔值，或嵌入报告类积木。"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the given start milliseconds. Handles clock wrap."
@@ -3303,7 +3303,7 @@ msgstr "最小公倍数 _ _"
 
 #. Pluck library block
 msgid "pluck MIDI key _ for _ msecs"
-msgstr "pluck MIDI key _ for _ msecs"
+msgstr "拨弦 MIDI 键号 _ 持续 _ 毫秒"
 
 #. Tone library block
 msgid "attach buzzer to pin _"
@@ -3312,11 +3312,11 @@ msgstr "连接蜂鸣器至引脚 _"
 #. Pluck library label
 #. Generate music with plucked-string resembling sounds
 msgid "Pluck"
-msgstr "Pluck"
+msgstr "拨弦"
 
 #. Pluck library block
 msgid "pluck note _ octave _ for _ ms"
-msgstr "pluck note _ octave _ for _ ms"
+msgstr "拨弦 音符 _ 八度 _ 持续 _ 毫秒"
 
 #. General MIDI drum instrument name
 msgid "Low Floor Tom"
@@ -3457,7 +3457,7 @@ msgstr "IP 地址 _ 网关 _ 子网掩码 _"
 
 #. WiFi library block
 msgid "wifi create hotspot _ password _"
-msgstr "创建 wifi 热点 _ 密码 _"
+msgstr "创建 WiFi 热点 _ 密码 _"
 
 #. Strings library block
 msgid "_ is uppercase"
@@ -3493,7 +3493,7 @@ msgstr "湿度 DHT11 引脚 _"
 
 #. Touch Screen library block
 msgid "TFT touch X position"
-msgstr "TFT点击 X 坐标"
+msgstr "TFT 点击 X 坐标"
 
 #. BME280 environmental sensor library block
 msgid "bmp280 connected"
@@ -3501,7 +3501,7 @@ msgstr "bmp280 已连接"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 altitude (cm)"
-msgstr "BMX280 高度（厘米）"
+msgstr "bmx280 高度 (厘米)"
 
 #. TCS34725 color sensor library block
 msgid "TCS34725 connected"
@@ -4162,7 +4162,7 @@ msgstr "依赖的路径,名字或 URL?"
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] change the color, or drop a reporter into it."
-msgstr "[l] 改变颜色，或嵌入报告类积木"
+msgstr "[l] 改变颜色，或嵌入报告类积木。"
 
 #. String in file picker and library dialogs
 msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
@@ -4172,7 +4172,7 @@ msgstr "如果要添加的库，已经内置在 MicroBlocks，只需输入它的
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] edit its value, or drop a reporter into it."
-msgstr "[l] 修改数值，或嵌入报告类积木"
+msgstr "[l] 修改数值，或嵌入报告类积木。"
 
 #. String in file picker and library dialogs
 msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
@@ -4189,7 +4189,7 @@ msgstr "[l] 点击运行，或用鼠标拖拽出来搭建脚本。 [r] 打开菜
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to run. [r] menu."
-msgstr "[l] 运行。 [r] 打开菜单"
+msgstr "[l] 运行。 [r] 打开菜单。"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Pane Divider"
@@ -4197,31 +4197,31 @@ msgstr "窗格分割线"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag to change pane width."
-msgstr "拖拽可修改窗格宽度"
+msgstr "拖拽可修改窗格宽度。"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to show the blocks in this library. [r] menu."
-msgstr "[l] 显示此积木库中的积木代码。 [r] 打开菜单"
+msgstr "[l] 显示此积木库中的积木代码。 [r] 打开菜单。"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "Drag blocks here to build scripts. [r] menu."
-msgstr "将积木拖拽到此处搭建脚本。 [r] 打开菜单"
+msgstr "将积木拖拽到此处搭建脚本。 [r] 打开菜单。"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Turn the user LED on or off."
-msgstr "打开或关闭 LED 灯"
+msgstr "打开或关闭 LED 灯。"
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] to show the blocks in this category."
-msgstr "[l] 显示此分类中的积木"
+msgstr "[l] 显示此分类中的积木。"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Display a bubble showing the value."
-msgstr "用气泡对话框显示值"
+msgstr "用气泡对话框显示值。"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Graph the value."
@@ -5123,7 +5123,7 @@ msgstr "在使用 BLE 时允许 WiFi _"
 
 #. WiFi library block
 msgid "wifi set local domain name _ .local"
-msgstr "wifi 设置本地域名为 _ .local"
+msgstr "WiFi 设置本地域名为 _ .local"
 
 #. Files library block
 msgid "contents of file _"
@@ -5330,7 +5330,7 @@ msgstr "_ 中的 _ 项目被 _ 替换"
 
 #. TFT Display library block
 msgid "draw pixel row _ x _ y _"
-msgstr "在 TFT 上绘制像素行_ x _ y _"
+msgstr "在 TFT 上绘制像素行 _ x _ y _"
 
 #. Color library label
 msgid "Color Operators"
@@ -6105,3 +6105,19 @@ msgstr "CoCube 机器人"
 #. Library name
 msgid "MIDI"
 msgstr "MIDI 合成器"
+
+#. Musical scale name
+msgid "chromatic"
+msgstr "半音"
+
+#. Musical scale name
+msgid "tonal"
+msgstr "全音"
+
+#. Sound destination for arpeggiate block in Scales & Chords library
+msgid "gate trigger"
+msgstr "门触发"
+
+#. WiFi library block
+msgid "stop wifi"
+msgstr "停止 WiFi"
