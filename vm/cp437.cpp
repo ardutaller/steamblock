@@ -5,26 +5,26 @@
 // Copyright 2025 Ilya Zverev and John Maloney
 
 // cp437.cpp - Conversion table from Unicode to CP437
+// Based on https://en.wikipedia.org/wiki/Code_page_437#Character_set
 // Ilya Zverev, May 2025
 
-#include <stdlib.h>
 #include "mem.h"
 #include "interp.h"
 
-// Convert a string from UTF-8 (which all strings are encoded in)
+// Convert a string from UTF-8 (which all MicroBlock strings are encoded in)
 // to CP 437 (which is the built-in Adafruit 8-bit font codepage).
-// It allocates length(str) bytes for the result, to be freed
-// by the caller.
-char* UTF8ToCP437(char* str) {
-	int itemCount = countUTF8(str);
-	char *result = (char *)malloc(itemCount + 1);
-	char *dst = &result[0];
-	for (int i = 0; i < itemCount; i++) {
-		int code = unicodeCodePoint(str);
-		// Base 7-bit ASCII.
-		if (code >= 0 && code <= 0x7F) *dst = code;
-		// Made peeking into https://en.wikipedia.org/wiki/Code_page_437#Character_set
-		else switch(code) {
+// Writes up to dstSize 8-bit codepage indices into buffer and returns
+// the number of indices written.
+
+int UTF8ToCP437(char* src, char* dst, int dstSize) {
+	int count = countUTF8(src);
+	if (count > dstSize) count = dstSize;
+
+	for (int i = 0; i < count; i++) {
+		uint32_t code = unicodeCodePoint(src);
+		if (code <= 0x7F) {
+			*dst = code; // 7-bit ASCII range; no translation needed
+		} else switch(code) {
 			case 0x263A: *dst = 0x01; break;
 			case 0x263B: *dst = 0x02; break;
 			case 0x2665: *dst = 0x03; break;
@@ -188,8 +188,8 @@ char* UTF8ToCP437(char* str) {
 			default: *dst = 0xFE;
 		}
 		dst++;
-		str = nextUTF8(str);
+		src = nextUTF8(src);
 	}
 	*dst = 0;
-	return result;
+	return count;
 }

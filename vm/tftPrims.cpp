@@ -1272,9 +1272,10 @@ static void drawText(OBJ value, int x, int y, int color16b, int scale, int wrap,
 	tft->setTextWrap(wrap);
 
 	if (IS_TYPE(value, StringType)) {
-		char *str = obj2str(value);
-		if (bgColor != -1) tft->fillRect(x, y, countUTF8(str) * letterW, lineH, bgColor);
-		tft->print(obj2str(value));
+		char buffer[1000];
+		int count = UTF8ToCP437(obj2str(value), buffer, sizeof(buffer));
+		if (bgColor != -1) tft->fillRect(x, y, count * letterW, lineH, bgColor);
+		tft->print(buffer);
 	} else if (trueObj == value) {
 		if (bgColor != -1) tft->fillRect(x, y, 4 * letterW, lineH, bgColor);
 		tft->print("true");

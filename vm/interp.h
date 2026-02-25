@@ -281,6 +281,7 @@ int countUTF8(char *s);
 OBJ charAt(OBJ stringObj, int i);
 int unicodeCodePoint(char *s);
 char *nextUTF8(char *s);
+int UTF8ToCP437(char* src, char* dst, int dstSize);
 
 // Platform Specific Operations
 
