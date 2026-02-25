@@ -41,6 +41,26 @@ SdFat SD;
 	#define DEFAULT_CS_PIN SS
 #endif
 
+#if defined(DOMINO4_CWA)
+    // SS must defined before including SdFat.h
+    // #define SS 35
+    #undef DEFAULT_CS_PIN 
+    #define DEFAULT_CS_PIN 35
+    #define MOSI_PIN 37
+    #define MISO_PIN 38
+    #define SCK_PIN 36
+    #include <SPI.h>
+#elif defined(SPRINGBOT)
+    // SS must defined before including SdFat.h
+    // #define SS 34
+    #undef DEFAULT_CS_PIN 
+    #define DEFAULT_CS_PIN 34
+    #define MOSI_PIN 35
+    #define MISO_PIN 37
+    #define SCK_PIN 36
+    #include <SPI.h>
+#endif
+
 // Variables
 
 #define MAX_FILE_PATH 128
@@ -60,6 +80,10 @@ static FileEntry fileEntry[FILE_ENTRIES]; // fileEntry[] records open files
 // Helper functions
 
 static void initSDCard(int chipSelectPin) {
+	#if defined(SPRINGBOT)
+    SPI.end();
+    SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, DEFAULT_CS_PIN);
+    #endif
 	if (sdCardCSPin != chipSelectPin) {
 		if (sdCardCSPin != -1) SD.end();
 		if (chipSelectPin < 0) chipSelectPin = DEFAULT_CS_PIN;

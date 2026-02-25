@@ -40,4 +40,12 @@ electron/src/snapBlocks/Libraries
 
 electron/node_modules/*
 **/node_modules/*
+# Local IDE + OS junk
+.vscode/
+.DS_Store
+**/.DS_Store
 
+# Local IDE + OS junk
+.vscode/
+.DS_Store
+**/.DS_Store

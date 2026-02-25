@@ -909,6 +909,60 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 			0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			0, 0};
 
+#elif defined(DOMINO4_CWA)
+    #define BOARD_TYPE "DOMINO4 CWA"
+    #define DIGITAL_PINS 43
+    #define ANALOG_PINS 20
+    #define TOTAL_PINS 43
+    static const int analogPin[] = {};
+
+    #define PIN_LED 40
+    #define PIN_BUTTON_A 0
+    #undef PIN_NEOPIXEL
+    #define PIN_NEOPIXEL 39
+
+    // See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
+    // strapping pins 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG)
+    // SPI (26-32); also 33-37 on boards with Octal SPI Flash PSRAM
+    // USB pins: 19 (USB D-), 20 (USB D+)
+    // also possibly: 39-42 (JTAG pins)
+    static const char reservedPin[TOTAL_PINS] = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0};
+
+#elif defined(SPRINGBOT)
+    #if defined(SPRINGBOT_GOLD)
+        #define BOARD_TYPE "Springbot Gold"
+    #else
+        #define BOARD_TYPE "Springbot Green"
+    #endif
+    #define DIGITAL_PINS 43
+    #define ANALOG_PINS 20
+    #define TOTAL_PINS 43
+    static const int analogPin[] = {};
+
+    #define PIN_LED 40
+    #define PIN_BUTTON_A 11
+    #define PIN_BUTTON_B 12
+    #define DEFAULT_TONE_PIN 33 // maps to speaker pin
+    #undef PIN_NEOPIXEL
+    #define PIN_NEOPIXEL 39
+
+    // See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
+    // strapping pins 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG)
+    // SPI (26-32); also 33-37 on boards with Octal SPI Flash PSRAM
+    // USB pins: 19 (USB D-), 20 (USB D+)
+    // also possibly: 39-42 (JTAG pins)
+    static const char reservedPin[TOTAL_PINS] = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0};
+
 #elif defined(ESP32_S2)
 	#define BOARD_TYPE "ESP32-S2"
 	#define DIGITAL_PINS 48
@@ -2048,6 +2102,12 @@ OBJ primButtonA(OBJ *args) {
 			return (buttonReadings[4] < CAP_THRESHOLD) ? trueObj : falseObj;
 		#elif defined(FOXBIT)
 			setPinMode(PIN_BUTTON_A, INPUT_PULLUP); // ESP32 pin number not edge pin
+		#elif defined(SPRINGBOT_GREEN) 
+            if (touchRead(T11)>25700) return trueObj;
+            else return falseObj;
+        #elif defined(SPRINGBOT_GOLD) 
+            if (touchRead(T11)>27700) return trueObj;
+            else return falseObj;
 		#elif defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_ARCH_ESP32) || \
 			  defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
@@ -2077,6 +2137,12 @@ OBJ primButtonB(OBJ *args) {
 			return (buttonReadings[3] < CAP_THRESHOLD) ? trueObj : falseObj;
 		#elif defined(FOXBIT)
 			setPinMode(PIN_BUTTON_B, INPUT_PULLUP); // ESP32 pin number not edge pin
+		#elif defined(SPRINGBOT_GREEN) 
+            if (touchRead(T12)>19300) return trueObj;
+            else return falseObj;
+        #elif defined(SPRINGBOT_GOLD) 
+            if (touchRead(T12)>15700) return trueObj;
+            else return falseObj;
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
 		#else
