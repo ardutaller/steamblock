@@ -8,6 +8,7 @@
 // Based on https://en.wikipedia.org/wiki/Code_page_437#Character_set
 // Ilya Zverev, May 2025
 
+#include <stdint.h>
 #include "mem.h"
 #include "interp.h"
 
