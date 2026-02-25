@@ -1,6 +1,6 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 1 14 
+version 1 15 
 choices outputTypes 'asy;pin' 'asy;MCP4725' 
 description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
 
@@ -61,11 +61,11 @@ to '_asynth init' {
   _asynth_trigger_active = (newList 8 (booleanConstant false))
   _asynth_trigger_times = (newList 8)
   _asynth_frequencies = (newList 8)
-  _asynth_amplitudes = (newList 8)
-  _asynth_attacks = (newList 8)
-  _asynth_holds = (newList 8)
-  _asynth_releases = (newList 8)
-  _asynth_total_durations = (newList 8)
+  _asynth_amplitudes = (newList 8 8000)
+  _asynth_attacks = (newList 8 5)
+  _asynth_holds = (newList 8 50)
+  _asynth_releases = (newList 8 250)
+  _asynth_total_durations = (newList 8 305)
   _asynth_ramp_starts = (newList 8 -1)
   _asynth_ramp_ends = (newList 8)
   _asynth_ramp_frequencies = (newList 8)
