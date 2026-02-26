@@ -40,6 +40,7 @@ const Categories = {
 	]
 };
 
+
 Categories.colorFor = function (categoryName) {
 	let descriptor = this.descriptors.find(descriptor => {
 		return descriptor.label == 'cat;' + categoryName
@@ -47,6 +48,7 @@ Categories.colorFor = function (categoryName) {
 	// default "Generic" category color is #1e997a
 	return descriptor ? descriptor.color : '#1e997a';
 };
+
 
 Categories.build = function (descriptors, className) {
 	let container = document.createElement('div');
@@ -57,9 +59,11 @@ Categories.build = function (descriptors, className) {
 	return container;
 };
 
+
 Categories.buildStandard = function () {
-	return this.build(this.descriptors, 'categories');
+	return this.build(this.descriptors, 'categories-list');
 };
+
 
 Categories.buildLibraries = function (descriptors) {
 	return this.build(
@@ -70,17 +74,24 @@ Categories.buildLibraries = function (descriptors) {
 				isLibrary: true
 			};
 		}),
-		'libraries'
+		'libraries__list' // TODO Not consistent with categories-list
 	);
 };
 
+
 Categories.elementFor = function (descriptor) {
-	let button = document.createElement('a');
+
+	// Create element
+	let button = document.createElement('button');
 	let loc = document.createElement('l-');
-	loc.innerText = descriptor.label;
+	button.classList.add('category-button');
+	button.style.backgroundColor = descriptor.color;
 	button.ariaLabel = 'Block Category';
 	button.ariaDescription = '[l] to show the blocks in this category';
+	loc.innerText = descriptor.label;
 	button.appendChild(loc);
+
+	// Associate functionalities
 	if (descriptor.isLibrary) {
 		button.onclick = () => {
 			GP.apiCall('ide.selectLibrary', [descriptor.label]);
@@ -101,38 +112,43 @@ Categories.elementFor = function (descriptor) {
 			GP.apiCall('ide.selectCategory', [descriptor.label]);
 		};
 	}
-	button.classList.add('category-button');
+
+	// Selected and Dev Mode
 	if (IDE.currentCategory == descriptor.label) {
-		button.classList.add('selected');
+		button.classList.add('--is-selected');
 	}
 	if (descriptor.advanced && !IDE.userPreference('devMode')) {
-		button.classList.add('hidden');
+		button.classList.add('--is-hidden');
 	}
-	button.style.backgroundColor = descriptor.color;
+
 	return button;
 };
+
 
 document.addEventListener(
 	'currentCategory',
 	(e) => {
 		document.querySelectorAll('.category-button').forEach(element => {
 				if (element.innerText == GetText.localize(e.detail.value)) {
-					element.classList.add('selected');
+					element.classList.add('--is-selected');
 				} else {
-					element.classList.remove('selected');
+					element.classList.remove('--is-selected');
 				}
 			}
 		);
 	}
 );
 
+
 document.addEventListener(
 	'libraryList',
 	(e) => {
+		let librariesList = document.querySelector('[data-ide="libraries-list"]');
+
 		if (IDE.libraryList?.length > 0) {
-			IDE.populateLibraries(document.querySelector('.libraries'));
+			IDE.populateLibraries(librariesList);
 		} else {
-			document.querySelector('.libraries').innerHTML = '';
+			librariesList.innerHTML = '';
 		}
 	}
 );

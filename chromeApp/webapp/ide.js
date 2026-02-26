@@ -90,7 +90,7 @@ IDE.applyUserPreferences = function () {
 IDE.toggleAdvancedMode = function () {
 	this.toggleUserPreference('devMode')
 	// rebuild categories
-	this.populateCategories(document.querySelector('[data-ide="categories"]'));
+	this.populateCategories(document.querySelector('[data-ide="categories-list"]'));
 };
 
 
@@ -253,7 +253,7 @@ IDE.populateLibraries = function (element) {
 // Build the IDE
 IDE.build = function () {
 	this.populateTopBar(document.querySelector('[data-ide="top-bar"]'));
-	this.populateCategories(document.querySelector('[data-ide="categories"]'));
+	this.populateCategories(document.querySelector('[data-ide="categories-list"]'));
 	this.populateScriptControls(document.querySelector('[data-ide="scripts-pane-controls"]'));
 	this.tipBar.init();
 	// check connection every 500ms

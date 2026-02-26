@@ -1,0 +1,33 @@
+/*
+ * Buttons
+**/
+
+
+.button-rounded {
+	/* Somehow browser UA overwrites minireset's setting */
+	box-sizing: border-box;
+
+	height: var(--space-24);
+	padding: 0 var(--space-10);
+	display: flex;
+	align-items: center;
+
+	font-size: var(--fontSize-12);
+	line-height: 1;
+	font-weight: 600;
+	color: var(--color-blue-grey-300);
+
+	border-radius: var(--borderRadius-max);
+	border: 2px solid var(--color-blue-grey-700);
+
+	/* TODO Review all cases */
+	background-color: var(--color-blue-grey-850);
+
+	transition: all var(--duration-100) ease-in-out;
+
+	&:hover {
+		color: var(--color-blue-grey-900);
+		border: 2px solid var(--color-yellow-action);
+		background-color: var(--color-yellow-action);
+	}
+}

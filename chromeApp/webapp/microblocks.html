@@ -25,7 +25,8 @@
 		<link rel="stylesheet" href="styles/generic/_body.css">
 		<link rel="stylesheet" href="styles/generic/_button.css">
 		<link rel="stylesheet" href="styles/components/_app-preloader.css">
-		<link rel="stylesheet" href="styles/components/_categories.css">
+		<link rel="stylesheet" href="styles/components/_buttons.css">
+		<link rel="stylesheet" href="styles/components/_categories-libraries.css">
 		<link rel="stylesheet" href="styles/components/_ide.css">
 		<link rel="stylesheet" href="styles/components/_menus.css">
 		<link rel="stylesheet" href="styles/components/_scripts-pane-controls.css">
@@ -106,15 +107,17 @@
 			<div class="workspace" data-ide="workspace">
 
 				<div class="workspace__left" data-ide="workspace-left">
-					<div class="categories" data-ide="categories"></div>
-					<span class="lib-header"><l->LIBRARIES</l-></span>
-					<nav class="lib-button-holder">
-						<a class="round-button" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
-					</nav>
-					<div class="libraries"></div>
+					<div class="categories-list" data-ide="categories-list"></div>
+					<div class="libraries">
+						<h2 class="libraries__title"><l->LIBRARIES</l-></h2>
+						<div class="libraries__list" data-ide="libraries-list"></div>
+						<nav class="libraries__add-button-wrapper">
+							<button class="button-rounded" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
+						</nav>
+					</div>
 				</div>
 
-				<div class="emscripten">
+				<div class="emscripten workspace__canvas-wrapper">
 					<canvas id="canvas" class="emscripten" width="100px" height="100px"></canvas>
 					<div class="scripts-pane-controls --can-drag-through" data-ide="scripts-pane-controls"></div>
 				</div>
