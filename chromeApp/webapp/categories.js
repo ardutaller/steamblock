@@ -50,9 +50,10 @@ Categories.colorFor = function (categoryName) {
 };
 
 
-Categories.build = function (descriptors, className) {
+Categories.build = function (descriptors, className, dataIde) {
 	let container = document.createElement('div');
 	container.classList.add(className);
+	container.setAttribute('data-ide', dataIde);
 	descriptors.forEach(descriptor => {
 		container.appendChild(this.elementFor(descriptor));
 	});
@@ -61,7 +62,7 @@ Categories.build = function (descriptors, className) {
 
 
 Categories.buildStandard = function () {
-	return this.build(this.descriptors, 'categories-list');
+	return this.build(this.descriptors, 'categories__list', 'categories-list');
 };
 
 
@@ -74,7 +75,8 @@ Categories.buildLibraries = function (descriptors) {
 				isLibrary: true
 			};
 		}),
-		'libraries__list' // TODO Not consistent with categories-list
+		'libraries__list',
+		'libraries-list'
 	);
 };
 
