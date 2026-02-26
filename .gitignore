@@ -178,3 +178,11 @@ dist
 .yarn/install-state.gz
 .pnp.*
 **/node_modules/*
+# Node modules
+electron/node_modules/*
+**/node_modules/*
+
+# Local IDE + OS junk
+.vscode/
+.DS_Store
+**/.DS_Store

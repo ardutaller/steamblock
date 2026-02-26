@@ -14,7 +14,7 @@
 
 // Convert a string from UTF-8 (which all MicroBlock strings are encoded in)
 // to CP 437 (which is the built-in Adafruit 8-bit font codepage).
-// Writes up to dstSize 8-bit codepage indices into buffer and returns
+// Writes up to dstSize 8-bit codepage indices into dst and returns
 // the number of indices written.
 
 int UTF8ToCP437(char* src, char* dst, int dstSize) {
