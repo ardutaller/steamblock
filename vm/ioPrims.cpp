@@ -2053,7 +2053,6 @@ void primSetUserLED(OBJ *args) {
 	#else
 		if (useTFT) {
 			tftSetHugePixel(3, 1, (trueObj == args[0]));
-			return;
 		}
 		if (PIN_LED < 0) return; // board does not have a user LED
 		if (PIN_LED < TOTAL_PINS) {
