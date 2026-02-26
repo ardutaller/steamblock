@@ -32,7 +32,8 @@ const LiveReload = {
 		'ide.js',
 		'menus.js',
 		'buttons.js',
-		'categories.js'
+		'categories.js',
+		'windows.js'
   	],
 	lastVersions: {},
 	interval: null,

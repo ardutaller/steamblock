@@ -163,6 +163,7 @@
   /* Box Shadow */
 
   --boxShadow-scriptsPanel:   0 0 6px 0px rgba(0, 0, 0, 0.1);
+  --boxShadow-window:         0 0 12px 0px rgba(0, 0, 0, 0.25);
 
 
 
