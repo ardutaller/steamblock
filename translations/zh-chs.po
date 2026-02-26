@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-26 08:09+0000\n"
+"PO-Revision-Date: 2026-02-27 15:09+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -44,7 +44,7 @@ msgstr "NenPanel 像素屏"
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
-msgstr "像素屏绘制 列 _ 颜色 _"
+msgstr "像素屏 绘制 列 _ 颜色 _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "z"
@@ -852,7 +852,7 @@ msgstr "电容式传感器 _"
 
 #. NeoPanel library block
 msgid "NeoPanel fill row _ color _"
-msgstr "像素屏绘制 行 _ 颜色 _"
+msgstr "像素屏 绘制 行 _ 颜色 _"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;right"
@@ -1137,7 +1137,7 @@ msgstr "播放铃声 _"
 
 #. Turtle geometry library label
 msgid "Turtle"
-msgstr "海龟"
+msgstr "海龟绘图"
 
 #. Tone library block
 msgid "start tone _ Hz"
@@ -1349,7 +1349,7 @@ msgstr "Hummingbird 电池 (mV)"
 
 #. Turtle Geometry library block
 msgid "fill display with _"
-msgstr "用 _ 填充视区"
+msgstr "填充背景为 _"
 
 #. Strings library block
 msgid "unicodes _"
@@ -2088,11 +2088,11 @@ msgstr "将所有 NeoPixels 亮度增加 _"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
-msgstr "将宽度 _ 高度 _ 的像素屏连接到引脚 _"
+msgstr "像素屏 宽度为 _ 高度为 _ 连接到引脚 _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
-msgstr "像素屏绘制文本 _ 于 x _ y _ 颜色 _"
+msgstr "像素屏 绘制文本 _ x _ y _ 颜色 _"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
@@ -2451,11 +2451,11 @@ msgstr "_ 除以 _ 的余数"
 
 #. NeoPanel library block
 msgid "NeoPanel set x _ y _ color _"
-msgstr "像素屏设置 x _ y _ 颜色 _"
+msgstr "像素屏 设置 x _ y _ 颜色 _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
-msgstr "像素屏绘制BMP图片 _ 于 x _ y _"
+msgstr "像素屏 绘制 BMP 图片 _ x _ y _"
 
 #. Microphone library block
 msgid "estimate clap threshold"
@@ -4602,11 +4602,11 @@ msgstr "清除 TFT 屏幕显示"
 
 #. NeoPanel library block
 msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
-msgstr "像素屏绘制行从坐标x_ y_到坐标x_ y_ 颜色 _"
+msgstr "像素屏 绘制线条, 从 x _ y _ 到 x _ y _ 颜色 _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw circle at x _ y _ radius _ color _"
-msgstr "像素屏绘制圆, 圆心x_ y_ 半径_ 颜色_"
+msgstr "像素屏 绘制圆, 圆心 x _ y _ 半径 _ 颜色 _"
 
 #. CoCube Sengo2 library choice
 msgid "AprilTag"
@@ -5293,7 +5293,7 @@ msgstr ""
 
 #. NeoPanel library block
 msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
-msgstr "像素屏绘制正方形 x _ y _ 宽度 _ 高度 _ 颜色 _"
+msgstr "像素屏 绘制正方形, x _ y _ 宽度 _ 高度 _ 颜色 _"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;AltGr"
