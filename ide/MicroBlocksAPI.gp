@@ -132,11 +132,11 @@ method dispatchCall MicroBlocksAPI callObject {
 
 	// Script edition
 	} (endPoint == 'edit.undo') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
 		undo scripter
+		respondAPIRequest this id 0
 	} (endPoint == 'edit.redo') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
 		redo scripter
+		respondAPIRequest this id 0
 
 	// Scripting area
 	} (endPoint == 'scripts.selectBlockSize') {
@@ -164,14 +164,14 @@ method dispatchCall MicroBlocksAPI callObject {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		setExportScale (scriptEditor scripter) (at params 1)
 	} (endPoint == 'scripts.zoomIn') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
 		zoomIn editor
+		respondAPIRequest this id 0
 	} (endPoint == 'scripts.zoomOut') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
 		zoomOut editor
+		respondAPIRequest this id 0
 	} (endPoint == 'scripts.restoreZoom') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
 		restoreZoom editor
+		respondAPIRequest this id 0
 	} (endPoint == 'scripts.setZoom') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		setBlockScalePercent editor (at params 1)

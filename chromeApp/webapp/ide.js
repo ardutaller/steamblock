@@ -18,7 +18,11 @@
 IDE = {
 	currentMenu: null, // remember open menu so it can be closed on outside click
 	currentCategory: 'cat;Control',
-	libraryList: []
+	libraryList: [],
+	scripts: {
+		undoAvailable: false,
+		redoAvailable: false
+	}
 };
 
 // Initialization
@@ -96,7 +100,6 @@ IDE.toggleAdvancedMode = function () {
 
 // Top Bar
 IDE.populateTopBar = function (container) {
-
 	// Add main menu buttons
 	const mainMenuButtons = container.querySelector('[data-ide="main-menu"]');
 	['language', 'settings', 'project'].forEach(selector => {
@@ -210,24 +213,46 @@ IDE.tipBar.setTip = function (title, content) {
 };
 
 
-// Zoom Buttons. Eventually also undo/redo
+// Zoom buttons and undo/redo
 IDE.populateScriptControls = function (element) {
 	['undo', 'redo', '|', 'zoomOut', 'restoreZoom', 'zoomIn'].forEach(selector => {
 		element.appendChild(Buttons.elementFor(selector));
 	});
 };
 
+IDE.recreateScriptControls = function () {
+	let element = document.querySelector('[data-ide="scripts-pane-controls"]');
+	element.innerHTML = '';
+	this.populateScriptControls(element);
+};
+
+document.addEventListener('scripts.undoAvailable', e => {
+	let button = document.querySelector('[data-ide="scripts-pane-controls"] button.--undo');
+	if (e.detail.value) {
+		button.classList.remove('--disabled');
+	} else {
+		button.classList.add('--disabled');
+	}
+});
+
+document.addEventListener('scripts.redoAvailable', e => {
+	let button = document.querySelector('[data-ide="scripts-pane-controls"] button.--redo');
+	if (e.detail.value) {
+		button.classList.remove('--disabled');
+	} else {
+		button.classList.add('--disabled');
+	}
+});
+
 
 // Dark Mode
-document.addEventListener('preference.darkMode', e =>
-	{
-		if (e.detail.value) {
-			document.querySelector('[data-ide="ide"]').classList.add('--dark-mode');
-		} else {
-			document.querySelector('[data-ide="ide"]').classList.remove('--dark-mode');
-		}
+document.addEventListener('preference.darkMode', e => {
+	if (e.detail.value) {
+		document.querySelector('[data-ide="ide"]').classList.add('--dark-mode');
+	} else {
+		document.querySelector('[data-ide="ide"]').classList.remove('--dark-mode');
 	}
-);
+});
 
 
 // Dragging

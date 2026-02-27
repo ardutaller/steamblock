@@ -699,6 +699,8 @@ method saveScripts MicroBlocksScripter oldScale skipUndoStore {
 method storeUndoState MicroBlocksScripter {
 	if ((count undoStack) > 50) { removeFirst undoStack }
 	add undoStack (codeString mbProject)
+	setProperty (api (smallRuntime)) 'scripts.undoAvailable' (undoAvailable this)
+	setProperty (api (smallRuntime)) 'scripts.redoAvailable' (redoAvailable this)
 	redoStack = (list)
 }
 
@@ -717,6 +719,8 @@ method undo MicroBlocksScripter {
 	}
 	restoreScripts this
 	syncScripts (smallRuntime)
+	setProperty (api (smallRuntime)) 'scripts.undoAvailable' (undoAvailable this)
+	setProperty (api (smallRuntime)) 'scripts.redoAvailable' (redoAvailable this)
 }
 
 method redo MicroBlocksScripter {
@@ -728,7 +732,12 @@ method redo MicroBlocksScripter {
 		restoreScripts this
 		syncScripts (smallRuntime)
 	}
+	setProperty (api (smallRuntime)) 'scripts.undoAvailable' (undoAvailable this)
+	setProperty (api (smallRuntime)) 'scripts.redoAvailable' (redoAvailable this)
 }
+
+method undoAvailable MicroBlocksScripter { return (notEmpty undoStack) }
+method redoAvailable MicroBlocksScripter { return (notEmpty redoStack) }
 
 method updateFunctionOrMethod MicroBlocksScripter script {
 	args = (argList script)

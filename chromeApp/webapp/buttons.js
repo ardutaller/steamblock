@@ -70,6 +70,7 @@ const Buttons = {
 		description: 'Undo the last action',
 		class: 'scripts-pane-controls__button',
 		action: () => { GP.apiCall('edit.undo'); },
+		disabled: () => { return true; } // nothing to undo when loading the IDE
 	},
 	redo: {
 		icon: 'redo--16x16',
@@ -77,33 +78,42 @@ const Buttons = {
 		description: 'Redo the last undone action',
 		class: 'scripts-pane-controls__button',
 		action: () => { GP.apiCall('edit.redo'); },
+		disabled: () => { return true; } // nothing to redo when loading the IDE
 	},
 	zoomOut: {
 		icon: 'zoom-out--16x16',
 		label: 'Zoom out',
 		description: 'Decrease block size',
 		class: 'scripts-pane-controls__button',
-		action: () => { GP.apiCall('scripts.zoomOut'); },
+		action: () => {
+			GP.apiCall('scripts.zoomOut', [], () => { IDE.recreateScriptControls(); });
+		},
+		disabled: () => { return IDE.userPreference('blockSizePercent') <= 50; }
 	},
 	restoreZoom: {
 		icon: 'zoom-restore--16x16',
 		label: 'Restore zoom',
 		description: 'Restore block size to 100%',
 		class: 'scripts-pane-controls__button',
-		action: () => { GP.apiCall('scripts.restoreZoom'); },
+		action: () => {
+			GP.apiCall('scripts.restoreZoom', [], () => { IDE.recreateScriptControls(); });
+		},
+		disabled: () => { return IDE.userPreference('blockSizePercent') == 100; }
 	},
 	zoomIn: {
 		icon: 'zoom-in--16x16',
 		label: 'Zoom in',
 		description: 'Increase block size',
 		class: 'scripts-pane-controls__button',
-		action: () => { GP.apiCall('scripts.zoomIn'); },
+		action: () => {
+			GP.apiCall('scripts.zoomIn', [], () => { IDE.recreateScriptControls(); });
+		},
+		disabled: () => { return IDE.userPreference('blockSizePercent') >= 250; }
 	}
 };
 
 
 Buttons.elementFor = function (selector) {
-
 	// Separators and Connect
 	if (selector == '|') {
 		let separator = document.createElement('div');
@@ -122,6 +132,9 @@ Buttons.elementFor = function (selector) {
 	icon.classList.add(`--${selector}`);
 	icon.ariaLabel = descriptor.label;
 	icon.ariaDescription = descriptor.description; // excuse the alliteration :)
+
+	// Disabled state
+	if (descriptor.disabled?.()) { icon.classList.add('--disabled'); }
 
 	// Button action
 	if (descriptor.menu) {
