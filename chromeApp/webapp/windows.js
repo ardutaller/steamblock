@@ -17,63 +17,88 @@ class FloatingWindow extends HTMLElement {
 
 		if (descriptor.id) { this.id = descriptor.id; }
 
-		// Window Title
+
+		// Window Top
 		if (typeof descriptor.title == 'string') {
-			let h1 = document.createElement('h1');
-			h1.innerHTML = `<l->${descriptor.title}</l->`;
-			this.append(h1);
+			let windowTop = document.createElement('div');
+			let windowTitle = document.createElement('h2');
+			let windowClose = document.createElement('button');
+
+			windowTop.classList.add('window__top');
+			windowTitle.classList.add('window__title');
+			windowClose.classList.add('window__close');
+
+			windowTitle.innerHTML = `<l->${descriptor.title}</l->`;
+			fetch('img/icon-close--16x16.svg')
+				.then(res => res.text())
+				.then(text => windowClose.innerHTML = text);
+
+			windowTop.appendChild(windowTitle);
+			windowTop.appendChild(windowClose);
+			this.append(windowTop);
 		}
 
+
 		// Window Body
-		let body = document.createElement('div');
-		body.classList.add('win-body');
-		body.setAttribute('data-undraggable', true);
+		let windowBody = document.createElement('div');
+		windowBody.classList.add('window__body');
+		windowBody.setAttribute('data-undraggable', true);
+
 		if (descriptor.body) {
 			if (typeof descriptor.body == 'string') {
-				body.innerText = descriptor.body;
+				windowBody.innerText = descriptor.body;
 			} else if (typeof descriptor.body == 'object') { // assume DOM element
-				body.append(descriptor.body);
+				windowBody.append(descriptor.body);
 			}
 		}
+
 		if (descriptor.input) {
 			let input = descriptor.input.multiline ?
 				document.createElement('textarea') :
 				document.createElement('input');
-			input.classList.add('win-input');
+			input.classList.add('window__input');
 			input.type = descriptor.input.type ?? 'text';
 			input.default = descriptor.input.defaultValue ?? '';
 			input.placeholder = descriptor.input.placeholder ?? '';
 			input.onfocus = () => { GP.delegateKeyboardEvents = true; };
 			input.onblur = () => { GP.delegateKeyboardEvents = false; };
-			body.append(input);
+			windowBody.append(input);
 		}
-		this.append(body);
+		this.append(windowBody);
+
 
 		// Buttons
 		if (descriptor.buttons) {
-			let buttons = document.createElement('div');
-			buttons.classList.add('win-buttons');
+			let windowButtons = document.createElement('div');
+			windowButtons.classList.add('window__buttons');
+			windowButtons.setAttribute('data-undraggable', true);
+
 			descriptor.buttons.forEach(buttonDescriptor => {
 				let button = document.createElement('button');
 				button.innerHTML = `<l->${buttonDescriptor.label}</l->`;
+				button.classList.add('button-rounded');
+				windowButtons.append(button);
+
 				button.onclick = () => {
 					let value;
 					if (descriptor.input) {
-						value = body.querySelector('.win-input').value;
+						value = windowBody.querySelector('.window__input').value;
 					}
 					buttonDescriptor.action.call(this, value);
 					if (buttonDescriptor.closesWindow) { this.remove(); }
 					GP.delegateKeyboardEvents = false;
 				};
-				button.classList.add('win-button');
-				buttons.append(button);
 			});
-			buttons.children[0].classList.add('default');
-			this.append(buttons);
+
+			windowButtons.children[0].classList.add('--default');
+			this.append(windowButtons);
 		}
+
+
+		// Resize
 		if (descriptor.resizable) {
 			let handle = document.createElement('button');
-			handle.classList.add('win-resize');
+			handle.classList.add('window__resize');
 			handle.setAttribute('data-undraggable', true);
 			handle.onpointerdown = resizeMouseDown;
 
@@ -116,47 +141,46 @@ class FloatingWindow extends HTMLElement {
 		}
 	}
 
+
 	popUp() {
 		document.body.append(this);
+
 		this.onkeydown = (e) => {
 			if (e.key == 'Enter') {
-				this.querySelector('.win-button').click(); // first button is OK
+				this.querySelector('.window__buttons button').click(); // first button is OK
 			} else if (e.key == 'Escape') {
 				this.remove();
 			}
 		}
-		if (this.querySelector('.win-input')) {
-			this.querySelector('.win-input').focus();
+
+		if (this.querySelector('.window__input')) {
+			this.querySelector('.window__input').focus();
 		} else {
-			this.querySelector('.win-button').focus();
+			this.querySelector('.window__buttons button').focus();
 		}
 	}
 
+
 	connectedCallback() {
+		this.classList.add('window', '--can-drag-through');
+
+		// Events
 		this.addEventListener('mousedown', this.startDragging);
 		this.addEventListener('mouseup', this.stopDragging);
 		this.addEventListener('mousemove', this.drag);
 		makeDraggable(this);
+		this.querySelector('.window__close').onclick = () => { this.remove(); };
 
-		this.classList.add('window','--can-drag-through');
-
-		let title = this.querySelector('h1');
-		title.classList.add('win-title');
-		let cross = document.createElement('button');
-		cross.classList.add('win-close');
-		cross.innerText = 'X';
-		cross.onclick = () => { this.remove(); };
-		title.appendChild(cross);
-
+		// Position
 		this.x = window.innerWidth / 2 - this.clientWidth / 2;
 		this.y = window.innerHeight / 2 - this.clientHeight / 2;
-
 		this.style.left = this.x + "px";
 		this.style.top = this.y + "px";
 	}
 }
 
 customElements.define('win-', FloatingWindow);
+
 
 // Generic Window Definitions
 
@@ -211,8 +235,8 @@ FloatingWindow.prompt =
 	return win;
 };
 
-// Specific Window Definitions
 
+// Specific Window Definitions
 FloatingWindow.about = function() {
 	GP.apiCall('ide.version', [], ideVersion => {
 		GP.apiCall('board.vmVersion',[], vmVersion => {
@@ -234,6 +258,7 @@ FloatingWindow.about = function() {
 
 
 // Events
+
 document.addEventListener(
 	'window.inform',
 	(e) => {

@@ -9,4 +9,5 @@ TODO
 [ ] Proposar la opció d'amagar els tips (Advanced mode?)
 [ ] Discutir si els colors de les categories van a JS o CSS (libraries...)
 [ ] Estilar progress
-[ ] Windows: inform (ex. about), promt (ex. create var), confirm (ex. new project)
+[ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
+[ ] Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)

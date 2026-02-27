@@ -1,101 +1,135 @@
 /*
  * Windows
- *
- * TODO Refactor classes
 **/
 
 
+
+
+
 .window {
+	position: absolute;
+
 	display: flex;
 	flex-direction: column;
-	position: absolute;
-	box-shadow: 0 0 12px 0px rgba(0,0,0,0.25);
-	border-radius: 4px;
+
+	background-color: var(--color-blue-grey-50);
+	box-shadow: var(--boxShadow-window);
+	border-radius: var(--borderRadius-4);
 	overflow: hidden;
 }
 
-.win-title {
-	background-color: #2D3143;
-	line-height: 20px;
-	padding-left: 8px;
-	margin: 0;
-	cursor: grab;
-	color: #ECEDF1;
-	font-size: 12px;
-	font-weight: 700;
+
+
+
+
+/* Top */
+
+
+.window__top {
+	height: var(--space-32);
+	padding: var(--space-4) var(--space-8) var(--space-4) var(--space-12);
+
+	display: flex;
+	align-items: center;
+	gap: var(--space-16);
+
+	background-color: var(--color-blue-grey-850);
+	/* cursor: grab; */
 }
 
-.win-close {
-	float: right;
-	margin-right: 2px;
-	line-height: 14px;
-	color: #ECEDF1;
-	background: none;
-	border: none;
+
+.window__title {
+	flex-grow: 1;
+
+	font-size: var(--fontSize-14);
+	color: var(--color-blue-grey-50);
+	/* font-weight: 700; */
+}
+
+
+.window__close {
+	width: var(--space-16);
+	height: var(--space-16);
+
+	color: var(--color-blue-grey-50);
+	transition: color var(--duration-100) ease-in-out;
 	cursor: pointer;
+
+	svg {
+		width: 100%;
+	}
+
+	&:hover {
+		color: var(--color-yellow-action);
+	}
 }
 
-.win-close:hover {
-	color: gold;
-}
 
-.win-body {
-	flex-grow: 2;
-	padding: 8px;
+
+
+
+/* Body */
+
+
+.window__body {
+	flex-grow: 1;
+	padding: var(--space-32) var(--space-24);
+
 	cursor: default !important;
 	overflow: auto;
-	background-color: #ECEDF1;
+
+	text-align: center;
 	font-size: 14px;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+
+
+	/* Elements */
+
+	input {
+		min-height: var(--space-32);
+		padding: var(--space-4) var(--space-12);
+
+		border: 0;
+		text-align: center;
+		font-size: var(--fontSize-18);
+		background-color: var(--color-white);
+		transition: all var(--space-200) ease-in-out;
+		outline: 0px solid var(--color-yellow-action);
+
+		&:focus {
+			outline: var(--space-2) solid var(--color-yellow-action);
+		}
+	}
 }
 
-.win-input {
-	border: 1px solid #B0B3C5;
-	border-radius: 10px;
-	padding: 0 8px;
-}
 
-.win-buttons {
+
+
+/* Buttons */
+
+
+.window__buttons {
+	padding: 0 var(--space-32) var(--space-16);
+	margin: 0 auto;
+
 	display: flex;
 	flex-direction: row-reverse; /* easier to revert in style than in code */
 	justify-content: center;
-	padding: 8px 0;
-	gap: 2px;
-	background-color: #ECEDF1;
+	gap: var(--space-4);
 }
 
-.win-button {
-	font-weight: 700;
-	border: 1px solid #B0B3C5;
-	padding: 4px 10px;
-	color: #262938;
-	border-radius: 100px;
-	cursor: pointer;
-	font-size: 12px;
-}
 
-.win-button:focus, .win-button.default {
-	color: #ECEDF1;
-	background-color: #262938;
-	border-color: #262938;
-	outline: none;
-}
+.window__resize {
+	width: var(--space-16);
+	height: var(--space-16);
 
-.win-button:hover {
-	color: #262938;
-	background-color: #FED722;
-	border-color: #FED722;
-}
-
-.win-resize {
-	cursor: nwse-resize;
 	position: absolute;
-	right: 1px;
-	bottom: 1px;
+	right: 0;
+	bottom: 0;
+
 	background: url('../../img/resize.svg') no-repeat;
-	width: 10px;
-	height: 10px;
-	border: 0;
+	background-position: bottom var(--space-2) right var(--space-2);
+
+	&:hover {
+		cursor: nwse-resize;
+	}
 }
