@@ -1692,7 +1692,9 @@ static int readTemperature() {
 	return (qmi8658Read16Bit(QMI8658_TEMP) >> 8) + fudgeFactor;
 }
 
-#elif defined(DUELink_DISABLED)
+#elif defined(DUELink)
+
+#if defined(DISABLED_DUELINK_ACCELEROMETER)
 
 // DISABLED! Unfortunately, enabling this code adds ~10k to the compiled code size.
 // That is more than the available code space without shrinking the code store by 4k.
@@ -1742,14 +1744,30 @@ static void setAccelRange(int range) {
 	writeI2CReg(MC3216_ADDR, 0x07, 1);					// start accelerometer
 }
 
-static int readTemperature() {
-	if (!IS_DUE_STEM) return 0;
+#endif // DISABLED_DUELINK_ACCELEROMETER
 
-	OBJ pinArg = int2obj(9);
-	int analogValue = obj2int(primAnalogRead(1, &pinArg));
-	int mVx10 = (33000 * analogValue) / 1023;
-	return (mVx10 - 4000) / 195;
+static int readTemperature() {
+	if (IS_DUE_STEM) {
+		// Use built-in temperature sensor
+		OBJ pinArg = int2obj(9);
+		int analogValue = obj2int(primAnalogRead(1, &pinArg));
+		int mVx10 = (33000 * analogValue) / 1023;
+		return (mVx10 - 4000) / 195;
+	}
+
+	// use temperature sensor on the STM32C071 processor chip
+	const int slope = 151; // degrees C per ADC increment * 100 (for CincoBit)
+	const int zeroPoint = 2200; // for 10 readings
+
+	// collect the sum of 10 ADC readings to average out jitter
+	int adcTotal = 0;
+	for (int i = 0; i < 10; i++) adcTotal += analogRead(ATEMP);
+
+	return (((adcTotal - zeroPoint) * slope) + 500) / 1000; // temp in degrees C
 }
+
+static int readAcceleration(int registerID) { return 0; }
+static void setAccelRange(int range) { }
 
 // Support Springbot START
 #elif defined(SPRINGBOT)
