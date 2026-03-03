@@ -1827,7 +1827,7 @@ void primAnalogWrite(OBJ *args) {
 	#endif
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
-	#if defined(ARDUINO_SAM_DUE)
+	#if defined(ARDUINO_SAM_DUE) || defined(ARDUINO_WEACT)
 		if (value > 4095) value = 4095;
 	#else
 		if (value > 1023) value = 1023;
@@ -1889,7 +1889,6 @@ void primAnalogWrite(OBJ *args) {
 			}
 			value = (value >> 2); // On NRF52, use only the top 8-bits of the 10-bit value
 		#endif
-
 		analogWrite(pinNum, value); // sets the PWM duty cycle on a digital pin
 	#endif
 	if (OUTPUT == currentMode[pinNum]) { // using PWM, not DAC
