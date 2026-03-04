@@ -1608,13 +1608,34 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 
 #if defined(HAS_EXTERNAL_DISPLAY_PRIMS)
 
+int spiCLK = -1;
+int spiMOSI = -1;
+int spiMISO = -1;
+int spiDeviceNum = -1;
+
+OBJ primSetDisplaySPIPins(int argCount, OBJ *args) {
+	// Set the SPI clock, MOSI, and MISO pins usef for the external display.
+	// The optional fourth argument (0 or 1) specifies the SPI controller to use on RP2040 boards.
+	// Note: Changing the display pins ont default SPI device also changes them for the SPI blocks.
+
+	if (argCount < 3) return fail(notEnoughArguments);
+	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]))) return fail(needsIntegerError);
+
+	spiCLK = mapDigitalPinNum(obj2int(args[0]));
+	spiMOSI = mapDigitalPinNum(obj2int(args[1]));
+	spiMISO = mapDigitalPinNum(obj2int(args[2]));
+	spiDeviceNum = ((argCount > 3) && isInt(args[3])) ? obj2int(args[3]) : -1;
+
+	return falseObj;
+}
+
 static Arduino_DataBus* makeDataBus(int dc, int cs) {
 	#if defined(ARDUINO_ARCH_NRF52840)
-		return new Arduino_NRFXSPI(dc, cs);
+		return new Arduino_NRFXSPI(dc, cs, spiCLK, spiMOSI, spiMISO);
 	#elif defined(TARGET_RP2040) || defined(PICO_RP2350)
-		return new Arduino_RPiPicoSPI(dc, cs);
+		return new Arduino_RPiPicoSPI(dc, cs, spiCLK, spiMOSI, spiMISO, ((spiDeviceNum == 1) ? spi1 : spi0));
 	#elif defined(ESP32) && (CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32S2 || CONFIG_IDF_TARGET_ESP32S3 || CONFIG_IDF_TARGET_ESP32C3)
-		return new Arduino_ESP32SPI(dc, cs);
+		return new Arduino_ESP32SPI(dc, cs, spiCLK, spiMOSI, spiMISO);
 	#elif defined(ESP8266)
 		return new Arduino_ESP8266SPI(dc, cs);
 	#else
@@ -1962,6 +1983,7 @@ static PrimEntry entries[] = {
 	{"aprilTag", primAprilTag},
 
 	#if defined(HAS_EXTERNAL_DISPLAY_PRIMS)
+		{"setDisplaySPIPins", primSetDisplaySPIPins},
 		{"init7735", primInitST7735},
 		{"init7789", primInitST7789},
 		{"init7796", primInitST7796},

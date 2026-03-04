@@ -1,6 +1,6 @@
 module 'External Displays' Output
 author MicroBlocks
-version 1 3 
+version 1 4 
 description 'This library supports connecting selected external displays to MicroBlocks boards.
 
 * Only selected display controllers are supported.
@@ -16,3 +16,5 @@ description 'This library supports connecting selected external displays to Micr
   spec ' ' '[tft:init9341]' 'attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _ : #BR# reset pin _ invert colors _' 'num num num num num bool' 0 0 0 0 -1 false
   spec ' ' '[tft:initOLED]' 'attach OLED w _ h _ : reset pin _' 'num num num' 128 64 -1
   spec ' ' '[tft:closeDisplay]' 'detach display'
+  space
+  spec ' ' '[tft:setDisplaySPIPins]' 'set display SPI clk pin _ mosi pin _ miso pin _ : spi _' 'num num num num' 18 19 16 0
