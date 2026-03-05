@@ -113,10 +113,11 @@ static int isCodeSnapshot(File *file) {
 	// Check integrity of the given code snapshot file.
 
 	if (file->size() >= codeStoreSize()) return false; // file too large
+	if ((file->size() % 4) != 0) return false; // file size is not a multiple of four bytes
 	return true;
 }
 
-void loadCodeSnapshot(char *fileName) {
+extern "C" void loadCodeSnapshot(char *fileName) {
 	#if !defined(USE_CODE_FILE)
 
 		char fullFileName[64]; // local buffer for full file name
@@ -145,6 +146,7 @@ void loadCodeSnapshot(char *fileName) {
 		file.seek(0, SeekSet); // read from start of file
 		int byteCount = file.size();
 		file.read(codeStoreData, byteCount);
+		setCodeStoreSize(byteCount);
 
 		restoreScripts();
 		startAll();

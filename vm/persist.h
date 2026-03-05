@@ -64,6 +64,7 @@ int fileExists(const char *fileName);
 // Code Snapshots
 
 int codeStoreSize();
+void setCodeStoreSize(int byteCount);
 uint8_t* getCodeStore(int *byteCount);
 void snapshotCodeToFile(char *fileName, int fileNameBytes);
 void loadCodeSnapshot(char *fileName);

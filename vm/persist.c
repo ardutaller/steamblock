@@ -1195,6 +1195,12 @@ int codeStoreSize() {
 	#endif
 }
 
+void setCodeStoreSize(int byteCount) {
+	// Set freeStart after loading a snapshot of byteCount size.
+
+	freeStart += byteCount / 4;
+}
+
 uint8_t* getCodeStore(int *byteCount) {
 	#ifdef USE_CODE_FILE
 		return -1; // code snapshots not supported

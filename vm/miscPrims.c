@@ -15,6 +15,7 @@
 
 #include "mem.h"
 #include "interp.h"
+#include "persist.h"
 #include "tinyJSON.h"
 #include "version.h"
 
@@ -590,9 +591,10 @@ static OBJ primLaunchCodeSnapshot(int argCount, OBJ *args) {
 
 	if ((argCount < 1) || !IS_TYPE(args[0], StringType)) return fail(needsStringError);
 
+	if (ideConnected()) return fail(cannotUseWhileIDEConnected);
+
 	loadCodeSnapshot(obj2str(args[0]));
-	fail(newSnapshotSignal); // exit this task without suspending since it's code has disappeared!
-	delay(20000); // delay long enough for the IDE to disconnect
+	fail(newSnapshotSignal); // exit this task without suspending since its code has disappeared!
 	return falseObj;
 }
 

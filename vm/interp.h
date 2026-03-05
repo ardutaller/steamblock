@@ -213,6 +213,7 @@ extern int extraByteDelay;
 #define encoderNotStarted		53	// Encoder not started; pin may not support interrupts
 #define scriptTooLarge			54	// Script too large
 #define udpPortNotOpen			55	// UDP port not open
+#define cannotUseWhileIDEConnected 56 // This primitive cannot be used while connected to the IDE
 #define newSnapshotSignal		254 // Not a real error; used when launching a code snapshot
 #define sleepSignal				255	// Not a real error; used to make current task sleep
 
