@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "mem.h"
+#include "interp.h"
 #include "persist.h"
 
 #if defined(ESP8266) || defined(ARDUINO_ARCH_ESP32) || defined(RP2040_PHILHOWER)
@@ -18,6 +19,7 @@
 
 #define FILE_NAME "/ublockscode"
 
+int fileSystemInitialized = false;
 static File codeFile;
 
 static void closeAndOpenCodeFile() {
@@ -34,6 +36,7 @@ extern "C" void initFileSystem() {
 	#else
 		myFS.begin();
 	#endif
+	fileSystemInitialized = true;
 }
 
 extern "C" int initCodeFile(uint8 *flash, int flashByteCount) {
@@ -84,6 +87,68 @@ extern "C" int fileExists(const char *fileName) {
 	if (!file) return false;
 	file.close();
 	return true;
+}
+
+extern "C" void snapshotCodeToFile(char *fileName, int fileNameBytes) {
+	char filePath[64]; // local buffer for full file name
+	if (fileNameBytes > 62) return; // file name is too long
+
+	// prefix file name with "/" and add null termionator
+	// Note: fileName is not null terminated.
+	filePath[0] = '/';
+	memcpy(&filePath[1], fileName, fileNameBytes);
+	filePath[fileNameBytes + 1] = 0; // null terminator
+
+	int codeStoreByteCount = 0;
+	uint8_t *codeStoreData = getCodeStore(&codeStoreByteCount);
+	if (codeStoreByteCount < 0) return; // code snapshot not supported
+
+	initFileSystem();
+	File file = myFS.open(filePath, "w");
+	file.write(codeStoreData, codeStoreByteCount);
+	file.close();
+}
+
+static int isCodeSnapshot(File *file) {
+	// Check integrity of the given code snapshot file.
+
+	if (file->size() >= codeStoreSize()) return false; // file too large
+	return true;
+}
+
+void loadCodeSnapshot(char *fileName) {
+	#if !defined(USE_CODE_FILE)
+
+		char fullFileName[64]; // local buffer for full file name
+		if (strlen(fileName) > 62) return; // file name is too long
+
+		// prefix fullFileName with "/" and add null termionator
+		fullFileName[0] = 0;
+		strncat(fullFileName, "/", sizeof(fullFileName) - 1);
+		strncat(fullFileName, fileName, sizeof(fullFileName) - 1);
+
+		initFileSystem();
+		File file = myFS.open(fullFileName, "r");
+		if (!isCodeSnapshot(&file)) {
+			outputString("Bad code snapshot");
+			outputString(fullFileName);
+			return;
+		}
+		clearPersistentMemory();
+
+		// copy chunks from the file into persistent memory
+		int codeStoreByteCount = 0;
+		uint8_t *codeStoreData = getCodeStore(&codeStoreByteCount);
+		if (codeStoreByteCount < 0) return; // code snapshot not supported
+		// NOTE: codeStoreByteCount should be 0
+
+		file.seek(0, SeekSet); // read from start of file
+		int byteCount = file.size();
+		file.read(codeStoreData, byteCount);
+
+		restoreScripts();
+		startAll();
+	#endif
 }
 
 #endif
