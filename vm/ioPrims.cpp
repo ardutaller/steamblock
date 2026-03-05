@@ -2114,10 +2114,7 @@ OBJ primButtonA(OBJ *args) {
 		#endif
 		return (BUTTON_PRESSED == digitalRead(PIN_BUTTON_A)) ? trueObj : falseObj;
 	#elif defined(DUELink)
-		int pinButton = -1;
-		if (DUE_HAS_EDGE_CONNECTOR) { pinButton = 28;
-		} else if (IS_DUE_STEM) { pinButton = 28;
-		} else { return falseObj; }
+		int pinButton = 28; // Button A, the LDR button (PA_14), is the same on all DUELink boards.
 		setPinMode(pinButton, INPUT_PULLDOWN); // Arduino pin, not edge pin number
 		return (HIGH == digitalRead(pinButton)) ? trueObj : falseObj;
 	#else
