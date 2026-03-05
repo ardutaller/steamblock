@@ -591,7 +591,8 @@ method initPrimsets SmallCompiler {
 		camera
 		1wire
 		encoder
-		sd'
+		sd
+		lgvl'
 
 	primsets = (dictionary)
 	primSetIndex = 0
