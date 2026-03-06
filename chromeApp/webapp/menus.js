@@ -473,6 +473,8 @@ Menus.popUpFromDescriptor = function (
 
 	container.style.left = `${pos.x}px`;
 	container.style.top = `${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
+
+	this.keepInsideBounds();
 };
 
 Menus.keepInsideBounds = function () {

@@ -2,6 +2,9 @@ TODO
 ====
 
 [x] Crear un TODO en català perquè no l'entengui ningú més
+[ ] Afegir classe a blocs alternatius del menu contextual de blocs
+[ ] Estilitzar ↑↑↑ perquè siguin d'una mida raonable
+[x] Impedir selecció del botó del logo (passa a Electron només?)
 [ ] Canvi imatges tips perquè quadrin millor amb el text
 [ ] Canvi textos tips (treure punts finals)
 [x] Alçada del canvas inconsistent (CSS vs JS?)
