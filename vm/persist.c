@@ -1187,18 +1187,20 @@ void resumeCodeFileUpdates() {
 	#endif
 }
 
+// Code Snapshot support
+
 int codeStoreSize() {
 	#ifdef USE_CODE_FILE
 		return -1; // code snapshots not supported
 	#else
-		return HALF_SPACE;
+		return HALF_SPACE - 8;
 	#endif
 }
 
-void setCodeStoreSize(int byteCount) {
-	// Set freeStart after loading a snapshot of byteCount size.
-
-	freeStart += byteCount / 4;
+void appendToCodeStore(uint8 *data, int byteCount) {
+	int wordCount = byteCount / 4;
+	flashWriteData(freeStart, wordCount, (int *) data);
+	freeStart += wordCount;
 }
 
 uint8* getCodeStore(int *byteCount) {

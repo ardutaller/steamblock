@@ -112,8 +112,9 @@ extern "C" void snapshotCodeToFile(char *fileName, int fileNameBytes) {
 static int isCodeSnapshot(File *file) {
 	// Check integrity of the given code snapshot file.
 
-	if (file->size() >= codeStoreSize()) return false; // file too large
-	if ((file->size() % 4) != 0) return false; // file size is not a multiple of four bytes
+	int fileSize = file->size();
+	if (fileSize >= codeStoreSize()) return false; // file too large
+	if ((fileSize % 4) != 0) return false; // file size is not a multiple of four bytes
 	return true;
 }
 
@@ -135,19 +136,19 @@ extern "C" void loadCodeSnapshot(char *fileName) {
 			outputString(fullFileName);
 			return;
 		}
+
+		// clear code store
 		clearPersistentMemory();
 
-		// copy chunks from the file into persistent memory
-		int codeStoreByteCount = 0;
-		uint8_t *codeStoreData = getCodeStore(&codeStoreByteCount);
-		if (codeStoreByteCount < 0) return; // code snapshot not supported
-		// NOTE: codeStoreByteCount should be 0
-
+		// copy the file into the code store
+		uint8 buffer[1024]; // must be a multiple of four
 		file.seek(0, SeekSet); // read from start of file
-		int byteCount = file.size();
-		file.read(codeStoreData, byteCount);
-		setCodeStoreSize(byteCount);
+		while (file.available()) {
+			int byteCount = file.read(buffer, sizeof(buffer));
+			appendToCodeStore(buffer, byteCount);
+		}
 
+		// install scripts and start running
 		restoreScripts();
 		startAll();
 	#endif
