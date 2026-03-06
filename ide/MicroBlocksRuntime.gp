@@ -2058,6 +2058,7 @@ method msgNameToID SmallRuntime msgName {
 		atPut msgDict 'enableBLEMsg' 31
 		atPut msgDict 'chunkCode16Msg' 32
 		atPut msgDict 'codeStoreUsedMsg' 33
+		atPut msgDict 'snapshotCodeToFileMsg' 34
 		atPut msgDict 'getAllCRCsMsg' 38
 		atPut msgDict 'allCRCsMsg' 39
 		atPut msgDict 'deleteFile' 200
@@ -2126,6 +2127,7 @@ method errorString SmallRuntime errID {
 #define encoderNotStarted		53	// Encoder not started; pin may not support interrupts
 #define scriptTooLarge			54	// Script too large
 #define udpPortNotOpen			55	// UDP port not open
+#define cannotUseWhileIDEConnected 56 // This primitive cannot be used while connected to the IDE
 '
 	for line (lines defsFromHeaderFile) {
 		words = (words line)
@@ -2551,6 +2553,16 @@ method writeFileToBoard SmallRuntime srcFileName fileData {
 
 	sendFileData this targetFileName fileData
 }
+
+method snapshotCode SmallRuntime {
+	codeFileName = (prompt (global 'page') 'Code file name?' '')
+	if ('' == codeFileName) { return } // aborted
+	if (not (endsWith codeFileName '.ucode')) {
+		codeFileName = (join codeFileName '.ucode')
+	}
+	sendMsg this 'snapshotCodeToFileMsg' 0 (toList (toArray (toBinaryData codeFileName)))
+}
+
 
 // busy tells the MicroBlocksEditor to suspend board communciations during file transfers
 method busy SmallRuntime { return (notNil fileTransferProgress) }

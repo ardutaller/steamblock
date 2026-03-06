@@ -609,6 +609,10 @@ static void runTask(Task *task) {
 			}
 			goto suspend;
 		}
+		if (newSnapshotSignal == errorCode) {
+			errorCode = noError; // clear the error
+			return; // a new code snapshot has been installed; return directly to the task scheduler
+		}
 		// tmp encodes the error location: <16 bit ip><8 bit chunkIndex>
 		tmp = ((ip - (int16 *) task->code) << 8) | (task->currentChunkIndex & 0xFF);
 		sendTaskError(task->taskChunkIndex, errorCode, tmp);

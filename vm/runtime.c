@@ -1277,6 +1277,13 @@ static void processLongMessage() {
 	case extendedMsg:
 		processExtendedMessage(chunkIndex, bodyBytes, &rcvBuf[5]);
 		break;
+	case snapshotCodeToFileMsg:
+		#if defined(ARDUINO_ARCH_ESP32) || defined(RP2040_PHILHOWER)
+			// Code snapshots are supported only boards that have a file system.
+			// Not currently supported on ESP8266 boards.
+			snapshotCodeToFile(&rcvBuf[5], bodyBytes);
+		#endif
+		break;
 	default:
 		if ((200 <= cmd) && (cmd <= 205)) {
 			processFileMessage(cmd, bodyBytes, (char *) &rcvBuf[5]);

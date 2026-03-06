@@ -15,6 +15,7 @@
 
 #include "mem.h"
 #include "interp.h"
+#include "persist.h"
 #include "tinyJSON.h"
 #include "version.h"
 
@@ -577,6 +578,29 @@ static OBJ primFunctionExists(int argCount, OBJ *args) {
 	return (chunkIndexForFunction(obj2str(args[0])) < 0) ? falseObj : trueObj;
 }
 
+static OBJ primLaunchCodeSnapshot(int argCount, OBJ *args) {
+	// Warning: This is a very advanced and potentially confusing primitive!!!
+	// This primitive replaces the code running on the board with a compiled code snapshot
+	// from a file. This means that, when this primitive is run while connected to the IDE,
+	// the code in the IDE will no longer match the code running on the board. To avoid
+	// confusion, is best to NOT run this primitive while connected to the IDE!
+	// This primitive is meant to be used only in the context of a MicroBlocks program
+	// used to select and run saved code snapshots. Such programs are typically created
+	// and maintained by product manufacturers (e.g. CoCube).
+	// The primitive is very experimental and may be removed!
+
+	if ((argCount < 1) || !IS_TYPE(args[0], StringType)) return fail(needsStringError);
+
+	#if defined(ARDUINO_ARCH_ESP32) || defined(RP2040_PHILHOWER)
+		if (ideConnected()) return fail(cannotUseWhileIDEConnected);
+		loadCodeSnapshot(obj2str(args[0]));
+		fail(newSnapshotSignal); // exit this task without suspending since its code has disappeared!
+	#else
+		fail(primitiveNotImplemented);
+	#endif
+	return falseObj;
+}
+
 static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
@@ -828,6 +852,7 @@ static PrimEntry entries[] = {
 	{"shapeforChar", primShapeforChar},
 	{"clearGraph", primClearGraph},
 	{"functionExists", primFunctionExists},
+	{"launchCodeSnapshot", primLaunchCodeSnapshot},
 #if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
 	{"espSleep", primESPSleep},
 #endif

@@ -1187,6 +1187,37 @@ void resumeCodeFileUpdates() {
 	#endif
 }
 
+int codeStoreSize() {
+	#ifdef USE_CODE_FILE
+		return -1; // code snapshots not supported
+	#else
+		return HALF_SPACE;
+	#endif
+}
+
+void setCodeStoreSize(int byteCount) {
+	// Set freeStart after loading a snapshot of byteCount size.
+
+	freeStart += byteCount / 4;
+}
+
+uint8* getCodeStore(int *byteCount) {
+	#ifdef USE_CODE_FILE
+		*byteCount = -1;
+		return NULL; // code snapshots not supported
+	#else
+		compactCodeStore(NULL, NULL);
+		int *codeStart = (0 == current) ? start0 : start1;
+
+		// skip the cycle count word(s)
+		codeStart++;
+		if (CYCLE_COUNT_WORDS == 2) codeStart++;
+
+		*byteCount = 4 * (freeStart - codeStart);
+		return (uint8 *) codeStart;
+	#endif
+}
+
 // testing
 
 static void dumpWords(int halfSpace, int count) {

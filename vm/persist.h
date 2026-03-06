@@ -61,6 +61,14 @@ void createFile(const char *fileName);
 void deleteFile(const char *fileName);
 int fileExists(const char *fileName);
 
+// Code Snapshots
+
+int codeStoreSize();
+void setCodeStoreSize(int byteCount);
+uint8* getCodeStore(int *byteCount);
+void snapshotCodeToFile(char *fileName, int fileNameBytes);
+void loadCodeSnapshot(char *fileName);
+
 #ifdef __cplusplus
 }
 #endif
