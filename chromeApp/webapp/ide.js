@@ -27,6 +27,7 @@ IDE = {
 
 // Initialization
 IDE.init = function () {
+	this.element = document.querySelector('[data-ide="ide"]');
 	this.project = this.emptyProject();
 	this.board = this.emptyBoard();
 	this.applyUserPreferences();
@@ -248,9 +249,9 @@ document.addEventListener('scripts.redoAvailable', e => {
 // Dark Mode
 document.addEventListener('preference.darkMode', e => {
 	if (e.detail.value) {
-		document.querySelector('[data-ide="ide"]').classList.add('--dark-mode');
+		IDE.element.classList.add('--dark-mode');
 	} else {
-		document.querySelector('[data-ide="ide"]').classList.remove('--dark-mode');
+		IDE.element.classList.remove('--dark-mode');
 	}
 });
 

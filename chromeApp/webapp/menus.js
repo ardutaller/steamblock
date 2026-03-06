@@ -467,6 +467,13 @@ Menus.popUpFromDescriptor = function (
 
 	container.style.left = `${pos.x}px`;
 	container.style.top = `${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
+	let bounds = container.getBoundingClientRect();
+	if (bounds.bottom > IDE.element.clientHeight) {
+		container.style.top = `${IDE.element.clientHeight - bounds.height - 8}px`;
+	}
+	if (bounds.right > IDE.element.clientWidth) {
+		container.style.left = `${IDE.element.clientWidth - bounds.width - 8}px`;
+	}
 };
 
 Menus.current = function () {
