@@ -387,6 +387,12 @@ Menus.elementFor = function (descriptor, target) {
 					text = document.createElement('img');
 					text.src = item.image;
 
+					if (text.complete) {
+						Menus.keepInsideBounds()
+					} else {
+						text.addEventListener('load', () => { Menus.keepInsideBounds(); });
+					}
+
 				} else {
 					// Create a span element with a <l-> inside
 					text = document.createElement('span');
@@ -467,7 +473,11 @@ Menus.popUpFromDescriptor = function (
 
 	container.style.left = `${pos.x}px`;
 	container.style.top = `${pos.y + (triggerElement ? triggerElement.clientHeight : 0)}px`;
-	let bounds = container.getBoundingClientRect();
+};
+
+Menus.keepInsideBounds = function () {
+	let container = document.querySelector('[data-ide="menu-container"]'),
+		bounds = container.getBoundingClientRect();
 	if (bounds.bottom > IDE.element.clientHeight) {
 		container.style.top = `${IDE.element.clientHeight - bounds.height - 8}px`;
 	}
