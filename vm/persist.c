@@ -1201,9 +1201,10 @@ void setCodeStoreSize(int byteCount) {
 	freeStart += byteCount / 4;
 }
 
-uint8_t* getCodeStore(int *byteCount) {
+uint8* getCodeStore(int *byteCount) {
 	#ifdef USE_CODE_FILE
-		return -1; // code snapshots not supported
+		*byteCount = -1;
+		return NULL; // code snapshots not supported
 	#else
 		compactCodeStore(NULL, NULL);
 		int *codeStart = (0 == current) ? start0 : start1;
@@ -1213,7 +1214,7 @@ uint8_t* getCodeStore(int *byteCount) {
 		if (CYCLE_COUNT_WORDS == 2) codeStart++;
 
 		*byteCount = 4 * (freeStart - codeStart);
-		return (uint8_t *) codeStart;
+		return (uint8 *) codeStart;
 	#endif
 }
 

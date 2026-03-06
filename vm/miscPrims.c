@@ -591,10 +591,13 @@ static OBJ primLaunchCodeSnapshot(int argCount, OBJ *args) {
 
 	if ((argCount < 1) || !IS_TYPE(args[0], StringType)) return fail(needsStringError);
 
-	if (ideConnected()) return fail(cannotUseWhileIDEConnected);
-
-	loadCodeSnapshot(obj2str(args[0]));
-	fail(newSnapshotSignal); // exit this task without suspending since its code has disappeared!
+	#if defined(ARDUINO_ARCH_ESP32) || defined(RP2040_PHILHOWER)
+		if (ideConnected()) return fail(cannotUseWhileIDEConnected);
+		loadCodeSnapshot(obj2str(args[0]));
+		fail(newSnapshotSignal); // exit this task without suspending since its code has disappeared!
+	#else
+		fail(primitiveNotImplemented);
+	#endif
 	return falseObj;
 }
 
