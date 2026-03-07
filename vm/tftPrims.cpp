@@ -36,9 +36,11 @@ Arduino_GFX *tft;
 #endif
 
 int useTFT = false; // true means simulate 5x5 LED display on TFT display
-int isMonochrome = false;
-int colorBGR = false;
 int isOLED1106 = false;
+
+static int backlightPin = -1;
+static int isMonochrome = false;
+static int colorBGR = false;
 
 static int tftWidth = 0;
 static int tftHeight = 0;
@@ -1075,6 +1077,12 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		if (oledLevel > 255) oledLevel = 255;
 		writeI2CReg(OLED_ADDR, 0x80, 0x81);
 		writeI2CReg(OLED_ADDR, 0x80, oledLevel);
+	#else
+		if (backlightPin >= 0) {
+			if (brightness < 0) brightness = 0;
+			if (brightness > 10) brightness = 10;
+			analogWrite(backlightPin, brightness * 100);
+		}
 	#endif
 	return falseObj;
 }
@@ -1644,9 +1652,10 @@ static Arduino_DataBus* makeDataBus(int dc, int cs) {
 }
 
 static void turnOnBacklight(int blPin) {
-	if (blPin < 0) return; // not defined
-	pinMode(blPin, OUTPUT);
-	digitalWrite(blPin, HIGH);
+	backlightPin = blPin;
+	if (backlightPin < 0) return; // not defined
+	pinMode(backlightPin, OUTPUT);
+	digitalWrite(backlightPin, HIGH);
 }
 
 static void freeDisplayController() {
@@ -1656,7 +1665,7 @@ static void freeDisplayController() {
 	useTFT = false;
 }
 
-static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
+static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false,
 		int xOffset = 0, int yOffset = 0) {
 	if ((w < 80) || (w > 132) || (h < 128) || (h > 162)) return;
@@ -1672,13 +1681,13 @@ static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int back
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
 	}
 }
 
-static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
+static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false,
 		int xOffset = 0, int yOffset = 0) {
 	if ((w < 32) || (w > 240) || (h < 32) || (h > 320)) return;
@@ -1693,13 +1702,13 @@ static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int back
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
 	}
 }
 
-static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
+static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false,
 		int xOffset = 0, int yOffset = 0) {
 	if ((w < 32) || (w > 480) || (h < 32) || (h > 480)) return;
@@ -1714,13 +1723,13 @@ static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int back
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
 	}
 }
 
-static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
+static void init_9341(int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false) {
 	if (!tft) delete tft;
 	Arduino_DataBus *bus = makeDataBus(dcPin, csPin);
@@ -1732,7 +1741,7 @@ static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
 		tftWidth = 320;
 		tftHeight = 240;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftWidth = 320;
 		tftHeight = 240;
 		tftClear();
