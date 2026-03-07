@@ -13,7 +13,7 @@
 #include <inttypes.h>
 
 #if defined(ARDUINO_WEACT) || defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
-	defined(__ZEPHYR__) || defined(DUELink)
+	defined(__ZEPHYR__) || defined(DUELink) || defined(ESP8266)
 
 // TFT primitives are not supported
 #define NO_EXTERNAL_DISPLAY_PRIMS
