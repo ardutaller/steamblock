@@ -1199,7 +1199,7 @@ int codeStoreSize() {
 
 void appendToCodeStore(uint8 *data, int byteCount) {
 	int wordCount = byteCount / 4;
-	flashWriteData(freeStart, wordCount, (int *) data);
+	flashWriteData(freeStart, wordCount, data);
 	freeStart += wordCount;
 }
 

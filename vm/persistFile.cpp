@@ -110,11 +110,50 @@ extern "C" void snapshotCodeToFile(char *fileName, int fileNameBytes) {
 }
 
 static int isCodeSnapshot(File *file) {
-	// Check integrity of the given code snapshot file.
+	// Check the integrity of the given code snapshot file. Return true if okay.
+
+	uint8 header[8];
 
 	int fileSize = file->size();
 	if (fileSize >= codeStoreSize()) return false; // file too large
 	if ((fileSize % 4) != 0) return false; // file size is not a multiple of four bytes
+
+	file->seek(0, SeekSet); // read from start of file
+	while (file->available()) {
+		file->read(header, 8);
+		int recWords = (header[7] << 24) | (header[6] << 16) | (header[5] << 8) | header[4];
+
+		// check the record tag byte
+		if ('R' != header[3]) {
+			outputString("Bad code snapshot");
+			return false;
+		}
+
+		// check the record type byte
+		switch(header[2]) {
+		case 10:
+		case 11:
+		case 12:
+		case 19:
+		case 21:
+		case 29:
+		case 218:
+			break; // okay; these are known record types from persist.h RecordType_t
+		default:
+			outputString("Bad chunk type in code snapshot");
+			return false;
+		}
+
+		// check the record length
+		int bytesToRead = 4 * recWords;
+		if (file->available() < bytesToRead) {
+			outputString("Incomplete code snapshot");
+			return false;
+		}
+
+		// skp to the next record
+		file->seek(4 * recWords, SeekCur);
+	}
 	return true;
 }
 
