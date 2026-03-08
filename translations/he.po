@@ -1,594 +1,602 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-03-07 15:34+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-03-08 15:09+0000\n"
+"Last-Translator: Yitzhak Marmelstein <info@above-israel.co.il>\n"
+"Language-Team: Hebrew <https://hosted.weblate.org/projects/microblocks/ide/"
+"he/>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Translate Toolkit 3.19.3\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "פלט"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "לד"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "אמור_"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "גרף_"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "קלט"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "כפתור A"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "כפתור B"
 
 #. Block in Input category
 msgid "timer"
-msgstr ""
+msgstr "שעון עצר"
 
 #. Block in Input category
 msgid "reset timer"
-msgstr ""
+msgstr "איפוס שעון עצר"
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "שניות"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "מיקרו שניות"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "אלפיות השנייה"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "סוג הלוח"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "גירסא"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr ""
+msgstr "ספירת אלפיות השנייה"
 
 #. Block in Input category
 msgid "end time _"
-msgstr ""
+msgstr "הזמן נגמר _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr ""
+msgstr "מיקרו שניות מאז"
 
 #. Block in Input category
 msgid "BLE id"
-msgstr ""
+msgstr "מספר מזהה בלוטוס"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr ""
+msgstr "בלוטוס מחובר"
 
 #. Block in Input category
 msgid "connected to IDE"
-msgstr ""
+msgstr "מחובר ל IDE"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr ""
+msgstr "פינים"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr ""
+msgstr "קרא פין דיגיטאלי_"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr ""
+msgstr "קרא פין אנאלוגי_"
 
 #. Block in Pins category
 msgid "pullup _"
-msgstr ""
+msgstr "בולם_"
 
 #. Block in Pins category
 msgid "set digital pin _ to _"
-msgstr ""
+msgstr "קבע פין דיגיטלי _ ל_"
 
 #. Block in Pins category
 msgid "set pin _ to _"
-msgstr ""
+msgstr "קבע פין _ ל _"
 
 #. Block in Pins category
 msgid "analog pins"
-msgstr ""
+msgstr "פינים אנלוגי"
 
 #. Block in Pins category
 msgid "digital pins"
-msgstr ""
+msgstr "פינים דיגיטליים"
 
 #. "Control" blocks category label
 msgid "cat;Control"
-msgstr ""
+msgstr "שליטה"
 
 #. Block in Control category
 msgid "when started"
-msgstr ""
+msgstr "כאשר מתחיל"
 
 #. Block in Control category
 msgid "when button _ pressed"
-msgstr ""
+msgstr "כאשר כפתור _ נלחץ"
 
 #. Block in Control category
 msgid "forever _"
-msgstr ""
+msgstr "לעולמים_"
 
 #. Block in Control category
 msgid "repeat _ _"
-msgstr ""
+msgstr "חזור __"
 
 #. Block in Control category
 msgid "wait _ millisecs"
-msgstr ""
+msgstr "המתן_אלפיות שנייה"
 
 #. Block in Control category
 msgid "if _ _"
-msgstr ""
+msgstr "אם__"
 
 #. Block in Control category
 msgid "if _ _ else _"
-msgstr ""
+msgstr "אחרת__אם_"
 
 #. Block in Control category
 msgid "else if _ _"
-msgstr ""
+msgstr "אחרת אם__"
 
 #. Block in Control category
 msgid "else"
-msgstr ""
+msgstr "אחרת"
 
 #. Block in Control category
 msgid "when _"
-msgstr ""
+msgstr "כאשר_"
 
 #. Block in Control category
 msgid "wait until _"
-msgstr ""
+msgstr "המתן עד_"
 
 #. Block in Control category
 msgid "wait _ microsecs"
-msgstr ""
+msgstr "המתן_מיקרו שניות"
 
 #. Block in Control category
 msgid "return _"
-msgstr ""
+msgstr "החזר_"
 
 #. Block in Control category
 msgid "when _ received"
-msgstr ""
+msgstr "כאשר_מתקבל"
 
 #. Example message for [ when _ received ] and [ broadcast _ ] blocks
 msgid "go!"
-msgstr ""
+msgstr "התקדם!"
 
 #. Block in Control category
 msgid "broadcast _"
-msgstr ""
+msgstr "שדר_"
 
 #. Block in Control category
 msgid "comment _"
-msgstr ""
+msgstr "תגובה_"
 
 #. Example content for the comment block
 msgid "How this works..."
-msgstr ""
+msgstr "איך זה עובד..."
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr ""
+msgstr "טווח מ_עד_"
 
 #. Block in Control category
 msgid "by _"
-msgstr ""
+msgstr "לצד_"
 
 #. Block in Control category
 msgid "for _ in _ _"
-msgstr ""
+msgstr "לולאה_בתוך__"
 
 #. Block in Control category
 msgid "repeat until _ _"
-msgstr ""
+msgstr "חזור עד אשר__"
 
 #. Block in Control category
 msgid "stop this task"
-msgstr ""
+msgstr "עצור משימה זו"
 
 #. Block in Control category
 msgid "stop other tasks"
-msgstr ""
+msgstr "עצור משימות אחרות"
 
 #. Block in Control category
 msgid "stop all"
-msgstr ""
+msgstr "עצור הכל"
 
 #. Block in Control category
 msgid "last message"
-msgstr ""
+msgstr "ההודעה האחרונה"
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr ""
+msgstr "פרמטר_ברירת מחדל_"
 
 #. Block in Control category
 msgid "exit loop"
-msgstr ""
+msgstr "צא מלולאה"
 
 #. Example default value for the ( arg _ default _ ) block
 msgid "default"
-msgstr ""
+msgstr "ברירת מחדל"
 
 #. Block in Control category
 msgid "with _"
-msgstr ""
+msgstr "עם_"
 
 #. "Operators" blocks category label
 msgid "cat;Operators"
-msgstr ""
+msgstr "אופרטורים (מה לעשות עם הנתונים)"
 
 #. Block in Operators category
 msgid "_ mod _"
-msgstr ""
+msgstr "_אופרטור שמחזיר את השארית של חילוק בין שני מספרים_"
 
 #. Block in Operators category
 msgid "abs _"
-msgstr ""
+msgstr "ערך מוחלט_"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr ""
+msgstr "מינימום (מחזיר את המספר הקטן ביותר מבין כמה מספרים)__"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr ""
+msgstr "מקסימום (מחזיר את המספר הגדול ביותר מבין כמה מספרים)__"
 
 #. Block in Operators category
 msgid "random _ to _"
-msgstr ""
+msgstr "מספר רנדומלי בין _ל_"
 
 #. Block in Operators category
 msgid "not _"
-msgstr ""
+msgstr "לא/היפוך_"
 
 #. Block in Operators category
 msgid "_ and _"
-msgstr ""
+msgstr "_וגם_"
 
 #. Block in Operators category
 msgid "and _"
-msgstr ""
+msgstr "ו_"
 
 #. Block in Operators category
 msgid "_ or _"
-msgstr ""
+msgstr "_או_"
 
 #. Block in Operators category
 msgid "or _"
-msgstr ""
+msgstr "או_"
 
 #. Block in Operators category
 msgid "_ is a _"
-msgstr ""
+msgstr "_is a(בדיקת אובייקט או משתנה)_"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr ""
+msgstr "בצע המרה_ל_"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr ""
+msgstr "אם _אז_אחרת_"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "boolean"
-msgstr ""
+msgstr "ערך בוליאני"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
-msgstr ""
+msgstr "מספר"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "string"
-msgstr ""
+msgstr "מחרוזת"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 #. Also label of ( list < > ) block in Data category
 msgid "list"
-msgstr ""
+msgstr "רשימה"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
-msgstr ""
+msgstr "רשימה של בתים (בין 0 עד 255)"
 
 #. "Advanced" label for advanced blocks in the palette
 msgid "cat;Advanced:"
-msgstr ""
+msgstr "מתקדם:"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr ""
+msgstr "המרת ערך_מ(_,_)ל(_,_)"
 
 #. Block in Operators category
 msgid "hex _"
-msgstr ""
+msgstr "hex_"
 
 #. Block in Operators category
 msgid "sqrt _"
-msgstr ""
+msgstr "מחזיר_"
 
 #. "Variables" blocks category label
 msgid "cat;Variables"
-msgstr ""
+msgstr "משתנים"
 
 #. Button on top of "Variables" category
 msgid "Add a variable"
-msgstr ""
+msgstr "הוספת משתנה"
 
 #. Button on top of "Variables" category
 msgid "Delete a variable"
-msgstr ""
+msgstr "מחק משתנה"
 
 #. New variable dialog
 msgid "New variable name?"
-msgstr ""
+msgstr "שם למשתנה?"
 
 #. Block in Variables category
 msgid "set _ to _"
-msgstr ""
+msgstr "קבע_ל_"
 
 #. Block in Variables category
 msgid "change _ by _"
-msgstr ""
+msgstr "שנה_על ידי_"
 
 #. Block in Variables category
 msgid "initialize local _ to _"
-msgstr ""
+msgstr "ליצור משתנה מקומי_ל_"
 
 #. "Data" blocks category label
 msgid "cat;Data"
-msgstr ""
+msgstr "מידע"
 
 #. Example value for the ( list < > ) block
 msgid "cat"
-msgstr ""
+msgstr "חתול"
 
 #. Example value for the ( list < > ) block
 msgid "dog"
-msgstr ""
+msgstr "כלב"
 
 #. Example value for the ( list < > ) block
 msgid "bird"
-msgstr ""
+msgstr "ציפור"
 
 #. Example value for the ( list < > ) block
 msgid "fish"
-msgstr ""
+msgstr "דג"
 
 #. Block in Data category
 msgid "length of _"
-msgstr ""
+msgstr "אורך של_"
 
 #. Block in Data category
 msgid "item _ of _"
-msgstr ""
+msgstr "פריט_של _"
 
 #. Block in Data category
 msgid "replace item _ of list _ with _"
-msgstr ""
+msgstr "החלף פריט_מתוך רשימה_עם_"
 
 #. Block in Data category
 msgid "delete item _ of list _"
-msgstr ""
+msgstr "מחק פריט_מתוך רשימה_"
 
 #. Block in Data category
 msgid "add _ to list _"
-msgstr ""
+msgstr "הוסיף_לרשימה_"
 
 #. Block in Data category
 msgid "join _ _"
-msgstr ""
+msgstr "לחבר__"
 
 #. Block in Data category
 msgid "copy _ from _"
-msgstr ""
+msgstr "להעתיק_מ_"
 
 #. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
 #. You could think of a word that still has meaning when you remove its first character in your language.
 msgid "smiles"
-msgstr ""
+msgstr "חיוכים"
 
 #. Block in Data category
 msgid "to _"
-msgstr ""
+msgstr "ל_"
 
 #. Block in Data category
 msgid "find _ in _"
-msgstr ""
+msgstr "מצא_בתוך_"
 
 #. Block in Data category
 msgid "starting at _"
-msgstr ""
+msgstr "מתחיל ב_"
 
 #. Block in Data category
 msgid "join items of list _"
-msgstr ""
+msgstr "מזג פרטים מרשימה_"
 
 #. Block in Data category
 msgid "separator _"
-msgstr ""
+msgstr "מפריד_"
 
 #. Block in Data category
 msgid "unicode _ of _"
-msgstr ""
+msgstr "יוניקוד(מספר ייחודי לכל תו)_של _"
 
 #. Block in Data category
 msgid "string from unicode _"
-msgstr ""
+msgstr "מחרוזת מתוך יוניקוד_"
 
 #. Block in Data category
 msgid "new list length _"
-msgstr ""
+msgstr "אורך רשימה חדשה_"
 
 #. Block in Data category
 msgid "new byte array _"
-msgstr ""
+msgstr "ליצור מערך חדש של בתים (בגודל מסויים)_"
 
 #. Block in Data category
 msgid "as byte array _"
-msgstr ""
+msgstr "המרת נתון מסויים לבתים_"
 
 #. Example string. Tells the user this input accepts a byte list or a string.
 msgid "aByteListOrString"
-msgstr ""
+msgstr "רשימת בתים או מחרוזת"
 
 #. Block in Data category
 msgid "with all _"
-msgstr ""
+msgstr "פעולה על כל הפריטים ברשימה_"
 
 #. Block in Data category
 msgid "free memory"
-msgstr ""
+msgstr "כמות הזיכרון במחשב"
 
 #. Option in dropdown menu of editable input slots on mobile devices:
 msgid "edit"
-msgstr ""
+msgstr "ערוך"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( all v ) of list ( aList ) ]
 msgid "all"
-msgstr ""
+msgstr "הכל"
 
 #. Option in dropdown menu of blocks:
 #. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
 #. [ delete item ( last v ) of list ( aList ) ]
 #. ( item ( last v ) of list ( aList ) )
 msgid "last"
-msgstr ""
+msgstr "אחרון"
 
 #. Option in dropdown menu of blocks:
 #. ( item ( random v ) of list ( aList ) )
 msgid "random"
-msgstr ""
+msgstr "רנדומלי"
 
 #. Block in Data category
 msgid "split _ by _"
-msgstr ""
+msgstr "לקחת מחרוזת טקסט אחת ולהפוך אותה לרשימה של מילים או חלקים לחלק_ב_"
 
 #. "My Blocks" blocks category label
 msgid "cat;My Blocks"
-msgstr ""
+msgstr "הבלוקים שלי"
 
 #. "Generic" blocks category label
 msgid "cat;Generic"
 msgstr ""
+"גנרי משהו כללי שיכול לעבוד עם סוגים שונים של נתונים ולא מוגבל לסוג אחד בלבד."
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
-msgstr ""
+msgstr "הוספת בלוק של פעולה Command"
 
 #. Button on top of "My Blocks" category
 msgid "Add a reporter block"
-msgstr ""
+msgstr "הוסף בלוק חדש שמחזיר ערך"
 
 #. Make a block dialog
 msgid "Enter function name:"
-msgstr ""
+msgstr "הכנס שם לפונקציה:"
 
 #. "Comm" blocks category label
 msgid "cat;Comm"
-msgstr ""
+msgstr "תקשורת העברת מידע בין מכשירים או תוכניות"
 
 #. Block in Comm category
 msgid "i2c get device _ register _"
-msgstr ""
+msgstr "לקרוא נתון מרכיב (device) שמחובר דרך I²C מתוך register מסוים."
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
-msgstr ""
+msgstr "לקרוא נתון מהחיישן אנחנו שולחים לו ערך או פקודה"
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
 msgstr ""
+"לקרוא כמה בתים (Bytes) ברצף ממכשיר שמחובר דרך I²C_ ולהחזיר אותם כרשימה _"
 
 #. Block in Comm category
 msgid "i2c device _ write list _"
 msgstr ""
+"לקרוא כמה בתים (Bytes) ברצף ממכשיר שמחובר דרך I²C_ ולכתוב אותם כרשימה (List)_"
 
 #. Block in Comm category
 msgid "i2c device _ exists?"
-msgstr ""
+msgstr "האם קיים מכשיר I²C_ בכתובת מסוימת?"
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr ""
+msgstr "שולח נתונים דרך תקשורת SPI למכשיר אחר_"
 
 #. Block in Comm category
 msgid "spi receive"
 msgstr ""
+"לקבל נתונים ממכשיר שמחובר דרך תקשורת SPI. כלומר הרובוט או המיקרו בקר קורא "
+"נתונים שמגיעים מהמכשיר."
 
 #. Block in Comm category
 msgid "spi setup speed _"
 msgstr ""
+"הגדרת מהירות התקשורת של SPI Serial Peripheral Interface לפני שמתחילים לשלוח "
+"או לקבל נתונים_"
 
 #. Block in Comm category
 msgid "mode _"
-msgstr ""
+msgstr "הגדרת מצב החיישן/רכיב ו/או תקשורת_"
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr ""
+msgstr "ערוץ תקשורת עם raspberry pi (RPI)_"
 
 #. Block in Comm category
 msgid "spi exchange bytes _"
-msgstr ""
+msgstr "להחליף נתונים עם מכשיר דרך תקשורת spi_"
 
 #. Example string. Tells the user this input accepts a byte array
 msgid "aByteArray"
-msgstr ""
+msgstr "מערך של בתים (Byte Array)"
 
 #. Block in Comm category
 msgid "serial open _ baud"
-msgstr ""
+msgstr "לפתוח חיבור תקשורת Serial_ ולהגדיר את מהירות התקשורת (Baud Rate)"
 
 #. Block in Comm category
 msgid "serial close"
-msgstr ""
+msgstr "לסגור את חיבור התקשורת הסדרתית (Serial)"
 
 #. Block in Comm category
 msgid "serial read"
-msgstr ""
+msgstr "קרא נתונים שמגיעים דרך תקשורת Serial"
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr ""
+msgstr "כתוב נתונים ולשלו דרך תקשורת serial למכשיר אחר."
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
@@ -5029,19 +5037,19 @@ msgstr ""
 
 #. CoCube library block
 msgid "cocube;left"
-msgstr ""
+msgstr "שמאלה"
 
 #. CoCube library block
 msgid "cocube;right"
-msgstr ""
+msgstr "ימינה"
 
 #. CoCube library block
 msgid "cocube;forward"
-msgstr ""
+msgstr "קדימה"
 
 #. CoCube library block
 msgid "cocube;backward"
-msgstr ""
+msgstr "אחורה"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50) for _ msecs"
@@ -5065,267 +5073,282 @@ msgstr ""
 
 #. CoCube library block
 msgid "wheels stop"
-msgstr ""
+msgstr "לעצור גלגלים"
 
 #. CoCube library block
 msgid "wheels break"
-msgstr ""
+msgstr "לבלום את הגלגלים"
 
 #. CoCube library block
 msgid "X position"
-msgstr ""
+msgstr "ציר ה X"
 
 #. CoCube library block
 msgid "Y position"
-msgstr ""
+msgstr "ציר ה Y"
 
 #. CoCube library block
 msgid "direction"
-msgstr ""
+msgstr "כיוון"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50) by _ steps"
-msgstr ""
+msgstr "זוז_ב_מהירות (0-50)על ידי_צעדים"
 
 #. CoCube library block
 msgid "rotate _ at _ speed (0-50) by _ degrees"
-msgstr ""
+msgstr "הסתובב על ציר_ב_מהירות (0-50) על ידי_מעלות"
 
 #. CoCube library block
 msgid "rotate to angle _ at _ speed (0-50)"
-msgstr ""
+msgstr "הסתובב על הציר בזווית_במהירות_(0-50)"
 
 #. CoCube library block
 msgid "point towards X _ Y _ at _ speed (0-50)"
-msgstr ""
+msgstr "לכוון אל עבר ציר ה X_Y_במהירות של_(50-0)"
 
 #. CoCube library block
 msgid "move to X _ Y _ at _ speed (0-50)"
-msgstr ""
+msgstr "התקדם אל עבר ציר ה X_Y_במהירות של_(50-0)"
 
 #. CoCube library block
 msgid "on the mat"
-msgstr ""
+msgstr "על השטיח"
 
 #. CoCube library block
 msgid "card ID"
-msgstr ""
+msgstr "כרטיס זיהוי"
 
 #. CoCube library block
 msgid "draw ArUco marker on TFT _"
-msgstr ""
+msgstr "להציג על מסך ה-TFT סמן ArUco_"
 
 #. CoCube library block
 msgid "draw AprilTag on TFT _"
 msgstr ""
+"לצייר תג AprilTag (הוא סמן חזותי שחור-לבן, דומה ל־QR קטן, שמצלמה יכולה לזהות "
+"בצורה מדויקת) על מסך ה-TFT_"
 
 #. CoCube library block
 msgid "set TFT backlight _"
-msgstr ""
+msgstr "להגדיר את עוצמת התאורה האחורית (Backlight) של מסך ה-TFT_"
 
 #. CoCube library block
 msgid "battery percentage"
-msgstr ""
+msgstr "אחוז הסוללה"
 
 #. CoCube Module library block
 msgid "3D gesture connected"
 msgstr ""
+"בודק האם מודול חיישן המחוות התלת־ממדי (3D gesture sensor) מחובר לרובוט CoCube"
 
 #. CoCube Module library block
 msgid "3D gesture read"
-msgstr ""
+msgstr "לקרוא את המחווה (Gesture) שהחיישן התלת־ממדי מזהה מול הרובוט CoCube"
 
 #. CoCube Module library block
 msgid "gripper close"
-msgstr ""
+msgstr "סוגר את האחיזה (Gripper) של צבתות רובוט CoCube"
 
 #. CoCube Module library block
 msgid "ToF distance (mm)"
 msgstr ""
+"למדוד את המרחק בין רובוט CoCube לבין אובייקט שנמצא מולו בעזרת חיישן ToF "
+"(Time of Flight) במילימטרים"
 
 #. CoCube Module library block
 msgid "gripper stop"
-msgstr ""
+msgstr "לעצור את הצבתות"
 
 #. CoCube Module library block
 msgid "ToF connected"
-msgstr ""
+msgstr "חיישן tof (tIme of flight) מחובר"
 
 #. CoCube Module library block
 msgid "ASR get command"
 msgstr ""
+"לקבל את הפקודה הקולית שזוהתה על-ידי מודול זיהוי הדיבור (ASR – Automatic "
+"Speech Recognition)"
 
 #. CoCube Module library block
 msgid "attach NeoPixels"
-msgstr ""
+msgstr "לחבר ולהפעיל את מודול פאנל ה neopixel (led rgb) ברובוט Cocube"
 
 #. CoCube Module library block
 msgid "gripper open"
-msgstr ""
+msgstr "צבתות פתוחות"
 
 #. CoCube Module library block
 msgid "gripper degrees _ (0 to 70)"
-msgstr ""
+msgstr "צבתות בזווית של _(70-0)"
 
 #. CoCube Module library block
 msgid "ASR play command _"
 msgstr ""
+"להשמיע בקול את הפקודה שנבחרה מתוך מערכת זיהוי הדיבור (ASR)Automatic Speech "
+"Recognition_"
 
 #. CoCube Module library block
 msgid "power on module"
-msgstr ""
+msgstr "הדלק את המודול"
 
 #. CoCube Module library block
 msgid "DLight level"
 msgstr ""
+"למדוד את רמת האור בסביבה בעזרת חיישן האור DLight הבלוק מחזיר מספר שמייצג כמה "
+"אור יש סביב הרובוט"
 
 #. CoCube Module library block
 msgid "ultrasonic distance (mm)"
-msgstr ""
+msgstr "מרחק האולטרה סוניק במילימטרים"
 
 #. CoCube Sengo1 library choice
 msgid "Color Recog"
-msgstr ""
+msgstr "זיהוי צבעים"
 
 #. CoCube Sengo1 library choice
 msgid "Blob Detect"
-msgstr ""
+msgstr "לזהות אזור גדול של צבע מסוים בתמונה (Color Blob)"
 
 #. CoCube Sengo1 library choice
 msgid "Ball Detect"
-msgstr ""
+msgstr "זיהוי כדור"
 
 #. CoCube Sengo1 library choice
 msgid "Line Detect"
-msgstr ""
+msgstr "זיהוי קו"
 
 #. CoCube Sengo1 library choice
 msgid "Card Recog"
-msgstr ""
+msgstr "זיהוי כרטיס"
 
 #. CoCube Sengo1 library choice
 msgid "Face Recog"
-msgstr ""
+msgstr "זיהוי פנים"
 
 #. CoCube Sengo1 library choice
 msgid "QRcode"
-msgstr ""
+msgstr "בר קוד"
 
 #. CoCube Sengo1 library choice
 msgid "black"
-msgstr ""
+msgstr "שחור"
 
 #. CoCube Sengo1 library choice
 msgid "white"
-msgstr ""
+msgstr "לבן"
 
 #. CoCube Sengo1 library choice
 msgid "blue"
-msgstr ""
+msgstr "כחול"
 
 #. CoCube Sengo1 library choice
 msgid "x1"
-msgstr ""
+msgstr "X1"
 
 #. CoCube Sengo1 library choice
 msgid "y1"
-msgstr ""
+msgstr "y1"
 
 #. CoCube Sengo1 library choice
 msgid "x2"
-msgstr ""
+msgstr "x2"
 
 #. CoCube Sengo1 library choice
 msgid "y2"
-msgstr ""
+msgstr "y2"
 
 #. CoCube Sengo1 library choice
 msgid "degree"
-msgstr ""
+msgstr "מעלות"
 
 #. CoCube Sengo1 library choice
 msgid "w"
-msgstr ""
+msgstr "w"
 
 #. CoCube Sengo1 library choice
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #. CoCube Sengo1 library choice
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #. CoCube Sengo1 library choice
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #. CoCube Sengo1 library choice
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 read QRcode"
-msgstr ""
+msgstr "לקרוא קוד QR בעזרת מצלמת ה-AI מסוג Sengo1"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 change algorithm _"
-msgstr ""
+msgstr "להחליף את האלגוריתם (מצב הזיהוי) של מצלמת הבינה המלאכותית מסוג Sengo1_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 delete face ID _ (1-10)"
 msgstr ""
+"למחוק פנים שנשמרו בזיכרון של מצלמת ה-AI _ (בטווח 10-1) המצלמה יכולה לשמור עד "
+"10 פרצופים שונים, וכל אחד מקבל מספר מזהה (ID)"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 detect ball (ping pong or tennis)"
-msgstr ""
+msgstr "מצלמת Sengo1 מזהה כדור (פינג פונג או טניס)"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get QRcode _"
-msgstr ""
+msgstr "מצלמת Sengo1 מזהה בר קוד_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get ball _"
-msgstr ""
+msgstr "מצלמת Sengo1 מצלמת כדור_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get blob _"
-msgstr ""
+msgstr "לקבל נתונים על אובייקט צבעוני (Blob) שהמצלמה Sengo1 זיהתה_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get card _"
-msgstr ""
+msgstr "קבל מידע על כרטיס (card) שהמצלמה Sengo 1 זיהתה_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get color _"
-msgstr ""
+msgstr "מצלמת senogo1 מצלמת צבע_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get face _"
-msgstr ""
+msgstr "מצלמת Sengo1 מצלמת פנים_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get face ID"
-msgstr ""
+msgstr "לקבל את מספר הזיהוי (ID) של הפנים שהמצלמה Sengo1 זיהתה"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 get line _"
-msgstr ""
+msgstr "לקבל מידע על קו שהמצלמה Sengo1 זיהתה_"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 init"
 msgstr ""
+"לאתחל להפעיל ולהכין את מצלמת הבינה המלאכותית מסוג sengo1 לפני שמתחילים "
+"להשתמש בה"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 read blob"
-msgstr ""
+msgstr "לבדוק אם מצלמת Sengo1 זיהתה אובייקט צבעוני (Blob)"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 read card"
-msgstr ""
+msgstr "לבדוק האם מצלמת Sengo1 זיהתה כרטיס (Card)"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 read color"
-msgstr ""
+msgstr "לבדוק אם מצלמת הבינה המלאכותית מסוג Sengo1 זיהתה צבע בתמונה"
 
 #. CoCube Sengo1 library block
 msgid "Sengo1 record face ID _ (1-10)"
@@ -7142,7 +7165,7 @@ msgstr ""
 
 #. Examples folder
 msgid "folder;CoCube"
-msgstr ""
+msgstr "קו קיוב CoCube"
 
 #. Examples folder
 msgid "folder;MakerPort"
@@ -7202,140 +7225,142 @@ msgstr ""
 
 #. Library folder
 msgid "folder;Network"
-msgstr ""
+msgstr "תקשורת"
 
 #. Library folder
 msgid "folder;Motors"
-msgstr ""
+msgstr "מנועים"
 
 #. Library folder
 msgid "folder;Other"
-msgstr ""
+msgstr "אחר"
 
 #. Library folder
 msgid "folder;Robots"
-msgstr ""
+msgstr "רובוטים"
 
 #. Library folder
 msgid "folder;Sensing"
-msgstr ""
+msgstr "חישה"
 
 #. Library folder
 msgid "folder;Sound"
-msgstr ""
+msgstr "צלילים"
 
 #. Library folder
 msgid "folder;System"
-msgstr ""
+msgstr "מערכת"
 
 #. Library name
 msgid "8 Bit Graphics"
-msgstr ""
+msgstr "גרפיקה 8 ביט"
 
 #. Library name
 msgid "BMP"
-msgstr ""
+msgstr "פורמט של קובץ תמונה שבו כל פיקסל נשמר בצורה ישירה בזיכרון"
 
 #. Library name
 msgid "Color"
-msgstr ""
+msgstr "צבע"
 
 #. Library name
 msgid "External Displays"
-msgstr ""
+msgstr "תצוגה חיצונית"
 
 #. Library name
 msgid "Four Digit Display (TM1637)"
-msgstr ""
+msgstr "תצוגה של ארבעה תווים (TM1637)"
 
 #. Library name
 msgid "Four Digit Display (TM1650)"
-msgstr ""
+msgstr "תצוגת ארבעה תווים (TM1650)"
 
 #. Library name
 msgid "TFT"
-msgstr ""
+msgstr "מסך TFT Thin-Film Transistor"
 
 #. Library name
 msgid "CoCube Module"
-msgstr ""
+msgstr "מודולים חיצוניים של קו קיוב CoCube"
 
 #. Library name
 msgid "CoCube"
-msgstr ""
+msgstr "קו קיוב CoCube"
 
 #. Library name
 msgid "MIDI"
 msgstr ""
+"MIDI הוא קיצור של Musical Instrument Digital Interface זה פורמט שמשמש להעברת "
+"מידע מוזיקלי בין מחשבים וכלי נגינה דיגיטליים"
 
 #. Library name
 msgid "Function Calls"
-msgstr ""
+msgstr "קריאות לפונקציה (פונקציה היא קבוצת הוראות שעושה פעולה מסוימת)"
 
 #. Library folder
 msgid "folder;WorkInProgress"
-msgstr ""
+msgstr "עדיין עובדים על זה"
 
 #. String in file picker and library dialogs
 msgid "New library name?"
-msgstr ""
+msgstr "מה השם לספרייה החדשה?"
 
 #. Scripting area right-click context menu
 msgid "show all block definitions"
-msgstr ""
+msgstr "הצג את כל ההסברים אודות הבלוקים"
 
 #. Scripting area right-click context menu
 msgid "hide all block definitions"
-msgstr ""
+msgstr "הסתר את ההסברים אודות הבלוקים"
 
 #. Library label right click context menu option
 msgid "export this library"
-msgstr ""
+msgstr "ייצא ספרייה זו"
 
 #. Library label right click context menu option
 msgid "delete library"
-msgstr ""
+msgstr "מחק ספרייה"
 
 #. Project source folder
 msgid "Examples"
-msgstr ""
+msgstr "דוגמאות"
 
 #. Project source folder
 msgid "Desktop"
-msgstr ""
+msgstr "שולחן העבודה"
 
 #. Project source folder
 msgid "Computer"
-msgstr ""
+msgstr "מחשב"
 
 #. Project source
 msgid "Cloud"
-msgstr ""
+msgstr "ענן"
 
 #. String in file picker and library dialogs
 msgid "File"
-msgstr ""
+msgstr "קובץ"
 
 #. String in file picker and library dialogs
 msgid "File Open"
-msgstr ""
+msgstr "פתח קובץ"
 
 #. String in file picker and library dialogs
 msgid "File Save"
-msgstr ""
+msgstr "שמור קובץ"
 
 #. String in file picker and library dialogs
 msgid "File name:"
-msgstr ""
+msgstr "שם הקובץ"
 
 #. String in file picker and library dialogs
 msgid "New Folder"
-msgstr ""
+msgstr "תיקייה חדשה"
 
 #. String in file picker and library dialogs
 #. as in "by Jane Doe", the author of this library
 msgid "libdata;by"
-msgstr ""
+msgstr "על ידי"
 
 #. String in file picker and library dialogs
 #. as in dependencies of this library
@@ -7344,39 +7369,39 @@ msgstr ""
 
 #. String in file picker and library dialogs
 msgid "Tags:"
-msgstr ""
+msgstr "תגית:"
 
 #. String in file picker and library dialogs
 msgid "Path, name or URL for library?"
-msgstr ""
+msgstr "מהו נתיב שם או כתובת אינטרנט של ספרייה?"
 
 #. String in file picker and library dialogs
 msgid "Invalid URL"
-msgstr ""
+msgstr "כתובת URL לא תקינה"
 
 #. String in file picker and library dialogs
 msgid "Could not fetch library."
-msgstr ""
+msgstr "לא ניתן לגשת לתיקיה בענן."
 
 #. String in file picker and library dialogs
 msgid "Host does not exist or is currently down."
-msgstr ""
+msgstr "המחשב או השרת המאחריםלא קיים או כרגע לא זמין."
 
 #. String in file picker and library dialogs
 msgid "File not found in server."
-msgstr ""
+msgstr "הקובץ לא נמצא בשרת."
 
 #. String in file picker and library dialogs
 msgid "Server expects HTTPS, and MicroBlocks doesn't currently support it."
-msgstr ""
+msgstr "השרת ממתין לHTTPS, אך כרגע מיקרובלוק MicroBlocks לא תומך בכך."
 
 #. String in file picker and library dialogs
 msgid "library information"
-msgstr ""
+msgstr "מידע על הספרייה"
 
 #. String in file picker and library dialogs
 msgid "built-in library"
-msgstr ""
+msgstr "ספרייה מובנת"
 
 #. String in file picker and library dialogs
 msgid "Dependency path, name or URL?"
