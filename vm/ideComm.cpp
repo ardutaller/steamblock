@@ -299,7 +299,7 @@ void BLE_stop() {
 
 	NimBLEDevice::getAdvertising()->stop();
 	if (pServer) pServer->removeService(pService);
-	NimBLEDevice::deinit();
+	NimBLEDevice::deinit(true);
 
 	pServer = NULL;
 	pService = NULL;
