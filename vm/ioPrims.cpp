@@ -852,20 +852,21 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 	#define BOARD_TYPE "micro:STEAMakers"
 	#define PIN_BUTTON_A 0
 	#define PIN_BUTTON_B 17
-	#define DIGITAL_PINS 25
+	#define DIGITAL_PINS 28
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 40
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {};
-	static const char digitalPin[25] = {
+	static const char digitalPin[28] = {
 		12, 14, 32, 13, 27, 0, 2, 25, 4, 16,
 		26, 17, 15, 18, 19, 23, 5, 255, 255, 22,
-		21, 33, 35, 36, 39}; // edge connector pins 17 & 18 are not used (255 in map)
+		21, 33, 35, 36, 39, 20, 24, 34}; // edge connector pins 17 & 18 are not used (255 in map)
+
 	#define DEFAULT_TONE_PIN 21
 	static char reservedPin[TOTAL_PINS] = {
 		0, 1, 0, 1, 0, 0, 1, 1, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-		1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+		0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 1, 1, 0};
 	// analog inputs (ESP32=edge pin): 12=0, 14=1, 32=2, 13=3, 27=4, 0=5, 2=6, 25=7, 4=8, 26=10, 15=12
 	// UART: edge connector pins 9 (RX) and 11 (TX)
@@ -875,7 +876,9 @@ extern "C" void esp8266DeepSleep(uint64_t usecs) {
 	// Microphone - 22 (was 35)
 	// Current - 23 (was 36)
 	// LDR - 24 (was 39)
-	// Unused - 34
+	// Unused - 25 (was 20)
+	// Unused - 26 (was 24)
+	// Unused - 27 (was 34)
 
 #elif defined(ARDUINO_XIAO_ESP32S3)
 	#define BOARD_TYPE "Xiao ESP32S3"
