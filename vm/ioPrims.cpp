@@ -366,20 +366,21 @@ void hardwareInit() {
 #elif defined(ARDUINO_NRF52840_CLUE)
 
 	#define BOARD_TYPE "Clue"
-	#define DIGITAL_PINS 23
+	#define DIGITAL_PINS 24
 	#define ANALOG_PINS 8
 	#define TOTAL_PINS 48
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7};
-	static const char digitalPin[23] = {
+	static const char digitalPin[24] = {
 		// Pins 0-20 Edge connector pins (except 17 & 18)
 		// Pin 17 - red LED (internal; not on edge connector)
 		// Pin 18 - NeoPixel (internal; not on edge connector)
 		// Pin 21 - speaker (internal pin 46)
 		// Pin 22 - white LED (internal pin 43)
+		// Pin 23 - TFT backlight (internal pin 34)
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-		46, 43};
+		46, 43, 34};
 	#define PIN_LED 17
 	#define PIN_BUTTON_A 5
 	#define PIN_BUTTON_B 11
