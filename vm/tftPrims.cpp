@@ -269,6 +269,14 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			writeAXP(0x33, data);
 		}
 
+		void AXP192_SetBacklight(int brightness) {
+			if (brightness > 10) brightness = 10;
+			if (brightness < 0) brightness = 0;
+			int voltage = 2500 + (80 * brightness); // 1-10 -> 2500 to 3300
+			if (brightness == 0) voltage = 2400;
+			AXP192_SetDCVoltage(2, voltage);
+		}
+
 		void AXP192_SetBusPowerMode(uint8_t state) {
 			// Select source for BUS_5V
 			// 0 : powered by USB or battery; use internal boost
@@ -1057,15 +1065,23 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		analogWrite(TFT_BL, brightness * 25);
 	#elif defined(ARDUINO_M5Stack_Core_ESP32)
 		pinMode(32, OUTPUT);
-		digitalWrite(32, (brightness > 0) ? HIGH : LOW);
+		if (brightness < 0) brightness = 0;
+		if (brightness > 10) brightness = 10;
+		analogWrite(32, brightness * 25);
 	#elif defined(ARDUINO_M5Stick_Plus)
 		brightness = (brightness <= 0) ? 0 : brightness + 7; // 8 is lowest setting that turns on backlight
 		if (brightness > 15) brightness = 15;
 		int n = readAXP(0x28);
 		writeAXP(0x28, (brightness << 4) | (n & 0x0f)); // set brightness (high 4 bits of reg 0x28)
+	#elif defined(ARDUINO_M5STACK_Core2)
+		if (brightness < 0) brightness = 0;
+		if (brightness > 10) brightness = 10;
+		AXP192_SetBacklight(brightness);
 	#elif defined(ARDUINO_NRF52840_CLUE)
+		if (brightness < 0) brightness = 0;
+		if (brightness > 10) brightness = 10;
 		pinMode(34, OUTPUT);
-		digitalWrite(34, (brightness > 0) ? HIGH : LOW);
+		analogWrite(34, brightness * 25); // nRF5x boards use 8-bit analogWrite resolution
 	#elif defined(TTGO_RP2040)
 		pinMode(TFT_BL, OUTPUT);
 		if (brightness < 0) brightness = 0;
