@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-03-07 15:34+0200\n"
-"PO-Revision-Date: 2026-03-08 15:09+0000\n"
+"PO-Revision-Date: 2026-03-09 14:19+0000\n"
 "Last-Translator: Yitzhak Marmelstein <info@above-israel.co.il>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/microblocks/ide/"
 "he/>\n"
@@ -510,7 +510,7 @@ msgstr "הבלוקים שלי"
 #. "Generic" blocks category label
 msgid "cat;Generic"
 msgstr ""
-"גנרי משהו כללי שיכול לעבוד עם סוגים שונים של נתונים ולא מוגבל לסוג אחד בלבד."
+"גנרי משהו כללי שיכול לעבוד עם סוגים שונים של נתונים ולא מוגבל לסוג אחד בלבד"
 
 #. Button on top of "My Blocks" category
 msgid "Add a command block"
@@ -530,11 +530,11 @@ msgstr "תקשורת העברת מידע בין מכשירים או תוכניו
 
 #. Block in Comm category
 msgid "i2c get device _ register _"
-msgstr "לקרוא נתון מרכיב (device) שמחובר דרך I²C מתוך register מסוים."
+msgstr "לקרוא נתון מרכיב (device)_ שמחובר דרך I2C מתוך register מסוים_"
 
 #. Block in Comm category
 msgid "i2c set device _ register _ to _"
-msgstr "לקרוא נתון מהחיישן אנחנו שולחים לו ערך או פקודה"
+msgstr "לקרוא נתון מהחיישן_אנחנו שולחים לו ערך או פקודה_לבצע_"
 
 #. Block in Comm category
 msgid "i2c device _ read list _"
@@ -552,19 +552,15 @@ msgstr "האם קיים מכשיר I²C_ בכתובת מסוימת?"
 
 #. Block in Comm category
 msgid "spi send _"
-msgstr "שולח נתונים דרך תקשורת SPI למכשיר אחר_"
+msgstr "שולח נתונים למכשיר אחר_"
 
 #. Block in Comm category
 msgid "spi receive"
-msgstr ""
-"לקבל נתונים ממכשיר שמחובר דרך תקשורת SPI. כלומר הרובוט או המיקרו בקר קורא "
-"נתונים שמגיעים מהמכשיר."
+msgstr "לקבל נתונים ממכשיר שמחובר דרך spi"
 
 #. Block in Comm category
 msgid "spi setup speed _"
-msgstr ""
-"הגדרת מהירות התקשורת של SPI Serial Peripheral Interface לפני שמתחילים לשלוח "
-"או לקבל נתונים_"
+msgstr "הגדרת מהירות התקשורת spi serial peripheral interface_"
 
 #. Block in Comm category
 msgid "mode _"
@@ -572,7 +568,7 @@ msgstr "הגדרת מצב החיישן/רכיב ו/או תקשורת_"
 
 #. Block in Comm category
 msgid "rpi channel _"
-msgstr "ערוץ תקשורת עם raspberry pi (RPI)_"
+msgstr "ערוץ תקשורת עם raspberry pi_"
 
 #. Block in Comm category
 msgid "spi exchange bytes _"
@@ -596,7 +592,7 @@ msgstr "קרא נתונים שמגיעים דרך תקשורת Serial"
 
 #. Block in Comm category
 msgid "serial write _"
-msgstr "כתוב נתונים ולשלו דרך תקשורת serial למכשיר אחר."
+msgstr "כתוב נתונים ושלח דרך תקשורת serial למכשיר אחר_"
 
 #. Example string. Tells the user this input accepts an integer, a string list or a byte array
 msgid "anIntegerStringListOrByteArray"
@@ -616,175 +612,176 @@ msgstr ""
 
 #. Block in Comm category
 msgid "print _"
-msgstr ""
+msgstr "הדפס_"
 
 #. Block in Comm category
 msgid "no op"
-msgstr ""
+msgstr "No Operation לא לבצע שום פעולה"
 
 #. Block in Comm category
 msgid "ignore"
-msgstr ""
+msgstr "להתעלם"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "draw shape _ at x _ y _"
-msgstr ""
+msgstr "ליצור צורה ב_X_Y"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
-msgstr ""
+msgstr "מציג צורה של האות_"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "send NeoPixel rgb _"
-msgstr ""
+msgstr "שליחת נורות rgb של ניאופיקסל_"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has tone support"
-msgstr ""
+msgstr "בדוק האם המכשיר או הלוח תומך בהשמעת צלילים"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "play tone pin _ frequency _"
-msgstr ""
+msgstr "נגן צליל בפין _ בתדר _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "has WiFi support"
-msgstr ""
+msgstr "האם המכשיר או הלוח תומך בחיבור WiFi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "start WiFi _ password _"
-msgstr ""
+msgstr "להתחבר לרשת WiFi _ וסיסמה_"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "stop WiFi"
-msgstr ""
+msgstr "עצור את הwifi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "WiFi status"
-msgstr ""
+msgstr "מצב הwifi"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "my IP address"
-msgstr ""
+msgstr "כתובת הIP internet protocol שלי"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "disable radio"
-msgstr ""
+msgstr "בטל רדיו"
 
 #. "Basic Sensors" library label.
 msgid "Basic Sensors"
-msgstr ""
+msgstr "חיישנים בסיסיים"
 
 #. Block in Basic Sensors library
 msgid "tilt x"
-msgstr ""
+msgstr "הטיה על ציר ה X"
 
 #. Block in Basic Sensors library
 msgid "tilt y"
-msgstr ""
+msgstr "הטיה על ציר ה Y"
 
 #. Block in Basic Sensors library
 msgid "tilt z"
-msgstr ""
+msgstr "הטיה על ציר ה Z"
 
 #. Block in Basic Sensors library
 msgid "acceleration"
-msgstr ""
+msgstr "מד תאוצה"
 
 #. Block in Basic Sensors library
 msgid "light level"
-msgstr ""
+msgstr "עוצמת האור"
 
 #. Block in Basic Sensors library
 msgid "temperature (°C)"
-msgstr ""
+msgstr "מד טמפרטורה במעלות צלזיוס"
 
 #. Block in Basic Sensors library
 msgid "magnetic field"
-msgstr ""
+msgstr "שדה מגנטי"
 
 #. Block in Basic Sensors library
 msgid "set acceleration range _ g = 100"
-msgstr ""
+msgstr "קבע את טווח התאוצה_g=100"
 
 #. Block in Function Calls library
 msgid "call _"
-msgstr ""
+msgstr "קריאה לפעולה_ להפעיל (לקרוא) לפונקציה, בלוק או תת־תוכנית"
 
 #. Example value for ( call _ ) block
 msgid "function name"
-msgstr ""
+msgstr "שם הפונקציה"
 
 #. Example string. Tells the user this input accepts a list of parameters.
 msgid "parameter list"
-msgstr ""
+msgstr "רשימת פרמטרים (המשתנים) שפונקציה או בלוק מקבלים כקלט"
 
 #. Block in Function Calls library
 msgid "function _ exists"
-msgstr ""
+msgstr "בדוק אם פונקציה_בשם מסוים קיימת כרגע במערכת"
 
 #. NeoPixel library label
 msgid "NeoPixel"
-msgstr ""
+msgstr "ניאופיקסל"
 
 #. NeoPixel library block
 msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
-msgstr ""
+msgstr "קבע את הניאופיקסל__________"
 
 #. NeoPixel library block
 msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
-msgstr ""
+msgstr "קבע את הניאופיקסל#BR#_____#BR#_____#BR#_____#BR#_____#BR#_____"
 
 #. NeoPixel library block
 msgid "clear NeoPixels"
-msgstr ""
+msgstr "אפס את הניאופיקסל"
 
 #. NeoPixel library block
 msgid "set NeoPixel _ color _"
-msgstr ""
+msgstr "קבע את צבע הניאופיקסל_צבע_"
 
 #. NeoPixel library block
 msgid "set all NeoPixels color _"
-msgstr ""
+msgstr "קבע את כל הצבעים של הניאופיקסל ל_"
 
 #. NeoPixel library block
 msgid "rotate NeoPixels by _"
-msgstr ""
+msgstr "סובב את הניאופיקסל ב_"
 
 #. NeoPixel library block
 msgid "brighten NeoPixel _ by _"
-msgstr ""
+msgstr "שנה את הבהירות של הניאופיקסל_ב_"
 
 #. NeoPixel library block
 msgid "brighten all NeoPixels by _"
-msgstr ""
+msgstr "שנה את הבהירות של כל הניאופיקסלים ב_"
 
 #. NeoPixel library block
 msgid "shift NeoPixel _ color by _"
-msgstr ""
+msgstr "שנה את הצבע של הניאופיקסל_ב_"
 
 #. NeoPixel library block
 msgid "shift all NeoPixel colors by _"
-msgstr ""
+msgstr "שנה את כל צבעי הניאופיקסל ב_"
 
 #. NeoPixel library block
 msgid "attach _ LED NeoPixel strip to pin _"
-msgstr ""
+msgstr "הצמד את סטריפ הלדים_ של הניאופיקסל לפין_"
 
 #. NeoPixel library block
 msgid "has white _"
-msgstr ""
+msgstr "יש בו לבן_ בודק האם יש צבע לבן באזור מסוים או בכיוון מסוים שחיישן רואה"
 
 #. NeoPixel library block
 msgid "PIR"
-msgstr ""
+msgstr "Passive Infrared Sensor חיישן אינפרא-אדום פסיבי לזיהוי תנועה"
 
 #. NeoPixel library block
 msgid "PIR at pin _ detected movement"
 msgstr ""
+"Passive Infrared Sensor חיישן אינפרא-אדום פסיבי לזיהוי תנועה בפין_מזהה תנועה"
 
 #. NeoPanel library label
 msgid "NeoPanel"
-msgstr ""
+msgstr "ניאופאנל של נורות led מסוג neopixel"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
@@ -824,35 +821,35 @@ msgstr ""
 
 #. Microphone library label
 msgid "Microphone"
-msgstr ""
+msgstr "מיקרופון"
 
 #. Microphone library block
 msgid "microphone"
-msgstr ""
+msgstr "מיקרופון"
 
 #. Microphone library block
 msgid "turn on microphone"
-msgstr ""
+msgstr "הדלק את המיקרופון"
 
 #. Microphone library block
 msgid "turn off microphone"
-msgstr ""
+msgstr "כבה את המיקרופון"
 
 #. Microphone library block
 msgid "loudness"
-msgstr ""
+msgstr "עוצמת קול גבוהה"
 
 #. Microphone library block
 msgid "clap count"
-msgstr ""
+msgstr "ספירת מחיאות כף"
 
 #. Microphone library block
 msgid "set clap threshold _"
-msgstr ""
+msgstr "קבע את סף מחיאת הכף_"
 
 #. Microphone library block
 msgid "estimate clap threshold"
-msgstr ""
+msgstr "הערכה של סף מחיאות הכף"
 
 #. Citilab ED1 Stepper Motor library label
 msgid "ED1 Stepper Motor"
@@ -876,15 +873,15 @@ msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "stop steppers"
-msgstr ""
+msgstr "עצור מנועי steppers"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
-msgstr ""
+msgstr "עם כיוון השעון"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "counter-clockwise"
-msgstr ""
+msgstr "נגד כיוון השעון"
 
 #. Citilab ED1 Buttons library label
 msgid "ED1 Buttons"
@@ -924,23 +921,23 @@ msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Light"
-msgstr ""
+msgstr "עוצמת אור"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Distance (cm)"
-msgstr ""
+msgstr "מרחק (סנטימטר)"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Dial"
-msgstr ""
+msgstr "חוגה כפתור מסתובב"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Sound"
-msgstr ""
+msgstr "צלילים"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Other"
-msgstr ""
+msgstr "אחר"
 
 #. BirdBrain Technologies Finch library label
 msgid "Finch Beak Red _ Green _ Blue _"
@@ -996,23 +993,23 @@ msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "All"
-msgstr ""
+msgstr "הכל"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Forward"
-msgstr ""
+msgstr "קדימה"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Backward"
-msgstr ""
+msgstr "אחורה"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Right"
-msgstr ""
+msgstr "ימינה"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Left"
-msgstr ""
+msgstr "שמאלה"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Beak Up"
@@ -1024,35 +1021,35 @@ msgstr ""
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Tilt Left"
-msgstr ""
+msgstr "הטיה שמאלה"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Tilt Right"
-msgstr ""
+msgstr "הטיה ימינה"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Level"
-msgstr ""
+msgstr "השווה"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Upside Down"
-msgstr ""
+msgstr "הפוך"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "x"
-msgstr ""
+msgstr "ציר X"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "y"
-msgstr ""
+msgstr "ציר Y"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "z"
-msgstr ""
+msgstr "ציר Z"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "strength"
-msgstr ""
+msgstr "עוצמת החוזק"
 
 #. Ultrasound distance library block
 msgid "distance (cm) trigger _ echo _"
@@ -1060,23 +1057,23 @@ msgstr ""
 
 #. Infrared remote library label
 msgid "IR Remote"
-msgstr ""
+msgstr "שלט אינפרא אדום"
 
 #. Infrared Remote library block
 msgid "receive IR code"
-msgstr ""
+msgstr "קבל קוד אינפרא אדום"
 
 #. Infrared Remote library block
 msgid "receive IR code from device _"
-msgstr ""
+msgstr "קבל קוד אינפרא אדום ממכשיר_"
 
 #. Infrared Remote library block
 msgid "test IR"
-msgstr ""
+msgstr "בדוק אינפרא אדום"
 
 #. Infrared Remote library block
 msgid "attach IR receiver to pin _"
-msgstr ""
+msgstr "הצמד רסיבר אינפרא אדום לפין מספר_"
 
 #. Infrared Remote library block
 msgid "IR transmit device _ command _"
@@ -1084,148 +1081,148 @@ msgstr ""
 
 #. Keyboard and Mouse library label
 msgid "Keyboard and Mouse"
-msgstr ""
+msgstr "עכבר ומקלדת"
 
 #. Keyboard and Mouse library block
 msgid "press key _"
-msgstr ""
+msgstr "לחץ על כפתור_"
 
 #. Keyboard and Mouse library block
 msgid "while holding _"
-msgstr ""
+msgstr "לחיצה ארוכה_"
 
 #. Keyboard and Mouse library block
 msgid "hold key _"
-msgstr ""
+msgstr "החזק כפתור_"
 
 #. Keyboard and Mouse library block
 msgid "release key _"
-msgstr ""
+msgstr "שחרר כפתור_"
 
 #. Keyboard and Mouse library block
 msgid "release all keys"
-msgstr ""
+msgstr "שחרר את כל הכפתורים"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Shift"
-msgstr ""
+msgstr "כפתור Shift"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Control"
-msgstr ""
+msgstr "כפתור Control"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Alt / ⌥"
-msgstr ""
+msgstr "כפתור Alt/"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;Logo / ⌘"
-msgstr ""
+msgstr "לוגו/⌘"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;AltGr"
-msgstr ""
+msgstr "כפתור AltGr"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;enter"
-msgstr ""
+msgstr "כפתור enter"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;return"
-msgstr ""
+msgstr "כפתור return"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;tab"
-msgstr ""
+msgstr "כפתור tab"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;backspace"
-msgstr ""
+msgstr "כפתור backspace"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;delete"
-msgstr ""
+msgstr "כפתור delete"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;insert"
-msgstr ""
+msgstr "כפתור insert"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;home"
-msgstr ""
+msgstr "כפתור home"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;end"
-msgstr ""
+msgstr "כפתור end"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PgUp"
-msgstr ""
+msgstr "כפתור PgUp"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PgDown"
-msgstr ""
+msgstr "כפתור PgDown"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;CapsLock"
-msgstr ""
+msgstr "כפתור CapsLock"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;NumLock"
-msgstr ""
+msgstr "כפתור NumLock"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;ScrollLock"
-msgstr ""
+msgstr "כפתור ScrollLock"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;PrintScreen"
-msgstr ""
+msgstr "כפתור PrintScreen"
 
 #. Key name (as in computer keyboard key)
 msgid "kbd;ESC"
-msgstr ""
+msgstr "כפתור ESC"
 
 #. Keyboard and Mouse library block
 msgid "_ mouse click"
-msgstr ""
+msgstr "קליק על העכבר_"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;left"
-msgstr ""
+msgstr "שמאלה"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;right"
-msgstr ""
+msgstr "ימינה"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;middle"
-msgstr ""
+msgstr "כפתור אמצעי"
 
 #. Mouse button name (as in computer mouse button)
 msgid "mouse;both"
-msgstr ""
+msgstr "שני הכפתורים"
 
 #. Keyboard and Mouse library block
 msgid "move mouse pointer by _ , _"
-msgstr ""
+msgstr "הזז את הסמן של העבר ב_,_"
 
 #. Keyboard and Mouse library block
 msgid "scroll mouse by _"
-msgstr ""
+msgstr "גלול את העכבר ב_"
 
 #. Keyboard and Mouse library block
 msgid "hold _ mouse button"
-msgstr ""
+msgstr "החזק את לחצן העכבר_"
 
 #. Keyboard and Mouse library block
 msgid "release mouse buttons"
-msgstr ""
+msgstr "שחרר את כפתורי העכבר"
 
 #. Lists library label
 #. Extra utilities for list manipulation and access
 msgid "Lists"
-msgstr ""
+msgstr "רשימות"
 
 #. Lists library block
 msgid "list _ contains _"
@@ -1257,15 +1254,15 @@ msgstr ""
 
 #. Option in ( pick (a few) from (aList) ) block in Lists library
 msgid "a few"
-msgstr ""
+msgstr "כמה"
 
 #. Option in ( pick (some) from (aList) ) block in Lists library
 msgid "some"
-msgstr ""
+msgstr "חלק"
 
 #. Option in ( pick (most) from (aList) ) block in Lists library
 msgid "most"
-msgstr ""
+msgstr "הכי הרבה"
 
 #. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
 msgid "_ with _ items replaced by _"
@@ -1273,7 +1270,7 @@ msgstr ""
 
 #. Lists library block
 msgid "reverse _"
-msgstr ""
+msgstr "אחורנית_"
 
 #. Lists library block
 msgid "shuffle _"
@@ -1306,7 +1303,7 @@ msgstr ""
 #. Pseudorandomness library label
 #. Creates pseudorandom numbers and lists of numbers given a particular seed
 msgid "Pseudorandomness"
-msgstr ""
+msgstr "פסאודו מספר אקראי"
 
 #. Pseudorandomness library block
 msgid "pseudorandom _ to _ with seed _"
@@ -1318,37 +1315,37 @@ msgstr ""
 
 #. BLE Keyboard library label
 msgid "BLE Keyboard"
-msgstr ""
+msgstr "מקלדת בלוטוס'"
 
 #. BLE Keyboard library block
 msgid "start BLE Keyboard"
-msgstr ""
+msgstr "התחל להשתמש במקלדת בלוטוס'"
 
 #. Radio comm library label
 #. Allows micro:bit boards to exchange messages
 #. All of its blocks are primitive (see "Primitives" section)
 msgid "Radio"
-msgstr ""
+msgstr "רדיו"
 
 #. Radio library block
 msgid "radio send number _"
-msgstr ""
+msgstr "רדיו שלח מספר_"
 
 #. Radio library block
 msgid "radio send string _"
-msgstr ""
+msgstr "רדיו שלח מחרוזת_"
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "Hello!"
-msgstr ""
+msgstr "שלום!"
 
 #. Radio library block
 msgid "radio send pair _ = _"
-msgstr ""
+msgstr "רדיו שלח זוג_=_"
 
 #. Example string for blocks that send a message via some communication channel.
 msgid "light"
-msgstr ""
+msgstr "אור"
 
 #. Radio library block
 msgid "radio message received?"
@@ -7406,18 +7403,23 @@ msgstr "ספרייה מובנת"
 #. String in file picker and library dialogs
 msgid "Dependency path, name or URL?"
 msgstr ""
+"נתיב, שם או כתובת אינטרנט של תלות (Dependency) Dependency היא ספרייה או קובץ "
+"שתוכנה אחרת צריכה כדי לעבוד?"
 
 #. String in file picker and library dialogs
 msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
 msgstr ""
+"אם אתה מוסיף ספרייה שכבר מובנית בתוך MicroBlocks, אפשר פשוט לכתוב את השם שלה."
 
 #. String in file picker and library dialogs
 msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
 msgstr ""
+"אם הספרייה שלך נמצאת בתיקיית Libraries בתוך תיקיית הפרויקט המקומית של "
+"MicroBlocks, צריך להוסיף לפניה קו נטוי (/)."
 
 #. String in file picker and library dialogs
 msgid "If the library is hosted online, please input its full URL."
-msgstr ""
+msgstr "אם הספרייה מאוחסנת באינטרנט, יש להזין את כתובת ה-URL המלאה שלה."
 
 #. String in file picker and library dialogs
 msgid "Tag name?"
