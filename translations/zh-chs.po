@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-02-27 15:09+0000\n"
+"PO-Revision-Date: 2026-03-07 04:09+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16.1-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 #. Block in Control category
 msgid "by _"
@@ -5314,7 +5314,7 @@ msgstr "伪随机库"
 
 #. Pseudorandomness library block
 msgid "pseudorandom _ to _ with seed _"
-msgstr "伪随机数 从 _ 到 _ ，种子为"
+msgstr "伪随机数 从 _ 到 _ ，种子为 _"
 
 #. Pseudorandomness library block
 msgid "_ pseudorandom numbers _ to _ with seed _"
