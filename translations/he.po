@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-03-07 15:34+0200\n"
-"PO-Revision-Date: 2026-03-09 14:19+0000\n"
+"PO-Revision-Date: 2026-03-10 01:36+0000\n"
 "Last-Translator: Yitzhak Marmelstein <info@above-israel.co.il>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/microblocks/ide/"
 "he/>\n"
@@ -1353,52 +1353,52 @@ msgstr ""
 
 #. Radio library block
 msgid "radio last number"
-msgstr ""
+msgstr "המספר האחרון שנשלח ברדיו"
 
 #. Radio library block
 msgid "radio last string"
-msgstr ""
+msgstr "המחרוזת האחרונה שנשלחה ברדיו"
 
 #. Radio library block
 msgid "radio last message type"
-msgstr ""
+msgstr "ההודעה האחרונה שעברה ברדיו"
 
 #. Radio library block
 msgid "radio set group _ (0-255)"
-msgstr ""
+msgstr "הגדר מזהה קבוצה לרדיו_ (255-0)"
 
 #. Radio library block
 msgid "radio set channel (0-83) _"
-msgstr ""
+msgstr "רדיו קבע ערוץ (83-0)_"
 
 #. Radio library block
 msgid "radio set power (0-7) _"
-msgstr ""
+msgstr "קבע את עוצמת הרדיו (7-0)_"
 
 #. Radio library block
 msgid "radio last signal strength"
-msgstr ""
+msgstr "בלוק של ספריית רדיו"
 
 #. Radio library block
 msgid "radio send packet _"
-msgstr ""
+msgstr "רדיו שלח נתונים בצבר Packer_"
 
 #. Radio library block
 msgid "radio receive packet _"
-msgstr ""
+msgstr "רדיו קבל צבר נתונים Packet_"
 
 #. Radio library block
 msgid "radio last sender ID"
-msgstr ""
+msgstr "מספר הזהות של שולח הרדיו האחרון"
 
 #. Radio library block
 msgid "radio my ID"
-msgstr ""
+msgstr "מזהה הרדיו שלי"
 
 #. Text scrolling library label
 #. Scrolls text on 5x5 LED displays and simulated ones
 msgid "Scrolling"
-msgstr ""
+msgstr "לגלול"
 
 #. Scrolling library block
 msgid "scroll text _"
