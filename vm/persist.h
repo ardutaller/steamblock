@@ -63,11 +63,11 @@ int fileExists(const char *fileName);
 
 // Code Snapshots
 
-int codeStoreSize();
-void setCodeStoreSize(int byteCount);
-uint8* getCodeStore(int *byteCount);
 void snapshotCodeToFile(char *fileName, int fileNameBytes);
 void loadCodeSnapshot(char *fileName);
+uint8* getCodeStore(int *byteCount);
+int codeStoreSize();
+void appendToCodeStore(uint8 *data, int byteCount);
 
 #ifdef __cplusplus
 }

@@ -13,7 +13,7 @@
 #include <inttypes.h>
 
 #if defined(ARDUINO_WEACT) || defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
-	defined(__ZEPHYR__) || defined(DUELink)
+	defined(__ZEPHYR__) || defined(DUELink) || defined(ESP8266)
 
 // TFT primitives are not supported
 #define NO_EXTERNAL_DISPLAY_PRIMS
@@ -36,9 +36,11 @@ Arduino_GFX *tft;
 #endif
 
 int useTFT = false; // true means simulate 5x5 LED display on TFT display
-int isMonochrome = false;
-int colorBGR = false;
 int isOLED1106 = false;
+
+static int backlightPin = -1;
+static int isMonochrome = false;
+static int colorBGR = false;
 
 static int tftWidth = 0;
 static int tftHeight = 0;
@@ -265,6 +267,14 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			data &= 0xf0;
 			data = data | ( state & 0x0f );
 			writeAXP(0x33, data);
+		}
+
+		void AXP192_SetBacklight(int brightness) {
+			if (brightness > 10) brightness = 10;
+			if (brightness < 0) brightness = 0;
+			int voltage = 2500 + (80 * brightness); // 1-10 -> 2500 to 3300
+			if (brightness == 0) voltage = 2400;
+			AXP192_SetDCVoltage(2, voltage);
 		}
 
 		void AXP192_SetBusPowerMode(uint8_t state) {
@@ -1055,15 +1065,23 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		analogWrite(TFT_BL, brightness * 25);
 	#elif defined(ARDUINO_M5Stack_Core_ESP32)
 		pinMode(32, OUTPUT);
-		digitalWrite(32, (brightness > 0) ? HIGH : LOW);
+		if (brightness < 0) brightness = 0;
+		if (brightness > 10) brightness = 10;
+		analogWrite(32, brightness * 25);
 	#elif defined(ARDUINO_M5Stick_Plus)
 		brightness = (brightness <= 0) ? 0 : brightness + 7; // 8 is lowest setting that turns on backlight
 		if (brightness > 15) brightness = 15;
 		int n = readAXP(0x28);
 		writeAXP(0x28, (brightness << 4) | (n & 0x0f)); // set brightness (high 4 bits of reg 0x28)
+	#elif defined(ARDUINO_M5STACK_Core2)
+		if (brightness < 0) brightness = 0;
+		if (brightness > 10) brightness = 10;
+		AXP192_SetBacklight(brightness);
 	#elif defined(ARDUINO_NRF52840_CLUE)
+		if (brightness < 0) brightness = 0;
+		if (brightness > 10) brightness = 10;
 		pinMode(34, OUTPUT);
-		digitalWrite(34, (brightness > 0) ? HIGH : LOW);
+		analogWrite(34, brightness * 25); // nRF5x boards use 8-bit analogWrite resolution
 	#elif defined(TTGO_RP2040)
 		pinMode(TFT_BL, OUTPUT);
 		if (brightness < 0) brightness = 0;
@@ -1075,6 +1093,12 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		if (oledLevel > 255) oledLevel = 255;
 		writeI2CReg(OLED_ADDR, 0x80, 0x81);
 		writeI2CReg(OLED_ADDR, 0x80, oledLevel);
+	#else
+		if (backlightPin >= 0) {
+			if (brightness < 0) brightness = 0;
+			if (brightness > 10) brightness = 10;
+			analogWrite(backlightPin, brightness * 100);
+		}
 	#endif
 	return falseObj;
 }
@@ -1450,6 +1474,15 @@ OBJ primResumeUpdates(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+OBJ primInvertDisplay(int argCount, OBJ *args) {
+	if (!tft) return falseObj;
+	if (argCount < 1) return fail(notEnoughArguments);
+	int invertFlag = (args[0] == trueObj);
+
+	tft->invertDisplay(invertFlag);
+	return falseObj;
+}
+
 // 8 bit bitmap ops
 
 static OBJ primMergeBitmap(int argCount, OBJ *args) {
@@ -1644,9 +1677,10 @@ static Arduino_DataBus* makeDataBus(int dc, int cs) {
 }
 
 static void turnOnBacklight(int blPin) {
-	if (blPin < 0) return; // not defined
-	pinMode(blPin, OUTPUT);
-	digitalWrite(blPin, HIGH);
+	backlightPin = blPin;
+	if (backlightPin < 0) return; // not defined
+	pinMode(backlightPin, OUTPUT);
+	digitalWrite(backlightPin, HIGH);
 }
 
 static void freeDisplayController() {
@@ -1656,7 +1690,7 @@ static void freeDisplayController() {
 	useTFT = false;
 }
 
-static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
+static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false,
 		int xOffset = 0, int yOffset = 0) {
 	if ((w < 80) || (w > 132) || (h < 128) || (h > 162)) return;
@@ -1672,13 +1706,13 @@ static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int back
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
 	}
 }
 
-static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
+static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false,
 		int xOffset = 0, int yOffset = 0) {
 	if ((w < 32) || (w > 240) || (h < 32) || (h > 320)) return;
@@ -1693,13 +1727,13 @@ static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int back
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
 	}
 }
 
-static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int backlightPin,
+static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false,
 		int xOffset = 0, int yOffset = 0) {
 	if ((w < 32) || (w > 480) || (h < 32) || (h > 480)) return;
@@ -1714,13 +1748,13 @@ static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int back
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
 	}
 }
 
-static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
+static void init_9341(int rotation, int dcPin, int csPin, int blPin,
 		int resetPin = GFX_NOT_DEFINED, int invertColors = false) {
 	if (!tft) delete tft;
 	Arduino_DataBus *bus = makeDataBus(dcPin, csPin);
@@ -1732,7 +1766,7 @@ static void init_9341(int rotation, int dcPin, int csPin, int backlightPin,
 		tftWidth = 320;
 		tftHeight = 240;
 		isMonochrome = false;
-		turnOnBacklight(backlightPin);
+		turnOnBacklight(blPin);
 		tftWidth = 320;
 		tftHeight = 240;
 		tftClear();
@@ -1912,6 +1946,7 @@ static OBJ primClear(int argCount, OBJ *args) { return falseObj; }
 
 OBJ primDeferUpdates(int argCount, OBJ *args) { return falseObj; }
 OBJ primResumeUpdates(int argCount, OBJ *args) { return falseObj; }
+OBJ primInvertDisplay(int argCount, OBJ *args) { return falseObj; }
 
 static OBJ primMergeBitmap(int argCount, OBJ *args) { return falseObj; }
 static OBJ primDrawBuffer(int argCount, OBJ *args) { return falseObj; }
@@ -1969,6 +2004,7 @@ static PrimEntry entries[] = {
 	{"clear", primClear},
 	{"deferUpdates", primDeferUpdates},
 	{"resumeUpdates", primResumeUpdates},
+	{"invertDisplay", primInvertDisplay},
 
 	{"mergeBitmap", primMergeBitmap},
 	{"drawBuffer", primDrawBuffer},
