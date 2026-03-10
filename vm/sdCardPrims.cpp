@@ -82,14 +82,14 @@ static void initSecondarySPI() {
 	#if defined(ARDUINO_ARCH_ESP32)
 		// Use HSPI SPI controller for ESP32 boards
 		secondarySPI = new SPIClass(HSPI);
-   		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
-	#elif (SPI_INTERFACES_COUNT < 2)
+		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
+	#elif (SPI_INTERFACES_COUNT > 1) || defined(ARDUINO_ARCH_RP2040)
+		// Use SPI1 on boards that have it
+		secondarySPI = &SPI1;
+		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
+	#else
 		// use the only SPI device on boards that do not have a second SPI device
 		secondarySPI = &SPI;
-	#else
-		// Use SPI1 on other boards
-		secondarySPI = &SPI1;
-  		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
 	#endif
 }
 
