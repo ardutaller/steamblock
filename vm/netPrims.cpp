@@ -624,7 +624,7 @@ static OBJ primHttpRequest(int argCount, OBJ *args) {
 	}
 
 	// Protocol
-	activeHttpClient->write((const uint8_t *) " HTTP/1.0\r\n", 11);
+	activeHttpClient->write((const uint8_t *) " HTTP/1.1\r\n", 11);
 
 	// Host
 	activeHttpClient->write((const uint8_t *) "Host: ", 6);
