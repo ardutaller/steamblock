@@ -187,7 +187,7 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 			SPI1.setTX(spiMOSI);
 			SPI1.setRX(spiMISO);
 			SPI1.begin();
-		#elif defined(ARDUINO_GENERIC)
+		#elif defined(ARDUINO_GENERIC) || defined(NRF52)
 			secondarySPI->setPins(spiMISO, spiCLK, spiMOSI);
 			secondarySPI->begin();
 		#else
@@ -200,7 +200,7 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 			SPI.setTX(spiMOSI);
 			SPI.setRX(spiMISO);
 			SPI.begin();
-		#elif defined(ARDUINO_GENERIC)
+		#elif defined(ARDUINO_GENERIC) || defined(NRF52)
 			SPI.setPins(spiMISO, spiCLK, spiMOSI);
 			SPI.begin();
 		#else
