@@ -637,11 +637,13 @@ static OBJ primESPSleep(int argCount, OBJ *args) {
 
 static OBJ primEnableBLE(int argCount, OBJ *args) {
 	if (argCount < 1) return fail(notEnoughArguments);
-	if (trueObj == args[0]) {
-		BLE_start();
-	} else {
-		BLE_stop();
-	}
+	#if defined(BLE_IDE)
+		if (trueObj == args[0]) {
+			BLE_start();
+		} else {
+			BLE_stop();
+		}
+	#endif
 	return falseObj;
 }
 
