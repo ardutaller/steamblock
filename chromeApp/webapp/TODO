@@ -2,8 +2,8 @@ TODO
 ====
 
 [x] Crear un TODO en català perquè no l'entengui ningú més
-[ ] Afegir classe a blocs alternatius del menu contextual de blocs
-[ ] Estilitzar ↑↑↑ perquè siguin d'una mida raonable
+[x] Afegir classe a blocs alternatius del menu contextual de blocs
+[x] Estilitzar ↑↑↑ perquè siguin d'una mida raonable
 [x] Impedir selecció del botó del logo (passa a Electron només?)
 [ ] Canvi imatges tips perquè quadrin millor amb el text
 [ ] Canvi textos tips (treure punts finals)
@@ -14,3 +14,6 @@ TODO
 [ ] Estilar progress
 [ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
 [ ] Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
+[x] Als context menu amb checks que són single option, afegir classe --single-option
+[ ] A ↑↑↑, alinear ticks a la dreta i només mostrar el que està actiu
+[ ] Al buscar usos de blocs, els scripts surten gegants. Ja tenen clasee --script

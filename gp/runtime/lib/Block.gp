@@ -1075,7 +1075,8 @@ method contextMenu Block {
 				if (or ((at varName 1) != '_') (showHiddenBlocksEnabled pe)) {
 					b = (toBlock (newReporter 'v' varName))
 					fixLayout b
-					add items (array (fullCostume (morph b)) (action 'changeVar' this varName))
+					// 'label' 'callback' 'tip' 'image' 'class'
+					add items (array varName (action 'changeVar' this varName) nil (fullCostume (morph b)) '--block')
 				}
 			}
 		}
@@ -1090,7 +1091,8 @@ method contextMenu Block {
 				if (and (notNil spec) (op != myOp)) {
 					b = (blockForSpec spec)
 					fixLayout b
-					add items (array (join 'data:image/png;base64,' (base64Encode (encodePNG (fullCostume (morph b))))) (action 'changeOperator' this op))
+					// 'label' 'callback' 'tip' 'image' 'class'
+					add items (array (join 'alternative-' op) (action 'changeOperator' this op) 'replace with this block' (fullCostume (morph b)) '--block')
 				}
 			}
 		}

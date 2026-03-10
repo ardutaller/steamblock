@@ -36,9 +36,9 @@ method step MicroBlocksDataGraph {
 method addZoomButtons MicroBlocksDataGraph {
 	editor = (first (allInstances 'MicroBlocksEditor')) // used editor to make buttons
 	zoomButtons = (array
-		(newZoomButton editor 'zoomIn' (action 'increaseGraphScale' this))
-		(newZoomButton editor 'restoreZoom' (action 'normalGraphScale' this))
-		(newZoomButton editor 'zoomOut' (action 'decreaseGraphScale' this)))
+		(newZoomButton editor 'legacy-zoomIn' (action 'increaseGraphScale' this))
+		(newZoomButton editor 'legacy-restoreZoom' (action 'normalGraphScale' this))
+		(newZoomButton editor 'legacy-zoomOut' (action 'decreaseGraphScale' this)))
 	for button zoomButtons {
 		addPart morph (morph button)
 	}

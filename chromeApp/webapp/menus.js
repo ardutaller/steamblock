@@ -323,10 +323,12 @@ Menus.scriptingArea = {
 Menus.blockZoomLevels = {
 	selector: 'blockZoomLevels',
 	type: 'context',
+	class: '--single-option',
 	items: [50,75,100,125,150,200,250].map(level => {
 		return {
 			label: level + '%',
-			action: (target) => { GP.apiCall('scripts.setZoom', [level]); }
+			action: (target) => { GP.apiCall('scripts.setZoom', [level]); },
+			checked: () => { return IDE.userPreference('blockSizePercent') == level }
 		}
 	})
 };
@@ -352,6 +354,9 @@ Menus.elementFor = function (descriptor, target) {
 	// change depending on the state of the board, preferences, etc
 	let menu = document.createElement('ul');
 	menu.classList.add('menu');
+
+	// optional extra CSS class
+	if (descriptor.class) { menu.classList.add(descriptor.class); }
 
 	descriptor.items.forEach((item, index) => {
 
@@ -381,9 +386,8 @@ Menus.elementFor = function (descriptor, target) {
 					if (!item.keepOpenAfterClick) { this.close(); }
 				};
 
-
 				// Set the item text or image contents
-				if (!item.label && item.image) {
+				if (item.image) {
 					text = document.createElement('img');
 					text.src = item.image;
 
@@ -406,6 +410,9 @@ Menus.elementFor = function (descriptor, target) {
 						textLocalization.innerText = item.label();
 					}
 				}
+
+				// Optional CSS class
+				if (item.class) { button.classList.add(item.class); }
 
 				// Tip Bar data
 				if (item.tip) {
@@ -532,21 +539,14 @@ document.addEventListener('menu', (e) => {
 		e.clientX = descriptor.x + canvas.offsetLeft;
 		e.clientY = descriptor.y + canvas.offsetTop;
 	}
+	descriptor.items.forEach(item => {
+		item.action = () => {
+			GP.apiResponses[descriptor.id] = JSON.stringify(item.label);
+		};
+		item.type = item.image ? 'image' : 'label';
+	})
 	Menus.popUpFromDescriptor(
-		{
-			type: 'context',
-			items: descriptor.items.map(item => {
-				let object =
-					{
-						action: () => {
-							GP.apiResponses[descriptor.id] = JSON.stringify(item);
-						}
-					},
-					type = item.startsWith('data:image') ? 'image' : 'label';
-				object[type] = item;
-				return object;
-			})
-		},
+		{ type: 'context', items: descriptor.items },
 		null,
 		null,
 		e

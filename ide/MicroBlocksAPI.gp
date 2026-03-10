@@ -252,9 +252,7 @@ method contextMenu MicroBlocksAPI selector aHand {
 }
 
 method menuFor MicroBlocksAPI items callback {
-	// callback is an action that gets called with the chosen item as a param,
-	// however, if items is a 2-dimensional list, then the first items are treated
-	// as menu labels and the second ones are treated as individual item callbacks
+	// callback is an action that gets called with the chosen item as a param
 
 	page = (global 'page')
 	scale = (global 'scale')
@@ -264,20 +262,29 @@ method menuFor MicroBlocksAPI items callback {
 	atPut options 'id' id
 	atPut options 'x' (/ (x (hand page)) scale)
 	atPut options 'y' (/ (y (hand page)) scale)
-	if (isClass callback 'Action') {
-		atPut options 'items' items
-	} else {
-		// this is a 2D list, let's extract the labels
-		labels = (list)
-		for item items {
-			// TODO there can be more than one label per item!
-			if (isClass (at item 1) 'Bitmap') {
-				add labels (join 'data:image/png;base64,' (base64Encode (encodePNG (at item 1))))
-			} else {
-				add labels (toString (at item 1))
+	atPut options 'items' (list)
+
+	fields = (array 'label' 'callback' 'tip' 'image' 'class')
+
+	for item items {
+		dict = (dictionary)
+		add (at options 'items') dict
+		for i (count item) {
+			field = (at fields i)
+			if (field != 'callback') { // callback isn't encoded into the JSON
+				value = (at item i)
+				if (and (field == 'image') (isClass value 'Bitmap')) {
+					value = (join
+						'data:image/png;base64,'
+						(base64Encode (encodePNG value))
+					)
+				}
+				if (field == 'label') {
+					value = (toString value) // make sure the label is always a string
+				}
+				atPut dict field value
 			}
 		}
-		atPut options 'items' labels
 	}
 
 	notify this 'menu' options
@@ -291,7 +298,12 @@ method menuFor MicroBlocksAPI items callback {
 	if (isClass callback 'Action') {
 		call callback response
 	} else {
-		// this is a 2D list, let's find the selected item and run its action
-		call (at (at items (indexOf labels response)) 2)
+		// let's find the selected item label (index 1) and run its action (index 2)
+		for item items {
+			if ((toString (at item 1)) == (toString response)) {
+				call (at item 2)
+				return
+			}
+		}
 	}
 }

@@ -139,15 +139,19 @@ method showResults BlockFinder purpose {
 	}
 
 	items = (list)
+	id = 1
 	for entry functions {
 		b = (blockForFunction entry)
 		fixLayout b
-		add items (array (fullCostume (morph b)) (action 'jumpTo' this entry purpose))
+		// 'label' 'callback' 'tip' 'image' 'class'
+		add items (array id (action 'jumpTo' this entry purpose) nil (fullCostume (morph b)) '--block')
+		id = (+ id 1)
 	}
 	if (and (notNil functions) (notEmpty functions)) { add items '-' }
 	for entry scripts {
-		// entries are 2-item arrays with topBlock and actual found block
-		add items (array (fullCostume (at entry 1) 600 200) (action 'jumpTo' this (at entry 2)))
+		// 'label' 'callback' 'tip' 'image' 'class'
+		add items (array id (action 'jumpTo' this (at entry 2)) nil (fullCostume (at entry 1) 600 200) '--script')
+		id = (+ id 1)
 	}
 	menuFor (api (smallRuntime)) items
 }

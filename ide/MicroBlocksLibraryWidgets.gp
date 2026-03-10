@@ -437,9 +437,10 @@ method pickCategory MicroBlocksLibraryCategoryPicker {
 	scripter = (scripter (smallRuntime))
 	items = (list)
 	for cat (categories scripter) {
-		add items (array (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) cat)))) (localized cat) (action 'setCategory' this cat))
+		// 'label' 'callback' 'tip' 'image' 'class'
+		add items (array (localized cat) (action 'setCategory' this cat) nil (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) cat)))) '--category-color')
 	}
-	add items (array (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) 'Library')))) (localized 'Generic') (action 'setCategory' this 'Library'))
+	add items (array (localized 'Generic') (action 'setCategory' this 'Library') nil (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) 'Library')))) '--category-color')
 	menuFor (api (smallRuntime)) items
 }
 

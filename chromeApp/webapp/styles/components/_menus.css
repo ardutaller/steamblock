@@ -71,6 +71,14 @@
 		opacity: 0.4;
 		pointer-events: none;
 	}
+
+	&.--block img, &.--category-color img {
+		max-height: 2em;
+	}
+
+	&.--script img {
+		zoom: 0.5;
+	}
 }
 
 
