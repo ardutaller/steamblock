@@ -305,11 +305,10 @@ void restartSerial();
 const char *boardType();
 int hasPSRAM();
 void hardwareInit(void);
+void processStartupGesture();
 
 int readI2CReg(int deviceID, int reg);
 void writeI2CReg(int deviceID, int reg, int value);
-
-void initSPI();
 
 // I/O Support
 
