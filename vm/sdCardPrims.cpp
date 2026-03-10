@@ -78,13 +78,13 @@ static FileEntry fileEntry[FILE_ENTRIES]; // fileEntry[] records open files
 
 static void initSecondarySPI() {
 	if (secondarySPI) return; // already initialized
-	#if (SPI_INTERFACES_COUNT < 2)
-		// use the only SPI device on boards that do not have a second SPI device
-		secondarySPI = &SPI;
-	#elif defined(ARDUINO_ARCH_ESP32)
+	#if defined(ARDUINO_ARCH_ESP32)
 		// Use HSPI SPI controller for ESP32 boards
 		secondarySPI = new SPIClass(HSPI);
-  		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
+  		secondarySPI->begin(15, 32, 33, -1); // Use default SCLK, MISO, MOSI, SS pins for HSPI
+	#elif (SPI_INTERFACES_COUNT < 2)
+		// use the only SPI device on boards that do not have a second SPI device
+		secondarySPI = &SPI;
 	#else
 		// Use SPI1 on other boards
 		secondarySPI = &SPI1;
@@ -183,10 +183,10 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 		initSecondarySPI();
 		secondarySPI->end();
 		#if defined(ARDUINO_ARCH_RP2040)
-			secondarySPI->setSCK(spiCLK);
-			secondarySPI->setTX(spiMOSI);
-			secondarySPI->setRX(spiMISO);
-			secondarySPI->begin();
+			SPI1.setSCK(spiCLK);
+			SPI1.setTX(spiMOSI);
+			SPI1.setRX(spiMISO);
+			SPI1.begin();
 		#elif defined(ARDUINO_GENERIC)
 			secondarySPI->setPins(spiMISO, spiCLK, spiMOSI);
 			secondarySPI->begin();
