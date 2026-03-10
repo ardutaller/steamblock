@@ -609,6 +609,8 @@ static OBJ primDUELinkPID(int argCount, OBJ *args) {
 
 #if defined(ARDUINO_ARCH_ESP32)
 	#include <esp_sleep.h>
+	#include <esp32-hal-cpu.h> // setCpuFrequencyMhz() and friends
+
 #else
 	// Defined in ioPrims.cpp because it needs to use the ESP C++ class.
 	void esp8266DeepSleep(uint64_t usecs);
@@ -632,6 +634,16 @@ static OBJ primESPSleep(int argCount, OBJ *args) {
 }
 
 #endif
+
+static OBJ primEnableBLE(int argCount, OBJ *args) {
+	if (argCount < 1) return fail(notEnoughArguments);
+	if (trueObj == args[0]) {
+		BLE_start();
+	} else {
+		BLE_stop();
+	}
+	return falseObj;
+}
 
 #if defined(DUELink)
 
@@ -877,6 +889,8 @@ static PrimEntry entries[] = {
 	{"jsonValueAt", primJSONValueAt},
 	{"jsonKeyAt", primJSONKeyAt},
 	{"scriptTooLarge", primScriptTooLarge},
+// experimental
+	{"enableBLE", primEnableBLE},
 };
 
 void addMiscPrims() {
