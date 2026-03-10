@@ -58,6 +58,7 @@ SdFat SD;
 // Variables
 
 static int useSecondarySPI = false;
+static int isDedicatedSPI = false;
 static SPIClass *secondarySPI = NULL;
 
 #define MAX_FILE_PATH 128
@@ -101,9 +102,11 @@ static void initSDCard(int chipSelectPin) {
 		if (sdCardCSPin != -1) SD.end();
 		if (chipSelectPin < 0) chipSelectPin = DEFAULT_CS_PIN;
 		int ok = SD.begin(SdSpiConfig(
-			chipSelectPin, DEDICATED_SPI, SPI_SPEED,
-			(useSecondarySPI ? secondarySPI : &SPI))
-		);
+			chipSelectPin,
+			isDedicatedSPI ? DEDICATED_SPI : SHARED_SPI,
+			SPI_SPEED,
+			useSecondarySPI ? secondarySPI : &SPI
+		));
 		if (!ok) {
 			outputString("Could not open SD Card.");
 			outputString("Check wiring, chip select pin, and that card is inserted.");
@@ -168,7 +171,9 @@ static OBJ primInit(int argCount, OBJ *args) {
 }
 
 static OBJ primSetSPIPins(int argCount, OBJ *args) {
-	// Set the SDCard SPI clock, MOSI, and MISO. If optional argument is true, use SPI1.
+	// Set the SDCard SPI clock, MOSI, and MISO.
+	// If optional 4th argument is true, use SPI1.
+	// If optional 5th argument is true, use SPI in DEDICATED mode.
 	// Note: This changes the MicroBlocks SPI pins globally (unless SPI1 is specified).
 
 	if (argCount < 3) return fail(notEnoughArguments);
@@ -178,6 +183,7 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 	int spiMOSI = mapDigitalPinNum(obj2int(args[1]));
 	int spiMISO = mapDigitalPinNum(obj2int(args[2]));
 	useSecondarySPI = ((argCount > 3) && (args[3] == trueObj));
+	isDedicatedSPI = ((argCount > 4) && (args[4] == trueObj));
 
 	if (useSecondarySPI) {
 		initSecondarySPI();
