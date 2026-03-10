@@ -82,7 +82,7 @@ static void initSecondarySPI() {
 	#if defined(ARDUINO_ARCH_ESP32)
 		// Use HSPI SPI controller for ESP32 boards
 		secondarySPI = new SPIClass(HSPI);
-  		secondarySPI->begin(15, 32, 33, -1); // Use default SCLK, MISO, MOSI, SS pins for HSPI
+   		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
 	#elif (SPI_INTERFACES_COUNT < 2)
 		// use the only SPI device on boards that do not have a second SPI device
 		secondarySPI = &SPI;
@@ -99,7 +99,6 @@ static void initSDCard(int chipSelectPin) {
 		SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, DEFAULT_CS_PIN);
 	#endif
 	if (sdCardCSPin != chipSelectPin) {
-		if (sdCardCSPin != -1) SD.end();
 		if (chipSelectPin < 0) chipSelectPin = DEFAULT_CS_PIN;
 		int ok = SD.begin(SdSpiConfig(
 			chipSelectPin,
@@ -197,7 +196,7 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 			secondarySPI->setPins(spiMISO, spiCLK, spiMOSI);
 			secondarySPI->begin();
 		#else
-			secondarySPI->begin(spiCLK, spiMISO, spiMISO);
+			secondarySPI->begin(spiCLK, spiMISO, spiMOSI);
 		#endif
 	} else {
 		SPI.end();
@@ -210,7 +209,7 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 			SPI.setPins(spiMISO, spiCLK, spiMOSI);
 			SPI.begin();
 		#else
-			SPI.begin(spiCLK, spiMISO, spiMISO);
+			SPI.begin(spiCLK, spiMISO, spiMOSI);
 		#endif
 	}
 	return falseObj;
