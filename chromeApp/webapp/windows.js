@@ -15,8 +15,10 @@ class FloatingWindow extends HTMLElement {
 		this.width = this.minWidth;
 		this.height = this.minHeight;
 
-		if (descriptor.id) { this.id = descriptor.id; }
+		this.onResize = descriptor.onResize;
+		this.target = descriptor.target;
 
+		if (descriptor.id) { this.id = descriptor.id; }
 
 		// Window Top
 		if (typeof descriptor.title == 'string') {
@@ -117,17 +119,22 @@ class FloatingWindow extends HTMLElement {
 				e = e || window.event;
 				e.preventDefault();
 
-				var newX = e.clientX;
-				var newY = e.clientY;
+				let newX = e.clientX,
+					newY = e.clientY,
+					newWidth = Math.max(
+						myself.minWidth,
+						myself.width + (newX - lastX)
+					),
+					newHeight = Math.max(
+						myself.minHeight,
+						myself.height + (newY - lastY)
+					);
 
-				myself.style.width = Math.max(
-					myself.minWidth,
-					myself.width + (newX - lastX)
-				) + 'px';
-				myself.style.height = Math.max(
-					myself.minHeight,
-					myself.height + (newY - lastY)
-				) + 'px';
+				myself.style.width = newWidth + 'px';
+				myself.style.height = newHeight + 'px';
+				if (myself.onResize) {
+					myself.onResize.call(myself.target, newWidth, newHeight);
+				}
 			}
 
 			function endResize(e) {
@@ -155,7 +162,7 @@ class FloatingWindow extends HTMLElement {
 
 		if (this.querySelector('.window__input')) {
 			this.querySelector('.window__input').focus();
-		} else {
+		} else if (this.querySelector('.window__buttons button')) {
 			this.querySelector('.window__buttons button').focus();
 		}
 	}

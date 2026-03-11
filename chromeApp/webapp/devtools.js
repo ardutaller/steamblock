@@ -34,7 +34,7 @@ const LiveReload = {
 		'buttons.js',
 		'categories.js',
 		'windows.js'
-  	],
+	],
 	lastVersions: {},
 	interval: null,
 	watchInterval: 1000,
@@ -108,3 +108,4 @@ LiveReload.reloadPage = function (contents) {
 };
 
 LiveReload.enable();
+document.body.oncontextmenu = null; // enable context menu when in dev mode
