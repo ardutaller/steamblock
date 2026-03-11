@@ -1628,7 +1628,9 @@ OBJ primBrowserResponse(int nargs, OBJ args[]) {
 	OBJ response = allocateString(responseLength);
 	EM_ASM_(
 		{
-			stringToUTF8(GP.apiResponses[$0], $1, $2);
+			// overkill fix: double the max bytes to write, just in case there are
+			// non-ASCII chars in the string
+			stringToUTF8(GP.apiResponses[$0], $1, $2 * 2);
 			delete(GP.apiResponses[$0]);
 		},
 		id,
