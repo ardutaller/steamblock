@@ -346,6 +346,7 @@ Menus.exportedScriptScale = {
 	})
 };
 
+
 // MENU HTML GENERATION
 
 Menus.elementFor = function (descriptor, target) {
