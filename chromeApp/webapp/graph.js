@@ -70,10 +70,10 @@ Graph.drawGrid = function () {
 
 Graph.drawRow = function (index, y) {
 	this.setColor(index);
-	this.ctx.fillText(index * this.step, 40, y);
+	this.ctx.fillText(index * this.step, 40, y + 4);
 	this.ctx.beginPath();
-	this.ctx.moveTo(45, y-4);
-	this.ctx.lineTo(this.width - 5, y-4);
+	this.ctx.moveTo(45, y);
+	this.ctx.lineTo(this.width - 5, y);
 	this.ctx.stroke();
 };
 
@@ -89,31 +89,40 @@ Graph.setColor = function (index) {
 
 Graph.drawData = function () {
 	this.dataTracks.forEach((dataPoints, track) => {
-		let x = 45;
-		if (dataPoints.length > 1) {
-			this.ctx.beginPath();
-			this.ctx.strokeStyle = this.trackColors[track];
-			this.ctx.moveTo(x, this.scaleValue(dataPoints[0]));
-			for (let i = 1; i < dataPoints.length; i++) {
+		let x = 45,
+			hRange = this.width - 50,
+			end = dataPoints.length,
+			start = Math.max(0, end - hRange);
+
+		this.ctx.beginPath();
+		this.ctx.strokeStyle = this.trackColors[track];
+		this.ctx.moveTo(x, this.scaleValue(dataPoints[start]));
+		for (let i = start; i < end; i++) {
+			if (dataPoints[i] !== null) {
 				x++;
 				this.ctx.lineTo(x, this.scaleValue(dataPoints[i]));
 			}
-			this.ctx.stroke();
 		}
+		this.ctx.stroke();
 	});
 };
 
 Graph.addDataPoints = function (values) {
-	for (let i = 0; i < values.length; i++) {
-		this.dataTracks[i].push(values[i]);
+	for (let i = 0; i < this.dataTracks.length; i++) {
+		if (values[i]) {
+			this.dataTracks[i].push(values[i]);
+		} else {
+			// did I actually find a use case for NaN? I did!
+			this.dataTracks[i].push(NaN);
+		}
 	}
 	this.redraw();
 };
 
 Graph.scaleValue = function (value) {
 	if (this.origin == 'center') {
-		return this.height - value * this.spacing / this.step - (this.height / 2) - 4;
+		return this.height - value * this.spacing / this.step - (this.height / 2);
 	} else {
-		return this.height - value * this.spacing / this.step - 4;
+		return this.height - value * this.spacing / this.step;
 	}
 };
