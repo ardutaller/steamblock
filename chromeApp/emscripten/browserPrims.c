@@ -1620,7 +1620,10 @@ OBJ primBrowserResponse(int nargs, OBJ args[]) {
 	int id = obj2int(args[0]);
 
 	int responseLength = EM_ASM_INT(
-		{ return GP.apiResponses[$0] ? GP.apiResponses[$0].length + 1 : 0; },
+		{
+			// byte count, not string length, in case string contains non-ASCII chars
+			return GP.apiResponses[$0] ? new Blob([GP.apiResponses[$0]]).size + 1 : 0;
+		},
 		id
 	);
 	if (responseLength == 0) { return nilObj; }
@@ -1628,9 +1631,7 @@ OBJ primBrowserResponse(int nargs, OBJ args[]) {
 	OBJ response = allocateString(responseLength);
 	EM_ASM_(
 		{
-			// overkill fix: double the max bytes to write, just in case there are
-			// non-ASCII chars in the string
-			stringToUTF8(GP.apiResponses[$0], $1, $2 * 2);
+			stringToUTF8(GP.apiResponses[$0], $1, $2);
 			delete(GP.apiResponses[$0]);
 		},
 		id,
