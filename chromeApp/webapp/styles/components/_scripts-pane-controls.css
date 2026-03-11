@@ -35,8 +35,13 @@
 	color: var(--color-blue-grey-500);
 	transition: color var(--duration-100);
 
-	&:hover {
+	&:not(.--is-disabled):hover {
 		color: var(--color-blue-grey-900);
+	}
+
+	&.--is-disabled {
+		opacity: 0.4;
+		pointer-events: none;
 	}
 
 	.--dark-mode & {

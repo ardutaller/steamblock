@@ -134,7 +134,7 @@ Buttons.elementFor = function (selector) {
 	icon.ariaDescription = descriptor.description; // excuse the alliteration :)
 
 	// Disabled state
-	if (descriptor.disabled?.()) { icon.classList.add('--disabled'); }
+	if (descriptor.disabled?.()) { icon.classList.add('--is-disabled'); }
 
 	// Button action
 	if (descriptor.menu) {

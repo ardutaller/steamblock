@@ -230,18 +230,18 @@ IDE.recreateScriptControls = function () {
 document.addEventListener('scripts.undoAvailable', e => {
 	let button = document.querySelector('[data-ide="scripts-pane-controls"] button.--undo');
 	if (e.detail.value) {
-		button.classList.remove('--disabled');
+		button.classList.remove('--is-disabled');
 	} else {
-		button.classList.add('--disabled');
+		button.classList.add('--is-disabled');
 	}
 });
 
 document.addEventListener('scripts.redoAvailable', e => {
 	let button = document.querySelector('[data-ide="scripts-pane-controls"] button.--redo');
 	if (e.detail.value) {
-		button.classList.remove('--disabled');
+		button.classList.remove('--is-disabled');
 	} else {
-		button.classList.add('--disabled');
+		button.classList.add('--is-disabled');
 	}
 });
 
