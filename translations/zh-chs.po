@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-03-07 04:09+0000\n"
+"PO-Revision-Date: 2026-03-12 10:09+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -40,7 +40,7 @@ msgstr "串口 打开 波特率 _"
 
 #. NeoPanel library label
 msgid "NeoPanel"
-msgstr "NenPanel 像素屏"
+msgstr "NeoPanel 像素屏"
 
 #. NeoPanel library block
 msgid "NeoPanel fill column _ color _"
@@ -5263,7 +5263,7 @@ msgstr "设置 MIDI 音符 _ 为 _ 通道 _ 音量 _"
 
 #. MIDI library block
 msgid "note _ octave _ to MIDI key"
-msgstr "音符 _ 升降八度 _ 到MIDI键"
+msgstr "音符 _ 升降 _ 个八度到 MIDI 键"
 
 #. MIDI library block
 msgid "select MIDI instrument _ number _ for channel _"
