@@ -1,6 +1,6 @@
 module 'PCA9685 Servos' Output
 author Rick Stoddard
-version 1 0
+version 1 1
 description 'Support for up to 16 servos controlled by a PCA9685 board.
 
 Datasheet: https://cdn-shop.adafruit.com/datasheets/PCA9685.pdf'
@@ -18,7 +18,7 @@ to '_pca9685_init' {
     return
   }
   comment 'Create list to store servo positions, initially all zero'
-  _servoPos = (newList 16 0)
+  _pca9685_servoPos = (newList 16 0)
   comment 'Sleep Mode'
   '_pca9685_setRegister' 0 16
   comment 'Frequency'
@@ -47,7 +47,7 @@ to pca9685_setServo which degrees {
   '_pca9685_setRegister' (baseReg + 3) ((('[misc:rescale]' degrees -90 90 170 450) >> 8) & (hexToInt 'FF'))
   '_pca9685_setRegister' (6 + (channel * 4)) 0
   '_pca9685_setRegister' (baseReg + 1) 0
-  atPut (which + 1) _servoPos degrees
+  atPut (which + 1) _pca9685_servoPos degrees
 }
 
 to pca9685_sleep sleepFlag {
