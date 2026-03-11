@@ -30,6 +30,7 @@ if test -n "$help"; then
 	echo "                              created in your OS temporary files directory."
 	echo "                              Run with \"=all\" to update all existing locales."
 	echo "--webapp                      Rebuild MicroBlocks as a webapp."
+	echo "--boardie                     Build Boardie."
 	echo "--electron                    Run the webapp as an Electron app. Can be combined"
 	echo "                              with --webapp to make sure you're running the latest"
 	echo "                              version of the web application."
@@ -102,6 +103,10 @@ if test -n "$tools"; then
 		echo "If you get a Mono/Wine error when packaging for Windows, remove the ~/.wine folder and run winecfg"
 	fi
 	exit 0
+fi
+
+if test -n "$boardie"; then
+	(cd boardie; ./buildBoardie.sh)
 fi
 
 if test -n "$webapp"; then
