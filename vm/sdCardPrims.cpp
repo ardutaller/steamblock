@@ -58,6 +58,7 @@ SdFat SD;
 // Variables
 
 static int useSecondarySPI = false;
+static int isDedicatedSPI = false;
 static SPIClass *secondarySPI = NULL;
 
 #define MAX_FILE_PATH 128
@@ -81,14 +82,14 @@ static void initSecondarySPI() {
 	#if defined(ARDUINO_ARCH_ESP32)
 		// Use HSPI SPI controller for ESP32 boards
 		secondarySPI = new SPIClass(HSPI);
-  		secondarySPI->begin(15, 32, 33, -1); // Use default SCLK, MISO, MOSI, SS pins for HSPI
-	#elif (SPI_INTERFACES_COUNT < 2)
+		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
+	#elif (SPI_INTERFACES_COUNT > 1) || defined(ARDUINO_ARCH_RP2040)
+		// Use SPI1 on boards that have it
+		secondarySPI = &SPI1;
+		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
+	#else
 		// use the only SPI device on boards that do not have a second SPI device
 		secondarySPI = &SPI;
-	#else
-		// Use SPI1 on other boards
-		secondarySPI = &SPI1;
-  		secondarySPI->begin(); // Use default SCLK, MISO, MOSI, SS pins for HSPI
 	#endif
 }
 
@@ -98,12 +99,13 @@ static void initSDCard(int chipSelectPin) {
 		SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, DEFAULT_CS_PIN);
 	#endif
 	if (sdCardCSPin != chipSelectPin) {
-		if (sdCardCSPin != -1) SD.end();
 		if (chipSelectPin < 0) chipSelectPin = DEFAULT_CS_PIN;
 		int ok = SD.begin(SdSpiConfig(
-			chipSelectPin, DEDICATED_SPI, SPI_SPEED,
-			(useSecondarySPI ? secondarySPI : &SPI))
-		);
+			chipSelectPin,
+			isDedicatedSPI ? DEDICATED_SPI : SHARED_SPI,
+			SPI_SPEED,
+			useSecondarySPI ? secondarySPI : &SPI
+		));
 		if (!ok) {
 			outputString("Could not open SD Card.");
 			outputString("Check wiring, chip select pin, and that card is inserted.");
@@ -168,7 +170,9 @@ static OBJ primInit(int argCount, OBJ *args) {
 }
 
 static OBJ primSetSPIPins(int argCount, OBJ *args) {
-	// Set the SDCard SPI clock, MOSI, and MISO. If optional argument is true, use SPI1.
+	// Set the SDCard SPI clock, MOSI, and MISO.
+	// If optional 4th argument is true, use SPI1.
+	// If optional 5th argument is true, use SPI in DEDICATED mode.
 	// Note: This changes the MicroBlocks SPI pins globally (unless SPI1 is specified).
 
 	if (argCount < 3) return fail(notEnoughArguments);
@@ -178,6 +182,7 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 	int spiMOSI = mapDigitalPinNum(obj2int(args[1]));
 	int spiMISO = mapDigitalPinNum(obj2int(args[2]));
 	useSecondarySPI = ((argCount > 3) && (args[3] == trueObj));
+	isDedicatedSPI = ((argCount > 4) && (args[4] == trueObj));
 
 	if (useSecondarySPI) {
 		initSecondarySPI();
@@ -187,11 +192,11 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 			SPI1.setTX(spiMOSI);
 			SPI1.setRX(spiMISO);
 			SPI1.begin();
-		#elif defined(ARDUINO_GENERIC)
+		#elif defined(ARDUINO_GENERIC) || defined(NRF52)
 			secondarySPI->setPins(spiMISO, spiCLK, spiMOSI);
 			secondarySPI->begin();
 		#else
-			secondarySPI->begin(spiCLK, spiMISO, spiMISO);
+			secondarySPI->begin(spiCLK, spiMISO, spiMOSI);
 		#endif
 	} else {
 		SPI.end();
@@ -200,11 +205,11 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 			SPI.setTX(spiMOSI);
 			SPI.setRX(spiMISO);
 			SPI.begin();
-		#elif defined(ARDUINO_GENERIC)
+		#elif defined(ARDUINO_GENERIC) || defined(NRF52)
 			SPI.setPins(spiMISO, spiCLK, spiMOSI);
 			SPI.begin();
 		#else
-			SPI.begin(spiCLK, spiMISO, spiMISO);
+			SPI.begin(spiCLK, spiMISO, spiMOSI);
 		#endif
 	}
 	return falseObj;

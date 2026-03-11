@@ -1362,6 +1362,11 @@ void vmLoop() {
 				cocubeSensorUpdate();
 			#endif
 			handleMicosecondClockWrap();
+			#if !defined(DUELink)
+				if (totalMicrosecs() < (10 * 1000000)) { // first N seconds after startup
+					processStartupGesture();
+				}
+			#endif
 			count = 95; // must be under 30 when building on mbed to avoid serial errors
 		} else if ((count & 0xF) == 0) {
 			captureIncomingBytes();

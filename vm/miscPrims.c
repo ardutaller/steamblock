@@ -637,11 +637,13 @@ static OBJ primESPSleep(int argCount, OBJ *args) {
 
 static OBJ primEnableBLE(int argCount, OBJ *args) {
 	if (argCount < 1) return fail(notEnoughArguments);
-	if (trueObj == args[0]) {
-		BLE_start();
-	} else {
-		BLE_stop();
-	}
+	#if defined(BLE_IDE)
+		if (trueObj == args[0]) {
+			BLE_start();
+		} else {
+			BLE_stop();
+		}
+	#endif
 	return falseObj;
 }
 
@@ -671,7 +673,7 @@ static OBJ primDUESleep(int argCount, OBJ *args) {
 	// Note: Boards with voltage regulators consume 1-3 mA even in shutdown mode.
 
 	// The following allows a user to recover if they create a script like "when started, sleep"
-	// It gives them ten seconds to connect the IDE to the board so they can change their code.
+	// It gives them five seconds to connect the IDE to the board so they can change their code.
 	if (totalMicrosecs() < (5 * 1000000)) return falseObj; // do nothing for N secs after startup
 
 	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1_HIGH);

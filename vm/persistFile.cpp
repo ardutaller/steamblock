@@ -31,6 +31,8 @@ static void closeAndOpenCodeFile() {
 extern "C" void initFileSystem() {
 	// Initialize the file system.
 
+	if (fileSystemInitialized) return;
+
 	#if defined(ARDUINO_ARCH_ESP32)
 		myFS.begin(true);
 	#else
@@ -87,6 +89,13 @@ extern "C" int fileExists(const char *fileName) {
 	if (!file) return false;
 	file.close();
 	return true;
+}
+
+// Code snapshots
+
+extern "C" int hasStartupSnapshot() {
+	initFileSystem();
+	return fileExists("/startup.ucode");
 }
 
 extern "C" void snapshotCodeToFile(char *fileName, int fileNameBytes) {
@@ -192,5 +201,10 @@ extern "C" void loadCodeSnapshot(char *fileName) {
 		startAll();
 	#endif
 }
+
+#else // stubs for boards without file systems
+
+extern "C" int hasStartupSnapshot() { return false; }
+extern "C" void loadCodeSnapshot(char *fileName) { } // do nothing
 
 #endif
