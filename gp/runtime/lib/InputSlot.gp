@@ -215,26 +215,46 @@ method clicked InputSlot aHand {
 			if (contains (methodNames (class 'InputSlot')) menuSelector) {
 				menu = (call menuSelector this)
 				if (notNil menu) {
-					popUpAtHand menu (page aHand)
+					// convert to new type of menus
+					items = (list)
+					for entry (items menu) {
+						// 'label' 'callback' 'tip' 'image' 'class' 'checked'
+						if (isLine menu entry) {
+							add items '-'
+						} else {
+							if (isClass (at entry 2) 'Action') {
+								callback = (at entry 2)
+							} else {
+								if (isNil (at entry 2)) {
+									callback = (action 'setContents' this (at entry 1))
+								} else {
+									callback = (action 'setContents' this (at entry 2))
+								}
+							}
+							add items (array (at entry 1) callback)
+						}
+					}
+					menuFor (api (smallRuntime)) items
 					return true
 				}
 			} else {
 				project = (project (findProjectEditor))
 				choices = (choicesFor project menuSelector)
 				if (notNil choices) {
-					menu = (menu nil (action 'setContents' this) true)
+					items = (list)
 					for choice choices {
 						labelAndValue = (splitWith choice ':')
 						if ((count labelAndValue) == 2) {
 							if (representsAnInteger (at labelAndValue 2)) {
 								atPut labelAndValue 2 (toNumber (at labelAndValue 2))
 							}
-							addItem menu (at labelAndValue 1) (at labelAndValue 2)
+							// 'label' 'callback' 'tip' 'image' 'class' 'checked'
+							add items (array (at labelAndValue 1) (action 'setContents' this (at labelAndValue 2)))
 						} else {
-							addItem menu choice
+							add items (array choice (action 'setContents' this choice))
 						}
 					}
-					popUpAtHand menu (page aHand)
+					menuFor (api (smallRuntime)) items
 					return true
 				}
 			}
@@ -649,7 +669,7 @@ method broadcastMenu InputSlot {
 		remove msgList defaultBroadcast
 		remove msgList '' // wildcard (empty string)
 		addItemNonlocalized menu defaultBroadcast (action 'setContents' this defaultBroadcast)
-		addLine menu
+		if (notEmpty msgList) { addLine menu }
 
 		for s msgList {
 			addItemNonlocalized menu s (action 'setContents' this s)

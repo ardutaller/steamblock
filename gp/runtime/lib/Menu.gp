@@ -38,6 +38,10 @@ method lastItemIsLine Menu {
 	return (and (isClass lastItem 'Array') ((count lastItem) == 1) ((count (first lastItem)) == 2))
 }
 
+method isLine Menu item {
+	return (and (isClass item 'Array') ((count item) == 1) ((count (first item)) == 2))
+}
+
 method popUp Menu page x y noFocus {
 	if (or (isNil noFocus) (not (isClass noFocus 'Boolean'))) {noFocus = false}
 	if (isEmpty items) { return }
@@ -65,6 +69,10 @@ method creator Menu {
 		args = (argsForCall db currentFrame)
 	}
 	return (first args)
+}
+
+method items Menu {
+	return items
 }
 
 method popUpAtHand Menu page noFocus {
