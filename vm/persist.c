@@ -1190,34 +1190,33 @@ void resumeCodeFileUpdates() {
 // Code Snapshot support
 
 int codeStoreSize() {
-	#ifdef USE_CODE_FILE
-		return -1; // code snapshots not supported
-	#else
-		return HALF_SPACE - 8;
-	#endif
+	return HALF_SPACE - 8; // minus cycle word(s)
 }
 
 void appendToCodeStore(uint8 *data, int byteCount) {
 	int wordCount = byteCount / 4;
-	flashWriteData(freeStart, wordCount, data);
-	freeStart += wordCount;
+	#ifdef USE_CODE_FILE
+		memcpy(freeStart, data, 4 * wordCount); // copy into the RAM code store
+		freeStart += wordCount;
+		int *codeStart = ((0 == current) ? start0 : start1) + 1; // skip half-space header
+		clearCodeFile(cycleCount(current));
+		writeCodeFile((uint8 *) codeStart, 4 * (freeStart - codeStart));
+	#else
+		flashWriteData(freeStart, wordCount, data);
+		freeStart += wordCount;
+	#endif
 }
 
 uint8* getCodeStore(int *byteCount) {
-	#ifdef USE_CODE_FILE
-		*byteCount = -1;
-		return NULL; // code snapshots not supported
-	#else
-		compactCodeStore(NULL, NULL);
-		int *codeStart = (0 == current) ? start0 : start1;
+	compactCodeStore(NULL, NULL);
+	int *codeStart = (0 == current) ? start0 : start1;
 
-		// skip the cycle count word(s)
-		codeStart++;
-		if (CYCLE_COUNT_WORDS == 2) codeStart++;
+	// skip the cycle count word(s)
+	codeStart++;
+	if (CYCLE_COUNT_WORDS == 2) codeStart++;
 
-		*byteCount = 4 * (freeStart - codeStart);
-		return (uint8 *) codeStart;
-	#endif
+	*byteCount = 4 * (freeStart - codeStart);
+	return (uint8 *) codeStart;
 }
 
 // testing
