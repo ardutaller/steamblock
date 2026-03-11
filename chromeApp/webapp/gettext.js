@@ -87,7 +87,7 @@ GetText.localize = function (key, ...replacementStrings) {
 	}
 	// default to the key itself if there's no EN translation either
 	if ((value == undefined) || (value == '')) { value = key; }
-	if (value.includes('%1')) {
+	if (value && value.includes('%1')) {
 		return this.replaceParams(value, ...replacementStrings);
 	}
 	return value;
