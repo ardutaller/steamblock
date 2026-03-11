@@ -251,7 +251,7 @@ method contextMenu MicroBlocksAPI selector aHand {
 	notify (api (smallRuntime)) 'context' options
 }
 
-method menuFor MicroBlocksAPI items callback {
+method menuFor MicroBlocksAPI items callback class {
 	// callback is an action that gets called with the chosen item as a param
 
 	page = (global 'page')
@@ -262,9 +262,10 @@ method menuFor MicroBlocksAPI items callback {
 	atPut options 'id' id
 	atPut options 'x' (/ (x (hand page)) scale)
 	atPut options 'y' (/ (y (hand page)) scale)
+	atPut options 'class' class
 	atPut options 'items' (list)
 
-	fields = (array 'label' 'callback' 'tip' 'image' 'class')
+	fields = (array 'label' 'callback' 'tip' 'image' 'class' 'checked')
 
 	for item items {
 		dict = (dictionary)

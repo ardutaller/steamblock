@@ -427,7 +427,14 @@ Menus.elementFor = function (descriptor, target) {
 				}
 
 				// States: checked and unchecked
-				if (item.checked) {
+				if (item.checked !== undefined) {
+					let checked;
+					if (typeof item.checked == 'boolean') {
+						checked = item.checked;
+					} else {
+						// checked is a callback, let's run it
+						checked = item.checked();
+					}
 
 					// Can be checked, so it needs a tick icon
 					let tick = document.createElement('span');
@@ -435,10 +442,9 @@ Menus.elementFor = function (descriptor, target) {
 						.then(res => res.text())
 						.then(text => tick.innerHTML = text);
 
-					// We now run the checked callback to see whether the item is checked
 					tick.classList.add('menu__button-tick');
 					button.appendChild(tick);
-					button.classList.add(item.checked() ? '--is-checked' : '--is-unchecked');
+					button.classList.add(checked ? '--is-checked' : '--is-unchecked');
 				}
 
 				button.appendChild(text);
@@ -546,7 +552,7 @@ document.addEventListener('menu', (e) => {
 		item.type = item.image ? 'image' : 'label';
 	})
 	Menus.popUpFromDescriptor(
-		{ type: 'context', items: descriptor.items },
+		{ type: 'context', items: descriptor.items, class: descriptor.class },
 		null,
 		null,
 		e

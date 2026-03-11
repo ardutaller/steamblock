@@ -16,4 +16,4 @@ TODO
 [ ] Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
 [x] Als context menu amb checks que són single option, afegir classe --single-option
 [ ] A ↑↑↑, alinear ticks a la dreta i només mostrar el que està actiu
-[ ] Al buscar usos de blocs, els scripts surten gegants. Ja tenen clasee --script
+[x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen clasee --script

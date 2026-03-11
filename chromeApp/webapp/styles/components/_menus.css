@@ -76,6 +76,10 @@
 		max-height: 2em;
 	}
 
+	&.--input img {
+		max-height: 1.4em;
+	}
+
 	&.--script img {
 		zoom: 0.5;
 	}

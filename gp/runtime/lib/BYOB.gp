@@ -930,22 +930,15 @@ method element InputDeclaration typeStr blockColor {
 
 method typesMenu InputDeclaration {
 	// slot types: 'auto' 'num' 'str' 'bool' 'color' 'cmd' 'var' 'menu'
-	menu = (menu nil (action 'setType' this) true)
-	addItem menu (selectedString this 'auto') 'auto' 'number or string' (fullCostume (morph (element this 'auto')))
+	items = (list)
+	// 'label' 'callback' 'tip' 'image' 'class' 'isChecked'
+	add items (array 'auto' nil 'number or string' (fullCostume (morph (element this 'auto'))) '--input' ('auto' == typeString))
 	if (devMode) {
-		addItem menu (selectedString this 'num') 'num' 'number only' (fullCostume (morph (element this 'num')))
-		addItem menu (selectedString this 'str') 'str' 'string only' (fullCostume (morph (element this 'str')))
-		addLine menu
+		add items (array 'num' nil 'number only' (fullCostume (morph (element this 'num'))) '--input' ('num' == typeString))
+		add items (array 'str' nil 'string only' (fullCostume (morph (element this 'str'))) '--input' ('str' == typeString))
+		add items '-'
 	}
-	addItem menu (selectedString this 'bool') 'bool' 'boolean switch' (fullCostume (morph (element this 'bool')))
-	addItem menu (selectedString this 'color') 'color' 'color patch' (fullCostume (morph (element this 'color')))
-	popUp menu (global 'page') (left morph) (bottom morph)
-}
-
-method selectedString InputDeclaration slotType {
-	if (slotType == typeString) {
-		return '      ✔'
-	} else {
-		return ''
-	}
+	add items (array 'bool' nil 'boolean switch' (fullCostume (morph (element this 'bool'))) '--input' ('bool' == typeString))
+	add items (array 'color' nil 'color patch' (fullCostume (morph (element this 'color'))) '--input' ('color' == typeString))
+	menuFor (api (smallRuntime)) items (action 'setType' this) '--single-option'
 }
