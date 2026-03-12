@@ -2340,7 +2340,8 @@ method handleMessage SmallRuntime msg {
 		if (chunkID == 255) {
 			print (returnedValue this msg)
 		} (chunkID == 254) {
-			addLoggedData this (toString (returnedValue this msg))
+			notify api 'graph.data' (returnedValue this msg)
+			//addLoggedData this (toString (returnedValue this msg))
 		} else {
 			showResult this chunkID (returnedValue this msg) false true
 		}

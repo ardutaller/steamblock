@@ -477,6 +477,9 @@ Menus.popUpFromDescriptor = function (
 	nav.trigger = triggerElement;
 	container.appendChild(nav);
 
+	if (!window.maxZIndex) { window.maxZIndex = 999; };
+	container.style.zIndex = maxZIndex + 1;
+
 	if (type == 'context') {
 		container.classList.add('--context-menu');
 		container.classList.remove('--top-menu');

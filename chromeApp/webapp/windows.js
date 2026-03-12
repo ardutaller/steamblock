@@ -16,6 +16,8 @@ class FloatingWindow extends HTMLElement {
 		this.height = this.minHeight;
 
 		this.onResize = descriptor.onResize;
+		this.onClose = descriptor.onClose;
+		this.onOpen = descriptor.onOpen;
 		this.target = descriptor.target;
 
 		if (descriptor.id) { this.id = descriptor.id; }
@@ -165,6 +167,8 @@ class FloatingWindow extends HTMLElement {
 		} else if (this.querySelector('.window__buttons button')) {
 			this.querySelector('.window__buttons button').focus();
 		}
+
+		if (this.onOpen) { this.onOpen.call(this.target); }
 	}
 
 
@@ -183,6 +187,10 @@ class FloatingWindow extends HTMLElement {
 		this.y = window.innerHeight / 2 - this.clientHeight / 2;
 		this.style.left = this.x + "px";
 		this.style.top = this.y + "px";
+	}
+
+	disconnectedCallback() {
+		if (this.onClose) { this.onClose.call(this.target); }
 	}
 }
 

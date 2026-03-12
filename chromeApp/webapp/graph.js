@@ -4,6 +4,12 @@ FloatingWindow.graph = function () {
 		body: Graph.build(),
 		resizable: true,
 		onResize: Graph.resize,
+		onOpen: () => {
+			IDE.controlsButtons.querySelector('.--graph').classList.add('--active');
+		},
+		onClose: () => {
+			IDE.controlsButtons.querySelector('.--graph').classList.remove('--active');
+		},
 		target: Graph
 	});
 	win.popUp();
@@ -13,6 +19,7 @@ FloatingWindow.graph = function () {
 const Graph = {
 	origin: 'center',
 	step: 25,
+	stepRange: [1,5,10,25,50,100,250,500,1000,2500,5000],
 	spacing: 25,
 	width: 400,
 	height: 250,
@@ -36,7 +43,7 @@ Graph.build = function () {
 	this.resize(this.width, this.height);
 
 	this.canvas.oncontextmenu = (e) => {
-		Menus.popUp('graph', this.canvas, this, e);
+		Menus.popUp('graph', null, this, e);
 		e.preventDefault();
 	};
 
@@ -116,7 +123,7 @@ Graph.drawData = function () {
 Graph.addDataPoints = function (values) {
 	for (let i = 0; i < this.dataTracks.length; i++) {
 		if (values[i]) {
-			this.dataTracks[i].push(values[i]);
+			this.dataTracks[i].push(parseInt(values[i]));
 		} else {
 			// did I actually find a use case for NaN? I did!
 			this.dataTracks[i].push(NaN);
@@ -138,13 +145,17 @@ Graph.clear = function () {
 	this.redraw();
 };
 
-Graph.increaseRange = function () {
-	if (this.step < 5000) { this.step *= 2; }
+Graph.increaseStep = function () {
+	if (this.step < 5000) {
+		this.step = this.stepRange[this.stepRange.indexOf(this.step) + 1];
+	}
 	this.redraw();
 };
 
-Graph.decreaseRange = function () {
-	if (this.step > 5) { this.step /= 2; }
+Graph.decreaseStep = function () {
+	if (this.step > 1) {
+		this.step = this.stepRange[this.stepRange.indexOf(this.step) - 1];
+	}
 	this.redraw();
 };
 
@@ -152,6 +163,25 @@ Graph.setOrigin = function(which) {
 	this.origin = which;
 	this.redraw();
 };
+
+// Data import / export
+
+Graph.exportData = function () {
+	GP_writeFile(
+		this.dataTracks.map(t => t.map(p => isNaN(p) ? 0 : p).join(',')).join('\n'),
+		'data.csv',
+		'graph'
+	);
+};
+
+// Events
+
+document.addEventListener(
+	'graph.data',
+	(e) => {
+		Graph.addDataPoints(e.detail.value.split(' '));
+	}
+);
 
 // Graph context menu
 
@@ -161,37 +191,37 @@ Menus.graph = {
 	items: [
 		{
 			label: 'clear graph',
-			action: (target, event) => { Graph.clear(); }
+			action: () => { Graph.clear(); }
 		},
 		{ label: '-' },
 		{
 			label: 'increase range',
-			action: (target, event) => { Graph.increaseRange(); }
+			action: () => { Graph.increaseStep(); }
 		},
 		{
 			label: 'decrease range',
-			action: (target, event) => { Graph.decreaseRange(); }
+			action: () => { Graph.decreaseStep(); }
 		},
 		{
 			label: () => {
 				return Graph.origin == 'center' ? 'zero at bottom' : 'zero in middle'
 			},
-			action: (target, event) => {
+			action: () => {
 				Graph.setOrigin(Graph.origin == 'center' ? 'bottom' : 'center');
 			}
 		},
 		{ label: '-' },
 		{
 			label: 'export data to CSV file',
-			action: (target, event) => { Graph.exportData(); }
+			action: () => { Graph.exportData(); }
 		},
 		{
 			label: 'import data from CSV file',
-			action: (target, event) => { Graph.importData(); }
+			action: () => { Graph.importData(); }
 		},
 		{
 			label: 'copy graph data to clipboard',
-			action: (target, event) => { Graph.copyDataToClipboard(); },
+			action: () => { Graph.copyDataToClipboard(); },
 			advanced: true
 		},
 		{
@@ -203,7 +233,8 @@ Menus.graph = {
 			action: (target, event) => {
 				Menus.popUp('serialDelay', null, target, event);
 			},
-			advanced: true
+			advanced: true,
+			keepOpenAfterClick: true
 		}
 	]
 };
@@ -213,15 +244,13 @@ Menus.serialDelay = {
 	type: 'context',
 	items: [1,2,3,4,5,6,8,10,12,14,16,18,20].map(value => {
 		return {
-			label: value,
-			action: (target) => {
-				Graph.setSerialDelay(value);
-			}
+			label: value.toString(),
+			action: () => { GP.apiCall('ide.setSerialDelay', [value]); }
 		}
 	})
 };
 
-Menus.serialDelay.items.push('-');
+Menus.serialDelay.items.push({ label: '-' });
 Menus.serialDelay.items.push({
 	label: 'reset to default (10)',
 	action: (target, event) => { Graph.setSerialDelay(10); }

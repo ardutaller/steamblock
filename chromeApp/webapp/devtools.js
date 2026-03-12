@@ -107,5 +107,5 @@ LiveReload.reloadPage = function (contents) {
 	}
 };
 
-LiveReload.enable();
+//LiveReload.enable();
 document.body.oncontextmenu = null; // enable context menu when in dev mode

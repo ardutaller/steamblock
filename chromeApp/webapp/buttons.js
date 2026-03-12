@@ -39,7 +39,7 @@ const Buttons = {
 		label: 'Graph',
 		description: 'Open a graph window. Use the graph block in the Output category to add data points to it.',
 		class: 'top-bar__rounded-button',
-		action: () => { GP.apiCall('ide.showGraph'); }
+		action: () => { FloatingWindow.graph(); }
 	},
 	connect: {
 		icon : 'plug--16x16',

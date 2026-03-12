@@ -27,9 +27,9 @@ method dispatchCall MicroBlocksAPI callObject {
 
 	// dispatch API call
 	// IDE
-	if (endPoint == 'ide.showGraph') {
+	if (endPoint == 'ide.setSerialDelay') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
-		showGraph editor
+		setSerialDelay runtime (at params 1)
 	} (endPoint == 'ide.applyUserPreferences') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		applyUserPreferences editor
@@ -39,9 +39,6 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'ide.stopAll') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		stopAndSyncScripts runtime
-	} (endPoint == 'ide.showConnectMenu') {
-		respondAPIRequest this id 0 // respond first so the request is deleted
-		selectPort runtime
 	} (endPoint == 'ide.updateConnection') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		updateConnection runtime

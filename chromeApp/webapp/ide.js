@@ -150,18 +150,7 @@ IDE.populateTopBar = function (container) {
 		controlsButtons.appendChild(Buttons.elementFor(selector));
 	});
 
-	// Add listener to graph button
-	document.addEventListener(
-		'windows.DataGraph.active',
-		(e) => {
-			let element = controlsButtons.querySelector('.--graph');
-			if (e.detail.value) {
-				element.classList.add('--active');
-			} else {
-				element.classList.remove('--active');
-			}
-		}
-	)
+	IDE.controlsButtons = controlsButtons;
 };
 
 
