@@ -187,6 +187,9 @@ extern "C" void loadCodeSnapshot(char *fileName) {
 
 		// clear code store
 		clearPersistentMemory();
+		#if defined(ESP8266)
+			clearCodeFile(0);
+		#endif
 
 		// copy the file into the code store
 		uint8 buffer[1024]; // must be a multiple of four
