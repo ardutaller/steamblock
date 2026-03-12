@@ -628,7 +628,7 @@ method deleteVariableMenu MicroBlocksScripter {
 	if (isEmpty (visibleVars this)) { return }
 	items = (list)
 	for v (visibleVars this) {
-		add items v
+		add items (array v)
 	}
 	menuFor (api (smallRuntime)) items (action 'deleteVariable' this)
 }
