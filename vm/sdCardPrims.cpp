@@ -170,19 +170,20 @@ static OBJ primInit(int argCount, OBJ *args) {
 }
 
 static OBJ primSetSPIPins(int argCount, OBJ *args) {
-	// Set the SDCard SPI clock, MOSI, and MISO.
-	// If optional 4th argument is true, use SPI1.
-	// If optional 5th argument is true, use SPI in DEDICATED mode.
+	// Set the SDCard SPI clock, MOSI, MISO, and CS.
+	// If optional 5th argument is true, use SPI1.
+	// If optional 6th argument is true, use SPI in DEDICATED mode.
 	// Note: This changes the MicroBlocks SPI pins globally (unless SPI1 is specified).
 
 	if (argCount < 3) return fail(notEnoughArguments);
-	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]))) return fail(needsIntegerError);
+	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]) && isInt(args[3]))) return fail(needsIntegerError);
 
 	int spiCLK = mapDigitalPinNum(obj2int(args[0]));
 	int spiMOSI = mapDigitalPinNum(obj2int(args[1]));
 	int spiMISO = mapDigitalPinNum(obj2int(args[2]));
-	useSecondarySPI = ((argCount > 3) && (args[3] == trueObj));
-	isDedicatedSPI = ((argCount > 4) && (args[4] == trueObj));
+	int csPin = mapDigitalPinNum(obj2int(args[3]));
+	useSecondarySPI = ((argCount > 4) && (args[4] == trueObj));
+	isDedicatedSPI = ((argCount > 5) && (args[5] == trueObj));
 
 	if (useSecondarySPI) {
 		initSecondarySPI();
@@ -212,6 +213,7 @@ static OBJ primSetSPIPins(int argCount, OBJ *args) {
 			SPI.begin(spiCLK, spiMISO, spiMOSI);
 		#endif
 	}
+	initSDCard(csPin);
 	return falseObj;
 }
 
