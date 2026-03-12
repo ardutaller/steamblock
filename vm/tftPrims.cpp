@@ -72,8 +72,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_HEIGHT 128
 
 		void tftInit() {
-			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
+			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
+			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
  					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
@@ -468,7 +468,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_RST GFX_NOT_DEFINED
 
 		void tftInit() {
-			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
+			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
@@ -1667,8 +1667,11 @@ static Arduino_DataBus* makeDataBus(int dc, int cs) {
 		return new Arduino_NRFXSPI(dc, cs, spiCLK, spiMOSI, spiMISO);
 	#elif defined(TARGET_RP2040) || defined(PICO_RP2350)
 		return new Arduino_RPiPicoSPI(dc, cs, spiCLK, spiMOSI, spiMISO, ((spiDeviceNum == 1) ? spi1 : spi0));
-	#elif defined(ESP32) && (CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32S2 || CONFIG_IDF_TARGET_ESP32S3 || CONFIG_IDF_TARGET_ESP32C3)
-		return new Arduino_ESP32SPI(dc, cs, spiCLK, spiMOSI, spiMISO);
+	#elif defined(ESP32)
+		// use Arduino_HWSPI because Arduino_ESP32SPI is not compatible with other devices
+		// sharing the SPI bus (e.g. SD cards) and the performance difference is not huge
+		// (24% slower for scaled text, 9% slow for filled circles and rectangles).
+		return new Arduino_HWSPI(dc, cs, spiCLK, spiMOSI, spiMISO);
 	#elif defined(ESP8266)
 		return new Arduino_ESP8266SPI(dc, cs);
 	#else
