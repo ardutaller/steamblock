@@ -1080,7 +1080,7 @@ void loadStartCodeOrClear() {
 	if (ideConnected()) return; // do nothing if connected to IDE; would break IDE/board sync
 
 	if (hasStartupSnapshot()) {
-		loadCodeSnapshot("startup.ucode");
+		loadCodeSnapshot((char *) "startup.ucode");
 	} else {
 		// clear the current program
 		clearAllVariables();
