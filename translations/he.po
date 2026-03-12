@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-03-07 15:34+0200\n"
-"PO-Revision-Date: 2026-03-11 09:09+0000\n"
+"PO-Revision-Date: 2026-03-12 10:09+0000\n"
 "Last-Translator: Yitzhak Marmelstein <info@above-israel.co.il>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/microblocks/ide/"
 "he/>\n"
@@ -897,7 +897,7 @@ msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library label
 msgid "Hummingbird LED _ _ %"
-msgstr ""
+msgstr "אחוז תאורת לד __% ברובוט Hummingbird"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
@@ -905,19 +905,19 @@ msgstr ""
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Position Servo _ _ °"
-msgstr ""
+msgstr "זווית מנוע הסרבו __ במעלות ברובוט Hummingbird"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Rotation Servo _ _ %"
-msgstr ""
+msgstr "זווית הסיבוב במנוע סרבו __% ברובוט Hummingbird"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird _ _"
-msgstr ""
+msgstr "Hummingbird _ _"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "Hummingbird Battery (mV)"
-msgstr ""
+msgstr "סוללת Hummingbird במילי וואט"
 
 #. BirdBrain Technologies Hummingbird kit library block
 msgid "humm;Light"
@@ -1913,7 +1913,7 @@ msgstr ""
 
 #. 8 Bit Graphics Library block
 msgid "current palette"
-msgstr ""
+msgstr "כלי הפתוח כרגע על המסך"
 
 #. 8 Bit Graphics Library block
 msgid "screen width"
@@ -2127,7 +2127,7 @@ msgstr ""
 
 #. Ringtone library block
 msgid "current song name"
-msgstr ""
+msgstr "שם השיר המתנגן כרגע"
 
 #. Pluck library label
 #. Generate music with plucked-string resembling sounds
@@ -2169,7 +2169,7 @@ msgstr ""
 
 #. Rhythm library block
 msgid "current beat"
-msgstr ""
+msgstr "הביט העכשווי"
 
 #. Rhythm library block
 msgid "current bar"
@@ -2283,7 +2283,7 @@ msgstr ""
 
 #. General MIDI drum instrument name
 msgid "Electric Snare"
-msgstr ""
+msgstr "תוף סגר חשמלי"
 
 #. General MIDI drum instrument name
 msgid "Low Floor Tom"
@@ -2319,7 +2319,7 @@ msgstr ""
 
 #. General MIDI drum instrument name
 msgid "Crash Cymbal 1"
-msgstr ""
+msgstr "מצילה גדולה בתופים Cymbal 1"
 
 #. General MIDI drum instrument name
 msgid "High Tom"
@@ -2347,11 +2347,11 @@ msgstr ""
 
 #. General MIDI drum instrument name
 msgid "Cowbell"
-msgstr ""
+msgstr "פעמון פרה - כלי הקשה"
 
 #. General MIDI drum instrument name
 msgid "Crash Cymbal 2"
-msgstr ""
+msgstr "מצילה גדולה בתופים Cymbal 2"
 
 #. General MIDI drum instrument name
 msgid "Vibraslap"
@@ -2535,7 +2535,7 @@ msgstr ""
 
 #. General MIDI drum set
 msgid "Hip Hop"
-msgstr ""
+msgstr "היפ הופ"
 
 #. General MIDI drum set
 msgid "Jungle Techno"
@@ -2547,7 +2547,7 @@ msgstr ""
 
 #. General MIDI drum set
 msgid "House Power Electronic"
-msgstr ""
+msgstr "מתח הסוללה"
 
 #. General MIDI drum set
 msgid "TR-808"
@@ -2555,11 +2555,11 @@ msgstr ""
 
 #. General MIDI drum set
 msgid "Dance"
-msgstr ""
+msgstr "לרקוד"
 
 #. General MIDI drum set
 msgid "CR-78"
-msgstr ""
+msgstr "מכונת תופים אלקטרונית"
 
 #. General MIDI drum set
 msgid "TR-606"
@@ -2611,7 +2611,7 @@ msgstr "אסיה"
 
 #. General MIDI drum set
 msgid "Cymbal&claps"
-msgstr ""
+msgstr "מצלתיים ומחיאות כפיים"
 
 #. General MIDI drum set
 msgid "Gamelan 1"
@@ -2647,7 +2647,7 @@ msgstr ""
 
 #. General MIDI drum set
 msgid "Cym&Claps 2"
-msgstr ""
+msgstr "מצילתיים ומחיאות כפיים 2"
 
 #. General MIDI control change
 msgid "bank select 1"
@@ -2679,7 +2679,7 @@ msgstr ""
 
 #. General MIDI control change
 msgid "hold"
-msgstr ""
+msgstr "עצור"
 
 #. General MIDI control change
 msgid "portamento"
@@ -2707,7 +2707,7 @@ msgstr "זמן עלייה"
 
 #. General MIDI control change
 msgid "cutoff"
-msgstr ""
+msgstr "חתוך"
 
 #. General MIDI control change
 msgid "decay time"
@@ -2731,11 +2731,11 @@ msgstr ""
 
 #. General MIDI control change
 msgid "effect 1"
-msgstr ""
+msgstr "אפקט 1"
 
 #. General MIDI control change
 msgid "effect 2"
-msgstr ""
+msgstr "אפקט 2"
 
 #. MIDI library block
 msgid "play MIDI note _ for _ ms on channel _ volume _"
@@ -2779,7 +2779,7 @@ msgstr ""
 
 #. MIDI library block
 msgid "drum _"
-msgstr ""
+msgstr "תוף_"
 
 #. MIDI library block
 msgid "change MIDI control _ on channel _ to _"
@@ -2828,7 +2828,7 @@ msgstr ""
 
 #. Musical scale name
 msgid "dorian"
-msgstr ""
+msgstr "סולם דוריאני dorian"
 
 #. Musical scale name
 msgid "phrygian"
@@ -3044,7 +3044,7 @@ msgstr ""
 
 #. File System library block
 msgid "delete file _"
-msgstr ""
+msgstr "מחק קובץ_"
 
 #. File System library block
 msgid "append line _ to file _"
@@ -3434,7 +3434,7 @@ msgstr ""
 
 #. HTTP Client library label
 msgid "HTTP client"
-msgstr ""
+msgstr "HTTP client"
 
 #. HTTP Client library block.
 #. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
@@ -3451,7 +3451,7 @@ msgstr ""
 
 #. HTTP Server library label
 msgid "HTTP server"
-msgstr ""
+msgstr "HTTP server"
 
 #. HTTP Server library block
 msgid "start HTTP server"
@@ -3459,7 +3459,7 @@ msgstr ""
 
 #. HTTP Server library block
 msgid "HTTP server request"
-msgstr ""
+msgstr "בקשת HTTP server"
 
 #. HTTP Server library block
 msgid "respond _ to HTTP request"
@@ -3731,7 +3731,7 @@ msgstr ""
 
 #. Shield:bit library motor movement type selection
 msgid "degrees"
-msgstr ""
+msgstr "מעלות"
 
 #. micro:STEAMakers library block
 msgid "ms pin _ touched?"
@@ -4020,23 +4020,23 @@ msgstr ""
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina light"
-msgstr ""
+msgstr "אור"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina distance (cm)"
-msgstr ""
+msgstr "מרחק בסנטימטר"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina button (D2) pressed?"
-msgstr ""
+msgstr "האם כפתור D2 לחוץ?"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina digital reading _"
-msgstr ""
+msgstr "קרא דיגיטלי_"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina analog reading A1"
-msgstr ""
+msgstr "קרא באופן אנלוגי את A1"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set digital pin _ to _"
@@ -4064,7 +4064,7 @@ msgstr ""
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina IR reading"
-msgstr ""
+msgstr "קרא חיישן IR Infra Red"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina IR transmit device _ command _"
@@ -4096,7 +4096,7 @@ msgstr ""
 
 #. Keyestudio Smart Farm library block
 msgid "current (mA)"
-msgstr ""
+msgstr "זרם מיליאמפר"
 
 #. Keyestudio Smart Farm library block
 msgid "power (mW)"
@@ -4120,7 +4120,7 @@ msgstr ""
 
 #. Keyestudio Smart Farm library block
 msgid "Farm fan _"
-msgstr ""
+msgstr "מאוורר בחווה_"
 
 #. Keyestudio Smart Farm library block
 msgid "start"
@@ -4128,55 +4128,55 @@ msgstr ""
 
 #. Keyestudio Smart Farm library block
 msgid "Farm display _ in line _"
-msgstr ""
+msgstr "תצוגה_של קו_ בחווה"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm _ the trapdoor"
-msgstr ""
+msgstr "דלת מלכודת בחווה_"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm play _ octave _ for _ ms"
-msgstr ""
+msgstr "נגן_אוקטבה_למשך_אלפיות השנייה"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm set light _"
-msgstr ""
+msgstr "קבע עוצמת אור_"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm water pump _"
-msgstr ""
+msgstr "משאבת מים לחווה_"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm temperature ºC"
-msgstr ""
+msgstr "חיישן טמפרטורה במעלות צלזיוס בחווה"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm humidity"
-msgstr ""
+msgstr "חיישן לחות בחווה"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm movement detected?"
-msgstr ""
+msgstr "חיישן תנועה בחווה?"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm button pressed?"
-msgstr ""
+msgstr "לחיצה על כפתור בחווה?"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm distance (cm)"
-msgstr ""
+msgstr "חיישן מרחק בחווה נמדד בסנטימטר"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm light level"
-msgstr ""
+msgstr "חיישן מד אור לחווה"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm water level"
-msgstr ""
+msgstr "חיישן גובה מים לחווה"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm soil moisture"
-msgstr ""
+msgstr "חיישן לחות קרקע בחווה"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm steam level"
@@ -4184,23 +4184,23 @@ msgstr ""
 
 #. Keyestudio Smart Farm library block
 msgid "Farm electric consumption _"
-msgstr ""
+msgstr "חיישן צריכת חשמל בחווה_"
 
 #. Keyestudio Smart Home library block
 msgid "Home fan _"
-msgstr ""
+msgstr "מאוורר_"
 
 #. Keyestudio Smart Home library block
 msgid "Home display _ in line _"
-msgstr ""
+msgstr "הצג_בשורה_"
 
 #. Keyestudio Smart Home library block
 msgid "Home _ the window"
-msgstr ""
+msgstr "החלון_"
 
 #. Keyestudio Smart Home library block
 msgid "Home activate the door"
-msgstr ""
+msgstr "הפעל את הדלת"
 
 #. Keyestudio Smart Home library block
 msgid "Home play _ octave _ for _ ms"
@@ -4208,15 +4208,15 @@ msgstr ""
 
 #. Keyestudio Smart Home library block
 msgid "Home set light _"
-msgstr ""
+msgstr "קבע את עוצמת האור_"
 
 #. Keyestudio Smart Home library block
 msgid "Home temperature ºC"
-msgstr ""
+msgstr "הטמפרטורה במעלות צלזיוס"
 
 #. Keyestudio Smart Home library block
 msgid "Home humidity"
-msgstr ""
+msgstr "לחות"
 
 #. Keyestudio Smart Home library block
 msgid "Home steam level"
@@ -4224,15 +4224,15 @@ msgstr ""
 
 #. Keyestudio Smart Home library block
 msgid "Home read RFID card"
-msgstr ""
+msgstr "קרא כרטיס RFID Radio Frequency Identification"
 
 #. Keyestudio Smart Home library block
 msgid "Home movement detected?"
-msgstr ""
+msgstr "אותרה תזוזה?"
 
 #. Keyestudio Smart Home library block
 msgid "Home _ button pressed?"
-msgstr ""
+msgstr "כפתור_לחוץ?"
 
 #. Keyestudio Smart Home button (left/right) label
 msgid "shbutton;left"
@@ -4244,19 +4244,19 @@ msgstr ""
 
 #. Keyestudio Smart Home library block
 msgid "Home gas detected?"
-msgstr ""
+msgstr "האם גז זוהה?"
 
 #. Keyestudio Smart Home library block
 msgid "Home set NeoPixels _ _ _ _"
-msgstr ""
+msgstr "קבע את הניאופיקסל ____"
 
 #. Keyestudio Smart Home library block
 msgid "Home clear leds"
-msgstr ""
+msgstr "כבה את הלדים"
 
 #. Keyestudio Smart Home library block
 msgid "Home electric consumption _"
-msgstr ""
+msgstr "הצג צריכת חשמל_"
 
 #. MQTT library block
 msgid "MQTT connect to broker _"
@@ -4432,7 +4432,7 @@ msgstr "סוג הכתובת"
 
 #. BLE Scanner library block
 msgid "device name"
-msgstr ""
+msgstr "שם ההתקן"
 
 #. BLE Scanner library block
 msgid "hasType _"
@@ -4448,11 +4448,11 @@ msgstr ""
 
 #. Cutebot library block
 msgid "Cutebot stop wheels"
-msgstr ""
+msgstr "רובוט cutebot עצור את הגלגלים"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to _ degrees (-90 to 90)"
-msgstr ""
+msgstr "רובוט cutebot קבע את מנוע הסרבו_למעלות_בטווח שבין -90 עד 90"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to speed _ (-100 to 100)"
@@ -4468,55 +4468,55 @@ msgstr ""
 
 #. Cutebot library block
 msgid "Cutebot _ line sensor"
-msgstr ""
+msgstr "רובוט cutebot_חיישן אינפרא אדום עקוב אחר קו"
 
 #. Cutebot library block
 msgid "Cutebot sees line on left _ right _"
-msgstr ""
+msgstr "רובוט cutebo רואה את הקו משמאל_ומימין_"
 
 #. Cutebot library block
 msgid "Cutebot distance (cm)"
-msgstr ""
+msgstr "cutebot מרחק בסנטימטר"
 
 #. Cutebot Pro library block dropdown option
 #. as in "left" light
 msgid "cutebotlight;left"
-msgstr ""
+msgstr "שמאלה"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" light
 msgid "cutebotlight;right"
-msgstr ""
+msgstr "ימינה"
 
 #. Cutebot Pro library block dropdown option
 #. as in "both" lights
 msgid "cutebotlight;both"
-msgstr ""
+msgstr "שניהם"
 
 #. Cutebot Pro library block dropdown option
 #. as in "left" side
 msgid "cutebotside;left"
-msgstr ""
+msgstr "שמאל"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" side
 msgid "cutebotside;right"
-msgstr ""
+msgstr "ימין"
 
 #. Cutebot Pro library block dropdown option
 #. as in "left" wheel
 msgid "cutebotwheel;left"
-msgstr ""
+msgstr "שמאל"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" wheel
 msgid "cutebotwheel;right"
-msgstr ""
+msgstr "ימין"
 
 #. Cutebot Pro library block dropdown option
 #. as in "both" wheels
 msgid "cutebotwheel;both"
-msgstr ""
+msgstr "שניהם"
 
 #. Cutebot Pro library block dropdown option
 msgid "45 degrees"
@@ -4537,12 +4537,12 @@ msgstr "180 מעלות"
 #. Cutebot Pro library block dropdown option
 #. robot motion direction
 msgid "cutebot;forward"
-msgstr ""
+msgstr "קדימה"
 
 #. Cutebot Pro library block dropdown option
 #. robot motion direction
 msgid "cutebot;backward"
-msgstr ""
+msgstr "אחורה"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degree"
@@ -4559,12 +4559,12 @@ msgstr "360 מעלות"
 #. Cutebot Pro library block dropdown option
 #. as in turn "left"
 msgid "cutebotturn;left"
-msgstr ""
+msgstr "שמאל"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "right"
 msgid "cutebotturn;right"
-msgstr ""
+msgstr "ימינה"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "left" on your axis
@@ -4942,7 +4942,7 @@ msgstr ""
 
 #. Octostudio communication library block
 msgid "duration _ ms"
-msgstr ""
+msgstr "תזמון_ באלפיות השניה"
 
 #. Octostudio communication library block
 msgid "Octo beam received?"
@@ -5381,7 +5381,7 @@ msgstr ""
 
 #. CoCube Sengo2 library choice
 msgid "Deep Learning"
-msgstr ""
+msgstr "למידה עמוקה"
 
 #. CoCube Sengo2 library choice
 msgid "Obj20Class"
@@ -5845,7 +5845,7 @@ msgstr "טמפרטורת צלזיוס °C"
 
 #. Gas (SCD40) library block
 msgid "°F"
-msgstr ""
+msgstr "טמרטורה במעלות פרנהייט"
 
 #. Gas (SCD40) library block
 msgid "SCD40 init sensor"
@@ -6309,11 +6309,11 @@ msgstr ""
 
 #. Real Time Clock library block
 msgid "hour"
-msgstr ""
+msgstr "שעה"
 
 #. Real Time Clock library block
 msgid "day"
-msgstr ""
+msgstr "יום"
 
 #. Real Time Clock library block
 msgid "month"
@@ -6325,7 +6325,7 @@ msgstr ""
 
 #. Real Time Clock library block
 msgid "day of week"
-msgstr ""
+msgstr "יום בשבוע"
 
 #. Real Time Clock library block
 msgid "set day of week _ (1-7)"
@@ -6361,7 +6361,7 @@ msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "Copy project URL to clipboard"
-msgstr ""
+msgstr "העתק כתובת אינטנרט URL אל לוח הגזירה (Clipboard)"
 
 #. In information window title
 msgid "Information"
@@ -6419,7 +6419,7 @@ msgstr ""
 
 #. In MicroBlocks IDE connection menu
 msgid "disconnect"
-msgstr ""
+msgstr "מנותק"
 
 #. In MicroBlocks IDE connection menu
 msgid "Serial port:"
@@ -6452,7 +6452,7 @@ msgstr ""
 #. Firmware file read error.
 #. %1 holds the firmware file name
 msgid "Could not read %1."
-msgstr ""
+msgstr "לא ניתן לקרוא את המידע %1"
 
 #. About window info. As in "By Mary, Johanna and Tracy".
 #. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
@@ -6605,15 +6605,15 @@ msgstr ""
 
 #. Block selection right-click context menu
 msgid "duplicate selection"
-msgstr ""
+msgstr "שכפל את הבחירה"
 
 #. Block selection right-click context menu
 msgid "drag selection"
-msgstr ""
+msgstr "גרור את בחירתך"
 
 #. Block selection right-click context menu
 msgid "delete selection"
-msgstr ""
+msgstr "מחק את הבחירה"
 
 #. Settings menu option
 msgid "about..."
@@ -6641,7 +6641,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "enable or disable BLE"
-msgstr ""
+msgstr "הפעל או כבה את הבלוט'וס BLE"
 
 #. config confirmation
 msgid "Allow the attached board to be connected via BLE?"
@@ -6661,7 +6661,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "HTTP Server"
-msgstr ""
+msgstr "HTTP Server"
 
 #. MicroBlocks IDE information
 msgid "MicroBlocks HTTP Server listening on port 6473"
@@ -6758,6 +6758,8 @@ msgstr ""
 #. MicroBlocks IDE information
 msgid "If your micro:bit shows a sad face, save the firmware.hex file to your disk then drop it onto the MICROBIT drive."
 msgstr ""
+"אם המיקרוביט שלך מציג פרצוף עצוב, בצע עדכון גרסא על ידי שמירת קובץ hex על "
+"גבי המיקרוביט"
 
 #. MicroBlocks IDE information
 msgid "Save the firmware file when prompted."
@@ -6794,11 +6796,11 @@ msgstr ""
 
 #. Process finished information
 msgid "Done!"
-msgstr ""
+msgstr "מוכן!"
 
 #. Settings menu option
 msgid "download and install latest VM"
-msgstr ""
+msgstr "הורד והתקן את הגרסא האחרונה של המכונה הוירטואלית virtual machine"
 
 #. Settings menu option
 msgid "Select board type:"
@@ -6810,7 +6812,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "dark mode"
-msgstr ""
+msgstr "מצב חשוך"
 
 #. Settings menu option
 msgid "advanced mode"
@@ -6822,7 +6824,7 @@ msgstr ""
 
 #. Settings menu option
 msgid "export functions as library"
-msgstr ""
+msgstr "ייצא את הפונקציות כספרייה"
 
 #. Project menu option
 msgid "put file on board"
@@ -6838,11 +6840,11 @@ msgstr ""
 
 #. File download process information
 msgid "downloaded"
-msgstr ""
+msgstr "קובץ ירד"
 
 #. Graph window title
 msgid "Data Graph"
-msgstr ""
+msgstr "גרף מידע"
 
 #. Graph button tooltip
 msgid "Graph"
@@ -6858,7 +6860,7 @@ msgstr ""
 
 #. Graph context menu option
 msgid "decrease range"
-msgstr ""
+msgstr "להקטין את הטווח"
 
 #. Graph context menu option
 msgid "zero at bottom"
@@ -6870,7 +6872,7 @@ msgstr ""
 
 #. Graph context menu option
 msgid "export data to CSV file"
-msgstr ""
+msgstr "ייצא את המידע כקובץ CSV"
 
 #. Graph context menu option
 msgid "import data from CSV file"
@@ -6878,7 +6880,7 @@ msgstr ""
 
 #. Graph context menu option
 msgid "copy graph data to clipboard"
-msgstr ""
+msgstr "העתק את גרף הנתונים ללוח ההעתקה (Clipboard)"
 
 #. Script right-click context menu
 msgid "copy callable name"
@@ -6894,7 +6896,7 @@ msgstr ""
 
 #. Block right-click context menu
 msgid "expand"
-msgstr ""
+msgstr "הרחב"
 
 #. Block right-click context menu
 msgid "collapse"
@@ -6938,15 +6940,15 @@ msgstr ""
 
 #. Block right-click context menu
 msgid "delete block definition..."
-msgstr ""
+msgstr "מחק את הגדרת הבלוק..."
 
 #. Block right-click context menu tooltip
 msgid "delete the definition of this block"
-msgstr ""
+msgstr "מחק את ההגדרה של בלוק זה"
 
 #. Block right-click context menu
 msgid "duplicate"
-msgstr ""
+msgstr "שכפל"
 
 #. Block right-click context menu
 msgid "help"
@@ -6954,15 +6956,15 @@ msgstr ""
 
 #. Block right-click context menu
 msgid "duplicate this block"
-msgstr ""
+msgstr "שפכל את הבלוק הזה"
 
 #. Block right-click context menu
 msgid "delete block"
-msgstr ""
+msgstr "מחק בלוק"
 
 #. Block right-click context menu tooltip
 msgid "delete this block"
-msgstr ""
+msgstr "מחק את הבלוק הזה"
 
 #. Block right-click context menu tooltip
 msgid "just this one block"
@@ -6970,31 +6972,31 @@ msgstr ""
 
 #. Block right-click context menu
 msgid "copy to clipboard"
-msgstr ""
+msgstr "העתק אל לוח הגזירה Clipboard"
 
 #. Block right-click context menu
 msgid "copy to clipboard as URL"
-msgstr ""
+msgstr "העתק אל לוח הגזירה Clipboard ככתובת אתר אינטרנט URL"
 
 #. Block right-click context menu tooltip
 msgid "copy these blocks to the clipboard as a URL"
-msgstr ""
+msgstr "העתק את הבלוקים הללו אל לוח הגזירה (Clipboard) ככתובת אתר אינטרנט URL"
 
 #. Block right-click context menu tooltip
 msgid "copy these blocks to the clipboard"
-msgstr ""
+msgstr "העתק את הבלוקים הללו אל לוח הגזירה (Clipboard)"
 
 #. Block right-click context menu
 msgid "duplicate all"
-msgstr ""
+msgstr "שכפל הכל"
 
 #. Block right-click context menu tooltip
 msgid "duplicate these blocks"
-msgstr ""
+msgstr "שכפל את הבלוקים הללו"
 
 #. Block right-click context menu
 msgid "extract block"
-msgstr ""
+msgstr "הרחב בלוק"
 
 #. Block right-click context menu tooltip
 msgid "pull out this block"
@@ -7026,7 +7028,7 @@ msgstr ""
 
 #. Script right-click context menu
 msgid "copy script"
-msgstr ""
+msgstr "העתק סקריפט"
 
 #. Script right-click context menu
 msgid "script;delete"
@@ -7058,7 +7060,7 @@ msgstr ""
 
 #. Text right-click context menu option
 msgid "cut"
-msgstr ""
+msgstr "לחתוך"
 
 #. Text right-click context menu option
 msgid "copy"
@@ -7082,7 +7084,7 @@ msgstr ""
 
 #. Block input right-click context menu option
 msgid "define"
-msgstr ""
+msgstr "הגדר"
 
 #. Block input right-click context menu option
 msgid "number/string"
@@ -7118,7 +7120,7 @@ msgstr ""
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr ""
+msgstr "מותאם אישית..."
 
 #. Obsolete blocks category label
 msgid "Obsolete"
@@ -7362,7 +7364,7 @@ msgstr "על ידי"
 #. String in file picker and library dialogs
 #. as in dependencies of this library
 msgid "Depends:"
-msgstr ""
+msgstr "תלוי:"
 
 #. String in file picker and library dialogs
 msgid "Tags:"
