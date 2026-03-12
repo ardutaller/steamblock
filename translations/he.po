@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-03-07 15:34+0200\n"
-"PO-Revision-Date: 2026-03-12 10:09+0000\n"
+"PO-Revision-Date: 2026-03-13 20:09+0000\n"
 "Last-Translator: Yitzhak Marmelstein <info@above-israel.co.il>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/microblocks/ide/"
 "he/>\n"
@@ -1238,7 +1238,7 @@ msgstr ""
 
 #. Lists library block
 msgid "map _ over _"
-msgstr ""
+msgstr "מפה_מעל_"
 
 #. Example string. Tells the user this input accepts a function name
 msgid "aFunction"
@@ -2539,7 +2539,7 @@ msgstr "היפ הופ"
 
 #. General MIDI drum set
 msgid "Jungle Techno"
-msgstr ""
+msgstr "טכנו גאנג'ל"
 
 #. General MIDI drum set
 msgid "Room L/R"
@@ -2575,11 +2575,11 @@ msgstr ""
 
 #. General MIDI drum set
 msgid "Jazz"
-msgstr ""
+msgstr "ג'ז"
 
 #. General MIDI drum set
 msgid "Jazz L/R"
-msgstr ""
+msgstr "ג'ז שמאל/ימין"
 
 #. General MIDI drum set
 msgid "Brush"
@@ -2884,7 +2884,7 @@ msgstr ""
 
 #. Sound destination for arpeggiate block in Scales & Chords library
 msgid "MIDI channel"
-msgstr ""
+msgstr "ערוץ מידי Midi"
 
 #. Sound destination for arpeggiate block in Scales & Chords library
 msgid "tone pin"
@@ -3314,11 +3314,11 @@ msgstr "ברומטר (LPS331AP)"
 
 #. Barometer (LPS331AP) library dropdown menu option
 msgid "lps331;ºC"
-msgstr ""
+msgstr "טמפרטורת צלזיוס"
 
 #. Barometer (LPS331AP) library dropdown menu option
 msgid "lps331;ºF"
-msgstr ""
+msgstr "טמפרטורת פרנהייט"
 
 #. Barometer (LPS331AP) library dropdown menu option
 msgid "lps331;hPa"
@@ -3443,7 +3443,7 @@ msgstr ""
 
 #. HTTP Client library example data to send to a server
 msgid "MicroBlocks is fun"
-msgstr ""
+msgstr "מיקרובלוקס זה כיף"
 
 #. HTTP Client library block
 msgid "port _"
@@ -3611,11 +3611,11 @@ msgstr ""
 
 #. MiKe Robot library block
 msgid "MiKe back light"
-msgstr ""
+msgstr "האור האחורי ברובוט Mike"
 
 #. MiKe Robot library block
 msgid "MiKe IR"
-msgstr ""
+msgstr "אינפרא אדום של רובוט Mike"
 
 #. MiKe Robot library block
 msgid "MiKe digital D8 sensor"
@@ -3623,7 +3623,7 @@ msgstr ""
 
 #. MiKe Robot library block
 msgid "MiKe stop motors"
-msgstr ""
+msgstr "עצור את כל המנועים ברובוט Mike"
 
 #. MiKe Robot library block
 msgid "MiKe Robot go _ at _ %"
@@ -3635,7 +3635,7 @@ msgstr ""
 
 #. MiKe Robot library block
 msgid "MiKe Robot direction _"
-msgstr ""
+msgstr "כיוון רובוט Mike_"
 
 #. MiKe Robot library block
 msgid "MiKe turn _ motor _"
@@ -5729,19 +5729,19 @@ msgstr ""
 
 #. Nehza Pro library choice
 msgid "M1"
-msgstr ""
+msgstr "מנוע 1"
 
 #. Nehza Pro library choice
 msgid "M2"
-msgstr ""
+msgstr "מנוע 2"
 
 #. Nehza Pro library choice
 msgid "M3"
-msgstr ""
+msgstr "מנוע 3"
 
 #. Nehza Pro library choice
 msgid "M4"
-msgstr ""
+msgstr "מנוע 4"
 
 #. Nehza Pro library choice
 msgid "nezhaPro;by shortest path"
@@ -5809,11 +5809,11 @@ msgstr ""
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD set RGB background _"
-msgstr ""
+msgstr "קבע תצוגת רקע של מסך LCD ל RGB_"
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD is connected?"
-msgstr ""
+msgstr "מסך LCD מחובר?"
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD write text _ to line _"
@@ -5829,11 +5829,11 @@ msgstr ""
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD clear display"
-msgstr ""
+msgstr "נקה תצוגת LCD"
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD set display on _"
-msgstr ""
+msgstr "קבע הפעלת תצוגת LCD_"
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD write field _ to line _ from _ to _"
@@ -6053,11 +6053,11 @@ msgstr ""
 
 #. KidsIOT library choice
 msgid "kiot;film pressure"
-msgstr ""
+msgstr "חיישן סרט לחץ"
 
 #. KidsIOT library choice
 msgid "kiot;flame"
-msgstr ""
+msgstr "להבה"
 
 #. KidsIOT library choice
 msgid "kiot;light"
@@ -6065,11 +6065,11 @@ msgstr ""
 
 #. KidsIOT library choice
 msgid "kiot;microphone"
-msgstr ""
+msgstr "מיקרופון"
 
 #. KidsIOT library choice
 msgid "kiot;potentiometer"
-msgstr ""
+msgstr "פוטנציאומטר"
 
 #. KidsIOT library choice
 msgid "kiot;steam"
@@ -6077,19 +6077,19 @@ msgstr ""
 
 #. KidsIOT library choice
 msgid "kiot;UV light"
-msgstr ""
+msgstr "אור UV"
 
 #. KidsIOT library choice
 msgid "kiot;active buzzer"
-msgstr ""
+msgstr "זמזם אקטיבי"
 
 #. KidsIOT library choice
 msgid "kiot;LED"
-msgstr ""
+msgstr "נורות לד"
 
 #. KidsIOT library choice
 msgid "kiot;laser"
-msgstr ""
+msgstr "לייזר"
 
 #. KidsIOT library choice
 msgid "kiot;relay"
@@ -6097,35 +6097,35 @@ msgstr ""
 
 #. KidsIOT library choice
 msgid "kiot;button pressed?"
-msgstr ""
+msgstr "לחצן נלחץ?"
 
 #. KidsIOT library choice
 msgid "kiot;humidity"
-msgstr ""
+msgstr "לחות"
 
 #. KidsIOT library choice
 msgid "kiot;magnet detected?"
-msgstr ""
+msgstr "האם זוהה מגנט?"
 
 #. KidsIOT library choice
 msgid "kiot;movement detected?"
-msgstr ""
+msgstr "זוהתה תזוזה?"
 
 #. KidsIOT library choice
 msgid "kiot;obstacle?"
-msgstr ""
+msgstr "מכשול?"
 
 #. KidsIOT library choice
 msgid "kiot;photo sensor interrupted?"
-msgstr ""
+msgstr "חיישן פוטורזיסטור הופרע?"
 
 #. KidsIOT library choice
 msgid "kiot;receive IR code"
-msgstr ""
+msgstr "קבל קוד אינפרא אדום"
 
 #. KidsIOT library choice
 msgid "kiot;temperature (Celsius)"
-msgstr ""
+msgstr "טמפרטורה במעלות צלזיוס"
 
 #. KidsIOT library choice
 msgid "kiot;tilt?"
@@ -6133,7 +6133,7 @@ msgstr ""
 
 #. KidsIOT library choice
 msgid "kiot;touching?"
-msgstr ""
+msgstr "נוגע?"
 
 #. KidsIOT library choice
 msgid "X"
@@ -6145,27 +6145,27 @@ msgstr ""
 
 #. KidsIOT library choice
 msgid "kiot;rotation"
-msgstr ""
+msgstr "סיבוב"
 
 #. KidsIOT library choice
 msgid "kiot;clockwise"
-msgstr ""
+msgstr "עם כיוון השעון"
 
 #. KidsIOT library choice
 msgid "kiot;counter-clockwise"
-msgstr ""
+msgstr "נגד כיוון השעון"
 
 #. KidsIOT library choice
 msgid "kiot;stop"
-msgstr ""
+msgstr "עצור"
 
 #. KidsIOT library choice
 msgid "kiot;left"
-msgstr ""
+msgstr "שמאל"
 
 #. KidsIOT library choice
 msgid "kiot;right"
-msgstr ""
+msgstr "ימין"
 
 #. KidsIOT library block
 msgid "#SVG#square11#ffffff RGB color _ port _"
@@ -6517,7 +6517,7 @@ msgstr ""
 
 #. MicroBlocks doesn't need a translation, does it?
 msgid "MicroBlocks"
-msgstr ""
+msgstr "מיקרובלוקס"
 
 #. Tooltip in "Stop" button. Top right of IDE.
 msgid "Stop"
@@ -6597,7 +6597,7 @@ msgstr ""
 
 #. Block size option
 msgid "large (100%)"
-msgstr ""
+msgstr "גדול (100%)"
 
 #. Block size option
 msgid "printable (200%)"
@@ -6968,7 +6968,7 @@ msgstr "מחק את הבלוק הזה"
 
 #. Block right-click context menu tooltip
 msgid "just this one block"
-msgstr ""
+msgstr "רק הבלוק הזה"
 
 #. Block right-click context menu
 msgid "copy to clipboard"
@@ -7096,7 +7096,7 @@ msgstr ""
 
 #. Block part type, while making a new block
 msgid "label"
-msgstr ""
+msgstr "תווית"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -7112,7 +7112,7 @@ msgstr "האם אתה בטוח שאת/ה רוצה להסיר את ההסבר א�
 
 #. Language menu tooltip
 msgid "Language"
-msgstr ""
+msgstr "שפה"
 
 #. Language menu item. Takes the user to documentation about adding a missing language
 msgid "Missing language?"
