@@ -1,10 +1,10 @@
 module 'PCA9685 Servos' Output
-author Rick Stoddard
-version 1 1
+author 'Rick Stoddard'
+version 1 1 
 description 'Support for up to 16 servos controlled by a PCA9685 board.
 
 Datasheet: https://cdn-shop.adafruit.com/datasheets/PCA9685.pdf'
-variables _pca9685_servoPos
+variables _pca9685_servoPos 
 
   spec ' ' 'pca9685_setServo' 'pca9685 set servo _ to _ (-90 to 90)' 'num.range:0-15 num' 0 0
   spec ' ' 'pca9685_sleep' 'pca9685 sleep _' 'bool' false
@@ -36,7 +36,7 @@ to '_pca9685_setRegister' reg value {
 }
 
 to pca9685_setServo which degrees {
-  _pca9685_init
+  '_pca9685_init'
   comment 'Limit channel range'
   which = (maximum 0 (minimum which 16))
   comment 'Limit angle range'
@@ -51,7 +51,7 @@ to pca9685_setServo which degrees {
 }
 
 to pca9685_sleep sleepFlag {
-  _pca9685_init
+  '_pca9685_init'
   '_pca9685_setRegister' 0 (ifExpression sleepFlag 16 0)
 }
 
