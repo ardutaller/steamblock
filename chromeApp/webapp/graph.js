@@ -174,6 +174,42 @@ Graph.exportData = function () {
 	);
 };
 
+Graph.importData = function () {
+	try {
+		let fileUploader = document.getElementById('FileUploader');
+		let oldCallback = fileUploader.onchange;
+		let reader = new FileReader();
+		reader.addEventListener('load', () => {
+			try {
+				this.dataTracks = reader.result.split('\n').map(
+					line =>line.split(',').map(point=>parseInt(point))
+				);
+				this.redraw();
+			} catch(err) {
+				error(err);
+			}
+
+		});
+		fileUploader.onchange = () => {
+			try {
+				reader.readAsText(fileUploader.files[0]);
+				fileUploader.onchange = oldCallback;
+			} catch(err) {
+				error(err);
+			}
+		};
+		fileUploader.click();
+	} catch(err) {
+		error(err);
+	}
+	function error(err) {
+		FloatingWindow.inform(
+			'Malformed CSV',
+			'Could not read CSV file.' + '\n\n' + err
+		);
+	}
+};
+
 // Events
 
 document.addEventListener(
