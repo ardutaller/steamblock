@@ -1491,7 +1491,7 @@ method projectMenu MicroBlocksEditor {
 		addItem menu 'put file on board' (action 'putFileOnBoard' (smallRuntime)) nil nil true (not (boardHasFileSystem (smallRuntime)))
 		addItem menu 'get file from board' (action 'getFileFromBoard' (smallRuntime)) nil nil true (not (boardHasFileSystem (smallRuntime)))
 		addLine menu
-		addItem menu 'snapshot code on board' (action 'snapshotCode' (smallRuntime)) nil nil true (not (boardHasFileSystem (smallRuntime)))
+		addItem menu 'snapshot code on board' (action 'snapshotCode' (smallRuntime) (text title)) nil nil true (not (boardHasFileSystem (smallRuntime)))
 	}
 	popUpAtHand menu (global 'page')
 }

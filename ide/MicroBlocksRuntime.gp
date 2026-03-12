@@ -2677,8 +2677,9 @@ method writeFileToBoard SmallRuntime srcFileName fileData {
 	sendFileData this targetFileName fileData
 }
 
-method snapshotCode SmallRuntime {
-	codeFileName = (prompt (global 'page') 'Code file name?' '')
+method snapshotCode SmallRuntime defaultFileName {
+	if (isNil defaultFileName) { defaultFileName = '' }
+	codeFileName = (prompt (global 'page') 'Code file name?' defaultFileName)
 	if ('' == codeFileName) { return } // aborted
 	if (not (endsWith codeFileName '.ucode')) {
 		codeFileName = (join codeFileName '.ucode')
