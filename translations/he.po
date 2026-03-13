@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-03-07 15:34+0200\n"
-"PO-Revision-Date: 2026-03-13 20:09+0000\n"
+"PO-Revision-Date: 2026-03-14 05:56+0000\n"
 "Last-Translator: Yitzhak Marmelstein <info@above-israel.co.il>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/microblocks/ide/"
 "he/>\n"
@@ -861,15 +861,15 @@ msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor 1 _ and motor 2 _ _ steps"
-msgstr ""
+msgstr "הזז את מנוע 1_וכן את מנוע 2 למשך __ צעדים"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ angle _ °"
-msgstr ""
+msgstr "הזז מנוע_בזווית _"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ complete turns"
-msgstr ""
+msgstr "הזז מנוע__בסיבובים שלמים"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "stop steppers"
@@ -2443,7 +2443,7 @@ msgstr ""
 
 #. General MIDI drum instrument name
 msgid "Mute Triangle"
-msgstr ""
+msgstr "משולש"
 
 #. General MIDI drum instrument name
 msgid "Open Triangle"
@@ -2992,7 +2992,7 @@ msgstr ""
 
 #. Turtle Geometry library block
 msgid "move _"
-msgstr ""
+msgstr "תזוז_"
 
 #. Turtle Geometry library block
 msgid "turn _ degrees"
@@ -3072,11 +3072,11 @@ msgstr ""
 
 #. File System library block
 msgid "next line of file _"
-msgstr ""
+msgstr "הקובץ בשורה_"
 
 #. File System library block
 msgid "next _ bytes of file _"
-msgstr ""
+msgstr "הבא_קובץ בייטים_"
 
 #. File System library block
 msgid "read into _ from file _"
@@ -3213,7 +3213,7 @@ msgstr ""
 
 #. Example WiFi network name
 msgid "Network_Name"
-msgstr ""
+msgstr "שם הרשת_"
 
 #. WiFi library block
 msgid "IP _ gateway _ subnet _"
@@ -3229,7 +3229,7 @@ msgstr ""
 
 #. Example WiFi network password
 msgid "Network_Password"
-msgstr ""
+msgstr "סיסמא של הרשת_"
 
 #. WiFi library block
 msgid "IP address"
@@ -3246,11 +3246,11 @@ msgstr "אפשר חיבור WIFI בזמן שאתה משתמש בחיבור בל�
 #. Motion library label
 #. Counts steps and detects motion via the internal accelerometer
 msgid "Motion"
-msgstr ""
+msgstr "תנועה"
 
 #. Motion library block
 msgid "motion"
-msgstr ""
+msgstr "תנועה"
 
 #. Motion library block
 msgid "start step counter"
@@ -3743,7 +3743,7 @@ msgstr ""
 
 #. micro:STEAMakers library block
 msgid "ms gyro _ deg/s"
-msgstr ""
+msgstr "גיירוסקופ_מעלות לשנייה"
 
 #. micro:STEAMakers library block
 #. The #BR# tag must be kept intact. It translates to a new line
@@ -3761,19 +3761,19 @@ msgstr ""
 
 #. micro:STEAMakers library block
 msgid "ms clear display"
-msgstr ""
+msgstr "נקה תצוגה"
 
 #. micro:STEAMakers library block
 msgid "ms scale brightness to _ %"
-msgstr ""
+msgstr "שנה את הבהירות ל_%"
 
 #. micro:STEAMakers library block
 msgid "ms plot x _ y _ with _"
-msgstr ""
+msgstr "הדפס X_Y_עם _"
 
 #. micro:STEAMakers library block
 msgid "ms unplot x _ y _"
-msgstr ""
+msgstr "הפסק להדפיס את ציר ה X_Y_"
 
 #. micro:STEAMakers library block
 msgid "ms display character _ with _"
@@ -3785,7 +3785,7 @@ msgstr ""
 
 #. micro:STEAMakers library block
 msgid "ms stop scrolling"
-msgstr ""
+msgstr "עצור גלגלת"
 
 #. micro:STEAMakers library block
 msgid "start micro꞉STEAMakers audio"
@@ -3797,23 +3797,23 @@ msgstr ""
 
 #. micro:STEAMakers library block
 msgid "ms touching ?"
-msgstr ""
+msgstr "האם נגעת בלוגו?"
 
 #. micro:STEAMakers library block
 msgid "ms light"
-msgstr ""
+msgstr "אור"
 
 #. micro:STEAMakers library block
 msgid "ms sound"
-msgstr ""
+msgstr "סאונד"
 
 #. micro:STEAMakers library block
 msgid "ms temperature ºC"
-msgstr ""
+msgstr "טמפרטורה במעלות צלזיוס"
 
 #. micro:STEAMakers library block
 msgid "ms humidity %"
-msgstr ""
+msgstr "לחות%"
 
 #. micro:STEAMakers library block
 msgid "ms inclination towards _ º"
@@ -3821,31 +3821,31 @@ msgstr ""
 
 #. micro:STEAMakers library block
 msgid "ms energy _"
-msgstr ""
+msgstr "אנרגיה_"
 
 #. micro:STEAMakers library block
 msgid "ms _ energy meter"
-msgstr ""
+msgstr "אנרגיה למטר_"
 
 #. micro:STEAMakers library block
 msgid "ms energy consumption (µWh)"
-msgstr ""
+msgstr "צריכת אנרגיה"
 
 #. micro:STEAMakers library block
 msgid "ms;start"
-msgstr ""
+msgstr "התחל"
 
 #. micro:STEAMakers library block
 msgid "ms;stop"
-msgstr ""
+msgstr "עצור"
 
 #. micro:STEAMakers library block
 msgid "ms;reset"
-msgstr ""
+msgstr "התחל מחדש"
 
 #. micro:STEAMakers library block
 msgid "ms;down"
-msgstr ""
+msgstr "מטה"
 
 #. DrawBot Library block
 msgid "plotter move X _ Y _"
@@ -4734,15 +4734,15 @@ msgstr ""
 
 #. Joystick:bit library block
 msgid "motor vibrate for _ ms"
-msgstr ""
+msgstr "רטט למשך_אלפיות השניה"
 
 #. NeZha robot library label
 msgid "NeZha"
-msgstr ""
+msgstr "NeZha"
 
 #. NeZha robot library block
 msgid "NeZha set motor _ speed to _ %"
-msgstr ""
+msgstr "NeZha קבע מנוע_למהירות של _%"
 
 #. NeZha robot library block
 msgid "NeZha stop motor _"
@@ -4762,7 +4762,7 @@ msgstr ""
 
 #. NeZha2 robot library label
 msgid "Nezha2"
-msgstr ""
+msgstr "NeZha2"
 
 #. NeZha2 robot library block
 msgid "Nezha beep _ Hz for _ msecs"
@@ -4770,7 +4770,7 @@ msgstr ""
 
 #. NeZha2 robot library block
 msgid "Nezha set motor _ speed to _ (-100-100)"
-msgstr ""
+msgstr "NeZha קבע מנוע_למהירות שבטווח של 100- עד 100_"
 
 #. NeZha2 robot library block
 msgid "Nezha stop motor _"
@@ -4782,7 +4782,7 @@ msgstr ""
 
 #. NeZha2 robot library block
 msgid "Nezha set _ servo _ angle to _"
-msgstr ""
+msgstr "NeZha קבע_מנוע סרבו_לזווית של_"
 
 #. NeZha2 robot library block
 msgid "Nezha set continuous servo _ speed to _ (-100 to 100)"
@@ -4790,7 +4790,7 @@ msgstr ""
 
 #. NeZha2 robot library block
 msgid "Nezha set LED _ to _"
-msgstr ""
+msgstr "קבע נורות לד_ל_"
 
 #. NeZha2 robot library block
 msgid "brightness _ %"
@@ -4798,7 +4798,7 @@ msgstr "בהירות_%"
 
 #. NeZha2 robot library block
 msgid "Nezha set all LEDs to _"
-msgstr ""
+msgstr "NeZha קבע את כל נורות הלד ל_"
 
 #. NeZha2 robot library block
 msgid "Nezha trim pot _"
@@ -4810,11 +4810,11 @@ msgstr ""
 
 #. NeZha2 robot library block
 msgid "Nezha read analog _"
-msgstr ""
+msgstr "NeZha קרא אנלוגי_"
 
 #. NeZha2 robot library block
 msgid "Nezha crash sensor _"
-msgstr ""
+msgstr "NeZha חיישן התנגשות_"
 
 #. NeZha2 robot library block
 msgid "Nezha line sensor _ sees line on left _ right _"
@@ -4822,7 +4822,7 @@ msgstr ""
 
 #. NeZha2 robot library block
 msgid "Nezha distance _ (cm)"
-msgstr ""
+msgstr "NeZha מרחק בסנטימטר_"
 
 #. WuKong2040 robot library label
 msgid "WuKong2040"
@@ -5050,7 +5050,7 @@ msgstr "אחורה"
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50) for _ msecs"
-msgstr ""
+msgstr "תזוז_במהירות שבין 0-50_למשך_אלפיות השניה"
 
 #. CoCube library block
 msgid "rotate _ at _ speed (0-50) for _ msecs"
@@ -5058,7 +5058,7 @@ msgstr ""
 
 #. CoCube library block
 msgid "move _ at _ speed (0-50)"
-msgstr ""
+msgstr "תזוז_במהירות שבין 0 עד 50_"
 
 #. CoCube library block
 msgid "rotate _ at _ speed (0-50)"
@@ -5389,7 +5389,7 @@ msgstr ""
 
 #. CoCube Sengo2 library choice
 msgid "Motion Detect"
-msgstr ""
+msgstr "זוהתה תנועה"
 
 #. CoCube Sengo2 library block
 msgid "Sengo2 read QRcode"
@@ -5573,7 +5573,7 @@ msgstr ""
 
 #. Calliope MotionKit library block
 msgid "MotionKit distance (cm)"
-msgstr ""
+msgstr "מרחק בסנטימטר"
 
 #. Calliope MotionKit library block
 msgid "IR key _ pressed?"
@@ -5581,31 +5581,31 @@ msgstr ""
 
 #. Calliope MotionKit library block
 msgid "MotionKit set NeoPixels _"
-msgstr ""
+msgstr "קבע ניאופיקסל_"
 
 #. Calliope MotionKit library block
 msgid "MotionKit clear NeoPixels"
-msgstr ""
+msgstr "נקה את הניאופיקסלים"
 
 #. Calliope MotionKit library block
 msgid "MotionKit set motor _ _ speed _ (0~100)"
-msgstr ""
+msgstr "קבע מנוע__במהירות של _בין0 עד100"
 
 #. Calliope MotionKit library block
 msgid "MotionKit stop motor _"
-msgstr ""
+msgstr "עצור את מנוע_"
 
 #. Calliope MotionKit library block
 msgid "MotionKit stop all"
-msgstr ""
+msgstr "עצור הכל"
 
 #. Calliope MotionKit library block
 msgid "MotionKit set led _ _"
-msgstr ""
+msgstr "קבע נורות לד__"
 
 #. Calliope MotionKit library block
 msgid "MotionKit line sensor _ _"
-msgstr ""
+msgstr "חיישן זיהוי קו__"
 
 #. Calliope MotionKit library block
 msgid "IR code received?"
@@ -5613,15 +5613,15 @@ msgstr ""
 
 #. Calliope MotionKit library block
 msgid "MotionKit set servo _ to _ degrees (0-180)"
-msgstr ""
+msgstr "קבע מנוע סרבו_ל_מעלות בין 0 עד 180"
 
 #. Calliope MotionKit library block
 msgid "MotionKit set _ servo _ to _ degrees"
-msgstr ""
+msgstr "קבע_סרבו_ל_מעלות"
 
 #. Calliope MotionKit library block
 msgid "MotionKit rotate servo _ _ speed _ (0~100)"
-msgstr ""
+msgstr "שנה את הסיבוב של מנוע הסרבו__במהירות_ בין 0 עד 100"
 
 #. Calliope Callibot library choice
 msgid "callibot;left front"
@@ -5725,7 +5725,7 @@ msgstr ""
 
 #. Nezha Pro library label
 msgid "Nezha Pro"
-msgstr ""
+msgstr "NeZha מתקדם"
 
 #. Nehza Pro library choice
 msgid "M1"
@@ -5745,7 +5745,7 @@ msgstr "מנוע 4"
 
 #. Nehza Pro library choice
 msgid "nezhaPro;by shortest path"
-msgstr ""
+msgstr "על ידי הדרך הקצרה ביותר"
 
 #. Nezha Pro library block
 msgid "np angle _"
@@ -6317,7 +6317,7 @@ msgstr "יום"
 
 #. Real Time Clock library block
 msgid "month"
-msgstr ""
+msgstr "חודש"
 
 #. Real Time Clock library block
 msgid "year"
@@ -6349,7 +6349,7 @@ msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "New"
-msgstr ""
+msgstr "חדש"
 
 #. In MicroBlocks IDE project menu
 msgid "Open"
@@ -6465,7 +6465,7 @@ msgstr ""
 
 #. About window info
 msgid "More info at http://microblocks.fun"
-msgstr ""
+msgstr "מידע נוסף ניתן למצוא בכתובת http://microblocks.fun"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
