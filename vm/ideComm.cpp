@@ -86,7 +86,7 @@ static void show_BLE_ID() {
 		primMBDrawShape(3, args);
 		showShapeForMSecs(300);
 
-		args[0] = 0; // clear screen
+		args[0] = int2obj(0); // clear screen
 		primMBDrawShape(3, args);
 		showShapeForMSecs(100);
 	}
@@ -297,8 +297,10 @@ void BLE_stop() {
 	connID = -1;
 	BLE_connected_to_IDE = false;
 
-	NimBLEDevice::getAdvertising()->stop();
-	if (pServer) pServer->removeService(pService);
+	// the following lines cause a crash on ESP32 boards and do not seem to be needed
+	// NimBLEDevice::getAdvertising()->stop();
+	// if (pServer) pServer->removeService(pService);
+
 	NimBLEDevice::deinit(true);
 
 	pServer = NULL;
