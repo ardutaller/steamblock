@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-03-04 12:09+0000\n"
+"PO-Revision-Date: 2026-03-14 21:30+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -4691,7 +4691,7 @@ msgstr "sb gira el motor CC M- _ (1-4) _ a _ %"
 
 #. Shield:bit library block
 msgid "sb turn Stepper- _ (1-2) motor _ for _ _"
-msgstr "sb gira el motor PaP- _ (1-2) _ per _ _"
+msgstr "sb gira el motor PaP- _ (1-2) _ por _ _"
 
 #. Shield:bit library motor type
 msgid "sb;DC/Stepper_motors"
