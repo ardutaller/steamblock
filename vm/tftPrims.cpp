@@ -72,8 +72,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_HEIGHT 128
 
 		void tftInit() {
-			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
-			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
+ 			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
  					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
