@@ -1421,6 +1421,8 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'OLED Graphics'
 	} ('DUELink' == boardType) {
 		importEmbeddedLibrary scripter 'DUELink Edu'
+	} ('PiBody' == boardType) {
+		importEmbeddedLibrary scripter 'PiBody'
 	}
 }
 
