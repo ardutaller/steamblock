@@ -1294,7 +1294,7 @@ method checkVmVersion SmallRuntime {
 	if ((latestVmVersion this) > vmVersion) {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
-			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040'))
+			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'ESP8266'))
 		if (or (dueBoardConnected this) (isMobile)) { offerToUpdate = false }
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
@@ -3044,7 +3044,7 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 		}
 		popUpAtHand menu (global 'page')
 	} (notNil boardType) {
-		if (and (contains (array 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP8266' 'ESP32' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT') boardType)
+		if (and (contains (array 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'ESP32' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT') boardType)
 				(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 		} (isOneOf boardType 'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort') {
@@ -3064,14 +3064,14 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 		}
 		for boardName (array
 				'Citilab ED1'
-				'micro:STEAMakers'
-				'KidsBits'
-				'Foxbit'
 				'CoCube'
 				'Databot'
+				'Foxbit'
+				'KidsBits'
+				'micro:STEAMakers'
 //				'M5Stack-Core'
 				'ESP32'
-				'ESP8266'
+//				'ESP8266'
 		) {
 			addItem menu boardName (action 'flashVM' this boardName eraseFlashFlag downloadLatestFlag)
 		}
@@ -3080,6 +3080,7 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 //			addItem menu 'ELECFREAKS Pico:ed' (action 'rp2040ResetMessage' this)
 			addItem menu 'ELECFREAKS Wukong2040' (action 'rp2040ResetMessage' this)
 			addItem menu 'RP2040 (Pico or Pico-W)' (action 'rp2040ResetMessage' this)
+			addLine menu
 			addItem menu 'MakerPort' (action 'adaFruitResetMessage' this)
 			addItem menu 'Adafruit Board' (action 'adaFruitResetMessage' this)
 		}
@@ -3143,8 +3144,8 @@ method getBoardDriveName SmallRuntime path {
 		if (isOneOf fn 'MINI.HTM' 'CALLIOPE.HTM' 'Calliope.html') { return 'MINI' }
 		if ('INFO_UF2.TXT' == fn) {
 			contents = (readFile (join path fn))
-			if (notNil (nextMatchIn 'CPlay Express' contents)) { return 'CPLAYBOOT' }
-			if (notNil (nextMatchIn 'Circuit Playground nRF52840' contents)) { return 'CPLAYBTBOOT' }
+//			if (notNil (nextMatchIn 'CPlay Express' contents)) { return 'CPLAYBOOT' }
+//			if (notNil (nextMatchIn 'Circuit Playground nRF52840' contents)) { return 'CPLAYBTBOOT' }
 //			if (notNil (nextMatchIn 'Adafruit Clue' contents)) { return 'CLUEBOOT' }
 //			if (notNil (nextMatchIn 'Adafruit CLUE nRF52840' contents)) { return 'CLUEBOOT' } // bootloader 0.7
 			if (notNil (nextMatchIn 'MakerPort' contents)) { return 'MAKERBOOT' }
@@ -3217,42 +3218,43 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'micro:bit v2'
 	} (isOneOf boardType 'Calliope' 'Calliope v3') {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Calliope mini'
-	} ('CircuitPlayground' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Express'
-	} ('CircuitPlayground Bluefruit' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Bluefruit'
-	} ('Clue' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Clue'
+// 	} ('CircuitPlayground' == boardType) {
+// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Express'
+// 	} ('CircuitPlayground Bluefruit' == boardType) {
+// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Bluefruit'
+// 	} ('Clue' == boardType) {
+// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Clue'
 	} ('MakerPort' == boardType) {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'MakerPort'
 	} (isOneOf boardType 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040') {
 		rp2040ResetMessage this
 	} (and
-		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT')
+		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT')
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 	} else {
 		menu = (menu 'Select board type:' (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag) true)
 		if eraseFlashFlag {
 			addItem menu 'Citilab ED1'
-			addItem menu 'micro:STEAMakers'
-			addItem menu 'KidsBits'
-			addItem menu 'Foxbit'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
+			addItem menu 'KidsBits'
+			addItem menu 'Foxbit'
+			addItem menu 'micro:STEAMakers'
 //			addItem menu 'M5Stack-Core'
+			addLine menu
 			addItem menu 'ESP32'
-			addItem menu 'ESP8266'
+//			addItem menu 'ESP8266'
 		} else {
 			addItem menu 'micro:bit'
 			addItem menu 'Calliope mini'
 			addLine menu
 			addItem menu 'Citilab ED1'
-			addItem menu 'micro:STEAMakers'
-			addItem menu 'KidsBits'
-			addItem menu 'Foxbit'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
+			addItem menu 'KidsBits'
+			addItem menu 'Foxbit'
+			addItem menu 'micro:STEAMakers'
 			addLine menu
 //			addItem menu 'ELECFREAKS Pico:ed'
 			addItem menu 'ELECFREAKS Wukong2040'
@@ -3260,13 +3262,13 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addLine menu
 			addItem menu 'MakerPort'
 			addLine menu
-			addItem menu 'Circuit Playground Express'
-			addItem menu 'Circuit Playground Bluefruit'
+// 			addItem menu 'Circuit Playground Express'
+// 			addItem menu 'Circuit Playground Bluefruit'
 //			addItem menu 'Clue'
 			addLine menu
 //			addItem menu 'M5Stack-Core'
 			addItem menu 'ESP32'
-			addItem menu 'ESP8266'
+//			addItem menu 'ESP8266'
 		}
 		popUpAtHand menu (global 'page')
 	}
