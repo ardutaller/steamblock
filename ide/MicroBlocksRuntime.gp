@@ -1418,7 +1418,7 @@ method installBoardSpecificBlocks SmallRuntime {
 	} ('Springbot Gold' == boardType) {
 		importEmbeddedLibrary scripter 'Springbot'
 		importEmbeddedLibrary scripter 'Basic Sensors'
-		importEmbeddedLibrary scripter 'OLED Graphics'
+		importEmbeddedLibrary scripter 'TFT'
 	} ('DUELink' == boardType) {
 		importEmbeddedLibrary scripter 'DUELink Edu'
 	} ('PiBody' == boardType) {
