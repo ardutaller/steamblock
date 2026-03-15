@@ -1412,13 +1412,17 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'DUELink Edu'
 		importEmbeddedLibrary scripter 'Tone'
 	} ('Springbot Green' == boardType) {
-		importEmbeddedLibrary scripter 'Springbot'
-		importEmbeddedLibrary scripter 'Basic Sensors'
 		importEmbeddedLibrary scripter 'LED Display'
-	} ('Springbot Gold' == boardType) {
-		importEmbeddedLibrary scripter 'Springbot'
 		importEmbeddedLibrary scripter 'Basic Sensors'
-		importEmbeddedLibrary scripter 'TFT'
+		importEmbeddedLibrary scripter 'Tone'
+		importEmbeddedLibrary scripter 'NeoPixel'
+		importEmbeddedLibrary scripter 'SDCard'
+	} ('Springbot Gold' == boardType) {
+		importEmbeddedLibrary scripter 'Springbot Display'
+		importEmbeddedLibrary scripter 'Basic Sensors'
+		importEmbeddedLibrary scripter 'Tone'
+		importEmbeddedLibrary scripter 'NeoPixel'
+		importEmbeddedLibrary scripter 'SDCard'
 	} ('DUELink' == boardType) {
 		importEmbeddedLibrary scripter 'DUELink Edu'
 	} ('PiBody' == boardType) {
