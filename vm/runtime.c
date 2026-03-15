@@ -1085,6 +1085,8 @@ void loadStartCodeOrClear() {
 		// clear the current program
 		clearAllVariables();
 		deleteAllChunks();
+		softReset(true);
+		if (useTFT) tftClear();
 		restoreScripts();
 		startAll();
 	}
