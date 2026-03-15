@@ -68,7 +68,7 @@ cp .pio/build/esp32-c3-sparkle/firmware.bin extraVMs/vm_esp32-c3-sparkle.bin
 
 pio run -e waveshare-s3-matrix
 esptool.py --chip ESP32-S3 merge_bin -o extraVMs/vm_waveshare_s3_matrix_all.bin --flash_mode dio --flash_size 4MB 0 .pio/build/waveshare-s3-matrix/bootloader.bin 0x8000 esp32/partitionsMicroBlocks.bin 0xe000 esp32/boot_app0.bin 0x10000 .pio/build/waveshare-s3-matrix/firmware.bin
-// the following runs on the server during the release process:
+# the following runs on the server during the release process:
 python3 -m esptool --chip ESP32-S3 merge_bin -o extraVMs/vm_waveshare_s3_matrix_all.bin --flash_mode dio --flash_size 4MB 0 .pio/build/waveshare-s3-matrix/bootloader.bin 0x8000 esp32/partitionsMicroBlocks.bin 0xe000 esp32/boot_app0.bin 0x10000 .pio/build/waveshare-s3-matrix/firmware.bin
 
 pio run -e freenoveCamera
