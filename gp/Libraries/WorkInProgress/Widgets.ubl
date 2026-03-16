@@ -55,7 +55,7 @@ variables widget_allWidgets widget_bgColor widget_fgColor widget_layout_scale wi
   space
   spec ' ' '_widget_selectWidget' '_widget_selectWidget _' 'auto' ''
   spec ' ' '_widget_highlight' '_widget_highlight _ highlight _' 'str bool' '' true
-  spec ' ' '_widget_changeValueBy' '_widget_changeValueBy _ label _' 'str num' '' 1
+  spec ' ' '_widget_changeValueBy' '_widget_changeValue _ by _' 'str num' '' 1
   space
   spec 'r' '_widget_findTouched' '_widget_findTouched'
   spec ' ' '_widget_handleTouch' '_widget_handleTouch'
@@ -211,7 +211,7 @@ to '_widget_drawLight' widget {
   local 'radius' ((at 4 widget) / 2)
   local 'color' (at 9 widget)
   '[tft:circle]' ((widget_x widget) + radius) ((widget_y widget) + radius) (radius - 1) widget_fgColor false
-  '[tft:circle]' ((widget_x widget) + radius) ((widget_y widget) + radius) (radius - 3) (ifExpression (widget_value widget) widget_bgColor color) true
+  '[tft:circle]' ((widget_x widget) + radius) ((widget_y widget) + radius) (radius - 3) (ifExpression (widget_value widget) color widget_bgColor) true
 }
 
 to '_widget_drawNumber' widget {
@@ -390,7 +390,7 @@ to widget_addLight x y optionalColor optionalMsg {
   local 'msg' (argOrDefault 4 '')
   local 's' ('_widget_layout_scale')
   local 'diameter' (10 * s)
-  local 'widget' ('[data:makeList]' 'light' (x * s) (y * s) diameter diameter (booleanConstant true) (booleanConstant false) msg)
+  local 'widget' ('[data:makeList]' 'light' (x * s) (y * s) diameter diameter (booleanConstant false) (booleanConstant false) msg)
   comment 'extra: color'
   '[data:addLast]' color widget
   '_widget_add' widget
@@ -506,10 +506,12 @@ to widget_selectNext {
 }
 
 to widget_setLightColor widget color {
-  '_widget_erase' widget
-  atPut 9 widget color
-  comment 'Set the redrawNeeded'
-  atPut 7 widget (booleanConstant true)
+  if ('light' == (widget_type widget)) {
+    '_widget_erase' widget
+    atPut 9 widget color
+    comment 'Set the redrawNeeded'
+    atPut 7 widget (booleanConstant true)
+  }
 }
 
 to widget_setValue widget newValue {
