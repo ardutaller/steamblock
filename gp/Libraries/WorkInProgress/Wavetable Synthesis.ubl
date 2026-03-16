@@ -1,0 +1,112 @@
+module 'Wavetable Synthesis' Output
+author MicroBlocks
+version 1 0 
+choices wt_instruments 'sin wave' 'tri wave' 'square wave' 'saw wave' 
+description 'Sound synthesis directly on the microcontroller using wave tables. Supports 10 different channels for which you can select different instruments in the same style of the MIDI library.'
+variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin 
+
+  spec ' ' 'wt_select instrument' 'select instrument _ for channel _' 'menu.wt_instruments auto' 'tri wave' 1
+  spec ' ' 'wt_play MIDI note' 'play MIDI note _ for _ ms on channel _ volume _' 'auto auto auto auto' 60 500 1 500
+  spec ' ' 'wt_stop all notes on channel' 'stop  channel _ in _ ms' 'auto auto' 1 500
+  spec ' ' '_wt_init' '_wt_init'
+  spec ' ' '_wt_play' '_wt_play'
+  spec 'r' '_wt_MIDI to factor' '_wt_MIDI to factor _' 'auto' '10'
+  spec ' ' '_wt_set_inst_tri_wave' '_wt_set_inst_tri_wave _' 'auto' 1
+  spec ' ' '_wt_set_inst_saw_wave' '_wt_set_inst_saw_wave _' 'auto' 1
+  spec ' ' '_wt_set_inst_square_wave' '_wt_set_inst_square_wave _' 'auto' '10'
+  spec ' ' '_wt_set_inst_sin_wave' '_wt_set_inst_sin_wave _' 'auto' '10'
+
+to '_wt_MIDI to factor' 'MIDI note' {
+  return ((at (((v 'MIDI note') % 12) + 1) _wt_note_factors) / (at (((v 'MIDI note') / 12) - 1) ('[data:makeList]' 1 2 4 8 16 32 64 128 256)))
+}
+
+to '_wt_init' {
+  if (_wt_waves == 0) {
+    _wt_amps = (newList 10 0)
+    _wt_waves = (newList 10 0)
+    _wt_freqs = (newList 10 1)
+    for i 10 {
+      atPut i _wt_waves ('[data:newByteArray]' 256)
+      'wt_select instrument' 'tri wave' i
+    }
+    _wt_note_factors = ('[data:makeList]' 119360 112768 106368 100352 94720 89408 84416 79680 75220 71040 67072 63232)
+    if ((boardType) == 'WeAct STM32H743') {
+      _wt_pin = 56
+    } else {
+      _wt_pin = 25
+    }
+  }
+  sendBroadcast '_wt_play'
+}
+
+to '_wt_play' {
+  forever {
+    local 'sum' 0
+    for i (size _wt_waves) {
+      sum += (((at (((((microsOp) * 1000) / (at i _wt_freqs)) % 256) + 1) (at i _wt_waves)) * (at i _wt_amps)) / 100)
+    }
+    analogWriteOp _wt_pin sum
+  }
+}
+
+to '_wt_set_inst_saw_wave' c {
+  for i 256 {
+    atPut i (at c _wt_waves) (i - 1)
+  }
+}
+
+to '_wt_set_inst_sin_wave' c {
+  for i 256 {
+    atPut i (at c _wt_waves) (((255 * ('[misc:sin]' ((36000 * (i - 1)) / 256))) >> 15) + 128)
+  }
+}
+
+to '_wt_set_inst_square_wave' c {
+  local 'halfperiod' 128
+  for i halfperiod {
+    atPut i (at c _wt_waves) 255
+  }
+  for i halfperiod {
+    atPut (i + halfperiod) (at c _wt_waves) 0
+  }
+}
+
+to '_wt_set_inst_tri_wave' c {
+  local 'halfperiod' 128
+  for i halfperiod {
+    atPut i (at c _wt_waves) ((i - 1) * 2)
+  }
+  for i halfperiod {
+    atPut (i + halfperiod) (at c _wt_waves) ((halfperiod - i) * 2)
+  }
+}
+
+to 'wt_play MIDI note' note ms c vol {
+  '_wt_init'
+  local 'start' (millisOp)
+  atPut c _wt_freqs ('_wt_MIDI to factor' note)
+  for i vol {
+    atPut c _wt_amps i
+    waitMicros 50
+  }
+  waitMillis (ms - (((millisOp) - start) * 2))
+  for i vol {
+    atPut c _wt_amps (vol - i)
+    waitMicros 50
+  }
+}
+
+to 'wt_select instrument' instrument c {
+  '_wt_init'
+  callCustomCommand ('[data:join]' '_wt_set_inst_' ('[data:joinStrings]' ('[data:split]' instrument ' ') '_')) ('[data:makeList]' c)
+}
+
+to 'wt_stop all notes on channel' c ms {
+  local 'amp' ((at c _wt_amps) * 100)
+  for i 100 {
+    atPut c _wt_amps ((at c _wt_amps) - (amp / 10000))
+    waitMillis (ms / 100)
+  }
+  atPut c _wt_amps 0
+}
+
