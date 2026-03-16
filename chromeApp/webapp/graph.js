@@ -19,6 +19,7 @@ FloatingWindow.graph = function () {
 const Graph = {
 	origin: 'center',
 	step: 25,
+	defaultStep: 25,
 	stepRange: [1,5,10,25,50,100,250,500,1000,2500,5000],
 	spacing: 25,
 	width: 400,
@@ -35,9 +36,16 @@ const Graph = {
 };
 
 Graph.build = function () {
+	let container = document.createElement('div');
+	container.classList.add('--graph-container');
+
 	this.canvas = document.createElement('canvas');
 	this.canvas.style.display = 'block';
-	this.canvas.classList.add('graph');
+	this.canvas.classList.add('--graph');
+
+	this.controls = document.createElement('div');
+	this.controls.classList.add('--can-drag-through');
+	this.controls.classList.add('--graph-controls');
 
 	this.ctx = this.canvas.getContext('2d');
 	this.resize(this.width, this.height);
@@ -47,12 +55,23 @@ Graph.build = function () {
 		e.preventDefault();
 	};
 
-	return this.canvas;
+	this.updateControls();
+
+	container.appendChild(this.canvas);
+	container.appendChild(this.controls);
+	return container;
+};
+
+Graph.updateControls = function () {
+	this.controls.innerHTML = '';
+	['graph_zoomOut', 'graph_restoreZoom', 'graph_zoomIn'].forEach(selector => {
+		this.controls.appendChild(Buttons.elementFor(selector));
+	});
 };
 
 Graph.resize = function (newWidth, newHeight) {
-	this.width = newWidth - 50;
-	this.height = newHeight - 95;
+	this.width = newWidth - 51; // extra pixel so Electron doesn't show scrollbars
+	this.height = newHeight - 96; // same here
 	this.canvas.width = this.width;
 	this.canvas.height = this.height;
 	this.redraw();
@@ -146,17 +165,25 @@ Graph.clear = function () {
 };
 
 Graph.increaseStep = function () {
-	if (this.step < 5000) {
+	if (this.step < this.stepRange[this.stepRange.length - 1]) {
 		this.step = this.stepRange[this.stepRange.indexOf(this.step) + 1];
 	}
 	this.redraw();
+	this.updateControls();
 };
 
 Graph.decreaseStep = function () {
-	if (this.step > 1) {
+	if (this.step > this.stepRange[0]) {
 		this.step = this.stepRange[this.stepRange.indexOf(this.step) - 1];
 	}
 	this.redraw();
+	this.updateControls();
+};
+
+Graph.restoreStep = function () {
+	this.step = this.defaultStep;
+	this.redraw();
+	this.updateControls();
 };
 
 Graph.setOrigin = function(which) {

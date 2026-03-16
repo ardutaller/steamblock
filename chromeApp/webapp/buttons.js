@@ -108,8 +108,36 @@ const Buttons = {
 		action: () => {
 			GP.apiCall('scripts.zoomIn', [], () => { IDE.recreateScriptControls(); });
 		},
-		disabled: () => { return IDE.userPreference('blockSizePercent') >= 250; }
+		disabled: () => {
+			return Graph.step >= Graph.stepRange[Graph.stepRange.length];
+		}
+	},
+
+	// Graph buttons
+	graph_zoomOut: {
+		icon: 'zoom-out--16x16',
+		label: 'Zoom out',
+		class: 'graph-controls__button',
+		action: () => { Graph.increaseStep(); },
+		disabled: () => {
+			return Graph.step >= Graph.stepRange[Graph.stepRange.length - 1];
+		}
+	},
+	graph_restoreZoom: {
+		icon: 'zoom-restore--16x16',
+		label: 'Restore zoom',
+		class: 'graph-controls__button',
+		action: () => { Graph.restoreStep(); },
+		disabled: () => { return Graph.step == Graph.defaultStep; }
+	},
+	graph_zoomIn: {
+		icon: 'zoom-in--16x16',
+		label: 'Zoom in',
+		class: 'graph-controls__button',
+		action: () => { Graph.decreaseStep(); },
+		disabled: () => { return Graph.step <= Graph.stepRange[0]; }
 	}
+
 };
 
 

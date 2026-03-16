@@ -145,12 +145,10 @@ IDE.populateTopBar = function (container) {
 	);
 
 	// Add controls buttons
-	let controlsButtons = container.querySelector('[data-ide="controls"]');
+	this.controlsButtons = container.querySelector('[data-ide="controls"]');
 	['graph', '|', 'connect', '|', 'run', 'stop' ].forEach(selector => {
-		controlsButtons.appendChild(Buttons.elementFor(selector));
+		this.controlsButtons.appendChild(Buttons.elementFor(selector));
 	});
-
-	IDE.controlsButtons = controlsButtons;
 };
 
 
