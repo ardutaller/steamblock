@@ -18,7 +18,7 @@
 // TFT primitives are not supported
 #define NO_EXTERNAL_DISPLAY_PRIMS
 
-#elif defined(PICO_ED)
+#elif defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE)
 
 #include <Adafruit_GFX.h>
 #define draw16bitRGBBitmap drawRGBBitmap
@@ -433,6 +433,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		}
 
 	#elif defined(ARDUINO_NRF52840_CLUE)
+		#include "Adafruit_ST7789.h"
+
 		#define TFT_CS		31
 		#define TFT_DC		32
 		#define TFT_RST		33
@@ -440,21 +442,28 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_HEIGHT	240
 		#define TFT_BL		34
 
+		Adafruit_ST7789 display = Adafruit_ST7789(&SPI1, TFT_CS, TFT_DC, TFT_RST);
+
 		void tftInit() {
-			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS, &SPI1);
-			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
-					TFT_WIDTH, TFT_HEIGHT, 0, 80, 0, 80);
-			if (!tft->begin()) {
-				outputString("tftInit() failed!");
-			} else {
-				pinMode(TFT_BL, OUTPUT);
-				digitalWrite(TFT_BL, HIGH); // turn on backlight
-				tftWidth = TFT_WIDTH;
-				tftHeight = TFT_HEIGHT;
-				tftClear();
-				useTFT = true;
-			}
-		}
+			display.init(240, 240);
+			display.setRotation(1);
+			display.fillScreen(0);
+			uint8_t rtna = 0x01; // Screen refresh rate control (datasheet 9.2.18, FRCTRL2)
+			display.sendCommand(0xC6, &rtna, 1);
+
+			// fix for display gamma glitch on some Clue boards:
+			uint8_t gamma = 2;
+			display.sendCommand(0x26, &gamma, 1);
+
+			// Turn on backlight
+			pinMode(TFT_BL, OUTPUT);
+			digitalWrite(TFT_BL, HIGH);
+
+			tft = &display;
+			tftWidth = TFT_WIDTH;
+			tftHeight = TFT_HEIGHT;
+			useTFT = true;
+ 		}
 
 	#elif defined(ARDUINO_IOT_BUS)
  		#include <XPT2046_Touchscreen.h>
@@ -468,7 +477,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_RST GFX_NOT_DEFINED
 
 		void tftInit() {
-			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
+			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
  			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
@@ -1667,8 +1676,11 @@ static Arduino_DataBus* makeDataBus(int dc, int cs) {
 		return new Arduino_NRFXSPI(dc, cs, spiCLK, spiMOSI, spiMISO);
 	#elif defined(TARGET_RP2040) || defined(PICO_RP2350)
 		return new Arduino_RPiPicoSPI(dc, cs, spiCLK, spiMOSI, spiMISO, ((spiDeviceNum == 1) ? spi1 : spi0));
-	#elif defined(ESP32) && (CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32S2 || CONFIG_IDF_TARGET_ESP32S3 || CONFIG_IDF_TARGET_ESP32C3)
-		return new Arduino_ESP32SPI(dc, cs, spiCLK, spiMOSI, spiMISO);
+	#elif defined(ESP32)
+		// use Arduino_HWSPI because Arduino_ESP32SPI is not compatible with other devices
+		// sharing the SPI bus (e.g. SD cards) and the performance difference is not huge
+		// (24% slower for scaled text, 9% slow for filled circles and rectangles).
+		return new Arduino_HWSPI(dc, cs, spiCLK, spiMOSI, spiMISO);
 	#elif defined(ESP8266)
 		return new Arduino_ESP8266SPI(dc, cs);
 	#else

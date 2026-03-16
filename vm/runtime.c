@@ -1080,11 +1080,13 @@ void loadStartCodeOrClear() {
 	if (ideConnected()) return; // do nothing if connected to IDE; would break IDE/board sync
 
 	if (hasStartupSnapshot()) {
-		loadCodeSnapshot("startup.ucode");
+		loadCodeSnapshot((char *) "startup.ucode");
 	} else {
 		// clear the current program
 		clearAllVariables();
 		deleteAllChunks();
+		softReset(true);
+		if (useTFT) tftClear();
 		restoreScripts();
 		startAll();
 	}
@@ -1321,9 +1323,8 @@ static void processLongMessage() {
 		processExtendedMessage(chunkIndex, bodyBytes, &rcvBuf[5]);
 		break;
 	case snapshotCodeToFileMsg:
-		#if defined(ARDUINO_ARCH_ESP32) || defined(RP2040_PHILHOWER)
-			// Code snapshots are supported only boards that have a file system.
-			// Not currently supported on ESP8266 boards.
+		#if defined(ESP32) || defined(ESP8266) || defined(RP2040_PHILHOWER)
+			// Code snapshots are supported only on boards that have a file system.
 			snapshotCodeToFile(&rcvBuf[5], bodyBytes);
 		#endif
 		break;

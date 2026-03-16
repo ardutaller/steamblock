@@ -1197,14 +1197,11 @@ void appendToCodeStore(uint8 *data, int byteCount) {
 	int wordCount = byteCount / 4;
 	#ifdef USE_CODE_FILE
 		memcpy(freeStart, data, 4 * wordCount); // copy into the RAM code store
-		freeStart += wordCount;
-		int *codeStart = ((0 == current) ? start0 : start1) + 1; // skip half-space header
-		clearCodeFile(cycleCount(current));
-		writeCodeFile((uint8 *) codeStart, 4 * (freeStart - codeStart));
+		writeCodeFile((uint8 *) data, 4 * wordCount);
 	#else
 		flashWriteData(freeStart, wordCount, data);
-		freeStart += wordCount;
 	#endif
+	freeStart += wordCount;
 }
 
 uint8* getCodeStore(int *byteCount) {

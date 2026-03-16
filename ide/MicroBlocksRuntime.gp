@@ -1178,7 +1178,7 @@ method checkVmVersion SmallRuntime {
 	if ((latestVmVersion this) > vmVersion) {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
-			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040'))
+			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'ESP8266'))
 		if (or (dueBoardConnected this) (isMobile)) { offerToUpdate = false }
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
@@ -1296,15 +1296,21 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'DUELink Edu'
 		importEmbeddedLibrary scripter 'Tone'
 	} ('Springbot Green' == boardType) {
-		importEmbeddedLibrary scripter 'Springbot'
-		importEmbeddedLibrary scripter 'Basic Sensors'
 		importEmbeddedLibrary scripter 'LED Display'
-	} ('Springbot Gold' == boardType) {
-		importEmbeddedLibrary scripter 'Springbot'
 		importEmbeddedLibrary scripter 'Basic Sensors'
-		importEmbeddedLibrary scripter 'OLED Graphics'
+		importEmbeddedLibrary scripter 'Tone'
+		importEmbeddedLibrary scripter 'NeoPixel'
+		importEmbeddedLibrary scripter 'SDCard'
+	} ('Springbot Gold' == boardType) {
+		importEmbeddedLibrary scripter 'Springbot Display'
+		importEmbeddedLibrary scripter 'Basic Sensors'
+		importEmbeddedLibrary scripter 'Tone'
+		importEmbeddedLibrary scripter 'NeoPixel'
+		importEmbeddedLibrary scripter 'SDCard'
 	} ('DUELink' == boardType) {
 		importEmbeddedLibrary scripter 'DUELink Edu'
+	} ('PiBody' == boardType) {
+		importEmbeddedLibrary scripter 'PiBody'
 	}
 }
 
@@ -2429,6 +2435,8 @@ method boardHasFileSystem SmallRuntime {
 	if (not (connectedToBoard this)) { return false }
 	if (isNil boardType) { getVersion this }
 	if (and (notNil boardType) (notNil (findSubstring 'ESP' boardType))) { return true }
+	if (and (notNil boardType) (notNil (findSubstring '2040' boardType))) { return true }
+	if (and (notNil boardType) (notNil (findSubstring '2350' boardType))) { return true }
 	return (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix'
 		'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040'
@@ -2555,8 +2563,9 @@ method writeFileToBoard SmallRuntime srcFileName fileData {
 	sendFileData this targetFileName fileData
 }
 
-method snapshotCode SmallRuntime {
-	codeFileName = (prompt (global 'page') 'Code file name?' '')
+method snapshotCode SmallRuntime defaultFileName {
+	if (isNil defaultFileName) { defaultFileName = '' }
+	codeFileName = (prompt (global 'page') 'Code file name?' defaultFileName)
 	if ('' == codeFileName) { return } // aborted
 	if (not (endsWith codeFileName '.ucode')) {
 		codeFileName = (join codeFileName '.ucode')
@@ -2982,18 +2991,18 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'micro:bit v2'
 	} (isOneOf boardType 'Calliope' 'Calliope v3') {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Calliope mini'
-	} ('CircuitPlayground' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Express'
-	} ('CircuitPlayground Bluefruit' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Bluefruit'
-	} ('Clue' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Clue'
+// 	} ('CircuitPlayground' == boardType) {
+// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Express'
+// 	} ('CircuitPlayground Bluefruit' == boardType) {
+// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Bluefruit'
+// 	} ('Clue' == boardType) {
+// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Clue'
 	} ('MakerPort' == boardType) {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'MakerPort'
 	} (isOneOf boardType 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040') {
 		rp2040ResetMessage this
 	} (and
-		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT')
+		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT')
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 	} else {
@@ -3025,14 +3034,14 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			add items '-'
 			add items 'MakerPort'
 			add items '-'
-			add items 'Circuit Playground Express'
-			add items 'Circuit Playground Bluefruit'
+//			add items 'Circuit Playground Express'
+//			add items 'Circuit Playground Bluefruit'
 //			add items 'Clue'
 			add items '-'
 //			add items 'M5Stack-Core'
 			add items 'ESP32'
-			add items 'ESP8266'
-		}
+//			add items 'ESP8266'
+                }
 		menuFor api items (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag)
 	}
 }
