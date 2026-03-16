@@ -460,6 +460,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			digitalWrite(TFT_BL, HIGH);
 
 			tft = &display;
+			tftWidth = TFT_WIDTH;
+			tftHeight = TFT_HEIGHT;
 			useTFT = true;
  		}
 
