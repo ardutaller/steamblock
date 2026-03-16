@@ -1,6 +1,6 @@
 module Widgets
 author MicroBlocks
-version 1 0 
+version 1 1 
 depends '_Touch Screen' TFT 
 description 'Simple monochrome widgets using the TFT library. Supports interation via touch screen, when available, or buttons.
 '
@@ -64,6 +64,8 @@ variables widget_allWidgets widget_bgColor widget_fgColor widget_layout_scale wi
   spec ' ' '_widget_dragChoice' '_widget_dragChoice _' 'auto' '10'
   spec ' ' '_widget_waitDuringTouch' '_widget_waitDuringTouch _ msecs' 'num' 100
   spec ' ' '_widget_releaseButton' '_widget_releaseButton _' 'str' ''
+  spec ' ' 'widget_updateDisplay' 'widget_updateDisplay'
+  spec ' ' 'widget_clearSelection' 'widget_clearSelection'
 
 to '_widget_add' widget {
   if (widget_allWidgets == 0) {widget_initialize}
@@ -72,6 +74,7 @@ to '_widget_add' widget {
     stopTask
   }
   '[data:addLast]' widget widget_allWidgets
+  '_widget_redrawAll'
 }
 
 to '_widget_changeValueBy' widget increment {
@@ -258,6 +261,7 @@ to '_widget_findTouched' {
 to '_widget_handleTouch' {
   local 'touched widget' ('_widget_findTouched')
   if ((v 'touched widget') != 0) {
+    widget_clearSelection
     local 'type' (widget_type (v 'touched widget'))
     if (or ('button' == type) ('light' == type)) {
       widget_setValue (v 'touched widget') (not (widget_value (v 'touched widget')))
@@ -275,6 +279,7 @@ to '_widget_handleTouch' {
         } ('choice' == type) {
           '_widget_dragChoice' (v 'touched widget')
         }
+        widget_updateDisplay
       }
     }
   }
@@ -296,12 +301,7 @@ to '_widget_interactionLoop' {
   '_widget_redrawAll'
   forever {
     if ('[tft:tftTouched]') {'_widget_handleTouch'}
-    comment 'Redraw widgets that have changed, either due to user interaction
-or because some script has changed their value.'
-    for w widget_allWidgets {
-      if ('_widget_redrawNeeded' w) {'_widget_draw' w}
-    }
-    waitMillis 20
+    widget_updateDisplay
   }
 }
 
@@ -432,6 +432,13 @@ to widget_bottom widget {
   return ((at 3 widget) + (at 5 widget))
 }
 
+to widget_clearSelection {
+  if (widget_selected != 0) {
+    '_widget_highlight' widget_selected false
+    widget_selected = 0
+  }
+}
+
 to widget_handleButtonInput {
   if (widget_selected == 0) {
     comment 'No widget selected'
@@ -442,7 +449,7 @@ to widget_handleButtonInput {
   if (or ('button' == type) ('light' == type)) {
     comment 'Toggle boolean (e.g. button)'
     widget_setValue widget_selected (not value)
-    '_widget_selectWidget' widget_selected
+    widget_updateDisplay
     waitUntil (not (or (buttonA) (buttonB)))
     if ('button' == (widget_type widget_selected)) {
       '_widget_releaseButton' widget_selected
@@ -452,7 +459,6 @@ to widget_handleButtonInput {
     local 'increment' (ifExpression (buttonA) -1 1)
     repeatUntil (not (or (buttonA) (buttonB))) {
       '_widget_changeValueBy' widget_selected increment
-      '_widget_selectWidget' widget_selected
       if (or ('bar' == type) ('slider' == type)) {
         waitMillis 50
       } else {
@@ -472,6 +478,7 @@ to widget_initialize optionalScale optionalColor {
   widget_layout_scale = (argOrDefault 1 (('[tft:getWidth]') / 100))
   widget_fgColor = (argOrDefault 2 (tft_colorSwatch (colorSwatch 255 255 255 255)))
   widget_bgColor = (tft_colorSwatch (colorSwatch 1 1 1 255))
+  sendBroadcast '_widget_interactionLoop'
 }
 
 to widget_lightColor widget {
@@ -506,7 +513,10 @@ to widget_setLightColor widget color {
 }
 
 to widget_setValue widget newValue {
-  '_widget_erase' widget
+  if (or (newValue == (at 6 widget)) (at 7 widget)) {
+    comment 'No change or already changed this cycle; just return'
+    return 0
+  }
   atPut 6 widget newValue
   comment 'Set the redrawNeeded'
   atPut 7 widget (booleanConstant true)
@@ -522,6 +532,18 @@ to widget_startInteractionLoop {
 
 to widget_type widget {
   return (at 1 widget)
+}
+
+to widget_updateDisplay {
+  comment 'Redraw widgets that have changed, either due to user interaction
+or because some script has changed their value.'
+  for w widget_allWidgets {
+    if ('_widget_redrawNeeded' w) {
+      '_widget_erase' w
+      '_widget_draw' w
+    }
+  }
+  waitMillis 20
 }
 
 to widget_value widget {
