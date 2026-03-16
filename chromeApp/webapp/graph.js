@@ -1,4 +1,7 @@
 FloatingWindow.graph = function () {
+	// only one Graph window allowed
+	if (Graph.isOpen()) { return; }
+
 	let win = new FloatingWindow({
 		title: 'Data Graph',
 		body: Graph.build(),
@@ -34,6 +37,10 @@ const Graph = {
 		'rgb(180,0,180)'
 	]
 };
+
+Graph.isOpen = function () {
+	return document.querySelector('.window .--graph') != null;
+}
 
 Graph.build = function () {
 	let container = document.createElement('div');
