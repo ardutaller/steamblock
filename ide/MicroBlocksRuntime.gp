@@ -2009,7 +2009,7 @@ method serialDelayMenu SmallRuntime {
 	items = (list)
 	for i (range 1 5) { add items (array i (action 'setSerialDelay' this i)) }
 	for i (range 6 20 2) { add items (array i (action 'setSerialDelay' this i)) }
-	add items '-'
+	add items (array '-')
 	add items (array 'reset to default (10)' (action 'setDefaultSerialDelay' this))
 	menuFor api items
 }
@@ -3008,39 +3008,39 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 	} else {
 		items = (list)
 		if eraseFlashFlag {
-			add items 'Citilab ED1'
-			add items 'micro:STEAMakers'
-			add items 'KidsBits'
-			add items 'Foxbit'
-			add items 'CoCube'
-			add items 'Databot'
-//			add items 'M5Stack-Core'
-			add items 'ESP32'
-			add items 'ESP8266'
+			 add items (array 'Citilab ED1')
+			 add items (array 'micro:STEAMakers')
+			 add items (array 'KidsBits')
+			 add items (array 'Foxbit')
+			 add items (array 'CoCube')
+			 add items (array 'Databot')
+//			 add items (array 'M5Stack-Core')
+			 add items (array 'ESP32')
+			 add items (array 'ESP8266')
 		} else {
-			add items 'micro:bit'
-			add items 'Calliope mini'
-			add items '-'
-			add items 'Citilab ED1'
-			add items 'micro:STEAMakers'
-			add items 'KidsBits'
-			add items 'Foxbit'
-			add items 'CoCube'
-			add items 'Databot'
-			add items '-'
-//			add items 'ELECFREAKS Pico:ed'
-			add items 'ELECFREAKS Wukong2040'
-			add items 'RP2040 (Pico or Pico W)'
-			add items '-'
-			add items 'MakerPort'
-			add items '-'
-//			add items 'Circuit Playground Express'
-//			add items 'Circuit Playground Bluefruit'
-//			add items 'Clue'
-			add items '-'
-//			add items 'M5Stack-Core'
-			add items 'ESP32'
-//			add items 'ESP8266'
+			 add items (array 'micro:bit')
+			 add items (array 'Calliope mini')
+			 add items (array '-')
+			 add items (array 'Citilab ED1')
+			 add items (array 'micro:STEAMakers')
+			 add items (array 'KidsBits')
+			 add items (array 'Foxbit')
+			 add items (array 'CoCube')
+			 add items (array 'Databot')
+			 add items (array '-')
+//			 add items (array 'ELECFREAKS Pico:ed')
+			 add items (array 'ELECFREAKS Wukong2040')
+			 add items (array 'RP2040 (Pico or Pico W)')
+			 add items (array '-')
+			 add items (array 'MakerPort')
+			 add items (array '-')
+//			 add items (array 'Circuit Playground Express')
+//			 add items (array 'Circuit Playground Bluefruit')
+//			 add items (array 'Clue')
+			 add items (array '-')
+//			 add items (array 'M5Stack-Core')
+			 add items (array 'ESP32')
+//			 add items (array 'ESP8266')
                 }
 		menuFor api items (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag)
 	}
