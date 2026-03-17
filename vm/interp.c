@@ -1367,6 +1367,14 @@ void vmLoop() {
 					processStartupGesture();
 				}
 			#endif
+			#if defined(BLE_IDE)
+				if (BLE_allowShutdown && (totalMicrosecs() > (30 * 1000000))) {
+					// if BLE_allowShutdown is true and no BLE connection is made
+					// within N seconds of startup, shut down BLE to save power
+					BLE_stop();
+					BLE_allowShutdown = false; // don't check again
+				}
+			#endif
 			count = 95; // must be under 30 when building on mbed to avoid serial errors
 		} else if ((count & 0xF) == 0) {
 			captureIncomingBytes();

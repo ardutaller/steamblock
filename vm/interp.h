@@ -399,6 +399,7 @@ void cocubeSensorUpdate();
 // BLE Support
 
 extern int BLE_connected_to_IDE;
+extern int BLE_allowShutdown;
 extern char BLE_ThreeLetterID[4];
 extern uint32 lastRcvTime;
 
