@@ -333,6 +333,7 @@ void BLE_resumeAdvertising() {
 	}
 
 	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+	pAdvertising->reset();
 	pAdvertising->removeServices();
 	pAdvertising->addServiceUUID(MB_SERVICE_UUID);
 	pAdvertising->setName(bleDeviceName);
