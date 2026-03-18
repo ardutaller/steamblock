@@ -30,6 +30,7 @@
 int BLE_connected_to_IDE = false;
 int USB_connected_to_IDE = false;
 int BLE_allowShutdown = false;
+int bleRunning = false;
 
 // Other Variables
 
@@ -134,7 +135,6 @@ static NimBLECharacteristic *pRxCharacteristic;
 static NimBLECharacteristic *pUARTTxCharacteristic;
 static NimBLECharacteristic *pUARTRxCharacteristic;
 
-static bool bleRunning = false;
 static uint16_t connID = -1;
 static int lastRC = 0;
 
@@ -349,8 +349,6 @@ extern bool __isPicoW;
 // uncomment these to test BLE
 #include <BTstackLib.h>
 #include <ble/att_server.h>
-
-static int bleRunning = false;
 
 static hci_con_handle_t connectionHandle = 0;
 static uint16_t txCharacteristic = 0;
@@ -707,9 +705,8 @@ int BLE_isEnabled() {
 		if (fileExists(BLE_DISABLED_FILE)) {
 			BLE_allowShutdown = false;
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	#elif defined(NRF52)
 		// xxx todo: use user settings registers or Flash page just before persistent code store
 		return true;

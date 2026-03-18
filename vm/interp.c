@@ -1345,6 +1345,31 @@ static void runTask(Task *task) {
 
 #if !defined(EMSCRIPTEN)
 
+#if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS)
+	#define CAN_NAP 1
+
+static inline int napIfPossible() {
+	const int napMicroSecs = 5000;
+	int usecs = microsecs(); // get usecs
+	for (int i = 0; i < taskCount; i++) {
+		Task *task = &tasks[i];
+		if (running == task->status) return false;
+		if (waiting_micros == task->status) {
+			int usecsUntilWake = task->wakeTime - usecs;
+			if (usecsUntilWake < 0) usecsUntilWake = task->wakeTime; // clock wrap; use wakeTime as estimate
+			if (usecsUntilWake < napMicroSecs) return false;
+		}
+	}
+	#if defined(ESP32) || defined(ESP8266)
+		lightSleep(5);
+	#elif defined(GNUBLOCKS)
+		usleep(napMicroSecs); // nap a while to relinquish the CPU
+	#endif
+	return true;
+}
+
+#endif
+
 void vmLoop() {
 	// Run the next runnable task. Wake up any waiting tasks whose wakeup time has arrived.
 
@@ -1375,12 +1400,15 @@ void vmLoop() {
 					BLE_allowShutdown = false; // don't check again
 				}
 			#endif
-			count = 95; // must be under 30 when building on mbed to avoid serial errors
+			#ifdef CAN_NAP
+				if (!napIfPossible()) count = 95;
+			#else
+				count = 95; // must be under 30 on mbed to avoid serial errors
+			#endif
 		} else if ((count & 0xF) == 0) {
 			captureIncomingBytes();
 		}
-		int runCount = 0;
-		uint32 usecs = 0; // compute times only the first time they are needed
+		uint32 usecs = 0; // compute usecs only the first it is needed
 		for (int t = 0; t < taskCount; t++) {
 			currentTaskIndex++;
 			if (currentTaskIndex >= taskCount) currentTaskIndex = 0;
@@ -1389,14 +1417,12 @@ void vmLoop() {
 				continue;
 			} else if (running == task->status) {
 				runTask(task);
-				runCount++;
 				break;
 			} else if (waiting_micros == task->status) {
 				if (!usecs) usecs = microsecs(); // get usecs
 				if ((usecs - task->wakeTime) < RECENT) {
 					task->status = running;
 					runTask(task);
-					runCount++;
 					break;
 				}
 			}
@@ -1406,23 +1432,6 @@ void vmLoop() {
 			taskSleepUSecs = 0;
 			count = (count < 5000) ? count : 5000;
 		}
-
-#ifdef GNUBLOCKS
-		if (!runCount) { // no active tasks; consider taking a nap
-			if (!usecs) usecs = microsecs(); // get usecs
-			int sleepUSecs = 500;
-			for (int i = 0; i < taskCount; i++) {
-				Task *task = &tasks[i];
-				if (waiting_micros == task->status) {
-					int usecsUntilWake = (task->wakeTime - usecs) - 5; // leave 5 extra usecs
-					if ((usecsUntilWake > 0) && (usecsUntilWake < sleepUSecs)) {
-						sleepUSecs = usecsUntilWake;
-					}
-				}
-			}
-			if (sleepUSecs > 5) usleep(sleepUSecs); // nap a while to relinquish the CPU
-		}
-#endif
 	}
 }
 
