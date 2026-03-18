@@ -1392,7 +1392,7 @@ void vmLoop() {
 					processStartupGesture();
 				}
 			#endif
-			#if defined(BLE_IDE)
+			#if defined(SPRINGBOT)
 				if (BLE_allowShutdown && (totalMicrosecs() > (30 * 1000000))) {
 					// if BLE_allowShutdown is true and no BLE connection is made
 					// within N seconds of startup, shut down BLE to save power
