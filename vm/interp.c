@@ -1345,7 +1345,7 @@ static void runTask(Task *task) {
 
 #if !defined(EMSCRIPTEN)
 
-#if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS)
+#if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD)
 	#define CAN_NAP 1
 
 static inline int napIfPossible() {
@@ -1360,10 +1360,10 @@ static inline int napIfPossible() {
 			if (usecsUntilWake < napMicroSecs) return false;
 		}
 	}
-	#if defined(ESP32) || defined(ESP8266)
-		lightSleep(5);
-	#elif defined(GNUBLOCKS)
+	#if defined(GNUBLOCKS)
 		usleep(napMicroSecs); // nap a while to relinquish the CPU
+	#else
+		lightSleep(5);
 	#endif
 	return true;
 }
