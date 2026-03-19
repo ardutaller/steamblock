@@ -3204,7 +3204,11 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
  	#include <esp32-hal-cpu.h> // setCpuFrequencyMhz() and friends
 
 	extern "C" void lightSleep(int msecs) {
-		setCpuFrequencyMhz(bleRunning ? 80 : 10); // must use 80 MHz if BLE is enabled
+		#if defined(ESP32_S2) || defined(ESP32_C3)
+			setCpuFrequencyMhz(80); // S2 can C3 only support 80, 160, and 240 MHzßß
+		#else
+			setCpuFrequencyMhz(bleRunning ? 80 : 10); // must use 80 MHz if BLE is enabled
+		#endif
 		delay(msecs);
 		setCpuFrequencyMhz(240);
 	}
@@ -3229,6 +3233,13 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 
 	extern "C" void lightSleep(int msecs) {
 		LowPower.idle(msecs);
+	}
+
+#elif defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
+	#include <time.h>
+
+	extern "C" void lightSleep(int msecs) {
+		sleep_ms(msecs);
 	}
 
 #else
