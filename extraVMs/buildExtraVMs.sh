@@ -4,9 +4,9 @@ rm -f *.hex *.bin *.uf2
 cd ..
 
 pio run -e cpx
-python precompiled/uf2conv.py -c .pio/build/cpx/firmware.bin -o precompiled/vm_circuitplay.uf2
+python precompiled/uf2conv.py -c .pio/build/cpx/firmware.bin -o extraVMs/vm_circuitplay.uf2
 pio run -e cplay52
-python precompiled/uf2conv.py -c .pio/build/cplay52/firmware.hex -f 0xADA52840 -o precompiled/vm_cplay52.uf2
+python precompiled/uf2conv.py -c .pio/build/cplay52/firmware.hex -f 0xADA52840 -o extraVMs/vm_cplay52.uf2
 pio run -e clue
 python precompiled/uf2conv.py -c -f 0xada52840 .pio/build/clue/firmware.hex -o extraVMs/vm_clue.uf2
 
@@ -15,7 +15,7 @@ cp .pio/build/pico-ed/firmware.uf2 extraVMs/vm_pico_ed.uf2
 pio run -e m5stack
 cp .pio/build/m5stack/firmware.bin extraVMs/vm_m5stack.bin
 pio run -e nodemcu
-cp .pio/build/nodemcu/firmware.bin precompiled/vm_nodemcu.bin
+cp .pio/build/nodemcu/firmware.bin extraVMs/vm_nodemcu.bin
 
 pio run -e xiao-samd21
 python precompiled/uf2conv.py -c .pio/build/xiao-samd21/firmware.bin -o extraVMs/vm_xiao_samd21.uf2
