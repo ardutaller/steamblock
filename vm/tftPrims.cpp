@@ -1488,6 +1488,9 @@ OBJ primInvertDisplay(int argCount, OBJ *args) {
 	if (argCount < 1) return fail(notEnoughArguments);
 	int invertFlag = (args[0] == trueObj);
 
+	#if defined(ARDUINO_NRF52840_CLUE)
+		invertFlag = !invertFlag;
+	#endif
 	tft->invertDisplay(invertFlag);
 	return falseObj;
 }
