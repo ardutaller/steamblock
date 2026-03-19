@@ -301,6 +301,7 @@ int recvBytes(uint8 *buf, int count);
 int sendBytes(uint8 *buf, int start, int end);
 void captureIncomingBytes();
 void restartSerial();
+void lightSleep(int msecs);
 
 const char *boardType();
 int hasPSRAM();
@@ -398,7 +399,9 @@ void cocubeSensorUpdate();
 
 // BLE Support
 
+extern int BLE_allowShutdown;
 extern int BLE_connected_to_IDE;
+extern int bleRunning;
 extern char BLE_ThreeLetterID[4];
 extern uint32 lastRcvTime;
 

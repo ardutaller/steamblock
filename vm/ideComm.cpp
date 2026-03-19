@@ -29,6 +29,8 @@
 
 int BLE_connected_to_IDE = false;
 int USB_connected_to_IDE = false;
+int BLE_allowShutdown = false;
+int bleRunning = false;
 
 // Other Variables
 
@@ -133,7 +135,6 @@ static NimBLECharacteristic *pRxCharacteristic;
 static NimBLECharacteristic *pUARTTxCharacteristic;
 static NimBLECharacteristic *pUARTRxCharacteristic;
 
-static bool bleRunning = false;
 static uint16_t connID = -1;
 static int lastRC = 0;
 
@@ -212,6 +213,7 @@ class ConnectionCallbacks: public NimBLEServerCallbacks {
 	void onConnect(NimBLEServer* pServer, ble_gap_conn_desc* desc) override {
 		connID = desc->conn_handle;
 		lastRcvTime = microsecs();
+		BLE_allowShutdown = false;
 		BLE_connected_to_IDE = true;
 	}
 	void onDisconnect(NimBLEServer* pServer, ble_gap_conn_desc* desc) override {
@@ -331,6 +333,7 @@ void BLE_resumeAdvertising() {
 	}
 
 	NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+	pAdvertising->reset();
 	pAdvertising->removeServices();
 	pAdvertising->addServiceUUID(MB_SERVICE_UUID);
 	pAdvertising->setName(bleDeviceName);
@@ -346,8 +349,6 @@ extern bool __isPicoW;
 // uncomment these to test BLE
 #include <BTstackLib.h>
 #include <ble/att_server.h>
-
-static int bleRunning = false;
 
 static hci_con_handle_t connectionHandle = 0;
 static uint16_t txCharacteristic = 0;
@@ -459,6 +460,7 @@ static void deviceConnectedCallback(BLEStatus status, BLEDevice *device) {
 		connectionHandle = device->getHandle();
 		BTstack.stopAdvertising();
 		lastRcvTime = microsecs();
+		BLE_allowShutdown = false;
 		BLE_connected_to_IDE = true;
 	}
 }
@@ -671,6 +673,8 @@ void restartSerial() {
 #define BLE_DISABLED_FILE "/_BLE_DISABLED_"
 
 void BLE_setEnabled(int enableFlag) {
+	// Invoked by BLE command to enable/diable BLE. Feature not supported on nRF52 boards.
+
 	#if defined(ARDUINO_ARCH_ESP32) || defined(RP2040_PHILHOWER)
 		// Disable BLE connections from IDE if BLE_DISABLED_FILE file exists.
 
@@ -688,14 +692,27 @@ void BLE_setEnabled(int enableFlag) {
 	} else {
 		BLE_stop();
 	}
+
+	BLE_allowShutdown = false;
 }
 
 int BLE_isEnabled() {
+	#if defined(SPRINGBOT)
+		BLE_allowShutdown = true; // only allow BLE shutdown on Springbot boards for now
+	#endif
+
 	#if defined(ARDUINO_ARCH_ESP32) || defined(RP2040_PHILHOWER)
-		return !fileExists(BLE_DISABLED_FILE);
+		if (fileExists(BLE_DISABLED_FILE)) {
+			BLE_allowShutdown = false;
+			return false;
+		}
+		return true;
 	#elif defined(NRF52)
 		// xxx todo: use user settings registers or Flash page just before persistent code store
 		return true;
 	#endif
+
+	// board does not support BLE
+	BLE_allowShutdown = false;
 	return false;
 }

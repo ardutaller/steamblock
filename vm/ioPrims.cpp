@@ -549,13 +549,6 @@ void hardwareInit() {
 	#define PIN_LED LED_BUILTIN
 	#define PIN_BUTTON_A 0
 
-
-extern "C" void esp8266DeepSleep(uint64_t usecs) {
-	uint64_t maxSleep = ESP.deepSleepMax() - 10000;
-	if (usecs > maxSleep) usecs = maxSleep;
-	ESP.deepSleep(usecs);
-}
-
 #elif defined(ARDUINO_CITILAB_ED1)
 
 	#define BOARD_TYPE "Citilab ED1"
@@ -3203,6 +3196,45 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 	int isSupported = startRF(pinNum, frequency);
 	return isSupported ? trueObj : falseObj;
 }
+
+// power savings
+
+#if defined(ESP32)
+ 	#include <esp32-hal-cpu.h> // setCpuFrequencyMhz() and friends
+
+	extern "C" void lightSleep(int msecs) {
+		setCpuFrequencyMhz(bleRunning ? 80 : 10); // must use 80 MHz if BLE is enabled
+		delay(msecs);
+		setCpuFrequencyMhz(240);
+	}
+
+#elif defined(ESP8266)
+	#include "user_interface.h"
+
+	extern "C" void lightSleep(int msecs) {
+		system_update_cpu_freq(80);
+		delay(msecs);
+		system_update_cpu_freq(160);
+	}
+
+	extern "C" void esp8266DeepSleep(uint64_t usecs) {
+		uint64_t maxSleep = ESP.deepSleepMax() - 10000;
+		if (usecs > maxSleep) usecs = maxSleep;
+		ESP.deepSleep(usecs);
+	}
+
+#elif defined(ARDUINO_ARCH_SAMD) && !(defined(MAKERPORT) || defined(MAKERPORT_V2) || defined(MAKERPORT_V3))
+	#include <ArduinoLowPower.h>
+
+	extern "C" void lightSleep(int msecs) {
+		LowPower.idle(msecs);
+	}
+
+#else
+
+	extern "C" void lightSleep(int msecs) { } // stub
+
+#endif
 
 // forward to primitives that don't take argCount
 
