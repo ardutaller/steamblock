@@ -200,6 +200,57 @@ IDE.tipBar.setTip = function (title, content) {
 	this.contentElement.innerHTML = tipHTML;
 };
 
+// Spinner and overlay
+IDE.spinner = {
+	init: function () {
+		this.overlay = IDE.element.querySelector('[data-ide="overlay"]');
+		this.spinner = this.overlay.querySelector('[data-ide="overlay-spinner"]');
+		this.titleSpan = this.overlay.querySelector('[data-ide="overlay-title"]');
+		this.subtitleSpan = this.overlay.querySelector('[data-ide="overlay-subtitle"]');
+
+		this.overlay.onkeypress = function (e) {
+			if (e.key == 'Escape') {
+				if (this.onCancel) { this.onCancel.call(); }
+				this.hide();
+			}
+		}
+	},
+
+	show: function (title, subtitle, percent, onCancel, onDone) {
+		this.onCancel = onCancel;
+		this.onDone = onDone;
+		this.update(title, subtitle ?? '(press ESC to cancel)', percent);
+		this.overlay.classList.add('--is-active');
+	},
+
+	update: function (title, subtitle, percent) {
+		this.setTitle(title);
+		this.setSubtitle(subtitle);
+		this.setPercent(percent);
+	},
+
+	setTitle: function (title) {
+		if (title) { this.titleSpan.innerText = GetText.localize(title); }
+	},
+
+	setSubtitle: function (subtitle) {
+		if (subtitle) { this.subtitleSpan.innerText = GetText.localize(subtitle); }
+	},
+
+	setPercent: function (percent) {
+		this.spinner.style.setProperty('--a', (percent ?? 75)/100 * 360 + 'deg');
+		if ((percent >= 100) && this.onDone) {
+			this.onDone.call();
+			this.hide();
+		}
+	},
+
+	hide: function () {
+		this.overlay.classList.remove('--is-active');
+		this.onCancel = null;
+		this.onDone = null;
+	}
+};
 
 // Zoom buttons and undo/redo
 IDE.populateScriptControls = function (element) {
@@ -269,6 +320,7 @@ IDE.build = function () {
 	this.populateCategories(document.querySelector('[data-ide="categories-list"]'));
 	this.populateScriptControls(document.querySelector('[data-ide="scripts-pane-controls"]'));
 	this.tipBar.init();
+	this.spinner.init();
 	// check connection every 500ms
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
@@ -277,3 +329,4 @@ IDE.build = function () {
 		500 // it takes a bit for all elements to position and show themselves
 	);
 };
+

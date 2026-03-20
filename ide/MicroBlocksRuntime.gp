@@ -3008,40 +3008,42 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 	} else {
 		items = (list)
 		if eraseFlashFlag {
-			 add items (array 'Citilab ED1')
-			 add items (array 'micro:STEAMakers')
-			 add items (array 'KidsBits')
-			 add items (array 'Foxbit')
-			 add items (array 'CoCube')
-			 add items (array 'Databot')
-//			 add items (array 'M5Stack-Core')
-			 add items (array 'ESP32')
-			 add items (array 'ESP8266')
+			add items (array 'Citilab ED1')
+			add items (array 'micro:STEAMakers')
+			add items (array 'KidsBits')
+			add items (array 'Foxbit')
+			add items (array 'CoCube')
+			add items (array 'Databot')
+//			add items (array 'M5Stack-Core')
+			add items (array 'ESP32')
+			add items (array 'ESP8266')
 		} else {
-			 add items (array 'micro:bit')
-			 add items (array 'Calliope mini')
-			 add items (array '-')
-			 add items (array 'Citilab ED1')
-			 add items (array 'micro:STEAMakers')
-			 add items (array 'KidsBits')
-			 add items (array 'Foxbit')
-			 add items (array 'CoCube')
-			 add items (array 'Databot')
-			 add items (array '-')
-//			 add items (array 'ELECFREAKS Pico:ed')
-			 add items (array 'ELECFREAKS Wukong2040')
-			 add items (array 'RP2040 (Pico or Pico W)')
-			 add items (array '-')
-			 add items (array 'MakerPort')
-			 add items (array '-')
-//			 add items (array 'Circuit Playground Express')
-//			 add items (array 'Circuit Playground Bluefruit')
-//			 add items (array 'Clue')
-			 add items (array '-')
-//			 add items (array 'M5Stack-Core')
-			 add items (array 'ESP32')
+			add items (array 'micro:bit')
+			add items (array 'Calliope mini')
+			add items (array '-')
+			add items (array 'Citilab ED1')
+			add items (array 'micro:STEAMakers')
+			add items (array 'KidsBits')
+			add items (array 'Foxbit')
+			add items (array 'CoCube')
+			add items (array 'Databot')
+			add items (array '-')
+//			add items (array 'ELECFREAKS Pico:ed')
+			add items (array 'ELECFREAKS Wukong2040')
+			add items (array 'RP2040 (Pico or Pico W)')
+			add items (array '-')
+			add items (array 'MakerPort')
+			add items (array '-')
+//			add items (array 'Circuit Playground Express')
+//			add items (array 'Circuit Playground Bluefruit')
+//			add items (array 'Clue')
+			add items (array '-')
+//			add items (array 'M5Stack-Core')
+			add items (array 'ESP32')
 //			 add items (array 'ESP8266')
-                }
+			add items (array '-')
+			add items (array 'WeAct STM32H743')
+		}
 		menuFor api items (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag)
 	}
 }
@@ -3067,6 +3069,11 @@ method flashVMInBrowser SmallRuntime boardName eraseFlashFlag downloadLatestFlag
 method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boardName {
 	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT' 'KidsBits') {
 		flashVM this boardName eraseFlashFlag downloadLatestFlag
+		return
+	}
+
+	if (isOneOf boardName 'WeAct STM32H743') { // in preparation for DueLink boards
+		browserDfuUpload boardName
 		return
 	}
 

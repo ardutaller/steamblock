@@ -34,6 +34,7 @@
 		<link rel="stylesheet" href="styles/components/_top-bar.css">
 		<link rel="stylesheet" href="styles/components/_window.css">
 		<link rel="stylesheet" href="styles/components/_graph.css">
+		<link rel="stylesheet" href="styles/components/_overlay.css">
 		<link rel="stylesheet" href="styles/components/_wysiwyg.css">
 		<link rel="stylesheet" href="styles/utilities/_drag.css">
 
@@ -46,6 +47,11 @@
 		<!-- Window Components -->
 		<script type="text/javascript" src="windows.js" defer></script>
 		<script type="text/javascript" src="graph.js" defer></script>
+
+		<!-- DFU upload support -->
+		<script type="text/javascript" src="lib/usbDfuDevice.js" defer></script>
+		<script type="text/javascript" src="dfupload.js" defer></script>
+
 	</head>
 
 	<body oncontextmenu="return false;">
@@ -136,6 +142,11 @@
 			</div>
 
 			<div class="menu-container" data-ide="menu-container"></div>
+			<div class="overlay" data-ide="overlay">
+				<div class="overlay__spinner" data-ide="overlay-spinner"></div>
+				<h2 class="overlay__title" data-ide="overlay-title"></h2>
+				<h3 class="overlay__subtitle" data-ide="overlay-subtitle"></h3>
+			</div>
 
 		</div>
 

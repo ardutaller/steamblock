@@ -1640,7 +1640,14 @@ OBJ primBrowserResponse(int nargs, OBJ args[]) {
 	);
 
 	return response;
-}
+};
+
+OBJ primBrowserDfuUpload(int nargs, OBJ args[]) {
+	if (nargs < 1) return notEnoughArgsFailure();
+	if (NOT_CLASS(args[0], StringClass)) return primFailed("Argument must be a string");
+	EM_ASM_({ DFUpload.flashBoard(UTF8ToString($0)); }, obj2str(args[0]));
+	return nilObj;
+};
 
 static PrimEntry browserPrimList[] = {
 	{"-----", NULL, "Browser Support"},
@@ -1667,6 +1674,7 @@ static PrimEntry browserPrimList[] = {
 	{"browserReadFile",				primBrowserReadFile,				"Select and read a file in the browser. Args: [extension]"},
 	{"browserWriteFile",			primBrowserWriteFile,				"Select and write a file the browser. Args: data [suggestedFileName, id]"},
 	{"browserLastSaveName",		primBrowserLastSaveName,		"Return the name of the most recent file save."},
+	{"browserDfuUpload",			primBrowserDfuUpload,				"Upload a binary firmware file to a DFU device"},
 	{"browserSetShadow",			primBrowserSetShadow,				"Set the Canvas shadow color, offset, and blur for following graphics operations. Args: color, offset, blur"},
 	{"browserClearShadow",		primBrowserClearShadow,			"Disable the Canvas shadow effect."},
 	{"browserReadPrefs",			primBrowserReadPrefs,				"Read user preferences from localStorage."},
