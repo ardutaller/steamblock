@@ -4,7 +4,7 @@
 
 // Copyright 2018 John Maloney, Bernat Romagosa, and Jens Mönig
 
-// interp.c - Simple interpreter based on 32-bit opcodes
+// interp.c - Simple interpreter based on 32-bit opcodes (changed to 16-bit opcode in v2.0)
 // John Maloney, April 2017
 
 #define _DEFAULT_SOURCE // enable usleep() declaration from unistd.h
@@ -1345,8 +1345,13 @@ static void runTask(Task *task) {
 
 #if !defined(EMSCRIPTEN)
 
-#if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD)
-	#define CAN_NAP 1
+#if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD) || \
+	defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
+
+	#if !defined(ESP32_ORIGINAL)
+		// original ESP32 fails with TG1WDT_SYS_RESET when napping
+		#define CAN_NAP 1
+	#endif
 
 static inline int napIfPossible() {
 	const int napMicroSecs = 5000;

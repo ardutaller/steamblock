@@ -949,6 +949,29 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			}
 		}
 
+	#elif defined(DOMINO4_CWA)
+		#define TFT_MOSI 37
+		#define TFT_SCLK 36
+		#define TFT_CS 35
+		#define TFT_DC 33
+		#define TFT_RST 34
+		#define TFT_WIDTH 240
+		#define TFT_HEIGHT 135
+
+		void tftInit() {
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
+			tft = new Arduino_ST7789(bus, TFT_RST, 3, true,
+					TFT_HEIGHT, TFT_WIDTH, 52, 40, 52, 40);
+			if (!tft->begin()) {
+				outputString("tftInit() failed!");
+			} else {
+				tftWidth = TFT_WIDTH;
+				tftHeight = TFT_HEIGHT;
+				tftClear();
+				useTFT = true;
+			}
+		}
+
 	#elif defined(NO_EXTERNAL_DISPLAY_PRIMS)
 		// no external display primitives
 
@@ -1488,6 +1511,9 @@ OBJ primInvertDisplay(int argCount, OBJ *args) {
 	if (argCount < 1) return fail(notEnoughArguments);
 	int invertFlag = (args[0] == trueObj);
 
+	#if defined(ARDUINO_NRF52840_CLUE)
+		invertFlag = !invertFlag;
+	#endif
 	tft->invertDisplay(invertFlag);
 	return falseObj;
 }

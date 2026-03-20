@@ -962,9 +962,9 @@ void hardwareInit() {
 
 #elif defined(ESP32_S2)
 	#define BOARD_TYPE "ESP32-S2"
-	#define DIGITAL_PINS 48
+	#define DIGITAL_PINS 47
 	#define ANALOG_PINS 20
-	#define TOTAL_PINS 48
+	#define TOTAL_PINS 47
 	static const int analogPin[] = {};
 	#ifdef LED_BUILTIN
 		#define PIN_LED LED_BUILTIN
@@ -978,15 +978,16 @@ void hardwareInit() {
 			#define PIN_BUTTON_A 0
 		#endif
 	#endif
-	// See https://docs.espressif.com/projects/esp-idf/en/stable/esp32s2/hw-reference/esp32s2/user-guide-saola-1-v1.2.html
-	// strapping pins 0 (Boot), 45 (VSPI), 46 (LOG)
+	// See https://docs.espressif.com/projects/esp-idf/en/stable/esp32s2/api-reference/peripherals/gpio.html
+	// GPIO26-32 are used for SPI flash and PSRAM and not recommended for other uses
+	// strapping pins 0 (Boot), 45 (VSPI), 46 (LOG; input only)
 	// USB pins: 19 (USB D-), 20 (USB D+)
 	static const char reservedPin[TOTAL_PINS] = {
-		1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-		1, 1, 1, 1, 1, 1, 0, 1, 1, 1,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0};
+		0, 0, 0, 0, 0, 0, 0};
 
 #elif defined(ESP32_S3)
 	#define BOARD_TYPE "ESP32-S3"
@@ -3203,7 +3204,11 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
  	#include <esp32-hal-cpu.h> // setCpuFrequencyMhz() and friends
 
 	extern "C" void lightSleep(int msecs) {
-		setCpuFrequencyMhz(bleRunning ? 80 : 10); // must use 80 MHz if BLE is enabled
+		#if defined(ESP32_S2) || defined(ESP32_C3)
+			setCpuFrequencyMhz(80); // S2 can C3 only support 80, 160, and 240 MHzßß
+		#else
+			setCpuFrequencyMhz(bleRunning ? 80 : 10); // must use 80 MHz if BLE is enabled
+		#endif
 		delay(msecs);
 		setCpuFrequencyMhz(240);
 	}
@@ -3228,6 +3233,13 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 
 	extern "C" void lightSleep(int msecs) {
 		LowPower.idle(msecs);
+	}
+
+#elif defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
+	#include <time.h>
+
+	extern "C" void lightSleep(int msecs) {
+		sleep_ms(msecs);
 	}
 
 #else

@@ -1297,15 +1297,14 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'Tone'
 	} ('Springbot Green' == boardType) {
 		importEmbeddedLibrary scripter 'LED Display'
-		importEmbeddedLibrary scripter 'Basic Sensors'
+		importEmbeddedLibrary scripter 'Springbot'
 		importEmbeddedLibrary scripter 'Tone'
-		importEmbeddedLibrary scripter 'NeoPixel'
 		importEmbeddedLibrary scripter 'SDCard'
 	} ('Springbot Gold' == boardType) {
 		importEmbeddedLibrary scripter 'Springbot Display'
-		importEmbeddedLibrary scripter 'Basic Sensors'
+		importEmbeddedLibrary scripter 'LED Display'
+		importEmbeddedLibrary scripter 'Springbot'
 		importEmbeddedLibrary scripter 'Tone'
-		importEmbeddedLibrary scripter 'NeoPixel'
 		importEmbeddedLibrary scripter 'SDCard'
 	} ('DUELink' == boardType) {
 		importEmbeddedLibrary scripter 'DUELink Edu'
@@ -1320,6 +1319,7 @@ method boardIsBLECapable SmallRuntime {
 	status = (updateConnection this)
 	if ('connected' != status) { return false }
 	if (isNil boardType) { getVersion this }
+	if (isNil boardType) { return false } // could not get version info
 	if (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'Databot' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers' 'CodingBox' 'Foxbit' 'KidsIOT' 'IOT-BUS') {
 		return true
