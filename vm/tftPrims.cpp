@@ -1318,31 +1318,86 @@ static OBJ primTriangle(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+static void drawChar(int x, int y, uint8_t *glyph, int color, int scale) {
+	int block_w = 6 * scale;
+	int block_h = 8 * scale;
+	if ((x >= tftWidth) || (y >= tftHeight)) return;
+	if ((x <= -block_w) || (y <= -block_h)) return;
+
+	int curX, curY;
+	tft->startWrite();
+	if (scale == 1) {
+		curX = x;
+		for (int8_t i = 0; i < 5; ++i, ++curX) { // Char bitmap = 5 columns
+			uint8_t line = glyph[i];
+			if (curX < tftWidth) {
+				curY = y;
+				for (int8_t j = 0; j < 8; ++j, ++curY, line >>= 1) {
+					if (curY < tftHeight) {
+						if (line & 1) {
+							tft->writePixel((int16_t) curX, (int16_t) curY, (int16_t) color);
+						}
+					}
+				}
+			}
+		}
+	} else { // scale > 1
+		curX = x;
+		for (int8_t i = 0; i < 5; ++i, curX += scale) { // Char bitmap = 5 columns
+			if ((curX + scale - 1) < tftWidth) {
+				uint8_t line = glyph[i];
+				curY = y;
+				for (int8_t j = 0; j < 8; j++, line >>= 1, curY += scale) {
+					if ((curY + scale - 1) < tftHeight) {
+						if (line & 1) {
+							tft->writeFillRect(curX, curY, scale, scale, color);
+						}
+					}
+				}
+			}
+		}
+	}
+	tft->endWrite();
+}
+
+static void drawString(const char *s, int x, int y, int color16b, int scale, int wrap) {
+	const int lineH = 8 * scale;
+	const int letterW = 6 * scale;
+	const int lastX = tftWidth - letterW;
+	int count = strlen(s);
+
+	for (int i = 0; i < count; i++) {
+		if (wrap && (x > lastX)) { // wrap text
+			x = 0;
+			y += lineH;
+			if (s[i] == 32) continue; // skip the next character if it is a space
+		}
+		int offset = s[i] * 5;
+		drawChar(x, y, (uint8_t *) &mbFont[offset], color16b, scale);
+		x += letterW;
+	}
+}
+
 static void drawText(OBJ value, int x, int y, int color16b, int scale, int wrap, int bgColor) {
 	int lineH = 8 * scale;
 	int letterW = 6 * scale;
-
-	tft->setCursor(x, y);
-	tft->setTextColor(color16b);
-	tft->setTextSize(scale);
-	tft->setTextWrap(wrap);
+	char buffer[1000];
 
 	if (IS_TYPE(value, StringType)) {
-		char buffer[1000];
 		int count = UTF8ToCP437(obj2str(value), buffer, sizeof(buffer));
 		if (bgColor != -1) tft->fillRect(x, y, count * letterW, lineH, bgColor);
+		drawString(buffer, x, y, color16b, scale, wrap);
 		tft->print(buffer);
 	} else if (trueObj == value) {
 		if (bgColor != -1) tft->fillRect(x, y, 4 * letterW, lineH, bgColor);
-		tft->print("true");
+		drawString("true", x, y, color16b, scale, wrap);
 	} else if (falseObj == value) {
 		if (bgColor != -1) tft->fillRect(x, y, 5 * letterW, lineH, bgColor);
-		tft->print("false");
+		drawString("false", x, y, color16b, scale, wrap);
 	} else if (isInt(value)) {
-		char s[50];
-		sprintf(s, "%d", obj2int(value));
-		if (bgColor != -1) tft->fillRect(x, y, strlen(s) * letterW, lineH, bgColor);
-		tft->print(s);
+		sprintf(buffer, "%d", obj2int(value));
+		if (bgColor != -1) tft->fillRect(x, y, strlen(buffer) * letterW, lineH, bgColor);
+		drawString(buffer, x, y, color16b, scale, wrap);
 	}
 }
 

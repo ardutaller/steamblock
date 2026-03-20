@@ -286,6 +286,8 @@ int unicodeCodePoint(char *s);
 char *nextUTF8(char *s);
 int UTF8ToCP437(char* src, char* dst, int dstSize);
 
+extern const unsigned char mbFont[];
+
 // Platform Specific Operations
 
 uint64 totalMicrosecs();
