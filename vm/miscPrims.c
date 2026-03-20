@@ -605,37 +605,44 @@ static OBJ primDUELinkPID(int argCount, OBJ *args) {
 	return int2obj(*((uint32 *) 0x1FFF7004) & 0xFFFFFF);
 }
 
-#if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
-
-#if defined(ARDUINO_ARCH_ESP32)
-	#include <esp_sleep.h>
-	#include <esp32-hal-cpu.h> // setCpuFrequencyMhz() and friends
-
-#else
-	// Defined in ioPrims.cpp because it needs to use the ESP C++ class.
-	void esp8266DeepSleep(uint64_t usecs);
-#endif
-
-static OBJ primESPSleep(int argCount, OBJ *args) {
+static OBJ primDeepSleep(int argCount, OBJ *args) {
 	// Deep sleep for N seconds. When that time elapses, the ESP32 will reset/boot.
+	// Currently does nothing on non-ESP boards; may be extended to other boards later.
 	// Note: on ESP8266, you must connect GPIO16 ("Wake" pin) to the RST to use deep sleep:
 	//	https://randomnerdtutorials.com/esp8266-deep-sleep-with-arduino-ide/
 
 	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
+	int secs = obj2int(args[0]);
 
-	uint64_t usecs = obj2int(args[0]) * 1000000;
-	#if defined(ARDUINO_ARCH_ESP32)
-		esp_sleep_enable_timer_wakeup(usecs);
-		esp_deep_sleep_start();
-	#else
-		esp8266DeepSleep(usecs);
-	#endif
+	deepSleep(secs);
 	return falseObj; // this is never executed
 }
 
-#endif
+// Experimental: will be deleted!
+
+static OBJ primLightSleep(int argCount, OBJ *args) {
+	// Light sleep for N milliseconds. When the time elapses, the ESP32 will
+	// resume from where it left off.
+
+	// Failed experiments:
+	// Attempt to enable "modem sleep". Doesn't work; esp_pm_configure() gives an error.
+	// 		#include <esp_pm.h> // power management
+	// 		esp_pm_config_esp32_t sleepConfig = {240, 80, true};
+	// 		esp_pm_configure(&sleepConfig);
+	//
+	// This breaks the USB connection:
+	// 		esp_sleep_enable_timer_wakeup(msecs * 1000);
+	// 		esp_light_sleep_start();
+
+	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
+	int msecs = obj2int(args[0]);
+	lightSleep(msecs);
+	return falseObj; // this is never executed
+}
 
 static OBJ primEnableBLE(int argCount, OBJ *args) {
+	// This fails (crashes) after 600 to 1600 cycles, probably due to heap fragmentation.
+
 	if (argCount < 1) return fail(notEnoughArguments);
 	#if defined(BLE_IDE)
 		if (trueObj == args[0]) {
@@ -867,9 +874,6 @@ static PrimEntry entries[] = {
 	{"clearGraph", primClearGraph},
 	{"functionExists", primFunctionExists},
 	{"launchCodeSnapshot", primLaunchCodeSnapshot},
-#if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
-	{"espSleep", primESPSleep},
-#endif
 #if defined(DUELink)
 	{"dueLinkPID", primDUELinkPID},
 	{"dueSleep", primDUESleep},
@@ -891,7 +895,10 @@ static PrimEntry entries[] = {
 	{"jsonValueAt", primJSONValueAt},
 	{"jsonKeyAt", primJSONKeyAt},
 	{"scriptTooLarge", primScriptTooLarge},
+	{"deepSleep", primDeepSleep},
+
 // experimental
+	{"lightSleep", primLightSleep},
 	{"enableBLE", primEnableBLE},
 };
 

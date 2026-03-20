@@ -304,6 +304,7 @@ int sendBytes(uint8 *buf, int start, int end);
 void captureIncomingBytes();
 void restartSerial();
 void lightSleep(int msecs);
+void deepSleep(int secs);
 
 const char *boardType();
 int hasPSRAM();
