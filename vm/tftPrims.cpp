@@ -39,8 +39,9 @@ int useTFT = false; // true means simulate 5x5 LED display on TFT display
 int isOLED1106 = false;
 
 static int backlightPin = -1;
-static int isMonochrome = false;
 static int colorBGR = false;
+static int isOLED = false;
+static int oledAddr = 0;
 
 static int tftWidth = 0;
 static int tftHeight = 0;
@@ -53,16 +54,77 @@ static int deferUpdates = false;
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 #if !(defined(PICO_ED) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
-	// Helper function to flush canvas-based OLED displays and yield after slow TFT operations.
+	// Helper functions for OLED displays.
+
+	static void oledCmd(uint8 cmd) {
+		Wire.beginTransmission(oledAddr);
+		Wire.write(0x80);
+		Wire.write(cmd);
+		Wire.endTransmission(true);
+	}
+
+	static void oledSetup(int isSH1106) {
+		// Minimal setup commands.
+		// isSH1106 flag is for 128x128 OLED display with an SH1106 controller.
+
+		oledCmd(0xAE); // display off
+		if (isSH1106) {
+			oledCmd(0xA0); // flip horizontal A0/A1
+			oledCmd(0xC0); // flip vertical C0/C8'
+		} else {
+			oledCmd(0xA1); // flip horizontal A0/A1
+			oledCmd(0xC8); // flip vertical C0/C8'
+		}
+		delay(10);
+		oledCmd(0xAF); // display on
+
+		// set to medium brightness
+		oledCmd(0x81);
+		oledCmd(0x80);
+	}
+
+	static void i2cWriteBytes(uint8 *bytes, int byteCount) {
+		Wire.beginTransmission(oledAddr);
+		for (int i = 0; i < byteCount; i++) Wire.write(bytes[i]);
+		Wire.endTransmission(true);
+	}
+
+	static void oledUpdate() {
+		// Send the entire OLED buffer to the display via i2c. Takes about 30 msecs for 128x64.
+		// Periodically capture incoming bytes and update 5x5 LED display to avoid flicker.
+
+		uint8 buffer[65];
+		buffer[0] = 0x40;
+		uint8 *src = (uint8 *) ((Arduino_Canvas *) tft)->getFramebuffer();
+		for (int i = 0; i < (tftHeight / 8); i++) {
+			// do time-sensitive background tasks
+			captureIncomingBytes();
+			updateMicrobitDisplay();
+
+			oledCmd(0x10);
+			oledCmd(isOLED1106 ? 0x02 : 0); // column offset
+			oledCmd(0xB0 + i);
+
+			// write 128 bytes of data in two i2c writes
+			memcpy(&buffer[1], src, 64);
+			i2cWriteBytes(buffer, 65);
+			src += 64;
+			memcpy(&buffer[1], src, 64);
+			i2cWriteBytes(buffer, 65);
+			src += 64;
+		}
+	}
+
 	static void inline UPDATE_DISPLAY() {
-		if (isMonochrome && !deferUpdates) {
-			tft->flush();
-			taskSleep(3);
+		if (isOLED && !deferUpdates) {
+			oledUpdate();
+			taskSleep(3); // make this task sleep a bit since writing to OLED takes 30+ msecs
 		} else {
 			taskSleep(-1);
 		}
 	}
-#endif
+
+#endif // OLED helper functions
 
 	#if defined(ARDUINO_CITILAB_ED1)
 		#define TFT_CS	5
@@ -570,10 +632,11 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			if (!tft->begin(400000)) {
 				outputString("tftInit() failed!");
 			} else {
+				oledAddr = OLED_ADDR;
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
 				tftClear();
-				isMonochrome = true;
+				isOLED = true;
 				useTFT = true;
 			}
 		}
@@ -1000,7 +1063,7 @@ static int color24to16b(int color24b) {
 
 	int r, g, b;
 
-	if (isMonochrome) return color24b ? WHITE : 0;
+	if (isOLED) return color24b ? WHITE : 0;
 
 	#ifdef IS_GRAYSCALE
 		r = (color24b >> 16) & 0xFF;
@@ -1119,17 +1182,22 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		if (brightness < 0) brightness = 0;
 		if (brightness > 10) brightness = 10;
 		analogWrite(TFT_BL, brightness * 25);
-	#elif defined(OLED_ADDR)
-		int oledLevel = (255 * brightness) / 10;
-		if (oledLevel < 0) oledLevel = 0;
-		if (oledLevel > 255) oledLevel = 255;
-		writeI2CReg(OLED_ADDR, 0x80, 0x81);
-		writeI2CReg(OLED_ADDR, 0x80, oledLevel);
 	#else
 		if (backlightPin >= 0) {
 			if (brightness < 0) brightness = 0;
 			if (brightness > 10) brightness = 10;
 			analogWrite(backlightPin, brightness * 100);
+		} else if (oledAddr > 0) {
+			if (brightness <= 0) {
+				oledCmd(0xAE); // turn off OLED
+			} else {
+				int oledLevel = (brightness * 20) - 10; // 10, 30, 50, ...
+				if (brightness == 10) oledLevel = 255;
+				if (oledLevel > 255) oledLevel = 255;
+				oledCmd(0x81);
+				oledCmd(oledLevel);
+				oledCmd(0xAF); // turn on OLED
+			}
 		}
 	#endif
 	return falseObj;
@@ -1568,7 +1636,12 @@ OBJ primInvertDisplay(int argCount, OBJ *args) {
 	#if defined(ARDUINO_NRF52840_CLUE)
 		invertFlag = !invertFlag;
 	#endif
-	tft->invertDisplay(invertFlag);
+
+	if (oledAddr > 0) {
+		oledCmd(invertFlag ? 0xA7 : 0xA6);
+	} else {
+		tft->invertDisplay(invertFlag);
+	}
 	return falseObj;
 }
 
@@ -1797,7 +1870,7 @@ static void init_7735(int w, int h, int rotation, int dcPin, int csPin, int blPi
 	} else {
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
-		isMonochrome = false;
+		isOLED = false;
 		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
@@ -1818,7 +1891,7 @@ static void init_7789(int w, int h, int rotation, int dcPin, int csPin, int blPi
 	} else {
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
-		isMonochrome = false;
+		isOLED = false;
 		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
@@ -1839,7 +1912,7 @@ static void init_7796(int w, int h, int rotation, int dcPin, int csPin, int blPi
 	} else {
 		tftWidth = (rotation & 1) ? h : w;
 		tftHeight = (rotation & 1) ? w : h;
-		isMonochrome = false;
+		isOLED = false;
 		turnOnBacklight(blPin);
 		tftClear();
 		useTFT = true;
@@ -1857,16 +1930,14 @@ static void init_9341(int rotation, int dcPin, int csPin, int blPin,
 	} else {
 		tftWidth = 320;
 		tftHeight = 240;
-		isMonochrome = false;
+		isOLED = false;
 		turnOnBacklight(blPin);
-		tftWidth = 320;
-		tftHeight = 240;
 		tftClear();
 		useTFT = true;
 	}
 }
 
-static void init_1306(int w, int h, int resetPin) {
+static void init_OLED(int w, int h, int resetPin, int useSH1106) {
 	if ((w < 32) || (w > 128) || (h < 16) || (h > 128)) return;
 	if (!tft) delete tft;
 
@@ -1874,7 +1945,6 @@ static void init_1306(int w, int h, int resetPin) {
 
 	const int OLED_ADDR_1 = 0x3C;
 	const int OLED_ADDR_2 = 0x3D;
-	int oledAddr = 0;
 	int response = readI2CReg(OLED_ADDR_1, 0); // see if OLED responds at OLED_ADDR_1
 	if (response >= 0) {
 		oledAddr = OLED_ADDR_1;
@@ -1886,21 +1956,18 @@ static void init_1306(int w, int h, int resetPin) {
 			return; // no OLED display detected
 		}
 	}
-	isOLED1106 = (8 == (response & 15));
+	isOLED1106 = useSH1106 || (8 == (response & 15));
 
-	Arduino_DataBus *bus = new Arduino_Wire(oledAddr, 0x00, 0x40);
-	Arduino_G *g;
-	if (isOLED1106) {
-		g = new Arduino_SH1106(bus, resetPin, w, h);
-	} else {
-		g = new Arduino_SSD1306(bus, resetPin, w, h);
-	}
-	tft = new Arduino_Canvas_Mono(w, h, g, 0, 0, true);
+	// Draw to canvas. We do our own OLED initialization and updating
+	// in order to support SH1106 128x128 displays.
+	tft = new Arduino_Canvas_Mono(w, h, NULL, 0, 0, true);
 	if (!tft->begin(400000)) {
+		oledAddr = 0;
 		freeDisplayController();
 		outputString("Display initialization failed!");
 	} else {
-		isMonochrome = true;
+		oledSetup(isOLED1106);
+		isOLED = true;
 		tftWidth = w;
 		tftHeight = h;
 		tftClear();
@@ -2003,9 +2070,10 @@ static OBJ primInitOLED(int argCount, OBJ *args) {
 	if (!(isInt(args[0]) && isInt(args[1]))) return fail(needsIntegerError);
 	int w = obj2int(args[0]);
 	int h = obj2int(args[1]);
-	int rstPin = mapDigitalPinNum(((argCount > 4) && isInt(args[4])) ? obj2int(args[4]) : -1);
+	int rstPin = mapDigitalPinNum(((argCount > 2) && isInt(args[2])) ? obj2int(args[2]) : -1);
+	int useSH1106 = (argCount > 3) && (args[3] == trueObj);
 
-	init_1306(w, h, rstPin);
+	init_OLED(w, h, rstPin, useSH1106);
 	return falseObj;
 }
 
