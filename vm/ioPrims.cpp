@@ -3251,7 +3251,8 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 	#include <time.h>
 
 	extern "C" void lightSleep(int msecs) {
-		sleep_ms(msecs);
+		// xxx does this interfere with WiFi? disabled for now.
+//		sleep_ms(msecs);
 	}
 
 	extern "C" void deepSleep(int secs) {
