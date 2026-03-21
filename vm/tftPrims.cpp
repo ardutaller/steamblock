@@ -1387,7 +1387,6 @@ static void drawText(OBJ value, int x, int y, int color16b, int scale, int wrap,
 		int count = UTF8ToCP437(obj2str(value), buffer, sizeof(buffer));
 		if (bgColor != -1) tft->fillRect(x, y, count * letterW, lineH, bgColor);
 		drawString(buffer, x, y, color16b, scale, wrap);
-		tft->print(buffer);
 	} else if (trueObj == value) {
 		if (bgColor != -1) tft->fillRect(x, y, 4 * letterW, lineH, bgColor);
 		drawString("true", x, y, color16b, scale, wrap);
