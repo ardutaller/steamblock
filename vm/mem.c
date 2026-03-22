@@ -50,7 +50,7 @@
 #elif defined(HAS_CAMERA)
 	#define OBJSTORE_BYTES 230000 // will be allocated from PSRAM
 #elif defined(ESP32_S2) || defined(ESP32_C3)
-	#define OBJSTORE_BYTES 32000 // https test: 80000 fails 50000 fails on https 35000 works
+	#define OBJSTORE_BYTES 28000 // https test: 80000 fails 50000 fails on https 35000 works
 #elif defined(ESP32_S3)
 	#define OBJSTORE_BYTES 64000
 #elif defined(ARDUINO_ARCH_ESP32)
