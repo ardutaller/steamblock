@@ -3206,13 +3206,19 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
  	#include <esp_sleep.h>
 
 	extern "C" void lightSleep(int msecs) {
-		#if defined(ESP32_S2) || defined(ESP32_C3)
-			setCpuFrequencyMhz(80); // S2 can C3 only support 80, 160, and 240 MHzßß
+		#if defined(ESP32_S2) || defined(ESP32_C3) || defined(ESP32_C6)
+			setCpuFrequencyMhz(80); // lowest safe clock speed on S2, C3, and C6 is 80 MHz
 		#else
 			setCpuFrequencyMhz(bleRunning ? 80 : 10); // must use 80 MHz if BLE is enabled
 		#endif
+
 		delay(msecs);
-		setCpuFrequencyMhz(240);
+
+		#if defined(ESP32_C3) || defined(ESP32_C6)
+			setCpuFrequencyMhz(160); // max clock speed on C3 and C6
+		#else
+			setCpuFrequencyMhz(240);
+		#endif
 	}
 
 	extern "C" void deepSleep(int secs) {
