@@ -63,24 +63,25 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		Wire.endTransmission(true);
 	}
 
-	static void oledSetup(int isSH1106) {
+	static void oledSetup(int flipVertical) {
 		// Minimal setup commands.
-		// isSH1106 flag is for 128x128 OLED display with an SH1106 controller.
 
-		oledCmd(0xAE); // display off
-		if (isSH1106) {
+		oledCmd(0xAE); // turn display off
+		oledCmd(0x8D); oledCmd(0x14); // Enable charge pump (8D 14)
+
+		if (flipVertical) {
 			oledCmd(0xA0); // flip horizontal A0/A1
 			oledCmd(0xC0); // flip vertical C0/C8'
 		} else {
 			oledCmd(0xA1); // flip horizontal A0/A1
 			oledCmd(0xC8); // flip vertical C0/C8'
 		}
+
 		delay(10);
-		oledCmd(0xAF); // display on
+		oledCmd(0xAF); // turn display on
 
 		// set to medium brightness
-		oledCmd(0x81);
-		oledCmd(0x80);
+		oledCmd(0x81); oledCmd(0x80);
 	}
 
 	static void i2cWriteBytes(uint8 *bytes, int byteCount) {
@@ -618,25 +619,21 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 			int response = readI2CReg(OLED_ADDR, 0); // test if OLED responds at OLED_ADDR
 			if (response < 0) return; // no OLED display detected
+			oledAddr = OLED_ADDR;
 			isOLED1106 = (8 == (response & 15));
 
-			Arduino_DataBus *bus = new Arduino_Wire(OLED_ADDR, 0x00, 0x40);
-			Arduino_G *g;
- 			if (isOLED1106) {
- 				g = new Arduino_SH1106(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
-			} else {
-				g = new Arduino_SSD1306(bus, TFT_RST, TFT_WIDTH, TFT_HEIGHT);
-			}
-			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, g, 0, 0, true);
-
-			if (!tft->begin(400000)) {
+			// Draw to canvas. We do our own OLED initialization and updating
+			// in order to support SH1106 128x128 displays.
+ 			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, NULL, 0, 0, true);
+			if (!tft->begin()) {
+				oledAddr = 0;
 				outputString("tftInit() failed!");
 			} else {
-				oledAddr = OLED_ADDR;
+				oledSetup(false);
+				isOLED = true;
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
 				tftClear();
-				isOLED = true;
 				useTFT = true;
 			}
 		}
@@ -1191,7 +1188,7 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 			if (brightness <= 0) {
 				oledCmd(0xAE); // turn off OLED
 			} else {
-				int oledLevel = (brightness * 20) - 10; // 10, 30, 50, ...
+				int oledLevel = (brightness * 17) - 10;
 				if (brightness == 10) oledLevel = 255;
 				if (oledLevel > 255) oledLevel = 255;
 				oledCmd(0x81);
@@ -1937,7 +1934,7 @@ static void init_9341(int rotation, int dcPin, int csPin, int blPin,
 	}
 }
 
-static void init_OLED(int w, int h, int resetPin, int useSH1106) {
+static void init_OLED(int w, int h, int resetPin, int flipVertical, int useSH1106) {
 	if ((w < 32) || (w > 128) || (h < 16) || (h > 128)) return;
 	if (!tft) delete tft;
 
@@ -1956,7 +1953,7 @@ static void init_OLED(int w, int h, int resetPin, int useSH1106) {
 			return; // no OLED display detected
 		}
 	}
-	isOLED1106 = useSH1106 || (8 == (response & 15));
+	isOLED1106 = useSH1106;
 
 	// Draw to canvas. We do our own OLED initialization and updating
 	// in order to support SH1106 128x128 displays.
@@ -1966,7 +1963,7 @@ static void init_OLED(int w, int h, int resetPin, int useSH1106) {
 		freeDisplayController();
 		outputString("Display initialization failed!");
 	} else {
-		oledSetup(isOLED1106);
+		oledSetup(flipVertical);
 		isOLED = true;
 		tftWidth = w;
 		tftHeight = h;
@@ -2071,9 +2068,10 @@ static OBJ primInitOLED(int argCount, OBJ *args) {
 	int w = obj2int(args[0]);
 	int h = obj2int(args[1]);
 	int rstPin = mapDigitalPinNum(((argCount > 2) && isInt(args[2])) ? obj2int(args[2]) : -1);
-	int useSH1106 = (argCount > 3) && (args[3] == trueObj);
+	int flipVertical = (argCount > 3) && (args[3] == trueObj);
+	int useSH1106 = (argCount > 4) && (args[4] == trueObj);
 
-	init_OLED(w, h, rstPin, useSH1106);
+	init_OLED(w, h, rstPin, flipVertical, useSH1106);
 	return falseObj;
 }
 
