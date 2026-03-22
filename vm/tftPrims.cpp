@@ -605,7 +605,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 	#elif defined(SCOUT_MAKES_AZUL) || defined(OLED_128_64)
 		#define OLED_ADDR 0x3C
-		#define TFT_RST GFX_NOT_DEFINED
 		#define TFT_WIDTH 128
 		#if defined(SCOUT_MAKES_AZUL)
 			#define TFT_HEIGHT 32
@@ -1934,7 +1933,7 @@ static void init_9341(int rotation, int dcPin, int csPin, int blPin,
 	}
 }
 
-static void init_OLED(int w, int h, int resetPin, int flipVertical, int useSH1106) {
+static void init_OLED(int w, int h, int flipVertical, int useSH1106) {
 	if ((w < 32) || (w > 128) || (h < 16) || (h > 128)) return;
 	if (!tft) delete tft;
 
@@ -2067,11 +2066,10 @@ static OBJ primInitOLED(int argCount, OBJ *args) {
 	if (!(isInt(args[0]) && isInt(args[1]))) return fail(needsIntegerError);
 	int w = obj2int(args[0]);
 	int h = obj2int(args[1]);
-	int rstPin = mapDigitalPinNum(((argCount > 2) && isInt(args[2])) ? obj2int(args[2]) : -1);
-	int flipVertical = (argCount > 3) && (args[3] == trueObj);
-	int useSH1106 = (argCount > 4) && (args[4] == trueObj);
+	int flipVertical = (argCount > 2) && (args[2] == trueObj);
+	int useSH1106 = (argCount > 3) && (args[3] == trueObj);
 
-	init_OLED(w, h, rstPin, flipVertical, useSH1106);
+	init_OLED(w, h, flipVertical, useSH1106);
 	return falseObj;
 }
 
