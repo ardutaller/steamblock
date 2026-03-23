@@ -519,7 +519,7 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 		if (IS_TYPE(args[1], StringType)) port = atoi(obj2str(args[1]));
 	}
 
-	if (activeHttpClient->connected()) activeHttpClient->stop(); // in case previous connection is still active
+	if (httpClient.connected()) httpClient.stop(); // in case previous connection is still active
 
 	uint32 start = millisecs();
 	const int timeout = 3000;
@@ -564,9 +564,10 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 		if (IS_TYPE(args[1], StringType)) port = atoi(obj2str(args[1]));
 	}
 
-	if (activeHttpClient->connected()) activeHttpClient->stop(); // in case previous connection is still active
+	if (httpClient.connected()) httpClient.stop(); // in case previous connection is still active
 
 	#if HAS_HTTPS_CLIENT
+		if (httpsClient.connected()) httpsClient.stop();
 		httpsClient.setInsecure();
 		activeHttpClient = &httpsClient;
 	#endif

@@ -3202,15 +3202,27 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 
 #if defined(ESP32)
  	#include <esp32-hal-cpu.h> // setCpuFrequencyMhz() and friends
+ 	#include <esp_sleep.h>
 
 	extern "C" void lightSleep(int msecs) {
-		#if defined(ESP32_S2) || defined(ESP32_C3)
-			setCpuFrequencyMhz(80); // S2 can C3 only support 80, 160, and 240 MHzßß
+		#if defined(ESP32_S2) || defined(ESP32_C3) || defined(ESP32_C6)
+			setCpuFrequencyMhz(80); // lowest safe clock speed on S2, C3, and C6 is 80 MHz
 		#else
 			setCpuFrequencyMhz(bleRunning ? 80 : 10); // must use 80 MHz if BLE is enabled
 		#endif
+
 		delay(msecs);
-		setCpuFrequencyMhz(240);
+
+		#if defined(ESP32_C3) || defined(ESP32_C6)
+			setCpuFrequencyMhz(160); // max clock speed on C3 and C6
+		#else
+			setCpuFrequencyMhz(240);
+		#endif
+	}
+
+	extern "C" void deepSleep(int secs) {
+		esp_sleep_enable_timer_wakeup(1000000 * (uint64_t) secs);
+		esp_deep_sleep_start();
 	}
 
 #elif defined(ESP8266)
@@ -3222,7 +3234,8 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 		system_update_cpu_freq(160);
 	}
 
-	extern "C" void esp8266DeepSleep(uint64_t usecs) {
+	extern "C" void deepSleep(int secs) {
+		uint64_t usecs = 1000000 * secs;
 		uint64_t maxSleep = ESP.deepSleepMax() - 10000;
 		if (usecs > maxSleep) usecs = maxSleep;
 		ESP.deepSleep(usecs);
@@ -3235,16 +3248,26 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 		LowPower.idle(msecs);
 	}
 
+	extern "C" void deepSleep(int secs) {
+		// not yet implemented
+	}
+
 #elif defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
 	#include <time.h>
 
 	extern "C" void lightSleep(int msecs) {
-		sleep_ms(msecs);
+		// xxx does this interfere with WiFi? disabled for now.
+//		sleep_ms(msecs);
+	}
+
+	extern "C" void deepSleep(int secs) {
+		// not yet implemented
 	}
 
 #else
 
 	extern "C" void lightSleep(int msecs) { } // stub
+	extern "C" void deepSleep(int secs) { } // stub
 
 #endif
 
