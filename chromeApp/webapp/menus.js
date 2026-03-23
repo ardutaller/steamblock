@@ -96,19 +96,16 @@ Menus.settings = {
 			label: 'install ESP firmware from URL',
 			action: () => { GP.apiCall('board.installVMfromURL'); },
 			hidden: () => { return !IDE.userPreference('devMode'); },
-			disabled: () => { return !IDE.board.connected; }
 		},
 		{
 			label: 'install ESP firmware from microblocks.fun',
 			action: () => { GP.apiCall('board.installVMfromRepo'); },
 			hidden: () => { return !IDE.userPreference('devMode'); },
-			disabled: () => { return !IDE.board.connected; }
 		},
 		{
 			label: 'erase flash and update firmware on ESP board',
 			action: () => { GP.apiCall('board.installVM', [true, false]); },
 			hidden: () => { return !IDE.userPreference('devMode'); },
-			disabled: () => { return !IDE.board.connected; }
 		},
 		{ label: '-', hidden: () => { return !IDE.userPreference('devMode'); } },
 		{

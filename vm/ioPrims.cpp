@@ -1406,6 +1406,9 @@ void hardwareInit() {
 
 #elif defined(ARDUINO_WEACT)
 	#define BOARD_TYPE "WeAct STM32H743"
+	#define PIN_BUTTON_A 47
+	#undef BUTTON_PRESSED
+	#define BUTTON_PRESSED HIGH
 	#define DIGITAL_PINS 82
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 82
