@@ -18,6 +18,13 @@
 // TFT primitives are not supported
 #define NO_EXTERNAL_DISPLAY_PRIMS
 
+#elif defined(ARDUINO_WEACT)
+#include <Adafruit_GFX.h>
+#define draw16bitRGBBitmap drawRGBBitmap
+Adafruit_GFX *tft;
+#define NO_EXTERNAL_DISPLAY_PRIMS
+#define HAS_TFT_PRIMS true
+
 #elif defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE)
 
 #include <Adafruit_GFX.h>
@@ -34,6 +41,7 @@ Arduino_GFX *tft;
 #define HAS_TFT_PRIMS true
 
 #endif
+
 
 int useTFT = false; // true means simulate 5x5 LED display on TFT display
 int isOLED1106 = false;
@@ -136,8 +144,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
- 					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
+			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
+					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
 			} else {
@@ -155,7 +163,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
+			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
@@ -414,7 +422,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			AXP192_begin();
 
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, true);
+			tft = new Arduino_ILI9341(bus, TFT_RST, 1, true);
 
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
@@ -508,7 +516,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		Adafruit_ST7789 display = Adafruit_ST7789(&SPI1, TFT_CS, TFT_DC, TFT_RST);
 
 		void tftInit() {
-			display.init(240, 240);
+			display.init(TFT_WIDTH, TFT_HEIGHT);
 			display.setRotation(1);
 			display.fillScreen(0);
 			uint8_t rtna = 0x01; // Screen refresh rate control (datasheet 9.2.18, FRCTRL2)
@@ -526,10 +534,45 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tftWidth = TFT_WIDTH;
 			tftHeight = TFT_HEIGHT;
 			useTFT = true;
- 		}
+		}
+
+	#elif defined(ARDUINO_WEACT)
+		#include "Adafruit_ST7735.h"
+
+		#define TFT_MOSI	72
+		#define TFT_SCLK	70
+		#define TFT_CS		69
+		#define TFT_DC		71
+		#define TFT_RST		NULL
+		#define TFT_WIDTH	160
+		#define TFT_HEIGHT	80
+		#define TFT_BL		68
+
+		Adafruit_ST7735 display = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+
+		void tftInit() {
+			pinMode(TFT_CS, OUTPUT);
+			pinMode(TFT_BL, OUTPUT);
+
+			display.initSPI(27000000, SPI_MODE1);
+			display.initR(INITR_MINI160x80_PLUGIN);
+
+			display.setRotation(1);
+			display.fillScreen(0);
+
+			tft = &display;
+
+			tftWidth = TFT_WIDTH;
+			tftHeight = TFT_HEIGHT;
+			useTFT = true;
+		}
+
+		#define UPDATE_DISPLAY() {}
+		#undef oledCmd
+		#define oledCmd(cmd) {}
 
 	#elif defined(ARDUINO_IOT_BUS)
- 		#include <XPT2046_Touchscreen.h>
+		#include <XPT2046_Touchscreen.h>
 
 		#define HAS_TOUCH_SCREEN 1
 		#define TOUCH_CS_PIN 16
@@ -541,7 +584,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
+			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
@@ -623,7 +666,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 			// Draw to canvas. We do our own OLED initialization and updating
 			// in order to support SH1106 128x128 displays.
- 			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, NULL, 0, 0, true);
+			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, NULL, 0, 0, true);
 			if (!tft->begin()) {
 				oledAddr = 0;
 				outputString("tftInit() failed!");
@@ -673,7 +716,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_HEIGHT 128
 
 		void tftInit() {
- 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
 			tft = new Arduino_ST7735(bus, TFT_RST, 3, false,
 					TFT_WIDTH, TFT_HEIGHT);
 			if (!tft->begin()) {
@@ -1174,6 +1217,11 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		pinMode(34, OUTPUT);
 		analogWrite(34, brightness * 25); // nRF5x boards use 8-bit analogWrite resolution
 	#elif defined(TTGO_RP2040)
+		pinMode(TFT_BL, OUTPUT);
+		if (brightness < 0) brightness = 0;
+		if (brightness > 10) brightness = 10;
+		analogWrite(TFT_BL, brightness * 25);
+	#elif defined(ARDUINO_WEACT)
 		pinMode(TFT_BL, OUTPUT);
 		if (brightness < 0) brightness = 0;
 		if (brightness > 10) brightness = 10;
