@@ -285,6 +285,7 @@ OBJ charAt(OBJ stringObj, int i);
 int unicodeCodePoint(char *s);
 char *nextUTF8(char *s);
 int UTF8ToCP437(char* src, char* dst, int dstSize);
+int codepointToCP437(int codepoint);
 
 extern const unsigned char mbFont[];
 
