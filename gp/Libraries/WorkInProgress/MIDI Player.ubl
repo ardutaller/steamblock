@@ -3,13 +3,15 @@ author MicroBlocks
 version 1 1 
 depends _Files _MIDI 
 description 'Simple MIDI file player.
+
+Assumes the MIDI file is single-track format and contains exactly one track.
 '
 variables _midi_division _midi_bpm _midi_file 
 
-  spec ' ' 'play midi file' 'play midi file _ tempo _ BPM' 'str num' 'piano.mid' 120
+  spec ' ' 'midi_playFile' 'play midi file _ tempo _ BPM' 'str num' 'piano.mid' 120
   space
   spec ' ' '_midi_playLoop' '_midi_playLoop'
-  spec 'r' '_midi_byteArrayToInteger' 'byte array _ to integer' 'auto' ''
+  spec 'r' '_midi_byteArrayToInteger' '_midi_byteArray _ to integer' 'auto' ''
   spec 'r' '_midi_nextMIDIMessage' '_midi_nextMIDIMessage'
   spec 'r' '_midi_readValue' '_midi_readValue'
 
@@ -76,7 +78,7 @@ to '_midi_readValue' {
   return value
 }
 
-to 'play midi file' 'file name' BPM {
+to midi_playFile 'file name' BPM {
   _midi_file = (v 'file name')
   _midi_bpm = BPM
   '[file:open]' _midi_file
