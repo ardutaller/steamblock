@@ -22,14 +22,16 @@
 
 // Variables
 
-static char fullPath[32]; // used to prefix "/" to file names
+// The LittleFS maxium path is 256 but we don't want to use too much RAM so limit it to 128.
+#define MAX_PATH_LENGTH 128
+static char fullPath[MAX_PATH_LENGTH + 1]; // used to prefix "/" to file names
 
 typedef struct {
-	char fileName[32];
+	char fileName[MAX_PATH_LENGTH];
 	File file;
 } FileEntry;
 
-#define FILE_ENTRIES 8
+#define FILE_ENTRIES 4
 static FileEntry fileEntry[FILE_ENTRIES]; // fileEntry[] records open files
 
 // Helper functions
