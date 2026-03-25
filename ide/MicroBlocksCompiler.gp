@@ -347,6 +347,7 @@ method microBlocksSpecs SmallCompiler {
 		(array 'r' '[file:fileSize]'		'size of file _' 'str')
 		(array ' ' '[file:startList]'		'start file list _' 'str' 'dir')
 		(array 'r' '[file:nextInList]'		'next file in list')
+		(array 'r' '[file:nextDirInList]'	'next directory in list')
 		(array 'r' '[file:systemInfo]'		'file system info')
 
 		(array ' ' '[radio:sendInteger]'			'radio send number _' 'num' 123)
