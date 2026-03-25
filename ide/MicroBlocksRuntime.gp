@@ -2347,7 +2347,6 @@ method handleMessage SmallRuntime msg {
 			print (returnedValue this msg)
 		} (chunkID == 254) {
 			notify api 'graph.data' (returnedValue this msg)
-			//addLoggedData this (toString (returnedValue this msg))
 		} else {
 			showResult this chunkID (returnedValue this msg) false true
 		}
@@ -2378,7 +2377,7 @@ method handleMessage SmallRuntime msg {
 	} (op == (msgNameToID this 'fileChunk')) {
 		recordFileTransferMsg this (copyFromTo msg 6)
 	} (op == (msgNameToID this 'clearGraphMsg')) {
-		clearLoggedData this
+		notify api 'graph.clear'
 	} else {
 		print 'msg:' (toArray msg)
 	}

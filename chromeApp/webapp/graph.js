@@ -256,10 +256,11 @@ Graph.importData = function () {
 
 document.addEventListener(
 	'graph.data',
-	(e) => {
-		Graph.addDataPoints(e.detail.value.split(' '));
-	}
+	e => { Graph.addDataPoints(e.detail.value.split(' ')); }
 );
+
+document.addEventListener('graph.clear', e => { Graph.clear(); });
+
 
 // Graph context menu
 
