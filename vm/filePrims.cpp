@@ -372,13 +372,14 @@ static String nextFileName(bool *isDir) {
 static OBJ primNextFileInList(int argCount, OBJ *args) {
 	bool isDir;
 	String fName = nextFileName(&isDir);
-	while (fName.length() && isDir) {
-		fName = nextFileName(&isDir); // skip directories
+	while (fName.length() && (isDir || (fName == "ublockscode") || (fName == "/ublockscode"))) {
+		fName = nextFileName(&isDir); // skip directories and MicroBlocks code store file
 	}
 	#if defined(ESP32)
 		if (fName.length() == 0) fileListDir.close();
 	#endif
 
+	taskSleep(-1);
 	return newStringFromBytes(fName.c_str(), fName.length());
 }
 
@@ -392,6 +393,7 @@ static OBJ primNextDirInList(int argCount, OBJ *args) {
 		if (fName.length() == 0) fileListDir.close();
 	#endif
 
+	taskSleep(-1);
 	return newStringFromBytes(fName.c_str(), fName.length());
 }
 
