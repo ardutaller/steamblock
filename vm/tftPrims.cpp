@@ -53,7 +53,7 @@ static int deferUpdates = false;
 #define BUFFER_PIXELS_SIZE 480 // maximum display width
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
-#if !(defined(PICO_ED) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
+#if !(defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
 	// Helper functions for OLED displays.
 
 	static void oledCmd(uint8 cmd) {
@@ -124,6 +124,11 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			taskSleep(-1);
 		}
 	}
+
+#else
+
+	static void inline UPDATE_DISPLAY() { taskSleep(-1); }
+	static void oledCmd(uint8 cmd) { } // stub
 
 #endif // OLED helper functions
 
