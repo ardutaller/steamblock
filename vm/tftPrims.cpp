@@ -572,7 +572,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			useTFT = true;
 		}
 
-		#define UPDATE_DISPLAY() {}
+		#define UPDATE_DISPLAY() { taskSleep(10); }
 		#undef oledCmd
 		#define oledCmd(cmd) {}
 
