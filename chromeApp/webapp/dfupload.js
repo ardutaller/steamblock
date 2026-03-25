@@ -16,6 +16,13 @@ const DFUpload = {
 			pageSize: 1048576,
 			flashSize: 2097152,
 			filter: { vendorId: 1155, productId: 57105 }
+		},
+		'DueLink': {
+			name: 'DueLink',
+			vmFileName: 'vm_duelink.bin',
+			pageSize: 2048,
+			flashSize: 131072,
+			filter: { vendorId: 1155 }
 		}
 	}
 };
@@ -31,7 +38,7 @@ DFUpload.flashBoard = function (boardName) {
 		() => { dfu.disconnect(); }, // onCancel
 	);
 
-	fetch(`precompiled/vm_weact_stm32.bin`)
+	fetch(`precompiled/${board.vmFileName}`)
 		.then(res => res.arrayBuffer())
 		.then(buffer => {
 			if (buffer) {
