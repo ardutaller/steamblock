@@ -2,9 +2,13 @@ FloatingWindow.graph = function () {
 	// only one Graph window allowed
 	if (Graph.isOpen()) { return; }
 
+	if (!Graph.body) { Graph.build(); }
+
 	let win = new FloatingWindow({
 		title: 'Data Graph',
-		body: Graph.build(),
+		body: Graph.body,
+		width: Graph.width + 51,
+		height: Graph.height + 96,
 		resizable: true,
 		onResize: Graph.resize,
 		onOpen: () => {
@@ -15,6 +19,7 @@ FloatingWindow.graph = function () {
 		},
 		target: Graph
 	});
+
 	win.popUp();
 	return win;
 };
@@ -66,6 +71,9 @@ Graph.build = function () {
 
 	container.appendChild(this.canvas);
 	container.appendChild(this.controls);
+
+	this.body = container;
+
 	return container;
 };
 
