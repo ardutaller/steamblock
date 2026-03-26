@@ -361,8 +361,8 @@ static OBJ primStartFileList(int argCount, OBJ *args) {
 		if (dirPath[0] == '/') dirPath++; // skip leading slash, if any
 	}
 	EM_ASM_({
-		window.dirPath = UTF8ToString($0);
 		window.currentFileIndex = 0;
+		window.dirPath = UTF8ToString($0);
 		window.lastDir = "";
 	}, dirPath);
 	return falseObj;
@@ -373,14 +373,22 @@ static OBJ primNextFileInList(int argCount, OBJ *args) {
 	char *s = fileName;
 	EM_ASM_({
 		var origin = window.useSessionStorage ? 'session' : 'local';
-		var fileNames =
-			Object.keys(
-				window[origin + 'Storage']).filter(fn => fn !== 'user-prefs');
-		if (window.currentFileIndex === undefined) { window.currentFileIndex = 0; }
+		var fileNames = Object.keys(
+			window[origin + 'Storage']).filter(fn =>
+				((fn !== 'user-prefs') && !fn.startsWith('-snap-')));
+		if (window.currentFileIndex === undefined) {
+			// initialize file list variables in case primStartFileList was not called
+			window.currentFileIndex = 0;
+			window.dirPath = "";
+			window.lastDir = "";
+		}
 		stringToUTF8("", $0, 100); // init result to empty string
 		while (window.currentFileIndex < fileNames.length) {
 			var path = fileNames[window.currentFileIndex];
-			if (path.startsWith(window.dirPath) && (path.length > window.dirPath.length)) {
+			if (path.startsWith(window.dirPath) &&
+				(path.length > window.dirPath.length) &&
+				(!path.includes('/', window.dirPath.length + 1)))
+			{
 				stringToUTF8(path, $0, 100);
 				window.currentFileIndex ++;
 				break;
@@ -399,22 +407,29 @@ static OBJ primNextDirInList(int argCount, OBJ *args) {
 		var fileNames =
 			Object.keys(
 				window[origin + 'Storage']).filter(fn => fn !== 'user-prefs');
-		if (window.currentFileIndex === undefined) { window.currentFileIndex = 0; }
+		if (window.currentFileIndex === undefined) {
+			// initialize file list variables in case primStartFileList was not called
+			window.currentFileIndex = 0;
+			window.dirPath = "";
+			window.lastDir = "";
+		}
 		stringToUTF8("", $0, 100); // init result to empty string
 		while (window.currentFileIndex < fileNames.length) {
 			var path = fileNames[window.currentFileIndex];
 			if (path.startsWith(window.dirPath)) {
-				var i = path.lastIndexOf('/');
-				if (i > 0) {
-					path = path.substring(0, i);
-					if ((path != window.lastDir) && (path != window.dirPath)) {
-						stringToUTF8(path, $0, 100);
-						window.lastDir = path;
+				var dirName = path.substring(window.dirPath.length);
+				if (dirName.startsWith('/')) dirName = dirName.substring(1);
+				var i = dirName.indexOf('/');
+				if ((i > 0) && !dirName.includes('/', i + 1)) {
+					dirName = dirName.substring(0, i);
+					if ((dirName != window.lastDir) && (dirName != window.dirPath)) {
+						stringToUTF8(dirName, $0, 100);
+						window.lastDir = dirName;
 						break;
 					}
 				}
 			}
-			window.currentFileIndex ++;
+			window.currentFileIndex++;
 		}
 	}, s);
 	return newStringFromBytes(s, strlen(s));
