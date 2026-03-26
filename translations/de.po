@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-03-09 14:18+0000\n"
+"PO-Revision-Date: 2026-03-27 19:09+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8287,7 +8287,7 @@ msgstr "Vierstellige Anzeige (TM1650)"
 
 #. Library name
 msgid "TFT"
-msgstr "TfT"
+msgstr "TFT"
 
 #. Library name
 msgid "CoCube Module"
