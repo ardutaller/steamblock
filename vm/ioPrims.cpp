@@ -936,7 +936,7 @@ void hardwareInit() {
 	#else
 		#define BOARD_TYPE "Springbot Green"
 	#endif
-	#define DIGITAL_PINS 43
+	#define DIGITAL_PINS 41
 	#define ANALOG_PINS 20
 	#define TOTAL_PINS 43
 	static const int analogPin[] = {};
@@ -947,6 +947,28 @@ void hardwareInit() {
 	#define DEFAULT_TONE_PIN 33 // maps to speaker pin
 	#undef PIN_NEOPIXEL
 	#define PIN_NEOPIXEL 39
+
+	// Special pins (MicroBlocks pin numbers):
+	// 21 - red LED (GPIO 40)
+	// 22 - Neopixel (GPIO 29)
+	// 23 - buzzer (GPIO 33)
+	// 24 - phototransistor (GPIO 7)
+	// 25 - SD Card CS (GPIO 34)
+	// 26 - IMU interrupt (GPIO 21)
+	// 27 - touch button A (GPIO 11)
+	// 28 - touch button B (GPIO 12)
+	// 29 - touch button logo (GPIO 13)
+	// 30 - double-tap (GPIO 42)
+	// 31-35 - 5x5 LED row pins (Springbot Green only) (GPIO 8, 17, 10, 38, 6)
+	// 36-40 - 5x5 LED column pins (Springbot Green only) (GPIO 3, 2, 14, 15, 16)
+	// Note: 255 entries in the digitalPin[] array indicate unused pins.
+	#define USE_DIGITAL_PIN_MAP true
+	static const char digitalPin[DIGITAL_PINS] = {
+		  1,   9, 18, 255, 255, 255, 41, 255,  44, 255,
+		255, 255,  0,  36,  37,  35, 43, 255, 255,   4,
+		  5,  40, 39,  33,   7,  34, 21,  11,  12,  13,
+		 42,   8,  17, 10,  38,   6,  3,   2,  14,  15,
+		 16};
 
 	// See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
 	// strapping pins 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG)
