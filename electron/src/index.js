@@ -39,8 +39,8 @@ function bleSelectMenu(portList, callback) {
 	bleMenu.popup({callback: bleMenuClosed});
 }
 
-function usbSelectMenu(portList, callback) {
-	function usbPortSelected(menuItem, window, event) {
+function serialSelectMenu(portList, callback) {
+	function serialPortSelected(menuItem, window, event) {
 		callback(menuItem.id);
 	}
 
@@ -48,11 +48,26 @@ function usbSelectMenu(portList, callback) {
 	for (var i = 0; i < portList.length; i++) {
 		var item = portList[i];
 		var fullName = item.displayName + ' (' + item.portName + ')';
-		myMenu.append(new MenuItem({label: fullName, click: usbPortSelected, id: item.portId}));
+		myMenu.append(new MenuItem({label: fullName, click: serialPortSelected, id: item.portId}));
 	}
 	myMenu.append(new MenuItem({type: 'separator'}));
 	myMenu.append(new MenuItem({label: 'cancel'}));
 	myMenu.popup();
+}
+
+function usbSelectMenu(deviceList, callback) {
+	function itemSelected(menuItem, window, event) {
+		callback(menuItem.id);
+	}
+
+	let usbMenu = new Menu();
+	for (var i = 0; i < deviceList.length; i++) {
+		var item = deviceList[i];
+		usbMenu.append(new MenuItem({label: item.productName, click: itemSelected, id: item.deviceId}));
+	}
+	usbMenu.append(new MenuItem({type: 'separator'}));
+	usbMenu.append(new MenuItem({label: 'cancel'}));
+	usbMenu.popup();
 }
 
 const createWindow = () => {
@@ -69,12 +84,12 @@ const createWindow = () => {
 
 	mainWindow.webContents.session.setPermissionCheckHandler(
 		(webContents, permission, requestingOrigin, details) => {
-			return (permission === 'serial');
+			return (permission === 'serial' || permission === 'usb');
 		}
 	);
 
 	mainWindow.webContents.session.setDevicePermissionHandler((details) => {
-		return (details.deviceType === 'serial');
+		return (details.deviceType === 'serial' || details.deviceType === 'usb');
 	});
 
 	// Force-quit electron when window is closed (needed on MacOS).
@@ -86,14 +101,21 @@ const createWindow = () => {
 		'select-serial-port',
 		(event, portList, webContents, callback) => {
 			event.preventDefault();
-			usbSelectMenu(portList, callback);
+			serialSelectMenu(portList, callback);
+	});
+
+	mainWindow.webContents.session.on(
+		'select-usb-device',
+		(event, details, callback) => {
+			event.preventDefault();
+			usbSelectMenu(details.deviceList, callback);
 	});
 
 	mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
-		// When the user requests a a BLE connection, this function is called repeatedly
+		// When the user requests a BLE connection, this function is called repeatedly
 		// until the callback function is called. The number devices in the device list
-		// grows over time as additional devices are discovered. The current stategy is to
-		// wait a litte, then present of menu of the devices that have been discovered
+		// grows over time as additional devices are discovered. The current strategy is to
+		// wait a little, then present a menu of the devices that have been discovered
 		// up to that point.
 
 		event.preventDefault();

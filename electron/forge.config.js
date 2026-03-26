@@ -9,7 +9,7 @@ module.exports = {
 		asar: true,
 		afterCopyExtraResources: [
 			(bPath, eVer, platform, arch, done) => {
-				['translations', 'img'].forEach(part => {
+				['translations', 'img', 'precompiled'].forEach(part => {
 					let dirpath;
 					if (platform == 'darwin') {
 						dirPath = path.join(
