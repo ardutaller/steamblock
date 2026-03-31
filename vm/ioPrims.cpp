@@ -944,7 +944,7 @@ void hardwareInit() {
 	#define PIN_LED 40
 	#define PIN_BUTTON_A 11
 	#define PIN_BUTTON_B 12
-	#define DEFAULT_TONE_PIN 33 // maps to speaker pin
+	#define DEFAULT_TONE_PIN 23 // maps to speaker pin, GPIO 33
 	#undef PIN_NEOPIXEL
 	#define PIN_NEOPIXEL 39
 
