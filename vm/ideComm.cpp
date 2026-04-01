@@ -566,6 +566,7 @@ void BLE_start() {
 	// start BLE and advertising
 	BTstack.setup();
 	BLE_resumeAdvertising();
+	show_BLE_ID();
 	bleRunning = true;
 }
 

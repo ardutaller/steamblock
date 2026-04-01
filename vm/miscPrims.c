@@ -456,6 +456,7 @@ static OBJ primShapeforChar(int argCount, OBJ *args) {
 		// argument is a non-empty string; use its first (and usually only) byte
 		ch = unicodeCodePoint(obj2str(arg));
 	}
+	if (ch < 32) return zeroObj; // ignore non-printing ASCII characters
 
 	// create byte array
 	OBJ result = newObj(ByteArrayType, 2, falseObj); // two words, up to 8 bytes

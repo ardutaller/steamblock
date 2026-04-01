@@ -2202,15 +2202,25 @@ static OBJ primTouchRead(int argCount, OBJ *args) {
 #else
 
 static OBJ primTouchRead(int argCount, OBJ *args) {
-	uint8 esp32TouchPins[10] = {0, 2, 4, 12, 13, 14, 15, 27, 32, 33};
+	if (argCount < 1) return fail(notEnoughArguments);
+
 	int gpioPin = mapDigitalPinNum(obj2int(args[0]));
-	if (gpioPin < 0) return int2obj(999); // illegal pin; no touch
-	for (int i = 0; i < sizeof(esp32TouchPins); i++) {
-		if (gpioPin == esp32TouchPins[i]) {
+	if (gpioPin < 0) return int2obj(999); // reserved or out-of-range pin number
+
+	#if defined(ESP32_S2) || defined(ESP32_S3)
+		if ((1 <= gpioPin) && (gpioPin <= 14)) {
 			return int2obj(touchRead(gpioPin));
 		}
-	}
-	return zeroObj; // gpioPin is not an ESP32 touch pin
+	#elif defined(ESP32_ORIGINAL)
+		uint8 esp32TouchPins[10] = {0, 2, 4, 12, 13, 14, 15, 27, 32, 33};
+		for (int i = 0; i < sizeof(esp32TouchPins); i++) {
+			if (gpioPin == esp32TouchPins[i]) {
+				return int2obj(touchRead(gpioPin));
+			}
+		}
+	#endif
+
+	return int2obj(999); // gpioPin is not an ESP32 touch pin on this chip
 }
 
 #endif
