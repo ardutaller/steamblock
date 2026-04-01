@@ -13,7 +13,7 @@ TODO
 [ ] Proposar la opció d'amagar els tips (Advanced mode?)
 [ ] Discutir si els colors de les categories van a JS o CSS (libraries...)
 [ ] Estilar progress
-[ ] Windows: Quan fas el primer resize es lia un pollastre
+[x] Windows: Quan fas el primer resize es lia un pollastre
 [ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
 [ ] Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
 [x] Als context menu amb checks que són single option, afegir classe --single-option
@@ -21,3 +21,5 @@ TODO
 [x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen classe --script
 [ ] Cantonada xunga en finestres quan en dark mode
 [ ] Estilitzar overlay modal amb spinner
+[ ] Revisar padding de finestra Graph
+[ ] Fer category pane redimensionable (o collapsible)
