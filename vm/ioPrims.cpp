@@ -1763,7 +1763,15 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 	if ((pinNum < 0) || (pinNum >= ANALOG_PINS)) return int2obj(0);
 	int pin = analogPin[pinNum];
 	SET_MODE(pin, mode);
-	return int2obj(analogRead(pin));
+	int result = analogRead(pin);
+
+	#if defined(NRF52)
+		// disconnect pin from ADC so it can be used for other pin operations
+		NRF_SAADC->CH[0].PSELN = SAADC_CH_PSELP_PSELP_NC;
+		NRF_SAADC->CH[0].PSELP = SAADC_CH_PSELP_PSELP_NC;
+	#endif
+
+	return int2obj(result);
 }
 
 #if defined(ESP32)
