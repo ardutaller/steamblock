@@ -1766,7 +1766,15 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 	if ((pinNum < 0) || (pinNum >= ANALOG_PINS)) return int2obj(0);
 	int pin = analogPin[pinNum];
 	SET_MODE(pin, mode);
-	return int2obj(analogRead(pin));
+	int result = analogRead(pin);
+
+	#if defined(NRF52)
+		// disconnect pin from ADC so it can be used for other pin operations
+		NRF_SAADC->CH[0].PSELN = SAADC_CH_PSELP_PSELP_NC;
+		NRF_SAADC->CH[0].PSELP = SAADC_CH_PSELP_PSELP_NC;
+	#endif
+
+	return int2obj(result);
 }
 
 #if defined(ESP32)
@@ -2823,6 +2831,69 @@ static int writeDAC(int sample) { return 0; }
 
 #endif
 
+// Experimental LEDC PWM audio output
+
+#if defined(ESP32)
+
+#include <driver/sigmadelta.h>
+
+#define LEDC_AUDIO_CHANNEL 5
+static int pwmAudioInitialized = false;
+static int pwmAudioMaxSample = 0;
+
+static OBJ primPWMAudioInit(int argCount, OBJ *args) {
+	// Sampling rate is 40 MHz / 2^resolution:
+	//	 8 bits, 156250 kSamples/sec
+	//	 9 bits, 78125 kSamples/sec
+	//	10 bits, 39062 kSamples/sec
+	//	11 bits, 19531 kSamples/sec
+	// 9-bit at 78k sounds good up for a 6 kHz sine wave with no low-pass filter on output
+	// Have not tested the different sample rates with a low-pass filter.
+
+	if (argCount < 2) return fail(notEnoughArguments);
+	if (!isInt(args[0]) || !isInt(args[0])) return fail(needsIntegerError);
+
+	int outputPin = obj2int(args[0]);
+	int resolution = obj2int(args[1]);
+	if (resolution < 8) resolution = 8;
+	if (resolution > 11) resolution = 11;
+
+	int sampleRate = 40000000 / (1 << resolution);
+	pwmAudioMaxSample = (1 << resolution) - 1;
+
+	int rc = ledcSetup(LEDC_AUDIO_CHANNEL, sampleRate, resolution);
+	ledcAttachPin(outputPin, LEDC_AUDIO_CHANNEL);
+	pwmAudioInitialized = true;
+
+	return falseObj;
+}
+
+static OBJ primPWMAudioOut(int argCount, OBJ *args) {
+	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
+
+	int signed16bit = obj2int(args[0]); // signed 16-bit sample
+
+	if (!pwmAudioInitialized) {
+		outputString("PWM Audio not initialized");
+		return falseObj;
+	}
+
+	// convert 16-bit signed to 9-bit unsigned output
+	int pwm = (signed16bit >> 7) + 256;
+	if (pwm < 0) pwm = 0;
+	if (pwm > pwmAudioMaxSample) pwm = pwmAudioMaxSample;
+
+	ledcWrite(LEDC_AUDIO_CHANNEL, pwm);
+	return falseObj;
+}
+
+#else
+
+static OBJ primPWMAudioInit(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
+static OBJ primPWMAudioOut(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
+
+#endif
+
 // Tone Primitives
 
 #ifndef DEFAULT_TONE_PIN
@@ -3303,6 +3374,8 @@ static OBJ primAnalogWrite2(int argCount, OBJ *args) { primAnalogWrite(args); re
 static OBJ primDigitalWrite2(int argCount, OBJ *args) { primDigitalWrite(args); return falseObj; }
 
 static PrimEntry entries[] = {
+	{"pwmAudioOut", primPWMAudioOut},
+	{"pwmAudioInit", primPWMAudioInit},
 	{"hasTone", primHasTone},
 	{"playTone", primPlayTone},
 	{"hasServo", primHasServo},
