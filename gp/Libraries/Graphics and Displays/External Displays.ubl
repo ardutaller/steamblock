@@ -1,6 +1,6 @@
 module 'External Displays' Output
 author MicroBlocks
-version 1 5 
+version 1 6 
 description 'This library supports connecting selected external displays to MicroBlocks boards.
 
 * Only selected display controllers are supported.
@@ -18,3 +18,26 @@ description 'This library supports connecting selected external displays to Micr
   spec ' ' '[tft:closeDisplay]' 'detach display'
   space
   spec ' ' '[tft:setDisplaySPIPins]' 'set display SPI clk pin _ mosi pin _ miso pin _ : spi _' 'num num num num' 18 19 16 0
+  advanced
+  spec ' ' 'externalDisplay_sendOLEDCmds' 'send OLED commands _' 'str' 'A7,A0,C0'
+
+to 'externalDisplay_sendOLEDCmds' cmdString {
+  comment 'Send one or more hexadecimal command bytes to an I2C OLED display.
+Multiple commands are separated by commas. Used for experimentation
+and to initialize uncommon OLED display types.'
+  local 'i2cAddr' (hexToInt '3C')
+  if (not ('[sensors:i2cExists]' i2cAddr)) {
+    i2cAddr = (hexToInt '3D')
+    if (not ('[sensors:i2cExists]' i2cAddr)) {
+      sayIt 'Could not find I2C OLED display'
+      waitMillis 1000
+      return 0
+    }
+  }
+  local 'cmds' ('[data:split]' cmdString ',')
+  local 'cmdPrefix' (hexToInt '80')
+  for cmd cmds {
+    '[sensors:i2cWrite]' i2cAddr ('[data:makeList]' cmdPrefix (hexToInt cmd))
+  }
+}
+
