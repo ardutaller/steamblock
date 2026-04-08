@@ -2829,6 +2829,59 @@ static int writeDAC(int sample) { return 0; }
 
 #endif
 
+// Experimental LEDC PWM audio output
+
+#if defined(ESP32)
+
+#include <driver/sigmadelta.h>
+
+// Note: 9-bit at 78k sounds good up for a 6 kHz sine wave with no low-pass filter on output
+// Have not tested the different sample rates with a low-pass filter.
+#define LEDC_AUDIO_CHANNEL 5
+#define LEDC_AUDIO_RESOLUTION 9
+#define LEDC_AUDIO_SAMPLE_RATE 78125 // 40 MHz / 2^9
+// #define LEDC_AUDIO_RESOLUTION 10
+// #define LEDC_AUDIO_SAMPLE_RATE 39062 // 40 MHz / 2^10
+// #define LEDC_AUDIO_RESOLUTION 11
+// #define LEDC_AUDIO_SAMPLE_RATE 19531 // 40 MHz / 2^11
+
+static int audioOutInitialized = false;
+
+static OBJ primPWMAudioOut(int argCount, OBJ *args) {
+	int sample16bit = obj2int(args[0]); // signed 16-bit sample
+	int outputPin = obj2int(args[1]);
+
+	if (!audioOutInitialized) {
+		int rc = ledcSetup(LEDC_AUDIO_CHANNEL, LEDC_AUDIO_SAMPLE_RATE, LEDC_AUDIO_RESOLUTION);
+		ledcAttachPin(outputPin, LEDC_AUDIO_CHANNEL);
+		audioOutInitialized = true;
+	}
+
+	// convert 16-bit signed to 9-bit unsigned output
+	int pwm = (sample16bit >> 7) + 256;
+	if (pwm < 0) pwm = 0;
+	if (pwm > 511) pwm = 511;
+
+	// convert 16-bit signed to 10-bit unsigned output
+// 	int pwm = (sample16bit >> 6) + 512;
+// 	if (pwm < 0) pwm = 0;
+// 	if (pwm > 1023) pwm = 1023;
+
+	// convert 16-bit signed to 11-bit unsigned output
+// 	int pwm = (sample16bit >> 5) + 1024;
+// 	if (pwm < 0) pwm = 0;
+// 	if (pwm > 2047) pwm = 2047;
+
+	ledcWrite(LEDC_AUDIO_CHANNEL, pwm);
+	return falseObj;
+}
+
+#else
+
+static OBJ primPWMAudioOut(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
+
+#endif
+
 // Tone Primitives
 
 #ifndef DEFAULT_TONE_PIN
@@ -3324,6 +3377,7 @@ static PrimEntry entries[] = {
 	{"analogWrite", primAnalogWrite2},
 	{"digitalRead", primDigitalRead},
 	{"digitalWrite", primDigitalWrite2},
+	{"pwmAudioOut", primPWMAudioOut},
 };
 
 void addIOPrims() {
