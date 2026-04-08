@@ -58,6 +58,31 @@
 
 
 
+
+/* Progress */
+
+
+.top-bar__controls-progress {
+	position: relative;
+	width: var(--space-32);
+	height: var(--space-32);
+
+	border-radius: var(--borderRadius-max);
+	mask: radial-gradient(farthest-corner, transparent 12px, black 13px);
+}
+
+
+.top-bar__controls-connect .top-bar__button-rounded {
+
+
+
+}
+
+
+
+
+
+
 /* Buttons */
 
 
@@ -184,12 +209,4 @@
 	&:hover {
 		color: var(--color-boolean-red--hover);
 	}
-}
-
-
-.top-bar__controls-progress {
-	width: 32px;
-	height: 32px;
-	margin-top: 9px;
-	border-radius: 50%;
 }
