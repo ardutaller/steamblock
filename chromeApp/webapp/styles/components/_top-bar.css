@@ -97,6 +97,11 @@
 		background-color: var(--color-yellow-action);
 	}
 
+	&.--is-active {
+		color: var(--color-blue-grey-900);
+		background-color: var(--color-yellow-action);
+	}
+
 	svg {
 		width: var(--space-16);
 		height: var(--space-16);

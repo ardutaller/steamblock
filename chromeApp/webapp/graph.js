@@ -12,10 +12,10 @@ FloatingWindow.graph = function () {
 		resizable: true,
 		onResize: Graph.resize,
 		onOpen: () => {
-			IDE.controlsButtons.querySelector('.--graph').classList.add('--active');
+			IDE.controlsButtons.querySelector('.--graph').classList.add('--is-active');
 		},
 		onClose: () => {
-			IDE.controlsButtons.querySelector('.--graph').classList.remove('--active');
+			IDE.controlsButtons.querySelector('.--graph').classList.remove('--is-active');
 		},
 		target: Graph
 	});
