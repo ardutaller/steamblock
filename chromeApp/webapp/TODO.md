@@ -21,5 +21,6 @@ TODO
 [x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen classe --script
 [ ] Cantonada xunga en finestres quan en dark mode
 [ ] Estilitzar overlay modal amb spinner
-[ ] Revisar padding de finestra Graph
+[x] Revisar padding de finestra Graph
 [ ] Fer category pane redimensionable (o collapsible)
+[ ] Considerar un sol component per a controls de zoom (scripts pane, graph window)

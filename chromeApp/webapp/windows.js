@@ -58,8 +58,10 @@ class FloatingWindow extends HTMLElement {
 
 		if (descriptor.body) {
 			if (typeof descriptor.body == 'string') {
+				windowBody.classList.add('--text');
 				windowBody.innerText = descriptor.body;
 			} else if (typeof descriptor.body == 'object') { // assume DOM element
+				windowBody.classList.add('--object');
 				windowBody.append(descriptor.body);
 			}
 		}
