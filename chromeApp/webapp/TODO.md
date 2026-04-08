@@ -19,7 +19,7 @@ TODO
 [x] Als context menu amb checks que són single option, afegir classe --single-option
 [ ] A ↑↑↑, alinear ticks a la dreta i només mostrar el que està actiu
 [x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen classe --script
-[ ] Cantonada xunga en finestres quan en dark mode
+[x] Cantonada xunga en finestres quan en dark mode
 [ ] Estilitzar overlay modal amb spinner
 [x] Revisar padding de finestra Graph
 [ ] Fer category pane redimensionable (o collapsible)

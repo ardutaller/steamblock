@@ -12,7 +12,7 @@
 	display: flex;
 	flex-direction: column;
 
-	background-color: var(--color-blue-grey-50);
+	/* background-color: var(--color-blue-grey-50); */
 	box-shadow: var(--boxShadow-window);
 	border-radius: var(--borderRadius-4);
 	overflow: hidden;
@@ -76,6 +76,7 @@
 
 	cursor: default !important;
 	overflow: auto;
+	background-color: var(--color-blue-grey-50);
 
 	text-align: center;
 	font-size: 14px;
@@ -181,13 +182,14 @@
 
 
 .window__buttons {
-	padding: 0 var(--space-32) var(--space-16);
-	margin: 0 auto;
+	padding: var(--space-12) var(--space-32) var(--space-16);
 
 	display: flex;
 	flex-direction: row-reverse; /* easier to revert in style than in code */
 	justify-content: center;
 	gap: var(--space-4);
+
+	background-color: var(--color-blue-grey-50);
 }
 
 
