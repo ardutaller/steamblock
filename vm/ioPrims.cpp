@@ -2833,10 +2833,11 @@ static int writeDAC(int sample) { return 0; }
 
 #if defined(ESP32)
 
-#include <driver/sigmadelta.h>
+// #include <driver/ledc.h>
 
-#define LEDC_AUDIO_CHANNEL 5
+#define LEDC_AUDIO_CHANNEL 1
 static int pwmAudioInitialized = false;
+static int pwmAudioPin = -1;
 static int pwmAudioMaxSample = 0;
 
 static OBJ primPWMAudioInit(int argCount, OBJ *args) {
@@ -2851,17 +2852,42 @@ static OBJ primPWMAudioInit(int argCount, OBJ *args) {
 	if (argCount < 2) return fail(notEnoughArguments);
 	if (!isInt(args[0]) || !isInt(args[0])) return fail(needsIntegerError);
 
-	int outputPin = obj2int(args[0]);
+	if (pwmAudioPin >= 0) ledcDetachPin(pwmAudioPin);
+
+	int outputPin = mapDigitalPinNum(obj2int(args[0]));
+	if (outputPin < 0) return falseObj;
+
 	int resolution = obj2int(args[1]);
 	if (resolution < 8) resolution = 8;
 	if (resolution > 11) resolution = 11;
 
-	int sampleRate = 40000000 / (1 << resolution);
+	uint32_t sampleRate = 40000000 / (1 << resolution);
 	pwmAudioMaxSample = (1 << resolution) - 1;
 
 	int rc = ledcSetup(LEDC_AUDIO_CHANNEL, sampleRate, resolution);
 	ledcAttachPin(outputPin, LEDC_AUDIO_CHANNEL);
+	pwmAudioPin = outputPin;
 	pwmAudioInitialized = true;
+
+// ledc_timer_config_t ledc_timer = {
+// 	.speed_mode		= LEDC_HIGH_SPEED_MODE, // Set High Speed
+// 	.duty_resolution = (ledc_timer_bit_t) resolution,
+// 	.timer_num		= LEDC_TIMER_0,
+// 	.freq_hz		= sampleRate,
+// 	.clk_cfg		= LEDC_AUTO_CLK
+// };
+// ledc_timer_config(&ledc_timer);
+//
+// ledc_channel_config_t ledc_channel = {
+// 	.gpio_num		= outputPin,
+// 	.speed_mode		= LEDC_HIGH_SPEED_MODE, // Set High Speed
+// 	.channel		= LEDC_CHANNEL_0,
+// 	.intr_type		= LEDC_INTR_DISABLE,
+// 	.timer_sel		= LEDC_TIMER_0,
+// 	.duty			= 0,
+// 	.hpoint			= 0
+// };
+// ledc_channel_config(&ledc_channel);
 
 	return falseObj;
 }
@@ -2881,6 +2907,8 @@ static OBJ primPWMAudioOut(int argCount, OBJ *args) {
 	if (pwm < 0) pwm = 0;
 	if (pwm > pwmAudioMaxSample) pwm = pwmAudioMaxSample;
 
+// ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, pwm);
+// ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
 	ledcWrite(LEDC_AUDIO_CHANNEL, pwm);
 	return falseObj;
 }
