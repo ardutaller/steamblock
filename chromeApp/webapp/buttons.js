@@ -38,7 +38,7 @@ const Buttons = {
 		icon: 'graph--16x16',
 		label: 'Graph',
 		description: 'Open a graph window. Use the graph block in the Output category to add data points to it.',
-		class: 'top-bar__rounded-button',
+		class: 'top-bar__button-rounded',
 		action: () => { FloatingWindow.graph(); }
 	},
 	connect: {
@@ -195,7 +195,7 @@ Buttons.connectWidget = function () {
 	container.classList.add(descriptor.class);
 	container.ariaLabel = descriptor.ariaLabel;
 	container.ariaDescription = descriptor.ariaDescription;
-	icon.classList.add('top-bar__rounded-button');
+	icon.classList.add('top-bar__button-rounded');
 	label.innerText = GetText.localize('Connect');
 	label.classList.add('top-bar__controls-connect-label');
 	arrow.classList.add('top-bar__controls-connect-dropdown');

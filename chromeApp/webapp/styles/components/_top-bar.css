@@ -77,7 +77,7 @@
 }
 
 
-.top-bar__rounded-button {
+.top-bar__button-rounded {
 	width: var(--space-32);
 	height: var(--space-32);
 	border-radius: var(--borderRadius-max);
@@ -134,7 +134,7 @@
 	&:hover {
 		cursor: pointer;
 
-		.top-bar__rounded-button {
+		.top-bar__button-rounded {
 			color: var(--color-blue-grey-900);
 			background-color: var(--color-yellow-action);
 		}
@@ -148,7 +148,7 @@
 	/* Connected */
 	&.--is-connected {
 
-		.top-bar__rounded-button {
+		.top-bar__button-rounded {
 			color: var(--color-blue-grey-900);
 			background-color: var(--color-boolean-green);
 		}
