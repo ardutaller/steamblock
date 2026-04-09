@@ -72,7 +72,8 @@
 		pointer-events: none;
 	}
 
-	&.--block img, &.--category-color img {
+	&.--block img,
+	&.--category-color img {
 		max-height: 2em;
 	}
 
@@ -83,10 +84,19 @@
 	&.--script img {
 		zoom: 0.5;
 	}
+
+
+	/* Single Option */
+
+	.menu.--single-option & {
+		padding: var(--space-6) var(--space-12) var(--space-6) var(--space-12);
+		flex-direction: row-reverse;
+	}
 }
 
 
 .menu__button-tick {
+	transition: all var(--duration-200);
 
 	svg {
 		display: block;
@@ -116,6 +126,12 @@
 
 	.--is-unchecked:hover & {
 		color: var(--color-blue-grey-500);
+	}
+
+	/* Single Option */
+
+	.menu.--single-option .--is-unchecked & {
+		opacity: 0;
 	}
 }
 
