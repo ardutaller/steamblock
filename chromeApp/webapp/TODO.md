@@ -14,7 +14,6 @@ TODO
 [ ] Discutir si els colors de les categories van a JS o CSS (libraries...)
 [ ] Estilar progress
 [x] Windows: Quan fas el primer resize es lia un pollastre
-[ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
 [ ] Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
 [x] Als context menu amb checks que són single option, afegir classe --single-option
 [ ] A ↑↑↑, alinear ticks a la dreta i només mostrar el que està actiu
@@ -24,3 +23,13 @@ TODO
 [x] Revisar padding de finestra Graph
 [ ] Fer category pane redimensionable (o collapsible)
 [ ] Considerar un sol component per a controls de zoom (scripts pane, graph window)
+[ ] Glitch, al clicar al menú fa un joc estrany amb el ✔
+
+
+Windows
+===
+[ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
+
+Opció?
+- Decidir dues o tres amplades estàndard de finestra (small, medium, large)
+- Un cop tenir l'amplada, podem assignar amb CSS l'alçada (heigth: min-content)
