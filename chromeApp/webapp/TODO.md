@@ -41,4 +41,5 @@ Menus
 [x] Als context menu amb checks que són single option, afegir classe --single-option
 [x] A ↑↑↑, alinear ticks a la dreta i només mostrar el que està actiu
 [ ] My Blocks -> Context menu: Show and Hide, or just a check?
+[ ] Blocks -> Context menu: Show and Hide, or just a check?
 [ ] Glitch, al clicar al menú fa un joc estrany amb el ✔
