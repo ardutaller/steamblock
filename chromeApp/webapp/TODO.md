@@ -5,7 +5,7 @@ TODO
 [x] Afegir classe a blocs alternatius del menu contextual de blocs
 [x] Estilitzar ↑↑↑ perquè siguin d'una mida raonable
 [x] Impedir selecció del botó del logo (passa a Electron només?)
-[ ] Botó de graph té classe "active" però al CSS no s'està fent res amb ella
+[x] Botó de graph té classe "active" però al CSS no s'està fent res amb ella
 [ ] Canvi imatges tips perquè quadrin millor amb el text
 [ ] Canvi textos tips (treure punts finals)
 [x] Alçada del canvas inconsistent (CSS vs JS?)
@@ -21,5 +21,6 @@ TODO
 [x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen classe --script
 [ ] Cantonada xunga en finestres quan en dark mode
 [ ] Estilitzar overlay modal amb spinner
-[ ] Revisar padding de finestra Graph
+[x] Revisar padding de finestra Graph
 [ ] Fer category pane redimensionable (o collapsible)
+[ ] Considerar un sol component per a controls de zoom (scripts pane, graph window)

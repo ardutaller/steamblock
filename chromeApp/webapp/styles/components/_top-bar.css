@@ -58,6 +58,31 @@
 
 
 
+
+/* Progress */
+
+
+.top-bar__controls-progress {
+	position: relative;
+	width: var(--space-32);
+	height: var(--space-32);
+
+	border-radius: var(--borderRadius-max);
+	mask: radial-gradient(farthest-corner, transparent 12px, black 13px);
+}
+
+
+.top-bar__controls-connect .top-bar__button-rounded {
+
+
+
+}
+
+
+
+
+
+
 /* Buttons */
 
 
@@ -77,7 +102,7 @@
 }
 
 
-.top-bar__rounded-button {
+.top-bar__button-rounded {
 	width: var(--space-32);
 	height: var(--space-32);
 	border-radius: var(--borderRadius-max);
@@ -93,6 +118,11 @@
 		background-color var(--duration-75) ease-in;
 
 	&:hover {
+		color: var(--color-blue-grey-900);
+		background-color: var(--color-yellow-action);
+	}
+
+	&.--is-active {
 		color: var(--color-blue-grey-900);
 		background-color: var(--color-yellow-action);
 	}
@@ -134,7 +164,7 @@
 	&:hover {
 		cursor: pointer;
 
-		.top-bar__rounded-button {
+		.top-bar__button-rounded {
 			color: var(--color-blue-grey-900);
 			background-color: var(--color-yellow-action);
 		}
@@ -148,7 +178,7 @@
 	/* Connected */
 	&.--is-connected {
 
-		.top-bar__rounded-button {
+		.top-bar__button-rounded {
 			color: var(--color-blue-grey-900);
 			background-color: var(--color-boolean-green);
 		}
@@ -179,12 +209,4 @@
 	&:hover {
 		color: var(--color-boolean-red--hover);
 	}
-}
-
-
-.top-bar__controls-progress {
-	width: 32px;
-	height: 32px;
-	margin-top: 9px;
-	border-radius: 50%;
 }

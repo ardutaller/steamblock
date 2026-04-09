@@ -122,13 +122,14 @@ IDE.populateTopBar = function (container) {
 	// - First number is the phase number out of three (compile, send, sync)
 	// - Second number is the percentage of the phase
 	let progress =  container.querySelector('[data-ide="progress"]');
+
 	document.addEventListener(
 		'ide.downloadProgress',
 		(e) => {
 			let colors = [
-				['lightgreen', 'lightgray'],
-				['green', 'gray'],
-				['darkgreen', 'darkgray']
+				['lightgreen', 'var(--color-blue-grey-850)'],
+				['green', 'var(--color-blue-grey-850)'],
+				['darkgreen', 'var(--color-blue-grey-850)']
 			];
 			if (typeof e.detail.value != 'object') { return; }
 			let phase = e.detail.value[0];
@@ -329,4 +330,3 @@ IDE.build = function () {
 		500 // it takes a bit for all elements to position and show themselves
 	);
 };
-
