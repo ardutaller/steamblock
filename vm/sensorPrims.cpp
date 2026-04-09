@@ -2582,15 +2582,96 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 #if defined (COCUBE)
 	#include <CoCubeSensor.h>
+	#include "persist.h"
+	#include "fileSys.h"
+	#define PIN_BUTTON 36 // Power Button
+	#define PIN_BUTTON_A 38
+	#define PIN_BUTTON_B 37
 	CoCubeSensor cocube;
+
+	int clickCount = 0;
+	unsigned long lastClickTime = 0;
+
+	const unsigned long TIMEOUT_MS = 800; // 连按判定窗口
+
+	int clickCountPower = 0;
+	unsigned long lastClickTimePower = 0;
+
+
+	void checkResetButton() {
+		static int lastStateA = HIGH;
+		int stateA = digitalRead(PIN_BUTTON_A);
+		int stateB = digitalRead(PIN_BUTTON_B);
+
+		if (stateB == LOW) { 
+			if (lastStateA == HIGH && stateA == LOW) {
+				unsigned long now = millis();
+				
+				if (now - lastClickTime > TIMEOUT_MS) {
+					clickCount = 0;
+				}
+				
+				clickCount++;
+				lastClickTime = now;
+				delay(50);
+			}
+			
+			if (clickCount >= 4) {
+				delay(200);
+				// primLaunchCodeSnapshot();
+				char* targetFile = (char*) "startup.ucode"; // 确保文件名正确
+    			loadCodeSnapshot(targetFile);
+				// backupMbcodeToSPIFFS("backup_shay");
+				clickCount = 0;
+			}
+
+		} else {
+			if (clickCount > 0) {
+				clickCount = 0;
+			}
+		}
+
+		lastStateA = stateA;
+	}
+
+
+	void checkPowerButton() {
+		static int lastState = HIGH;
+		int currentState = digitalRead(PIN_BUTTON);
+		unsigned long now = millis();
+
+		// 1. 超时自动重置点击计数（放在检测逻辑之前）
+		if (clickCountPower > 0 && (now - lastClickTimePower > TIMEOUT_MS)) {
+			clickCountPower = 0;
+		}
+
+		// 2. 边缘检测：按下瞬间 (HIGH -> LOW)
+		if (lastState == HIGH && currentState == LOW) {
+			clickCountPower++;
+			lastClickTimePower = now;
+			delay(50); // 简单的消抖
+		}
+		lastState = currentState;
+
+		// 3. 立即触发逻辑：达到 3 次立即执行，不再等待超时
+		if (clickCountPower >= 3) {
+			delay(200);
+			char* targetFile = (char*) "startup.ucode"; // 确保文件名正确
+			loadCodeSnapshot(targetFile);
+			clickCountPower = 0; // 执行后立即清零
+		}
+	}
 
 	void cocubeSensorInit() {
 		cocube.Init();
+		pinMode(PIN_BUTTON, INPUT);
 	}
 
 	void cocubeSensorUpdate() {
 		cocube.Update();
 		cocube.EncoderUpdate();
+		checkPowerButton();
+		checkResetButton();
 	}
 
 	static OBJ primPositionX(int argCount, OBJ *args) {
@@ -2629,6 +2710,47 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 			int result = cocube.GetSpeedRight();
 			return int2obj(result);
 	}
+#endif
+
+#if defined(COCUBE_SOCCER)
+	#include <CoCubeSensor.h>
+	CoCubeSensor cocube;
+
+	void cocubeSensorInit() {
+		cocube.Init();
+	}
+
+	void cocubeSensorUpdate() {
+		cocube.Update();
+	}
+
+	static OBJ primPositionX(int argCount, OBJ *args) {
+		int result = cocube.GetX();
+		return int2obj(result);
+	}
+
+	static OBJ primPositionY(int argCount, OBJ *args) {
+			int result = cocube.GetY();
+			return int2obj(result);
+		}
+
+	static OBJ primPositionYaw(int argCount, OBJ *args) {
+			int result = cocube.GetAngle();
+			return int2obj(result);
+	}
+
+	static OBJ primIndex(int argCount, OBJ *args) {
+			int result = cocube.GetIndex();
+			return int2obj(result);
+	}
+
+	static OBJ primCubeStatus(int argCount, OBJ *args) {
+		if (cocube.GetState())
+			return trueObj;
+		else
+			return falseObj;
+	}
+
 #endif
 
 // Signal Capture
@@ -2726,6 +2848,13 @@ static PrimEntry entries[] = {
 	{"cube_status", primCubeStatus},
 	{"speed_left", primPositionSpeedLeft},
 	{"speed_right", primPositionSpeedRight},
+	#endif
+	#if defined(COCUBE_SOCCER)
+	{"position_x", primPositionX},
+	{"position_y", primPositionY},
+	{"position_yaw", primPositionYaw},
+	{"cube_index", primIndex},
+	{"cube_status", primCubeStatus},
 	#endif
 };
 
