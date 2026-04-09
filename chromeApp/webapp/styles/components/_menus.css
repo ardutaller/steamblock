@@ -107,7 +107,7 @@
 	/* By context */
 
 	.--top-menu & {
-		color: var(--color-blue-grey-500);
+		color: var(--color-blue-grey-600);
 	}
 
 	.--context-menu & {
@@ -118,6 +118,10 @@
 
 	.--is-checked & {
 		color: var(--color-boolean-green);
+	}
+
+	.--context-menu .--is-checked & {
+		color: var(--color-blocks-operators);
 	}
 
 	.--is-checked:hover & {
