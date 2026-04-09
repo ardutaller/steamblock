@@ -5111,6 +5111,95 @@ msgstr "set TFT backlight _"
 msgid "battery percentage"
 msgstr "battery percentage"
 
+#. CoCube Emoji library label
+#. Show emojis on the TFT Screen.
+msgid "CoCube Emoji"
+msgstr "CoCube Emoji"
+
+#. CoCube emoji block
+msgid "set emoji _ scale _"
+msgstr "set emoji _ scale _"
+
+#. CoCube emoji block
+msgid "happy"
+msgstr "happy"
+
+#. CoCube emoji block
+msgid "naughty"
+msgstr "naughty"
+
+#. CoCube emoji block
+msgid "star-struck"
+msgstr "star-struck"
+
+#. CoCube emoji block
+msgid "kiss"
+msgstr "kiss"
+
+#. CoCube emoji block
+msgid "laughing"
+msgstr "laughing"
+
+#. CoCube emoji block
+msgid "neutral"
+msgstr "neutral"
+
+#. CoCube emoji block
+msgid "smug"
+msgstr "smug"
+
+#. CoCube emoji block
+msgid "crying"
+msgstr "crying"
+
+#. CoCube emoji block
+msgid "sleeping"
+msgstr "sleeping"
+
+#. CoCube emoji block
+msgid "awkward"
+msgstr "awkward"
+
+#. CoCube emoji block
+msgid "shocked"
+msgstr "shocked"
+
+#. CoCube emoji block
+msgid "nerdy"
+msgstr "nerdy"
+
+#. CoCube emoji block
+msgid "cool"
+msgstr "cool"
+
+#. CoCube emoji block
+msgid "scared"
+msgstr "scared"
+
+#. CoCube emoji block
+msgid "angry"
+msgstr "angry"
+
+#. CoCube emoji block
+msgid "cold"
+msgstr "cold"
+
+#. CoCube emoji block
+msgid "hot"
+msgstr "hot"
+
+#. CoCube emoji block
+msgid "nauseated"
+msgstr "nauseated"
+
+#. CoCube emoji block
+msgid "vomiting"
+msgstr "vomiting"
+
+#. CoCube emoji block
+msgid "dizzy"
+msgstr "dizzy"
+
 #. CoCube Module library block
 msgid "3D gesture connected"
 msgstr "3D gesture connected"
