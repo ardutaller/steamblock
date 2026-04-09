@@ -9,7 +9,6 @@ TODO
 [x] Canvi imatges tips perquè quadrin millor amb el text
 [x] Alçada del canvas inconsistent (CSS vs JS?)
 [x] Classes d'estat de les script-pane-tools (--disabled)
-
 [x] Cantonada xunga en finestres quan en dark mode
 [x] Revisar padding de finestra Graph
 [x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen classe --script
