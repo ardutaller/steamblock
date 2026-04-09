@@ -128,7 +128,7 @@ sendBroadcast 'play drum'
 
 module CoCube
 author 'Liang Shuai'
-version 2 17 
+version 2 18 
 depends Tone Display TFT '_Motors/PID' 'Robots/CoCube Module' 
 tags 'cocube robot' 
 choices cocube_rotate_Menu 'cocube;left' 'cocube;right' 
@@ -155,8 +155,9 @@ v2.14 Improve the accuracy of move_to_target and optimize the loop exit mechanis
 v2.15 Remove "set TFT backlight" function
 v2.16 Change PID global variables into local
 v2.17 Modify the movement function on the map
+v2.18 Fix "_cocube_move_flag" variable missing
 '
-variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _cocube_pid_flag _cocube_error_distance _cocube_error_y _cocube_error_x _cocube_target_angle 
+variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _cocube_pid_flag _cocube_error_distance _cocube_error_y _cocube_error_x _cocube_target_angle _cocube_move_flag 
 
   spec ' ' 'CoCube move for msecs' 'move _ at _ speed (0-50) for _ msecs' 'menu.cocube_move_Menu num num' 'cocube;forward' 40 1000
   spec ' ' 'CoCube rotate for msecs' 'rotate _ at _ speed (0-50) for _ msecs' 'menu.cocube_rotate_Menu num num' 'cocube;left' 30 1000
