@@ -7,15 +7,15 @@ FloatingWindow.graph = function () {
 	let win = new FloatingWindow({
 		title: 'Data Graph',
 		body: Graph.body,
-		width: Graph.width + 51,
-		height: Graph.height + 96,
+		width: Graph.width + 24,
+		height: Graph.height + 24,
 		resizable: true,
 		onResize: Graph.resize,
 		onOpen: () => {
-			IDE.controlsButtons.querySelector('.--graph').classList.add('--active');
+			IDE.controlsButtons.querySelector('.--graph').classList.add('--is-active');
 		},
 		onClose: () => {
-			IDE.controlsButtons.querySelector('.--graph').classList.remove('--active');
+			IDE.controlsButtons.querySelector('.--graph').classList.remove('--is-active');
 		},
 		target: Graph
 	});
@@ -44,20 +44,20 @@ const Graph = {
 };
 
 Graph.isOpen = function () {
-	return document.querySelector('.window .--graph') != null;
+	return document.querySelector('.window #graph-canvas') != null;
 }
 
 Graph.build = function () {
 	let container = document.createElement('div');
-	container.classList.add('--graph-container');
+	container.classList.add('window__body-object');
 
 	this.canvas = document.createElement('canvas');
+	this.canvas.id = 'graph-canvas';
 	this.canvas.style.display = 'block';
-	this.canvas.classList.add('--graph');
 
 	this.controls = document.createElement('div');
+	this.controls.classList.add('window__body-object-controls');
 	this.controls.classList.add('--can-drag-through');
-	this.controls.classList.add('--graph-controls');
 
 	this.ctx = this.canvas.getContext('2d');
 	this.resize(this.width, this.height);
@@ -85,8 +85,8 @@ Graph.updateControls = function () {
 };
 
 Graph.resize = function (newWidth, newHeight) {
-	this.width = newWidth - 51; // extra pixel so Electron doesn't show scrollbars
-	this.height = newHeight - 96; // same here
+	this.width = newWidth - 24; // extra pixel so Electron doesn't show scrollbars
+	this.height = newHeight - 24; // same here
 	this.canvas.width = this.width;
 	this.canvas.height = this.height;
 	this.redraw();

@@ -122,13 +122,14 @@ IDE.populateTopBar = function (container) {
 	// - First number is the phase number out of three (compile, send, sync)
 	// - Second number is the percentage of the phase
 	let progress =  container.querySelector('[data-ide="progress"]');
+
 	document.addEventListener(
 		'ide.downloadProgress',
 		(e) => {
 			let colors = [
-				['lightgreen', 'lightgray'],
-				['green', 'gray'],
-				['darkgreen', 'darkgray']
+				['lightgreen', 'var(--color-blue-grey-850)'],
+				['green', 'var(--color-blue-grey-850)'],
+				['darkgreen', 'var(--color-blue-grey-850)']
 			];
 			if (typeof e.detail.value != 'object') { return; }
 			let phase = e.detail.value[0];
@@ -160,8 +161,7 @@ IDE.tipBar.init = function () {
 	this.icons['(-o)'] = 'bool_true';
 	this.icons['(o-)'] = 'bool_false';
 
-	this.titleElement = document.querySelector('[data-ide="tips-title"]');
-	this.contentElement = document.querySelector('[data-ide="tips-content"]');
+	this.tipsContainer = document.querySelector('[data-ide="tips-container"]');
 
 	document.addEventListener(
 		'ide.tip',
@@ -186,7 +186,7 @@ IDE.tipBar.enableFor = function (element) {
 };
 
 IDE.tipBar.setTip = function (title, content) {
-	this.titleElement.textContent = GetText.localize(title);
+	let tipTitle = GetText.localize(title);
 	let tipHTML = GetText.localize(content);
 	if (content !== null) {
 		Object.keys(this.icons).forEach(key => {
@@ -197,7 +197,10 @@ IDE.tipBar.setTip = function (title, content) {
 				);
 		});
 	}
-	this.contentElement.innerHTML = tipHTML;
+
+	this.tipsContainer.innerHTML = title
+		? `<span class="tips__title">${tipTitle}</span><span class="tips__content">${tipHTML}</span>`
+		: '';
 };
 
 // Spinner and overlay
@@ -329,4 +332,3 @@ IDE.build = function () {
 		500 // it takes a bit for all elements to position and show themselves
 	);
 };
-
