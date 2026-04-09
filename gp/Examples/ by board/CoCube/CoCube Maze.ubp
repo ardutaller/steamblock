@@ -1,26 +1,81 @@
 module main
-author 'wwj718 & Liang Shuai'
+author unknown
 version 1 0 
-description 'BLE program for interacting with Snap! or Python_BLE'
+description ''
+variables list_x list_y num 
 
-script 66 66 {
-comment 'Please manually add other required libraries.'
-comment 'Please refer to https://wwj718.github.io/post/programming/snap-cocube-en/'
+  spec ' ' 'start' 'start'
+
+to start {
+  '[tft:text]' 'A: Record' 10 60 (colorSwatch 255 150 0 255) 3 true
+  '[tft:text]' 'B: Start' 10 100 (colorSwatch 255 150 0 255) 3 true
+  '[tft:text]' 'A+B: Restart' 10 140 (colorSwatch 255 150 0 255) 3 true
 }
 
-script 258 174 {
-whenBroadcastReceived ''
-handle_blocking_message
+script 40 40 {
+whenButtonPressed 'A+B'
+'[tft:clear]'
+'CoCube wheels stop'
+stopAll
+start
 }
 
-script 66 176 {
-whenBroadcastReceived ''
-handle_message
+script 226 40 {
+whenButtonPressed 'A'
+'[tft:clear]'
+if ((size list_x) == 0) {
+  list_x = ('[data:makeList]')
+  list_y = ('[data:makeList]')
+  num = 0
+}
+if ('CoCube on the mat') {
+  '[data:addLast]' ('CoCube position_X') list_x
+  '[data:addLast]' ('CoCube position_Y') list_y
+  num += 1
+  sendBroadcast 'show number'
+}
 }
 
-script 66 266 {
-comment 'debug'
-sayIt (getLastBroadcast)
+script 40 483 {
+whenStarted
+comment '将CoCube放置在CoMaps地图上的不同位置，
+按下A键记录每一个坐标，
+按下B键，CoCube将按顺序移动到这些坐标位置。'
+comment 'Place the CoCube at different locations on the CoMap.
+Press the A button to record each coordinate.
+And then press the B button, the CoCube will move to these recorded locations in sequence.'
+start
+}
+
+script 40 716 {
+whenBroadcastReceived 'show number'
+'[tft:text]' num 80 80 (colorSwatch 255 150 0 255) 12 false
+'play tone' 'nt;c' 0 75
+'play tone' 'nt;g' 0 150
+waitMillis 200
+'[display:mbDisplayOff]'
+}
+
+script 40 946 {
+whenButtonPressed 'B'
+num = 0
+'[tft:text]' '0' 80 80 (colorSwatch 255 150 0 255) 12 false
+forever {
+  if ((size list_x) != 0) {
+    'CoCube move to' (at 1 list_x) (at 1 list_y) 40
+    '[display:mbDisplayOff]'
+    '[data:delete]' 1 list_x
+    '[data:delete]' 1 list_y
+    num += 1
+    '[tft:text]' num 80 80 (colorSwatch 255 150 0 255) 12 false
+    'play tone' 'nt;c' 0 75
+    'play tone' 'nt;g' 0 150
+  } else {
+    waitMillis 300
+    '[display:mbDisplayOff]'
+    exitLoop
+  }
+}
 }
 
 
@@ -90,10 +145,6 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' '_cocube_pid_control' '_cocube_pid_control'
   spec ' ' '_cocube_calculate_angle_error_' '_cocube_calculate_angle_error angle _' 'num' 0
   spec ' ' '_cocube_calculate_distance_error target_x _ target_y _' '_cocube_calculate_distance_error Target_X _ Target_Y _' 'num num' 0 0
-  spec ' ' 'CoCube set TFT backlight' 'obsolete obsolete set TFT backlight _' 'bool' false
-  spec ' ' '_cocube_pid_init' 'obsolete obsolete _cocube_pid_init'
-  spec ' ' '_cocube_pid_right_motor' 'obsolete obsolete _cocube_pid_right_motor'
-  spec ' ' '_cocube_pid_left_motor' 'obsolete obsolete _cocube_pid_left_motor'
 
 to 'CoCube battery percentage' {
   return (minimum (((254 * ('[misc:rescale]' (analogReadOp 34) 0 1023 0 3300)) - 680000) / 1600) 100)
@@ -389,559 +440,6 @@ to '_cocube_pid_control' {
 }
 
 
-module 'CoCube Module'
-author 'Liang Shuai'
-version 1 14 
-depends _Servo NeoPixel 
-choices trackerMenu '1' '2' '3' '4' '5' ALL 
-description 'External modules of CoCube.
-
-CoCube is a tabletop modular multi-robot platform for education and research.
-https://www.cocubefun.com/
-https://wiki.cocube.fun/
-sliang23@m.fudan.edu.cn
-
-Note: All functions start by turning on pin 13 to power the module.
-The power pin is off by default and is also turned off by the IDE stop button.'
-variables _cc_cam_init_flag _cc_asr_snc _cc_PCF8574_address 
-
-  spec ' ' 'ccmodule_gripper open' 'gripper open'
-  spec ' ' 'ccmodule_gripper close' 'gripper close'
-  spec ' ' 'ccmodule_gripper degree' 'gripper degrees _ (0 to 70)' 'num' 0
-  spec ' ' 'ccmodule_gripper stop' 'gripper stop'
-  space
-  spec ' ' 'ccmodule_attach NeoPixels' 'attach NeoPixels'
-  spec ' ' 'ccmodule_set all NeoPixels color' 'set all NeoPixels color _' 'color'
-  spec ' ' 'ccmodule_clear NeoPixels' 'clear NeoPixels'
-  space
-  spec 'r' 'ccmodule_ToF connected' 'ToF connected'
-  spec 'r' 'ccmodule_ToF distance' 'ToF distance (mm)'
-  space
-  spec 'r' 'ccmodule_DLight level' 'DLight level'
-  space
-  spec 'r' 'ccmodule_ASR get command' 'ASR get command'
-  spec ' ' 'ccmodule_ASR play command' 'ASR play command _' 'num' 19
-  space
-  spec 'r' 'ccmodule_tracker on black' 'Tracker _ on black' 'menu.trackerMenu' 1
-  spec 'r' 'ccmodule_tracker on white' 'Tracker _ on white' 'menu.trackerMenu' 1
-  space
-  spec ' ' 'ccmodule_power on module' 'power on module'
-  space
-  spec ' ' '_ccmodule_check_camera' 'check_camera'
-  spec 'r' 'ccmodule_gesture connected' 'obsolete obsolete 3D gesture connected'
-  spec 'r' 'ccmodule_gesture read' 'obsolete obsolete 3D gesture read'
-  spec 'r' '_ccmodule_ultrasonic distance' 'obsolete obsolete obsolete ultrasonic distance (mm)'
-
-to '_ccmodule_check_camera' {
-  if (_cc_cam_init_flag == 1) {
-    '[sensors:i2cWrite]' (hexToInt '58') ('[data:asByteArray]' ('[data:makeList]' (hexToInt '3') 255))
-  } else {
-    stopServo 22
-    digitalWriteOp 13 true
-  }
-}
-
-to 'ccmodule_ASR get command' {
-  '_ccmodule_check_camera'
-  waitMillis 30
-  '[sensors:i2cWrite]' (hexToInt '64') (hexToInt '2') false
-  local 'data' (newList 2)
-  '[sensors:i2cRead]' (hexToInt '64') data
-  local 'new_asr_snc' (at 1 data)
-  if (_cc_asr_snc != new_asr_snc) {
-    _cc_asr_snc = new_asr_snc
-    return (at 2 data)
-  } else {
-    return 0
-  }
-}
-
-to 'ccmodule_ASR play command' id {
-  '_ccmodule_check_camera'
-  '[sensors:i2cWrite]' (hexToInt '64') ('[data:asByteArray]' ('[data:makeList]' (hexToInt '3') id (id + 3) (hexToInt '5A')))
-}
-
-to 'ccmodule_DLight level' {
-  if (_cc_cam_init_flag == 1) {
-    '[sensors:i2cWrite]' (hexToInt '58') ('[data:asByteArray]' ('[data:makeList]' (hexToInt '3') 255))
-  } else {
-    stopServo 22
-    digitalWriteOp 13 true
-  }
-  i2cSet (hexToInt '23') 23 (hexToInt '21')
-  read = (newList 2)
-  '[sensors:i2cRead]' (hexToInt '23') read
-  return (((at 1 read) << 8) | (at 2 read))
-}
-
-to 'ccmodule_ToF connected' {
-  '_ccmodule_check_camera'
-  return ((i2cGet 41 (hexToInt 'C0')) == (hexToInt 'EE'))
-}
-
-to 'ccmodule_ToF distance' {
-  '_ccmodule_check_camera'
-  i2cSet 41 0 1
-  waitMillis 70
-  if (((i2cGet 41 (hexToInt '14')) & 1) == 1) {
-    '[sensors:i2cWrite]' 41 ('[data:makeList]' (hexToInt '14'))
-    local 'buf' (newList 12)
-    '[sensors:i2cRead]' 41 buf
-    if ((at 1 buf) == 95) {
-      return (((at 11 buf) << 8) | (at 12 buf))
-    } else {
-      return -1
-    }
-  } else {
-    return -2
-  }
-}
-
-to 'ccmodule_attach NeoPixels' {
-  if (_cc_cam_init_flag == 1) {
-    sayIt 'AI camera doesn''t support this module. Please connect directly.'
-  } else {
-    stopServo 22
-    digitalWriteOp 13 true
-    waitMillis 10
-    neoPixelAttach 48 22
-  }
-}
-
-to 'ccmodule_clear NeoPixels' {
-  digitalWriteOp 13 true
-  clearNeoPixels
-}
-
-to 'ccmodule_gripper close' {
-  if (_cc_cam_init_flag == 1) {
-    '[sensors:i2cWrite]' (hexToInt '58') ('[data:asByteArray]' ('[data:makeList]' (hexToInt '2') 0 28))
-  } else {
-    digitalWriteOp 13 true
-    setServoAngle 22 -70
-  }
-}
-
-to 'ccmodule_gripper degree' degree {
-  if (_cc_cam_init_flag == 1) {
-    stopServo 22
-    local 'hex' (7168 - ((degree * 2048) / 70))
-    '[sensors:i2cWrite]' (hexToInt '58') ('[data:asByteArray]' ('[data:makeList]' (hexToInt '2') (hex & (hexToInt 'FF')) (hex >> 8)))
-  } else {
-    digitalWriteOp 13 true
-    local 'var' (degree - 70)
-    if (var < -70) {
-      setServoAngle 22 -70
-    } (var > 0) {
-      setServoAngle 22 0
-    } else {
-      setServoAngle 22 var
-    }
-  }
-}
-
-to 'ccmodule_gripper open' {
-  if (_cc_cam_init_flag == 1) {
-    '[sensors:i2cWrite]' (hexToInt '58') ('[data:asByteArray]' ('[data:makeList]' (hexToInt '2') 0 20))
-  } else {
-    digitalWriteOp 13 true
-    setServoAngle 22 0
-  }
-}
-
-to 'ccmodule_gripper stop' {
-  if (_cc_cam_init_flag == 1) {
-    '[sensors:i2cWrite]' (hexToInt '58') ('[data:asByteArray]' ('[data:makeList]' (hexToInt '2') 0 0))
-  } else {
-    digitalWriteOp 13 true
-    stopServo 22
-  }
-}
-
-to 'ccmodule_power on module' {
-  digitalWriteOp 13 true
-}
-
-to 'ccmodule_set all NeoPixels color' color {
-  digitalWriteOp 13 true
-  neoPixelSetAllToColor color
-}
-
-to 'ccmodule_tracker on black' which {
-  if (_cc_PCF8574_address != 32) {
-    stopServo 22
-    digitalWriteOp 13 true
-    waitMillis 100
-    _cc_PCF8574_address = 32
-    if ((i2cGet _cc_PCF8574_address 0) < 0) {
-      sayIt 'init fail, please check i2c address and try again.'
-      return 0
-    }
-    '[sensors:i2cWrite]' _cc_PCF8574_address ('[data:makeList]' (hexToInt 'FF'))
-  }
-  local 'var' (newList 1)
-  '[sensors:i2cRead]' _cc_PCF8574_address var
-  if ('ALL' == which) {
-    if ((at 1 var) == 7) {return (booleanConstant true)}
-  } else {
-    return (not ('[data:convertType]' (1 & ((at 1 var) >> (8 - which))) 'boolean'))
-  }
-}
-
-to 'ccmodule_tracker on white' which {
-  if (_cc_PCF8574_address != 32) {
-    stopServo 22
-    digitalWriteOp 13 true
-    waitMillis 100
-    _cc_PCF8574_address = 32
-    if ((i2cGet _cc_PCF8574_address 0) < 0) {
-      sayIt 'init fail, please check i2c address and try again.'
-      return 0
-    }
-    '[sensors:i2cWrite]' _cc_PCF8574_address ('[data:makeList]' (hexToInt 'FF'))
-  }
-  local 'var' (newList 1)
-  '[sensors:i2cRead]' _cc_PCF8574_address var
-  if ('ALL' == which) {
-    if ((at 1 var) == 255) {return (booleanConstant true)}
-  } else {
-    return ('[data:convertType]' (1 & ((at 1 var) >> (8 - which))) 'boolean')
-  }
-}
-
-
-module 'Distance (VL53L0X)' Input
-author 'José García Yeste'
-version 1 2 
-tags sensor distance 
-description 'Support for VL53L0X distance sensor.
-TOF laser based.
-Range 3-200mm.
-
-Tested on:
-https://shop.m5stack.com/products/tof-sensor-unit (take Kapton tape on sensor!)
-'
-
-  spec 'r' 'VL53L0X connected' 'VL53L0X connected'
-  spec 'r' 'VL53L0X distance (mm)' 'VL53L0X distance (mm)'
-
-to 'VL53L0X connected' {
-  return ((i2cGet 41 (hexToInt 'C0')) == (hexToInt 'EE'))
-}
-
-to 'VL53L0X distance (mm)' {
-  i2cSet 41 0 1
-  waitMillis 70
-  if (((i2cGet 41 (hexToInt '14')) & 1) == 1) {
-    '[sensors:i2cWrite]' 41 ('[data:makeList]' (hexToInt '14'))
-    local 'buf' (newList 12)
-    '[sensors:i2cRead]' 41 buf
-    if ((at 1 buf) == 95) {
-      return (((at 11 buf) << 8) | (at 12 buf))
-    } else {
-      return -1
-    }
-  } else {
-    return -2
-  }
-}
-
-
-module 'Gesture (PAJ7620)' Input
-author 'José García'
-version 1 1 
-tags sensor gesture 
-description 'Support for PAJ7620 gesture sensor.
-The "read" block returns the name of the detected gesture.
-Based on github.com/Seeed-Studio/Gesture_PAJ7620'
-variables '_paj7620 initialized' 
-
-  spec 'r' 'paj7620 read' 'paj7620 read'
-  spec ' ' '_paj7620 setup' '_paj7620 setup'
-  spec 'r' 'paj7620 connected' 'paj7620 connected'
-  spec ' ' '_paj7620 setup bank0' '_paj7620 setup bank0'
-  spec ' ' '_paj7620 setup bank1' '_paj7620 setup bank1'
-
-to '_paj7620 setup' {
-  if ('paj7620 connected') {
-    '_paj7620 setup bank0'
-    '_paj7620 setup bank1'
-    i2cSet (hexToInt '73') (hexToInt '65') (hexToInt '12')
-    i2cSet (hexToInt '73') (hexToInt 'EF') 0
-    '_paj7620 initialized' = 1
-  }
-}
-
-to '_paj7620 setup bank0' {
-  i2cSet (hexToInt '73') (hexToInt 'EF') 0
-  local 'i' 1
-  local 'list' '3229
-3301
-3400
-3501
-3600
-3707
-3817
-3906
-3A12
-3F00
-4002
-41FF
-4201
-462D
-470F
-483C
-4900
-4A1E
-4B00
-4C20
-4D00
-4E1A
-4F14
-5000
-5110
-5200
-5C02
-5D00
-5E10
-5F3F
-6027
-6128
-6200
-6303
-64F7
-6503
-66D9
-6703
-6801
-69C8
-6A40
-6D04
-6E00
-6F00
-7080
-7100
-7200
-7300
-74F0
-7500
-8042
-8144
-8204
-8320
-8420
-8500
-8610
-8700
-8805
-8918
-8A10
-8B01
-8C37
-8D00
-8EF0
-8F81
-9006
-9106
-921E
-930D
-940A
-950A
-960C
-9705
-980A
-9941
-9A14
-9B0A
-9C3F
-9D33
-9EAE
-9FF9
-A048
-A113
-A210
-A308
-A430
-A519
-A610
-A708
-A824
-A904
-AA1E
-AB1E
-CC19
-CD0B
-CE13
-CF64
-D021
-D10F
-D288
-E001
-E104
-E241
-E3D6
-E400
-E50C
-E60A
-E700
-E800
-E900
-EE07'
-  repeatUntil (i > (size list)) {
-    local 'reg' ('[data:copyFromTo]' list i (i + 1))
-    local 'val' ('[data:copyFromTo]' list (i + 2) (i + 4))
-    i2cSet (hexToInt '73') (hexToInt reg) (hexToInt val)
-    i += 5
-    waitMicros 10
-  }
-}
-
-to '_paj7620 setup bank1' {
-  i2cSet (hexToInt '73') (hexToInt 'EF') 1
-  local 'i' 1
-  local 'list' '001E
-011E
-020F
-0310
-0402
-0500
-06B0
-0704
-080D
-090E
-0A9C
-0B04
-0C05
-0D0F
-0E02
-0F12
-1002
-1102
-1200
-1301
-1405
-1507
-1605
-1707
-1801
-1904
-1A05
-1B0C
-1C2A
-1D01
-1E00
-2100
-2200
-2300
-2501
-2600
-2739
-287F
-2908
-3003
-3100
-321A
-331A
-3407
-3507
-3601
-37FF
-3836
-3907
-3A00
-3EFF
-3F00
-4077
-4140
-4200
-4330
-44A0
-455C
-4600
-4700
-4858
-4A1E
-4B1E
-4C00
-4D00
-4EA0
-4F80
-5000
-5100
-5200
-5300
-5400
-5780
-5910
-5A08
-5B94
-5CE8
-5D08
-5E3D
-5F99
-6045
-6140
-632D
-6402
-6596
-6600
-6797
-6801
-69CD
-6A01
-6BB0
-6C04
-6D2C
-6E01
-6F32
-7100
-7201
-7335
-7400
-7533
-7631
-7701
-7C84
-7D03
-7E01'
-  repeatUntil (i > (size list)) {
-    local 'reg' ('[data:copyFromTo]' list i (i + 1))
-    local 'val' ('[data:copyFromTo]' list (i + 2) (i + 4))
-    i2cSet (hexToInt '73') (hexToInt reg) (hexToInt val)
-    i += 5
-    waitMicros 10
-  }
-}
-
-to 'paj7620 connected' {
-  return (and ((i2cGet (hexToInt '73') 0) == 32) ((i2cGet (hexToInt '73') 1) == 118))
-}
-
-to 'paj7620 read' {
-  if ((v '_paj7620 initialized') == 0) {'_paj7620 setup'}
-  local 'msg' '?'
-  local 'g' (i2cGet (hexToInt '73') (hexToInt '43'))
-  if ((g & 1) != 0) {
-    msg = 'right'
-  } ((g & 2) != 0) {
-    msg = 'left'
-  } ((g & 4) != 0) {
-    msg = 'up'
-  } ((g & 8) != 0) {
-    msg = 'down'
-  } ((g & 16) != 0) {
-    msg = 'forward'
-  } ((g & 32) != 0) {
-    msg = 'backward'
-  } ((g & 64) != 0) {
-    msg = 'clockwise'
-  } ((g & 128) != 0) {
-    msg = 'anti-clockwise'
-  }
-  return msg
-}
-
-
 module 'LED Display' Output
 author MicroBlocks
 version 1 15 
@@ -1050,197 +548,6 @@ to stopScrollingText {
 }
 
 
-module NeoPixel Output
-author MicroBlocks
-version 1 15 
-description 'Control NeoPixel (WS2812) RGB LED strips and rings.
-'
-variables _np_pixels _np_pin _np_haswhite 
-
-  spec ' ' 'neoPixelAttach' 'attach _ LED NeoPixel strip to pin _ : has white _' 'num auto bool' 10 '' false
-  spec ' ' 'setNeoPixelColors10' 'set NeoPixels _ _ _ _ _ _ _ _ _ _' 'color color color color color color color color color color'
-  spec ' ' 'setNeoPixelColors25' 'set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _' 'color color color color color color color color color color color color color color color color color color color color color color color color color'
-  spec ' ' 'clearNeoPixels' 'clear NeoPixels'
-  spec ' ' 'neoPixelSetAllToColor' 'set all NeoPixels color _' 'color'
-  spec ' ' 'setNeoPixelColor' 'set NeoPixel _ color _' 'num color' 1
-  space
-  spec 'r' 'neoPixel_colorSwatch' '_' 'color'
-  spec 'r' 'colorFromRGB' 'color r _ g _ b _ (0-255)' 'num num num' 0 100 100
-  spec 'r' 'randomColor' 'random color'
-  space
-  spec ' ' 'rotateNeoPixelsBy' 'rotate NeoPixels by _' 'auto' 1
-  space
-  spec ' ' 'NeoPixel_brighten' 'brighten NeoPixel _ by _' 'num num' 1 10
-  spec ' ' 'NeoPixel_brighten_all' 'brighten all NeoPixels by _' 'num' 10
-  spec ' ' 'NeoPixel_shift_color' 'shift NeoPixel _ color by _' 'num num' 1 10
-  spec ' ' 'NeoPixel_shift_all_colors' 'shift all NeoPixel colors by _' 'num' 10
-  space
-  spec ' ' '_NeoPixel_ensureInitialized' '_NeoPixel_ensureInitialized'
-  spec ' ' '_NeoPixel_increaseRGB' '_NeoPixel_increaseRGB of _ by _' 'num num' 1 10
-  spec ' ' '_NeoPixel_rotate' '_NeoPixel_rotate_left _' 'bool' true
-  spec ' ' '_NeoPixel_update' '_NeoPixel_update'
-  spec ' ' '_NeoPixel_shift_hue' '_NeoPixel_shift_hue of _ by _' 'auto auto' '10' '10'
-
-to NeoPixel_brighten i delta {
-  '_NeoPixel_increaseRGB' i delta
-  '_NeoPixel_update'
-}
-
-to NeoPixel_brighten_all delta {
-  for i (size _np_pixels) {
-    '_NeoPixel_increaseRGB' i delta
-  }
-  '_NeoPixel_update'
-}
-
-to NeoPixel_shift_all_colors delta {
-  for i (size _np_pixels) {
-    '_NeoPixel_shift_hue' i delta
-  }
-  '_NeoPixel_update'
-}
-
-to NeoPixel_shift_color i delta {
-  '_NeoPixel_shift_hue' i delta
-  '_NeoPixel_update'
-}
-
-to '_NeoPixel_ensureInitialized' {
-  if (_np_pixels == 0) {if (or ((boardType) == 'M5Atom-Matrix') (or ((boardType) == 'Mbits') ((boardType) == 'micro:STEAMakers'))) {
-    neoPixelAttach 25 '' false
-  } ((boardType) == 'D1-Mini') {
-    comment 'D1 mini kit'
-    neoPixelAttach 7 15 false
-  } ((boardType) == 'Foxbit') {
-    neoPixelAttach 35 '' false
-  } ((boardType) == 'CodingBox') {
-    neoPixelAttach 35 '' false
-  } else {
-    neoPixelAttach 10 '' false
-  }}
-}
-
-to '_NeoPixel_increaseRGB' i delta {
-  if (or (i < 1) (i > (size _np_pixels))) {return}
-  local 'rgb' (at i _np_pixels)
-  if (rgb != 0) {
-    local 'h' ('[misc:hue]' rgb)
-    local 's' ('[misc:saturation]' rgb)
-    local 'v' (('[misc:brightness]' rgb) + delta)
-    v = (maximum 20 (minimum v 100))
-    atPut i _np_pixels ('[misc:hsvColor]' h s v)
-  }
-}
-
-to '_NeoPixel_rotate' left {
-  '_NeoPixel_ensureInitialized'
-  local 'length' (size _np_pixels)
-  if left {
-    local 'first' (at 1 _np_pixels)
-    for i (length - 1) {
-      atPut i _np_pixels (at (i + 1) _np_pixels)
-    }
-    atPut length _np_pixels first
-  } else {
-    local 'last' (at length _np_pixels)
-    for i (length - 1) {
-      atPut ((length - i) + 1) _np_pixels (at (length - i) _np_pixels)
-    }
-    atPut 1 _np_pixels last
-  }
-}
-
-to '_NeoPixel_shift_hue' i delta {
-  if (or (i < 1) (i > (size _np_pixels))) {return}
-  local 'rgb' (at i _np_pixels)
-  if (rgb != 0) {
-    local 'h' ((('[misc:hue]' rgb) + delta) % 360)
-    local 's' ('[misc:saturation]' rgb)
-    local 'v' ('[misc:brightness]' rgb)
-    atPut i _np_pixels ('[misc:hsvColor]' h s v)
-  }
-}
-
-to '_NeoPixel_update' {
-  comment 'NeoPixel pin and hasWhite may have been changed by another library.'
-  '[display:neoPixelSetPin]' _np_pin _np_hasWhite
-  '[display:neoPixelSend]' _np_pixels
-  waitMicros 300
-}
-
-to clearNeoPixels {
-  '_NeoPixel_ensureInitialized'
-  atPut 'all' _np_pixels 0
-  '_NeoPixel_update'
-}
-
-to colorFromRGB r g b {
-  r = (maximum 0 (minimum r 255))
-  g = (maximum 0 (minimum g 255))
-  b = (maximum 0 (minimum b 255))
-  return (((r << 16) | (g << 8)) | b)
-}
-
-to neoPixelAttach number pinNumber optionalHasWhite {
-  _np_pin = pinNumber
-  _np_hasWhite = false
-  if ((pushArgCount) > 2) {
-    _np_hasWhite = optionalHasWhite
-  }
-  if (or (_np_pixels == 0) (number != (size _np_pixels))) {
-    _np_pixels = (newList number)
-  }
-  atPut 'all' _np_pixels 0
-  '[display:neoPixelSetPin]' _np_pin _np_hasWhite
-}
-
-to neoPixelSetAllToColor color {
-  '_NeoPixel_ensureInitialized'
-  atPut 'all' _np_pixels color
-  '_NeoPixel_update'
-}
-
-to neoPixel_colorSwatch color {
-  return color
-}
-
-to rotateNeoPixelsBy n {
-  '_NeoPixel_ensureInitialized'
-  local 'rotateLeft' (n < 0)
-  if (or ((boardType) == 'CircuitPlayground') ((boardType) == 'CircuitPlayground Bluefruit')) {
-    rotateLeft = (n > 0)
-  }
-  repeat (absoluteValue n) {
-    '_NeoPixel_rotate' rotateLeft
-  }
-  '_NeoPixel_update'
-}
-
-to setNeoPixelColor i color {
-  '_NeoPixel_ensureInitialized'
-  if (and (1 <= i) (i <= (size _np_pixels))) {
-    atPut i _np_pixels color
-    '_NeoPixel_update'
-  }
-}
-
-to setNeoPixelColors10 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 {
-  '_NeoPixel_ensureInitialized'
-  for i (minimum (size _np_pixels) (pushArgCount)) {
-    atPut i _np_pixels (getArg i)
-  }
-  '_NeoPixel_update'
-}
-
-to setNeoPixelColors25 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 c16 c17 c18 c19 c20 c21 c22 c23 c24 c25 {
-  '_NeoPixel_ensureInitialized'
-  for i (minimum (size _np_pixels) (pushArgCount)) {
-    atPut i _np_pixels (getArg i)
-  }
-  '_NeoPixel_update'
-}
-
-
 module PID Operators
 author 'Russell Owen'
 version 0 9 
@@ -1346,111 +653,6 @@ from the integral and derivitive terms.'
   atPut index _pid__prevError 0
   atPut index _pid__prevMicros -1
   atPut index _pid__prevIntegral 0
-}
-
-
-module Servo Output
-author MicroBlocks
-version 1 4 
-tags servo motor angle rotation position 
-description 'Control both positional (angle) and rotational servo motors.
-'
-variables _servoPin _servoPulseWidth 
-
-  spec ' ' 'setServoAngle' 'set servo _ to _ degrees (-90 to 90)' 'num num' 1 90
-  spec ' ' 'setServoSpeed' 'set servo _ to speed _ (-100 to 100)' 'num num' 1 100
-  spec ' ' 'stopServo' 'stop servo _' 'num' 1
-  spec 'r' '_servoIndex' '_servoIndex _' 'num' 1
-  spec ' ' '_servoPulse' '_servoPulse pin _ usecs _' 'num num' 1 1500
-  spec ' ' '_servoUpdateLoop' '_servoUpdateLoop'
-
-to '_servoIndex' which {
-  if (_servoPin == 0) {
-    _servoPin = ('[data:makeList]')
-    _servoPulseWidth = ('[data:makeList]')
-    sendBroadcast '_servoUpdateLoop'
-  }
-  local 'i' ('[data:find]' which _servoPin)
-  if (i < 0) {
-    comment 'Add new pin'
-    '[data:addLast]' which _servoPin
-    '[data:addLast]' 1500 _servoPulseWidth
-    i = (size _servoPin)
-  }
-  return i
-}
-
-to '_servoPulse' pin usecs {
-  if (usecs == 0) {
-    comment 'Servo stopped; do nothing'
-    return 0
-  }
-  usecs = (maximum 500 (minimum usecs 2900))
-  comment 'Split wait into a long wait followed by a wait of <= 30 usecs for greater accuracy'
-  local 'endTime' ((microsOp) + usecs)
-  digitalWriteOp pin true
-  waitMicros (usecs - 30)
-  waitMicros (endTime - (microsOp))
-  digitalWriteOp pin false
-}
-
-to '_servoUpdateLoop' {
-  forever {
-    if (_servoPin != 0) {
-      comment 'If the _servoPin list is not 0, update the servos'
-      for i (size _servoPin) {
-        local 'pin' (at i _servoPin)
-        local 'usecs' (at i _servoPulseWidth)
-        if (and (pin >= 0) (usecs != 0)) {
-          '_servoPulse' pin usecs
-        }
-      }
-      waitMillis 15
-    }
-  }
-}
-
-to setServoAngle which degrees optionalReverse {
-  local 'reversed' false
-  if ((pushArgCount) > 2) {
-    reversed = optionalReverse
-  }
-  if reversed {
-    degrees = (0 - degrees)
-  }
-  local 'pulseWidth' (1500 - (10 * degrees))
-  if ('[io:hasServo]') {
-    '[io:setServo]' which pulseWidth
-  } else {
-    atPut ('_servoIndex' which) _servoPulseWidth pulseWidth
-  }
-}
-
-to setServoSpeed which speed optionalReverse {
-  local 'reversed' false
-  if ((pushArgCount) > 2) {
-    reversed = optionalReverse
-  }
-  if reversed {
-    speed = (0 - speed)
-  }
-  local 'pulseWidth' (1500 - (10 * speed))
-  if ((absoluteValue speed) < 2) {
-    pulseWidth = 0
-  }
-  if ('[io:hasServo]') {
-    '[io:setServo]' which pulseWidth
-  } else {
-    atPut ('_servoIndex' which) _servoPulseWidth pulseWidth
-  }
-}
-
-to stopServo which {
-  if ('[io:hasServo]') {
-    '[io:setServo]' which 0
-  } else {
-    atPut ('_servoIndex' which) _servoPulseWidth 0
-  }
 }
 
 
@@ -1749,56 +951,5 @@ to startTone freq {
 
 to stopTone {
   startTone 0
-}
-
-
-module cocube_server_dynatalk
-author 'wwj718 & Liang Shuai'
-version 1 0 
-depends 'Robots/CoCube' 
-description '
-CoCube server code for Snap! and Python API
-
-For more detial: https://wwj718.github.io/post/%E7%BC%96%E7%A8%8B/snap-cocube/#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B-microblocks-%E6%94%AF%E6%8C%81%E7%9A%84-vm-primitive
-
-CoCube BLE Python API: https://github.com/wwj718/cocube
-'
-
-  spec ' ' 'handle_message' 'handle_message'
-  spec ' ' 'handle_blocking_message' 'handle_blocking_message'
-  spec 'r' 'to_mb_args' 'to_mb_args _' 'auto' ''
-
-to handle_blocking_message {
-  local 'msg' (getLastBroadcast)
-  if (('[data:copyFromTo]' msg 1 13) == 'blocking_call') {
-    local 'msg' ('[data:split]' msg ',')
-    local 'msg_id' (at 2 msg)
-    local 'cmd_name' (at 3 msg)
-    local 'cmd_args' ('[data:copyFromTo]' msg 4)
-    local 'result' (callCustomReporter cmd_name (to_mb_args cmd_args))
-    sendBroadcast ('[data:joinStrings]' ('[data:makeList]' '[response]' msg_id result) ',')
-  }
-}
-
-to handle_message {
-  local 'msg' (getLastBroadcast)
-  if (('[data:copyFromTo]' msg 1 4) == 'call') {
-    local 'msg' ('[data:split]' msg ',')
-    local 'msg_id' (at 2 msg)
-    local 'cmd_name' (at 3 msg)
-    local 'cmd_args' ('[data:copyFromTo]' msg 4)
-    local 'result' (callCustomReporter cmd_name (to_mb_args cmd_args))
-    sendBroadcast ('[data:joinStrings]' ('[data:makeList]' '[response]' msg_id result) ',')
-  }
-}
-
-to to_mb_args args {
-  local 'json' ('[data:join]' '[' ('[data:joinStrings]' args ',') ']')
-  local 'json_count' ('[misc:jsonCount]' json '')
-  local 'result' ('[data:makeList]')
-  for i json_count {
-    '[data:addLast]' ('[misc:jsonGet]' json ('[data:convertType]' i 'string')) result
-  }
-  return result
 }
 
