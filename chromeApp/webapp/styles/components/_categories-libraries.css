@@ -35,11 +35,26 @@
 	letter-spacing: 0.1em;
 
 	border-bottom: 1px solid var(--color-blue-grey-700);
+
+	l- {
+		display: inline-block;
+		max-width: var(--space-160);
+
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		transition: max-width var(--duration-400) ease-in-out;
+
+		.--is-left-collapsed & {
+			max-width: var(--space-32);
+		}
+	}
 }
 
 
 .libraries__list {
-	margin-top: var(--space-24);
+	margin-top: var(--space-12);
 
 	display: grid;
 	gap: var(--space-6);
@@ -47,8 +62,52 @@
 
 
 .libraries__add-button-wrapper {
-	margin-top: var(--space-16);
+	margin-top: var(--space-12);
 	padding-left: var(--space-12);
+}
+
+
+.libraries__add-button {
+	max-width: var(--space-120);
+	overflow: hidden;
+	transition:
+		max-width var(--duration-400) ease-in-out,
+		padding var(--duration-400) ease-in-out;
+
+	.--is-left-collapsed & {
+		max-width: var(--space-32);
+		padding: 0 var(--space-4);
+	}
+
+	l- {
+		display: inline-block;
+
+		max-width: var(--space-120);
+		overflow: hidden;
+		white-space: nowrap;
+
+		transition: max-width var(--duration-400) ease-in-out;
+
+		.--is-left-collapsed & {
+			max-width: 0;
+		}
+	}
+}
+
+
+.libraries__add-button-icon {
+	max-width: 0;
+	overflow: hidden;
+	transition: max-width var(--duration-400) ease-in-out;
+
+	svg {
+		width: var(--space-16);
+		height: var(--space-16);
+	}
+
+	.--is-left-collapsed & {
+		max-width: var(--space-16);
+	}
 }
 
 
@@ -90,7 +149,11 @@
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-	}
 
-	/* TODO Colors? */
+		transition: opacity var(--duration-400) ease-in-out;
+
+		.--is-left-collapsed & {
+			opacity: 0;
+		}
+	}
 }

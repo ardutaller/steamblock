@@ -12,10 +12,11 @@ TODO
 [x] Cantonada xunga en finestres quan en dark mode
 [x] Revisar padding de finestra Graph
 [x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen classe --script
-[ ] Estilar progress
-[ ] Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
-[ ] Estilitzar overlay modal amb spinner
-[ ] Fer category pane redimensionable (o collapsible)
+[x] Fer category pane redimensionable (o collapsible)
+[ ] Nat? Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
+[ ] Nat: Moviment estrany del canvas al col·lapsar i expandir
+[ ] Kram + Nat: Estilar progress
+[ ] Kram: Estilitzar overlay modal amb spinner
 [ ] Considerar un sol component per a controls de zoom (scripts pane, graph window)
 
 
@@ -32,8 +33,8 @@ Opció?
 
 Tips
 ===
-[ ] Revisar textos de tips per a minimitzar problemes d'imatges amb els espais i les puntuacions.
-[ ] Proposar la opció d'amagar els tips (Advanced mode?)
+[ ] Nat: Revisar textos de tips per a minimitzar problemes d'imatges amb els espais i les puntuacions.
+[ ] Nat + John: Proposar la opció d'amagar els tips (Advanced mode?)
 
 
 Menus

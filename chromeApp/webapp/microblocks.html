@@ -121,9 +121,21 @@
 						<h2 class="libraries__title"><l->LIBRARIES</l-></h2>
 						<div class="libraries__list" data-ide="libraries-list"></div>
 						<nav class="libraries__add-button-wrapper">
-							<button class="button-rounded" onclick="GP.apiCall('ide.showLibraryDialog');"><l->Add Library</l-></a>
+							<button class="button-rounded libraries__add-button" onclick="GP.apiCall('ide.showLibraryDialog');">
+								<l->Add Library</l->
+								<span class="libraries__add-button-icon">
+									<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8 4C8.27614 4 8.5 4.22386 8.5 4.5V7.5H11.5C11.7761 7.5 12 7.72386 12 8C12 8.27614 11.7761 8.5 11.5 8.5H8.5V11.5C8.5 11.7761 8.27614 12 8 12C7.72386 12 7.5 11.7761 7.5 11.5V8.5H4.5C4.22386 8.5 4 8.27614 4 8C4 7.72386 4.22386 7.5 4.5 7.5H7.5V4.5C7.5 4.22386 7.72386 4 8 4Z" fill="currentColor"/>
+									</svg>
+								</span>
+							</button>
 						</nav>
 					</div>
+					<button class="workspace__collapse-left-btn" data-ide="collapse-left-btn" aria-label="Expand and collapse left bar">
+						<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M1 8C1 8.27614 1.22386 8.5 1.5 8.5H13.2929L10.1464 11.6464C9.95118 11.8417 9.95118 12.1583 10.1464 12.3536C10.3417 12.5488 10.6583 12.5488 10.8536 12.3536L14.8536 8.35355C15.0488 8.15829 15.0488 7.84171 14.8536 7.64645L10.8536 3.64645C10.6583 3.45118 10.3417 3.45118 10.1464 3.64645C9.95118 3.84171 9.95118 4.15829 10.1464 4.35355L13.2929 7.5H1.5C1.22386 7.5 1 7.72386 1 8Z" fill="currentColor"/>
+						</svg>
+					</button>
 				</div>
 
 				<div class="emscripten workspace__canvas-wrapper">

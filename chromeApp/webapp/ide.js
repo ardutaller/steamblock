@@ -317,6 +317,34 @@ IDE.populateLibraries = function (element) {
 };
 
 
+// Collapse left bar
+IDE.collapseLeftBar = {
+	init: function () {
+		const ide = document.querySelector('[data-ide="ide"]');
+		const leftBar = document.querySelector('[data-ide="workspace-left"]');
+		const collapseButton = document.querySelector('[data-ide="collapse-left-btn"]');
+		let resizeInterval;
+
+		collapseButton.addEventListener('click', () => {
+			ide.classList.toggle('--is-left-collapsed');
+			ide.classList.add('--is-transitioning');
+
+			clearInterval(resizeInterval);
+			resizeInterval = setInterval(() => { IDE.resize(); }, 100);
+		})
+
+		leftBar.addEventListener('transitionend', () => {
+			ide.classList.remove('--is-transitioning');
+
+			clearInterval(resizeInterval);
+    		resizeInterval = null;
+
+			IDE.resize();
+		})
+	}
+};
+
+
 // Build the IDE
 IDE.build = function () {
 	this.populateTopBar(document.querySelector('[data-ide="top-bar"]'));
@@ -324,6 +352,8 @@ IDE.build = function () {
 	this.populateScriptControls(document.querySelector('[data-ide="scripts-pane-controls"]'));
 	this.tipBar.init();
 	this.spinner.init();
+	this.collapseLeftBar.init();
+
 	// check connection every 500ms
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
