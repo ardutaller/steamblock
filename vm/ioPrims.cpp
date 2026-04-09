@@ -1794,6 +1794,7 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 	void analogAttach(int pin) {
 		int esp32Channel = 1;
 		// Note: Do not use channels 0-1 or 8-9; those use timer0, which is used by Tone.
+		// Note: Channel 2 is used by audio pwm
 		while ((esp32Channel < MAX_ESP32_CHANNELS) && ((esp32Channels[esp32Channel] > 0) || ((esp32Channel & 7) <= 1))) {
 			esp32Channel++;
 		}
@@ -2832,14 +2833,14 @@ static int writeDAC(int sample) { return 0; }
 #endif
 
 // Experimental LEDC PWM audio output
+// Note: LEDC channels are also used by servos and by analog write; this feature could conflict.
+// Maybe just set PWM to 10-bits, 39062 Hz for analog output and use analog write primitive?
 
 #if defined(ESP32)
 
-#include <driver/sigmadelta.h>
-
-#define LEDC_AUDIO_CHANNEL 5
-static int pwmAudioInitialized = false;
-static int pwmAudioMaxSample = 0;
+#define LEDC_AUDIO_CHANNEL 5 // last LEDC channel on C3
+static int pwmAudioPin = -1; // -1 means audio is not initialized
+static int pwmAudioResolution = 10;
 
 static OBJ primPWMAudioInit(int argCount, OBJ *args) {
 	// Sampling rate is 40 MHz / 2^resolution:
@@ -2853,17 +2854,21 @@ static OBJ primPWMAudioInit(int argCount, OBJ *args) {
 	if (argCount < 2) return fail(notEnoughArguments);
 	if (!isInt(args[0]) || !isInt(args[0])) return fail(needsIntegerError);
 
-	int outputPin = obj2int(args[0]);
-	int resolution = obj2int(args[1]);
-	if (resolution < 8) resolution = 8;
-	if (resolution > 11) resolution = 11;
+	if (pwmAudioPin >= 0) ledcDetachPin(pwmAudioPin);
+	pwmAudioPin = -1;
 
-	int sampleRate = 40000000 / (1 << resolution);
-	pwmAudioMaxSample = (1 << resolution) - 1;
+	int outputPin = mapDigitalPinNum(obj2int(args[0]));
+	if (outputPin < 0) return falseObj;
 
-	int rc = ledcSetup(LEDC_AUDIO_CHANNEL, sampleRate, resolution);
+	pwmAudioResolution = obj2int(args[1]);
+	if (pwmAudioResolution < 8) pwmAudioResolution = 8;
+	if (pwmAudioResolution > 11) pwmAudioResolution = 11;
+
+	uint32_t sampleRate = 40000000 / (1 << pwmAudioResolution);
+
+	int rc = ledcSetup(LEDC_AUDIO_CHANNEL, sampleRate, pwmAudioResolution);
 	ledcAttachPin(outputPin, LEDC_AUDIO_CHANNEL);
-	pwmAudioInitialized = true;
+	pwmAudioPin = outputPin;
 
 	return falseObj;
 }
@@ -2873,13 +2878,14 @@ static OBJ primPWMAudioOut(int argCount, OBJ *args) {
 
 	int signed16bit = obj2int(args[0]); // signed 16-bit sample
 
-	if (!pwmAudioInitialized) {
+	if (pwmAudioPin < 0) {
 		outputString("PWM Audio not initialized");
 		return falseObj;
 	}
 
-	// convert 16-bit signed to 9-bit unsigned output
-	int pwm = (signed16bit >> 7) + 256;
+	int pwmAudioMaxSample = (1 << pwmAudioResolution) - 1;
+
+	int pwm = (signed16bit >> (16 - pwmAudioResolution)) + (1 << (pwmAudioResolution - 1));
 	if (pwm < 0) pwm = 0;
 	if (pwm > pwmAudioMaxSample) pwm = pwmAudioMaxSample;
 
