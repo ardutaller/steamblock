@@ -1,26 +1,86 @@
 module main
-author 'wwj718 & Liang Shuai'
+author unknown
 version 1 0 
-description 'BLE program for interacting with Snap! or Python_BLE'
+description ''
+variables list_x list_y num 
 
-script 66 66 {
-comment 'Please manually add other required libraries.'
-comment 'Please refer to https://wwj718.github.io/post/programming/snap-cocube-en/'
+  spec ' ' 'start' 'start'
+
+to start {
+  '[tft:text]' 'A: Record' 10 60 (colorSwatch 255 150 0 255) 3 true
+  '[tft:text]' 'B: Start' 10 100 (colorSwatch 255 150 0 255) 3 true
+  '[tft:text]' 'A+B: Restart' 10 140 (colorSwatch 255 150 0 255) 3 true
 }
 
-script 258 174 {
-whenBroadcastReceived ''
-handle_blocking_message
+script 40 40 {
+whenButtonPressed 'A+B'
+'[tft:clear]'
+'CoCube wheels stop'
+stopAll
+start
 }
 
-script 66 176 {
-whenBroadcastReceived ''
-handle_message
+script 226 40 {
+whenButtonPressed 'A'
+'[tft:clear]'
+if ((size list_x) == 0) {
+  list_x = ('[data:makeList]')
+  list_y = ('[data:makeList]')
+  num = 0
+}
+if ('CoCube on the mat') {
+  '[data:addLast]' ('CoCube position_X') list_x
+  '[data:addLast]' ('CoCube position_Y') list_y
+  num += 1
+  sendBroadcast 'show number'
+}
 }
 
-script 66 266 {
-comment 'debug'
-sayIt (getLastBroadcast)
+script 40 483 {
+whenStarted
+comment '将CoCube摆放在CoMap上并朝向右侧
+在每个足球的左侧按下A键，记录足球的坐标
+按下B键，机器人将自动完成射门'
+comment 'Place CoCube on CoMap and orient it towards the right.
+Press the A button to the left of each soccer ball to record its coordinates.
+Press the B button, and the robot will automatically complete the shot.'
+start
+}
+
+script 40 716 {
+whenBroadcastReceived 'show number'
+'[tft:text]' num 80 80 (colorSwatch 255 150 0 255) 12 false
+'play tone' 'nt;c' 0 75
+'play tone' 'nt;g' 0 150
+waitMillis 200
+'[display:mbDisplayOff]'
+}
+
+script 40 946 {
+whenButtonPressed 'B'
+num = 0
+'[tft:text]' '0' 80 80 (colorSwatch 255 150 0 255) 12 false
+forever {
+  if ((size list_x) != 0) {
+    'CoCube move to' (at 1 list_x) (at 1 list_y) 40
+    'CoCube point towards' 300 100 30
+    'ccmodule_gripper open'
+    'CoCube move for msecs' 'cocube;forward' 40 1500
+    'ccmodule_gripper close'
+    '[display:mbDisplayOff]'
+    '[data:delete]' 1 list_x
+    '[data:delete]' 1 list_y
+    num += 1
+    '[tft:text]' num 80 80 (colorSwatch 255 150 0 255) 12 false
+    'play tone' 'nt;c' 0 75
+    'play tone' 'nt;g' 0 150
+  } else {
+    waitMillis 300
+    '[display:mbDisplayOff]'
+    '[display:mbDisplay]' 15237440
+    exitLoop
+  }
+}
 }
 
 
@@ -89,10 +149,6 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' '_cocube_pid_control' '_cocube_pid_control'
   spec ' ' '_cocube_calculate_angle_error_' '_cocube_calculate_angle_error angle _' 'num' 0
   spec ' ' '_cocube_calculate_distance_error target_x _ target_y _' '_cocube_calculate_distance_error Target_X _ Target_Y _' 'num num' 0 0
-  spec ' ' 'CoCube set TFT backlight' 'obsolete obsolete set TFT backlight _' 'bool' false
-  spec ' ' '_cocube_pid_init' 'obsolete obsolete _cocube_pid_init'
-  spec ' ' '_cocube_pid_right_motor' 'obsolete obsolete _cocube_pid_right_motor'
-  spec ' ' '_cocube_pid_left_motor' 'obsolete obsolete _cocube_pid_left_motor'
 
 to 'CoCube battery percentage' {
   return (minimum (((254 * ('[misc:rescale]' (analogReadOp 34) 0 1023 0 3300)) - 680000) / 1600) 100)
@@ -427,9 +483,6 @@ variables _cc_cam_init_flag _cc_asr_snc _cc_PCF8574_address
   spec ' ' 'ccmodule_power on module' 'power on module'
   space
   spec ' ' '_ccmodule_check_camera' 'check_camera'
-  spec 'r' 'ccmodule_gesture connected' 'obsolete obsolete 3D gesture connected'
-  spec 'r' 'ccmodule_gesture read' 'obsolete obsolete 3D gesture read'
-  spec 'r' '_ccmodule_ultrasonic distance' 'obsolete obsolete obsolete ultrasonic distance (mm)'
 
 to '_ccmodule_check_camera' {
   if (_cc_cam_init_flag == 1) {
@@ -606,338 +659,6 @@ to 'ccmodule_tracker on white' which {
   } else {
     return ('[data:convertType]' (1 & ((at 1 var) >> (8 - which))) 'boolean')
   }
-}
-
-
-module 'Distance (VL53L0X)' Input
-author 'José García Yeste'
-version 1 2 
-tags sensor distance 
-description 'Support for VL53L0X distance sensor.
-TOF laser based.
-Range 3-200mm.
-
-Tested on:
-https://shop.m5stack.com/products/tof-sensor-unit (take Kapton tape on sensor!)
-'
-
-  spec 'r' 'VL53L0X connected' 'VL53L0X connected'
-  spec 'r' 'VL53L0X distance (mm)' 'VL53L0X distance (mm)'
-
-to 'VL53L0X connected' {
-  return ((i2cGet 41 (hexToInt 'C0')) == (hexToInt 'EE'))
-}
-
-to 'VL53L0X distance (mm)' {
-  i2cSet 41 0 1
-  waitMillis 70
-  if (((i2cGet 41 (hexToInt '14')) & 1) == 1) {
-    '[sensors:i2cWrite]' 41 ('[data:makeList]' (hexToInt '14'))
-    local 'buf' (newList 12)
-    '[sensors:i2cRead]' 41 buf
-    if ((at 1 buf) == 95) {
-      return (((at 11 buf) << 8) | (at 12 buf))
-    } else {
-      return -1
-    }
-  } else {
-    return -2
-  }
-}
-
-
-module 'Gesture (PAJ7620)' Input
-author 'José García'
-version 1 1 
-tags sensor gesture 
-description 'Support for PAJ7620 gesture sensor.
-The "read" block returns the name of the detected gesture.
-Based on github.com/Seeed-Studio/Gesture_PAJ7620'
-variables '_paj7620 initialized' 
-
-  spec 'r' 'paj7620 read' 'paj7620 read'
-  spec ' ' '_paj7620 setup' '_paj7620 setup'
-  spec 'r' 'paj7620 connected' 'paj7620 connected'
-  spec ' ' '_paj7620 setup bank0' '_paj7620 setup bank0'
-  spec ' ' '_paj7620 setup bank1' '_paj7620 setup bank1'
-
-to '_paj7620 setup' {
-  if ('paj7620 connected') {
-    '_paj7620 setup bank0'
-    '_paj7620 setup bank1'
-    i2cSet (hexToInt '73') (hexToInt '65') (hexToInt '12')
-    i2cSet (hexToInt '73') (hexToInt 'EF') 0
-    '_paj7620 initialized' = 1
-  }
-}
-
-to '_paj7620 setup bank0' {
-  i2cSet (hexToInt '73') (hexToInt 'EF') 0
-  local 'i' 1
-  local 'list' '3229
-3301
-3400
-3501
-3600
-3707
-3817
-3906
-3A12
-3F00
-4002
-41FF
-4201
-462D
-470F
-483C
-4900
-4A1E
-4B00
-4C20
-4D00
-4E1A
-4F14
-5000
-5110
-5200
-5C02
-5D00
-5E10
-5F3F
-6027
-6128
-6200
-6303
-64F7
-6503
-66D9
-6703
-6801
-69C8
-6A40
-6D04
-6E00
-6F00
-7080
-7100
-7200
-7300
-74F0
-7500
-8042
-8144
-8204
-8320
-8420
-8500
-8610
-8700
-8805
-8918
-8A10
-8B01
-8C37
-8D00
-8EF0
-8F81
-9006
-9106
-921E
-930D
-940A
-950A
-960C
-9705
-980A
-9941
-9A14
-9B0A
-9C3F
-9D33
-9EAE
-9FF9
-A048
-A113
-A210
-A308
-A430
-A519
-A610
-A708
-A824
-A904
-AA1E
-AB1E
-CC19
-CD0B
-CE13
-CF64
-D021
-D10F
-D288
-E001
-E104
-E241
-E3D6
-E400
-E50C
-E60A
-E700
-E800
-E900
-EE07'
-  repeatUntil (i > (size list)) {
-    local 'reg' ('[data:copyFromTo]' list i (i + 1))
-    local 'val' ('[data:copyFromTo]' list (i + 2) (i + 4))
-    i2cSet (hexToInt '73') (hexToInt reg) (hexToInt val)
-    i += 5
-    waitMicros 10
-  }
-}
-
-to '_paj7620 setup bank1' {
-  i2cSet (hexToInt '73') (hexToInt 'EF') 1
-  local 'i' 1
-  local 'list' '001E
-011E
-020F
-0310
-0402
-0500
-06B0
-0704
-080D
-090E
-0A9C
-0B04
-0C05
-0D0F
-0E02
-0F12
-1002
-1102
-1200
-1301
-1405
-1507
-1605
-1707
-1801
-1904
-1A05
-1B0C
-1C2A
-1D01
-1E00
-2100
-2200
-2300
-2501
-2600
-2739
-287F
-2908
-3003
-3100
-321A
-331A
-3407
-3507
-3601
-37FF
-3836
-3907
-3A00
-3EFF
-3F00
-4077
-4140
-4200
-4330
-44A0
-455C
-4600
-4700
-4858
-4A1E
-4B1E
-4C00
-4D00
-4EA0
-4F80
-5000
-5100
-5200
-5300
-5400
-5780
-5910
-5A08
-5B94
-5CE8
-5D08
-5E3D
-5F99
-6045
-6140
-632D
-6402
-6596
-6600
-6797
-6801
-69CD
-6A01
-6BB0
-6C04
-6D2C
-6E01
-6F32
-7100
-7201
-7335
-7400
-7533
-7631
-7701
-7C84
-7D03
-7E01'
-  repeatUntil (i > (size list)) {
-    local 'reg' ('[data:copyFromTo]' list i (i + 1))
-    local 'val' ('[data:copyFromTo]' list (i + 2) (i + 4))
-    i2cSet (hexToInt '73') (hexToInt reg) (hexToInt val)
-    i += 5
-    waitMicros 10
-  }
-}
-
-to 'paj7620 connected' {
-  return (and ((i2cGet (hexToInt '73') 0) == 32) ((i2cGet (hexToInt '73') 1) == 118))
-}
-
-to 'paj7620 read' {
-  if ((v '_paj7620 initialized') == 0) {'_paj7620 setup'}
-  local 'msg' '?'
-  local 'g' (i2cGet (hexToInt '73') (hexToInt '43'))
-  if ((g & 1) != 0) {
-    msg = 'right'
-  } ((g & 2) != 0) {
-    msg = 'left'
-  } ((g & 4) != 0) {
-    msg = 'up'
-  } ((g & 8) != 0) {
-    msg = 'down'
-  } ((g & 16) != 0) {
-    msg = 'forward'
-  } ((g & 32) != 0) {
-    msg = 'backward'
-  } ((g & 64) != 0) {
-    msg = 'clockwise'
-  } ((g & 128) != 0) {
-    msg = 'anti-clockwise'
-  }
-  return msg
 }
 
 
@@ -1748,56 +1469,5 @@ to startTone freq {
 
 to stopTone {
   startTone 0
-}
-
-
-module cocube_server_dynatalk
-author 'wwj718 & Liang Shuai'
-version 1 0 
-depends 'Robots/CoCube' 
-description '
-CoCube server code for Snap! and Python API
-
-For more detial: https://wwj718.github.io/post/%E7%BC%96%E7%A8%8B/snap-cocube/#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B-microblocks-%E6%94%AF%E6%8C%81%E7%9A%84-vm-primitive
-
-CoCube BLE Python API: https://github.com/wwj718/cocube
-'
-
-  spec ' ' 'handle_message' 'handle_message'
-  spec ' ' 'handle_blocking_message' 'handle_blocking_message'
-  spec 'r' 'to_mb_args' 'to_mb_args _' 'auto' ''
-
-to handle_blocking_message {
-  local 'msg' (getLastBroadcast)
-  if (('[data:copyFromTo]' msg 1 13) == 'blocking_call') {
-    local 'msg' ('[data:split]' msg ',')
-    local 'msg_id' (at 2 msg)
-    local 'cmd_name' (at 3 msg)
-    local 'cmd_args' ('[data:copyFromTo]' msg 4)
-    local 'result' (callCustomReporter cmd_name (to_mb_args cmd_args))
-    sendBroadcast ('[data:joinStrings]' ('[data:makeList]' '[response]' msg_id result) ',')
-  }
-}
-
-to handle_message {
-  local 'msg' (getLastBroadcast)
-  if (('[data:copyFromTo]' msg 1 4) == 'call') {
-    local 'msg' ('[data:split]' msg ',')
-    local 'msg_id' (at 2 msg)
-    local 'cmd_name' (at 3 msg)
-    local 'cmd_args' ('[data:copyFromTo]' msg 4)
-    local 'result' (callCustomReporter cmd_name (to_mb_args cmd_args))
-    sendBroadcast ('[data:joinStrings]' ('[data:makeList]' '[response]' msg_id result) ',')
-  }
-}
-
-to to_mb_args args {
-  local 'json' ('[data:join]' '[' ('[data:joinStrings]' args ',') ']')
-  local 'json_count' ('[misc:jsonCount]' json '')
-  local 'result' ('[data:makeList]')
-  for i json_count {
-    '[data:addLast]' ('[misc:jsonGet]' json ('[data:convertType]' i 'string')) result
-  }
-  return result
 }
 
