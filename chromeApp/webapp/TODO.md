@@ -6,8 +6,8 @@ TODO
 [x] Estilitzar ↑↑↑ perquè siguin d'una mida raonable
 [x] Impedir selecció del botó del logo (passa a Electron només?)
 [x] Botó de graph té classe "active" però al CSS no s'està fent res amb ella
-[ ] Canvi imatges tips perquè quadrin millor amb el text
-[ ] Canvi textos tips (treure punts finals)
+[x] Canvi imatges tips perquè quadrin millor amb el text
+[ ] Revisar textos de tips per a minimitzar problemes d'imatges amb els espais i les puntuacions.
 [x] Alçada del canvas inconsistent (CSS vs JS?)
 [x] Classes d'estat de les script-pane-tools (--disabled)
 [ ] Proposar la opció d'amagar els tips (Advanced mode?)

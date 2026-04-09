@@ -161,8 +161,7 @@ IDE.tipBar.init = function () {
 	this.icons['(-o)'] = 'bool_true';
 	this.icons['(o-)'] = 'bool_false';
 
-	this.titleElement = document.querySelector('[data-ide="tips-title"]');
-	this.contentElement = document.querySelector('[data-ide="tips-content"]');
+	this.tipsContainer = document.querySelector('[data-ide="tips-container"]');
 
 	document.addEventListener(
 		'ide.tip',
@@ -187,7 +186,7 @@ IDE.tipBar.enableFor = function (element) {
 };
 
 IDE.tipBar.setTip = function (title, content) {
-	this.titleElement.textContent = GetText.localize(title);
+	let tipTitle = GetText.localize(title);
 	let tipHTML = GetText.localize(content);
 	if (content !== null) {
 		Object.keys(this.icons).forEach(key => {
@@ -198,7 +197,10 @@ IDE.tipBar.setTip = function (title, content) {
 				);
 		});
 	}
-	this.contentElement.innerHTML = tipHTML;
+
+	this.tipsContainer.innerHTML = title
+		? `<span class="tips__title">${tipTitle}</span><span class="tips__content">${tipHTML}</span>`
+		: '';
 };
 
 // Spinner and overlay
