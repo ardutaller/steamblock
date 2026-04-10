@@ -204,6 +204,10 @@ IDE.tipBar.setTip = function (title, content) {
 };
 
 // Spinner and overlay
+//
+// Testing with:
+// IDE.spinner.show('Testing', 'Doing some stuff...', 30)
+// IDE.spinner.setPercent(50)
 IDE.spinner = {
 	init: function () {
 		this.overlay = IDE.element.querySelector('[data-ide="overlay"]');
@@ -241,7 +245,7 @@ IDE.spinner = {
 	},
 
 	setPercent: function (percent) {
-		this.spinner.style.setProperty('--a', (percent ?? 75)/100 * 360 + 'deg');
+		this.spinner.style.setProperty('--percent', (percent ?? 75)/100 * 360 + 'deg');
 		if ((percent >= 100) && this.onDone) {
 			this.onDone.call();
 			this.hide();

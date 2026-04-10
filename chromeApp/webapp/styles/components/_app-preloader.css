@@ -15,7 +15,6 @@
 		visibility var(--duration-600) ease-in;
 
 	&.--is-loaded {
-		/* visibility: hidden; */
 		opacity: 0;
 	}
 }
