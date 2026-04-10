@@ -59,7 +59,7 @@ class FloatingWindow extends HTMLElement {
 		if (descriptor.body) {
 			if (typeof descriptor.body == 'string') {
 				windowBody.classList.add('--text');
-				windowBody.innerText = descriptor.body;
+				windowBody.innerHTML = descriptor.body;
 			} else if (typeof descriptor.body == 'object') { // assume DOM element
 				windowBody.classList.add('--object');
 				windowBody.append(descriptor.body);
@@ -214,7 +214,8 @@ FloatingWindow.inform = function (title, text) {
 		title: title ?? 'Information',
 		body: GetText.localize(text),
 		buttons: [{ label: 'Ok', action: ()=>{}, closesWindow: true }],
-		resizable: true
+		width: 320,
+		resizable: false
 	});
 	win.popUp();
 	return win;
@@ -230,7 +231,7 @@ FloatingWindow.confirm =
 			{ label: yesLabel ?? 'Yes', action: onAccept, closesWindow: true },
 			{ label: noLabel ?? 'No', action: onCancel, closesWindow: true }
 		],
-		resizable: true
+		resizable: false
 	});
 	win.popUp();
 	return win;
@@ -266,15 +267,16 @@ FloatingWindow.about = function() {
 	GP.apiCall('ide.version', [], ideVersion => {
 		GP.apiCall('board.vmVersion',[], vmVersion => {
 			let vmVersionReport = '\n';
-			if (vmVersion) { vmVersionReport = ` (Firmware v${vmVersion})\n`; }
-			let text = `MicroBlocks v${ideVersion} ${vmVersionReport}\n`;
+			if (vmVersion) { vmVersionReport = ` (Firmware v${vmVersion})<br><br>`; }
+			let text = `<b>MicroBlocks v${ideVersion} ${vmVersionReport}</b>`;
+			text += '<br><br>';
 			text += GetText.localize(
 				'about;by %1, %2 & %3.',
 				'John Maloney',
 				'Bernat Romagosa',
 				'Jens Mönig'
 			);
-			text += '\n';
+			text += '<br><br>';
 			text += GetText.localize('More info at http://microblocks.fun');
 			FloatingWindow.inform('About MicroBlocks', text);
 		});

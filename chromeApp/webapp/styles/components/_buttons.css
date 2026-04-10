@@ -5,6 +5,7 @@
 
 .button-rounded {
 	--buttonBorder: var(--space-1);
+
 	/* Somehow browser UA overwrites minireset's setting */
 	box-sizing: border-box;
 
@@ -20,8 +21,11 @@
 	border-radius: var(--borderRadius-max);
 	transition: all var(--duration-200) ease-in-out;
 
+
 	/* Workspace Left */
 	.workspace__left & {
+		min-width: max-content; /* Avoid resizing on collapse */
+
 		color: var(--color-blue-grey-300);
 		background-color: var(--color-blue-grey-850);
 		border: var(--buttonBorder) solid var(--color-blue-grey-700);
@@ -32,6 +36,7 @@
 			background-color: var(--color-yellow-action);
 		}
 	}
+
 
 	/* Window */
 	.window & {

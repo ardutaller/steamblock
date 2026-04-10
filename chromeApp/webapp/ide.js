@@ -161,8 +161,7 @@ IDE.tipBar.init = function () {
 	this.icons['(-o)'] = 'bool_true';
 	this.icons['(o-)'] = 'bool_false';
 
-	this.titleElement = document.querySelector('[data-ide="tips-title"]');
-	this.contentElement = document.querySelector('[data-ide="tips-content"]');
+	this.tipsContainer = document.querySelector('[data-ide="tips-container"]');
 
 	document.addEventListener(
 		'ide.tip',
@@ -187,7 +186,7 @@ IDE.tipBar.enableFor = function (element) {
 };
 
 IDE.tipBar.setTip = function (title, content) {
-	this.titleElement.textContent = GetText.localize(title);
+	let tipTitle = GetText.localize(title);
 	let tipHTML = GetText.localize(content);
 	if (content !== null) {
 		Object.keys(this.icons).forEach(key => {
@@ -198,7 +197,10 @@ IDE.tipBar.setTip = function (title, content) {
 				);
 		});
 	}
-	this.contentElement.innerHTML = tipHTML;
+
+	this.tipsContainer.innerHTML = title
+		? `<span class="tips__title">${tipTitle}</span><span class="tips__content">${tipHTML}</span>`
+		: '';
 };
 
 // Spinner and overlay
@@ -315,6 +317,34 @@ IDE.populateLibraries = function (element) {
 };
 
 
+// Collapse left bar
+IDE.collapseLeftBar = {
+	init: function () {
+		const ide = document.querySelector('[data-ide="ide"]');
+		const leftBar = document.querySelector('[data-ide="workspace-left"]');
+		const collapseButton = document.querySelector('[data-ide="collapse-left-btn"]');
+		let resizeInterval;
+
+		collapseButton.addEventListener('click', () => {
+			ide.classList.toggle('--is-left-collapsed');
+			ide.classList.add('--is-transitioning');
+
+			clearInterval(resizeInterval);
+			resizeInterval = setInterval(() => { IDE.resize(); }, 100);
+		})
+
+		leftBar.addEventListener('transitionend', () => {
+			ide.classList.remove('--is-transitioning');
+
+			clearInterval(resizeInterval);
+    		resizeInterval = null;
+
+			IDE.resize();
+		})
+	}
+};
+
+
 // Build the IDE
 IDE.build = function () {
 	this.populateTopBar(document.querySelector('[data-ide="top-bar"]'));
@@ -322,6 +352,8 @@ IDE.build = function () {
 	this.populateScriptControls(document.querySelector('[data-ide="scripts-pane-controls"]'));
 	this.tipBar.init();
 	this.spinner.init();
+	this.collapseLeftBar.init();
+
 	// check connection every 500ms
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
