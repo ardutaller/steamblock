@@ -353,12 +353,18 @@ IDE.build = function () {
 	this.tipBar.init();
 	this.spinner.init();
 	this.collapseLeftBar.init();
+	const appPreloader = document.querySelector('[data-ide="app-preloader"]');
 
 	// check connection every 500ms
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
 	setTimeout(() =>
-		{ document.querySelector('[data-ide="app-preloader"]').classList.add('--is-loaded'); },
+		{
+			appPreloader.classList.add('--is-loaded');
+			appPreloader.addEventListener('transitionend', () => {
+				appPreloader.style.visibility = 'hidden';
+			})
+		},
 		500 // it takes a bit for all elements to position and show themselves
 	);
 };

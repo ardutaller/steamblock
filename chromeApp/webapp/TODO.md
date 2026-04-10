@@ -18,6 +18,7 @@ TODO
 [ ] Kram + Nat: Estilar progress
 [ ] Kram: Estilitzar overlay modal amb spinner
 [ ] Considerar un sol component per a controls de zoom (scripts pane, graph window)
+[ ] Kram + Nat: Netejar imatges no usades
 
 
 Windows
