@@ -204,6 +204,10 @@ IDE.tipBar.setTip = function (title, content) {
 };
 
 // Spinner and overlay
+//
+// Testing with:
+// IDE.spinner.show('Testing', 'Doing some stuff...', 30)
+// IDE.spinner.setPercent(50)
 IDE.spinner = {
 	init: function () {
 		this.overlay = IDE.element.querySelector('[data-ide="overlay"]');
@@ -241,7 +245,7 @@ IDE.spinner = {
 	},
 
 	setPercent: function (percent) {
-		this.spinner.style.setProperty('--a', (percent ?? 75)/100 * 360 + 'deg');
+		this.spinner.style.setProperty('--percent', (percent ?? 75)/100 * 360 + 'deg');
 		if ((percent >= 100) && this.onDone) {
 			this.onDone.call();
 			this.hide();
@@ -353,12 +357,18 @@ IDE.build = function () {
 	this.tipBar.init();
 	this.spinner.init();
 	this.collapseLeftBar.init();
+	const appPreloader = document.querySelector('[data-ide="app-preloader"]');
 
 	// check connection every 500ms
 	setInterval(() => { GP.apiCall('ide.updateConnection'); }, 500);
 	this.resize();
 	setTimeout(() =>
-		{ document.querySelector('[data-ide="app-preloader"]').classList.add('--is-loaded'); },
+		{
+			appPreloader.classList.add('--is-loaded');
+			appPreloader.addEventListener('transitionend', () => {
+				appPreloader.style.visibility = 'hidden';
+			})
+		},
 		500 // it takes a bit for all elements to position and show themselves
 	);
 };

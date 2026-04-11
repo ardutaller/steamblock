@@ -13,18 +13,20 @@ TODO
 [x] Revisar padding de finestra Graph
 [x] Al buscar usos de blocs, els scripts surten gegants. Ja tenen classe --script
 [x] Fer category pane redimensionable (o collapsible)
+[x] Kram: Estilitzar overlay modal amb spinner
 [ ] Nat? Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
 [ ] Nat: Moviment estrany del canvas al col·lapsar i expandir
-[ ] Kram + Nat: Estilar progress
-[ ] Kram: Estilitzar overlay modal amb spinner
 [ ] Considerar un sol component per a controls de zoom (scripts pane, graph window)
+[ ] Kram + Nat: Estilar progress
+[ ] Kram + Nat: Netejar imatges no usades
+[ ] Kram: Unificar els arxius CSS en un sol import
 
 
 Windows
 ===
 [x] Windows: Quan fas el primer resize es lia un pollastre
 [ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
-[ ] About: Fer microblocks.fun clicable
+[ ] Nat: About -> Fer microblocks.fun clicable
 
 Opció?
 - Decidir dues o tres amplades estàndard de finestra (small, medium, large)

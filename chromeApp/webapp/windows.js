@@ -231,6 +231,7 @@ FloatingWindow.confirm =
 			{ label: yesLabel ?? 'Yes', action: onAccept, closesWindow: true },
 			{ label: noLabel ?? 'No', action: onCancel, closesWindow: true }
 		],
+		width: 320,
 		resizable: false
 	});
 	win.popUp();

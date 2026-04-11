@@ -79,8 +79,11 @@
 
 		<!-- Loader -->
 		<div class="app-preloader" data-ide="app-preloader">
-			<div class="app-preloader__big-logo"></div>
-			<h1 class="app-preloader__title">Loading...</h1>
+			<div class="app-preloader__contents">
+				<img class="app-preloader__logo" src="img/logo-preloader.svg" alt="MicroBlocks and Rosza logo">
+				<div class="app-preloader__spinner"></div>
+			</div>
+			<p class="app-preloader__text">Loading</p>
 		</div>
 
 
@@ -150,10 +153,13 @@
 			</div>
 
 			<div class="menu-container" data-ide="menu-container"></div>
+
 			<div class="overlay" data-ide="overlay">
-				<div class="overlay__spinner" data-ide="overlay-spinner"></div>
-				<h2 class="overlay__title" data-ide="overlay-title"></h2>
-				<h3 class="overlay__subtitle" data-ide="overlay-subtitle"></h3>
+				<div class="overlay__contents">
+					<div class="overlay__spinner" data-ide="overlay-spinner"></div>
+					<h2 class="overlay__title" data-ide="overlay-title"></h2>
+					<h3 class="overlay__subtitle" data-ide="overlay-subtitle"></h3>
+				</div>
 			</div>
 
 		</div>
