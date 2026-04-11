@@ -484,6 +484,9 @@ msgstr "i2c 设置设备 _ 寄存器 _ 为 _"
 msgid "set all NeoPixels color _"
 msgstr "设置所有 NeoPixels 的颜色为 _"
 
+msgid "set NeoPixels color _"
+msgstr "设置 NeoPixels 的颜色为 _"
+
 #. Primitive block. Mostly hidden from end users.
 msgid "shape for letter _"
 msgstr "字母 _ 的形状"
@@ -4528,6 +4531,95 @@ msgstr "设置TFT背光 _"
 msgid "battery percentage"
 msgstr "电量百分比"
 
+#. CoCube Emoji library label
+#. Show emojis on the TFT Screen.
+msgid "CoCube Emoji"
+msgstr "CoCube 像素表情"
+
+#. CoCube emoji block
+msgid "set emoji _ scale _"
+msgstr "设置像素表情 _ 尺寸 _"
+
+#. CoCube emoji block
+msgid "happy"
+msgstr "开心"
+
+#. CoCube emoji block
+msgid "naughty"
+msgstr "调皮"
+
+#. CoCube emoji block
+msgid "star-struck"
+msgstr "星星眼"
+
+#. CoCube emoji block
+msgid "kiss"
+msgstr "亲吻"
+
+#. CoCube emoji block
+msgid "laughing"
+msgstr "大笑"
+
+#. CoCube emoji block
+msgid "neutral"
+msgstr "无表情"
+
+#. CoCube emoji block
+msgid "smug"
+msgstr "怀疑"
+
+#. CoCube emoji block
+msgid "crying"
+msgstr "大哭"
+
+#. CoCube emoji block
+msgid "sleeping"
+msgstr "睡觉"
+
+#. CoCube emoji block
+msgid "awkward"
+msgstr "尴尬"
+
+#. CoCube emoji block
+msgid "shocked"
+msgstr "震惊"
+
+#. CoCube emoji block
+msgid "nerdy"
+msgstr "戴眼镜"
+
+#. CoCube emoji block
+msgid "cool"
+msgstr "酷"
+
+#. CoCube emoji block
+msgid "scared"
+msgstr "害怕"
+
+#. CoCube emoji block
+msgid "angry"
+msgstr "愤怒"
+
+#. CoCube emoji block
+msgid "cold"
+msgstr "冷"
+
+#. CoCube emoji block
+msgid "hot"
+msgstr "热"
+
+#. CoCube emoji block
+msgid "nauseated"
+msgstr "恶心"
+
+#. CoCube emoji block
+msgid "vomiting"
+msgstr "呕吐"
+
+#. CoCube emoji block
+msgid "dizzy"
+msgstr "眩晕"
+
 #. CoCube Module library block
 msgid "gripper stop"
 msgstr "夹爪停止"
@@ -5116,6 +5208,14 @@ msgstr "ASR 播报指令 _"
 #. CoCube Module library block
 msgid "ASR get command"
 msgstr "ASR 获取指令"
+
+#. CoCube Module library block
+msgid "Tracker _ on black"
+msgstr "寻迹模块 _ 在黑色上"
+
+#. CoCube Module library block
+msgid "Tracker _ on white"
+msgstr "寻迹模块 _ 在白色上"
 
 #. WiFi library block
 msgid "allow WiFi while using BLE _"

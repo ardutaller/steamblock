@@ -1019,7 +1019,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			File logo = LittleFS.open(LOGO_PATH, "r");
 			if (logo) {
 				logo.close();
-				drawRawImage(LOGO_PATH, 0, 0, 240, 240);
+				tft->fillScreen(WHITE);
+				drawRawImage(LOGO_PATH, 0, 70, 240, 40);
 				drawBatteryStatus(battery_percentage, 85, 150, 70, 40, 3);
 				logoDisplayed = true;
 				delay(1000);
