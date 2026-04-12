@@ -1,20 +1,20 @@
 module Widgets
 author MicroBlocks
-version 1 2 
-depends '_Touch Screen' TFT 
-description 'Simple monochrome widgets using the TFT library. Supports interation via touch screen, when available, or buttons.
+version 1 3
+depends '_Touch Screen' TFT
+description 'Simple interactive monochrome widgets using the TFT library.
+Supports interation via touch screen, when available, or A and B buttons.
 '
-variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widget_selected _widget_showGrid 
+variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widget_showGrid _widget_selected
 
   spec ' ' 'widget_initialize' 'initialize widgets : scale _ : #BR# show grid _ : widget color _' 'num bool color' 1 true
   space
-  spec 'r' 'widget_addText' 'text x _ y _ label _' 'num num str' 0 0 'text label'
-  spec 'r' 'widget_addLight' 'light x _ y _ : color _ : #BR# broadcast _' 'num num color str' 0 0 nil 'light toggled'
-  spec 'r' 'widget_addBar' 'bar x _ y _ is vertical _ length _ #BR#  min _ max _ value _' 'num num bool num num num num' 0 0 false 50 0 100 50
+  spec 'r' 'widget_addText' 'text x _ y _ label _ : #BR# broadcast _' 'num num auto str' 0 0 'textOrNumber'
   spec 'r' 'widget_addButton' 'button x _ y _ label _ : #BR# toggleable _ : broadcast _' 'num num str bool str' 0 0 'button' false ''
-  spec 'r' 'widget_addNumber' 'number x _ y _ value _ : #BR# broadcast _' 'num num num str' 0 0 0 'input changed'
   spec 'r' 'widget_addSlider' 'slider x _ y _ is vertical _ length _ #BR# min _ max _ value _ : #BR# broadcast _' 'num num bool num num num num str' 0 0 false 50 0 100 25 ''
   spec 'r' 'widget_addChoice' 'choice x _ y _ value _ choices _ : #BR# broadcast _' 'num num str str str' 0 0 'A' 'A,B,C' ''
+  spec 'r' 'widget_addLight' 'light x _ y _ : color _ : #BR# broadcast _' 'num num color str' 0 0 nil 'light toggled'
+  spec 'r' 'widget_addBar' 'bar x _ y _ is vertical _ length _ #BR#  min _ max _ value _' 'num num bool num num num num' 0 0 false 50 0 100 50
   spec 'r' 'widget_addGraph' 'graph x _ y _ w _ h _ #BR# min _ max _' 'num num num num num num' 0 0 50 50 0 100
   space
   spec ' ' 'widget_center' 'center widget _' 'str' ''
@@ -24,11 +24,10 @@ variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widg
   space
   spec ' ' 'widget_clearGraph' 'clear graph widget _' 'str'
   spec ' ' 'widget_addToGraph' 'add _ to graph widget _' 'num str'
-  space
-  spec ' ' 'widget_setLightColor' 'widget _ set light color _' 'auto color' ''
-  spec 'r' 'widget_lightColor' 'widget _ light color' 'auto' ''
-  space
+  advanced
   spec 'r' 'widget_type' 'widget _ type' 'auto' ''
+  spec 'r' 'widget_isNumber' 'widget _ is number' 'auto' ''
+  space
   spec 'r' 'widget_x' 'widget _ x' 'auto' ''
   spec 'r' 'widget_y' 'widget _ y' 'auto' ''
   spec 'r' 'widget_width' 'widget _ width' 'auto' ''
@@ -36,10 +35,9 @@ variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widg
   spec 'r' 'widget_bottom' 'widget _ bottom' 'auto' ''
   spec 'r' 'widget_right' 'widget _ right' 'auto' ''
   space
-  spec ' ' 'widget_startInteractionLoop' 'start widgets'
+  spec ' ' 'widget_setLightColor' 'widget _ set light color _' 'auto color' ''
   space
-  spec ' ' 'widget_selectNext' 'select next widget'
-  spec ' ' 'widget_handleButtonInput' 'handle button input'
+  spec ' ' 'widget_startInteractionLoop' 'start widgets'
   space
   spec ' ' '_widget_add' '_widget_add _' 'auto' ''
   spec 'r' '_widget_layout_scale' '_widget_layout_scale'
@@ -52,7 +50,6 @@ variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widg
   spec ' ' '_widget_drawLight' '_widget_drawLight _' 'auto' ''
   spec ' ' '_widget_drawBar' '_widget_drawBar _' 'auto' ''
   spec ' ' '_widget_drawButton' '_widget_drawButton _' 'auto' ''
-  spec ' ' '_widget_drawNumber' '_widget_drawNumber _' 'auto' ''
   spec ' ' '_widget_drawSlider' '_widget_drawSlider _' 'auto' ''
   spec ' ' '_widget_drawChoice' '_widget_drawChoice _' 'auto' ''
   spec ' ' '_widget_drawGraph' '_widget_drawGraph _' 'auto' ''
@@ -63,18 +60,23 @@ variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widg
   spec ' ' '_widget_changed' '_widget_changed _' 'str' ''
   spec 'r' '_widget_redrawNeeded' '_widget_redrawNeeded _' 'auto' ''
   space
-  spec ' ' '_widget_selectWidget' '_widget_selectWidget _' 'auto' ''
-  spec ' ' '_widget_clearSelection' '_widget_clearSelection'
-  spec ' ' '_widget_highlight' '_widget_highlight _ highlight _' 'str bool' '' true
-  space
+  spec ' ' '_widget_handleTouchInput' '_widget_handleTouchInput'
   spec 'r' '_widget_findTouched' '_widget_findTouched'
-  spec ' ' '_widget_handleTouch' '_widget_handleTouch'
   spec ' ' '_widget_dragSlider' '_widget_dragSlider _' 'str' ''
   spec ' ' '_widget_dragNumber' '_widget_dragNumber _' 'str' ''
   spec ' ' '_widget_dragChoice' '_widget_dragChoice _' 'auto' '10'
-  spec ' ' '_widget_changeValueBy' '_widget_changeValue _ by _' 'str num' '' 1
   spec ' ' '_widget_waitDuringTouch' '_widget_waitDuringTouch _ msecs' 'num' 100
+  space
+  spec ' ' '_widget_handleButtonInput' 'handle button input'
+  spec ' ' '_widget_selectNext' 'select next widget'
+  spec ' ' '_widget_handleAB' 'handle A/B button'
+  space
+  spec ' ' '_widget_changeValueBy' '_widget_changeValue _ by _' 'str num' '' 1
   spec ' ' '_widget_releaseButton' '_widget_releaseButton _' 'str' ''
+  space
+  spec ' ' '_widget_selectWidget' '_widget_selectWidget _' 'auto' ''
+  spec ' ' '_widget_clearSelection' '_widget_clearSelection'
+  spec ' ' '_widget_highlight' '_widget_highlight _ highlight _' 'str bool' '' true
 
 to '_widget_add' widget {
   if (_widget_allWidgets == 0) {widget_initialize}
@@ -128,8 +130,9 @@ to '_widget_dragChoice' widget {
 to '_widget_dragNumber' widget {
   local 'offset' (('[tft:tftTouchY]') - ((widget_y widget) + ((widget_height widget) / 2)))
   if ((absoluteValue offset) > 1) {
+    '_widget_erase' widget
     widget_setValue widget ((widget_value widget) + (ifExpression (offset < 0) -1 1))
-    '_widget_drawNumber' widget
+    '_widget_drawText' widget
     '_widget_waitDuringTouch' (3000 / (absoluteValue offset))
   }
 }
@@ -155,7 +158,7 @@ to '_widget_dragSlider' slider {
 
 to '_widget_draw' widget {
   local 'type' (widget_type widget)
-  if (or ('text' == type) ('number' == type)) {
+  if ('text' == type) {
     '_widget_drawText' widget
   } ('light' == type) {
     '_widget_drawLight' widget
@@ -275,10 +278,6 @@ to '_widget_drawLight' widget {
   '[tft:circle]' ((widget_x widget) + radius) ((widget_y widget) + radius) (radius - 3) (ifExpression (widget_value widget) color _widget_bgColor) true
 }
 
-to '_widget_drawNumber' widget {
-  '_widget_drawText' widget
-}
-
 to '_widget_drawSlider' widget {
   local 'min' (at 9 widget)
   local 'max' (at 10 widget)
@@ -319,7 +318,47 @@ to '_widget_findTouched' {
   return 0
 }
 
-to '_widget_handleTouch' {
+to '_widget_handleAB' {
+  if (_widget_selected == 0) {
+    comment 'No widget selected'
+    return 0
+  }
+  local 'type' (widget_type _widget_selected)
+  local 'value' (widget_value _widget_selected)
+  if (or ('button' == type) ('light' == type)) {
+    comment 'Toggle boolean (e.g. button)'
+    widget_setValue _widget_selected (not value)
+    '_widget_updateDisplay'
+    waitUntil (not (or (buttonA) (buttonB)))
+    if ('button' == (widget_type _widget_selected)) {
+      '_widget_releaseButton' _widget_selected
+    }
+  } (or ('choice' == type) (isType value 'number')) {
+    comment 'Change a choice or numeric value (e.g. slider, bar, or number).'
+    local 'increment' (ifExpression (buttonA) -1 1)
+    repeatUntil (not (or (buttonA) (buttonB))) {
+      '_widget_changeValueBy' _widget_selected increment
+      '_widget_selectWidget' _widget_selected
+      if (or ('bar' == type) ('slider' == type)) {
+        waitMillis 50
+      } else {
+        waitMillis 300
+      }
+    }
+  }
+}
+
+to '_widget_handleButtonInput' {
+  if ('Boardie' != (boardType)) {waitMillis 50}
+  if (and (buttonA) (buttonB)) {
+    '_widget_selectNext'
+    waitUntil (not (or (buttonA) (buttonB)))
+  } else {
+    '_widget_handleAB'
+  }
+}
+
+to '_widget_handleTouchInput' {
   local 'touched widget' ('_widget_findTouched')
   if ((v 'touched widget') != 0) {
     '_widget_clearSelection'
@@ -335,10 +374,10 @@ to '_widget_handleTouch' {
       repeatUntil (not ('[tft:tftTouched]')) {
         if ('slider' == type) {
           '_widget_dragSlider' (v 'touched widget')
-        } ('number' == type) {
-          '_widget_dragNumber' (v 'touched widget')
         } ('choice' == type) {
           '_widget_dragChoice' (v 'touched widget')
+        } (widget_isNumber (v 'touched widget')) {
+          '_widget_dragNumber' (v 'touched widget')
         }
         '_widget_updateDisplay'
       }
@@ -361,7 +400,8 @@ to '_widget_highlight' widget showHighlight {
 to '_widget_interactionLoop' {
   '_widget_redrawAll'
   forever {
-    if ('[tft:tftTouched]') {'_widget_handleTouch'}
+    if ('[tft:tftTouched]') {'_widget_handleTouchInput'}
+    if (or (buttonA) (buttonB)) {'_widget_handleButtonInput'}
     '_widget_updateDisplay'
   }
 }
@@ -391,6 +431,23 @@ redraw flag but don''t re-send the button message.'
     '_widget_erase' button
     atPut 6 button (booleanConstant false)
     atPut 7 button (booleanConstant true)
+  }
+}
+
+to '_widget_selectNext' {
+  if (or (_widget_allWidgets == 0) ((size _widget_allWidgets) == 0)) {
+    _widget_selected = 0
+  } else {
+    local 'start' (maximum 0 ('[data:find]' _widget_selected _widget_allWidgets))
+    local 'i' ((start % (size _widget_allWidgets)) + 1)
+    repeatUntil (i == start) {
+      local 'w' (at i _widget_allWidgets)
+      if (and ('graph' != (widget_type w)) (or ('text' != (widget_type w)) (widget_isNumber w))) {
+        '_widget_selectWidget' w
+        exitLoop
+      }
+      i = ((i % (size _widget_allWidgets)) + 1)
+    }
   }
 }
 
@@ -493,16 +550,6 @@ to widget_addLight x y optionalColor optionalMsg {
   return widget
 }
 
-to widget_addNumber x y value optionalMsg {
-  local 'msg' (argOrDefault 4 '')
-  local 's' ('_widget_layout_scale')
-  local 'widget' ('[data:makeList]' 'number' (x * s) (y * s) (10 * s) (8 * s) value (booleanConstant false) msg)
-  comment 'Width is determined by number of digits'
-  widget_setValue widget value
-  '_widget_add' widget
-  return widget
-}
-
 to widget_addSlider x y isVertical length min max value optionalMsg {
   local 'msg' (argOrDefault 8 '')
   local 's' ('_widget_layout_scale')
@@ -517,9 +564,11 @@ to widget_addSlider x y isVertical length min max value optionalMsg {
   return widget
 }
 
-to widget_addText x y label {
+to widget_addText x y value optionalMsg {
+  local 'msg' (argOrDefault 4 '')
   local 's' ('_widget_layout_scale')
-  local 'widget' ('[data:makeList]' 'text' (x * s) (y * s) ((6 * (maximum (size label) 1)) * s) (8 * s) label (booleanConstant false) '')
+  local 'label' ('[data:convertType]' value 'string')
+  local 'widget' ('[data:makeList]' 'text' (x * s) (y * s) ((6 * (maximum (size label) 1)) * s) (8 * s) value (booleanConstant false) msg)
   '_widget_add' widget
   return widget
 }
@@ -552,35 +601,6 @@ to widget_clearGraph graph {
   '_widget_changed' graph
 }
 
-to widget_handleButtonInput {
-  if (_widget_selected == 0) {
-    comment 'No widget selected'
-    return 0
-  }
-  local 'type' (widget_type _widget_selected)
-  local 'value' (widget_value _widget_selected)
-  if (or ('button' == type) ('light' == type)) {
-    comment 'Toggle boolean (e.g. button)'
-    widget_setValue _widget_selected (not value)
-    '_widget_updateDisplay'
-    waitUntil (not (or (buttonA) (buttonB)))
-    if ('button' == (widget_type _widget_selected)) {
-      '_widget_releaseButton' _widget_selected
-    }
-  } (or ('choice' == type) (isType value 'number')) {
-    comment 'Change a choice or numeric value (e.g. slider, bar, or number).'
-    local 'increment' (ifExpression (buttonA) -1 1)
-    repeatUntil (not (or (buttonA) (buttonB))) {
-      '_widget_changeValueBy' _widget_selected increment
-      if (or ('bar' == type) ('slider' == type)) {
-        waitMillis 50
-      } else {
-        waitMillis 300
-      }
-    }
-  }
-}
-
 to widget_height widget {
   return (at 5 widget)
 }
@@ -595,28 +615,12 @@ to widget_initialize optionalScale optionalShowGrid optionalColor {
   sendBroadcast '_widget_interactionLoop'
 }
 
-to widget_lightColor widget {
-  return (at 9 widget)
+to widget_isNumber widget {
+  return (and ('text' == (widget_type widget)) (isType (widget_value widget) 'number'))
 }
 
 to widget_right widget {
   return ((at 2 widget) + (at 4 widget))
-}
-
-to widget_selectNext {
-  if (or (_widget_allWidgets == 0) ((size _widget_allWidgets) == 0)) {
-    _widget_selected = 0
-  } else {
-    local 'start' (maximum 0 ('[data:find]' _widget_selected _widget_allWidgets))
-    local 'i' ((start % (size _widget_allWidgets)) + 1)
-    repeatUntil (i == start) {
-      if ('text' != (widget_type (at i _widget_allWidgets))) {
-        '_widget_selectWidget' (at i _widget_allWidgets)
-        exitLoop
-      }
-      i = ((i % (size _widget_allWidgets)) + 1)
-    }
-  }
 }
 
 to widget_setLightColor widget color {
