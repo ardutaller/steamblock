@@ -930,6 +930,7 @@ static OBJ primWebSocketSendToClient(int argCount, OBJ *args) { return fail(noWi
 #define ESP_NOW_HEADER_VERSION 1
 #define ESP_NOW_HEADER_LEN 2
 #define ESP_NOW_HEADER ((ESP_NOW_HEADER_VERSION << 5) | ESP_NOW_HEADER_LEN)
+#define ESP_MSG_MAX 250
 
 // reserve the first N bytes of the 250 payload bytes for the MicroBlocks ESP Now header
 #define ESP_NOW_MAX_MSG (250 - ESP_NOW_HEADER_LEN)
@@ -937,8 +938,8 @@ static OBJ primWebSocketSendToClient(int argCount, OBJ *args) { return fail(noWi
 static volatile int esp_now_send_buffers = 10;
 static uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
-static int esp_now_msg_bytecount = 0;
-static char esp_now_msg[250];
+static volatile int esp_now_msg_bytecount = 0;
+static char esp_now_msg[ESP_MSG_MAX];
 static uint8_t esp_now_group = 255; // 255 is wildcard; receives messages from all groups
 
 // ESP Now send callback
@@ -964,6 +965,7 @@ static uint8_t esp_now_group = 255; // 255 is wildcard; receives messages from a
 
 	// receive the message
 	esp_now_msg_bytecount = length - ESP_NOW_HEADER_LEN;
+	if (esp_now_msg_bytecount > ESP_MSG_MAX) esp_now_msg_bytecount = ESP_MSG_MAX;
 	memcpy(esp_now_msg, data + ESP_NOW_HEADER_LEN, esp_now_msg_bytecount);
 }
 
