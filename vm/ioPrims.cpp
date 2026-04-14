@@ -3352,18 +3352,19 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 
 	extern "C" void deepSleep(int secs) {
 		// not yet implemented
+		fail(primitiveNotImplemented);
 	}
 
 #elif defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
 	#include <time.h>
 
 	extern "C" void lightSleep(int msecs) {
-		// xxx does this interfere with WiFi? disabled for now.
 		sleep_ms(msecs);
 	}
 
 	extern "C" void deepSleep(int secs) {
 		// not yet implemented
+		fail(primitiveNotImplemented);
 	}
 
 #else

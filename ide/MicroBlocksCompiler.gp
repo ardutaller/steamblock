@@ -268,6 +268,10 @@ method microBlocksSpecs SmallCompiler {
 
 		(array 'r' '[misc:dueLinkPID]'	'DUELink PID')
 
+		(array 'r' '[misc:functionExists]'		'function _ exists' 'str')
+		(array ' ' '[misc:launchCodeSnapshot]'	'launch code snapshot _' 'str')
+		(array ' ' '[misc:deepSleep]'			'deep sleep for _ secs' 'num' 60)
+
 		(array 'r' '[sensors:touchRead]'	'capacitive sensor _' 'num' 1)
 		(array 'r' '[sensors:readDHT]'		'read DHT data pin _' 'num' 1)
 		(array ' ' '[sensors:captureStart]'	'start pulse capture pin _' 'num' 0)
