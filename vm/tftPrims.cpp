@@ -63,11 +63,19 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		Wire.endTransmission(true);
 	}
 
-	static void oledSetup(int flipVertical) {
+	static void oledSetup(int flipVertical, int height) {
 		// Minimal setup commands.
 
 		oledCmd(0xAE); // turn display off
 		oledCmd(0x8D); oledCmd(0x14); // Enable charge pump (8D 14)
+
+		if (height == 32) {
+			oledCmd(0xA8); oledCmd(0x1F); // multiplex ratio (31 for 128x32 resolution)
+			oledCmd(0xDA); oledCmd(0x02); // COM pins configuration
+		} else {
+			oledCmd(0xA8); oledCmd(0x3F); // multiplex ratio (63 for 128x64 resolution)
+			oledCmd(0xDA); oledCmd(0x12); // COM pins configuration
+		}
 
 		if (flipVertical) {
 			oledCmd(0xA0); // flip horizontal A0/A1
@@ -633,7 +641,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 				oledAddr = 0;
 				outputString("tftInit() failed!");
 			} else {
-				oledSetup(false);
+				oledSetup(false, TFT_HEIGHT);
 				isOLED = true;
 				tftWidth = TFT_WIDTH;
 				tftHeight = TFT_HEIGHT;
@@ -1968,7 +1976,7 @@ static void init_OLED(int w, int h, int flipVertical, int useSH1106) {
 		freeDisplayController();
 		outputString("Display initialization failed!");
 	} else {
-		oledSetup(flipVertical);
+		oledSetup(flipVertical, h);
 		isOLED = true;
 		tftWidth = w;
 		tftHeight = h;
