@@ -2635,8 +2635,34 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 	}
 
 
+	// 检测引脚是否稳定保持在指定电平（采样 20ms，要求全部一致）
+	int pinIsStable(int pin, int expectedLevel) {
+		for (int i = 0; i < 20; i++) {
+			if (digitalRead(pin) != expectedLevel) return 0;
+			delay(1);
+		}
+		return 1;
+	}
+
 	void checkPowerButton() {
 		static int lastState = HIGH;
+		static int pinDisabled = -1; // -1=未检测, 0=正常, 1=悬空已禁用
+		static int falseFireCount = 0; // 运行时误触发计数
+
+		// 首次调用：采样 200ms 检测引脚是否悬空
+		if (pinDisabled == -1) {
+			int toggles = 0;
+			int prev = digitalRead(PIN_BUTTON);
+			for (int i = 0; i < 1000; i++) {
+				delayMicroseconds(200); // 共 200ms
+				int cur = digitalRead(PIN_BUTTON);
+				if (cur != prev) toggles++;
+				prev = cur;
+			}
+			pinDisabled = (toggles > 3) ? 1 : 0;
+		}
+		if (pinDisabled) return;
+
 		int currentState = digitalRead(PIN_BUTTON);
 		unsigned long now = millis();
 
@@ -2647,18 +2673,29 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 		// 2. 边缘检测：按下瞬间 (HIGH -> LOW)
 		if (lastState == HIGH && currentState == LOW) {
-			clickCountPower++;
-			lastClickTimePower = now;
-			delay(50); // 简单的消抖
+			// 要求引脚持续稳定 LOW 20ms（悬空引脚做不到）
+			if (pinIsStable(PIN_BUTTON, LOW)) {
+				clickCountPower++;
+				lastClickTimePower = now;
+				falseFireCount = 0;
+			} else {
+				falseFireCount++;
+				// 连续多次不稳定 → 判定为悬空，永久禁用
+				if (falseFireCount >= 5) {
+					pinDisabled = 1;
+					clickCountPower = 0;
+					return;
+				}
+			}
 		}
-		lastState = currentState;
+		lastState = digitalRead(PIN_BUTTON); // 用最新读数更新状态
 
 		// 3. 立即触发逻辑：达到 3 次立即执行，不再等待超时
 		if (clickCountPower >= 3) {
 			delay(200);
-			char* targetFile = (char*) "startup.ucode"; // 确保文件名正确
+			char* targetFile = (char*) "startup.ucode";
 			loadCodeSnapshot(targetFile);
-			clickCountPower = 0; // 执行后立即清零
+			clickCountPower = 0;
 		}
 	}
 
