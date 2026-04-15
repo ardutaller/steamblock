@@ -5258,11 +5258,11 @@ msgstr "ultrasonic distance (mm)"
 
 #. CoCube Module library block
 msgid "Tracker _ on black"
-msgstr "Tracker _ on black"
+msgstr "tracker _ on black"
 
 #. CoCube Module library block
 msgid "Tracker _ on white"
-msgstr "Tracker _ on white"
+msgstr "tracker _ on white"
 
 #. CoCube Sengo1 library choice
 msgid "Color Recog"
