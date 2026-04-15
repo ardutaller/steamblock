@@ -5548,6 +5548,10 @@ msgstr "Sengo2 set blob detect property color _ width _ height _"
 msgid "Sengo2 set color recog area x _ y _ width _ height _ (0-100)"
 msgstr "Sengo2 set color recog area x _ y _ width _ height _ (0-100)"
 
+#. CoCube Soccer library block
+msgid "set NeoPixels color _"
+msgstr "set NeoPixels color _"
+
 #. Calliope NeoPixel library block
 msgid "Calliope set all NeoPixels to _"
 msgstr "Calliope set all NeoPixels to _"
