@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-03-27 19:09+0000\n"
+"PO-Revision-Date: 2026-04-10 10:09+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -869,7 +869,7 @@ msgstr "und Header _"
 
 #. Ultrasound distance library block
 msgid "distance (cm) trigger _ echo _"
-msgstr "Entfernung (cm) Auslöser _ Echo _"
+msgstr "Entfernung (cm) Trigger _ Echo _"
 
 #. Turtle Geometry library block
 msgid "trtl;home"

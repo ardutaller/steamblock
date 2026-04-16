@@ -5256,6 +5256,14 @@ msgstr "DLight level"
 msgid "ultrasonic distance (mm)"
 msgstr "ultrasonic distance (mm)"
 
+#. CoCube Module library block
+msgid "Tracker _ on black"
+msgstr "tracker _ on black"
+
+#. CoCube Module library block
+msgid "Tracker _ on white"
+msgstr "tracker _ on white"
+
 #. CoCube Sengo1 library choice
 msgid "Color Recog"
 msgstr "Color Recog"
@@ -5547,6 +5555,10 @@ msgstr "Sengo2 set blob detect property color _ width _ height _"
 #. CoCube Sengo2 library block
 msgid "Sengo2 set color recog area x _ y _ width _ height _ (0-100)"
 msgstr "Sengo2 set color recog area x _ y _ width _ height _ (0-100)"
+
+#. CoCube Soccer library block
+msgid "set NeoPixels color _"
+msgstr "set NeoPixels color _"
 
 #. Calliope NeoPixel library block
 msgid "Calliope set all NeoPixels to _"
