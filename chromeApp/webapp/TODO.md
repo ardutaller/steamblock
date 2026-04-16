@@ -20,6 +20,8 @@ TODO
 [ ] Kram + Nat: Estilar progress
 [ ] Kram + Nat: Netejar imatges no usades
 [ ] Kram: Unificar els arxius CSS en un sol import
+[ ] Kram: Botó de biblioteca tallat en català: ( Afegeix una bibliotec )
+[ ] Kram: Gradient de left panel mal posicionat
 
 
 Windows
@@ -45,4 +47,4 @@ Menus
 [x] A ↑↑↑, alinear ticks a la dreta i només mostrar el que està actiu
 [ ] My Blocks -> Context menu: Show and Hide, or just a check?
 [ ] Blocks -> Context menu: Show and Hide, or just a check?
-[ ] Glitch, al clicar al menú fa un joc estrany amb el ✔
+[x] Glitch, al clicar al menú fa un joc estrany amb el ✔
