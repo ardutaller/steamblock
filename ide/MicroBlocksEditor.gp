@@ -49,12 +49,12 @@ to openMicroBlocksEditor devMode {
 	readVersionFile (smallRuntime)
 	applyUserPreferences editor
 	developerModeChanged editor
-	notify (api (smallRuntime)) 'ready'
 	url = (browserURL)
 	langCode = (urlParameter url 'lang')
 	if (notNil langCode) { setLanguage editor langCode }
 	// attempt to open a project or scripts from URL; does nothing if absent
 	importFromURL editor url
+	notify (api (smallRuntime)) 'ready'
 	startSteppingSafely page
 }
 
