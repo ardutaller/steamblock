@@ -229,7 +229,11 @@ Buttons.connectWidget = function () {
 
 
 // Icons
-const Icon = {};
+const Icon = { cache: {} };
+
+fetch('img/icon-checkmark--16x16.svg')
+	.then(res => res.text())
+	.then(text => Icon.cache.tick = text);
 
 Icon.forSelector = function (selector, html = 'button') {
 	// TODO: Rename files to avoid 'icon-'?

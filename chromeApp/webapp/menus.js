@@ -436,10 +436,7 @@ Menus.elementFor = function (descriptor, target) {
 
 					// Can be checked, so it needs a tick icon
 					let tick = document.createElement('span');
-					fetch('img/icon-checkmark--16x16.svg')
-						.then(res => res.text())
-						.then(text => tick.innerHTML = text);
-
+					tick.innerHTML = Icon.cache.tick;
 					tick.classList.add('menu__button-tick');
 					button.appendChild(tick);
 					button.classList.add(checked ? '--is-checked' : '--is-unchecked');
