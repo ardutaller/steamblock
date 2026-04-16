@@ -3536,8 +3536,8 @@ msgid "Copy project URL to clipboard"
 msgstr "kopiere Projekt-URL in die Zwischenablage"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Weitere Infos unter https://microblocks.fun"
+msgid "More info at %1"
+msgstr "Weitere Infos unter %1"
 
 #. Scripting area right-click context menu
 msgid "copy all scripts to clipboard"

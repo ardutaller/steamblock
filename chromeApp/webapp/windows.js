@@ -278,7 +278,11 @@ FloatingWindow.about = function() {
 				'Jens Mönig'
 			);
 			text += '<br><br>';
-			text += GetText.localize('More info at http://microblocks.fun');
+			text += GetText.localize(
+				'More info at %1',
+				'<a target="blank" ' +
+					'href="https://microblocks.fun">https://microblocks.fun</a>'
+			);
 			FloatingWindow.inform('About MicroBlocks', text);
 		});
 	});

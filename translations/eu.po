@@ -4682,7 +4682,7 @@ msgid "Created with GP"
 msgstr ""
 
 #. About window info
-msgid "More info at http://microblocks.fun"
+msgid "More info at %1"
 msgstr ""
 
 #. MicroBlocks IDE error message.

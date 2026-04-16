@@ -813,8 +813,8 @@ msgid "about;by %1, %2 & %3."
 msgstr "por %1, %2 e %3."
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Máis información en http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Máis información en %1"
 
 #. Settings menu option
 msgid "virtual machine version"

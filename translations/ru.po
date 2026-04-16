@@ -1409,8 +1409,8 @@ msgid "Could not read %1."
 msgstr "Не удаётся прочитать %1."
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Подробнее: http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Подробнее: %1"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."

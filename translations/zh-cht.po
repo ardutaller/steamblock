@@ -2192,8 +2192,8 @@ msgid "disconnect"
 msgstr "斷開連接"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "訪問 http://microblocks.fun 獲取更多信息"
+msgid "More info at %1"
+msgstr "訪問 %1 獲取更多信息"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."

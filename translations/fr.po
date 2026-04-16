@@ -4463,8 +4463,8 @@ msgid "Created with GP"
 msgstr ""
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Plus d'informations sur http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Plus d'informations sur %1"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
