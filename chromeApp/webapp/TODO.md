@@ -26,7 +26,7 @@ Windows
 ===
 [x] Windows: Quan fas el primer resize es lia un pollastre
 [ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
-[ ] Nat: About -> Fer microblocks.fun clicable
+[x] Nat: About -> Fer microblocks.fun clicable
 
 Opció?
 - Decidir dues o tres amplades estàndard de finestra (small, medium, large)
