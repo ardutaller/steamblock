@@ -344,20 +344,21 @@ class MB_Parser {
 			if (this.isDigit(c) || ('-' == c)) {
 				numBuf += this.next();
 			} else if ('.' == c) {
-				numBuf += this.next();
 				isFloat = true;
+				numBuf += this.next();
 			} else if (('e' == c) || ('E' == c)) {
+				isFloat = true;
 				numBuf += this.next();
 				c = this.peek();
 				if (('+' == c) || ('-' == c)) {
 					numBuf += this.next();
 				}
-				isFloat = true;
 			} else {
 				break;
 			}
 		}
-		return Number(numBuf);
+		if (isFloat) console.log('MicroBlocks does not support floating point numbers; rounding.')
+		return Math.round(Number(numBuf));
 	}
 
 	isDigit(c) {
@@ -400,7 +401,7 @@ class MB_Parser {
 	readSymbol() {
 		// Read an unquoted string or one of the special values: true, false, or nil.
 
-		let symbol = [];
+		let symbol = '';
 		while (true) {
 			let c = this.peek();
 			if ((c <= ' ') || (')' == c) || ('}' == c) || (this.EOF == c)) {

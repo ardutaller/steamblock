@@ -140,8 +140,6 @@ ToggleButtonMorph, DialMorph, SnapExtensions, CostumeIconMorph, SoundIconMorph,
 SVG_Costume, embedMetadataPNG, ThreadManager, snapEquals, InputList, BLACK,
 CustomHatBlockMorph, MB_Compiler, MB_GUI, MB_Project, world */
 
-/*jshint esversion: 11*/
-
 // Global stuff ////////////////////////////////////////////////////////
 
 modules.blocks = '2025-Dec-19';
@@ -1567,7 +1565,9 @@ BlockMorph.prototype.userMenu = function () {
 		() => {
 			var project = new MB_Project();
 			var compiler = new MB_Compiler(project);
-			console.log(compiler.showInstructions(this)); },
+			console.log(compiler.showInstructions(this));
+			console.log(compiler.compiledBytesFor(this));
+		},
 		'test the microblocks compiler'
 	);
 	menu.addItem(
@@ -1601,6 +1601,11 @@ BlockMorph.prototype.isUnattached = function () {
 		!(this.parent instanceof SyntaxElementMorph) &&
 		!(this.parent instanceof ScriptsMorph);
 };
+
+BlockMorph.prototype.nextBlock = function (block) {
+	// Overridden by CommandBlockMorph to get or set the next block
+	return null;
+}
 
 BlockMorph.prototype.deleteBlock = function () {
 	// delete just this one block, keep inputs and next block around
@@ -5861,7 +5866,7 @@ function MicroBitDisplaySlotMorph(bits) {
 
 MicroBitDisplaySlotMorph.prototype.init = function (bits) {
 	MicroBitDisplaySlotMorph.uber.init.call(this);
-	this.display = Array(25).fill(false); ;
+	this.display = Array(25).fill(false);
 	this.paintMode = true;
 	this.insetX = 2;
 	this.insetY = 9;

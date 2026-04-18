@@ -7,6 +7,8 @@
 // mb-compiler.js - Blocks compiler for MicroBlocks
 // Ported from MicroBlocksCompiler.gp (GP language)
 
+/* globals BlockMorph, CommandBlockMorph, CommandSlotMorph, MB_Function, ReporterBlockMorph */
+
 class MB_Compiler {
 	constructor(project, functionChunkIDs) {
 		// project: MB_Project for variable/function lookup
@@ -183,7 +185,7 @@ class MB_Compiler {
 		// Return an instruction list for the given block or function.
 
 		this.argNames = new Map();
-		let cmdOrReporter = null;
+		let cmdOrReporter = aBlockOrFunction;
 
 		if (aBlockOrFunction instanceof MB_Function) {
 			const func = aBlockOrFunction;
@@ -193,8 +195,6 @@ class MB_Compiler {
 				// function hat with no body
 				cmdOrReporter = { selector: 'noop', inputs: () => [], nextBlock: () => null };
 			}
-		} else {
-			cmdOrReporter = aBlockOrFunction;
 		}
 
 		this.collectVars(cmdOrReporter);
@@ -891,7 +891,7 @@ class MB_Compiler {
 				result.push('--------');
 			} else if (item[0] === 'pushLiteral') {
 				const instr = `[${this.opcodeForInstr(item[0])}] ${item[0]} ${item[1]} ("${item[2]}")`;
-				this._addWithLineNum(result, instr);
+				this.addWithLineNum(result, instr);
 			} else if (item[0] === 'pushImmediate') {
 				let arg = item[1];
 				if ((arg & 1) === 1) {
@@ -903,18 +903,18 @@ class MB_Compiler {
 				} else if (arg === 4) {
 					arg = true;
 				}
-				this._addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${arg}`);
+				this.addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${arg}`);
 			} else if (item[0] === 'pushLargeInteger' || item[0] === 'pushHugeInteger') {
-				this._addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${item[1]}`);
+				this.addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${item[1]}`);
 			} else if (item[0] === 'callFunction') {
 				const calledChunkID = (item[1] >> 8) & 255;
 				const argCount = item[1] & 255;
-				this._addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${calledChunkID} ${argCount}`);
+				this.addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${calledChunkID} ${argCount}`);
 			} else if (!/^[a-zA-Z]/.test(item[0])) {
 				// operator: don't show arg count
-				this._addWithLineNum(result, String(item[0]));
+				this.addWithLineNum(result, String(item[0]));
 			} else if (item[0] === 'placeholder') {
-				this._addWithLineNum(result, '<data>');
+				this.addWithLineNum(result, '<data>');
 			} else {
 				let displayItem = item;
 				if (item[0] === 'commandPrimitive' || item[0] === 'reporterPrimitive') {
@@ -928,13 +928,13 @@ class MB_Compiler {
 				for (const s of displayItem) {
 					if (s !== undefined) instr += s + ' ';
 				}
-				this._addWithLineNum(result, instr.trimEnd(), item);
+				this.addWithLineNum(result, instr.trimEnd(), item);
 			}
 		}
 		return result.join('\n');
 	}
 
-	_addWithLineNum(aList, instruction, items) {
+	addWithLineNum(aList, instruction, items) {
 		const currentLine = aList.length + 1;
 		let targetLine = '';
 		if (items && ['pushLiteral', 'jmp', 'longJmp', 'jmpTrue', 'jmpFalse', 'jmpAnd', 'jmpOr', 'decrementAndJmp'].includes(items[0])) {

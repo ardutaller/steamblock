@@ -199,7 +199,7 @@ class MB_Project {
 		for (const entry of this.main.scripts) {
 			this.forAllBlocks(entry[2], cmd => {
 				if (['sendBroadcast', 'whenBroadcastReceived'].includes(cmd.selector)) {
-					result.push(cmd.inputValues()[0]);
+					result.add(cmd.inputValues()[0]);
 				}
 			});
 		}
@@ -223,6 +223,7 @@ class MB_Project {
 // 			this.checkForNewerLibraryVersions();
 // 		}
 // 		this.fixFunctionLocals();
+		return this;
 	}
 // 		initialize this
 // 		cmdList = (parse s)
@@ -1119,10 +1120,33 @@ async function testLoadExamples() {
 		let data = await MB_Files.readFile(fileName);
 
 		scriptCount = functionCount = 0;
-		let startT = Date.now();
 		let project = new MB_Project();
 		project.loadFromString(data);
 		let msecs = Date.now() - startT;
 		console.log(fileName, functionCount, 'functions', scriptCount, 'scripts', msecs, 'msecs');
+	}
+}
+
+async function testCompileExamples() {
+	for (const fileName of MB_Files.allFilesIn('Examples')) {
+		let startT = Date.now();
+		scriptCount = functionCount = 0;
+		console.log('Compiling ' + fileName + '...');
+		let data = await MB_Files.readFile(fileName);
+		let project = new MB_Project().loadFromString(data);
+		let mainModule = project.main;
+		let compiler = new MB_Compiler(project);
+		console.log('    scripts:', scriptCount, mainModule.scripts.length);
+		console.log('    functions:', functionCount, mainModule.functions.length);
+// 		'functions', scriptCount, 'scripts', msecs, 'msecs');
+// 		console.log('scripts', mainModule.scripts.length, 'functions', mainModule.functions.length);
+		let scriptBytes = 0, functionBytes = 0;;
+		for (scriptRec of mainModule.scripts) {
+			scriptBytes += compiler.compiledBytesFor(scriptRec[2]).length;
+		}
+		for (f of mainModule.functions) {
+			functionBytes += compiler.compiledBytesFor(f).length;
+		}
+		console.log('    compiled scripts:', scriptBytes, 'functions:', functionBytes);
 	}
 }
