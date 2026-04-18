@@ -15,10 +15,10 @@ class MB_Function {
 		this.functionName = functionName;
 		this.argNames = argNames;
 		this.cmdList = cmdList;
-		this.localVars = this.collectLocalVars(cmdList);
+		this.localVars = this.collectLocalVars();
 	}
 
-	collectLocalVars(cmdOrReporter) {
+	collectLocalVars() {
 		// Return a set of all local variables used in this function.
 
 		let result = new Set();
@@ -143,7 +143,8 @@ class MB_Function {
 			(f.functionName == this.functionName) &&
  			arraysEqual(f.argNames, this.argNames) &&
 			arraysEqual(f.localVars, this.localVars) &&
-			f.cmdList.codeString() == this.cmdList.codeString());
+			(f.cmdList == null ? '' : f.cmdList.codeString()) ==
+			(this.cmdList == null ? '' : this.cmdList.codeString()));
 	}
 
 	codeString() {

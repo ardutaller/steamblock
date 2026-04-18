@@ -8,7 +8,7 @@
 	MB_Files - MicroBlocks server-based file system.
 */
 
-/* global MB_Files, CommandBlockMorph, ReporterBlockMorph, HatBlockMorph */
+/* global MB_Files */
 
 MB_Files = {
 	fileNames: null
