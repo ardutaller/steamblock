@@ -1581,8 +1581,16 @@ BlockMorph.prototype.userMenu = function () {
 		'log the code string for this script to the console'
 	);
 	menu.addItem(
+		'compile test',
+		() => {
+			var project = new MB_Project();
+			var compiler = new MB_Compiler(project);
+			console.log(compiler.showInstructions(this)); },
+		'test the microblocks compiler'
+	);
+	menu.addItem(
 		'log',
-		() => { tmp = this; console.log(this); },
+		() => { let tmp = this; console.log(this); },
 		'log this script to the console'
 	);
 	menu.addItem(
