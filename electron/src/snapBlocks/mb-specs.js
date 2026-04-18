@@ -8,6 +8,8 @@
 	MB_Specs - MicroBlocks block spec operations
 */
 
+/* global MB_Specs, CommandBlockMorph, ReporterBlockMorph, HatBlockMorph */
+
 MB_Specs = {
 	selectorToSpec: {}, // cached Map for looking up specs by selector
 	selectorToCategory: {}, // cached Map for looking up block category by selector

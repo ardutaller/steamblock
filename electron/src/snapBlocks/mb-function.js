@@ -8,6 +8,8 @@
 	MB_Function - MicroBlocks function representation.
 */
 
+/* global MB_Function, MB_Parser, CommandBlockMorph, BlockMorph */
+
 class MB_Function {
 	constructor(functionName, argNames, cmdList) {
 		this.functionName = functionName;
@@ -170,6 +172,6 @@ function functest() {
 	console.log('locals:', f.localVars);
 	console.log('globals:', f.globalVars());
 	console.log('refs of a', f.refsOfVariable('a'));
-	f2 = new MB_Function(funcName, argNames, b.nextBlock());
+	let f2 = new MB_Function(funcName, argNames, b.nextBlock());
 	console.log('functions equal', f2.equalsFunction(f));
 }

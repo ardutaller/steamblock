@@ -12,6 +12,8 @@
 	the libraries it uses.
 */
 
+/* global MB_Project, MB_GUI, MB_Files, MB_Function, MB_Parser, BlockMorph, CommandBlockMorph, ReporterBlockMorph */
+
 class MB_Project {
 	constructor() {
 		this.main = new MB_Module('main');
@@ -32,11 +34,11 @@ class MB_Project {
 	}
 
 	hasUserCode() {
-		if (!main) return false;
+		if (!this.main) return false;
 		return (
-			(main.scripts.length > 0) ||
-			(main.functions.length > 0) ||
-			(main.variables.length > 0));
+			(this.main.scripts.length > 0) ||
+			(this.main.functions.length > 0) ||
+			(this.main.variables.length > 0));
 	}
 
 	// Block Specs
@@ -111,7 +113,7 @@ class MB_Project {
 	removeLibraryNamed(libName) {
 		const lib = this.libraryNamed(libName);
 		if (!lib) return;
-		libraries = this.libraries.filter(m => m.moduleName != libName);
+		this.libraries = this.libraries.filter(m => m.moduleName != libName);
 		for (const f of lib.functions) {
 			this.blockSpecs.delete(f.functionName);
 		}
@@ -151,7 +153,7 @@ class MB_Project {
 	allVariableNames() {
 		// Return a sorted array of all global variables. Use case-insensitive sort.
 
-		result = main.variableNames.slice();
+		let result = this.main.variableNames.slice();
 		for (const lib of this.libraries) {
 			result = result.concat(lib.variableNames);
 		}
@@ -194,7 +196,7 @@ class MB_Project {
 
 	allBroadcasts() {
 		let result = new Set();
-		for (const entry of main.scripts) {
+		for (const entry of this.main.scripts) {
 			this.forAllBlocks(entry[2], cmd => {
 				if (['sendBroadcast', 'whenBroadcastReceived'].includes(cmd.selector)) {
 					result.push(cmd.inputValues()[0]);
@@ -423,7 +425,7 @@ class MB_Module {
 	// functions
 
 	functionNamed(functionName) {
-		for (const f of functions) {
+		for (const f of this.functions) {
 			if (f.functionName == functionName) return f;
 		}
 		return null;
@@ -432,12 +434,12 @@ class MB_Module {
 	addFunction(aFunction) {
 		this.removeFunction(aFunction);
 		aFunction.module = this;
-		functions.push(aFunction);
+		this.functions.push(aFunction);
 		MB_Project.needsRecompilation = true;
 	}
 
 	removeFunction(aFunction) {
-		functions = functions.filter(f => f !== aFunction);
+		this.functions = this.functions.filter(f => f !== aFunction);
 		MB_Project.needsRecompilation = true;
 	}
 
@@ -667,20 +669,13 @@ class MB_Module {
 
 	// loading
 
-	unquoted(s) {
-		if ((typeof s) != 'string') return s;
-		if ((s.length > 1) && (s[0] == '\'') && (s.at(-1) == '\'')) {
-			return s.slice(1, -1); // remove quotes
-		}
-		return s;
-	}
-
 	loadFromCmds(cmdList) {
 		for (const cmd of cmdList) {
 			if (cmd.length > 1) {
 				switch (cmd[0].toLowerCase()) {
 				case 'module':
 					this.loadModuleNameAndCategory(cmd);
+					break;
 				case 'version':
 					this.loadVersion(cmd);
 					break;
@@ -766,7 +761,7 @@ class MB_Module {
 		for (const cmd of cmdList) {
 			switch(cmd[0]) {
 			case 'spec':
-				let spec = cmd.slice(1).map(s => this.unquoted(s));
+				var spec = cmd.slice(1).map(s => this.unquoted(s));
 				this.blockSpecs.set(spec[1], spec); // spec[1] is the selector
 				this.blockList.push(spec);
 				break;

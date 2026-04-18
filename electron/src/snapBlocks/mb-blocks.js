@@ -138,7 +138,7 @@ Costume, IDE_Morph, BlockDialogMorph, BlockEditorMorph, localize, CLEAR, Point,
 isSnapObject, PushButtonMorph, SpriteIconMorph, Process, AlignmentMorph, List,
 ToggleButtonMorph, DialMorph, SnapExtensions, CostumeIconMorph, SoundIconMorph,
 SVG_Costume, embedMetadataPNG, ThreadManager, snapEquals, InputList, BLACK,
-CustomHatBlockMorph*/
+CustomHatBlockMorph, MB_Compiler, MB_GUI, MB_Project, world */
 
 /*jshint esversion: 11*/
 
@@ -1441,7 +1441,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 		this.add(this.placeHolder());
 	}
 
-	for (word of this.parseSpec(spec)) {
+	for (let word of this.parseSpec(spec)) {
  		if (':' == word) break; // stop at start of optional arguments
 
 		if (word[0] === '%') {
@@ -1836,7 +1836,7 @@ BlockMorph.prototype.maxInputCount = function () {
 	if (this.blockSpec.endsWith('...')) return Infinity;
 
 	let count = 0;
-	for (p of this.blockSpec.split(/\s+/)) {
+	for (let p of this.blockSpec.split(/\s+/)) {
 		if ('%' == p.at(0)) count += 1;
 	}
 	return count;
@@ -1853,7 +1853,7 @@ BlockMorph.prototype.inputCountForSpecSection = function (specSection) {
 	if ('...' == specSection) return Infinity;
 
 	let count = 0;
-	for (p of specSection.split(/\s+/)) {
+	for (let p of specSection.split(/\s+/)) {
 		if ('%' == p.at(0)) count += 1;
 	}
 	return count;
@@ -1866,7 +1866,7 @@ BlockMorph.prototype.specForExpand = function () {
 	let specSections = this.blockSpec.split(':').map(s => s.trim());
 
 	let count = this.inputCountForSpecSection(specSections[0]);
-	for (i = 1; i < specSections.length; i++) {
+	for (let i = 1; i < specSections.length; i++) {
 		count += this.inputCountForSpecSection(specSections[i]);
 		if (count > currentInputCount) {
 			let result = specSections[i];
@@ -1883,7 +1883,7 @@ BlockMorph.prototype.specForContract = function () {
 	let specSections = this.blockSpec.split(':').map(s => s.trim());
 
 	let count = this.inputCountForSpecSection(specSections[0]);
-	for (i = 1; i < specSections.length; i++) {
+	for (let i = 1; i < specSections.length; i++) {
 		count += this.inputCountForSpecSection(specSections[i]);
 		if (count >= currentInputCount) {
 			return specSections[i - 1];
@@ -4628,7 +4628,7 @@ InputSlotMorph.prototype.dropDownMenu = function (enableKeyboard) {
 };
 
 InputSlotMorph.prototype.mbMenu = function (slotMenuName) {
-	menu = new MenuMorph(this.setContents);
+	let menu = new MenuMorph(this.setContents);
 	menu.environment = this;
 	menu.fontSize = this.fontSize;
 
@@ -5782,7 +5782,7 @@ BlockExpanderMorph.prototype.render = function (ctx) {
 
 BlockExpanderMorph.prototype.mouseClickLeft = function (pos) {
 	const aBlock = this.parent;
-	if (!aBlock instanceof BlockMorph) return; // should not happen
+	if (!(aBlock instanceof BlockMorph)) return; // should not happen
 
 	if (!this.showLeft) {
 		aBlock.expand();
@@ -5889,7 +5889,7 @@ MicroBitDisplaySlotMorph.prototype.init = function (bits) {
 	this.ledWidth = 11;
 	this.ledHeight = 14;
 	this.setColor(new Color(71, 82, 191));
-	if (bits) setContents(bits);
+	if (bits) this.setContents(bits);
 	this.fixLayout();
 };
 

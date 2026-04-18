@@ -8,6 +8,8 @@
 	MB_Parser - Parser for the MicroBlocks language textual representation.
 */
 
+/* global MB_Parser, MB_GUI, MB_Specs, CommandBlockMorph, CommandSlotMorph, ReporterBlockMorph, HatBlockMorph */
+
 class MB_Parser {
 	constructor(srcString, fileName = '<string>') {
 		this.buf = Array.from(srcString);
@@ -165,7 +167,7 @@ class MB_Parser {
 
 		let selector = buf[0];
 		if ((typeof selector) != 'string') {
-			parseError('Selector must be a string; missing parentheses around a subexpression?');
+			this.parseError('Selector must be a string; missing parentheses around a subexpression?');
 			return null;
 		} else if (selector[0] == "'") {
 			selector = selector.slice(1, -1); // remove quotes
