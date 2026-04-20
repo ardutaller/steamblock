@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-04-20 09:25+0000\n"
+"PO-Revision-Date: 2026-04-21 20:09+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8397,3 +8397,35 @@ msgstr "Tracker _ auf weiß"
 #. CoCube Soccer library block
 msgid "set NeoPixels color _"
 msgstr "setze NeoPixel-Farbe _"
+
+#. General MIDI drum set
+msgid "Jungle"
+msgstr "Jungle"
+
+#. General MIDI drum set
+msgid "Techno"
+msgstr "Techno"
+
+#. General MIDI drum set
+msgid "House"
+msgstr "House"
+
+#. General MIDI drum set
+msgid "Power"
+msgstr "Power"
+
+#. General MIDI drum set
+msgid "Electronic"
+msgstr "Electronic"
+
+#. General MIDI drum set
+msgid "Orchestra"
+msgstr "Orchestra"
+
+#. General MIDI drum set
+msgid "Ethnic"
+msgstr "Ethnic"
+
+#. Library name
+msgid "MIDI Player"
+msgstr "MIDI Player"
