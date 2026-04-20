@@ -2603,19 +2603,19 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 		int stateA = digitalRead(PIN_BUTTON_A);
 		int stateB = digitalRead(PIN_BUTTON_B);
 
-		if (stateB == LOW) { 
+		if (stateB == LOW) {
 			if (lastStateA == HIGH && stateA == LOW) {
 				unsigned long now = millis();
-				
+
 				if (now - lastClickTime > TIMEOUT_MS) {
 					clickCount = 0;
 				}
-				
+
 				clickCount++;
 				lastClickTime = now;
 				delay(50);
 			}
-			
+
 			if (clickCount >= 4) {
 				delay(200);
 				// primLaunchCodeSnapshot();
@@ -2633,7 +2633,6 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 		lastStateA = stateA;
 	}
-
 
 	// 检测引脚是否稳定保持在指定电平（采样 20ms，要求全部一致）
 	int pinIsStable(int pin, int expectedLevel) {
@@ -2701,14 +2700,18 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 	void cocubeSensorInit() {
 		cocube.Init();
-		pinMode(PIN_BUTTON, INPUT);
+		#if !defined(COCUBE_SOCCER)
+			pinMode(PIN_BUTTON, INPUT);
+		#endif
 	}
 
 	void cocubeSensorUpdate() {
 		cocube.Update();
-		cocube.EncoderUpdate();
-		checkPowerButton();
-		checkResetButton();
+		#if !defined(COCUBE_SOCCER)
+			cocube.EncoderUpdate();
+			checkPowerButton();
+			checkResetButton();
+		#endif
 	}
 
 	static OBJ primPositionX(int argCount, OBJ *args) {
@@ -2739,55 +2742,20 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 	}
 
 	static OBJ primPositionSpeedLeft(int argCount, OBJ *args) {
-			int result = cocube.GetSpeedLeft();
-			return int2obj(result);
+		#if defined(COCUBE_SOCCER)
+			return zeroObj;
+		#else
+			return int2obj((int) cocube.GetSpeedLeft());
+		#endif
 	}
 
 	static OBJ primPositionSpeedRight(int argCount, OBJ *args) {
-			int result = cocube.GetSpeedRight();
-			return int2obj(result);
+		#if defined(COCUBE_SOCCER)
+			return zeroObj;
+		#else
+			return int2obj((int) cocube.GetSpeedRight());
+		#endif
 	}
-#endif
-
-#if defined(COCUBE_SOCCER)
-	#include <CoCubeSensor.h>
-	CoCubeSensor cocube;
-
-	void cocubeSensorInit() {
-		cocube.Init();
-	}
-
-	void cocubeSensorUpdate() {
-		cocube.Update();
-	}
-
-	static OBJ primPositionX(int argCount, OBJ *args) {
-		int result = cocube.GetX();
-		return int2obj(result);
-	}
-
-	static OBJ primPositionY(int argCount, OBJ *args) {
-			int result = cocube.GetY();
-			return int2obj(result);
-		}
-
-	static OBJ primPositionYaw(int argCount, OBJ *args) {
-			int result = cocube.GetAngle();
-			return int2obj(result);
-	}
-
-	static OBJ primIndex(int argCount, OBJ *args) {
-			int result = cocube.GetIndex();
-			return int2obj(result);
-	}
-
-	static OBJ primCubeStatus(int argCount, OBJ *args) {
-		if (cocube.GetState())
-			return trueObj;
-		else
-			return falseObj;
-	}
-
 #endif
 
 // Signal Capture
@@ -2885,13 +2853,6 @@ static PrimEntry entries[] = {
 	{"cube_status", primCubeStatus},
 	{"speed_left", primPositionSpeedLeft},
 	{"speed_right", primPositionSpeedRight},
-	#endif
-	#if defined(COCUBE_SOCCER)
-	{"position_x", primPositionX},
-	{"position_y", primPositionY},
-	{"position_yaw", primPositionYaw},
-	{"cube_index", primIndex},
-	{"cube_status", primCubeStatus},
 	#endif
 };
 
