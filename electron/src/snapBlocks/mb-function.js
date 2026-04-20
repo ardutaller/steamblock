@@ -8,15 +8,17 @@
 	MB_Function - MicroBlocks function representation.
 */
 
+/* global MB_Function, MB_Parser, CommandBlockMorph, BlockMorph */
+
 class MB_Function {
 	constructor(functionName, argNames, cmdList) {
 		this.functionName = functionName;
 		this.argNames = argNames;
 		this.cmdList = cmdList;
-		this.localVars = this.collectLocalVars(cmdList);
+		this.localVars = this.collectLocalVars();
 	}
 
-	collectLocalVars(cmdOrReporter) {
+	collectLocalVars() {
 		// Return a set of all local variables used in this function.
 
 		let result = new Set();
@@ -141,7 +143,8 @@ class MB_Function {
 			(f.functionName == this.functionName) &&
  			arraysEqual(f.argNames, this.argNames) &&
 			arraysEqual(f.localVars, this.localVars) &&
-			f.cmdList.codeString() == this.cmdList.codeString());
+			(f.cmdList == null ? '' : f.cmdList.codeString()) ==
+			(this.cmdList == null ? '' : this.cmdList.codeString()));
 	}
 
 	codeString() {
@@ -170,6 +173,6 @@ function functest() {
 	console.log('locals:', f.localVars);
 	console.log('globals:', f.globalVars());
 	console.log('refs of a', f.refsOfVariable('a'));
-	f2 = new MB_Function(funcName, argNames, b.nextBlock());
+	let f2 = new MB_Function(funcName, argNames, b.nextBlock());
 	console.log('functions equal', f2.equalsFunction(f));
 }

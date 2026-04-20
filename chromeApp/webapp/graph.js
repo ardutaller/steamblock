@@ -30,6 +30,7 @@ const Graph = {
 	defaultStep: 25,
 	stepRange: [1,5,10,25,50,100,250,500,1000,2500,5000],
 	spacing: 25,
+	offset: { 'center': 16, 'bottom': 40 },
 	width: 400,
 	height: 250,
 	dataTracks: [[],[],[],[],[],[]],
@@ -106,21 +107,22 @@ Graph.drawGrid = function () {
 	this.ctx.textAlign = 'end';
 	if (this.origin == 'center') {
 		for (let i = Math.floor(range/-2); i <= Math.floor(range/2); i ++) {
-			this.drawRow(i, this.height - ((i + range/2) * this.spacing))
+			this.drawRow(i, this.height - ((i + range/2) * this.spacing));
 		}
 	} else {
 		for (let i = 0; i <= range; i ++) {
-			this.drawRow(i, this.height - (i * this.spacing))
+			this.drawRow(i, this.height - (i * this.spacing));
 		}
 	}
 };
 
 Graph.drawRow = function (index, y) {
+	let offset = this.offset[this.origin];
 	this.setColor(index);
-	this.ctx.fillText(index * this.step, 40, y + 4);
+	this.ctx.fillText(index * this.step, 40, y + 4 - offset);
 	this.ctx.beginPath();
-	this.ctx.moveTo(45, y);
-	this.ctx.lineTo(this.width - 5, y);
+	this.ctx.moveTo(45, y - offset);
+	this.ctx.lineTo(this.width - 5, y - offset);
 	this.ctx.stroke();
 };
 
@@ -168,9 +170,14 @@ Graph.addDataPoints = function (values) {
 
 Graph.scaleValue = function (value) {
 	if (this.origin == 'center') {
-		return this.height - value * this.spacing / this.step - (this.height / 2);
+		return this.height -
+			value * this.spacing / this.step -
+			(this.height / 2) -
+			this.offset[this.origin];
 	} else {
-		return this.height - value * this.spacing / this.step;
+		return this.height -
+			value * this.spacing / this.step -
+			this.offset[this.origin];
 	}
 };
 

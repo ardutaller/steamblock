@@ -4832,8 +4832,8 @@ msgid "Created with GP"
 msgstr "சி.பி. உடன் உருவாக்கப்பட்டது"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "மேலும் செய்தி http://microblocks.fun இல்"
+msgid "More info at %1"
+msgstr "மேலும் செய்தி %1 இல்"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."

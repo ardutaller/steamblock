@@ -1441,8 +1441,8 @@ msgid "about;by %1, %2 & %3."
 msgstr "tarafından %1, %2 & %3."
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Daha fazla bilgi için: http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Daha fazla bilgi için: %1"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."

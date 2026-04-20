@@ -888,8 +888,8 @@ msgid "library information"
 msgstr "detalhes da biblioteca"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Mais informações em http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Mais informações em %1"
 
 #. Scripting area right-click context menu
 msgid "arrange scripts"

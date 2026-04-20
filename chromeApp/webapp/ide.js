@@ -324,27 +324,26 @@ IDE.populateLibraries = function (element) {
 // Collapse left bar
 IDE.collapseLeftBar = {
 	init: function () {
-		const ide = document.querySelector('[data-ide="ide"]');
-		const leftBar = document.querySelector('[data-ide="workspace-left"]');
-		const collapseButton = document.querySelector('[data-ide="collapse-left-btn"]');
+		const leftBar = document.querySelector('[data-ide="workspace-left"]'),
+			collapseButton = document.querySelector('[data-ide="collapse-left-btn"]');
 		let resizeInterval;
 
 		collapseButton.addEventListener('click', () => {
-			ide.classList.toggle('--is-left-collapsed');
-			ide.classList.add('--is-transitioning');
+			IDE.element.classList.toggle('--is-left-collapsed');
+			IDE.element.classList.add('--is-transitioning');
 
 			clearInterval(resizeInterval);
 			resizeInterval = setInterval(() => { IDE.resize(); }, 100);
-		})
+		});
 
 		leftBar.addEventListener('transitionend', () => {
-			ide.classList.remove('--is-transitioning');
+			IDE.element.classList.remove('--is-transitioning');
 
 			clearInterval(resizeInterval);
     		resizeInterval = null;
 
 			IDE.resize();
-		})
+		});
 	}
 };
 

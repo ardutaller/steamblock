@@ -1647,8 +1647,8 @@ msgid "Created with GP"
 msgstr "Criado com GP"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Mais informações em http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Mais informações em %1"
 
 #. In MicroBlocks IDE firmware update widgets. Board type to update.
 msgid "Board type:"

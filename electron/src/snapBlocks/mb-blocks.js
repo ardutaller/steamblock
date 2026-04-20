@@ -138,9 +138,7 @@ Costume, IDE_Morph, BlockDialogMorph, BlockEditorMorph, localize, CLEAR, Point,
 isSnapObject, PushButtonMorph, SpriteIconMorph, Process, AlignmentMorph, List,
 ToggleButtonMorph, DialMorph, SnapExtensions, CostumeIconMorph, SoundIconMorph,
 SVG_Costume, embedMetadataPNG, ThreadManager, snapEquals, InputList, BLACK,
-CustomHatBlockMorph*/
-
-/*jshint esversion: 11*/
+CustomHatBlockMorph, MB_Compiler, MB_GUI, MB_Project, world */
 
 // Global stuff ////////////////////////////////////////////////////////
 
@@ -193,7 +191,6 @@ SyntaxElementMorph.uber = Morph.prototype;
 				hatHeight	- additional top space for hat blocks
 				hatWidth	- minimum width for hat blocks
 				rfBorder	- pixel width of reification border (grey outline)
-				minWidth	- minimum width for any syntax element's contents
 
 		jigsaw shape:
 
@@ -246,7 +243,6 @@ SyntaxElementMorph.prototype.setScale = function (num) {
 	this.hatHeight = 12 * scale;
 	this.hatWidth = 70 * scale;
 	this.rfBorder = 3 * scale;
-	this.minWidth = 0;
 	this.dent = 8 * scale;
 	this.bottomPadding = 3 * scale;
 	this.cSlotPadding = 4 * scale;
@@ -300,7 +296,7 @@ SyntaxElementMorph.prototype.labelParts = {
 	/*
 	Input slots
 		type: input, boolean, c, text entry, color, mbDisplay, break
-		tags: numeric numstring alphanum read-only landscape static
+		tags: numeric numstring alphanum read-only static
 		menu: menu selector
 	*/
 
@@ -650,7 +646,7 @@ SyntaxElementMorph.prototype.setLabelColor = function (
 	shadowOffset
 ) {
 	this.children.forEach(morph => {
-		if (morph instanceof StringMorph && !morph.isProtectedLabel) {
+		if (morph instanceof StringMorph) {
 			morph.shadowOffset = shadowOffset || morph.shadowOffset;
 			morph.shadowColor = shadowColor || morph.shadowColor;
 			morph.setColor(textColor);
@@ -756,19 +752,16 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 
 		// apply the tags
 		// ---------------
-		// input: numeric, numstring, alphanum, read-only, landscape, static
+		// input: numeric, numstring, alphanum, read-only, static
 		// text entry: monospace
 		// boolean: static
-		// symbol: static, fading, protected
-		// c: static, lambda
+		// symbol: static
+		// c: static
 		// command slot: (none)
-		// ring: static
-		// ring slot: static
 		// template: (none)
 		// color: static
 		// break: (none)
 		// variable: (none)
-		// multi: widget
 
 		if (info.tags) {
 			info.tags.split(' ').forEach(tag => {
@@ -784,7 +777,6 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 							break;
 						case 'numstring':
 							part.isNumeric = true;
-							part.evaluateAsString = true;
 							break;
 						case 'read-only':
 							part.isReadOnly = true;
@@ -792,21 +784,9 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 						case 'static':
 							part.isStatic = true;
 							break;
-						case 'landscape':
-							part.minWidth = part.height() * 1.7;
-							break;
 						case 'monospace':
 							part.contents().fontName = 'monospace';
 							part.contents().fontStyle = 'monospace';
-							break;
-						case 'fading':
-							part.isFading = true;
-							break;
-						case 'protected':
-							part.isProtectedLabel = true;
-							break;
-						case 'widget':
-							part.canBeEmpty = false;
 							break;
 						default:
 							throw new Error(
@@ -844,7 +824,7 @@ SyntaxElementMorph.prototype.fixLayout = function () {
 		y,
 		lineHeight = 0,
 		maxX = 0,
-		blockWidth = this.minWidth,
+		blockWidth = 0,
 		blockHeight,
 		l = [],
 		lines = [],
@@ -1441,7 +1421,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 		this.add(this.placeHolder());
 	}
 
-	for (word of this.parseSpec(spec)) {
+	for (let word of this.parseSpec(spec)) {
  		if (':' == word) break; // stop at start of optional arguments
 
 		if (word[0] === '%') {
@@ -1581,8 +1561,18 @@ BlockMorph.prototype.userMenu = function () {
 		'log the code string for this script to the console'
 	);
 	menu.addItem(
+		'compile test',
+		() => {
+			var project = new MB_Project();
+			var compiler = new MB_Compiler(project);
+			console.log(compiler.showInstructions(this));
+			console.log(compiler.compiledBytesFor(this));
+		},
+		'test the microblocks compiler'
+	);
+	menu.addItem(
 		'log',
-		() => { tmp = this; console.log(this); },
+		() => { let tmp = this; console.log(this); },
 		'log this script to the console'
 	);
 	menu.addItem(
@@ -1611,6 +1601,11 @@ BlockMorph.prototype.isUnattached = function () {
 		!(this.parent instanceof SyntaxElementMorph) &&
 		!(this.parent instanceof ScriptsMorph);
 };
+
+BlockMorph.prototype.nextBlock = function (block) {
+	// Overridden by CommandBlockMorph to get or set the next block
+	return null;
+}
 
 BlockMorph.prototype.deleteBlock = function () {
 	// delete just this one block, keep inputs and next block around
@@ -1836,7 +1831,7 @@ BlockMorph.prototype.maxInputCount = function () {
 	if (this.blockSpec.endsWith('...')) return Infinity;
 
 	let count = 0;
-	for (p of this.blockSpec.split(/\s+/)) {
+	for (let p of this.blockSpec.split(/\s+/)) {
 		if ('%' == p.at(0)) count += 1;
 	}
 	return count;
@@ -1853,7 +1848,7 @@ BlockMorph.prototype.inputCountForSpecSection = function (specSection) {
 	if ('...' == specSection) return Infinity;
 
 	let count = 0;
-	for (p of specSection.split(/\s+/)) {
+	for (let p of specSection.split(/\s+/)) {
 		if ('%' == p.at(0)) count += 1;
 	}
 	return count;
@@ -1866,7 +1861,7 @@ BlockMorph.prototype.specForExpand = function () {
 	let specSections = this.blockSpec.split(':').map(s => s.trim());
 
 	let count = this.inputCountForSpecSection(specSections[0]);
-	for (i = 1; i < specSections.length; i++) {
+	for (let i = 1; i < specSections.length; i++) {
 		count += this.inputCountForSpecSection(specSections[i]);
 		if (count > currentInputCount) {
 			let result = specSections[i];
@@ -1883,7 +1878,7 @@ BlockMorph.prototype.specForContract = function () {
 	let specSections = this.blockSpec.split(':').map(s => s.trim());
 
 	let count = this.inputCountForSpecSection(specSections[0]);
-	for (i = 1; i < specSections.length; i++) {
+	for (let i = 1; i < specSections.length; i++) {
 		count += this.inputCountForSpecSection(specSections[i]);
 		if (count >= currentInputCount) {
 			return specSections[i - 1];
@@ -4518,10 +4513,8 @@ InputSlotMorph.prototype.init = function (
 	this.choices = choiceDict || null; // object, function or selector
 	this.oldContentsExtent = contents.extent();
 	this.isNumeric = isNumeric || false;
-	this.evaluateAsString = false; // special case for RANDOM NUMBER reporter
 	this.isAlphanumeric = false; // temporary override for allowing text
 	this.isReadOnly = isReadOnly || false;
-	this.minWidth = 0; // can be chaged for text-type inputs ("landscape")
 	this.constant = null;
 
 	InputSlotMorph.uber.init.call(this, null, true);
@@ -4628,7 +4621,7 @@ InputSlotMorph.prototype.dropDownMenu = function (enableKeyboard) {
 };
 
 InputSlotMorph.prototype.mbMenu = function (slotMenuName) {
-	menu = new MenuMorph(this.setContents);
+	let menu = new MenuMorph(this.setContents);
 	menu.environment = this;
 	menu.fontSize = this.fontSize;
 
@@ -4725,10 +4718,8 @@ InputSlotMorph.prototype.fixLayout = function () {
 					+ this.edge * 2
 					+ this.typeInPadding * 2,
 				contents.rawHeight ? // single vs. multi-line contents
-							contents.rawHeight() + arrowWidth
-									: fontHeight(contents.fontSize) / 1.3
-										+ arrowWidth,
-				this.minWidth // for text-type slots
+					contents.rawHeight() + arrowWidth :
+					(fontHeight(contents.fontSize) / 1.3) + arrowWidth
 			);
 		}
 	}
@@ -4806,7 +4797,7 @@ InputSlotMorph.prototype.evaluate = function () {
 	// convert that string to a number. If the conversion fails answer the
 	// string (e.g. for special choices like 'random', 'all' or 'last')
 	// otherwise the numerical value.
-	var val, num;
+
 	if (this.selectedBlock) {
 		return this.selectedBlock;
 	}
@@ -4819,15 +4810,10 @@ InputSlotMorph.prototype.evaluate = function () {
 	if (this.constant) {
 		return this.constant;
 	}
-	val = this.contents().text;
-	if (this.isNumeric &&
-		!this.isAlphanumeric &&
-		(!this.evaluateAsString || val === '')
-	) {
-		num = +val;
-		if (!isNaN(num)) {
-			return num;
-		}
+	let val = this.contents().text;
+	if (this.isNumeric && !this.isAlphanumeric) {
+		let num = +val;
+		if (!isNaN(num)) return num;
 	}
 	return val;
 };
@@ -5544,7 +5530,6 @@ TextSlotMorph.prototype.init = function (
 	this.oldContentsExtent = contents.extent();
 	this.isNumeric = isNumeric || false;
 	this.isReadOnly = isReadOnly || false;
-	this.minWidth = 0; // can be chaged for text-type inputs ("landscape")
 	this.constant = null;
 
 	InputSlotMorph.uber.init.call(this, null, null, null, null, true); // sil.
@@ -5782,7 +5767,7 @@ BlockExpanderMorph.prototype.render = function (ctx) {
 
 BlockExpanderMorph.prototype.mouseClickLeft = function (pos) {
 	const aBlock = this.parent;
-	if (!aBlock instanceof BlockMorph) return; // should not happen
+	if (!(aBlock instanceof BlockMorph)) return; // should not happen
 
 	if (!this.showLeft) {
 		aBlock.expand();
@@ -5881,7 +5866,7 @@ function MicroBitDisplaySlotMorph(bits) {
 
 MicroBitDisplaySlotMorph.prototype.init = function (bits) {
 	MicroBitDisplaySlotMorph.uber.init.call(this);
-	this.display = Array(25).fill(false); ;
+	this.display = Array(25).fill(false);
 	this.paintMode = true;
 	this.insetX = 2;
 	this.insetY = 9;
@@ -5889,7 +5874,7 @@ MicroBitDisplaySlotMorph.prototype.init = function (bits) {
 	this.ledWidth = 11;
 	this.ledHeight = 14;
 	this.setColor(new Color(71, 82, 191));
-	if (bits) setContents(bits);
+	if (bits) this.setContents(bits);
 	this.fixLayout();
 };
 

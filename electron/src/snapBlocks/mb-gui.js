@@ -8,6 +8,8 @@
 	MB_GUI - MicroBlocks user interface.
 */
 
+/* global MB_Parser, MB_Specs, Color, Point, BlockMorph, ScriptsMorph, ScrollFrameMorph, StringMorph, world */
+
 MB_GUI = {}
 
 MB_GUI.addMicroBlocksGUI = function (world) {
@@ -15,7 +17,6 @@ MB_GUI.addMicroBlocksGUI = function (world) {
 	const paletteWidth = 200;
 
 	let palette = new ScrollFrameMorph();
-	newMorph = new ScrollFrameMorph();
 	palette.color = new Color(180, 180, 180);
 	palette.setExtent(new Point(paletteWidth, scriptingHeight));
 	this.addBlocksToPalette(palette);

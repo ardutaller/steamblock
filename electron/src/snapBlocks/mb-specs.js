@@ -8,12 +8,14 @@
 	MB_Specs - MicroBlocks block spec operations
 */
 
+/* global CommandBlockMorph, ReporterBlockMorph, HatBlockMorph */
+
 MB_Specs = {
 	selectorToSpec: {}, // cached Map for looking up specs by selector
 	selectorToCategory: {}, // cached Map for looking up block category by selector
 }
 
-MB_Specs.initialize = function (selector) {
+MB_Specs.initialize = function () {
 	if (this.selectorToSpec instanceof Map) return; // already initialized
 	this.selectorToSpec = new Map();
 	this.selectorToCategory = new Map();
@@ -80,7 +82,7 @@ MB_Specs.specFor = function (selector, args) {
 				}
 			}
 		}
-	} else { // unknown select; generate a spec based on its arguments
+	} else { // unknown selector; generate a spec based on its arguments
 		spec = selector;
 		for (let i = 0; i < args.length; i++) {
 			spec += ' ' + this.specForArg(args[i]);

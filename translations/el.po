@@ -87,8 +87,8 @@ msgid "set string property _ title _ @Type _"
 msgstr "όρισε κειμένου ιδιότητα _ τίτλος _ @Τύπος _"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Περισσότερες πληροφορίες στο http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Περισσότερες πληροφορίες στο %1"
 
 #. Block input right-click context menu option
 msgid "string only"

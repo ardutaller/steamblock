@@ -6528,9 +6528,10 @@ msgstr "by %1, %2 & %3."
 msgid "Created with GP"
 msgstr "Created with GP"
 
-#. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "More info at http://microblocks.fun"
+#. About window info.
+#. The %1 tag becomes a hyperlink to https://microblocks.fun
+msgid "More info at %1"
+msgstr "More info at %1"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."

@@ -1,0 +1,968 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright 2019 John Maloney, Bernat Romagosa, and Jens Mönig
+
+// mb-compiler.js - Blocks compiler for MicroBlocks
+// Ported from MicroBlocksCompiler.gp (GP language)
+
+/* globals BlockMorph, CommandBlockMorph, CommandSlotMorph, MB_Function, ReporterBlockMorph */
+
+class MB_Compiler {
+	constructor(project, functionChunkIDs) {
+		// project: MB_Project for variable/function lookup
+		// functionChunkIDs: Map<string, number> from function name to chunk ID
+		this.project = project;
+		this.functionChunkIDs = functionChunkIDs || new Map();
+		this.initOpcodes();
+		this.initPrimsets();
+		// per-compilation state (reset in instructionsFor)
+		this.argNames = new Map();  // varName -> argIndex
+		this.localVars = new Map(); // varName -> localIndex
+		// encoding constants
+		this.falseObj = 0;
+		this.trueObj = 4;
+		this.zeroObj = 1; // (0 << 1) | 1
+		this.stringClassID = 4;
+	}
+
+	initOpcodes() {
+		// Must match the opcode table in interp.c
+		const defs = `
+			halt 0
+			stopAll 1
+			pushImmediate 2
+			pushLargeInteger 3
+			pushHugeInteger 4
+			pushLiteral 5
+			pushGlobal 6
+			storeGlobal 7
+			incrementGlobal 8
+			initLocals 9
+			pushLocal 10
+			storeLocal 11
+			incrementLocal 12
+			pushArg 13
+			storeArg 14
+			incrementArg 15
+			pushArgCount 16
+			getArg 17
+			argOrDefault 18
+			pop 19
+			ignoreArgs 20
+			noop 21
+			jmp 22
+			longJmp 23
+			jmpTrue 24
+			jmpFalse 25
+			decrementAndJmp 26
+			forLoop 27
+			jmpOr 28
+			jmpAnd 29
+			waitUntil 30
+			exitLoop 31
+			waitMicros 32
+			waitMillis 33
+			callFunction 34
+			returnResult 35
+			commandPrimitive 36
+			reporterPrimitive 37
+			callCustomCommand 38
+			callCustomReporter 39
+			sendBroadcast 40
+			recvBroadcast 41
+			getLastBroadcast 42
+			millisOp 43
+			microsOp 44
+			secsOp 45
+			millisSince 46
+			microsSince 47
+			timer 48
+			resetTimer 49
+			+ 50
+			- 51
+			* 52
+			/ 53
+			% 54
+			& 55
+			| 56
+			^ 57
+			~ 58
+			<< 59
+			>> 60
+			< 61
+			<= 62
+			== 63
+			!= 64
+			>= 65
+			> 66
+			not 67
+			sum 69
+			longMult 70
+			absoluteValue 71
+			minimum 72
+			maximum 73
+			random 74
+			hexToInt 75
+			isType 76
+			sayIt 77
+			graphIt 78
+			boardType 79
+			newList 80
+			at 81
+			atPut 82
+			size 83
+			analogPins 84
+			digitalPins 85
+			analogReadOp 86
+			analogWriteOp 87
+			digitalReadOp 88
+			digitalWriteOp 89
+			digitalSet 90
+			digitalClear 91
+			buttonA 92
+			buttonB 93
+			setUserLED 94
+			i2cSet 95
+			i2cGet 96
+			spiSend 97
+			spiRecv 98
+			comment 126
+			codeEnd 127
+			metadata 240`;
+
+		this.opcodes = new Map();
+		for (const line of defs.split('\n')) {
+			const words = line.trim().split(/\s+/);
+			if (words.length >= 2 && words[0] !== '') {
+				this.opcodes.set(words[0], parseInt(words[1]));
+			}
+		}
+	}
+
+	initPrimsets() {
+		// Must match PrimitiveSetIndex enum in interp.c
+		const names = [
+			'vars', 'data', 'misc', 'io', 'sensors', 'serial',
+			'display', 'file', 'net', 'ble', 'radio', 'tft',
+			'hid', 'camera', '1wire', 'encoder', 'sd', 'lgvl'
+		];
+		this.primsets = new Map();
+		names.forEach((name, i) => this.primsets.set(name, i));
+	}
+
+	// input extraction helpers
+
+	exprArg(inputs, i) {
+		// Return the i-th input as a value for instructionsForExpression:
+		// either a BlockMorph (embedded reporter) or a primitive JS value.
+		const input = inputs[i];
+		if (input == null) return null;
+		if (input instanceof BlockMorph) return input;
+		return input.evaluate();
+	}
+
+	cmdListArg(inputs, i) {
+		// Return the first CommandBlockMorph from a command-slot input.
+		const input = inputs[i];
+		if (input == null) return null;
+		if (input instanceof CommandSlotMorph) return input.nestedBlock();
+		if (input instanceof CommandBlockMorph) return input;
+		return null;
+	}
+
+	varNameArg(inputs, i) {
+		// Return the variable name string from a template/input slot.
+		const input = inputs[i];
+		if (input == null) return null;
+		return input.evaluate();
+	}
+
+	// instruction generation: entry point
+
+	instructionsFor(aBlockOrFunction) {
+		// Return an instruction list for the given block or function.
+
+		this.argNames = new Map();
+		let cmdOrReporter = aBlockOrFunction;
+
+		if (aBlockOrFunction instanceof MB_Function) {
+			const func = aBlockOrFunction;
+			func.argNames.forEach((name, i) => this.argNames.set(name, i));
+			cmdOrReporter = func.cmdList;
+			if (!cmdOrReporter) {
+				// function hat with no body
+				cmdOrReporter = { selector: 'noop', inputs: () => [], nextBlock: () => null };
+			}
+		}
+
+		this.collectVars(cmdOrReporter);
+
+		const result = [['initLocals', this.localVars.size]];
+		const op = cmdOrReporter ? cmdOrReporter.selector : null;
+
+		if (cmdOrReporter instanceof ReporterBlockMorph) {
+			result.push(...this.instructionsForExpression(cmdOrReporter));
+			result.push(['returnResult', 0]);
+		} else if (op === 'whenCondition') {
+			result.push(...this.instructionsForWhenCondition(cmdOrReporter));
+		} else if (op === 'whenButtonPressed' || op === 'whenStarted') {
+			result.push(...this.instructionsForCmdList(cmdOrReporter.nextBlock()));
+		} else if (op === 'whenBroadcastReceived') {
+			const inputs = cmdOrReporter.inputs();
+			result.push(...this.instructionsForExpression(this.exprArg(inputs, 0)));
+			result.push(['recvBroadcast', 1]);
+			result.push(...this.instructionsForCmdList(cmdOrReporter.nextBlock()));
+		} else if (aBlockOrFunction instanceof MB_Function) {
+			const func = aBlockOrFunction;
+			if (func.argNames.length === 0) {
+				// functions with no args can be invoked by broadcasting their name
+				result.push(['pushLiteral', func.functionName]);
+				result.push(['placeholder', 0]);
+				result.push(['recvBroadcast', 1]);
+				if (op !== 'noop') {
+					result.push(...this.instructionsForCmdList(cmdOrReporter));
+				}
+			} else {
+				result.push(...this.instructionsForCmdList(cmdOrReporter));
+			}
+			// final return false (needed even if last instruction is a return,
+			// since that return may be in an if-branch that gets skipped)
+			result.push(['pushImmediate', this.falseObj]);
+			result.push(['returnResult', 0]);
+		} else {
+			result.push(...this.instructionsForCmdList(cmdOrReporter));
+		}
+
+		result.push(['codeEnd', 0]);
+		if ((result.length % 2) === 1) {
+			// Ensure even instruction count so literals are 32-bit aligned
+			result.push(['codeEnd', 0]);
+		}
+		this.appendLiterals(result);
+		this.appendDecompilerMetadata(aBlockOrFunction, result);
+		return result;
+	}
+
+	// instruction generation: when-condition hat block
+
+	instructionsForWhenCondition(cmdBlock) {
+		const inputs = cmdBlock.inputs();
+		const condition = this.instructionsForExpression(this.exprArg(inputs, 0));
+		const body = this.instructionsForCmdList(cmdBlock.nextBlock());
+		const result = [];
+
+		// wait until condition becomes true
+		result.push(...this.instructionsForExpression(10));
+		result.push(['waitMillis', 1]);
+		result.push(...condition);
+		result.push(...this.instructionsForJump('jmpFalse', -(condition.length + 3)));
+
+		result.push(...body);
+
+		// loop back to condition test
+		result.push(...this.instructionsForJump('jmp', -(result.length + 1)));
+		return result;
+	}
+
+	// instruction generation: command lists and control structures
+
+	instructionsForCmdList(firstCmd) {
+		const result = [];
+		let cmd = firstCmd;
+		while (cmd != null) {
+			result.push(...this.instructionsForCmd(cmd));
+			cmd = cmd.nextBlock();
+		}
+		return result;
+	}
+
+	instructionsForCmd(cmd) {
+		const result = [];
+		const op = cmd.selector;
+		const inputs = cmd.inputs();
+
+		if (op === '=' || op === 'local') {
+			result.push(...this.instructionsForExpression(this.exprArg(inputs, 1)));
+			result.push(this.setVar(this.varNameArg(inputs, 0)));
+		} else if (op === '+=') {
+			result.push(...this.instructionsForExpression(this.exprArg(inputs, 1)));
+			result.push(this.incrementVar(this.varNameArg(inputs, 0)));
+		} else if (op === 'return') {
+			if (inputs.length === 0) {
+				result.push(['pushImmediate', this.zeroObj]);
+			} else {
+				result.push(...this.instructionsForExpression(this.exprArg(inputs, 0)));
+			}
+			result.push(['returnResult', 0]);
+		} else if (op === 'stopTask') {
+			result.push(['halt', 0]);
+		} else if (op === 'forever') {
+			return this.instructionsForForever(inputs);
+		} else if (op === 'if') {
+			return this.instructionsForIf(inputs);
+		} else if (op === 'repeat') {
+			return this.instructionsForRepeat(inputs);
+		} else if (op === 'repeatUntil') {
+			return this.instructionsForRepeatUntil(inputs);
+		} else if (op === 'waitUntil') {
+			return this.instructionsForWaitUntil(inputs);
+		} else if (op === 'for') {
+			return this.instructionsForForLoop(inputs);
+		} else if (op === 'exitLoop') {
+			result.push(['exitLoop', null]); // null offset fixed by fixLoopExits
+			result.push(['placeholder', 0]); // always two words
+		} else if (op === 'digitalWriteOp') {
+			const pinVal = this.exprArg(inputs, 0);
+			const boolVal = this.exprArg(inputs, inputs.length - 1);
+			if (typeof pinVal === 'number' && typeof boolVal === 'boolean') {
+				const pinNum = pinVal & 255;
+				result.push([boolVal ? 'digitalSet' : 'digitalClear', pinNum]);
+				return result;
+			}
+			return this.primitive(op, inputs, true);
+		} else if (op === 'sendBroadcastSimple') {
+			return this.primitive('sendBroadcast', inputs, true);
+		} else if (op === 'comment') {
+			// skip; no code generated
+		} else if (op === 'ignoreArgs') {
+			for (let i = 0; i < inputs.length; i++) {
+				result.push(...this.instructionsForExpression(this.exprArg(inputs, i)));
+			}
+			result.push(['ignoreArgs', inputs.length]);
+			return result;
+		} else if (op === 'callCustomCommand' || op === 'callCustomReporter') {
+			for (let i = 0; i < inputs.length; i++) {
+				result.push(...this.instructionsForExpression(this.exprArg(inputs, i)));
+			}
+			result.push([op, inputs.length]);
+			if (op === 'callCustomCommand') {
+				result.push(['pop', 1]); // discard return value
+			}
+			return result;
+		} else if (this.isFunctionCall(op)) {
+			return this.instructionsForFunctionCall(op, inputs, true);
+		} else {
+			return this.primitive(op, inputs, true);
+		}
+		return result;
+	}
+
+	instructionsForIf(inputs) {
+		const result = [];
+		const jumpsToFix = [];
+		let i = 0;
+		while (i < inputs.length) {
+			const finalCase = (i + 2) >= inputs.length;
+			const test = this.exprArg(inputs, i);
+			const body = this.instructionsForCmdList(this.cmdListArg(inputs, i + 1));
+			if (test !== true || !finalCase || i === 0) {
+				result.push(...this.instructionsForExpression(test));
+				let offset = body.length;
+				if (!finalCase) offset += 2;
+				result.push(...this.instructionsForJump('jmpFalse', offset));
+			}
+			result.push(...body);
+			if (!finalCase) {
+				const jumpToEnd = ['longJmp', result.length]; // offset fixed below
+				result.push(jumpToEnd);
+				result.push(['placeholder', 0]); // longJmp is always two words
+				jumpsToFix.push(jumpToEnd);
+			}
+			i += 2;
+		}
+		const instrCount = result.length;
+		for (const jmp of jumpsToFix) {
+			jmp[1] = instrCount - (jmp[1] + 2); // fix jump offset
+		}
+		return result;
+	}
+
+	instructionsForForever(inputs) {
+		const result = this.instructionsForCmdList(this.cmdListArg(inputs, 0));
+		result.push(...this.instructionsForJump('jmp', -(result.length + 1)));
+		this.fixLoopExits(result);
+		return result;
+	}
+
+	instructionsForRepeat(inputs) {
+		const result = this.instructionsForExpression(this.exprArg(inputs, 0));
+		const body = this.instructionsForCmdList(this.cmdListArg(inputs, 1));
+		result.push(...this.instructionsForJump('jmp', body.length));
+		result.push(...body);
+		result.push(...this.instructionsForJump('decrementAndJmp', -(body.length + 1)));
+		this.fixLoopExits(result);
+		return result;
+	}
+
+	instructionsForRepeatUntil(inputs) {
+		const result = [];
+		const conditionTest = this.instructionsForExpression(this.exprArg(inputs, 0));
+		const body = this.instructionsForCmdList(this.cmdListArg(inputs, 1));
+		result.push(...this.instructionsForJump('jmp', body.length));
+		result.push(...body);
+		result.push(...conditionTest);
+		result.push(...this.instructionsForJump('jmpFalse', -(body.length + conditionTest.length + 1)));
+		this.fixLoopExits(result);
+		return result;
+	}
+
+	instructionsForWaitUntil(inputs) {
+		const result = [];
+		const conditionTest = this.instructionsForExpression(this.exprArg(inputs, 0));
+		result.push(...conditionTest);
+		result.push(['waitUntil', -(conditionTest.length + 1)]);
+		return result;
+	}
+
+	instructionsForForLoop(inputs) {
+		const result = this.instructionsForExpression(this.exprArg(inputs, 1)); // range count
+		const loopVarName = this.varNameArg(inputs, 0);
+		const loopVarIndex = this.localVars.get(loopVarName);
+		const body = this.instructionsForCmdList(this.cmdListArg(inputs, 2));
+		result.push(
+			['pushImmediate', this.falseObj], // will be N (total loop count)
+			['pushImmediate', this.falseObj]  // will be a decrementing loop counter
+		);
+		result.push(...this.instructionsForJump('jmp', body.length));
+		result.push(...body);
+		result.push(
+			['forLoop', loopVarIndex],
+			['longJmp', -(body.length + 3)],
+			['placeholder', 0], // two-word longJmp; forLoop skips two words at loop end
+			['pop', 3]
+		);
+		this.fixLoopExits(result);
+		return result;
+	}
+
+	fixLoopExits(loopBody) {
+		// Resolve any uninitialized exitLoop instructions to jump past this loop.
+		// Ignore exitLoop instructions that already have an offset (nested loops).
+		for (let i = 0; i < loopBody.length; i++) {
+			const instr = loopBody[i];
+			if (instr[0] === 'exitLoop' && instr[1] == null) {
+				instr[1] = (loopBody.length - i) - 1;
+			}
+		}
+	}
+
+	// instruction generation: expressions
+
+	instructionsForExpression(expr) {
+		// immediate values
+		if (true === expr) return [['pushImmediate', this.trueObj]];
+		if (false === expr) return [['pushImmediate', this.falseObj]];
+		if (expr == null) return [['pushImmediate', this.zeroObj]];
+
+		if (typeof expr === 'number') {
+			if (Number.isInteger(expr)) {
+				if (expr >= -64 && expr <= 63) { // 7-bit: fits in 8-bit encoded int object
+					return [['pushImmediate', ((expr & 127) << 1) | 1]];
+				} else if (expr >= -4194304 && expr <= 4194303) { // fits in 3 bytes
+					return [['pushLargeInteger', expr], ['placeholder', 0]];
+				} else {
+					return [['pushHugeInteger', expr], ['placeholder', 0], ['placeholder', 0]];
+				}
+			} else {
+				throw new Error('Floats are not supported');
+			}
+		}
+
+		if (typeof expr === 'string') {
+			return [['pushLiteral', expr], ['placeholder', 0]];
+		}
+
+		// Color object (with r, g, b properties)
+		if (typeof expr === 'object' && 'r' in expr && 'g' in expr && 'b' in expr) {
+			return this.instructionsForExpression((expr.r << 16) | (expr.g << 8) | expr.b);
+		}
+
+		// Block expression (BlockMorph)
+		if (!(expr instanceof BlockMorph)) {
+			console.warn('Unknown expression type:', expr);
+			return [['pushImmediate', this.zeroObj]];
+		}
+
+		const op = expr.selector;
+		const inputs = expr.inputs();
+
+		if (op === 'v') {
+			// variable reporter: name is in blockSpec
+			return [this.getVar(expr.blockSpec)];
+		} else if (op === 'booleanConstant') {
+			const val = this.exprArg(inputs, 0);
+			return [['pushImmediate', val ? this.trueObj : this.falseObj]];
+		} else if (op === 'colorSwatch') {
+			const r = this.exprArg(inputs, 0);
+			const g = this.exprArg(inputs, 1);
+			const b = this.exprArg(inputs, 2);
+			return this.instructionsForExpression((r << 16) | (g << 8) | b);
+		} else if (op === 'and') {
+			return this.instructionsForAnd(inputs);
+		} else if (op === 'or') {
+			return this.instructionsForOr(inputs);
+		} else if (op === 'ifExpression') {
+			return this.instructionsForIfExpression(inputs);
+		} else if (this.isFunctionCall(op)) {
+			return this.instructionsForFunctionCall(op, inputs, false);
+		} else {
+			return this.primitive(op, inputs, false);
+		}
+	}
+
+	instructionsForAnd(inputs) {
+		const tests = [];
+		for (let i = 0; i < inputs.length; i++) {
+			tests.push(this.instructionsForExpression(this.exprArg(inputs, i)));
+		}
+		const totalInstrCount = tests.reduce((sum, t) => sum + t.length + 1, 0) - 1;
+
+		const result = [];
+		for (let i = 0; i < tests.length; i++) {
+			result.push(...tests[i]);
+			if (i < tests.length - 1) {
+				result.push(...this.instructionsForJump('jmpAnd', totalInstrCount - (result.length + 1)));
+			}
+		}
+		return result;
+	}
+
+	instructionsForOr(inputs) {
+		const tests = [];
+		for (let i = 0; i < inputs.length; i++) {
+			tests.push(this.instructionsForExpression(this.exprArg(inputs, i)));
+		}
+		const totalInstrCount = tests.reduce((sum, t) => sum + t.length + 1, 0) - 1;
+
+		const result = [];
+		for (let i = 0; i < tests.length; i++) {
+			result.push(...tests[i]);
+			if (i < tests.length - 1) {
+				result.push(...this.instructionsForJump('jmpOr', totalInstrCount - (result.length + 1)));
+			}
+		}
+		return result;
+	}
+
+	instructionsForIfExpression(inputs) {
+		const trueCase = this.instructionsForExpression(this.exprArg(inputs, 1));
+		const falseCase = this.instructionsForExpression(this.exprArg(inputs, 2));
+		falseCase.push(...this.instructionsForJump('jmp', trueCase.length));
+
+		const result = this.instructionsForExpression(this.exprArg(inputs, 0)); // test
+		result.push(...this.instructionsForJump('jmpTrue', falseCase.length));
+		result.push(...falseCase);
+		result.push(...trueCase);
+		return result;
+	}
+
+	instructionsForJump(jumpOp, offset) {
+		if (offset !== 0 && offset >= -128 && offset <= 127) {
+			return [[jumpOp, offset]]; // short jump: fits in 8 bits
+		}
+		// extended jump: signed offset in the next word
+		if (offset < 0) offset -= 1; // adjust for extra placeholder word
+		return [[jumpOp, offset], ['placeholder', 0]];
+	}
+
+	// instruction generation: primitive ops
+
+	primitive(op, inputs, isCommand) {
+		const result = [];
+		if (this.opcodes.has(op)) {
+			for (let i = 0; i < inputs.length; i++) {
+				result.push(...this.instructionsForExpression(this.exprArg(inputs, i)));
+			}
+			result.push([op, inputs.length]);
+		} else if (op.startsWith('[') && op.endsWith(']')) {
+			// named primitive of the form '[primSetName:primName]'
+			const colonIdx = op.indexOf(':');
+			if (colonIdx >= 0) {
+				const primSetName = op.slice(1, colonIdx);
+				const primName = op.slice(colonIdx + 1, op.length - 1);
+				for (let i = 0; i < inputs.length; i++) {
+					result.push(...this.instructionsForExpression(this.exprArg(inputs, i)));
+				}
+				if (isCommand) {
+					result.push(['commandPrimitive', primName, primSetName, inputs.length]);
+					result.push(['placeholder', 0]);
+				} else {
+					result.push(['reporterPrimitive', primName, primSetName, inputs.length]);
+					result.push(['placeholder', 0]);
+				}
+			}
+		} else {
+			console.log('Skipping unknown op:', op);
+			if (!isCommand) {
+				result.push(['pushImmediate', this.zeroObj]); // push dummy result for missing reporter
+			}
+		}
+		return result;
+	}
+
+	// variables
+
+	collectVars(firstCmd) {
+		const sharedVars = new Set(this.project ? this.project.allVariableNames() : []);
+		this.localVars = new Map();
+
+		const todo = firstCmd ? [firstCmd] : [];
+		while (todo.length > 0) {
+			const cmd = todo.shift();
+			const sel = cmd.selector;
+			const inputs = cmd.inputs();
+
+			if (sel === 'local' || sel === 'for') {
+				const varName = inputs[0].evaluate();
+				if (this.argNames.has(varName)) {
+					console.log('Warning: Local variable overrides parameter:', varName);
+				}
+				if (!this.localVars.has(varName)) {
+					this.localVars.set(varName, this.localVars.size);
+				}
+			} else if (sel === 'v' || sel === '=' || sel === '+=') {
+				const varName = (sel === 'v') ? cmd.blockSpec : inputs[0].evaluate();
+				if (!sharedVars.has(varName) && !this.argNames.has(varName) && !this.localVars.has(varName)) {
+					this.localVars.set(varName, this.localVars.size);
+				}
+			}
+
+			for (const input of inputs) {
+				if (input instanceof BlockMorph) {
+					todo.push(input);
+				} else if (input instanceof CommandSlotMorph) {
+					const nested = input.nestedBlock();
+					if (nested) todo.push(nested);
+				}
+			}
+			if (cmd.nextBlock()) todo.push(cmd.nextBlock());
+		}
+	}
+
+	getVar(varName) {
+		if (this.localVars.has(varName)) return ['pushLocal', this.localVars.get(varName)];
+		if (this.argNames.has(varName)) return ['pushArg', this.argNames.get(varName)];
+		const globalID = this.indexOfGlobalVar(varName);
+		if (globalID != null) return ['pushGlobal', globalID];
+		return ['pushImmediate', this.zeroObj]; // unknown variable; push zero
+	}
+
+	setVar(varName) {
+		if (this.localVars.has(varName)) return ['storeLocal', this.localVars.get(varName)];
+		if (this.argNames.has(varName)) return ['storeArg', this.argNames.get(varName)];
+		const globalID = this.indexOfGlobalVar(varName);
+		if (globalID != null) return ['storeGlobal', globalID];
+		return ['pop', 1]; // unknown variable; discard value
+	}
+
+	incrementVar(varName) {
+		if (this.localVars.has(varName)) return ['incrementLocal', this.localVars.get(varName)];
+		if (this.argNames.has(varName)) return ['incrementArg', this.argNames.get(varName)];
+		const globalID = this.indexOfGlobalVar(varName);
+		if (globalID != null) return ['incrementGlobal', globalID];
+		return ['noop', 0];
+	}
+
+	indexOfGlobalVar(varName) {
+		if (!this.project) return null;
+		const vars = this.project.allVariableNames();
+		const idx = vars.indexOf(varName);
+		return idx >= 0 ? idx : null;
+	}
+
+	// function calls
+
+	isFunctionCall(op) {
+		return this.functionChunkIDs.has(op);
+	}
+
+	instructionsForFunctionCall(op, inputs, isCmd) {
+		const result = [];
+		const chunkID = this.functionChunkIDs.get(op);
+		for (let i = 0; i < inputs.length; i++) {
+			result.push(...this.instructionsForExpression(this.exprArg(inputs, i)));
+		}
+		result.push(['callFunction', ((chunkID & 255) << 8) | (inputs.length & 255)]);
+		result.push(['placeholder', 0]); // callFunction is always two words
+		if (isCmd) result.push(['pop', 1]); // discard return value
+		return result;
+	}
+
+	// literal values
+
+	appendLiterals(instructions) {
+		// Resolve pushLiteral/commandPrimitive/reporterPrimitive offsets and append string literals.
+		const literals = [];
+		const literalOffsets = new Map();
+		if ((instructions.length % 2) === 1) {
+			instructions.push(['halt', 0]); // ensure even count for 32-bit alignment
+		}
+		let nextOffset = instructions.length;
+		for (let ip = 0; ip < instructions.length; ip++) {
+			const instr = instructions[ip];
+			if (!Array.isArray(instr)) continue;
+			const op = instr[0];
+			if (op === 'pushLiteral' || op === 'commandPrimitive' || op === 'reporterPrimitive') {
+				const literal = instr[1];
+				let litOffset = literalOffsets.get(literal);
+				if (litOffset == null) {
+					litOffset = nextOffset;
+					literals.push(literal);
+					literalOffsets.set(literal, litOffset);
+					nextOffset += 2 * this.wordsForLiteral(literal);
+				}
+				if (op === 'commandPrimitive' || op === 'reporterPrimitive') {
+					const primSetIndex = (this.primsets.get(instr[2]) || 0) & 63; // 6 bits
+					const primNameOffset = (litOffset - ip) & 1023;              // 10 bits
+					const argCount = (instr[3] || 0) & 255;
+					instr[1] = ((primSetIndex << 18) | (primNameOffset << 8)) | argCount;
+					instr[2] = literal; // retain literal string for "show instructions"
+				} else {
+					instr[1] = litOffset - ip;
+					instr[2] = literal; // retain literal string for "show instructions"
+				}
+			}
+		}
+		instructions.push(...literals);
+	}
+
+	wordsForLiteral(literal) {
+		if (typeof literal === 'string') {
+			const byteCount = new TextEncoder().encode(literal).length;
+			return 1 + Math.floor((byteCount + 4) / 4); // 1 header word + content words
+		}
+		throw new Error('Illegal literal type: ' + typeof literal);
+	}
+
+	// metadata for the decompiler
+
+	appendDecompilerMetadata(aBlockOrFunction, instructionList) {
+		let functionLibrary = '';
+		let functionSpec = '';
+		let varNames = '';
+		let functionName = '';
+
+		// collect local variable names in index order
+		const localVarAndArgNames = Array.from(this.localVars.entries())
+			.sort(([, a], [, b]) => a - b)
+			.map(([name]) => name)
+			.filter(name => typeof name === 'string');
+
+		if (aBlockOrFunction instanceof MB_Function) {
+			const func = aBlockOrFunction;
+			if (this.project) {
+				functionLibrary = this.project.libForFunction(func) || '';
+			}
+			if (!functionLibrary || this.notEmbeddedLibrary(functionLibrary)) {
+				functionSpec = this.metaInfoForFunction(func);
+			}
+			localVarAndArgNames.push(...func.argNames);
+			functionName = func.functionName;
+		}
+
+		if (localVarAndArgNames.length > 0) {
+			// Replace tabs with spaces, then join with tab delimiter
+			const sanitized = localVarAndArgNames.map(s => s.replace(/\t/g, ' '));
+			varNames = sanitized.join('\t');
+		}
+
+		instructionList.push(['metadata', functionLibrary, functionSpec, varNames, functionName]);
+	}
+
+	metaInfoForFunction(func) {
+		// Return the block spec string for the given function.
+		// Used by the decompiler to reconstruct the function signature.
+		// TODO: implement full spec serialization once MB_Specs supports it
+		return '';
+	}
+
+	notEmbeddedLibrary(libName) {
+		// Return true if the given library is not one of the embedded libraries.
+		// For now, treat all libraries as non-embedded.
+		return true;
+	}
+
+	// binary code generation
+
+	opcodeForInstr(op) {
+		return this.opcodes.get(op);
+	}
+
+	addBytesForInstructionTo(instr, bytes) {
+		// Append the bytes for the given instruction to bytes (little endian, 16-bit words).
+		const op = instr[0];
+		const arg = instr[1];
+
+		if (op === 'placeholder') return; // no code generated
+
+		const opcodeByte = this.opcodes.get(op);
+		if (opcodeByte == null) throw new Error('Unknown opcode: ' + op);
+		bytes.push(opcodeByte);
+
+		if (op === 'pushImmediate') {
+			// immediate int/boolean fits in 8-bit arg byte
+			bytes.push(arg & 255);
+		} else if (op === 'pushLargeInteger') {
+			// 24-bit integer object, little endian
+			bytes.push(((arg & 127) << 1) | 1); // low 7 bits + integer tag
+			bytes.push((arg >> 7) & 255);
+			bytes.push((arg >> 15) & 255);
+		} else if (op === 'pushHugeInteger') {
+			bytes.push(0); // unused arg byte
+			// 32-bit integer object, little endian
+			bytes.push(((arg & 127) << 1) | 1);
+			bytes.push((arg >> 7) & 255);
+			bytes.push((arg >> 15) & 255);
+			bytes.push((arg >> 23) & 255);
+		} else if (['jmp','jmpTrue','jmpFalse','jmpOr','jmpAnd','decrementAndJmp'].includes(op)) {
+			if (arg !== 0 && arg >= -128 && arg <= 127) {
+				bytes.push(arg & 255); // 8-bit offset
+			} else {
+				bytes.push(0); // zero arg: offset follows in next 16-bit word
+				bytes.push(arg & 255);
+				bytes.push((arg >> 8) & 255);
+			}
+		} else if (['longJmp', 'exitLoop', 'pushLiteral'].includes(op)) {
+			// always two words; replace longJmp with jmp opcode
+			if (op === 'longJmp') bytes[bytes.length - 1] = this.opcodes.get('jmp');
+			const safeArg = (arg == null) ? 0 : arg; // exitLoop outside loop → no-op
+			bytes.push(0); // zero arg byte
+			bytes.push(safeArg & 255);
+			bytes.push((safeArg >> 8) & 255);
+		} else if (op === 'callFunction') {
+			// arg: chunk ID (high byte) and arg count (low byte)
+			bytes.push(0);
+			bytes.push(arg & 255);
+			bytes.push((arg >> 8) & 255);
+		} else if (op === 'commandPrimitive' || op === 'reporterPrimitive') {
+			bytes.push(arg & 255);
+			bytes.push((arg >> 8) & 255);
+			bytes.push((arg >> 16) & 255);
+		} else if (op === 'metadata') {
+			// null-terminated UTF-8 strings: library, spec, varNames, functionName
+			const enc = new TextEncoder();
+			for (let i = 1; i <= 4; i++) {
+				const s = instr[i] || '';
+				bytes.push(...enc.encode(s));
+				bytes.push(0); // null terminator
+			}
+		} else if (arg >= -128 && arg <= 127) {
+			bytes.push(arg & 255); // 8-bit arg for all other instructions
+		} else {
+			throw new Error('Argument does not fit in 8 bits: ' + op + ' ' + arg);
+		}
+	}
+
+	compiledBytesFor(aBlockOrFunction) {
+		// Compile the given block or function and return an array of code bytes.
+		if (typeof aBlockOrFunction === 'string') {
+			aBlockOrFunction = this.project ? this.project.functionNamed(aBlockOrFunction) : null;
+			if (!aBlockOrFunction) return [];
+		}
+		const code = this.instructionsFor(aBlockOrFunction);
+		const bytes = [];
+		for (const item of code) {
+			if (Array.isArray(item)) {
+				this.addBytesForInstructionTo(item, bytes);
+			} else if (typeof item === 'string') {
+				this.addBytesForStringLiteral(item, bytes);
+			}
+		}
+		return bytes;
+	}
+
+	showInstructions(aBlock) {
+		// Return a formatted string showing the instructions for the given block's stack.
+		const code = this.instructionsFor(aBlock.topBlock());
+		const result = [];
+		let firstString = true;
+
+		for (const item of code) {
+			if (!Array.isArray(item)) {
+				// string literal appended after code
+				if (firstString) {
+					result.push('--------');
+					firstString = false;
+				}
+				result.push(String(item));
+			} else if (item[0] === 'metadata') {
+				result.push('--------');
+			} else if (item[0] === 'pushLiteral') {
+				const instr = `[${this.opcodeForInstr(item[0])}] ${item[0]} ${item[1]} ("${item[2]}")`;
+				this.addWithLineNum(result, instr);
+			} else if (item[0] === 'pushImmediate') {
+				let arg = item[1];
+				if ((arg & 1) === 1) {
+					arg = arg >> 1;
+					if (arg >= 4194304) arg -= 8388608;
+					if (arg < 128 && arg > 63) arg -= 128;
+				} else if (arg === 0) {
+					arg = false;
+				} else if (arg === 4) {
+					arg = true;
+				}
+				this.addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${arg}`);
+			} else if (item[0] === 'pushLargeInteger' || item[0] === 'pushHugeInteger') {
+				this.addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${item[1]}`);
+			} else if (item[0] === 'callFunction') {
+				const calledChunkID = (item[1] >> 8) & 255;
+				const argCount = item[1] & 255;
+				this.addWithLineNum(result, `[${this.opcodeForInstr(item[0])}] ${item[0]} ${calledChunkID} ${argCount}`);
+			} else if (!/^[a-zA-Z]/.test(item[0])) {
+				// operator: don't show arg count
+				this.addWithLineNum(result, String(item[0]));
+			} else if (item[0] === 'placeholder') {
+				this.addWithLineNum(result, '<data>');
+			} else {
+				let displayItem = item;
+				if (item[0] === 'commandPrimitive' || item[0] === 'reporterPrimitive') {
+					// re-order to display argCount last
+					displayItem = [...item];
+					const argCount = displayItem[3];
+					displayItem[3] = displayItem[4];
+					displayItem[4] = argCount;
+				}
+				let instr = `[${this.opcodeForInstr(displayItem[0])}] `;
+				for (const s of displayItem) {
+					if (s !== undefined) instr += s + ' ';
+				}
+				this.addWithLineNum(result, instr.trimEnd(), item);
+			}
+		}
+		return result.join('\n');
+	}
+
+	addWithLineNum(aList, instruction, items) {
+		const currentLine = aList.length + 1;
+		let targetLine = '';
+		if (items && ['pushLiteral', 'jmp', 'longJmp', 'jmpTrue', 'jmpFalse', 'jmpAnd', 'jmpOr', 'decrementAndJmp'].includes(items[0])) {
+			let offset = items[items.length - 1];
+			if (items[0] !== 'pushLiteral') {
+				if (offset === 0 || offset < -128 || offset > 127 || items[0] === 'longJmp') {
+					offset += 1;
+				}
+			}
+			targetLine = ` (line ${currentLine + 1 + offset})`;
+		}
+		aList.push(`${currentLine} ${instruction}${targetLine}`);
+	}
+
+	addBytesForStringLiteral(s, bytes) {
+		// Append the bytes for the given string literal (GP object format).
+		const encoded = new TextEncoder().encode(s);
+		const byteCount = encoded.length;
+		const wordCount = Math.floor((byteCount + 4) / 4);
+		let headerWord = (wordCount << 4) | this.stringClassID;
+		// header: 4 bytes, little endian
+		for (let i = 0; i < 4; i++) {
+			bytes.push(headerWord & 255);
+			headerWord >>= 8;
+		}
+		bytes.push(...encoded);
+		// pad to next 4-byte boundary
+		const pad = 4 - (byteCount % 4);
+		for (let i = 0; i < pad; i++) bytes.push(0);
+	}
+}
