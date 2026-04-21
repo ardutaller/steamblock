@@ -1354,7 +1354,7 @@ static void runTask(Task *task) {
 	#endif
 
 static inline int napIfPossible() {
-	const int napMicroSecs = 5000;
+	const int napMicroSecs = 4000;
 	int usecs = microsecs(); // get usecs
 	for (int i = 0; i < taskCount; i++) {
 		Task *task = &tasks[i];
@@ -1368,7 +1368,7 @@ static inline int napIfPossible() {
 	#if defined(GNUBLOCKS)
 		usleep(napMicroSecs); // nap a while to relinquish the CPU
 	#else
-		lightSleep(5);
+		lightSleep(4);
 	#endif
 	return true;
 }
