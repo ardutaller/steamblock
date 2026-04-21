@@ -1047,6 +1047,7 @@ static OBJ primESPNowSend(int argCount, OBJ *args) {
 	if (!esp_now_started) startESPNow();
 
 	if (esp_now_send_buffers < 1) {
+		taskSleep(5);
 		return falseObj;
 	}
 	esp_now_send_buffers--;
@@ -1062,7 +1063,6 @@ static OBJ primESPNowSend(int argCount, OBJ *args) {
 		int rc = esp_now_send(broadcastAddress, sendBuf, ESP_NOW_HEADER_LEN + byteCount);
 	#endif
 
-	taskSleep(10);
 	return trueObj;
 }
 
