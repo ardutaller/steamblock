@@ -25,6 +25,14 @@ class MB_Compiler {
 		this.trueObj = 4;
 		this.zeroObj = 1; // (0 << 1) | 1
 		this.stringClassID = 4;
+
+// testing only: assign chunk numbers for all functions
+let nextChunkID = 0;
+for (let f of project.allFunctions()) {
+	let fName = f.functionName;
+	this.functionChunkIDs.set(fName, nextChunkID++);
+}
+// end of testing code
 	}
 
 	initOpcodes() {
@@ -149,7 +157,9 @@ class MB_Compiler {
 			'hid', 'camera', '1wire', 'encoder', 'sd', 'lgvl'
 		];
 		this.primsets = new Map();
-		names.forEach((name, i) => this.primsets.set(name, i));
+		for (const [i, name] of names.entries()) {
+			this.primsets.set(name, i);
+		}
 	}
 
 	// input extraction helpers
@@ -440,8 +450,7 @@ class MB_Compiler {
 	fixLoopExits(loopBody) {
 		// Resolve any uninitialized exitLoop instructions to jump past this loop.
 		// Ignore exitLoop instructions that already have an offset (nested loops).
-		for (let i = 0; i < loopBody.length; i++) {
-			const instr = loopBody[i];
+		for (const [i, instr] of loopBody.entries()) {
 			if (instr[0] === 'exitLoop' && instr[1] == null) {
 				instr[1] = (loopBody.length - i) - 1;
 			}
@@ -520,8 +529,8 @@ class MB_Compiler {
 		const totalInstrCount = tests.reduce((sum, t) => sum + t.length + 1, 0) - 1;
 
 		const result = [];
-		for (let i = 0; i < tests.length; i++) {
-			result.push(...tests[i]);
+		for (const [i, test] of tests.entries()) {
+			result.push(...test);
 			if (i < tests.length - 1) {
 				result.push(...this.instructionsForJump('jmpAnd', totalInstrCount - (result.length + 1)));
 			}
@@ -537,8 +546,8 @@ class MB_Compiler {
 		const totalInstrCount = tests.reduce((sum, t) => sum + t.length + 1, 0) - 1;
 
 		const result = [];
-		for (let i = 0; i < tests.length; i++) {
-			result.push(...tests[i]);
+		for (const [i, test] of tests.entries()) {
+			result.push(...test);
 			if (i < tests.length - 1) {
 				result.push(...this.instructionsForJump('jmpOr', totalInstrCount - (result.length + 1)));
 			}
@@ -700,8 +709,7 @@ class MB_Compiler {
 			instructions.push(['halt', 0]); // ensure even count for 32-bit alignment
 		}
 		let nextOffset = instructions.length;
-		for (let ip = 0; ip < instructions.length; ip++) {
-			const instr = instructions[ip];
+		for (const [ip, instr] of instructions.entries()) {
 			if (!Array.isArray(instr)) continue;
 			const op = instr[0];
 			if (op === 'pushLiteral' || op === 'commandPrimitive' || op === 'reporterPrimitive') {
@@ -843,8 +851,8 @@ class MB_Compiler {
 		} else if (op === 'metadata') {
 			// null-terminated UTF-8 strings: library, spec, varNames, functionName
 			const enc = new TextEncoder();
-			for (let i = 1; i <= 4; i++) {
-				const s = instr[i] || '';
+			for (const field of instr.slice(1, 5)) {
+				const s = field || '';
 				bytes.push(...enc.encode(s));
 				bytes.push(0); // null terminator
 			}

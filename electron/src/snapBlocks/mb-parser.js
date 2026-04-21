@@ -357,7 +357,9 @@ class MB_Parser {
 				break;
 			}
 		}
-		if (isFloat) console.log('MicroBlocks does not support floating point numbers; rounding.')
+		if (isFloat) console.log(
+			'MicroBlocks does not support floating point numbers; rounding.' +
+			(' (' + this.fileName + ':' + this.lineNumber) + ')');
 		return Math.round(Number(numBuf));
 	}
 

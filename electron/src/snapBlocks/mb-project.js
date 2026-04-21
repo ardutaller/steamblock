@@ -140,7 +140,7 @@ class MB_Project {
 	}
 
 	functionNamed(functionName) {
-		return this.allFunctions.find(f => (f.functionName == functionName));
+		return this.allFunctions().find(f => (f.functionName == functionName));
 	}
 
 	libForFunction(aFunc) {
@@ -902,7 +902,10 @@ class MB_Module {
 		for (const entry of cmdList) {
 			if ((entry.length > 2) && (entry[0] == 'to')) {
 functionCount++;
-				const funcName = entry[1];
+				let funcName = entry[1];
+				if (funcName[0] == "'") {
+					funcName = funcName.slice(1, -1); // remove quotes
+				}
 				const funcArgs = entry.slice(2, -1);
 				const funcCmds = entry.at(-1);
 				let funcBody = (funcCmds.length > 0) ? MB_Parser.blockFor(funcCmds) : null;
@@ -1131,22 +1134,17 @@ async function testCompileExamples() {
 	for (const fileName of MB_Files.allFilesIn('Examples')) {
 		let startT = Date.now();
 		scriptCount = functionCount = 0;
-		console.log('Compiling ' + fileName + '...');
 		let data = await MB_Files.readFile(fileName);
 		let project = new MB_Project().loadFromString(data);
 		let mainModule = project.main;
 		let compiler = new MB_Compiler(project);
-		console.log('    scripts:', scriptCount, mainModule.scripts.length);
-		console.log('    functions:', functionCount, mainModule.functions.length);
-// 		'functions', scriptCount, 'scripts', msecs, 'msecs');
-// 		console.log('scripts', mainModule.scripts.length, 'functions', mainModule.functions.length);
-		let scriptBytes = 0, functionBytes = 0;;
+		let scriptBytes = 0, functionBytes = 0;
 		for (scriptRec of mainModule.scripts) {
 			scriptBytes += compiler.compiledBytesFor(scriptRec[2]).length;
 		}
-		for (f of mainModule.functions) {
-			functionBytes += compiler.compiledBytesFor(f).length;
+		for (f of project.allFunctions()) {
+			functionBytes += compiler.compiledBytesFor(f.functionName).length;
 		}
-		console.log('    compiled scripts:', scriptBytes, 'functions:', functionBytes);
+		console.log(fileName + ': ' + scriptBytes + ', ' + functionBytes + '; total: ' + (scriptBytes + functionBytes));
 	}
 }
