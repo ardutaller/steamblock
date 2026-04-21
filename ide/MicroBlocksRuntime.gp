@@ -2550,6 +2550,7 @@ method boardHasFileSystem SmallRuntime {
 	if (and (notNil boardType) (notNil (findSubstring 'ESP' boardType))) { return true }
 	if (and (notNil boardType) (notNil (findSubstring '2040' boardType))) { return true }
 	if (and (notNil boardType) (notNil (findSubstring '2350' boardType))) { return true }
+	if (and (notNil boardType) (notNil (findSubstring 'Springbot' boardType))) { return true }
 	return (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix'
 		'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040'
