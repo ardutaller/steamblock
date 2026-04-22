@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-03-12 10:09+0000\n"
-"Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
+"PO-Revision-Date: 2026-04-20 09:25+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
 "Language: zh-chs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 #. Block in Control category
 msgid "by _"
@@ -5210,10 +5210,12 @@ msgid "ASR get command"
 msgstr "ASR 获取指令"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "Tracker _ on black"
 msgstr "寻迹模块 _ 在黑色上"
 
 #. CoCube Module library block
+#, fuzzy
 msgid "Tracker _ on white"
 msgstr "寻迹模块 _ 在白色上"
 
