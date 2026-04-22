@@ -1,11 +1,11 @@
 module Widgets
 author MicroBlocks
-version 1 3
-depends '_Touch Screen' TFT
+version 1 4 
+depends '_Touch Screen' TFT 
 description 'Simple interactive monochrome widgets using the TFT library.
 Supports interation via touch screen, when available, or A and B buttons.
 '
-variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widget_showGrid _widget_selected
+variables _widget_allWidgets _widget_bgColor _widget_fgColor _widget_scale _widget_showGrid _widget_selected 
 
   spec ' ' 'widget_initialize' 'initialize widgets : scale _ : #BR# show grid _ : widget color _' 'num bool color' 1 true
   space
@@ -106,6 +106,7 @@ to '_widget_changeValueBy' widget increment {
     }
     widget_setValue widget newValue
   }
+  '_widget_updateDisplay'
 }
 
 to '_widget_changed' widget {
@@ -211,21 +212,23 @@ to '_widget_drawButton' widget {
 to '_widget_drawChoice' widget {
   local 'scale' ((widget_height widget) / 8)
   local 'value' ('[data:convertType]' (widget_value widget) 'string')
+  local 'icon top' ((widget_y widget) + (scale + 0))
+  local 'icon left' ((widget_x widget) + 2)
+  local 'bar height' (((5 * scale) + 1) / 3)
+  local 'bar width' (4 * scale)
   comment 'Update width'
-  atPut 4 widget ((scale * ((6 * (maximum (size value) 1)) + 6)) - 2)
-  local 'w' (4 * scale)
-  local 'left' ((widget_x widget) + (scale * ((6 * (maximum (size value) 1)) + 0)))
-  local 'top' ((widget_y widget) - 1)
-  local 'mid' (top + (4 * scale))
-  local 'bottom' (top + (8 * scale))
+  atPut 4 widget ((scale * (6 * (maximum (size value) 1))) + (7 * scale))
+  '[tft:rect]' (v 'icon left') (v 'icon top') (v 'bar width') (3 * (v 'bar height')) _widget_fgColor false
   local 'choices' (at 9 widget)
-  if (('[data:find]' value choices) != 1) {
-    '[tft:triangle]' left (mid - 1) (left + (w / 2)) top (left + w) (mid - 1) _widget_fgColor
+  local 'i' ('[data:find]' value choices)
+  if (i == 1) {
+    '[tft:rect]' (v 'icon left') (v 'icon top') (v 'bar width') (v 'bar height') _widget_fgColor true
+  } (i == (size choices)) {
+    '[tft:rect]' (v 'icon left') ((v 'icon top') + (2 * (v 'bar height'))) (v 'bar width') (v 'bar height') _widget_fgColor true
+  } else {
+    '[tft:rect]' (v 'icon left') ((v 'icon top') + (v 'bar height')) (v 'bar width') (v 'bar height') _widget_fgColor true
   }
-  if (('[data:find]' value choices) != (size choices)) {
-    '[tft:triangle]' left (mid + 1) (left + (w / 2)) bottom (left + w) (mid + 1) _widget_fgColor
-  }
-  '[tft:text]' value (widget_x widget) (widget_y widget) _widget_fgColor scale false
+  '[tft:text]' value ((widget_x widget) + ((7 * scale) + 1)) (widget_y widget) _widget_fgColor scale false
 }
 
 to '_widget_drawGraph' widget {
