@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-04-20 09:25+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-04-24 03:09+0000\n"
+"Last-Translator: 梁帅 <jiangren1209@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
 "Language: zh-chs\n"
@@ -6223,3 +6223,35 @@ msgstr "门触发"
 #. WiFi library block
 msgid "stop wifi"
 msgstr "停止 WiFi"
+
+#. Library name
+msgid "MIDI Player"
+msgstr "MIDI 播放器"
+
+#. General MIDI drum set
+msgid "Jungle"
+msgstr "丛林舞曲"
+
+#. General MIDI drum set
+msgid "Techno"
+msgstr "工业舞曲"
+
+#. General MIDI drum set
+msgid "House"
+msgstr "浩室舞曲"
+
+#. General MIDI drum set
+msgid "Power"
+msgstr "强力鼓组"
+
+#. General MIDI drum set
+msgid "Electronic"
+msgstr "电子鼓组"
+
+#. General MIDI drum set
+msgid "Orchestra"
+msgstr "交响乐鼓组"
+
+#. General MIDI drum set
+msgid "Ethnic"
+msgstr "民族打击乐鼓组"
