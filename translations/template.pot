@@ -2517,7 +2517,11 @@ msgid "Hip Hop"
 msgstr ""
 
 #. General MIDI drum set
-msgid "Jungle Techno"
+msgid "Jungle"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Techno"
 msgstr ""
 
 #. General MIDI drum set
@@ -2525,7 +2529,15 @@ msgid "Room L/R"
 msgstr ""
 
 #. General MIDI drum set
-msgid "House Power Electronic"
+msgid "House"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Power"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Electronic"
 msgstr ""
 
 #. General MIDI drum set
@@ -2573,7 +2585,11 @@ msgid "Brush 2 L/R"
 msgstr ""
 
 #. General MIDI drum set
-msgid "Orchestra Ethnic"
+msgid "Orchestra"
+msgstr ""
+
+#. General MIDI drum set
+msgid "Ethnic"
 msgstr ""
 
 #. General MIDI drum set
@@ -7351,6 +7367,10 @@ msgstr ""
 
 #. Library name
 msgid "MIDI"
+msgstr ""
+
+#. Library name
+msgid "MIDI Player"
 msgstr ""
 
 #. Library name

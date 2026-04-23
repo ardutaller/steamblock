@@ -1786,8 +1786,9 @@ static int readAcceleration(int registerID) {
 	if (!accelStarted) startAccelerometer();
 
 	int reg = 0;
-	if (1 == registerID) reg = KX022_XOUT_H; // x-axis (high byte)
-	if (3 == registerID) reg = KX022_YOUT_H; // y-axis (high byte)
+	// X and Y axes are swapped
+	if (1 == registerID) reg = KX022_YOUT_H; // x-axis (high byte)
+	if (3 == registerID) reg = KX022_XOUT_H; // y-axis (high byte)
 	if (5 == registerID) reg = KX022_ZOUT_H; // z-axis (high byte)
 
 	int val = (reg != 0) ? kx022Read(reg) : 0;
@@ -1795,6 +1796,8 @@ static int readAcceleration(int registerID) {
 
 	if (val < -127) val = -127;
 	if (val > 127) val = 127;
+
+	if ((1 == registerID) || (5 == registerID)) val = -val; // X and Z inverted
 
 	// Scale to MicroBlocks convention: approx. -200..200
 	return (val * 200) / 127;

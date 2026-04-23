@@ -2517,16 +2517,28 @@ msgid "Hip Hop"
 msgstr "Hip Hop"
 
 #. General MIDI drum set
-msgid "Jungle Techno"
-msgstr "Jungle Techno"
+msgid "Jungle"
+msgstr "Jungle"
+
+#. General MIDI drum set
+msgid "Techno"
+msgstr "Techno"
 
 #. General MIDI drum set
 msgid "Room L/R"
 msgstr "Room L/R"
 
 #. General MIDI drum set
-msgid "House Power Electronic"
-msgstr "House Power Electronic"
+msgid "House"
+msgstr "House"
+
+#. General MIDI drum set
+msgid "Power"
+msgstr "Power"
+
+#. General MIDI drum set
+msgid "Electronic"
+msgstr "Electronic"
 
 #. General MIDI drum set
 msgid "TR-808"
@@ -2573,8 +2585,12 @@ msgid "Brush 2 L/R"
 msgstr "Brush 2 L/R"
 
 #. General MIDI drum set
-msgid "Orchestra Ethnic"
-msgstr "Orchestra Ethnic"
+msgid "Orchestra"
+msgstr "Orchestra"
+
+#. General MIDI drum set
+msgid "Ethnic"
+msgstr "Ethnic"
 
 #. General MIDI drum set
 msgid "Kick & Snare"
@@ -7353,6 +7369,10 @@ msgstr "CoCube"
 #. Library name
 msgid "MIDI"
 msgstr "MIDI"
+
+#. Library name
+msgid "MIDI Player"
+msgstr "MIDI Player"
 
 #. Library name
 msgid "Function Calls"
