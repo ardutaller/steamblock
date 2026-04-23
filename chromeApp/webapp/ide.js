@@ -29,6 +29,9 @@ IDE = {
 IDE.init = function () {
 	this.element = document.querySelector('[data-ide="ide"]');
 	this.project = this.emptyProject();
+	this.topBarElement = document.querySelector('[data-ide="top-bar"]');
+	this.tipBarElement = document.querySelector('[data-ide="bottom-bar"]');
+	this.leftBarElement = document.querySelector('[data-ide="workspace-left"]');
 	this.board = this.emptyBoard();
 	this.applyUserPreferences();
 	this.build();
@@ -38,10 +41,10 @@ IDE.init = function () {
 IDE.resize = function () {
 	// TODO Rename vars to match CSS classes (new naming)
 	let winHeight = window.innerHeight,
-		topBarHeight = document.querySelector('[data-ide="top-bar"]').clientHeight,
-		tipBarHeight = document.querySelector('[data-ide="bottom-bar"]').clientHeight,
+		topBarHeight = IDE.topBarElement.clientHeight,
+		tipBarHeight = IDE.tipBarElement.clientHeight,
 		winWidth = window.innerWidth,
-		leftBarWidth = document.querySelector('[data-ide="workspace-left"]').clientWidth,
+		leftBarWidth = IDE.leftBarElement.clientWidth,
 		newHeight = winHeight - (topBarHeight + tipBarHeight);
 
 	// document.querySelector('[data-ide="workspace"]').style.height = newHeight + 'px';
@@ -324,8 +327,8 @@ IDE.populateLibraries = function (element) {
 // Collapse left bar
 IDE.collapseLeftBar = {
 	init: function () {
-		const leftBar = document.querySelector('[data-ide="workspace-left"]'),
-			collapseButton = document.querySelector('[data-ide="collapse-left-btn"]');
+		const collapseButton =
+			document.querySelector('[data-ide="collapse-left-btn"]');
 		let resizeInterval;
 
 		collapseButton.addEventListener('click', () => {
@@ -336,11 +339,11 @@ IDE.collapseLeftBar = {
 			resizeInterval = setInterval(() => { IDE.resize(); }, 100);
 		});
 
-		leftBar.addEventListener('transitionend', () => {
+		IDE.leftBarElement.addEventListener('transitionend', () => {
 			IDE.element.classList.remove('--is-transitioning');
 
 			clearInterval(resizeInterval);
-    		resizeInterval = null;
+			resizeInterval = null;
 
 			IDE.resize();
 		});
