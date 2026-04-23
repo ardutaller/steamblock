@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
 "PO-Revision-Date: 2026-04-24 03:09+0000\n"
-"Last-Translator: 梁帅 <jiangren1209@gmail.com>\n"
+"Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
 "Language: zh-chs\n"
@@ -5781,7 +5781,7 @@ msgstr "减和弦"
 
 #. Music chord type
 msgid "major 7th"
-msgstr "大七和弦"
+msgstr "七和弦"
 
 #. Music chord type
 msgid "minor 7th"
