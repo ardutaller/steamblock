@@ -5137,10 +5137,6 @@ msgid "set emoji _ scale _"
 msgstr ""
 
 #. CoCube emoji block
-msgid "happy"
-msgstr ""
-
-#. CoCube emoji block
 msgid "naughty"
 msgstr ""
 
@@ -5190,10 +5186,6 @@ msgstr ""
 
 #. CoCube emoji block
 msgid "scared"
-msgstr ""
-
-#. CoCube emoji block
-msgid "angry"
 msgstr ""
 
 #. CoCube emoji block
@@ -7117,20 +7109,24 @@ msgstr ""
 msgid "blockdef;delete"
 msgstr ""
 
-#. Block input right-click context menu
-msgid "Input type:"
-msgstr ""
-
-#. Block input right-click context menu option
-msgid "string only"
-msgstr ""
-
-#. Block input right-click context menu option
+#. Slot type menu option
 msgid "string or number"
 msgstr ""
 
-#. Block input right-click context menu option
+#. Slot type menu option
 msgid "number only"
+msgstr ""
+
+#. Slot type menu option
+msgid "string only"
+msgstr ""
+
+#. Slot type menu option
+msgid "boolean switch"
+msgstr ""
+
+#. Slot type menu option
+msgid "color patch"
 msgstr ""
 
 #. Text right-click context menu option
