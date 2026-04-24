@@ -2,7 +2,7 @@
 	MB_openSerialPort, MB_closeSerialPort, MB_isOpenSerialPort, MB_readSerialPort, MB_writeSerialPort */
 
 class MB_Connection {
-	constructor(mbEditor) {
+	constructor(mbEditor = null) {
 		this.editor = mbEditor;
 		this.msgDict = null;
 		this.portName = null;
@@ -31,11 +31,37 @@ class MB_Connection {
 		return new TextDecoder().decode(bytes);
 	}
 
-	async waitMSecs(msecs) {
-		const sleep = function (msecs) {
-			return (new Promise( resolve => setTimeout(resolve, msecs) ));
-		}
-		await sleep(msecs);
+	stopAndSyncScripts() {
+		// XXX TODO
+	}
+
+	softReset() {
+		// XXX TODO
+	}
+
+	sendStartAll() {
+		// XXX TODO
+	}
+
+	sendStopAll() {
+		// XXX TODO
+	}
+
+	setDefaultSerialDelay() {
+		// XXX TODO
+	}
+
+	abortFileTransfer() {
+		// XXX TODO
+	}
+
+	boardHasSameProject() {
+		// XXX TODO
+		return false;
+	}
+
+	clearBoardIfConnected() {
+		// XXX TODO
 	}
 
 	// --- Connection Handling ---
@@ -83,7 +109,7 @@ class MB_Connection {
 		this.boardType = null;
 
 		// remove running highlights and result bubbles when disconnected
-		editor.clearRunningHighlights();
+		if (this.editor) this.editor.clearRunningHighlights();
 	}
 
 	connectedToBoard() {
@@ -106,12 +132,14 @@ class MB_Connection {
 		if (this.decompiler != null) return 'connected';
 		if (this.portName == null) return 'not connected';
 
+		this.processMessages();
+
 		// handle connection attempt in progress
 		if (this.connectionStartTime != null) return this.tryToConnect();
 
 		// if port is not open, try to reconnect or find a different board
 		if (!this.isConnected || !MB_isOpenSerialPort()) {
-			editor.clearRunningHighlights();
+			if (this.editor) this.editor.clearRunningHighlights();
 			this.disconnect();
 			this.portName = null; // clear 'boardie' when boardie is closed with power button
 			return 'not connected'; // user must initiate connection attempt
@@ -137,7 +165,7 @@ class MB_Connection {
 		} else {
 			// ping timeout: close port to force reconnection
 			console.log('Lost communication to the board');
-			editor.clearRunningHighlights();
+			if (this.editor) this.editor.clearRunningHighlights();
 			this.disconnect();
 			return 'not connected';
 		}
@@ -150,7 +178,7 @@ class MB_Connection {
 		this.vmVersion = null;
 		this.sendMsgSync('getVersionMsg');
 		this.sendStopAll();
-		editor.clearRunningHighlights();
+		if (this.editor) this.editor.clearRunningHighlights();
 		this.setDefaultSerialDelay();
 		this.abortFileTransfer();
 		this.processMessages(); // process incoming version message
@@ -158,14 +186,14 @@ class MB_Connection {
 			this.readFromBoard = false;
 			this.readCodeFromBoard();
 		} else {
-			const reuseCodeIfPossible = true; // set this to true to attempt to reuse code on board
+			const reuseCodeIfPossible = false; // set this to true to attempt to reuse code on board
 			if (!reuseCodeIfPossible || !this.boardHasSameProject()) {
 				if (reuseCodeIfPossible) console.log('Full download');
 				this.clearBoardIfConnected();
 			} else {
 				console.log('Incremental download', this.vmVersion, this.boardType);
 			}
-			editor.showDownloadProgress(2, 0);
+			if (this.editor) this.editor.showDownloadProgress(2, 0);
 			this.stopAndSyncScripts(true);
 			this.softReset();
 		}
@@ -178,6 +206,7 @@ class MB_Connection {
 		if (this.portName !== 'boardie') {
 			if (MB_isOpenSerialPort()) {
 				this.isConnected = true;
+				this.processMessages();
 				if (this.lastPingRecvMSecs !== 0) { // got a ping; we're connected!
 					this.justConnected();
 					return 'connected';
@@ -189,6 +218,8 @@ class MB_Connection {
 				return 'not connected';
 			}
 		}
+
+		this.processMessages();
 
 		const connectionAttemptTimeout = 5000; // milliseconds
 
@@ -209,8 +240,9 @@ class MB_Connection {
 			if ((now - this.connectionStartTime) < connectionAttemptTimeout) return 'not connected'; // keep trying
 		}
 
-		this.disconnect();
-		this.connectionStartTime = null;
+// xxx don't timeout for now...
+// 		this.disconnect();
+// 		this.connectionStartTime = null;
 		return 'not connected';
 	}
 

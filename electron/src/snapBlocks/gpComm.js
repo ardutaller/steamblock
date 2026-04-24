@@ -3,6 +3,8 @@
 
 // Serial port entry points for WebSerial, WebBluetooth, and Boardie
 
+GP = { boardie: { isOpen: false }}; // TODO: replace with actual Boardie test
+
 function MB_openSerialPort(which) {
 	if (GP.boardie.isOpen) { return; }
 	if ((which == 'webBLE') && hasWebBluetooth()) {

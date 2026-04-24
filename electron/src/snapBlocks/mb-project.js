@@ -144,7 +144,7 @@ class MB_Project {
 	}
 
 	libForFunction(aFunc) {
-		const f = this.functionNamed(aFunc.funcName);
+		const f = this.functionNamed(aFunc.functionName);
 		return f ? f.moduleName : '';
 	}
 
@@ -158,7 +158,7 @@ class MB_Project {
 			result = result.concat(lib.variableNames);
 		}
 		return result.sort(
-			(m1, m2) => m1.toLowerCase() < m2.toLowerCase
+			(m1, m2) => m1.toLowerCase() < m2.toLowerCase()
 		);
 	}
 

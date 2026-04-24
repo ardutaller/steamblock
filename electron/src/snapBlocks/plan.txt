@@ -38,7 +38,7 @@ Long term plan:
   [x] project representation (medium)
   [x] ability to import an entire project
   [ ] ability to export an entire project
-  [ ] compiler (big!)
+  [x] compiler (big!) → mb-compiler.js
   [ ] ability to print compiled code and bytecodes
   [ ] IDE communication protocol (huge!)
   [ ] ability to compile, download, and run a script
@@ -48,14 +48,19 @@ Long term plan:
   [ ] decompiler (big!)
   - ...
 
+Tests:
+  [ ] import/export all projects
+  [ ] import/export all libraries
+  [ ] compile all projects and compare to compiled code with old compiler
+
 ------------------------
 GP code that will need to ported:
 	126		 ide/MicroBitDisplaySlot.gp (done!)
 
-	1236	ide/MicroBlocksProject.gp
+	1236	ide/MicroBlocksProject.gp (mostly done)
 
-	1332 	ide/MicroBlocksCompiler.gp
-	1102		ide/MicroBlocksDecompiler.gp
+	1332 	ide/MicroBlocksCompiler.gp (done!)
+	1102	ide/MicroBlocksDecompiler.gp
 
 	3216	ide/MicroBlocksRuntime.gp
 	265		ide/MicroBlocksExchange.gp

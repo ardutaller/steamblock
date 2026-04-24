@@ -1360,13 +1360,12 @@ BlockMorph.prototype.forAllBlocks = function (func) {
 	let todo = [this];
 	while (todo.length > 0) {
 		let b = todo.pop();
-console.log(b);
-//		func(b);
+		func(b);
 		if (b instanceof CommandBlockMorph) {
 			if (b.nextBlock()) todo.push(b.nextBlock());
 		}
 		for (const arg of b.inputs()) {
-			if (arg instanceof BlockMorph) todo.push(b);
+			if (arg instanceof BlockMorph) todo.push(arg);
 		}
 	}
 }
@@ -1817,7 +1816,7 @@ BlockMorph.prototype.contract = function () {
 	if (!this.canContract()) return;
 
 	if (this.expander) this.expander.destroy(); // remove the expander before appending parts
-	for (const p of this.specForContract().split(/\s+/)) {
+	for (const _ of this.specForContract().split(/\s+/)) {
 		this.removeChild(this.children.at(-1));
 	}
 	this.cachedInputs = null;
@@ -2030,7 +2029,7 @@ BlockMorph.prototype.addCodeStringForArg = function (arg, indent, result) {
 			result.push('}');
 		}
 	} else if (arg instanceof BooleanSlotMorph) {
-		result.push(arg.value == true);
+		result.push((arg.value == true).toString());
 	} else if (arg instanceof ReporterBlockMorph) {
 		result.push(arg.codeString());
 	} else if (arg instanceof TemplateSlotMorph) {
@@ -2054,7 +2053,6 @@ BlockMorph.prototype.addCodeStringForArg = function (arg, indent, result) {
 	} else {
 		console.log('unknown arg type:', arg);
 	}
-	return result.join('');
 }
 
 BlockMorph.prototype.codeString = function (indent = 0, result = []) {
@@ -3139,6 +3137,16 @@ HatBlockMorph.prototype.isRuleHat = function () {
 	return this.selector === 'receiveCondition';
 };
 
+HatBlockMorph.prototype.isFunctionDefinition = function () {
+	// This is the equivalent of GP "isPrototypeHat".
+	return this.selector === 'define';
+};
+
+HatBlockMorph.prototype.definedFunctionName = function () {
+	if (!this.isFunctionDefinition) return 'Not a function definition';
+	return this.inputs()[0];
+};
+
 // HatBlockMorph drawing:
 
 HatBlockMorph.prototype.outlinePath = function(ctx, inset) {
@@ -3766,7 +3774,8 @@ ScriptsMorph.prototype.cleanUp = function () {
 		y = target.cleanUpMargin;
 	target.children.sort((a, b) =>
 		// make sure the prototype hat block always stays on top
-		a instanceof PrototypeHatBlockMorph ? 0 : a.top() - b.top()
+		a instanceof PrototypeHatBlockMorph ? -1 :
+			(b instanceof PrototypeHatBlockMorph ? 1 : a.top() - b.top())
 	).forEach(child => {
 		child.setPosition(origin.add(new Point(target.cleanUpMargin, y)));
 		y += child.stackHeight() + target.cleanUpSpacing;
@@ -3832,7 +3841,8 @@ ScriptsMorph.prototype.sortedElements = function () {
 	var scripts = this.children.slice(); // make a copy
 	scripts.sort((a, b) =>
 		// make sure the prototype hat block always stays on top
-		a instanceof PrototypeHatBlockMorph ? 0 : a.top() - b.top()
+		a instanceof PrototypeHatBlockMorph ? -1 :
+			(b instanceof PrototypeHatBlockMorph ? 1 : a.top() - b.top())
 	);
 	return scripts;
 };
@@ -4333,7 +4343,7 @@ CSlotMorph.prototype.fixLayout = function () {
 			)
 		);
 		this.bounds.setHeight(nb.fullBounds().height() + this.corner);
-		this.bounds. setWidth(
+		this.bounds.setWidth(
 			nb.fullBounds().width() + (this.cSlotPadding * 2)
 		);
 	} else {
@@ -5079,9 +5089,6 @@ TemplateSlotMorph.prototype.render = function (ctx) {
 	}
 	BlockMorph.prototype.render.call(this, ctx);
 };
-
-TemplateSlotMorph.prototype.outlinePath =
-	ReporterBlockMorph.prototype.outlinePathOval;
 
 TemplateSlotMorph.prototype.outlinePath =
 	ReporterBlockMorph.prototype.outlinePathOval;
@@ -6559,7 +6566,8 @@ ScriptFocusMorph.prototype.sortedScripts = function () {
 	);
 	scripts.sort((a, b) =>
 		// make sure the prototype hat block always stays on top
-		a instanceof PrototypeHatBlockMorph ? 0 : a.top() - b.top()
+		a instanceof PrototypeHatBlockMorph ? -1 :
+			(b instanceof PrototypeHatBlockMorph ? 1 : a.top() - b.top())
 	);
 	return scripts;
 };

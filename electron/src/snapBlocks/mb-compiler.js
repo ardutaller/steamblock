@@ -106,6 +106,7 @@ for (let f of project.allFunctions()) {
 			>= 65
 			> 66
 			not 67
+			RESERVED 68
 			sum 69
 			longMult 70
 			absoluteValue 71
@@ -136,6 +137,33 @@ for (let f of project.allFunctions()) {
 			i2cGet 96
 			spiSend 97
 			spiRecv 98
+			RESERVED 99
+			RESERVED 100
+			RESERVED 101
+			RESERVED 102
+			RESERVED 103
+			RESERVED 104
+			RESERVED 105
+			RESERVED 106
+			RESERVED 107
+			RESERVED 108
+			RESERVED 109
+			RESERVED 110
+			RESERVED 111
+			RESERVED 112
+			RESERVED 113
+			RESERVED 114
+			RESERVED 115
+			RESERVED 116
+			RESERVED 117
+			RESERVED 118
+			RESERVED 119
+			RESERVED 120
+			RESERVED 121
+			RESERVED 122
+			RESERVED 123
+			RESERVED 124
+			RESERVED 125
 			comment 126
 			codeEnd 127
 			metadata 240`;
@@ -144,7 +172,9 @@ for (let f of project.allFunctions()) {
 		for (const line of defs.split('\n')) {
 			const words = line.trim().split(/\s+/);
 			if (words.length >= 2 && words[0] !== '') {
-				this.opcodes.set(words[0], parseInt(words[1]));
+				if ('RESERVED' !== words[0]) {
+					this.opcodes.set(words[0], parseInt(words[1]));
+				}
 			}
 		}
 	}
@@ -789,6 +819,7 @@ for (let f of project.allFunctions()) {
 	notEmbeddedLibrary(libName) {
 		// Return true if the given library is not one of the embedded libraries.
 		// For now, treat all libraries as non-embedded.
+		// XXX TO DO: FIX THIS!
 		return true;
 	}
 

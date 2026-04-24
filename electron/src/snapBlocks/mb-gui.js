@@ -159,3 +159,21 @@ function reload(scriptPath) {
     newScript.src = scriptPath + '?' + new Date().getTime(); // cache busting
     document.body.appendChild(newScript);
 }
+
+// Misc Helper Functions
+
+async function waitMSecs(msecs) {
+	const sleep = function (msecs) {
+		return (new Promise( resolve => setTimeout(resolve, msecs) ));
+	}
+	await sleep(msecs);
+}
+
+function localized(s) {
+	return s;
+}
+
+function isMobile() {
+	return false;
+}
+
