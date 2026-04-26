@@ -1305,6 +1305,25 @@ BlockMorph.prototype.colorFor = function (category) {
 	return result;
 };
 
+// BlockMorph chunk type
+
+BlockMorph.prototype.chunkType = function () {
+	if (this instanceof HatBlockMorph) {
+		switch (this.selector) {
+		case 'whenStarted': return 4;
+		case 'whenCondition': return 5;
+		case 'whenBroadcastReceived': return 6;
+		case 'whenButtonPressed':
+			let button = this.inputs()[0].evaluate();
+			if ('A' == button) return 7;
+			if ('B' == button) return 8;
+			return 9; // A+B
+		}
+	}
+	// other chunkTypes: 0 = unused, 3 = function
+	return (this instanceof ReporterBlockMorph) ? 1 : 2;
+}
+
 // BlockMorph preferences settings:
 
 BlockMorph.prototype.isCachingInputs = true;
@@ -1586,6 +1605,14 @@ BlockMorph.prototype.userMenu = function () {
 	);
 	menu.addLine();
 	menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
+
+	menu.addLine();
+	menu.addItem(
+		'run',
+		() => { MB_connection.runScript(this.topBlock()); },
+		'run this script'
+	);
+
 	return menu;
 };
 
@@ -5889,11 +5916,15 @@ MicroBitDisplaySlotMorph.prototype.getSpec = function () {
 	return '%mbdisplay';
 };
 
+MicroBitDisplaySlotMorph.prototype.evaluate = function() {
+	return this.contents();
+}
+
 MicroBitDisplaySlotMorph.prototype.contents = function (bits) {
 	let result = 0;
 	for (let row = 0; row < 5; row++) {
 		for (let col = 0; col < 5; col++) {
-			let isOn = this.display[(5 * (4 - row)) + col];
+			let isOn = this.display[(5 * (4 - row)) + (4 - col)];
 			result <<= 1;
 			result |= isOn ? 1 : 0;
 		}

@@ -47,7 +47,7 @@ MB_GUI.scriptsPane = function () {
 
 MB_GUI.removeAllScripts = function () {
 	let allScripts = this.scriptsPane().children.slice();
-    allScripts.forEach((m) => { m.destroy(); });
+	allScripts.forEach((m) => { m.destroy(); });
 }
 
 MB_GUI.addBlockToScripts = function (b) {
@@ -96,7 +96,7 @@ MB_GUI.handlePaste = function (event) {
 
 MB_GUI.addBlocksToPalette = function (palette) {
 	const specs = MB_Specs.mbBlockSpecs();
-	let	y = 10;
+	let y = 10;
 	let currentCategory = 'Output';
 	for (let i = 0; i < 169; i++) {
 		let item = specs[i];
@@ -150,17 +150,50 @@ MB_GUI.importLocalFile = function (callback) {
 	inp.click(); // show the input dialog
 };
 
+// Placeholder functions for eventual MB_Editor
+
+MB_GUI.inform = function (msg) {
+	// XXX TO DO
+	console.log(msg);
+}
+
+MB_GUI.showError = function (blockMorph, errorString) {
+	// XXX TO DO
+	console.log(errorString);
+}
+
+MB_GUI.showDownloadProgress = function (phase, percent) {
+	// XXX TO DO
+}
+
+MB_GUI.showDownloadProgress = function (phase, percent) {
+	// XXX TO DO
+}
+
+MB_GUI.clearRunningHighlights = function () {
+	// XXX TO DO
+}
+
+MB_GUI.justConnected = function () {
+	// XXX TO DO
+}
+
+MB_GUI.sortedScripts = function () {
+	// XXX TO DO
+	return [];
+}
+
 // Debugging Utility Function
 
 function reload(scriptPath) {
 	// Run in console to reload a Javascript file without reloading the page.
 	// Example: reloadScript('mb-gui.js')
-    const newScript = document.createElement('script');
-    newScript.src = scriptPath + '?' + new Date().getTime(); // cache busting
-    document.body.appendChild(newScript);
+	const newScript = document.createElement('script');
+	newScript.src = scriptPath + '?' + new Date().getTime(); // cache busting
+	document.body.appendChild(newScript);
 }
 
-// Misc Helper Functions
+// --- Global Helper Functions ---
 
 async function waitMSecs(msecs) {
 	const sleep = function (msecs) {
@@ -170,6 +203,7 @@ async function waitMSecs(msecs) {
 }
 
 function localized(s) {
+	// XXX TODO: Use actual localization system
 	return s;
 }
 
@@ -177,3 +211,5 @@ function isMobile() {
 	return false;
 }
 
+// MB_GUI is a placeholder for the eventual MB_Editor
+const MB_editor = MB_GUI;

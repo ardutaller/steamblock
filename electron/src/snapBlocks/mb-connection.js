@@ -1,21 +1,26 @@
-/* globals waitMSecs, isMobile, localized,
-	MB_openSerialPort, MB_closeSerialPort, MB_isOpenSerialPort, MB_readSerialPort, MB_writeSerialPort */
+/* globals waitMSecs, isMobile, localized */
 
 class MB_Connection {
-	constructor(mbEditor = null) {
-		this.editor = mbEditor;
+	constructor() {
 		this.msgDict = null;
 		this.portName = null;
-		this.isConnected = false;
 		this.connectionStartTime = null;
-		this.lastScanMSecs = null;
 		this.pingSentMSecs = null;
 		this.lastPingRecvMSecs = null;
 		this.recvBuf = null;
 		this.vmVersion = null;
 		this.boardType = null;
 		this.readFromBoard = null;
-		this.decompiler = null;
+	}
+
+	// --- Process Messages Every Animation Frame (for now) ---
+
+	startMessageProcessing() {
+		function processMsgCB() {
+			if (MB_port.isConnected()) this.updateConnection();
+			requestAnimationFrame(processMsgCB.bind(this));
+		}
+		requestAnimationFrame(processMsgCB.bind(this));
 	}
 
 	// --- Helpers ---
@@ -31,96 +36,74 @@ class MB_Connection {
 		return new TextDecoder().decode(bytes);
 	}
 
-	stopAndSyncScripts() {
-		// XXX TODO
-	}
-
-	softReset() {
-		// XXX TODO
-	}
-
-	sendStartAll() {
-		// XXX TODO
-	}
-
-	sendStopAll() {
-		// XXX TODO
-	}
-
-	setDefaultSerialDelay() {
-		// XXX TODO
-	}
-
-	abortFileTransfer() {
-		// XXX TODO
-	}
+	// --- Startup Actions ---
 
 	boardHasSameProject() {
 		// XXX TODO
 		return false;
 	}
 
-	clearBoardIfConnected() {
+	stopAndSyncScripts() {
 		// XXX TODO
+	}
+
+	readCodeFromBoard() {
+		// XXX TODO
+	}
+
+	clearBoardIfConnected() {
+		this.sendMsg('systemResetMsg'); // send the reset message
+		this.sendMsgSync('deleteAllCodeMsg'); // delete all code from board
+		this.sendMsgSync('clearVarsMsg'); // delete all variable names from board
 	}
 
 	// --- Connection Handling ---
 
-	connect(useBLE = false) {
-		if (!hasWebSerial()) {
+	async connect(portType = 'serial', boardieIFrame = null) {
+		if (!MB_port.hasWebSerial()) {
 			// running in a browser w/o WebSerial (or it is not enabled)
-			alert(localized('Only recent Chrome and Edge browsers support WebSerial and WebBluetooth.'));
+			alert(localized('This browser does not support WebSerial.'));
 			return;
 		}
-		if (useBLE) {
-			MB_openSerialPort('webBLE');
-			this.portName = 'webBLE';
-		} else {
-			MB_openSerialPort('webserial');
-			this.portName = 'webserial';
+		if (!MB_port.hasWebBluetooth()) {
+			// running in a browser w/o WebBluetooth (or it is not enabled)
+			alert(localized('This browser does not support WebBluetooth.'));
+			return;
+		}
+		this.portName = portType;
+		MB_port.connect(portType, boardieIFrame);
+		if (portType == 'boardie') {
+			await waitMSecs(100); // make sure Boardie is ready to receive messages
 		}
 		this.connectionStartTime = Date.now();
-		this.isConnected = true;
 		this.lastPingRecvMSecs = 0;
 		this.sendMsg('pingMsg');
-	}
-
-	connectBoardie() {
-		this.browserOpenBoardie();
-		waitMSecs(100); // make sure Boardie is ready to receive messages
-		this.connectionStartTime = Date.now();
-		this.portName = 'boardie';
-		this.isConnected = true;
-		this.lastPingRecvMSecs = 0;
-		this.sendMsg('pingMsg');
+		this.startMessageProcessing();
 	}
 
 	disconnect() {
-		if (this.portName !== 'boardie') {
-			this.stopAndSyncScripts();
-			this.sendStartAll();
-		} else {
-			this.browserCloseBoardie();
-		}
-		MB_closeSerialPort();
+// XXX TODO These actions should be done by the editor before calling disconnect()
+// 		this.stopAndSyncScripts();
+// 		this.sendMsg('startAllMsg');
+
+		MB_port.disconnect();
 		this.portName = null;
-		this.isConnected = false;
 		this.vmVersion = null;
 		this.boardType = null;
 
 		// remove running highlights and result bubbles when disconnected
-		if (this.editor) this.editor.clearRunningHighlights();
+		MB_editor.clearRunningHighlights();
 	}
 
 	connectedToBoard() {
 		const pingTimeout = 8000;
-		if (!this.isConnected || !MB_isOpenSerialPort()) return false;
+		if (!MB_port.isConnected()) return false;
 		if (this.lastPingRecvMSecs == null || this.lastPingRecvMSecs === 0) return false;
 		return (Date.now() - this.lastPingRecvMSecs) < pingTimeout;
 	}
 
 	connectedViaBLE() {
-		return this.portName === 'webBLE';
+		return this.portName === 'BLE';
 	}
 
 	updateConnection() {
@@ -129,7 +112,6 @@ class MB_Connection {
 		if (this.pingSentMSecs == null) this.pingSentMSecs = 0;
 		if (this.lastPingRecvMSecs == null) this.lastPingRecvMSecs = 0;
 
-		if (this.decompiler != null) return 'connected';
 		if (this.portName == null) return 'not connected';
 
 		this.processMessages();
@@ -137,12 +119,12 @@ class MB_Connection {
 		// handle connection attempt in progress
 		if (this.connectionStartTime != null) return this.tryToConnect();
 
-		// if port is not open, try to reconnect or find a different board
-		if (!this.isConnected || !MB_isOpenSerialPort()) {
-			if (this.editor) this.editor.clearRunningHighlights();
+		// if port is not open, disconnect
+		if (!MB_port.isConnected()) {
+			MB_editor.clearRunningHighlights();
 			this.disconnect();
-			this.portName = null; // clear 'boardie' when boardie is closed with power button
-			return 'not connected'; // user must initiate connection attempt
+			this.portName = null;
+			return 'not connected';
 		}
 
 		// if the port is open and it is time, send a ping
@@ -165,23 +147,47 @@ class MB_Connection {
 		} else {
 			// ping timeout: close port to force reconnection
 			console.log('Lost communication to the board');
-			if (this.editor) this.editor.clearRunningHighlights();
+			MB_editor.clearRunningHighlights();
 			this.disconnect();
 			return 'not connected';
 		}
 	}
 
+	tryToConnect() {
+		// Called when connectionStartTime is not null, indicating that we are trying
+		// to establish a connection to a board.
+
+		if (!MB_port.isConnected()) return 'not connected'; // BLE is not yet connected...
+
+		// process any incoming messages
+		this.processMessages();
+		if (this.lastPingRecvMSecs !== 0) { // got a ping; we're connected!
+			this.justConnected();
+			return 'connected';
+		}
+
+		this.sendMsg('pingMsg'); // send another ping
+
+		const connectionAttemptTimeout = 5000; // milliseconds
+		if ((Date.now() - this.connectionStartTime) > connectionAttemptTimeout) {
+			// give up and disconnect if no response from board after connectionAttemptTimeout
+			this.disconnect();
+			this.connectionStartTime = null;
+		}
+		return 'not connected';
+	}
+
 	justConnected() {
 		// Called when a board has just connected (browser or stand-alone).
-		console.log('Connected to', this.portName);
+		console.log('Connected (' + this.portName + ')');
 		this.connectionStartTime = null;
 		this.vmVersion = null;
 		this.sendMsgSync('getVersionMsg');
-		this.sendStopAll();
-		if (this.editor) this.editor.clearRunningHighlights();
-		this.setDefaultSerialDelay();
-		this.abortFileTransfer();
+		this.sendMsg('stopAllMsg');
 		this.processMessages(); // process incoming version message
+
+		MB_editor.justConnected();
+		// XXX TODO The following should be done by the editor:
 		if (this.readFromBoard) {
 			this.readFromBoard = false;
 			this.readCodeFromBoard();
@@ -193,67 +199,9 @@ class MB_Connection {
 			} else {
 				console.log('Incremental download', this.vmVersion, this.boardType);
 			}
-			if (this.editor) this.editor.showDownloadProgress(2, 0);
+			MB_editor.showDownloadProgress(2, 0);
 			this.stopAndSyncScripts(true);
-			this.softReset();
 		}
-	}
-
-	tryToConnect() {
-		// Called when connectionStartTime is not null, indicating that we are trying
-		// to establish a connection to a board.
-
-		if (this.portName !== 'boardie') {
-			if (MB_isOpenSerialPort()) {
-				this.isConnected = true;
-				this.processMessages();
-				if (this.lastPingRecvMSecs !== 0) { // got a ping; we're connected!
-					this.justConnected();
-					return 'connected';
-				}
-				this.sendMsg('pingMsg'); // send another ping
-				return 'not connected'; // don't make circle green until successful ping
-			} else {
-				this.isConnected = false;
-				return 'not connected';
-			}
-		}
-
-		this.processMessages();
-
-		const connectionAttemptTimeout = 5000; // milliseconds
-
-		// check connection status only N times/sec
-		const now = Date.now();
-		if (this.lastScanMSecs == null) this.lastScanMSecs = 0;
-		const msecsSinceLastScan = now - this.lastScanMSecs;
-		if (msecsSinceLastScan > 0 && msecsSinceLastScan < 20) return 'not connected';
-		this.lastScanMSecs = now;
-
-		if (this.connectionStartTime != null) {
-			if (this.lastPingRecvMSecs !== 0) { // got a ping; we're connected!
-				this.justConnected();
-				return 'connected';
-			}
-			this.sendMsg('pingMsg'); // send another ping
-			if (now < this.connectionStartTime) this.connectionStartTime = now; // clock wrap
-			if ((now - this.connectionStartTime) < connectionAttemptTimeout) return 'not connected'; // keep trying
-		}
-
-// xxx don't timeout for now...
-// 		this.disconnect();
-// 		this.connectionStartTime = null;
-		return 'not connected';
-	}
-
-	// --- Boardie Support ---
-
-	browserOpenBoardie() {
-		// XXX TO DO
-	}
-
-	browserCloseBoardie() {
-		// XXX TO DO
 	}
 
 	// --- Message handling ---
@@ -377,16 +325,16 @@ class MB_Connection {
 		return 'Unknown error: ' + errID;
 	}
 
-	readAvailableSerialData() {
+	async readAvailableSerialData() {
 		// Read any available data into recvBuf so that waitForResponse will await fresh data.
-		if (!this.isConnected) return;
-		waitMSecs(20); // leave some time for queued data to arrive
+		if (!MB_port.isConnected()) return;
+		await waitMSecs(20); // leave some time for queued data to arrive
 		if (this.recvBuf == null) this.recvBuf = new Uint8Array(0);
-		const s = MB_readSerialPort();
+		const s = MB_port.read();
 		if (s != null) this.recvBuf = this.joinBytes(this.recvBuf, s);
 	}
 
-	waitForResponse() {
+	async waitForResponse() {
 		// Wait for some data to arrive from the board. This is taken to mean that the
 		// previous operation has completed. Return true if a response was received.
 		this.sendMsg('pingMsg');
@@ -394,15 +342,15 @@ class MB_Connection {
 		let iter = 1;
 		const start = Date.now();
 		while ((Date.now() - start) < timeout) {
-			if (!this.isConnected) return false;
-			const s = MB_readSerialPort();
+			if (!MB_port.isConnected()) return false;
+			const s = MB_port.read();
 			if (s != null) {
 				this.recvBuf = this.joinBytes(this.recvBuf, s);
 				return true;
 			}
 			if ((iter % 50) === 0) this.sendMsg('pingMsg');
 			iter += 1;
-			waitMSecs(5);
+			await waitMSecs(5);
 		}
 		return false;
 	}
@@ -416,10 +364,10 @@ class MB_Connection {
 
 	processNextMessage() {
 		// Process the next message, if any. Return false when there are no more messages.
-		if (!this.isConnected || !MB_isOpenSerialPort()) return false;
+		if (!MB_port.isConnected()) return false;
 
 		// Read any available bytes and append to recvBuf
-		const s = MB_readSerialPort();
+		const s = MB_port.read();
 		if (s != null) this.recvBuf = this.joinBytes(this.recvBuf, s);
 		if (this.recvBuf.length < 3) return false; // not enough bytes for even a short message
 
@@ -533,10 +481,113 @@ class MB_Connection {
 		}
 	}
 
+	returnedValue(msg) {
+		if (msg.length < 7) return null; // incomplete msg
+
+		const type = msg[5]; // byteAt msg 6 (1-based) = msg[5] (0-based)
+
+		if (type === 1) { // integer (32-bit little-endian signed)
+			if (msg.length < 10) return null;
+			return (msg[9] << 24) | (msg[8] << 16) | (msg[7] << 8) | msg[6];
+		} else if (type === 2) { // string
+			return new TextDecoder().decode(msg.slice(6)); // bytes 7..end (1-based) = slice(6)
+		} else if (type === 3) { // boolean
+			return msg[6] !== 0; // byteAt msg 7 = msg[6]
+		} else if (type === 4) { // list
+			if (msg.length < 8) return null;
+			const total = (msg[7] << 8) | msg[6]; // byteAt msg 8, 7
+			if (total === 0) return '[empty list]';
+			const sentItems = this.readItems(msg);
+			const out = ['['];
+			for (const item of sentItems) {
+				out.push(String(item));
+				out.push(', ');
+			}
+			if (out.length > 1) out.pop(); // remove trailing ', '
+			if (total > sentItems.length) {
+				out.push(' ... and ' + (total - sentItems.length) + ' more');
+			}
+			out.push(']');
+			return out.join('');
+		} else if (type === 5) { // byte array
+			if (msg.length < 9) return null;
+			const total = (msg[7] << 8) | msg[6]; // byteAt msg 8, 7
+			if (total === 0) return '(empty byte array)';
+			let sentCount = msg[8]; // byteAt msg 9 = msg[8]
+			sentCount = Math.min(sentCount, msg.length - 9);
+			const out = ['('];
+			for (let i = 1; i <= sentCount; i++) {
+				out.push(String(msg[8 + i])); // byteAt msg (9+i) with 1-based i → msg[8+i]
+				out.push(', ');
+			}
+			if (out.length > 1) out.pop(); // remove trailing ', '
+			if (total > sentCount) {
+				out.push(' ... and ' + (total - sentCount) + ' more bytes');
+			}
+			out.push(')');
+			return out.join('');
+		} else {
+			console.log('Serial error, type:', type);
+			return null;
+		}
+	}
+
+	readItems(msg) {
+		// Read a sequence of list items from the given value message.
+		const result = [];
+		if (msg.length < 10) return result; // corrupted msg
+		const count = msg[8]; // byteAt msg 9 (1-based) = msg[8] (0-based)
+		let i = 10; // 1-based byte position, matching GP source
+
+		for (let c = 0; c < count; c++) {
+			if (msg.length < i + 1) return result; // corrupted msg
+			const itemType = msg[i - 1]; // byteAt msg i (1-based) = msg[i-1] (0-based)
+
+			if (itemType === 1) { // integer
+				if (msg.length < i + 4) return result; // corrupted msg
+				// byteAt msg (i+4..i+1) = msg[i+3..i] (1-based offset → 0-based offset - 1)
+				const n = (msg[i + 3] << 24) | (msg[i + 2] << 16) | (msg[i + 1] << 8) | msg[i];
+				result.push(n);
+				i += 5;
+			} else if (itemType === 2) { // string
+				const len = msg[i]; // byteAt msg (i+1) = msg[i]
+				if (msg.length < i + len + 1) return result; // corrupted msg
+				// copyFromTo msg (i+2) (i+len+1): 1-based positions → 0-based slice(i+1, i+len+1)
+				result.push(new TextDecoder().decode(msg.slice(i + 1, i + len + 1)));
+				i += len + 2;
+			} else if (itemType === 3) { // boolean
+				result.push(msg[i] !== 0); // byteAt msg (i+1) = msg[i]
+				i += 2;
+			} else if (itemType === 4) { // sublist (nested list, only count shown)
+				if (msg.length < i + 3) return result; // corrupted msg
+				const n = (msg[i + 1] << 8) | msg[i]; // byteAt msg (i+2), (i+1)
+				if (msg[i + 2] !== 0) { // byteAt msg (i+3) — non-zero sent items not supported here
+					console.log('skipping sublist with non-zero sent items');
+					return result;
+				}
+				result.push('[' + n + ' item list]');
+				i += 4;
+			} else if (itemType === 5) { // byte array (only count shown)
+				if (msg.length < i + 3) return result; // corrupted msg
+				const n = (msg[i + 1] << 8) | msg[i]; // byteAt msg (i+2), (i+1)
+				if (msg[i + 2] !== 0) { // byteAt msg (i+3)
+					console.log('skipping bytearray with non-zero sent items inside a list');
+					return result;
+				}
+				result.push('(' + n + ' bytes)');
+				i += 4;
+			} else {
+				console.log('unknown item type in value message:', itemType);
+				return result;
+			}
+		}
+		return result;
+	}
+
 	// --- Message sending ---
 
-	sendMsg(msgName, chunkID, byteList) {
-		if (!this.isConnected) return;
+	async sendMsg(msgName, chunkID, byteList) {
+		if (!MB_port.isConnected()) return;
 
 		if (chunkID == null) chunkID = 0;
 		const msgID = this.msgNameToID(msgName);
@@ -551,31 +602,28 @@ class MB_Connection {
 		let dataToSend = new Uint8Array(msgArr);
 
 		if (this.portName === 'boardie') { // send all data at once to boardie
-			MB_writeSerialPort(dataToSend);
+			MB_port.write(dataToSend);
 			return;
 		}
 
 		while (dataToSend.length > 0) {
+			if (!MB_port.isConnected()) return; // connection lost
 			let chunkSize = dataToSend.length;
-			if (this.portName !== 'webBLE' || isMobile()) {
+			if (this.portName !== 'BLE' || isMobile()) {
 				// Note: Serial receive buffer is only 63 bytes on many boards so limit chunkSize.
 				// In addition, some mobile devices (e.g. iPhones 11-13 and some Android devices)
 				// fail if over 63 bytes are written to BLE at a time due to a hardware/driver issue.
 				chunkSize = Math.min(63, chunkSize);
 			}
 			const chunk = dataToSend.slice(0, chunkSize);
-			const bytesSent = MB_writeSerialPort(chunk);
-			if (!MB_isOpenSerialPort()) {
-				this.disconnect();
-				return;
-			}
-			waitMSecs(3); // limit throughput to avoid overrunning buffer when board is busy
-			if (bytesSent < chunkSize) waitMSecs(25); // output queue full; wait a bit
+			const bytesSent = MB_port.write(chunk);
+			await waitMSecs(3); // limit throughput to avoid overrunning buffer when board is busy
+			if (bytesSent < chunkSize) await waitMSecs(25); // output queue full; wait a bit
 			dataToSend = dataToSend.slice(bytesSent);
 		}
 	}
 
-	sendMsgSync(msgName, chunkID, byteList) {
+	sendMsgSync(msgName, chunkID = 1, byteList = new Uint8Array(0)) {
 		// Send a message followed by a 'pingMsg', then wait for a ping response from VM.
 		this.readAvailableSerialData();
 		this.sendMsg(msgName, chunkID, byteList);
@@ -592,4 +640,67 @@ class MB_Connection {
 		return true;
 	}
 
+	// --- Version string parsing ---
+
+	versionReceived(versionString) {
+		if (versionString == null) return; // bad version message
+		const justConnected = (this.vmVersion == null);
+		this.vmVersion = this.extractVersionNumber(versionString);
+		this.boardType = this.extractBoardType(versionString);
+	}
+
+	extractVersionNumber(versionString) {
+		// Return the version number from the versionString.
+		// Version string format: vNNN, where NNN is one or more decimal digits,
+		// followed by non-digit characters that are ignored. Ex: 'v052a micro:bit'
+		const words = versionString.substring(1).trim().split(/\s+/);
+		if (words.length === 0 || words[0] === '') return -1;
+		let result = 0;
+		for (const ch of words[0]) {
+			if (!/\d/.test(ch)) return result;
+			result = (10 * result) + (ch.charCodeAt(0) - 48); // 48 = '0'.charCodeAt(0)
+		}
+		return result;
+	}
+
+	extractBoardType(versionString) {
+		// Return the board type from the versionString.
+		// Version string format: vNNN [boardType]
+		const words = versionString.substring(1).trim().split(/\s+/);
+		if (words.length === 0 || words[0] === '') return 'Unknown';
+		return words.slice(1).join(' ');
+	}
+
+	// --- Testing... ---
+
+	crcReceived(chunkID, crc) {
+		console.log('Chunk:', chunkID, 'CRC:', crc);
+	}
+
+	updateRunning(chunkID, isRunning) {
+		console.log('Chunk:', chunkID, (isRunning ? 'running' : 'stopped'));
+	}
+
+	showError(errorString) {
+		console.log(errorString);
+	}
+
+	showResult(chunkID, value, arg3, arg4) {
+		console.log('chunk:', chunkID, 'returned:', value);
+	}
+
+	async runScript(aBlock) {
+		if (this.project == null) this.project = new MB_Project();
+		if (this.nextChunkID == null) this.nextChunkID = 0;
+		this.nextChunkID++;
+		let code = new MB_Compiler(this.project).compiledBytesFor(aBlock);
+		let chunkType = aBlock.chunkType();
+		code.unshift(chunkType); // prepend the chunk type
+		this.sendMsg('chunkCode16Msg', this.nextChunkID, code);
+		this.sendMsg('startChunkMsg', this.nextChunkID);
+	}
+
 }
+
+// Global singleton
+const MB_connection = new MB_Connection();

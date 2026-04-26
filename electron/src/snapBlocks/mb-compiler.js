@@ -26,7 +26,7 @@ class MB_Compiler {
 		this.zeroObj = 1; // (0 << 1) | 1
 		this.stringClassID = 4;
 
-// testing only: assign chunk numbers for all functions
+// xxx testing only: assign chunk numbers for all functions
 let nextChunkID = 0;
 for (let f of project.allFunctions()) {
 	let fName = f.functionName;
@@ -736,7 +736,9 @@ for (let f of project.allFunctions()) {
 		const literals = [];
 		const literalOffsets = new Map();
 		if ((instructions.length % 2) === 1) {
-			instructions.push(['halt', 0]); // ensure even count for 32-bit alignment
+			// ensure that there are an even number of instructions so that the first literal
+			// starts on a 32-bit word address when stored in Flash memory
+			instructions.push(['halt', 0]);
 		}
 		let nextOffset = instructions.length;
 		for (const [ip, instr] of instructions.entries()) {
@@ -753,12 +755,12 @@ for (let f of project.allFunctions()) {
 				}
 				if (op === 'commandPrimitive' || op === 'reporterPrimitive') {
 					const primSetIndex = (this.primsets.get(instr[2]) || 0) & 63; // 6 bits
-					const primNameOffset = (litOffset - ip) & 1023;              // 10 bits
+					const primNameOffset = (litOffset - (ip + 1)) & 1023;              // 10 bits
 					const argCount = (instr[3] || 0) & 255;
 					instr[1] = ((primSetIndex << 18) | (primNameOffset << 8)) | argCount;
 					instr[2] = literal; // retain literal string for "show instructions"
 				} else {
-					instr[1] = litOffset - ip;
+					instr[1] = litOffset - (ip + 1); // ip points to next instruction word
 					instr[2] = literal; // retain literal string for "show instructions"
 				}
 			}
