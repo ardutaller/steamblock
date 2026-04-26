@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-04-25 10:10+0000\n"
+"PO-Revision-Date: 2026-04-27 07:09+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8007,7 +8007,7 @@ msgstr ""
 
 #. External Displays Library block
 msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
-msgstr "verbinde ILI9341 Rotation _ dc Pin _ cs Pin _ backlight Pin _"
+msgstr "verbinde ILI9341 Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
 
 #. External Displays Library block
 msgid "attach OLED w _ h _"
