@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-02-25 07:09+0000\n"
+"PO-Revision-Date: 2026-04-28 10:09+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.1-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -8169,3 +8169,136 @@ msgstr "activador de porta"
 #. Octostudio communication library block
 msgid "Octo last beam group"
 msgstr "Octo últim grup d'emissió"
+
+#. General MIDI drum set
+msgid "Jungle"
+msgstr "Jungle"
+
+#. General MIDI drum set
+msgid "Techno"
+msgstr "Techno"
+
+#. General MIDI drum set
+msgid "House"
+msgstr "House"
+
+#. General MIDI drum set
+msgid "Power"
+msgstr "Power"
+
+#. General MIDI drum set
+msgid "Electronic"
+msgstr "Electrònica"
+
+#. General MIDI drum set
+msgid "Orchestra"
+msgstr "Orquestra"
+
+#. General MIDI drum set
+msgid "Ethnic"
+msgstr "Ètnic"
+
+#. CoCube Emoji library label
+#. Show emojis on the TFT Screen.
+msgid "CoCube Emoji"
+msgstr "CoCube Emoji"
+
+#. CoCube emoji block
+msgid "set emoji _ scale _"
+msgstr "mostra emoji _ escala _"
+
+#. CoCube emoji block
+msgid "naughty"
+msgstr "trapella"
+
+#. CoCube emoji block
+msgid "star-struck"
+msgstr "encisat"
+
+#. CoCube emoji block
+msgid "kiss"
+msgstr "petó"
+
+#. CoCube emoji block
+msgid "laughing"
+msgstr "rialler"
+
+#. CoCube emoji block
+msgid "neutral"
+msgstr "neutral"
+
+#. CoCube emoji block
+msgid "smug"
+msgstr "cregut"
+
+#. CoCube emoji block
+msgid "crying"
+msgstr "plorant"
+
+#. CoCube emoji block
+msgid "sleeping"
+msgstr "dormint"
+
+#. CoCube emoji block
+msgid "awkward"
+msgstr "incòmode"
+
+#. CoCube emoji block
+msgid "shocked"
+msgstr "impactat"
+
+#. CoCube emoji block
+msgid "nerdy"
+msgstr "friqui"
+
+#. CoCube emoji block
+msgid "cool"
+msgstr "genial"
+
+#. CoCube emoji block
+msgid "scared"
+msgstr "espantat"
+
+#. CoCube emoji block
+msgid "cold"
+msgstr "gelat"
+
+#. CoCube emoji block
+msgid "hot"
+msgstr "sufocant"
+
+#. CoCube emoji block
+msgid "nauseated"
+msgstr "fastiguejat"
+
+#. CoCube emoji block
+msgid "vomiting"
+msgstr "vomitant"
+
+#. CoCube emoji block
+msgid "dizzy"
+msgstr "marejat"
+
+#. CoCube Module library block
+msgid "Tracker _ on black"
+msgstr "seguidor _ sobre negre"
+
+#. CoCube Module library block
+msgid "Tracker _ on white"
+msgstr "seguidor _ sobre blanc"
+
+#. CoCube Soccer library block
+msgid "set NeoPixels color _"
+msgstr "posa tots els NeoPíxels de color _"
+
+#. Slot type menu option
+msgid "boolean switch"
+msgstr "interruptor booleà"
+
+#. Slot type menu option
+msgid "color patch"
+msgstr "mostra de color"
+
+#. Library name
+msgid "MIDI Player"
+msgstr "Reproductor MIDI"
