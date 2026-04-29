@@ -3817,6 +3817,11 @@ ScriptsMorph.prototype.userMenu = function () {
 	menu.addItem('clean up', 'cleanUp', 'arrange scripts\nvertically');
 	menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
 	menu.addItem('file test', 'fileTest', 'test file open dialog');
+	menu.addLine();
+	menu.addItem(
+		'connect',
+		() => { MB_port.connect('serial') },
+		'connect via serial for testing');
 	return menu;
 };
 
