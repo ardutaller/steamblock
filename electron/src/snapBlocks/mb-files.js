@@ -8,9 +8,7 @@
 	MB_Files - MicroBlocks server-based file system.
 */
 
-/* global MB_Files */
-
-MB_Files = {
+const MB_Files = {
 	fileNames: null
 }
 

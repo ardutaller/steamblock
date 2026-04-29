@@ -305,15 +305,15 @@ SyntaxElementMorph.prototype.labelParts = {
 		type: 'input',
 		tags: 'numeric'
 	},
+	'%str': {
+		type: 'text entry',
+	},
 	'%auto': {
 		type: 'input',
-		tags: 'numstring'
+		tags: 'alphanum'
 	},
 	'%bool': {
 		type: 'boolean'
-	},
-	'%str': {
-		type: 'text entry',
 	},
 	'%color': {
 		type: 'color'
@@ -1372,9 +1372,14 @@ BlockMorph.prototype.toString = function () {
 
 // BlockMorph utilities
 
+BlockMorph.prototype.allBlocks = function () {
+	let result = [];
+	this.forAllBlocks( b => { result.push(b); });
+	return result;
+}
+
 BlockMorph.prototype.forAllBlocks = function (func) {
 	// Call the given function on all command and reporter blocks in this script.
-	// TODO, Fix: This currently fails with infinite recursion. Why?
 
 	let todo = [this];
 	while (todo.length > 0) {
@@ -1387,6 +1392,39 @@ BlockMorph.prototype.forAllBlocks = function (func) {
 			if (arg instanceof BlockMorph) todo.push(arg);
 		}
 	}
+}
+
+BlockMorph.prototype.calls = function (functionName) {
+	// Return true if this block or script includes a call to the given function or primitive.
+
+	this.forAllBlocks( b => {
+		if (b.selector == functionName) return true;
+	});
+	return false;
+}
+
+BlockMorph.prototype.usesVar = function (varName) {
+	// Return true if this block or script uses the given variable (reads or modifies).
+
+	this.forAllBlocks( b => {
+		let sel = b.selector;
+		if (('v' == sel) || ('=' == sel) || ('+=' == sel)) {
+			if (varName == b.inputs()[0]) return true;
+		}
+	});
+	return false;
+}
+
+BlockMorph.prototype.modifiesVar = function (varName) {
+	// Return true if this block or script modifies the given variable.
+
+	this.forAllBlocks( b => {
+		let sel = b.selector;
+		if (('=' == sel) || ('+=' == sel)) {
+			if (varName == b.inputs()[0]) return true;
+		}
+	});
+	return false;
 }
 
 // BlockMorph spec:
@@ -2060,22 +2098,23 @@ BlockMorph.prototype.addCodeStringForArg = function (arg, indent, result) {
 	} else if (arg instanceof ReporterBlockMorph) {
 		result.push(arg.codeString());
 	} else if (arg instanceof TemplateSlotMorph) {
-		result.push(arg.contents());
+		result.push(fixEmbeddedQuotes(arg.contents()));
 	} else if (arg instanceof MicroBitDisplaySlotMorph) {
 		result.push(arg.contents());
 	} else if (arg instanceof ColorSlotMorph) {
 		let c = arg.evaluate();
 		result.push((c.r << 16) | (c.g << 8) | c.b);
-	} else if (arg instanceof InputSlotMorph) {
+	} else if (arg instanceof InputSlotMorph) { // includes subclass TextSlotMorph
+		let isStringOnly = (arg instanceof TextSlotMorph);
 		let value = arg.contents().text;
-		if ((value.length == 0) && (arg.isNumeric)) {
-			result.push('0'); // treat empty input slot as zero
-		} else if (arg.isNumeric && !isNaN(value)) { // value is a number
+		if (arg.isNumeric && !arg.isAlphanumeric && (value.length == 0)) {
+			result.push('0'); // treat an empty numeric slot as zero
+		} else if (!isStringOnly && /^-?\d+$/.test(value)) { // value is an integer, slot is not 'str'
 			result.push(value);
 		} else if ((typeof value) == 'boolean') {
 			result.push(value);
 		} else { // string
-			result.push('\'' + value + '\'');
+			result.push('\'' + fixEmbeddedQuotes(value) + '\'');
 		}
 	} else {
 		console.log('unknown arg type:', arg);
@@ -2084,8 +2123,13 @@ BlockMorph.prototype.addCodeStringForArg = function (arg, indent, result) {
 
 BlockMorph.prototype.codeString = function (indent = 0, result = []) {
 	if (this.selector == 'v') {
-		// variable reporter - just return the variable name
-		return this.quoteIfNeeded(this.blockSpec);
+		// variable reporter
+		let varName = quoteIfNeeded(this.blockSpec);
+		if (varName != this.blockSpec) {
+			// var name is quoted: must use (v <varName>) variable reference
+			varName = ('(v ' + varName + ')');
+		}
+		return varName;
 	}
 
 	if (this.type() == 'reporter') {
@@ -2095,17 +2139,21 @@ BlockMorph.prototype.codeString = function (indent = 0, result = []) {
 	}
 
 	let args = this.inputs();
+
+	if (['=', '+=', 'local', 'for', 'to'].includes(this.selector)) {
+		let varName = (args[0] instanceof TemplateSlotMorph) ?
+			args[0].contents() :
+			args[0].contents().text;
+		args = args.slice(); // copy args so we can modify it
+		args[0] = new TemplateSlotMorph(quoteIfNeeded(varName));
+	}
+
 	if (this.isInfix(this.selector) && (args.length == 2)) { // infix operator
-		const firstArgIsVarName = ['v', '=', '+=', 'local', 'for'];
-		if (firstArgIsVarName.includes(this.selector)) {
-			result.push(this.quoteIfNeeded(args[0].contents().text)); // variable name
-		} else {
-			this.addCodeStringForArg(args[0], indent, result);
-		}
+		this.addCodeStringForArg(args[0], indent, result);
 		result.push(' ' + this.selector + ' ');
 		this.addCodeStringForArg(args[1], indent, result);
 	} else {
-		result.push(this.selector + ' ');
+		result.push(quoteIfNeeded(this.selector) + ' ');
 		for (let i = 0; i < args.length; i++) {
 			this.addCodeStringForArg(args[i], indent, result);
 			if (i < (args.length - 1)) {
@@ -2123,23 +2171,6 @@ BlockMorph.prototype.codeString = function (indent = 0, result = []) {
 		if (next != null) next.codeString(indent, result); // recursive!
 	}
 	return result.join('');
-}
-
-BlockMorph.prototype.quoteIfNeeded = function (s) {
-	// Return a quoted version of the given string if necessary for parsing.
-	// Otherwise, return the original string.
-
-	let mustQuote = false;
-	if ((s.length == 0) || !/[a-zA-Z_]/.test(s[0])) { // does not start with a letter or underscore
-		mustQuote = true;
-	}
-	for (const ch of s) {
-		if (!/[a-zA-Z0-9_]/.test(ch)) {
-			mustQuote = true; // contains a non-alphanumeric character
-			break;
-		}
-	}
-	return mustQuote ? ('\'' + s + '\'') : s;
 }
 
 // BlockMorph drawing
@@ -4848,8 +4879,8 @@ InputSlotMorph.prototype.evaluate = function () {
 		return this.constant;
 	}
 	let val = this.contents().text;
-	if (this.isNumeric && !this.isAlphanumeric) {
-		let num = +val;
+	if (this.isNumeric || (this.isAlphanumeric && /^-?\d+$/.test(val))) {
+		let num = parseInt(val, 10);
 		if (!isNaN(num)) return num;
 	}
 	return val;

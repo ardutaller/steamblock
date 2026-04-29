@@ -148,9 +148,9 @@ class MB_Function {
 	}
 
 	codeString() {
-		let result = 'to ' + this.functionName + ' ';
+		let result = 'to ' + quoteIfNeeded(this.functionName) + ' ';
 		for (const arg of this.argNames) {
-			result += arg + ' ';
+			result += quoteIfNeeded(arg) + ' ';
 		}
 		result += '{\n';
 		if (this.cmdList) { result += this.cmdList.codeString(1); }
@@ -158,6 +158,26 @@ class MB_Function {
 		return result;
 	}
 
+	calls(functionName) {
+		// Return true if this function calls to the given function or primitive.
+
+		if (this.cmdList == null) return false;
+		return this.cmdList.calls(functionName);
+	}
+
+	usesVar(varName) {
+		// Return true if this function uses (reads or modifies) the given variable .
+
+		if (this.cmdList == null) return false;
+		return this.cmdList.usesVar(functionName);
+	}
+
+	modifiesVar(varName) {
+		// Return true if this function modifies the given variable.
+
+		if (this.cmdList == null) return false;
+		return this.cmdList.modifiesVar(functionName);
+	}
 }
 
 function functest() {

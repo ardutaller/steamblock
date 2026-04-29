@@ -2,43 +2,122 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+// Copyright 2026 John Maloney and Bernat Romagosa
 
 /*
 	MB_Project - MicroBlocks project and library operations.
 
-	A MicroBlocks project consists of a main MB_Module objects containing the
+	A MicroBlocks project consists of a main MB_Module object containing the
 	top-level scripts and function definitions and zero or more MB_Modules for
 	the libraries it uses.
 */
 
-/* global MB_Project, MB_GUI, MB_Files, MB_Function, MB_Parser, BlockMorph, CommandBlockMorph, ReporterBlockMorph */
+/* global MB_Function, MB_Parser, BlockMorph, CommandBlockMorph */
+
+// --- Module-level helpers ---
+
+function stringArg(x) {
+	// Extract a plain JS value from a parse tree token.
+	// Quoted strings like "'hello'" → "hello"; unquoted identifiers stay as-is.
+	if (typeof x === 'number' || typeof x === 'boolean') return x;
+	if (typeof x === 'string') {
+		if (x[0] === "'") return x.slice(1, -1); // remove surrounding quotes
+		return x;
+	}
+	return String(x);
+}
+
+function printString(s) {
+	// Return s wrapped in single quotes, with internal quotes doubled.
+	return "'" + String(s).replace(/'/g, "''") + "'";
+}
+
+function parsedSpecs(cmdList) {
+	// Extract spec definitions from a command list and return a Map of opName → spec object.
+	let specs = new Map();
+	for (const cmd of cmdList) {
+		if (!Array.isArray(cmd) || cmd[0] !== 'spec') continue;
+		let blockType = stringArg(cmd[1]);
+		let opName = stringArg(cmd[2]);
+		let specString = (cmd.length > 3) ? stringArg(cmd[3]) : opName;
+		let slotTypes = (cmd.length > 4) ? stringArg(cmd[4]) : '';
+		let defaults = [];
+		for (let i = 5; i < cmd.length; i++) {
+			defaults.push(stringArg(cmd[i]));
+		}
+		specs.set(opName, { blockType, opName, specString, slotTypes, defaults });
+	}
+	return specs;
+}
+
+function specDefinitionString(spec) {
+	// Serialize a spec object to a 'spec' declaration line (without newline).
+	// Format: spec 'blockType' 'opName' 'specString' 'slotTypes' default1 default2...
+	let parts = ['spec'];
+	parts.push("'" + (spec.blockType || ' ') + "'");
+	parts.push("'" + spec.opName + "'");
+	parts.push("'" + (spec.specString || spec.opName) + "'");
+	let slotTypes = spec.slotTypes || '';
+	if (slotTypes || (spec.defaults && spec.defaults.length > 0)) {
+		parts.push("'" + slotTypes + "'");
+		for (const d of (spec.defaults || [])) {
+			if (typeof d === 'number') {
+				parts.push(String(d));
+			} else {
+				parts.push("'" + String(d) + "'");
+			}
+		}
+	}
+	return parts.join(' ');
+}
+
+function allBlocksIn(root) {
+	// Return all blocks in the tree rooted at root (a BlockMorph or CommandBlockMorph).
+	if (!root) return [];
+	let result = [];
+	let todo = [root];
+	while (todo.length > 0) {
+		let b = todo.pop();
+		result.push(b);
+		if (b.nextBlock && b.nextBlock()) todo.push(b.nextBlock());
+		if (b.inputs) {
+			for (const inp of b.inputs()) {
+				if (inp instanceof BlockMorph) todo.push(inp);
+			}
+		}
+	}
+	return result;
+}
+
+// --- MB_Project class ---
 
 class MB_Project {
 	constructor() {
 		this.main = new MB_Module('main');
-		this.libraries = [];
-		this.blockSpecs = new Map();
-		this.needsRecompilation = false;
+		this.libraries = new Map(); // libName → MB_Module
+		this.blockSpecs = new Map(); // opName → spec object
+		this.varIndices = new Map(); // varName → index
+		this.nextVarIndex = 0;
 	}
 
-	choicesFor(selector) {
-		let result = this.main.choices.get(selector);
-		if (result) return result;
+	// Support
 
-		for (const lib of this.libraries) {
-			result = lib.choices.get(selector);
-			if (result) return result;
+	choicesFor(selector) {
+		if (this.main.choices.has(selector)) return this.main.choices.get(selector);
+		for (const lib of this.libraries.values()) {
+			if (lib.choices.has(selector)) return lib.choices.get(selector);
 		}
-		return []; // not found; return empty choices list
+		return null;
 	}
 
 	hasUserCode() {
 		if (!this.main) return false;
 		return (
-			(this.main.scripts.length > 0) ||
-			(this.main.functions.length > 0) ||
-			(this.main.variables.length > 0));
+			this.main.scripts.length > 0 ||
+			this.main.functions.length > 0 ||
+			this.main.variableNames.length > 0 ||
+			this.libraries.size > 0
+		);
 	}
 
 	// Block Specs
@@ -47,119 +126,111 @@ class MB_Project {
 		this.blockSpecs.set(opName, spec);
 	}
 
-	deleteBlockSpecFor (functionName) {
+	deleteBlockSpecFor(functionName) {
 		this.blockSpecs.delete(functionName);
 	}
 
 	// Libraries
 
-	libraryNamed(name) {
-		for (const lib of this.libraries) {
-			if (lib.moduleName == name) return lib;
+	libraryNamed(name) { return this.libraries.get(name) || null; }
+
+	addLibrary(module) {
+		let libName = module.moduleName;
+		let oldLib = this.libraries.get(libName);
+		if (oldLib) oldLib.updatingLibrary(module, this);
+		this.libraries.delete(libName);
+		this.libraries.set(libName, module);
+
+		// new library functions supersede earlier versions
+		let newFunctionNames = new Set();
+		for (const f of module.functions) newFunctionNames.add(f.functionName);
+		this.main.removeSupercededFunctions(newFunctionNames);
+		for (const lib of this.libraries.values()) {
+			if (lib !== module) lib.removeSupercededFunctions(newFunctionNames);
 		}
-		return null;
-	}
 
-	addLibrary(aMicroBlocksModule) {
-// 		libName = (moduleName aMicroBlocksModule)
-// 		oldLib = (at libraries libName)
-// 		if (notNil oldLib) {
-// 			updatingLibrary oldLib aMicroBlocksModule
-// 		}
-// 		remove libraries libName
-// 		if (not (isImplementationLib aMicroBlocksModule)) {
-// 			atPut libraries libName aMicroBlocksModule
-// 		}
-//
-// 		// the functions in this new library supersede all earlier versions of those functions
-// 		newFunctionNames = (dictionary)
-// 		for f (functions aMicroBlocksModule) { add newFunctionNames (functionName f) }
-// 		removeSupercededFunctions main newFunctionNames
-// 		for lib (values libraries) {
-// 			if (lib != aMicroBlocksModule) { removeSupercededFunctions lib newFunctionNames }
-// 		}
-//
-// 		// update block specs
-// 		newSpecs = (blockSpecs aMicroBlocksModule)
-// 		for k (keys newSpecs) {
-// 			atPut blockSpecs k (at newSpecs k)
-// 		}
-	}
-
-	updatingLibrary(newerModule) {
-		// Called when updating an existing library (the receiver) to a newer version.
-		// Update the block specs of existing functions that are being updated.
-		// Retain the block specs for any functions that are being removed
-		// and add "obsolete" to their labels to allow them to be identified
-		// in any scripts in which they appear.
-
-	// 	newSpecs = (blockSpecs newerModule)
-	// 	projectSpecs = (blockSpecs (project (findProjectEditor)))
-	// 	for oldSpec (values (blockSpecs this)) { // for each spec in this module
-	// 		op = (blockOp oldSpec)
-	// 		if (contains newSpecs op) {
-	// 			// update exising spec for op
-	// 			atPut projectSpecs op (at newSpecs op)
-	// 		} else {
-	// 			// mark old function as obsolete and append to module
-	// 			obsoletedLabel = (join 'obsolete ' (first (specs oldSpec)))
-	// 			atPut (specs oldSpec) 1 obsoletedLabel
-	// 			atPut projectSpecs op oldSpec
-	// 			add (blockList newerModule) op
-	// 		}
-	// 	}
+		// update block specs
+		for (const [k, spec] of module.blockSpecs) {
+			this.blockSpecs.set(k, spec);
+		}
 	}
 
 	removeLibraryNamed(libName) {
-		const lib = this.libraryNamed(libName);
+		let lib = this.libraries.get(libName);
 		if (!lib) return;
-		this.libraries = this.libraries.filter(m => m.moduleName != libName);
+		this.libraries.delete(libName);
 		for (const f of lib.functions) {
 			this.blockSpecs.delete(f.functionName);
 		}
 	}
 
 	categoryForOp(op) {
-		// Return the category for the give op if it is in one of my libraries.
-
-		if (('-' == op) || ('advanced' == op)) return null; // ignore spacers and 'advanced'
-		for (const lib of this.libraries) {
+		if (op === '-') return null; // ignore dash used as a spacer in library block lists
+		for (const lib of this.libraries.values()) {
 			if (lib.blockList.includes(op)) return lib.moduleCategory;
 		}
 		return null;
 	}
 
+	checkForNewerLibraryVersions(autoConfirm = false) {
+		// Check for newer versions of libraries used in this project.
+		// If true is passed to the optional autoConfirm parameter, update old
+		// libraries without asking. Otherwise ask the user for confirmation.
+
+		// XXX TODO This requires UI interaction so skip for now.
+	}
+
 	// Functions
 
 	allFunctions() {
-		let result = this.main.functions.slice();
-		for (const lib of this.libraries) {
-			result = result.concat(lib.functions);
+		let result = [...this.main.functions];
+		for (const lib of this.libraries.values()) {
+			result.push(...lib.functions);
 		}
 		return result;
 	}
 
-	functionNamed(functionName) {
-		return this.allFunctions().find(f => (f.functionName == functionName));
+	functionNamed(name) {
+		let f = this.main.functionNamed(name);
+		if (f) return f;
+		for (const lib of this.libraries.values()) {
+			f = lib.functionNamed(name);
+			if (f) return f;
+		}
+		return null;
 	}
 
-	libForFunction(aFunc) {
-		const f = this.functionNamed(aFunc.functionName);
-		return f ? f.moduleName : '';
+	libForFunction(func) {
+		let funcName = func.functionName;
+		for (const lib of this.libraries.values()) {
+			if (lib.functionNamed(funcName)) return lib.moduleName;
+		}
+		return '';
+	}
+
+	metaInfoForFunction(func) {
+		// Return a tab-delimited string: blockType TAB specString TAB slotTypes
+		let funcName = func.functionName;
+		let spec = this.blockSpecs.get(funcName);
+		if (!spec) {
+			// no spec for func so generate one (unusual case)
+			let specString = funcName + func.argNames.map(() => ' _').join('');
+			let slotTypes = func.argNames.map(() => 'auto').join(' ');
+			spec = { blockType: ' ', opName: funcName, specString, slotTypes, defaults: [] };
+		}
+		return [spec.blockType, spec.specString, spec.slotTypes].join('\t');
 	}
 
 	// Variables
 
 	allVariableNames() {
-		// Return a sorted array of all global variables. Use case-insensitive sort.
-
-		let result = this.main.variableNames.slice();
-		for (const lib of this.libraries) {
-			result = result.concat(lib.variableNames);
+		// Return a sorted array of all global variable names (case-insensitive order).
+		let result = new Set(this.main.variableNames);
+		for (const lib of this.libraries.values()) {
+			for (const v of lib.variableNames) result.add(v);
 		}
-		return result.sort(
-			(m1, m2) => m1.toLowerCase() < m2.toLowerCase()
-		);
+		return Array.from(result).sort((a, b) =>
+			a.toUpperCase() < b.toUpperCase() ? -1 : 1);
 	}
 
 	addVariable(newVar) {
@@ -167,304 +238,428 @@ class MB_Project {
 	}
 
 	deleteVariable(varName) {
-		this.main.variables.delete(varName);
-		for (const lib of this.libraries) {
-			lib.deleteVariable(varName);
+		this.main.deleteVariable(varName);
+		for (const lib of this.libraries.values()) lib.deleteVariable(varName);
+	}
+
+	indexForVar(varName) {
+		// Return a unique index for the given global variable.
+		// Details: Assign indices sequentially without trying to recycle the indices
+		// of variables that have been deleted. When we run out of indices, clear the
+		// dictionary and recompile all scripts. (This is not common since most projects
+		// will not run out of variable indices.)
+
+		let result = this.varIndices.get(varName);
+		if (result !== undefined) return result;
+		if (this.nextVarIndex >= 128) {
+			// Rare case: No more variable indices
+			if (this.allVariableNames().length > 128) {
+				// Very rare: Too many global variables. Assign 127 to remaining variables.
+				// Code will run strangely but won't crash.
+				return 127;
+			}
+			// There are enough indices for all globals (perhaps because variables have been deleted)
+			// Recompile all scripts, to re-assign all global variable indices.
+			this.varIndices = new Map();
+			this.nextVarIndex = 0;
+			// XXX TODO: set the compiler "recompileNeeded" flag
 		}
+		let varIndex = this.nextVarIndex++;
+		this.varIndices.set(varName, varIndex);
+		return varIndex;
 	}
 
 	// Broadcasts
 
-	forAllBlocks(topBlock, f) {
-		// Call the given function on all command and reporter blocks in this script.
-		// Todo: move this to BlockMorph
-
-		if (!topBlock) return;
-
-		let todo = [topBlock];
-		while (todo.length > 0) {
-			let cmd = todo.pop();
-			f(cmd);
-			if (cmd instanceof CommandBlockMorph) {
-				if (cmd.nextBlock()) todo.push(cmd.nextBlock());
-			}
-			for (const arg of cmd.inputs()) {
-				if (arg instanceof BlockMorph) todo.push(arg);
-			}
-		}
-	}
-
 	allBroadcasts() {
 		let result = new Set();
 		for (const entry of this.main.scripts) {
-			this.forAllBlocks(entry[2], cmd => {
-				if (['sendBroadcast', 'whenBroadcastReceived'].includes(cmd.selector)) {
-					result.add(cmd.inputValues()[0]);
+			let block = entry[2];
+			for (const b of allBlocksIn(block)) {
+				if (b.selector === 'sendBroadcast' || b.selector === 'whenBroadcastReceived') {
+					let inputs = b.inputs();
+					if (inputs.length > 0) result.add(inputs[0].evaluate());
 				}
-			});
+			}
 		}
 		return Array.from(result).sort();
 	}
 
-	// Loading
+	// Unused analysis
 
-	loadFromString(s, updateLibraries) {
-		// Load project from a string in .ubp format. Keep libraries (modules) together.
+	unusedFunctions(paletteBlock) {
+		// Return a list of functions that are not used by this project (directly or indirectly).
+		// If the project contains a custom call block, trace the function call if the argument
+		// to the call block is a string constant. Otherise, assume that any function could be
+		// called so there are no unused functions.
+		// The optional paletteBlock argument supports running blocks in the palette.
 
-		let cmdList = MB_Parser.parse(s);
-		let moduleCmdLists = this.splitCmdListIntoModules(cmdList);
-
-		this.main.loadFromCmds(moduleCmdLists.shift());
-		for (const cmdsForModule of moduleCmdLists) {
-			let library = new MB_Module().loadFromCmds(cmdsForModule);
-			this.libraries.push(library);
+		// create dictionary with all functions
+		let functionCalled = new Map();
+		for (const f of this.allFunctions()) {
+			functionCalled.set(f.functionName, false);
 		}
-// 		if (updateLibraries || true) {
-// 			this.checkForNewerLibraryVersions();
-// 		}
-// 		this.fixFunctionLocals();
-		return this;
-	}
-// 		initialize this
-// 		cmdList = (parse s)
-// 		if (and (notEmpty cmdList) ('projectName' == (primName (first cmdList)))) {
-// 			// skip projectName line, if any
-// 			cmdList = (copyFromTo cmdList 2)
-// 		}
-// 		loadSpecs this cmdList
-// 		cmdsByModule = (splitCmdListIntoModules this cmdList)
-// 		isFirst = true
-// 		for cmdList cmdsByModule {
-// 			if isFirst { // main module
-// 				loadFromCmds main cmdList
-// 				isFirst = false
-// 			} else { // library
-// 				lib = (loadFromCmds (newMicroBlocksModule) cmdList true)
-// 				atPut libraries (moduleName lib) lib
-// 			}
-// 		}
-// 		if (isNil updateLibraries) { updateLibraries = true }
-// 		if updateLibraries { checkForNewerLibraryVersions this }
-// 		fixFunctionLocals this
-// 		return this
 
-	splitCmdListIntoModules(cmdList) {
-		// Split the list of commands into a list of command lists for each module of the project.
-		// Each module after the first (main) module begins with a 'module' command.
+		let scriptsToScan = [...this.main.scripts];
+		if (paletteBlock) scriptsToScan.push([0, 0, paletteBlock]);
 
-		let result = [];
-		let thisModule = [];
-		for (const cmd of cmdList) {
-			if ('module' == cmd[0]) {
-				if (thisModule.length > 0) result.push(thisModule);
-				thisModule = [];
+		// collect functions called by scripts
+		let todo = [];
+		for (const entry of scriptsToScan) {
+			// an entry is a three-element list: [x, y, script]
+			let block = entry[2];
+			for (const b of allBlocksIn(block)) {
+				let op = b.selector;
+				if (['callCustomCommand', 'callCustomReporter', 'sendBroadcast'].includes(op)) {
+					// if argument is a string the callee is known; otherwise any function could be called
+					let inputs = b.inputs();
+					let callArg = inputs.length > 0 ? inputs[0].evaluate() : null;
+					if (typeof callArg === 'string') {
+						op = callArg;
+					} else {
+						return []; // dynamic call — can't trace
+					}
+				}
+				if (functionCalled.get(op) === false) {
+					functionCalled.set(op, true);
+					todo.push(op);
+				}
 			}
-			thisModule.push(cmd);
 		}
-		if (thisModule.length > 0) result.push(thisModule); // add final module
+
+		// mark all reachable functions
+		while (todo.length > 0) {
+			let f = this.functionNamed(todo.shift());
+			if (!f || !f.cmdList) continue;
+			for (const b of allBlocksIn(f.cmdList)) {
+				let op = b.selector;
+				if (['callCustomCommand', 'callCustomReporter', 'sendBroadcast'].includes(op)) {
+					let inputs = b.inputs();
+					let callArg = inputs.length > 0 ? inputs[0].evaluate() : null;
+					if (typeof callArg === 'string') {
+						op = callArg;
+					} else {
+						return [];
+					}
+				}
+				if (functionCalled.get(op) === false) {
+					functionCalled.set(op, true);
+					todo.push(op);
+				}
+			}
+		}
+
+		// remove main user functions (so decompiler can recover them)
+		for (const f of this.main.functions) {
+			functionCalled.delete(f.functionName);
+		}
+
+		// generate and return a list of uncalled functions
+		let result = [];
+		for (const [k, called] of functionCalled) {
+			if (!called) result.push(k);
+		}
 		return result;
 	}
 
+	unusedGlobals() {
+		// Return global vars that are not referenced in any script or function.
+
+		// make a list of global variables not owned by any library
+		let unusedGlobals = new Set(this.main.variableNames);
+		for (const lib of this.libraries.values()) {
+			for (const v of lib.variableNames) unusedGlobals.delete(v);
+		}
+
+		// scan scripts
+		for (const entry of this.main.scripts) {
+			// an entry is a three-element list: [x, y, script]
+			for (const b of allBlocksIn(entry[2])) {
+				if (['v', '=', '+='].includes(b.selector)) {
+					let inputs = b.inputs();
+					if (inputs.length > 0) unusedGlobals.delete(inputs[0].evaluate());
+				}
+			}
+		}
+
+		// scan functions
+		for (const f of this.allFunctions()) {
+			let localAndArgs = new Set([...f.argNames, ...f.localVars]);
+			if (!f.cmdList) continue;
+			for (const b of allBlocksIn(f.cmdList)) {
+				if (['v', '=', '+='].includes(b.selector)) {
+					let inputs = b.inputs();
+					if (inputs.length > 0) {
+						let varName = inputs[0].evaluate();
+						if (!localAndArgs.has(varName)) unusedGlobals.delete(varName);
+					}
+				}
+			}
+		}
+
+		return Array.from(unusedGlobals);
+	}
+
+	// Loading
+
+	loadFromString(s, updateLibraries = true) {
+		this.main = new MB_Module('main');
+		this.libraries = new Map();
+		this.blockSpecs = new Map();
+		this.varIndices = new Map();
+		this.nextVarIndex = 0;
+
+		let cmdList = MB_Parser.parse(s);
+		if (cmdList.length > 0 && Array.isArray(cmdList[0]) && cmdList[0][0] === 'projectName') {
+			cmdList = cmdList.slice(1);
+		}
+		this.loadSpecs(cmdList);
+
+		let cmdsByModule = this.splitCmdListIntoModules(cmdList);
+		let isFirst = true;
+		for (const modCmds of cmdsByModule) {
+			if (isFirst) {
+				this.main.loadFromCmds(modCmds, this);
+				isFirst = false;
+			} else {
+				let lib = new MB_Module();
+				lib.loadFromCmds(modCmds, this);
+				this.libraries.set(lib.moduleName, lib);
+			}
+		}
+
+		if (updateLibraries) this.checkForNewerLibraryVersions();
+		this.updatePrimitives();
+		this.fixFunctionLocals();
+		return this;
+	}
 
 	addLibraryFromString(s, libName, fileName) {
-		// Load a library from a string.
+		// Load a library from a string and return its module name.
+		let cmdList = MB_Parser.parse(s);
+		this.loadSpecs(cmdList);
+		let cmdsByModule = this.splitCmdListIntoModules(cmdList);
+		let moduleName = null;
+		for (const modCmds of cmdsByModule) {
+			let lib = new MB_Module();
+			lib.loadFromCmds(modCmds, this);
+			if (!lib.moduleName) lib.moduleName = libName;
 
-// 		cmdList = (parse s)
-// 		loadSpecs this cmdList
-// 		cmdsByModule = (splitCmdListIntoModules this cmdList)
-// 		for cmdList cmdsByModule {
-// 			lib = (loadFromCmds (newMicroBlocksModule) cmdList)
-// 			if (isNil (moduleName lib)) {
-// 				setModuleName lib libName
-// 			}
-// 			if (beginsWith fileName '//Libraries/') {
-// 				setPath lib (withoutExtension (substring fileName ((count '//Libraries/') + 1)))
-// 			} (beginsWith fileName 'http://') {
-// 				setPath lib fileName
-// 			} (beginsWith fileName (join (gpFolder) '/Libraries')) {
-// 				setPath lib (withoutExtension (substring fileName ((count (join (gpFolder) '/Libraries')) + 1)))
-// 			} else {
-// 				// Local files sourced from places other than the MicroBlocks folder
-// 				// are unsupported as dependencies.
-// 				setPath lib nil
-// 			}
-// 			fixFunctionLocals this
-//
-// 			moduleName = (moduleName lib)
-// 			if (notNil (libraryNamed this moduleName)) {
-// 				// updating an existing library: just replace it and don't import dependencies
-// 				removeLibraryNamed this moduleName
-// 			} else {
-// 				importDependencies lib (scripter (smallRuntime))
-// 			}
-// 			addLibrary this lib
-// 		}
-// 		return this
+			// set path based on fileName
+			if (fileName) {
+				if (fileName.startsWith('//Libraries/')) {
+					lib.path = this.withoutExtension(fileName.slice('//Libraries/'.length));
+				} else if (fileName.startsWith('http://')) {
+					lib.path = fileName;
+				} else {
+					lib.path = null;
+				}
+			}
+
+			moduleName = lib.moduleName;
+			if (this.libraries.has(moduleName)) {
+				this.removeLibraryNamed(moduleName);
+				// updating: don't import dependencies
+			}
+			// importDependencies would go here (requires scripter runtime)
+			this.addLibrary(lib);
+		}
+		this.fixFunctionLocals();
+		return moduleName;
+	}
+
+	withoutExtension(path) {
+		let i = path.lastIndexOf('.');
+		return i >= 0 ? path.slice(0, i) : path;
+	}
+
+	parsedSpecs(cmdList) {
+		return parsedSpecs(cmdList);
+	}
+
+	loadSpecs(cmdList) {
+		for (const [k, spec] of parsedSpecs(cmdList)) {
+			this.blockSpecs.set(k, spec);
+		}
+	}
+
+	splitCmdListIntoModules(cmdList) {
+		// Split command list into one sub-list per module (each starts with 'module').
+		let result = [];
+		let m = [];
+		for (const cmd of cmdList) {
+			if (Array.isArray(cmd) && cmd[0] === 'module') {
+				if (m.length > 0) result.push(m);
+				m = [];
+			}
+			m.push(cmd);
+		}
+		result.push(m);
+		return result;
 	}
 
 	// Saving
 
 	codeString() {
-		// Return a string representing this project in .ubp format.
-
-		// sort libraries by name (this canonicalizes their order)
-		const sortedLibs = this.libraries.slice().sort(
-			(m1, m2) => m1.moduleName.toLowerCase() < m2.moduleName.toLowerCase()
-		);
+		let sortedLibs = Array.from(this.libraries.values())
+			.sort((a, b) => a.moduleName < b.moduleName ? -1 : 1);
 
 		let result = [this.main.codeString(this)];
 		for (const lib of sortedLibs) {
 			result.push('\n');
 			result.push(lib.codeString(this));
 		}
-		return result.join('\n');
+		return result.join('');
 	}
 
 	// Post-load processing
 
 	fixFunctionLocals() {
-		// Remove global variables from function locals.
-
-// 		projectVars = (allVariableNames this)
-// 		for f (allFunctions this) { removeFieldsFromLocals f projectVars }
+		// XXX TODO: would remove project variables that appear as function locals in GP.
+		// In the JS port, MB_Function.collectLocalVars() handles this separately.
 	}
 
-	// save/load test
-
-	saveLoadTest() {
-		// Verify that this project can be saved and reloaded.
-
-// 		s1 = (codeString this)
-// 		p2 = (loadFromString (newMicroBlocksProject) s1)
-// 		s2 = (codeString p2)
-// 		if (s1 != s2) { print 'second codeString does not match first'; return false }
-// 		if (not (equal this p2)) { print 'second project does not match first'; return false }
-// 		return true
+	updatePrimitives() {
+		this.main.updatePrimitives();
+		for (const lib of this.libraries.values()) lib.updatePrimitives();
 	}
 
-	// equality
+	// Save/load test
+
+	saveLoadTest(fileName) {
+		let s1 = this.codeString();
+		let p2 = new MB_Project().loadFromString(s1, false);
+		let s2 = p2.codeString();
+		if (s1 != s2) {
+			console.log('saveLoadTest failed:', fileName, s1.length, s2.length);
+			return false;
+		}
+		return true;
+	}
+
+	// Stats
+
+	stats() {
+		return ('' + this.main.scripts.length + ' scripts, ' + this.allFunctions().length + ' functions');
+	}
+
+	// Equality
 
 	equal(proj) {
-		// Return true if the given project has the same contents as this one.
+		// XXX Is this used?
 
-// 		if (not (equal main (main proj))) { return false }
-// 		for lib (values libraries) {
-// 			if (not (equal lib (libraryNamed proj (moduleName lib)))) {
-// 				print '	libs not equal:' (moduleName lib)
-// 				return false
-// 			}
-// 		}
-// 		sortedKeys = (sorted (keys blockSpecs))
-// 		if (sortedKeys != (sorted (keys (blockSpecs proj)))) {
-// 			print '	spec keys mismatch'
-// 			return false;
-// 		}
-// 		for k sortedKeys {
-// 			s1 = (specDefinitionString (at blockSpecs k))
-// 			s2 = (specDefinitionString (at (blockSpecs proj) k))
-// 			if (s1 != s2) {
-// 				print '	spec mismatch' k
-// 				return false
-// 			}
-// 		}
-// 		return true
+		if (!this.main.equal(proj.main)) return false;
+		for (const lib of this.libraries.values()) {
+			let otherLib = proj.libraryNamed(lib.moduleName);
+			if (!otherLib || !lib.equal(otherLib)) {
+				console.log('libs not equal:', lib.moduleName);
+				return false;
+			}
+		}
+		let sortedKeys = Array.from(this.blockSpecs.keys()).sort();
+		let otherKeys = Array.from(proj.blockSpecs.keys()).sort();
+		if (sortedKeys.join(',') !== otherKeys.join(',')) {
+			console.log('spec keys mismatch');
+			return false;
+		}
+		for (const k of sortedKeys) {
+			let s1 = specDefinitionString(this.blockSpecs.get(k));
+			let s2 = specDefinitionString(proj.blockSpecs.get(k));
+			if (s1 !== s2) {
+				console.log('spec mismatch', k);
+				return false;
+			}
+		}
+		return true;
 	}
 }
 
+// --- MB_Module class ---
+
 class MB_Module {
-	constructor(moduleName) {
-		this.moduleName = moduleName || 'main';
-		this.moduleCategory = '';
+	constructor(name) {
+		this.moduleName = name || null;
+		this.moduleCategory = 'Library';
 		this.dependencies = [];
 		this.version = [1, 0];
 		this.author = 'unknown';
 		this.description = '';
 		this.tags = [];
-		this.isImplementation = false;
-		this.path = '';
-		this.choices = new Map();
+		this.path = null;
+		this.choices = new Map(); // key → string[]
 		this.variableNames = [];
-		this.blockList = [];
-		this.blockSpecs = new Map();
-		this.functions = [];
-		this.scripts = []; // an array of [x, y, BlockMorph]
-		this.translationSources = new Map();
+		this.blockList = []; // list of opNames, '-', or 'advanced'
+		this.blockSpecs = new Map(); // opName → spec object
+		this.functions = []; // MB_Function[]
+		this.scripts = []; // [x, y, BlockMorph|null][]
+		this.translationSources = new Map(); // langCode → source
+		this.isImplementation = false;
 	}
 
-	setModuleName(modName) {
-		this.moduleName = modName;
+	// Accessors
+
+	isImplementationLib() { return this.isImplementation; }
+	beImplementation() { this.isImplementation = true; }
+	setModuleName(name) { this.moduleName = name; }
+	setDescription(desc) { this.description = desc; }
+	setAuthor(auth) { this.author = auth; }
+	setCategory(cat) { this.moduleCategory = cat; }
+	setVersion(versionArray) { this.version = [versionArray[0], versionArray[1]]; }
+	setTags(tagList) { this.tags = Array.from(tagList); }
+	setPath(aPath) { this.path = aPath; }
+	setDependencies(deps) { this.dependencies = Array.from(deps); }
+	setScripts(newScripts) { this.scripts = Array.from(newScripts); }
+
+	toString() { return 'MB_Module(\'' + this.moduleName + '\')'; }
+
+	dependencyName(dep) {
+		let name = dep;
+		let poundIdx = name.lastIndexOf('#');
+		if (poundIdx >= 0) name = name.slice(0, poundIdx);
+		let slashIdx = name.lastIndexOf('/');
+		if (slashIdx >= 0) name = name.slice(slashIdx + 1);
+		let dotIdx = name.lastIndexOf('.');
+		if (dotIdx >= 0) name = name.slice(0, dotIdx);
+		return name;
 	}
 
-	version() {
-		return this.version.slice();
+	dependencyNames() {
+		return this.dependencies.map(d => this.dependencyName(d));
 	}
 
-	tags() {
-		return this.tags.slice();
+	// Functions
+
+	functionNamed(name) {
+		return this.functions.find(f => f.functionName === name) || null;
 	}
 
-	dependencies() {
-		return this.dependencies.slice();
+	addFunction(f) {
+		if (this.functions.includes(f)) return;
+		this.functions = this.functions.filter(existing => existing.functionName !== f.functionName);
+		this.functions.push(f);
 	}
 
-	beImplementation() {
-		this.isImplementation = true;
-	}
-
-	setDependencies(deps) {
-		this.dependencies = deps.slice();
-	}
-
-	setVersion(versionArray) {
-		this.version = versionArray.slice();
-	}
-
-	setTags(tagList) {
-		this.args = tagList.slice();
-	}
-
-	// functions
-
-	functionNamed(functionName) {
-		for (const f of this.functions) {
-			if (f.functionName == functionName) return f;
-		}
-		return null;
-	}
-
-	addFunction(aFunction) {
-		this.removeFunction(aFunction);
-		aFunction.module = this;
-		this.functions.push(aFunction);
-		MB_Project.needsRecompilation = true;
-	}
-
-	removeFunction(aFunction) {
-		this.functions = this.functions.filter(f => f !== aFunction);
-		MB_Project.needsRecompilation = true;
+	removeFunction(f) {
+		this.functions = this.functions.filter(existing => existing !== f);
 	}
 
 	removeSupercededFunctions(superceded) {
-	// 	for f (copy functions) {
-	// 		if (contains superceded (functionName f)) {
-	// 			removeFunction this f
-	// 		}
-	// 	}
-	// 	newBlockList = (list)
-	// 	for op blockList {
-	// 		if (not (contains superceded op)) { add newBlockList op }
-	// 	}
+		// superceded is a Set of function names.
+		this.functions = this.functions.filter(f => !superceded.has(f.functionName));
+		this.blockList = this.blockList.filter(op => !superceded.has(op));
 	}
 
-	// variables
-
-	variableNames() {
-		return this.variableNames.slice();
+	appendFunction(functionsArray, f) {
+		let idx = functionsArray.findIndex(existing => existing.functionName === f.functionName);
+		if (idx >= 0) {
+			console.log('Warning: Multiple definitions of', f.functionName);
+			functionsArray[idx] = f;
+			return functionsArray;
+		}
+		return [...functionsArray, f];
 	}
 
-	removeAllVariables() {
-		this.variableNames = [];
-	}
+	// Variables
 
 	addVariable(newVar) {
 		if (!this.variableNames.includes(newVar)) {
@@ -473,572 +668,650 @@ class MB_Module {
 	}
 
 	deleteVariable(varName) {
-		this.variableNames = this.variableNames.filter(v => v != varName);
+		this.variableNames = this.variableNames.filter(v => v !== varName);
 	}
 
-	// saving
-
-	fixEmbeddedQuotes(s) {
-		if (!s.includes('\'')) return s;
-		return s.replaceAll('\'', '\'\''); // double embedded single quotes
+	removeAllVariables() {
+		this.variableNames = [];
 	}
 
-	codeString(owningProject, exportedLibName) {
-		// Return a string containing the code for this MB_Module.
-		// If exportedLibName is not nil, this module is being exported as a library.
-
-		let result = [];
-
-		let moduleLine = [exportedLibName ? exportedLibName : this.moduleName];
-		if (this.moduleCategory != '') {
-			moduleLine.push(this.quoteIfNeeded(this.moduleCategory));
-		}
-		this.addDeclaration('module', moduleLine, result);
-		result.push('author ' + this.quoteIfNeeded(this.author));
-		result.push('version ' + this.version[0] + ' ' + this.version[1]);
-		this.addDeclaration('depends', this.dependencies, result);
-		this.addDeclaration('tags', this.tags, result);
-		for (const [menuName, menuItems] of this.choices) {
-			this.addDeclaration('choices', [menuName].concat(menuItems), result);
-		}
-		if (this.description) {
-			result.push('description \'' + this.fixEmbeddedQuotes(this.description) + '\'');
-		}
-		if (this.variableNames.length > 0) {
-			this.addDeclaration('variables', this.variableNames, result);
-			result.push(''); // add blank line after variables
-		}
-
-		if (this.blockList.length > 0) result.push(this.specsString());
-		if (this.functions.length > 0) result.push(this.functionsString());
-		if (!exportedLibName) { // add scripts if not exporting as a library
-			result.push(this.scriptsString());
-		}
-
-		return result.join('\n');
-	}
-
-	addDeclaration(title, items, result) {
-		if (items.length == 0) return;
-
-		let line = [title];
-		for (const word of items) {
-			line.push(this.quoteIfNeeded(word));
-		}
-		result.push(line.join(' '));
-	}
-
-	quoteIfNeeded(s) {
-		// Return a quoted version of the given string if necessary for parsing.
-		// Otherwise, return the original string.
-
-		return this.needsQuotes(s) ? ('\'' + s + '\'') : s;
-	}
-
-// 	quoted(s) {
-// 		return '\'' + s + '\'';
-// 	}
-
-	specsString() {
-		let result = [];
-		for (const entry of this.blockList) {
-			if ('-' == entry) {
-				result.push('  space');
-			} else if ('advanced' == entry) {
-				result.push('  advanced');
-			} else {
-				let specLine = ['  spec'];
-				specLine.push('\'' + entry[0] + '\'');
-				specLine.push('\'' + entry[1] + '\'');
-				specLine.push('\'' + entry[2] + '\'');
-				if (entry.length > 3) {
-					specLine.push('\'' + entry[3] + '\'');
-					for (let i = 4; i < entry.length; i++) {
-						const v = entry[i];
-						if (typeof v  === 'string') {
-							specLine.push('\'' + v + '\'');
-						} else {
-							specLine.push(v);
-						}
-					}
-				}
-				result.push(specLine.join(' '));
-//console.log(entry);
-			}
-		}
-		result.push(''); // empty line after specs
-		return result.join('\n');
-	}
-	// 	projectSpecs = (blockSpecs owningProject)
-	// 	processed = (dictionary)
-	//
-	// 	for op blockList {
-	// 		if ('-' == op) {
-	// 			add result (join '  space' (newline))
-	// 		} ('advanced' == op) {
-	// 			add result (join '  advanced' (newline))
-	// 		} else {
-	// 			spec = (at projectSpecs op)
-	// 			if (notNil spec) {
-	// 				add result (join '  ' (specDefinitionString spec) (newline))
-	// 				add processed op
-	// 			}
-	// 		}
-	// 	}
-	//
-
-	functionsString() {
-		if (this.functions.length == 0) return '';
-
-		// sort functions by name
-		const sortedScripts = this.functions.slice().sort( (a, b) => {
-			return a.functionName < b.functionName;
-		});
-
-		let result = [];
-		for (const f of this.functions) {
-			result.push(f.codeString());
-		}
-		return result.join('\n');
-	}
-	// 	if (not (isEmpty functions)) {
-	// 		// sort functions by name (this canonicalizes function order)
-	// 		sortedFunctions = (sorted
-	// 			functions
-	// 			(function a b {return ((functionName a) < (functionName b))})
-	// 		)
-	// 		// add function block specs
-	// 		for func sortedFunctions {
-	// 			op = (functionName func)
-	// 			if (not (contains processed op)) {
-	// 				spec = (at projectSpecs op)
-	// 				if (notNil spec) {
-	// 					add result (join '  ' (specDefinitionString spec) (newline))
-	// 					add processed op
-	// 				}
-	// 			}
-	// 		}
-	// 		add result (newline)
-	//
-	// 		// add function definitions
-	// 		pp = (new 'PrettyPrinter')
-	// 		for func sortedFunctions {
-	// 			add result (prettyPrintFunction pp func)
-	// 			add result (newline)
-	// 		}
-	// 	}
-
-	scriptsString() {
-		if (this.scripts.length == 0) return '';
-
-		// sort scripts by position so the scriptsString does not depend on z-ordering of scripts
-		const sortedScripts = this.scripts.slice().sort( (a, b) => {
-			if (a[1] == b[1]) {
-				return a[0] < b[0]; // y's are equal, sort by x
-			} else {
-				return a[1] < b[1]; // sort by y
-			}
-		});
-
-		let result = ['']; // start with an empty line
-		for (const entry of sortedScripts) {
-			const script = entry[2];
-			if (script instanceof ReporterBlockMorph) {
-				result.push(
-					'script ' + entry[0] + ' ' + entry[1] + ' ' + script.codeString() + '\n');
-			} else {
-				result.push(
-					'script ' + entry[0] + ' ' + entry[1] + ' {\n' + script.codeString() + '}\n');
-			}
-		}
-		return result.join('\n');
-	}
+	// Saving
 
 	needsQuotes(s) {
-		// Return true if the given string needs to be quoted in order to be parsed as
-		// a variable or function name.
-
 		if (typeof s === 'number') return false;
-		if (('true' == s) || ('false' == s) || ('' == s)) return true;
-		if ('-.0123456789'.includes(s[0])) return true;
-		if (!/[a-zA-Z_]/.test(s[0])) return true; // does not start with letter or underscore
+		s = String(s);
+		if (s === '') return true;
+		if (s === 'true' || s === 'false') return true;
+		if (/^\d/.test(s) || s[0] === '-') return true;
+		if (!/^[a-zA-Z_]/.test(s)) return true;
 		for (const ch of s) {
-			if (!/[a-zA-Z0-9_]/.test(ch)) return true; // contains non-alphanumeric
+			if (!/[a-zA-Z0-9_]/.test(ch)) return true;
 		}
 		return false;
 	}
 
-	// loading
+	arrayToDeclaration(array, title) {
+		let parts = [title];
+		for (const item of array) {
+			if (typeof item === 'number') {
+				parts.push(String(item));
+			} else {
+				let s = String(item);
+				if (this.needsQuotes(s)) s = "'" + s + "'";
+				parts.push(s);
+			}
+		}
+		return parts.join(' ') + '\n';
+	}
 
-	loadFromCmds(cmdList) {
-		for (const cmd of cmdList) {
-			if (cmd.length > 1) {
-				switch (cmd[0].toLowerCase()) {
-				case 'module':
-					this.loadModuleNameAndCategory(cmd);
-					break;
-				case 'version':
-					this.loadVersion(cmd);
-					break;
-				case 'author':
-					this.author = this.unquoted(cmd[1]);
-					break;
-				case 'depends':
-					this.loadDependencies(cmd);
-					break;
-				case 'description':
-					this.description = this.unquoted(cmd[1]);
-					break;
-				case 'tags':
-					this.loadTags(cmd);
-					break;
-				case 'choices':
-					this.loadChoices(cmd);
-					break;
-				case 'variables':
-					this.loadVariables(cmd);
-					break;
+	codeString(owningProject, newLibName) {
+		let result = [];
+
+		let modName = (newLibName !== undefined) ? newLibName : (this.moduleName || '');
+		if (this.needsQuotes(modName)) modName = "'" + modName + "'";
+		result.push('module ' + modName);
+
+		if (this.moduleCategory !== 'Library') {
+			let modCat = this.moduleCategory;
+			if (this.needsQuotes(modCat)) modCat = "'" + modCat + "'";
+			result.push(' ' + modCat);
+		}
+		result.push('\n');
+
+		let by = this.author;
+		if (this.needsQuotes(by)) by = "'" + by + "'";
+		result.push('author ' + by + '\n');
+
+		result.push(this.arrayToDeclaration(this.version, 'version'));
+
+		if (this.dependencies.length > 0) {
+			result.push(this.arrayToDeclaration(this.dependencies, 'depends'));
+		}
+
+		if (this.tags.length > 0) {
+			result.push(this.arrayToDeclaration(this.tags, 'tags'));
+		}
+
+		for (const [key, vals] of this.choices) {
+			result.push(this.arrayToDeclaration([key, ...vals], 'choices'));
+		}
+
+		result.push('description ' + printString(this.description) + '\n');
+
+		if (this.variableNames.length > 0) {
+			result.push(this.arrayToDeclaration(this.variableNames, 'variables'));
+		}
+
+		result.push('\n');
+
+		let projectSpecs = owningProject ? owningProject.blockSpecs : new Map();
+		let processed = new Set();
+
+		for (const op of this.blockList) {
+			if (op === '-') {
+				result.push('  space\n');
+			} else if (op === 'advanced') {
+				result.push('  advanced\n');
+			} else {
+				let spec = projectSpecs.get(op);
+				if (spec) {
+					result.push('  ' + specDefinitionString(spec) + '\n');
+					processed.add(op);
 				}
 			}
 		}
-		this.loadSpecs(cmdList);
-		this.loadFunctions(cmdList);
-		this.loadScripts(cmdList);
-		return this
+
+		if (this.functions.length > 0) {
+			let sortedFuncs = this.functions.slice()
+				.sort((a, b) => a.functionName < b.functionName ? -1 : 1);
+
+			// add specs for functions not yet in blockList
+			for (const func of sortedFuncs) {
+				let op = func.functionName;
+				if (!processed.has(op)) {
+					let spec = projectSpecs.get(op);
+					if (spec) {
+						result.push('  ' + specDefinitionString(spec) + '\n');
+						processed.add(op);
+					}
+				}
+			}
+			result.push('\n');
+
+			for (const func of sortedFuncs) {
+				result.push(func.codeString() + '\n');
+			}
+		}
+
+		if (newLibName === undefined) {
+			result.push(this.scriptString());
+		}
+
+		return result.join('');
 	}
 
-	loadModuleNameAndCategory(cmd) {
-		this.moduleName = this.unquoted(cmd[1]);
+	scriptString() {
+		if (this.scripts.length === 0) return '';
+
+		let sorted = this.scripts.slice().sort((e1, e2) => {
+			if (e1[1] === e2[1]) return e1[0] < e2[0] ? -1 : 1;
+			return e1[1] < e2[1] ? -1 : 1;
+		});
+
+		let result = [];
+		for (const entry of sorted) {
+			let x = Math.round(entry[0]);
+			let y = Math.round(entry[1]);
+			let block = entry[2];
+			result.push('script ' + x + ' ' + y + ' {\n');
+			if (block) result.push(block.codeString(1));
+			result.push('}\n\n');
+		}
+		return result.join('');
+	}
+
+	// Loading
+
+	loadFromCmds(cmdList, owningProject) {
+		this.loadModuleNameAndCategory(cmdList);
+		this.loadVersion(cmdList);
+		this.loadAuthor(cmdList);
+		this.loadDependencies(cmdList);
+		this.loadTags(cmdList);
+		this.loadDescription(cmdList);
+		this.loadChoices(cmdList);
+		this.loadVariables(cmdList);
+		this.loadBlockList(cmdList);
+		this.loadSpecs(cmdList, owningProject);
+		this.loadFunctions(cmdList);
+		this.loadScripts(cmdList);
+		return this;
+	}
+
+	stringArgs(cmd) {
+		return cmd.slice(1).map(stringArg);
+	}
+
+	loadModuleNameAndCategory(cmdList) {
+		if (cmdList.length === 0) return;
+		let cmd = cmdList[0];
+		if (!Array.isArray(cmd) || cmd[0] !== 'module') return;
+		this.moduleName = stringArg(cmd[1]);
 		if (cmd.length > 2) {
-			this.moduleCategory = this.unquoted(cmd[2]);
+			let cat = stringArg(cmd[2]);
+			if (typeof cat === 'string' && cat.startsWith('cat;')) cat = cat.slice(4);
+			this.moduleCategory = cat;
 		}
 	}
 
-	loadVersion(cmd) {
-		if (cmd.length > 2) {
+	loadVersion(cmdList) {
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd) || cmd[0] !== 'version') continue;
 			this.version = [cmd[1], cmd[2]];
 		}
 	}
 
-	loadDependencies(cmd) {
-		this.dependencies = [];
-		for (let i = 1; i < cmd.length; i++) {
-			this.dependencies.push(this.unquoted(cmd[i]));
-		}
-	}
-
-	loadTags(cmd) {
-		this.tags = [];
-		for (let i = 1; i < cmd.length; i++) {
-			this.tags.push(this.unquoted(cmd[i]));
-		}
-	}
-
-	loadChoices(cmd) {
-		if (cmd.length < 2) return;
-		let choiceList = [];
-		for (let i = 2; i < cmd.length; i++) {
-			choiceList.push(this.unquoted(String(cmd[i])));
-		}
-		this.choices.set(this.unquoted(cmd[1]), choiceList);
-	}
-
-	loadVariables(cmd) {
-		this.variableNames = [];
-		for (let i = 1; i < cmd.length; i++) {
-			this.variableNames.push(this.unquoted(cmd[i]));
-		}
-	}
-
-	loadSpecs(cmdList) {
-		// Store the specs and blocks list for this module.
-		// The specs are stored in a Map keyed by selector.
-		// The blockList is a list of blocks for the module's palette in order
-		// of appearance. The 'space' keyword
-		// can be used to add some space between groups of blocks.
-
-		this.blockList = [];
-		this.blockSpecs = new Map();
+	loadAuthor(cmdList) {
 		for (const cmd of cmdList) {
-			switch(cmd[0]) {
-			case 'spec':
-				var spec = cmd.slice(1).map(s => this.unquoted(s));
-				this.blockSpecs.set(spec[1], spec); // spec[1] is the selector
-				this.blockList.push(spec);
-				break;
-			case 'space':
-				this.blockList.push('-'); // spacer
-				break;
-			case 'advanced':
+			if (!Array.isArray(cmd) || cmd[0] !== 'author') continue;
+			this.author = stringArg(cmd[1]);
+		}
+	}
+
+	loadDependencies(cmdList) {
+		let deps = [];
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd) || cmd[0] !== 'depends') continue;
+			for (let i = 1; i < cmd.length; i++) {
+				deps.push(String(stringArg(cmd[i])));
+			}
+		}
+		this.dependencies = deps;
+	}
+
+	loadTags(cmdList) {
+		let tags = [];
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd) || cmd[0] !== 'tags') continue;
+			for (let i = 1; i < cmd.length; i++) {
+				tags.push(String(stringArg(cmd[i])).toLowerCase());
+			}
+		}
+		this.tags = tags;
+	}
+
+	loadDescription(cmdList) {
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd) || cmd[0] !== 'description') continue;
+			this.description = String(stringArg(cmd[1]));
+		}
+	}
+
+	loadChoices(cmdList) {
+		this.choices = new Map();
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd) || cmd[0] !== 'choices') continue;
+			let args = cmd.slice(1).map(x => String(stringArg(x)));
+			if (args.length > 0) this.choices.set(args[0], args.slice(1));
+		}
+	}
+
+	loadVariables(cmdList) {
+		let varNames = [];
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd)) continue;
+			if (cmd[0] !== 'variables' && cmd[0] !== 'sharedVariables') continue;
+			for (let i = 1; i < cmd.length; i++) {
+				varNames.push(String(stringArg(cmd[i])));
+			}
+		}
+		this.variableNames = varNames;
+	}
+
+	loadBlockList(cmdList) {
+		this.blockList = [];
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd)) continue;
+			if (cmd[0] === 'space') {
+				this.blockList.push('-');
+			} else if (cmd[0] === 'advanced') {
 				this.blockList.push('advanced');
-				break;
+			} else if (cmd[0] === 'spec') {
+				this.blockList.push(stringArg(cmd[2]));
 			}
 		}
 	}
 
-	unquoted(s) {
-		if ((typeof s) != 'string') return s;
-		if ((s.length > 1) && (s[0] == '\'') && (s.at(-1) == '\'')) {
-			return s.slice(1, -1); // remove quotes
+	loadSpecs(cmdList, owningProject) {
+		this.blockSpecs = parsedSpecs(cmdList);
+		if (owningProject) {
+			for (const [k, spec] of this.blockSpecs) {
+				owningProject.blockSpecs.set(k, spec);
+			}
 		}
-		return s;
-	}
-
-	checkForNewerLibraryVersions(autoConfirm) {
-		// Check for newer versions of libraries used in this project.
-		// If true is passed to the optional autoConfirm parameter, update old
-		// libraries without asking. Otherwise ask the user for confirmation.
-
-// 		if (isNil autoConfirm) { autoConfirm = false }
-//
-// 		for libName (keys libraries) {
-// 			newVersion = (getNewerVersion (at libraries libName))
-// 			if (notNil newVersion) {
-// 				if (or
-// 					autoConfirm
-// 					(confirm (global 'page') nil (join
-// 						(localized 'Found a newer version of %1.' libName) (newline)
-// 						(localized 'Do you want me to update the one in the project?')))
-// 				) {
-// 					addLibrary this newVersion
-// 				}
-// 			}
-// 		}
-	}
-
-	getNewerVersion() {
-		// Return the embedded library with the same name and a newer version or nil if none found.
-
-	// 	if (moduleName == 'main') { return nil }
-	//
-	// 	embeddedFiles = (browserEmbeddedLibs this)
-	//
-	// 	// Find the embedded lib path
-	// 	moduleFileName = (join moduleName '.ubl')
-	// 	v1 = version // current version
-	// 	for filePath embeddedFiles {
-	// 		if ((filePart filePath) == moduleFileName) {
-	// 			cmdList = (parse (readEmbeddedFile filePath))
-	// 			candidate = (newMicroBlocksModule moduleName)
-	// 			loadFromCmds candidate cmdList
-	// 			v2 = (version candidate)
-	// 			if (or
-	// 				((at v2 1) > (at v1 1))
-	// 				(and ((at v1 1) == (at v2 1)) ((at v2 2) > (at v1 2)))
-	// 			) {
-	// 				return candidate
-	// 			}
-	// 		}
-	// 	}
-	// 	return nil
-	}
-
-	browserEmbeddedLibs() {
-	// 	result = (list)
-	// 	todo = (list 'Libraries')
-	// 	while (notEmpty todo) {
-	// 		libpath = (removeFirst todo)
-	// 		for dirName (listEmbeddedFiles libpath true) {
-	// 			add todo (join libpath '/' dirName)
-	// 		}
-	// 		for fName (listEmbeddedFiles libpath false) {
-	// 			if (endsWith fName '.ubl') {
-	// 				add result (join libpath '/' fName)
-	// 			}
-	// 		}
-	// 	}
-	// 	return result
-	}
-
-	importDependencies(scripter) {
-	// 	project = (project scripter)
-	// 	for dependency dependencies {
-	// 		if (isNil (libraryNamed project dependency)) {
-	// 			// don't import a dependent library if it is already loaded
-	// 			importDependency this dependency scripter
-	// 		}
-	// 	}
-	}
-
-	importDependency(lib, scripter) {
-		// dependencies look like either:
-		// LibName						- Fetch from embedded FS
-		// /LibName						- Fetch from ~/MicroBlocks/Libraries
-		// http://url/LibName.ubp		- Fetch from server
-
-		// Additionally, one can define version requirements like this:
-		// LibName#>1.4					- Needs at least version 1.4
-		// /LibName#=2.7				- Needs exactly version 2.7
-		// http://url/LibName.ubp#>1.1	- Needs at least version 1.1
-
-	// 	// find version requirements
-	// 	vPosition = (findLast lib '#')
-	// 	vRequirement = ''
-	// 	reqVersion = (array 1 0)
-	// 	if (vPosition > 0) {
-	// 		vPosition = (vPosition + 1)
-	// 		vRequirement = (substring lib vPosition vPosition)
-	// 		atPut reqVersion 1 (toInteger (substring lib (vPosition + 1) ((findLast lib '.') - 1)))
-	// 		atPut reqVersion 2 (toInteger ((findLast lib '.') + 1))
-	// 		lib = (substring lib 1 (vPosition - 2))
-	// 	}
-	//
-	// 	// TODO Make sure we comply with version requirement (ex. >2.3, =1.5)
-	//
-	// 	if (beginsWith lib 'http') {
-	// 		// fetch library from remote URL
-	// 		importLibraryFromUrl scripter lib
-	// 	} (beginsWith lib '/') {
-	// 		// fetch library from [MicroBlocksFolder]/Library
-	// 		importLibraryFromFile scripter (join (gpFolder) '/Libraries' lib '.ubl')
-	// 	} else {
-	// 		// load embedded library
-	// 		importEmbeddedLibrary scripter lib
-	// 	}
 	}
 
 	loadFunctions(cmdList) {
-		this.functions = [];
-		for (const entry of cmdList) {
-			if ((entry.length > 2) && (entry[0] == 'to')) {
-functionCount++;
-				let funcName = entry[1];
-				if (funcName[0] == "'") {
-					funcName = funcName.slice(1, -1); // remove quotes
-				}
-				const funcArgs = entry.slice(2, -1);
-				const funcCmds = entry.at(-1);
-				let funcBody = (funcCmds.length > 0) ? MB_Parser.blockFor(funcCmds) : null;
-				this.functions.push(new MB_Function(funcName, funcArgs, funcBody, this.moduleName));
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd) || cmd[0] !== 'to') continue;
+			let funcName = stringArg(cmd[1]);
+			// last arg is command list if it's an array of arrays (or empty array)
+			let lastArg = cmd[cmd.length - 1];
+			let hasCmdList = Array.isArray(lastArg) &&
+				(lastArg.length === 0 || Array.isArray(lastArg[0]));
+			let argEnd = hasCmdList ? cmd.length - 1 : cmd.length;
+			let argNames = [];
+			for (let i = 2; i < argEnd; i++) {
+				argNames.push(String(stringArg(cmd[i])));
 			}
+			let cmdListMorph = null;
+			if (hasCmdList && lastArg.length > 0) {
+				cmdListMorph = MB_Parser.blockFor(lastArg);
+			}
+			let f = new MB_Function(funcName, argNames, cmdListMorph);
+			this.functions = this.appendFunction(this.functions, f);
 		}
-		MB_Project.needsRecompilation = true;
 	}
 
 	loadScripts(cmdList) {
 		this.scripts = [];
-		for (const entry of cmdList) {
-			if ((entry.length == 4) && (entry[0] == 'script')) {
-scriptCount++;
-				const scriptCmds = entry[3];
-				if ((scriptCmds.length > 0) &&
-					(scriptCmds[0].length == 3) &&
-					(scriptCmds[0][0] == 'to')) {
-						// todo: figure out how to represent function references
-						// for now, don't add them to scripting area
-//						console.log('function ref:', scriptCmds[0][1]);
-				} else {
-					this.scripts.push([
-						entry[1], // x position
-						entry[2], // y position
-						MB_Parser.blockFor(scriptCmds) // script blocks
-					]);
+		for (const cmd of cmdList) {
+			if (!Array.isArray(cmd) || cmd[0] !== 'script') continue;
+			let x = cmd[1], y = cmd[2];
+			let bodyArg = cmd[3];
+			let block = null;
+			if (Array.isArray(bodyArg) && bodyArg.length > 0) {
+				block = MB_Parser.blockFor(bodyArg);
+			}
+			this.scripts.push([x, y, block]);
+		}
+	}
+
+	// Primitive updates
+
+	updatePrimitives() {
+		for (const f of this.functions) {
+			if (!f.cmdList) continue;
+			for (const b of allBlocksIn(f.cmdList)) {
+				let newPrim = this.newPrimFor(b.selector);
+				if (newPrim) b.selector = newPrim;
+			}
+		}
+		for (const entry of this.scripts) {
+			let block = entry[2];
+			if (!block) continue;
+			for (const b of allBlocksIn(block)) {
+				let newPrim = this.newPrimFor(b.selector);
+				if (newPrim) b.selector = newPrim;
+			}
+		}
+	}
+
+	newPrimFor(oldPrim) {
+		const primMap = {
+			'mbDisplay': '[display:mbDisplay]',
+			'mbDisplayOff': '[display:mbDisplayOff]',
+			'mbPlot': '[display:mbPlot]',
+			'mbUnplot': '[display:mbUnplot]',
+			'mbDrawShape': '[display:mbDrawShape]',
+			'mbShapeForLetter': '[display:mbShapeForLetter]',
+			'neoPixelSetPin': '[display:neoPixelSetPin]',
+			'neoPixelSend': '[display:neoPixelSend]',
+			'mbTiltX': '[sensors:tiltX]',
+			'mbTiltY': '[sensors:tiltY]',
+			'mbTiltZ': '[sensors:tiltZ]',
+			'mbTemp': '[sensors:temperature]',
+			'newArray': 'newList',
+			'fillArray': 'fillList',
+			'sendBroadcastSimple': 'sendBroadcast',
+			'split': '[data:split]',
+			'printIt': 'graphIt',
+		};
+		return primMap[oldPrim] || null;
+	}
+
+	updatingLibrary(newerModule, owningProject) {
+		// Called when updating this module to a newer version.
+		// Retain obsolete specs with 'obsolete' prepended to their labels.
+		let newSpecs = newerModule.blockSpecs;
+		let projectSpecs = owningProject ? owningProject.blockSpecs : new Map();
+		for (const [op, oldSpec] of this.blockSpecs) {
+			if (newSpecs.has(op)) {
+				projectSpecs.set(op, newSpecs.get(op));
+			} else {
+				let obsoletedSpec = Object.assign({}, oldSpec, {
+					specString: 'obsolete ' + oldSpec.specString,
+				});
+				projectSpecs.set(op, obsoletedSpec);
+				newerModule.blockList.push(op);
+			}
+		}
+	}
+
+	// Equality
+
+	equal(otherMod) {
+		if (this.moduleName !== otherMod.moduleName) return false;
+		if (this.variableNames.join(',') !== otherMod.variableNames.join(',')) return false;
+		if (this.functions.length !== otherMod.functions.length) return false;
+		if (this.scripts.length !== otherMod.scripts.length) return false;
+
+		for (let i = 0; i < this.functions.length; i++) {
+			if (!this.functionsEqual(this.functions[i], otherMod.functions[i])) {
+				console.log('function mismatch:', this.functions[i].functionName);
+				return false;
+			}
+		}
+
+		let scriptSortFn = (e1, e2) =>
+			e1[1] !== e2[1] ? e1[1] - e2[1] : e1[0] - e2[0];
+		let s1 = this.scripts.slice().sort(scriptSortFn);
+		let s2 = otherMod.scripts.slice().sort(scriptSortFn);
+		for (let i = 0; i < s1.length; i++) {
+			let e1 = s1[i], e2 = s2[i];
+			let code1 = e1[2] ? e1[2].codeString(0) : '';
+			let code2 = e2[2] ? e2[2].codeString(0) : '';
+			if (e1[0] !== e2[0] || e1[1] !== e2[1] || code1 !== code2) {
+				console.log('script mismatch', e1, e2);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	functionsEqual(f1, f2) {
+		if (f1.functionName !== f2.functionName) return false;
+		if (f1.argNames.join(',') !== f2.argNames.join(',')) return false;
+		let c1 = f1.cmdList ? f1.cmdList.codeString(1) : '';
+		let c2 = f2.cmdList ? f2.cmdList.codeString(1) : '';
+		return c1 === c2;
+	}
+
+	// Translation support (stubs)
+
+	setTranslations(translationsDict) { this.translationSources = translationsDict; }
+	getTranslationSources(langCode) { return this.translationSources.get(langCode); }
+	hasTranslationFor(langCode) { return this.translationSources.has(langCode); }
+}
+
+// MB_ScriptExchange - export and import scripts between projects.
+// Ported from MicroBlocksExchange.gp.
+//
+// *** NOTE: MB_ScriptExchange hoat not yet been cleaned up or tested! ***
+// *** There are still some unresolved global references. ***
+
+/* global blockScale, varMustBeQuoted, scriptForFunction, smallRuntime */
+
+class MB_ScriptExchange {
+	constructor(mbProject) {
+		this.mbProject = mbProject;
+		this.functionsUsed = []; // sorted array of function names; populated by analyzeCalls
+		this.libsUsed = [];      // sorted array of library names; populated by analyzeCalls
+	}
+
+	// --- Export ---
+
+	exportScripts(scripter, blockList) {
+		// Return a string representation of the given scripts (a list of BlockMorphs).
+		this.mbProject = scripter.project();
+		const result = [];
+
+		this.analyzeCalls(blockList);
+		result.push(this.libraryDependencies());
+		result.push('\n');
+		result.push(...this.functionDefinitions());
+
+		const scale = blockScale();
+		for (const m of blockList) {
+			const block = m.handler ? m.handler() : m;
+			if (!(block instanceof BlockMorph)) continue;
+			let expr = block.expression();
+			if (expr.primName() === 'to') {
+				// Save a function-definition hat as a stub 'to' with nil body;
+				// the full definition is saved separately by functionDefinitions().
+				const callArgs = ['to', ...expr.argList()];
+				callArgs[callArgs.length - 1] = null; // replace body with null
+				expr = MB_Parser.commandFromArray(callArgs);
+			}
+			const x = Math.round(m.left() / scale);
+			const y = Math.round(m.top() / scale);
+			result.push(this.scriptText(expr, x, y));
+		}
+		return result.join('');
+	}
+
+	libraryDependencies() {
+		// Return a 'depends' line listing library dependencies, or '' if none.
+		if (this.libsUsed.length === 0) return '';
+		return 'depends' + this.libsUsed.map(lib => " '" + lib + "'").join('') + '\n';
+	}
+
+	functionDefinitions() {
+		// Return a list of strings containing the specs and definitions of all used functions.
+		const result = [];
+		for (const funcName of this.functionsUsed) {
+			const spec = this.mbProject.blockSpecs.get(funcName);
+			if (spec != null) result.push(spec.definitionString() + '\n');
+			const func = this.mbProject.functionNamed(funcName);
+			if (func != null) result.push(func.codeString() + '\n');
+		}
+		return result;
+	}
+
+	scriptText(cmdOrReporter, x, y, useSemicolons = false) {
+		if (x == null) x = 10;
+		if (y == null) y = 10;
+		const nl = useSemicolons ? '' : '\n';
+		const parts = ['script ' + x + ' ' + y + ' '];
+		if (cmdOrReporter instanceof ReporterBlockMorph) {
+			if (cmdOrReporter.primName() === 'v') {
+				let varName = cmdOrReporter.argList()[0];
+				if (varMustBeQuoted(varName)) varName = JSON.stringify(varName);
+				parts.push('(v ' + varName + ')');
+			} else {
+				parts.push('(' + cmdOrReporter.codeString() + ')');
+			}
+			parts.push(nl);
+		} else {
+			parts.push('{' + nl);
+			parts.push(cmdOrReporter.codeString());
+			parts.push('}' + nl);
+		}
+		parts.push(nl);
+		return parts.join('');
+	}
+
+	// --- Call analysis ---
+
+	analyzeCalls(blockList) {
+		// Collect all user-defined functions and libraries used by the given blocks.
+		const functionsUsedSet = new Set();
+		const libsUsedSet = new Set();
+
+		for (const m of blockList) {
+			const block = m.handler ? m.handler() : m;
+			if (block instanceof BlockMorph) {
+				this.analyzeCallsInExpression(block.expression(), functionsUsedSet, libsUsedSet);
+			}
+		}
+
+		this.functionsUsed = [...functionsUsedSet].sort();
+		this.libsUsed = [...libsUsedSet].sort();
+	}
+
+	analyzeCallsInExpression(cmdOrReporter, functionsUsedSet, libsUsedSet) {
+		// Recursively collect all function calls and library references.
+		const main = this.mbProject.main;
+		const todo = [cmdOrReporter];
+		while (todo.length > 0) {
+			for (const b of todo.shift().allBlocks()) {
+				const op = b.primName();
+				if (this.isFunctionCall(op)) {
+					if (this.libraryDefines(main, op)) {
+						if (!functionsUsedSet.has(op)) {
+							functionsUsedSet.add(op);
+							const func = main.functionNamed(op);
+							if (func != null && func.cmdList() != null) {
+								todo.push(func.cmdList());
+							}
+						}
+					} else {
+						for (const lib of this.mbProject.libraries) {
+							if (this.libraryDefines(lib, op)) {
+								libsUsedSet.add(lib.moduleName);
+							}
+						}
+					}
+				} else if (op === 'to') {
+					functionsUsedSet.add(b.argList()[0]);
 				}
 			}
 		}
 	}
 
-	// equality
-
-	equal(otherMod) {
-		// Return true if the given module has the same content as this one.
-
-	// 	if (moduleName != (moduleName otherMod)) { return false }
-	// 	if (variableNames != (variableNames otherMod)) { return false }
-	// 	if ((count functions) != (count (functions otherMod))) { return false }
-	// 	if ((count scripts) != (count (scripts otherMod))) { return false }
-	//
-	// 	for i (count functions) {
-	// 		if (not (functionsEqual this (at functions i) (at (functions otherMod) i))) {
-	// 			print 'function mismatch:' (functionName (at functions i))
-	// 			return false
-	// 		}
-	// 	}
-	//
-	// 	// sort script entries by position
-	// 	scriptSortFunc = (function e1 e2 {
-	// 		if ((at e1 2) == (at e2 2)) {
-	// 			return ((at e1 1) < (at e2 1)) // y's equal, sort by x
-	// 		} else {
-	// 			return ((at e1 2) < (at e2 2)) // sort by y
-	// 		}
-	// 	})
-	// 	sortedScripts1 = (sorted scripts scriptSortFunc)
-	// 	sortedScripts2 = (sorted (scripts otherMod) scriptSortFunc)
-	//
-	// 	for i (count sortedScripts1) {
-	// 		e1 = (at sortedScripts1 i)
-	// 		e2 = (at sortedScripts2 i)
-	// 		if (not (and ((at e1 1) == (at e2 1))
-	// 					((at e1 2) == (at e2 2))
-	// 					((at e1 3) == (at e2 3))
-	// 				)
-	// 		) {
-	// 			print 'script mismatch' e1 e2
-	// 			return false
-	// 		}
-	// 	}
-	// 	return true
+	isFunctionCall(funcName) {
+		return (
+			this.mbProject.functionNamed(funcName) != null ||
+			(funcName.startsWith('[') && funcName.endsWith(']'))
+		);
 	}
 
-	// translation template export
-
-	templateStringForLibrary(libName) {
-		// setClipboard (templateStringForLibrary 'CoCube Sengo1')
-
-	// 	project = (project (first (allInstances 'MicroBlocksEditor')))
-	// 	lib = (libraryNamed project libName)
-	// 	if (isNil lib) { return '' }
-	// 	return (join (choiceTemplates lib) (newline) (blockTemplates lib))
+	libraryDefines(lib, funcName) {
+		if (lib.functionNamed(funcName) != null) return true;
+		if (lib.blockSpecs && lib.blockSpecs.has(funcName)) return true;
+		return false;
 	}
 
-	choiceTemplates() {
-	// 	seen = (dictionary) // used to avoid duplicate entries
-	// 	result = (list)
-	// 	for pair (sortedPairs choices true) {
-	// 		choiceList = (at pair 2)
-	// 		for c choiceList {
-	// 			if (not (or (representsAnInteger c) (contains seen c))) {
-	// 				add seen c
-	// 				add result (join '#. ' moduleName ' library choice')
-	// 				add result (join 'msgid "' c '"')
-	// 				add result 'msgstr ""'
-	// 				add result ''
-	// 			}
-	// 		}
-	// 	}
-	// 	return (joinStrings result (newline))
+	// --- Import ---
+
+	importScripts(scripter, scriptString, dstX, dstY) {
+		this.mbProject = scripter.project();
+		const scriptCmds = MB_Parser.parse(scriptString);
+		if (scriptCmds == null) return;
+
+		// Add block specs
+		this.mbProject.loadSpecs(scriptCmds);
+
+		// Add libraries and function definitions
+		for (const entry of scriptCmds) {
+			const op = entry.primName();
+			const args = entry.argList();
+			if (op === 'depends') {
+				for (const libName of args) {
+					scripter.installLibraryNamed(libName);
+				}
+			} else if (op === 'to') {
+				const funcName = args[0];
+				const parameterNames = args.slice(1, args.length - 1);
+				const body = args[args.length - 1];
+				this.addGlobalsFor(body, parameterNames);
+				this.mbProject.main.defineFunction(funcName, parameterNames, body);
+			}
+		}
+
+		// Find the origin of scripts to be pasted (top-left corner of the script group)
+		let scriptsX = 10000;
+		let scriptsY = 10000;
+		for (const entry of scriptCmds) {
+			const args = entry.argList();
+			if (entry.primName() === 'script' && args.length === 3) {
+				scriptsX = Math.min(scriptsX, args[0]);
+				scriptsY = Math.min(scriptsY, args[1]);
+			}
+		}
+
+		// Add scripts to the scripts pane
+		const scriptsPane = scripter.scriptEditor();
+		for (const entry of scriptCmds) {
+			let args = entry.argList();
+			if (args.length === 4 && args[0] == null) {
+				// Fix old Wiki scripts saved as "script nil x y { ...code... }"
+				args = args.slice(1);
+				args[0] = scriptsX;
+				args[1] = scriptsY;
+				console.log('fixed args:', args);
+			}
+			if (entry.primName() === 'script' && args.length === 3 && args[2] != null) {
+				const script = args[2];
+				this.addGlobalsFor(script);
+				let block;
+				if (script.primName() === 'to') {
+					const func = this.mbProject.functionNamed(script.argList()[0]);
+					block = scriptForFunction(func);
+				} else {
+					block = MB_Parser.blockFor(script);
+				}
+				block.fixBlockColor();
+				const scale = blockScale();
+				const blockX = Math.round(dstX + scale * (args[0] - scriptsX));
+				const blockY = Math.round(dstY + scale * (args[1] - scriptsY));
+				block.morph().setPosition(blockX, blockY);
+				scriptsPane.morph().addPart(block.morph());
+			}
+		}
+		smallRuntime().saveAllChunksAfterLoad();
 	}
 
-	blockTemplates() {
-	// 	seen = (dictionary) // used to avoid duplicate entries
-	// 	result = (list)
-	// 	for pair (sortedPairs blockSpecs true) {
-	// 		spec = (at pair 2)
-	// 		blockLabel = (first (specs spec))
-	// 		if (not (or (beginsWith blockLabel '_') (contains seen blockLabel))) {
-	// 			add seen blockLabel
-	// 			add result (join '#. ' moduleName ' library block')
-	// 			add result (join 'msgid "' blockLabel '"')
-	// 			add result 'msgstr ""'
-	// 			add result ''
-	// 		}
-	// 	}
-	// 	return (joinStrings result (newline))
-	}
-
-	// localization
-
-	setTranslations(aMap) {
-		this.translationSources = aMap;
-	}
-
-	getTranslationSources(langCode) {
-		return this.translationSources.get(langCode);
-	}
-
-	hasTranslationFor (langCode) {
-		return this.translationSources.includes(langCode);
+	addGlobalsFor(script, parameterNames) {
+		// Add any new global variables referenced in script that aren't already declared.
+		if (script == null) return;
+		const globalVars = this.mbProject.allVariableNames();
+		const varRefs = [];
+		const localVars = parameterNames ? [...parameterNames] : [];
+		for (const b of script.allBlocks()) {
+			const args = b.argList();
+			if (args.length > 0) {
+				const varName = args[0];
+				const op = b.primName();
+				if (['v', '=', '+='].includes(op)) varRefs.push(varName);
+				if (['local', 'for'].includes(op)) localVars.push(varName);
+			}
+		}
+		for (const v of varRefs) {
+			if (!globalVars.includes(v) && !localVars.includes(v)) {
+				this.mbProject.main.addVariable(v);
+			}
+		}
 	}
 }
 
@@ -1047,11 +1320,10 @@ scriptCount++;
 function testLoad() {
 	function loadFile(fileName, contents) {
 		let project = new MB_Project();
-		scriptCount = functionCount = 0;
 		let startT = Date.now();
 		project.loadFromString(contents);
 		let msecs = Date.now() - startT;
-		console.log(fileName, functionCount, 'functions', scriptCount, 'scripts', msecs, 'msecs');
+		console.log(fileName, project.stats(), msecs, 'msecs');
 		MB_GUI.removeAllScripts();
 		project.main.scripts.forEach( (entry) => {
 			let x = entry[0], y = entry[1], script = entry[2];
@@ -1072,48 +1344,16 @@ function testShow() {
 	MB_GUI.addBlockToScripts(b);
 }
 
-function testPerf() {
-	let a = Array.from({ length: 10000000 }, (v, i) => i + 1 );
-
-	let result = 0;
-	let startT = Date.now();
-	for (let i = 0; i < a.length; i++) { result += a[i]; }
-	console.log('loop', Date.now() - startT, 'msecs', 'result = ', result);
-
-	result = 0;
-	startT = Date.now();
-	for (const n of a) { result += n; }
-	console.log('forOf', Date.now() - startT, 'msecs', 'result = ', result);
-
-	result = 0;
-	startT = Date.now();
-	a.forEach(n => result += n);
-	console.log('forEach', Date.now() - startT, 'msecs', 'result = ', result);
-
-	startT = Date.now();
-	result = a.map(n => 2 * n);
-	console.log('map', Date.now() - startT, 'msecs', result.length, 'result = ', result);
-
-	startT = Date.now();
-	result = a.find(n => n == 10000000);
-	console.log('findA', Date.now() - startT, 'msecs', 'result = ', result);
-
-	result = 0;
-	startT = Date.now();
-	for (let i = 0; i < a.length; i++) { result += a[i]; if (a[i] == 5000000) break; }
-	console.log('loopWithBreak', Date.now() - startT, 'msecs', 'result = ', result);
-
-	result = 0;
-	startT = Date.now();
-	for (const n of a) { result += n; if (n == 5000000) break; }
-	console.log('forOfWithBreak', Date.now() - startT, 'msecs', 'result = ', result);
-}
-
 function testLoad2() {
 	function loadFile(fileName, contents) {
 		let project = new MB_Project();
 		project.loadFromString(contents);
-		console.log(project.codeString());
+		let s1 = project.codeString();
+		let p2 = new MB_Project().loadFromString(s1, false);
+		let s2 = p2.codeString();
+		console.log(s1);
+		console.log(s2);
+console.log("Lengths:", s1.length, s2.length, s1 == s2);
 	}
 	MB_GUI.importLocalFile(loadFile);
 }
@@ -1122,27 +1362,27 @@ async function testLoadExamples() {
 	for (const fileName of MB_Files.allFilesIn('Examples')) {
 		let data = await MB_Files.readFile(fileName);
 
-		scriptCount = functionCount = 0;
+		let startT = Date.now();
 		let project = new MB_Project();
 		project.loadFromString(data);
 		let msecs = Date.now() - startT;
-		console.log(fileName, functionCount, 'functions', scriptCount, 'scripts', msecs, 'msecs');
+//		console.log(fileName, project.stats(), msecs, 'msecs');
+		project.saveLoadTest(fileName);
 	}
 }
 
 async function testCompileExamples() {
 	for (const fileName of MB_Files.allFilesIn('Examples')) {
 		let startT = Date.now();
-		scriptCount = functionCount = 0;
 		let data = await MB_Files.readFile(fileName);
 		let project = new MB_Project().loadFromString(data);
 		let mainModule = project.main;
 		let compiler = new MB_Compiler(project);
 		let scriptBytes = 0, functionBytes = 0;
-		for (scriptRec of mainModule.scripts) {
+		for (const scriptRec of mainModule.scripts) {
 			scriptBytes += compiler.compiledBytesFor(scriptRec[2]).length;
 		}
-		for (f of project.allFunctions()) {
+		for (const f of project.allFunctions()) {
 			functionBytes += compiler.compiledBytesFor(f.functionName).length;
 		}
 		console.log(fileName + ': ' + scriptBytes + ', ' + functionBytes + '; total: ' + (scriptBytes + functionBytes));

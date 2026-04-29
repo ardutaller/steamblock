@@ -195,6 +195,33 @@ function reload(scriptPath) {
 
 // --- Global Helper Functions ---
 
+function quoteIfNeeded(s) {
+	// Return a quoted version of the given string if necessary for parsing.
+	// Otherwise, return the original string.
+	// To be unquoted, the string must start with a letter or underscore and must
+	// contain only alfanumeric characters (including underscore).
+
+	let mustQuote = false;
+	if ((s.length == 0) || !/[a-zA-Z_]/.test(s[0])) { // does not start with a letter or underscore
+		mustQuote = true;
+	}
+	for (const ch of s) {
+		if (!/[a-zA-Z0-9_]/.test(ch)) {
+			mustQuote = true; // contains a non-alphanumeric character
+			break;
+		}
+	}
+	return mustQuote ? ('\'' + fixEmbeddedQuotes(s) + '\'') : s;
+}
+
+function fixEmbeddedQuotes(s) {
+	// If the given string includes any single quote characters, double them so that the
+	// the MicroBlocks parser will treat them as embedded quotes.
+
+	if (!s.includes('\'')) return s;
+	return s.replaceAll('\'', '\'\''); // double embedded single quotes
+}
+
 async function waitMSecs(msecs) {
 	const sleep = function (msecs) {
 		return (new Promise( resolve => setTimeout(resolve, msecs) ));
@@ -209,6 +236,15 @@ function localized(s) {
 
 function isMobile() {
 	return false;
+}
+
+function varMustBeQuoted(varName) {
+	// Return true if varName must be enclosed in quotes when serialized.
+	// A name must be quoted if it is empty, contains a space, or starts with a digit or '-'.
+	if (varName === '') return true;
+	if (varName.includes(' ')) return true;
+	const ch = varName[0];
+	return /\d/.test(ch) || ch === '-';
 }
 
 // MB_GUI is a placeholder for the eventual MB_Editor

@@ -17,10 +17,10 @@ class MB_Connection {
 
 	startMessageProcessing() {
 		function processMsgCB() {
-			if (MB_port.isConnected()) this.updateConnection();
-			requestAnimationFrame(processMsgCB.bind(this));
+			if (MB_port.isConnected()) MB_connection.updateConnection();
+			requestAnimationFrame(processMsgCB);
 		}
-		requestAnimationFrame(processMsgCB.bind(this));
+		requestAnimationFrame(processMsgCB);
 	}
 
 	// --- Helpers ---
