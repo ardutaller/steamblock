@@ -11,13 +11,18 @@ class MB_Connection {
 		this.vmVersion = null;
 		this.boardType = null;
 		this.readFromBoard = null;
+		this.nextChunkID = 0;
+		this.chunkIDs = new Map();
+		this.runningChunks = new Map();
 	}
 
 	// --- Process Messages Every Animation Frame (for now) ---
 
 	startMessageProcessing() {
 		function processMsgCB() {
-			if (MB_port.isConnected()) MB_connection.updateConnection();
+			if (MB_port.isConnected()) {
+				MB_connection.updateConnection();
+			}
 			requestAnimationFrame(processMsgCB);
 		}
 		requestAnimationFrame(processMsgCB);
@@ -114,10 +119,12 @@ class MB_Connection {
 
 		if (this.portName == null) return 'not connected';
 
-		this.processMessages();
-
 		// handle connection attempt in progress
-		if (this.connectionStartTime != null) return this.tryToConnect();
+		if (this.connectionStartTime != null) {
+			return this.tryToConnect();
+		}
+
+		MB_connection.processMessages();
 
 		// if port is not open, disconnect
 		if (!MB_port.isConnected()) {
@@ -168,7 +175,7 @@ class MB_Connection {
 
 		this.sendMsg('pingMsg'); // send another ping
 
-		const connectionAttemptTimeout = 5000; // milliseconds
+		const connectionAttemptTimeout = 10000; // milliseconds
 		if ((Date.now() - this.connectionStartTime) > connectionAttemptTimeout) {
 			// give up and disconnect if no response from board after connectionAttemptTimeout
 			this.disconnect();
@@ -674,11 +681,7 @@ class MB_Connection {
 	// --- Testing... ---
 
 	crcReceived(chunkID, crc) {
-		console.log('Chunk:', chunkID, 'CRC:', crc);
-	}
-
-	updateRunning(chunkID, isRunning) {
-		console.log('Chunk:', chunkID, (isRunning ? 'running' : 'stopped'));
+//		console.log('Chunk:', chunkID, 'CRC:', crc);
 	}
 
 	showError(errorString) {
@@ -686,18 +689,56 @@ class MB_Connection {
 	}
 
 	showResult(chunkID, value, arg3, arg4) {
-		console.log('chunk:', chunkID, 'returned:', value);
+		console.log(value);
 	}
 
-	async runScript(aBlock) {
+	addLoggedData(value) {
+		console.log(value);
+	}
+
+	updateRunning(chunkID, isRunning) {
+		let runningBlock = null;
+		for (const [key, value] of this.chunkIDs.entries()) {
+			if (value === chunkID) {
+				runningBlock = key;
+				break;
+			}
+		}
+		if (runningBlock == null) return; // unknown chunk
+
+		if (isRunning) {
+			runningBlock.addHighlight();
+			this.runningChunks.set(runningBlock, chunkID);
+		} else {
+			runningBlock.removeHighlight();
+			this.runningChunks.delete(runningBlock);
+		}
+	}
+
+	toggleRunning(aBlock) {
+		let top = aBlock.topBlock();
+		let runningChunkID = this.runningChunks.get(top);
+		if (runningChunkID !== undefined) {
+			this.sendMsg('stopChunkMsg', runningChunkID);
+		} else {
+			let chunkID = this.chunkIDs.get(top);
+			if (chunkID == undefined) {
+				chunkID = this.nextChunkID++;
+				this.chunkIDs.set(top, chunkID);
+			}
+			this.compileAndRun(top, chunkID);
+		}
+	}
+
+	async compileAndRun(aBlock, chunkID) {
+		// Compile and run the given block.
+
 		if (this.project == null) this.project = new MB_Project();
-		if (this.nextChunkID == null) this.nextChunkID = 0;
-		this.nextChunkID++;
 		let code = new MB_Compiler(this.project).compiledBytesFor(aBlock);
 		let chunkType = aBlock.chunkType();
 		code.unshift(chunkType); // prepend the chunk type
-		this.sendMsg('chunkCode16Msg', this.nextChunkID, code);
-		this.sendMsg('startChunkMsg', this.nextChunkID);
+		this.sendMsg('chunkCode16Msg', chunkID, code);
+		this.sendMsg('startChunkMsg', chunkID);
 	}
 
 }

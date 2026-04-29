@@ -140,7 +140,9 @@ class MB_CommPort {
 	// --- WebSerial ---
 
 	async serialConnect() {
-		await this.serialDisconnect(); // ensure any previous port is closed
+		if (this.serialPort || this.serialReader) {
+			await this.serialDisconnect(); // ensure any previous port is closed
+		}
 		this.serialPort = await navigator.serial
 			.requestPort({ filters: SERIAL_VENDOR_IDS })
 			.catch((e) => { console.log(e); return null; });

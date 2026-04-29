@@ -1646,9 +1646,9 @@ BlockMorph.prototype.userMenu = function () {
 
 	menu.addLine();
 	menu.addItem(
-		'run',
-		() => { MB_connection.runScript(this.topBlock()); },
-		'run this script'
+		'run/stop',
+		() => { MB_connection.toggleRunning(this.topBlock()); },
+		'run or stop this script'
 	);
 
 	return menu;
@@ -2506,7 +2506,7 @@ BlockMorph.prototype.pickUp = function (wrrld) {
 // BlockMorph events
 
 BlockMorph.prototype.mouseClickLeft = function () {
-	alert('not implemented yet - left click');
+	MB_connection.toggleRunning(this.topBlock());
 	return;
 
 	var top = this.topBlock(),
@@ -3820,7 +3820,7 @@ ScriptsMorph.prototype.userMenu = function () {
 	menu.addLine();
 	menu.addItem(
 		'connect',
-		() => { MB_port.connect('serial') },
+		() => { MB_connection.connect('serial') },
 		'connect via serial for testing');
 	return menu;
 };
