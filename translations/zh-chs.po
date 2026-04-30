@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-04-29 13:09+0000\n"
+"PO-Revision-Date: 2026-04-30 20:41+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. Block in Control category
 msgid "by _"
@@ -895,7 +895,7 @@ msgstr "停止舵机 _"
 
 #. File System library block
 msgid "in directory _"
-msgstr "在字典 _"
+msgstr "在目录 _"
 
 #. Example text for Strings library block
 msgid "Hello, world!"
@@ -6255,3 +6255,75 @@ msgstr "交响乐鼓组"
 #. General MIDI drum set
 msgid "Ethnic"
 msgstr "民族打击乐鼓组"
+
+#. ESP Now library label
+msgid "espNow send pair _ = _"
+msgstr "espNow 发送消息对 _ = _"
+
+#. ESP Now library label
+msgid "espNow pair received?"
+msgstr "espNow 消息对已收到?"
+
+#. ESP Now library label
+msgid "espNow last number"
+msgstr "espNow 最后一个数字"
+
+#. ESP Now library label
+msgid "espNow last string"
+msgstr "espNow 最后一个字符串"
+
+#. ESP Now library label
+msgid "espNow set group _ (0-255)"
+msgstr "设置 espNow 组为 _ (0-255)"
+
+#. ESP Now library label
+msgid "espNow group"
+msgstr "espNow 组"
+
+#. ESP Now library label
+msgid "espNow send raw _"
+msgstr "espNow 发送原始消息 _"
+
+#. ESP Now library label
+msgid "espNow receive raw"
+msgstr "espNow 收到原始消息"
+
+#. ESP Now library label
+msgid "espNow set channel _"
+msgstr "设置 espNow 频道为 _"
+
+#. ESP Now library label
+msgid "espNow channel"
+msgstr "espNow 频道"
+
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr "在 TFT 上绘制图 _ x _ y _ 颜色 _"
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr "#BR# 缩放 _"
+
+#. TFT Display library block
+msgid "image _"
+msgstr "图 _"
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr "反转 TFT 显示 _"
+
+#. Turtle Geometry library block
+msgid "turtle x"
+msgstr "海龟 x"
+
+#. Turtle Geometry library block
+msgid "turtle y"
+msgstr "海龟 y"
+
+#. File System library block
+msgid "directory names"
+msgstr "目录名"
+
+#. ESP Now library label
+msgid "ESP Now"
+msgstr "ESP Now 通讯"
