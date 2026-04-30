@@ -37,9 +37,20 @@ Line 2' 50 20 16716113 2
   space
   spec ' ' '[tft:setBacklight]' 'set TFT backlight _ (0-10)' 'num' 10
   spec ' ' '[tft:invertDisplay]' 'invert TFT display _' 'bool' false
+  advanced
+  spec ' ' 'tft_deferOLEDDisplayUpdates' 'defer OLED display updates'
+  spec ' ' 'tft_resumeOLEDDisplayUpdates' 'resume OLED display updates'
   space
   spec ' ' '_deferMonochromeDisplayUpdates' '_defer monochrome display updates'
   spec ' ' '_resumeMonochromeDisplayUpdates' '_resume monochrome display updates'
+
+to 'tft_deferOLEDDisplayUpdates' {
+  '[tft:deferUpdates]'
+}
+
+to 'tft_resumeOLEDDisplayUpdates' {
+  '[tft:resumeUpdates]'
+}
 
 to '_deferMonochromeDisplayUpdates' {
   '[tft:deferUpdates]'
