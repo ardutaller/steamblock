@@ -1,6 +1,6 @@
 module TFT Output
 author MicroBlocks
-version 1 17 
+version 1 18 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -88,7 +88,7 @@ of 0 and 1 characters where each line is one row of the image. 1 means that pixe
       y += scale
       x = left
     } else {
-      if (ch == 49) {'[tft:rect]' x y scale scale true}
+      if (ch == 49) {'[tft:rect]' x y scale scale c}
       x += scale
     }
   }
