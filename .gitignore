@@ -34,9 +34,9 @@ JohnWorkInProgress
 *.pem
 
 # ignore snapBlocks copies of Examples and Libraries folders
-electron/src/snapBlocks/files.txt
-electron/src/snapBlocks/Examples
-electron/src/snapBlocks/Libraries
+snapBlocks/files.txt
+snapBlocks/Examples
+snapBlocks/Libraries
 
 # Node modules
 electron/node_modules/*
