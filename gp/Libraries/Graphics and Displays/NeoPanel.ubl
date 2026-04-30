@@ -1,11 +1,11 @@
 module NeoPanel Output
 author 'José García Yeste & Víctor Casado'
-version 1 10 
-depends _NeoPixel _BMP 
+version 1 11
+depends _NeoPixel _BMP
 description 'Draw lines, rectangles, circles, text, and images on a NeoPixel panels (e.g. 8x8, 16x16 or 32x8) in either horizontal or vertical orientation. Panels can be daisy-chained to create larger displays if there is sufficient power to drive them.
 See: https://www.btf-lighting.com/collections/led-matrix-display/products/ws2812b-panel-screen-8-8-16-16-8-32-pixel-256-pixels-digital-flexible-led-programmed-individually-addressable-full-color-dc5v#
 '
-variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal _neoPanel_minimizeSpacing _neoPanel_zizag 
+variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal _neoPanel_minimizeSpacing _neoPanel_zizag
 
   spec ' ' 'neoPanel_attach' 'attach NeoPixel panel width _ height _ at pin _' 'num num num' 8 8 1
   space
@@ -17,7 +17,9 @@ variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal _neoPanel_mini
   spec ' ' 'neoPanel_draw_rectangle' 'NeoPanel draw rectangle at x _ y _ width _ height _ color _ : filled _' 'num num num num color bool' 1 1 8 8 nil true
   spec ' ' 'neoPanel_draw_circle' 'NeoPanel draw circle at x _ y _ radius _ color _ : filled _' 'num num num color bool' 4 4 3 nil true
   space
+  spec ' ' 'neopanel_scrollText' 'NeoPanel scroll text _ color _ : pausing _ msecs' 'str color num' 'Hello, World!' nil 100
   spec ' ' 'neoPanel_drawText' 'NeoPanel draw text _ at x _ y _ color _ : scale _ : separation _' 'str num num color num num' 'Hello' 1 1 nil 1 1
+  space
   spec ' ' 'neoPanel_drawBMP' 'NeoPanel draw BMP file _ at x _ y _' 'str num num' 'aBitmap' 1 1
   space
   spec ' ' '_neoPanel_setPixel' '_NeoPanel_setPixel _ _  _' 'num num color' 1 1
@@ -216,6 +218,18 @@ to neoPanel_draw_rectangle x y width height color optionalFilled {
       '_neoPanel_drawline' x y (x + (width - 1)) y color
     }
     '_NeoPixel_update'
+  }
+}
+
+to neopanel_scrollText text color msec {
+  local 'delay' (argOrDefault 3 100)
+  local 'totalW' ((size text) * 6)
+  local 'x' _neoPanel_width
+  repeatUntil (x < (0 - totalW)) {
+    atPut 'all' _np_pixels 0
+    neoPanel_drawText text x 1 color
+    x += -1
+    waitMillis msec
   }
 }
 
