@@ -1,9 +1,9 @@
 module 'HTTP client' Comm
 author MicroBlocks
-version 1 11 
-depends WiFi 
-tags http network get post put delete 
-choices requestTypes GET POST PUT DELETE 
+version 1 12
+depends WiFi
+tags http network get post put delete
+choices requestTypes GET POST PUT DELETE
 description 'Send HTTP requests and get responses back. You can use this library to fetch or store data in online servers, or to control other Wifi-enabled boards.
 '
 
@@ -13,6 +13,7 @@ description 'Send HTTP requests and get responses back. You can use this library
   spec 'r' 'https܃//' 'https #SVG#colon-double-slash _ : port _' 'auto num' 'microblocks.fun/example.txt' 443
   space
   spec ' ' 'request' '_ data _ to http #SVG#colon-double-slash _ : port _ : useHTTPS _' 'menu.requestTypes str str num bool' 'POST' 'MicroBlocks is fun' 'microblocks.fun' 80 false
+  space
   spec 'r' '_http_body_start' '_http_body_start _' 'auto' ''
   spec 'r' '_http_header_text' '_http_header_text _' 'auto' ''
   spec 'r' '_http_status_text' '_http_status_text _' 'auto' ''
@@ -22,8 +23,24 @@ description 'Send HTTP requests and get responses back. You can use this library
   spec 'r' '_lowercase' '_lowercase _' 'auto' 'ABC Def gH'
   spec 'r' '_request_url' '_request_url _ method _ body _ : port _ : useHTTPS _' 'str menu.requestTypes str num bool' '' 'GET' '' 80 false
   spec 'r' '_readHTTPResponse' '_readHTTPResponse'
-  spec 'r' '_http_expected_length' 'expectedLength _' 'str' ''
+  spec 'r' '_http_expected_length' '_http_expected_length _' 'str' ''
   spec 'r' '_http_dechunk' '_http_dechunk _' 'str'
+  spec 'r' '_httpResponseBody' '_httpResponseBody _' 'str' ''
+
+to '_httpResponseBody' response {
+  if (response != '') {
+    if (('_http_status' response) == 200) {
+      if (('[data:find]' 'Transfer-Encoding: chunked' response) > 0) {
+        return ('_http_dechunk' response)
+      } else {
+        return ('[data:copyFromTo]' response ('_http_body_start' response))
+      }
+    } else {
+      return ('_http_status_text' response)
+    }
+  }
+  return 'Failed to get response'
+}
 
 to '_http_body_start' response {
   return (('[data:find]' ('[data:unicodeString]' ('[data:makeList]' 13 10 13 10)) response) + 4)
@@ -194,33 +211,13 @@ to decompose url {
 to 'https܃//' url optionalPort {
   local 'port' (argOrDefault 2 443)
   local 'response' ('_request_url' url 'GET' '' port true)
-  if (response != '') {
-    if (('_http_status' response) == 200) {
-      if (('[data:find]' 'Transfer-Encoding: chunked' response) > 0) {
-        return ('_http_dechunk' response)
-      } else {
-        return ('[data:copyFromTo]' response ('_http_body_start' response))
-      }
-    } else {
-      return ('_http_status_text' response)
-    }
-  } else {
-    return 'Failed to get response'
-  }
+  return ('_httpResponseBody' response)
 }
 
 to 'http܃//' url optionalPort {
   local 'port' (argOrDefault 2 80)
   local 'response' ('_request_url' url 'GET' '' port false)
-  if (response != '') {
-    if (('_http_status' response) == 200) {
-      return ('[data:copyFromTo]' response ('_http_body_start' response))
-    } else {
-      return ('_http_status_text' response)
-    }
-  } else {
-    return 'Failed to get response'
-  }
+  return ('_httpResponseBody' response)
 }
 
 to request method data url optionalPort optionalHTTPS {
@@ -250,14 +247,6 @@ microblocks.fun/example.txt (https by default)
 https://tls-v1-2.badssl.com:1012 (specific port)'
   local 'infoURL' (decompose url)
   local 'response' ('_request_url' ('[data:join]' (at 2 infoURL) (ifExpression ((size (at 3 infoURL)) > 0) ('[data:join]' '/' (at 3 infoURL)) '')) 'GET' '' (at 4 infoURL) ((at 1 infoURL) == 'https'))
-  if (response != '') {
-    if (('_http_status' response) == 200) {
-      return ('[data:copyFromTo]' response ('_http_body_start' response))
-    } else {
-      return ('_http_status_text' response)
-    }
-  } else {
-    return 'Failed to get response'
-  }
+  return ('_httpResponseBody' response)
 }
 
