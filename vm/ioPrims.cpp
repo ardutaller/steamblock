@@ -1449,7 +1449,7 @@ void hardwareInit() {
 
 const char * boardType() {
 	if (0 == strcmp("KidsBits", BOARD_TYPE)) {
-		if (isOLED1106) {
+		if (isCodingBox) {
 			return "CodingBox";
 		} else {
 			return "KidsIOT";

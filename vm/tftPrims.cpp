@@ -36,12 +36,13 @@ Arduino_GFX *tft;
 #endif
 
 int useTFT = false; // true means simulate 5x5 LED display on TFT display
-int isOLED1106 = false;
+int isCodingBox = false;
 
 static int backlightPin = -1;
 static int colorBGR = false;
 static int isOLED = false;
 static int oledAddr = 0;
+static int oledColumnOffset = 0;
 
 static int tftWidth = 0;
 static int tftHeight = 0;
@@ -72,6 +73,9 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		if (height == 32) {
 			oledCmd(0xA8); oledCmd(0x1F); // multiplex ratio (31 for 128x32 resolution)
 			oledCmd(0xDA); oledCmd(0x02); // COM pins configuration
+		} else if (height == 128) {
+			oledCmd(0xA8); oledCmd(0x7F); // multiplex ratio (127 for 128x128 resolution)
+			oledCmd(0xDA); oledCmd(0x12); // COM pins configuration
 		} else {
 			oledCmd(0xA8); oledCmd(0x3F); // multiplex ratio (63 for 128x64 resolution)
 			oledCmd(0xDA); oledCmd(0x12); // COM pins configuration
@@ -111,7 +115,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			updateMicrobitDisplay();
 
 			oledCmd(0x10);
-			oledCmd(isOLED1106 ? 0x02 : 0); // column offset
+			oledCmd(oledColumnOffset);
 			oledCmd(0xB0 + i);
 
 			// write 128 bytes of data in two i2c writes
@@ -616,7 +620,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			return pressure;
 		}
 
-	#elif defined(SCOUT_MAKES_AZUL) || defined(OLED_128_64)
+	#elif defined(SCOUT_MAKES_AZUL) || defined(OLED_128_64) || defined(KIDS_BITS)
 		#define OLED_ADDR 0x3C
 		#define TFT_WIDTH 128
 		#if defined(SCOUT_MAKES_AZUL)
@@ -632,7 +636,12 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			int response = readI2CReg(OLED_ADDR, 0); // test if OLED responds at OLED_ADDR
 			if (response < 0) return; // no OLED display detected
 			oledAddr = OLED_ADDR;
-			isOLED1106 = (8 == (response & 15));
+			if (8 == (response & 15)) {
+				oledColumnOffset = 2;
+				#if defined(KIDS_BITS)
+					isCodingBox = true;
+				#endif
+			}
 
 			// Draw to canvas. We do our own OLED initialization and updating
 			// in order to support SH1106 128x128 displays.
@@ -1947,7 +1956,7 @@ static void init_9341(int rotation, int dcPin, int csPin, int blPin,
 	}
 }
 
-static void init_OLED(int w, int h, int flipVertical, int useSH1106) {
+static void init_OLED(int w, int h, int flipVertical) {
 	if ((w < 32) || (w > 128) || (h < 16) || (h > 128)) return;
 	if (!tft) delete tft;
 
@@ -1966,7 +1975,6 @@ static void init_OLED(int w, int h, int flipVertical, int useSH1106) {
 			return; // no OLED display detected
 		}
 	}
-	isOLED1106 = useSH1106;
 
 	// Draw to canvas. We do our own OLED initialization and updating
 	// in order to support SH1106 128x128 displays.
@@ -2081,9 +2089,9 @@ static OBJ primInitOLED(int argCount, OBJ *args) {
 	int w = obj2int(args[0]);
 	int h = obj2int(args[1]);
 	int flipVertical = (argCount > 2) && (args[2] == trueObj);
-	int useSH1106 = (argCount > 3) && (args[3] == trueObj);
 
-	init_OLED(w, h, flipVertical, useSH1106);
+	oledColumnOffset = ((argCount > 3) && (isInt(args[3]))) ? obj2int(args[3]) : 0;
+	init_OLED(w, h, flipVertical);
 	return falseObj;
 }
 

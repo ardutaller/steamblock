@@ -1254,7 +1254,7 @@ void turnOffInternalNeoPixels() {
 	#elif defined(FOXBIT)
 		count = 35;
 	#elif defined(KIDS_BITS)
-		if (isOLED1106) count = 12; // this is a CodingBox
+		if (isCodingBox) count = 12;
 	#elif defined(M5Atom_Matrix) || defined(ARDUINO_Mbits) || defined(STEAMaker)
 		count = 25;
 		// sending neopixel data twice on the Atom Matrix eliminates green pixel at startup
