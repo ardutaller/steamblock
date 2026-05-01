@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2026-04-24 03:09+0000\n"
+"PO-Revision-Date: 2026-05-02 10:09+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklimos@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
 "cs/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -3478,55 +3478,55 @@ msgstr "oba senzory"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR test buzzer"
-msgstr ""
+msgstr "TdR otestuj zvuk"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR set blue LED _"
-msgstr ""
+msgstr "TdR rozsviť modrou LED _"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR set red LED _"
-msgstr ""
+msgstr "TdR rozsviť červenou LED _"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR set RGB LED _"
-msgstr ""
+msgstr "TdR nastav RGB LED _"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR clear RGB LED"
-msgstr ""
+msgstr "TdR zhasni LED"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR LM35 temperature ºC"
-msgstr ""
+msgstr "TdR LM35 teplota ºC"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR DHT11 temperature ºC"
-msgstr ""
+msgstr "TdR DHT11 teplota ºC"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR DHT11 humidity"
-msgstr ""
+msgstr "TdR vlhkost %"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR rotation"
-msgstr ""
+msgstr "TdR rotace"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR light level"
-msgstr ""
+msgstr "TdR intenzita světla"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR button 1"
-msgstr ""
+msgstr "TdR tlačítko 1"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR button 2"
-msgstr ""
+msgstr "TdR tlačítko 2"
 
 #. InnovaDidàctic TdR shield library block
 msgid "TdR receive IR code"
-msgstr ""
+msgstr "TdR přijmi IR kód"
 
 #. InnovaDidàctic Imagina shield library block
 msgid "Imagina set _ led to _"
@@ -4792,7 +4792,7 @@ msgstr "zobrazit pokročilé bloky"
 
 #. Settings menu option
 msgid "export functions as library"
-msgstr "exportovat moje funkce  jako knihovnu"
+msgstr "exportovat moje funkce jako knihovnu"
 
 #. Settings menu option
 msgid "hide advanced blocks"
@@ -6832,3 +6832,136 @@ msgstr "ukázat velikost programu v mikropočítači"
 #. Settings menu option
 msgid "open vm folder on microblocks.fun"
 msgstr "otevřít složku vm na microblocks.fun"
+
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr "nakresli obrázek _ na TFT pozice x _ y _ barva _"
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr "#BR# měřítko _"
+
+#. TFT Display library block
+msgid "image _"
+msgstr "obrázek _"
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr "invertuj TFT displej _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# x offset _ y offset _"
+msgstr "#BR# x offset _ y offset _"
+
+#. External Displays Library block
+msgid "reset pin _"
+msgstr "reset pin _"
+
+#. 8 Bit Graphics Library block
+msgid "set scale _"
+msgstr "nastav měřítko _"
+
+#. 8 Bit Graphics Library block
+msgid "draw buffer"
+msgstr "zobraz buffer"
+
+#. 8 Bit Graphics Library block
+msgid "starting at x _ y _ width _ height _"
+msgstr "počátek od x _ y _ šířka _ výška _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap from BMP file _"
+msgstr "bitmapa z BMP souboru _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from raw indexed file _"
+msgstr "bitmapa šířky _ ze zdrojového souboru index _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from string _"
+msgstr "bitmapa šířky _ z řetězce _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ rotated _ º"
+msgstr "bitmapa _ otočená o _ º"
+
+#. Turtle Geometry library block
+msgid "turtle x"
+msgstr "želva x"
+
+#. Turtle Geometry library block
+msgid "turtle y"
+msgstr "želva y"
+
+#. File System library block
+msgid "directory names"
+msgstr "názvy adresářů"
+
+#. ESP Now library label
+msgid "ESP Now"
+msgstr "ESP Now"
+
+#. ESP Now library label
+msgid "espNow send pair _ = _"
+msgstr "ESPnow pošli dvojici _ = _"
+
+#. ESP Now library label
+msgid "espNow pair received?"
+msgstr "ESPnow přijata dvojice ?"
+
+#. ESP Now library label
+msgid "espNow last number"
+msgstr "ESPnow poslední číslo"
+
+#. ESP Now library label
+msgid "espNow last string"
+msgstr "ESPnow poslední řetězec"
+
+#. ESP Now library label
+msgid "espNow set group _ (0-255)"
+msgstr "ESPnow nastav supinu _ (0-255)"
+
+#. ESP Now library label
+msgid "espNow group"
+msgstr "ESPnow skupina"
+
+#. ESP Now library label
+msgid "espNow send raw _"
+msgstr "ESPnow odešli surová data _"
+
+#. ESP Now library label
+msgid "espNow receive raw"
+msgstr "ESPnow přijmi surová data"
+
+#. ESP Now library label
+msgid "espNow set channel _"
+msgstr "ESPnow nastav kanál _"
+
+#. ESP Now library label
+msgid "espNow channel"
+msgstr "ESPnow kanál"
+
+#. Library name
+msgid "MIDI Player"
+msgstr "MIDI Player"
+
+#. Library name
+msgid "CoCube"
+msgstr "CoCube"
+
+#. Library name
+msgid "CoCube Module"
+msgstr "CoCube Modul"
+
+#. Slot type menu option
+msgid "boolean switch"
+msgstr "logický přepínač"
+
+#. Script right-click context menu
+msgid "copy callable name"
+msgstr "zkopíruj volatelné jméno"
+
+#. Slot type menu option
+msgid "color patch"
+msgstr "barevná skvrna"
