@@ -384,6 +384,11 @@ SyntaxElementMorph.prototype.inputValues = function () {
 	return this.inputs().map(slot => slot.evaluate());
 }
 
+SyntaxElementMorph.prototype.argList = function () {
+	// xxx backward compatability with GP; replace with either inputs() or inputValues()
+	return this.inputs().map(slot => slot.evaluate());
+}
+
 SyntaxElementMorph.prototype.debugCachedInputs = function () {
 	// private - only used for manually debugging inputs caching
 	var realInputs, i;
@@ -3814,20 +3819,28 @@ ScriptsMorph.prototype.userMenu = function () {
 	var menu = new MenuMorph(this),
 		shiftClicked = this.world().currentKey === 16;
 
-	menu.addItem('clean up', 'cleanUp', 'arrange scripts\nvertically');
-	menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
-	menu.addItem('file test', 'fileTest', 'test file open dialog');
-	menu.addLine();
 	menu.addItem(
 		'connect',
 		() => { MB_connection.connect('serial') },
 		'connect via serial for testing');
+	menu.addLine();
+
+	menu.addItem(
+		'new project', () => { MB_editor.newProject() }, 'clear current project');
+	menu.addItem(
+		'open project', () => { MB_editor.openProject() }, 'open a project from a file');
+	menu.addLine();
+
+	menu.addItem(
+		'run', () => { MB_editor.startAll() }, 'run the current project');
+	menu.addItem(
+		'stop', () => { MB_editor.stopAll() }, 'stop all scripts');
+	menu.addLine();
+
+	menu.addItem('clean up', 'cleanUp', 'arrange scripts\nvertically');
+	menu.addItem('scripts pic...', 'exportScriptsPicture', 'save a picture\nof all scripts');
 	return menu;
 };
-
-ScriptsMorph.prototype.fileTest = function () {
-	MB_GUI.importLocalFile((s) => { console.log(s); });
-}
 
 // ScriptsMorph user menu features:
 
@@ -3837,8 +3850,8 @@ ScriptsMorph.prototype.cleanUp = function () {
 		y = target.cleanUpMargin;
 	target.children.sort((a, b) =>
 		// make sure the prototype hat block always stays on top
-		a instanceof PrototypeHatBlockMorph ? -1 :
-			(b instanceof PrototypeHatBlockMorph ? 1 : a.top() - b.top())
+		a.isFunctionDefinition() ? -1 :
+			(b.isFunctionDefinition() ? 1 : a.top() - b.top())
 	).forEach(child => {
 		child.setPosition(origin.add(new Point(target.cleanUpMargin, y)));
 		y += child.stackHeight() + target.cleanUpSpacing;
@@ -3904,8 +3917,8 @@ ScriptsMorph.prototype.sortedElements = function () {
 	var scripts = this.children.slice(); // make a copy
 	scripts.sort((a, b) =>
 		// make sure the prototype hat block always stays on top
-		a instanceof PrototypeHatBlockMorph ? -1 :
-			(b instanceof PrototypeHatBlockMorph ? 1 : a.top() - b.top())
+		a.isFunctionDefinition() ? -1 :
+			(b.isFunctionDefinition() ? 1 : a.top() - b.top())
 	);
 	return scripts;
 };
@@ -4007,39 +4020,7 @@ ArgMorph.prototype.init = function (type) {
 	this.color = new Color(0, 17, 173);
 };
 
-// ArgMorph preferences settings:
-
-ArgMorph.prototype.executeOnSliderEdit = false;
-
 // ArgMorph events:
-
-ArgMorph.prototype.reactToSliderEdit = function () {
-/*
-	directly execute the stack of blocks I'm part of if my
-	"executeOnSliderEdit" setting is turned on, obeying the stage's
-	thread safety setting. This feature allows for "Bret Victor" style
-	interactive coding.
-*/
-	var block, top, receiver, stage;
-	if (!this.executeOnSliderEdit) {return; }
-	block = this.parentThatIsA(BlockMorph);
-	if (block) {
-		top = block.topBlock();
-		receiver = top.scriptTarget();
-		if (top instanceof PrototypeHatBlockMorph) {
-			return;
-		}
-		if (receiver) {
-			stage = receiver.parentThatIsA(StageMorph);
-			if (stage && (stage.isThreadSafe ||
-					Process.prototype.enableSingleStepping)) {
-				stage.threads.startProcess(top, receiver, stage.isThreadSafe);
-			} else {
-				top.mouseClickLeft();
-			}
-		}
-	}
-};
 
 ArgMorph.prototype.setContents = function () {
 	// subclass responsibility
@@ -5278,8 +5259,6 @@ BooleanSlotMorph.prototype.nextValue = function () {
 
 BooleanSlotMorph.prototype.mouseClickLeft = function () {
 	this.toggleValue();
-	if (isNil(this.value)) {return; }
-	this.reactToSliderEdit();
 };
 
 BooleanSlotMorph.prototype.mouseEnter = function () {
@@ -6587,7 +6566,7 @@ ScriptFocusMorph.prototype.shiftScript = function (deltaPoint) {
 		this.moveBy(deltaPoint);
 	} else {
 		tb = this.element.topBlock();
-		if (tb && !(tb instanceof PrototypeHatBlockMorph)) {
+		if (tb && !(tb.isFunctionDefinition())) {
 			tb.moveBy(deltaPoint);
 		}
 	}
