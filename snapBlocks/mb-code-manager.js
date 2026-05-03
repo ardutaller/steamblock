@@ -4,6 +4,7 @@ class MB_CodeManager {
 	constructor(aProject) {
 		this.project = aProject;
 		this.chunkIDs = new Map(); // key (Block or String) -> [id, crc, chunkType, lastSrc, functionMayHaveChanged]
+		this.functionChunkIDs = new Map(); // function name -> chunkID
 		this.recompileAll = false;
 		this.codeStoreFull = false;
 		this.compiler = null;
@@ -15,18 +16,22 @@ class MB_CodeManager {
 		this.buildCRC32Table();
 	}
 
-	recompileNeeded() { this.recompileAll = true; }
+	// --- run/stop ---
 
 	evalOnBoard(aBlock, showBytes) {
 		if (this.codeStoreFull) {
-			MB_editor.showError(aBlock.morph(), 'Program is too large to store on board.');
+			MB_editor.showError(aBlock, 'Program is too large to store on board.');
 			return;
 		}
-		if (aBlock.morph().ownerThatIsA('ScriptEditor') == null) {
+		if (!(aBlock.parent instanceof ScriptsMorph)) {
 			// running a block from the palette
 			this.saveAllChunks(true, aBlock);
 		}
 		this.runChunk(this.lookupChunkID(aBlock));
+	}
+
+	isRunning(aBlock) {
+		return aBlock.getHighlight.getHighlight != null;
 	}
 
 	stopRunningBlock(aBlock) {
@@ -35,26 +40,40 @@ class MB_CodeManager {
 		}
 	}
 
+	syncAndStartAll() {
+//		this.syncScripts();
+		MB_connection.sendMsg('startAllMsg', 1); // chunk type 1 means 16-bit instructions
+	}
+
+	stopAndSyncScripts() {
+		MB_connection.sendMsg('stopAllMsg');
+		this.syncScripts();
+	}
+
+	// --- compiling ---
+
+	recompileNeeded() { this.recompileAll = true; }
+
 	chunkTypeFor(aBlockOrFunction) {
+		if (aBlockOrFunction instanceof CommandBlockMorph) return 1;
+		if (aBlockOrFunction instanceof ReporterBlockMorph) return 2;
+
 		if (aBlockOrFunction instanceof MB_Function) return 3;
 		if (aBlockOrFunction instanceof BlockMorph &&
 			aBlockOrFunction.isFunctionDefinition()) {
 				return 3;
 		}
 
-		const expr = aBlockOrFunction.expression();
-		const op = expr.primName();
+		const op = aBlockOrFunction.selector;
 		if (op === 'whenStarted') return 4;
 		if (op === 'whenCondition') return 5;
 		if (op === 'whenBroadcastReceived') return 6;
 		if (op === 'whenButtonPressed') {
-			const button = expr.argList()[0];
+			const button = aBlockOrFunction.inputs()[0].evaluate();
 			if (button === 'A') return 7;
 			if (button === 'B') return 8;
 			return 9; // A+B
 		}
-		if (expr instanceof Command) return 1;
-		if (expr instanceof Reporter) return 2;
 
 		throw new Error('Unexpected argument to chunkTypeFor');
 	}
@@ -65,7 +84,9 @@ class MB_CodeManager {
 			aBlockOrFunction = this.project.functionNamed(aBlockOrFunction);
 			if (aBlockOrFunction == null) return [];
 		}
-		if (this.compiler == null) this.compiler = new MB_Compiler();
+		if (this.compiler == null) {
+			this.compiler = new MB_Compiler(this.project, this); // needs functionID map
+		}
 		const code = this.compiler.instructionsFor(aBlockOrFunction);
 		const bytes = [];
 		for (const item of code) {
@@ -96,10 +117,13 @@ class MB_CodeManager {
 
 	syncScripts() {
 		// Called by editor when anything changes.
-		if (!MB_connection.isConnected()) return;
+		if (!MB_connection.isConnected()) {
+			console.log('Board not connected!');
+			return;
+		}
 
 		// force re-save of any functions in the scripting area
-		for (const aBlock of MB_editor.sortedScripts()) {
+		for (const aBlock of this.project.allScripts()) {
 			if (aBlock.isFunctionDefinition()) {
 				const fName = aBlock.definedFunctionName();
 				const entry = this.chunkIDs.get(fName);
@@ -128,12 +152,11 @@ class MB_CodeManager {
 		for (const k of this.chunkIDs.keys()) {
 			let isObsolete = false;
 			if (k instanceof BlockMorph) {
-				const owner = k.morph().owner();
+				const owner = k.parent;
 				isObsolete = (owner == null ||
-					owner.handler() == null ||
-					!(owner.handler() instanceof Hand ||
-					owner.handler() instanceof ScriptEditor ||
-					owner.handler() instanceof BlocksPalette));
+					!(owner instanceof HandMorph ||
+					owner instanceof ScriptsMorph ||
+					owner instanceof ScrollFrameMorph));
 			} else if (typeof k === 'string') {
 				isObsolete = (this.project.functionNamed(k) == null);
 			}
@@ -173,11 +196,12 @@ class MB_CodeManager {
 		// Ensure that there is a chunk ID for every user-defined function.
 		// This must be done before generating any code to allow for recursive calls.
 		for (const func of this.project.allFunctions()) {
-			const fName = func.functionName();
+			const fName = func.functionName;
 			if (!this.chunkIDs.has(fName)) {
 				const id = this.unusedChunkID();
 				const entry = [id, null, this.chunkTypeFor(func), '', true];
 				this.chunkIDs.set(fName, entry); // fName -> [id, crc, chunkType, lastSrc, functionMayHaveChanged]
+				this.functionChunkIDs.set(fname, id);
 			}
 		}
 	}
@@ -204,12 +228,14 @@ class MB_CodeManager {
 
 	saveAllChunks(checkCRCs, paletteBlock) {
 		// Save the code for all scripts and user-defined functions.
+console.log('saveAllChunks A'); // xxx
 		if (checkCRCs == null) checkCRCs = true;
-		if (!this.connectedToBoard()) return;
+		if (!MB_connection.connectedToBoard()) return;
+console.log('saveAllChunks B'); // xxx
+this.recompileAll = true;
 
 		const t = Date.now();
-		const totalScripts = this.project.allFunctions().length +
-			MB_editor.sortedScripts().length;
+		const totalScripts = this.project.allFunctions().length + this.project.allScripts().length;
 		const progressInterval = Math.max(1, Math.floor(totalScripts / 20));
 		let processedScripts = 0;
 		let skipHiddenFunctions = true;
@@ -218,7 +244,7 @@ class MB_CodeManager {
 		if (this.recompileAll) {
 			// Clear the source code field of all chunk entries to force script recompilation
 			// and possible re-download since variable offsets have changed.
-			this.suspendCodeFileUpdates();
+			MB_connection.suspendCodeFileUpdates();
 			for (const entry of this.chunkIDs.values()) {
 				entry[3] = '';
 				entry[4] = true;
@@ -231,7 +257,7 @@ class MB_CodeManager {
 		const unusedFuncs = this.project.unusedFunctions(paletteBlock);
 		let functionsSaved = 0;
 		for (const aFunction of this.project.allFunctions()) {
-			if (!unusedFuncs.includes(aFunction.functionName())) {
+			if (!unusedFuncs.includes(aFunction.functionName)) {
 				if (this.saveChunk(aFunction, skipHiddenFunctions)) {
 					functionsSaved += 1;
 					if ((functionsSaved % progressInterval) === 0) {
@@ -243,7 +269,7 @@ class MB_CodeManager {
 				MB_editor.inform('Program is too large to store on board.');
 				return;
 			}
-			if (!this.connectedToBoard()) { // connection closed
+			if (!MB_connection.connectedToBoard()) { // connection closed
 				console.log('Lost communication to the board in saveAllChunks');
 				return;
 			}
@@ -258,7 +284,7 @@ class MB_CodeManager {
 			this.saveChunk(paletteBlock, skipHiddenFunctions);
 			scriptsSaved += 1;
 		}
-		for (const aBlock of MB_editor.sortedScripts()) {
+		for (const aBlock of this.project.allScripts()) {
 			if (!aBlock.isFunctionDefinition()) { // skip function def hat; functions get saved above
 				if (this.saveChunk(aBlock, skipHiddenFunctions)) {
 					scriptsSaved += 1;
@@ -270,7 +296,7 @@ class MB_CodeManager {
 					MB_editor.inform('Program is too large to store on board.');
 					return;
 				}
-				if (!this.connectedToBoard()) { // connection closed
+				if (!MB_connection.connectedToBoard()) { // connection closed
 					console.log('Lost communication to the board in saveAllChunks');
 					return;
 				}
@@ -289,7 +315,7 @@ class MB_CodeManager {
 
 		this.recompileAll = false;
 		if (checkCRCs) this.verifyCRCs();
-		this.resumeCodeFileUpdates();
+		MB_connection.resumeCodeFileUpdates();
 		MB_editor.showDownloadProgress(3, 1);
 	}
 
@@ -303,25 +329,12 @@ class MB_CodeManager {
 		this.saveChunk(aBlockOrFunction, false);
 	}
 
-	sourceForChunk(aBlockOrFunction) {
-		const pp = new PrettyPrinter();
-		if (aBlockOrFunction instanceof MB_Function) {
-			return pp.prettyPrintFunction(aBlockOrFunction);
-		}
-		const expr = aBlockOrFunction.expression();
-		if (expr instanceof Reporter) {
-			return pp.prettyPrint(expr);
-		}
-		return pp.prettyPrintList(expr);
-	}
-
 	saveChunk(aBlockOrFunction, skipHiddenFunctions) {
 		// Save the given script or function as an executable code "chunk".
 		// Also save the source code (in GP format) and the script position.
 		if (this.codeStoreFull) return;
 		if (skipHiddenFunctions == null) skipHiddenFunctions = true; // optimize by default
 
-		const pp = new PrettyPrinter();
 		if (typeof aBlockOrFunction === 'string') {
 			aBlockOrFunction = this.project.functionNamed(aBlockOrFunction);
 			if (aBlockOrFunction == null) return false;
@@ -329,19 +342,14 @@ class MB_CodeManager {
 
 		let chunkID, entry, currentSrc;
 		if (aBlockOrFunction instanceof MB_Function) {
-			const functionName = aBlockOrFunction.functionName();
+			const functionName = aBlockOrFunction.functionName;
 			chunkID = this.lookupChunkID(functionName);
 			entry = this.chunkIDs.get(functionName);
 			if (skipHiddenFunctions && !entry[4]) return false; // function is not in scripting area so has not changed
 			entry[4] = false;
-			currentSrc = pp.prettyPrintFunction(aBlockOrFunction);
+			currentSrc = aBlockOrFunction.codeString();
 		} else {
-			const expr = aBlockOrFunction.expression();
-			if (expr instanceof Reporter) {
-				currentSrc = pp.prettyPrint(expr);
-			} else {
-				currentSrc = pp.prettyPrintList(expr);
-			}
+			currentSrc = aBlockOrFunction.codeString();
 			chunkID = this.ensureChunkIdFor(aBlockOrFunction);
 			entry = this.chunkIDs.get(aBlockOrFunction);
 			if (entry[2] !== this.chunkTypeFor(aBlockOrFunction)) {
@@ -367,19 +375,21 @@ class MB_CodeManager {
 		const data = [chunkType, ...chunkBytes];
 		if (data.length > 1000) {
 			if (aBlockOrFunction instanceof MB_Function) {
-				MB_editor.inform(aBlockOrFunction.functionName() + 'Function is too large to send to board.');
+				MB_editor.inform(aBlockOrFunction.functionName + 'Function is too large to send to board.');
 			} else {
-				MB_editor.showError(aBlockOrFunction.morph(), 'Script is too large to send to board.');
+				MB_editor.showError(aBlockOrFunction, 'Script is too large to send to board.');
 			}
 			return false;
 		}
 
 		// don't save the chunk if its CRC has not changed unless is a button or broadcast
 		// hat because the CRC does not reflect changes to the button or broadcast name
-		let crcOptimization = true;
+		let crcOptimization = false; // xxx disabled for testing
 		if (aBlockOrFunction instanceof BlockMorph) {
-			const op = aBlockOrFunction.expression().primName();
-			crcOptimization = !(op === 'whenButtonPressed' || op === 'whenBroadcastReceived');
+			const op = aBlockOrFunction.selector;
+			if ((op === 'whenButtonPressed' || op === 'whenBroadcastReceived')) {
+				crcOptimization = false;
+			}
 		}
 		if (crcOptimization && this.arraysEqual(entry[1], this.computeCRC(chunkBytes))) {
 			return false;
@@ -389,6 +399,8 @@ class MB_CodeManager {
 		const restartChunk = (aBlockOrFunction instanceof BlockMorph && this.isRunning(aBlockOrFunction));
 
 		const chunkCRC = this.computeCRC(chunkBytes);
+console.log('saving chunk A', chunkID, 'len', chunkBytes.length, 'type', chunkType, chunkCRC); // xxx
+
 		if (this.storeChunkOnBoard(chunkID, data, chunkCRC)) {
 			entry[1] = chunkCRC; // remember the CRC of the code we just saved
 		} else {
@@ -410,9 +422,9 @@ class MB_CodeManager {
 		// Send the given chunk to the board and wait for the board to return the CRC.
 		// That ensures that the chunk has been saved to Flash memory.
 		// This can take several seconds if the board does a Flash compaction.
+
 		this.lastCRC = null;
 		MB_connection.sendMsg('chunkCode16Msg', chunkID, data);
-		MB_connection.sendMsg('getChunkCRCMsg', chunkID);
 
 		// wait for CRC to be reported
 		const timeout = 3000; // must be less than ping timeout
@@ -422,6 +434,8 @@ class MB_CodeManager {
 			if (this.codeStoreFull) return false;
 			await waitMSecs(1);
 		}
+console.log('sent chunk', chunkID, this.arraysEqual(this.lastCRC, chunkCRC), Date.now() - startT);
+
 		return this.arraysEqual(this.lastCRC, chunkCRC);
 	}
 
@@ -445,7 +459,7 @@ class MB_CodeManager {
 	verifyCRCs() {
 		// Check that the CRCs of the chunks on the board match the ones in the IDE.
 		// Resend the code of any chunks whose CRC's do not match.
-		if (!this.connectedToBoard()) return;
+		if (!MB_connection.connectedToBoard()) return;
 
 		// For testing: control type of CRC collection (default: forceIndividual = false)
 		// collectCRCsIndividually is slower and less reliable than collectCRCsBulk but since
@@ -511,12 +525,12 @@ class MB_CodeManager {
 
 	boardHasSameProject() {
 		// Return true if the board appears to have the same project as the IDE.
-		if (!this.connectedToBoard()) return false;
+		if (!MB_connection.connectedToBoard()) return false;
 		if (this.chunkIDs.size === 0) return false; // empty project
 
 		// update chunkIDs dictionary for script/function additions or removals while disconnected
 		this.assignFunctionIDs();
-		for (const aBlock of MB_editor.sortedScripts()) {
+		for (const aBlock of this.project.allScripts()) {
 			if (!aBlockisFunctionDefinition()) { // skip function def hat; functions get IDs above
 				this.ensureChunkIdFor(aBlock);
 			}
@@ -591,6 +605,7 @@ class MB_CodeManager {
 		// Received an individual CRC message from board.
 		// Record the CRC for the given chunkID.
 		this.lastRcvMSecs = Date.now();
+console.log('code manager crcReceived', chunkID, chunkCRC);
 		this.lastCRC = chunkCRC;
 		if (this.crcDict != null) {
 			this.crcDict.set(chunkID, chunkCRC);

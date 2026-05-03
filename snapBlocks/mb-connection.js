@@ -5,12 +5,13 @@ class MB_Connection {
 		this.msgDict = null;
 		this.portName = null;
 		this.connectionStartTime = null;
-		this.pingSentMSecs = null;
+		this.pingSentMSecs = 0;
 		this.lastPingRecvMSecs = null;
-		this.recvBuf = null;
+		this.recvBuf = new Uint8Array(0);
 		this.vmVersion = null;
 		this.boardType = null;
-		this.readFromBoard = null;
+		this.codeManager = null;
+
 		this.nextChunkID = 0;
 		this.chunkIDs = new Map();
 		this.runningChunks = new Map();
@@ -43,23 +44,21 @@ class MB_Connection {
 
 	// --- Startup Actions ---
 
-	boardHasSameProject() {
-		// XXX TODO
-		return false;
-	}
-
-	stopAndSyncScripts() {
-		// XXX TODO
-	}
-
-	readCodeFromBoard() {
-		// XXX TODO
-	}
-
 	clearBoardIfConnected() {
 		this.sendMsg('systemResetMsg'); // send the reset message
 		this.sendMsgSync('deleteAllCodeMsg'); // delete all code from board
 		this.sendMsgSync('clearVarsMsg'); // delete all variable names from board
+
+		// temporary: clear interim chunkID system
+		this.nextChunkID = 0;
+		this.chunkIDs = new Map();
+		this.runningChunks = new Map();
+	}
+
+	// --- Decompiler ---
+
+	readCodeFromBoard() {
+		// XXX TODO
 	}
 
 	// --- Connection Handling ---
@@ -88,8 +87,8 @@ class MB_Connection {
 
 	disconnect() {
 // XXX TODO These actions should be done by the editor before calling disconnect()
-// 		this.stopAndSyncScripts();
-// 		this.sendMsg('startAllMsg');
+// 		MB_editor.stopAndSyncScripts();
+// 		MB_editor.startAll();
 
 		MB_port.disconnect();
 		this.portName = null;
@@ -98,6 +97,10 @@ class MB_Connection {
 
 		// remove running highlights and result bubbles when disconnected
 		MB_editor.clearRunningHighlights();
+	}
+
+	isConnected() {
+		return MB_port.isConnected();
 	}
 
 	connectedToBoard() {
@@ -114,17 +117,17 @@ class MB_Connection {
 	updateConnection() {
 		const pingSendInterval = 2000; // msecs between pings
 		const pingTimeout = 8000;
-		if (this.pingSentMSecs == null) this.pingSentMSecs = 0;
 		if (this.lastPingRecvMSecs == null) this.lastPingRecvMSecs = 0;
 
 		if (this.portName == null) return 'not connected';
+
+		this.sendPeriodicPing();
+		this.processMessages();
 
 		// handle connection attempt in progress
 		if (this.connectionStartTime != null) {
 			return this.tryToConnect();
 		}
-
-		MB_connection.processMessages();
 
 		// if port is not open, disconnect
 		if (!MB_port.isConnected()) {
@@ -160,11 +163,24 @@ class MB_Connection {
 		}
 	}
 
+	sendPeriodicPing() {
+		// If the port is open and it is time, send a ping
+		const pingSendInterval = 2000; // msecs between pings
+
+		const now = Date.now();
+		if ((now - this.pingSentMSecs) > pingSendInterval) {
+			this.sendMsg('pingMsg');
+			this.pingSentMSecs = now;
+		}
+	}
+
 	tryToConnect() {
 		// Called when connectionStartTime is not null, indicating that we are trying
 		// to establish a connection to a board.
 
-		if (!MB_port.isConnected()) return 'not connected'; // BLE is not yet connected...
+		if (!MB_port.isConnected()) return 'not connected'; // Port is not yet connected...
+
+		this.sendMsg('pingMsg');
 
 		// process any incoming messages
 		this.processMessages();
@@ -173,14 +189,13 @@ class MB_Connection {
 			return 'connected';
 		}
 
-		this.sendMsg('pingMsg'); // send another ping
-
 		const connectionAttemptTimeout = 10000; // milliseconds
 		if ((Date.now() - this.connectionStartTime) > connectionAttemptTimeout) {
 			// give up and disconnect if no response from board after connectionAttemptTimeout
 			this.disconnect();
 			this.connectionStartTime = null;
 		}
+
 		return 'not connected';
 	}
 
@@ -192,26 +207,16 @@ class MB_Connection {
 		this.sendMsgSync('getVersionMsg');
 		this.sendMsg('stopAllMsg');
 		this.processMessages(); // process incoming version message
-
 		MB_editor.justConnected();
-		// XXX TODO The following should be done by the editor:
-		if (this.readFromBoard) {
-			this.readFromBoard = false;
-			this.readCodeFromBoard();
-		} else {
-			const reuseCodeIfPossible = false; // set this to true to attempt to reuse code on board
-			if (!reuseCodeIfPossible || !this.boardHasSameProject()) {
-				if (reuseCodeIfPossible) console.log('Full download');
-				this.clearBoardIfConnected();
-			} else {
-				console.log('Incremental download', this.vmVersion, this.boardType);
-			}
-			MB_editor.showDownloadProgress(2, 0);
-			this.stopAndSyncScripts(true);
-		}
 	}
 
 	// --- Message handling ---
+
+	setCodeManager(codeManager) {
+		// Register a code manager to receive certain message responses.
+
+		this.codeManager = codeManager;
+	}
 
 	msgNameToID(msgName) {
 		if (Number.isInteger(msgName)) return msgName;
@@ -410,9 +415,7 @@ class MB_Connection {
 		return true;
 	}
 
-	discardMessage() { this.skipMessage(true); }
-
-	skipMessage(discard) {
+	discardMessage() {
 		// Discard bytes in recvBuf until the start of the next message, if any.
 		const end = this.recvBuf.length;
 		for (let i = 1; i < end; i++) { // start at index 1 to skip the current (bad) start byte
@@ -423,7 +426,7 @@ class MB_Connection {
 				return;
 			}
 		}
-		if (discard === true) console.log('	   ', this.bytesToString(this.recvBuf));
+		console.log('	   ', this.bytesToString(this.recvBuf));
 		this.recvBuf = new Uint8Array(0); // no message start found; discard entire buffer
 	}
 
@@ -593,15 +596,17 @@ class MB_Connection {
 
 	// --- Message sending ---
 
-	async sendMsg(msgName, chunkID, byteList) {
+	async sendMsg(msgName, chunkID = 0, byteList = null) {
 		if (!MB_port.isConnected()) return;
 
 		if (chunkID == null) chunkID = 0;
 		const msgID = this.msgNameToID(msgName);
 		let msgArr;
 		if (byteList == null) { // short message
+// if (msgID != this.msgNameToID('pingMsg')) console.log('send short', msgID, chunkID); // xxx
 			msgArr = [250, msgID, chunkID];
 		} else { // long message
+// console.log('send long', msgID, chunkID, 'bytes', byteList.length); // xxx
 			const bodyByteCount = byteList.length + 1;
 			msgArr = [251, msgID, chunkID, bodyByteCount & 255, (bodyByteCount >> 8) & 255,
 				...byteList, 254]; // 254 is terminator byte (helps board detect dropped bytes)
@@ -630,7 +635,7 @@ class MB_Connection {
 		}
 	}
 
-	sendMsgSync(msgName, chunkID = 1, byteList = new Uint8Array(0)) {
+	sendMsgSync(msgName, chunkID = 0, byteList = null) {
 		// Send a message followed by a 'pingMsg', then wait for a ping response from VM.
 		this.readAvailableSerialData();
 		this.sendMsg(msgName, chunkID, byteList);
@@ -678,10 +683,20 @@ class MB_Connection {
 		return words.slice(1).join(' ');
 	}
 
+	// --- Code File Updates ---
+
+	suspendCodeFileUpdates() {
+//		this.sendMsgSync('extendedMsg', 2);
+	}
+
+	resumeCodeFileUpdates() {
+//		this.sendMsg('extendedMsg', 3);
+	}
+
 	// --- Testing... ---
 
 	crcReceived(chunkID, crc) {
-//		console.log('Chunk:', chunkID, 'CRC:', crc);
+		if (this.codeManager) this.codeManager.crcReceived(chunkID, crc);
 	}
 
 	showError(errorString) {
@@ -735,6 +750,12 @@ class MB_Connection {
 
 		if (this.project == null) this.project = new MB_Project();
 		let code = new MB_Compiler(this.project).compiledBytesFor(aBlock);
+		while ((code.length % 4) !== 0) {
+			// pad code with zeros to make chunk length be a multiple of four bytes
+			// this ensures 32-bit word chunk alignment in the code store
+			code.push(0);
+		}
+
 		let chunkType = aBlock.chunkType();
 		code.unshift(chunkType); // prepend the chunk type
 		this.sendMsg('chunkCode16Msg', chunkID, code);
