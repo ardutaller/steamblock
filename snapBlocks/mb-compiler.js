@@ -10,15 +10,13 @@
 /* globals BlockMorph, CommandBlockMorph, CommandSlotMorph, MB_Function, ReporterBlockMorph */
 
 class MB_Compiler {
-	constructor(project, functionChunkIDs) {
+	constructor(project, codeManager) {
 		// project: MB_Project for variable/function lookup
-		// functionChunkIDs: Map<string, number> from function name to chunk ID
+		// codeManager: used to look up chunkID for functions
 		this.project = project;
-		this.functionChunkIDs = functionChunkIDs || new Map();
-		this.initOpcodes();
-		this.initPrimsets();
+		this.codeManager = codeManager;
 		// per-compilation state (reset in instructionsFor)
-		this.argNames = new Map();  // varName -> argIndex
+		this.argNames = new Map();	// varName -> argIndex
 		this.localVars = new Map(); // varName -> localIndex
 		// encoding constants
 		this.falseObj = 0;
@@ -26,13 +24,8 @@ class MB_Compiler {
 		this.zeroObj = 1; // (0 << 1) | 1
 		this.stringClassID = 4;
 
-// xxx testing only: assign chunk numbers for all functions
-let nextChunkID = 0;
-for (let f of project.allFunctions()) {
-	let fName = f.functionName;
-	this.functionChunkIDs.set(fName, nextChunkID++);
-}
-// end of testing code
+		this.initOpcodes();
+		this.initPrimsets();
 	}
 
 	initOpcodes() {
@@ -462,8 +455,8 @@ for (let f of project.allFunctions()) {
 		const loopVarIndex = this.localVars.get(loopVarName);
 		const body = this.instructionsForCmdList(this.cmdListArg(inputs, 2));
 		result.push(
-			['pushImmediate', this.falseObj], // will be N (total loop count)
-			['pushImmediate', this.falseObj]  // will be a decrementing loop counter
+			['pushImmediate', this.falseObj],	// will be N (total loop count)
+			['pushImmediate', this.falseObj]	// will be a decrementing loop counter
 		);
 		result.push(...this.instructionsForJump('jmp', body.length));
 		result.push(...body);
@@ -714,12 +707,12 @@ for (let f of project.allFunctions()) {
 	// function calls
 
 	isFunctionCall(op) {
-		return this.functionChunkIDs.has(op);
+		return this.codeManager.functionChunkIDs.has(op);
 	}
 
 	instructionsForFunctionCall(op, inputs, isCmd) {
 		const result = [];
-		const chunkID = this.functionChunkIDs.get(op);
+		const chunkID = this.codeManager.functionChunkIDs.get(op);
 		for (let i = 0; i < inputs.length; i++) {
 			result.push(...this.instructionsForExpression(this.exprArg(inputs, i)));
 		}
@@ -754,8 +747,8 @@ for (let f of project.allFunctions()) {
 					nextOffset += 2 * this.wordsForLiteral(literal);
 				}
 				if (op === 'commandPrimitive' || op === 'reporterPrimitive') {
-					const primSetIndex = (this.primsets.get(instr[2]) || 0) & 63; // 6 bits
-					const primNameOffset = (litOffset - (ip + 1)) & 1023;              // 10 bits
+					const primSetIndex = (this.primsets.get(instr[2]) || 0) & 63;	// 6 bits
+					const primNameOffset = (litOffset - (ip + 1)) & 1023;			// 10 bits
 					const argCount = (instr[3] || 0) & 255;
 					instr[1] = ((primSetIndex << 18) | (primNameOffset << 8)) | argCount;
 					instr[2] = literal; // retain literal string for "show instructions"
