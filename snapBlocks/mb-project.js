@@ -12,7 +12,7 @@
 	the libraries it uses.
 */
 
-/* global MB_Function, MB_Parser, BlockMorph, CommandBlockMorph */
+/* global MB_editor, MB_Function, MB_Parser, BlockMorph, CommandBlockMorph */
 
 // --- Module-level helpers ---
 
@@ -178,6 +178,12 @@ class MB_Project {
 		// libraries without asking. Otherwise ask the user for confirmation.
 
 		// XXX TODO This requires UI interaction so skip for now.
+	}
+
+	// Scripts
+
+	allScripts() {
+		return this.main.scripts.map(entry => entry[2]);
 	}
 
 	// Functions
@@ -891,8 +897,12 @@ class MB_Module {
 		this.choices = new Map();
 		for (const cmd of cmdList) {
 			if (!Array.isArray(cmd) || cmd[0] !== 'choices') continue;
-			let args = cmd.slice(1).map(x => String(stringArg(x)));
-			if (args.length > 0) this.choices.set(args[0], args.slice(1));
+			if (cmd.length < 3) continue;
+			let args = cmd.slice(1);
+			for (let i = 0; i < args.length; i++) {
+				args[i] = String(stringArg(args[i]));
+			}
+			this.choices.set(args[0], args.slice(1));
 		}
 	}
 
@@ -1102,19 +1112,18 @@ class MB_ScriptExchange {
 		result.push(...this.functionDefinitions());
 
 		const scale = blockScale();
-		for (const m of blockList) {
-			const block = m.handler ? m.handler() : m;
+		for (const block of blockList) {
 			if (!(block instanceof BlockMorph)) continue;
-			let expr = block.expression();
-			if (expr.primName() === 'to') {
+			let expr = block;
+			if (expr.selector === 'to') {
 				// Save a function-definition hat as a stub 'to' with nil body;
 				// the full definition is saved separately by functionDefinitions().
 				const callArgs = ['to', ...expr.argList()];
 				callArgs[callArgs.length - 1] = null; // replace body with null
 				expr = MB_Parser.commandFromArray(callArgs);
 			}
-			const x = Math.round(m.left() / scale);
-			const y = Math.round(m.top() / scale);
+			const x = Math.round(block.left() / scale);
+			const y = Math.round(block.top() / scale);
 			result.push(this.scriptText(expr, x, y));
 		}
 		return result.join('');
@@ -1144,7 +1153,7 @@ class MB_ScriptExchange {
 		const nl = useSemicolons ? '' : '\n';
 		const parts = ['script ' + x + ' ' + y + ' '];
 		if (cmdOrReporter instanceof ReporterBlockMorph) {
-			if (cmdOrReporter.primName() === 'v') {
+			if (cmdOrReporter.selector === 'v') {
 				let varName = cmdOrReporter.argList()[0];
 				if (varMustBeQuoted(varName)) varName = JSON.stringify(varName);
 				parts.push('(v ' + varName + ')');
@@ -1168,10 +1177,9 @@ class MB_ScriptExchange {
 		const functionsUsedSet = new Set();
 		const libsUsedSet = new Set();
 
-		for (const m of blockList) {
-			const block = m.handler ? m.handler() : m;
+		for (const block of blockList) {
 			if (block instanceof BlockMorph) {
-				this.analyzeCallsInExpression(block.expression(), functionsUsedSet, libsUsedSet);
+				this.analyzeCallsInScript(block, functionsUsedSet, libsUsedSet);
 			}
 		}
 
@@ -1179,13 +1187,13 @@ class MB_ScriptExchange {
 		this.libsUsed = [...libsUsedSet].sort();
 	}
 
-	analyzeCallsInExpression(cmdOrReporter, functionsUsedSet, libsUsedSet) {
+	analyzeCallsInScript(cmdOrReporter, functionsUsedSet, libsUsedSet) {
 		// Recursively collect all function calls and library references.
 		const main = this.mbProject.main;
 		const todo = [cmdOrReporter];
 		while (todo.length > 0) {
 			for (const b of todo.shift().allBlocks()) {
-				const op = b.primName();
+				const op = b.selector;
 				if (this.isFunctionCall(op)) {
 					if (this.libraryDefines(main, op)) {
 						if (!functionsUsedSet.has(op)) {
@@ -1234,7 +1242,7 @@ class MB_ScriptExchange {
 
 		// Add libraries and function definitions
 		for (const entry of scriptCmds) {
-			const op = entry.primName();
+			const op = entry.selector;
 			const args = entry.argList();
 			if (op === 'depends') {
 				for (const libName of args) {
@@ -1254,7 +1262,7 @@ class MB_ScriptExchange {
 		let scriptsY = 10000;
 		for (const entry of scriptCmds) {
 			const args = entry.argList();
-			if (entry.primName() === 'script' && args.length === 3) {
+			if (entry.selector === 'script' && args.length === 3) {
 				scriptsX = Math.min(scriptsX, args[0]);
 				scriptsY = Math.min(scriptsY, args[1]);
 			}
@@ -1271,11 +1279,11 @@ class MB_ScriptExchange {
 				args[1] = scriptsY;
 				console.log('fixed args:', args);
 			}
-			if (entry.primName() === 'script' && args.length === 3 && args[2] != null) {
+			if (entry.selector === 'script' && args.length === 3 && args[2] != null) {
 				const script = args[2];
 				this.addGlobalsFor(script);
 				let block;
-				if (script.primName() === 'to') {
+				if (script.selector === 'to') {
 					const func = this.mbProject.functionNamed(script.argList()[0]);
 					block = scriptForFunction(func);
 				} else {
@@ -1285,8 +1293,8 @@ class MB_ScriptExchange {
 				const scale = blockScale();
 				const blockX = Math.round(dstX + scale * (args[0] - scriptsX));
 				const blockY = Math.round(dstY + scale * (args[1] - scriptsY));
-				block.morph().setPosition(blockX, blockY);
-				scriptsPane.morph().addPart(block.morph());
+				block.setPosition(blockX, blockY);
+				scriptsPane.add(block);
 			}
 		}
 		smallRuntime().saveAllChunksAfterLoad();
@@ -1302,7 +1310,7 @@ class MB_ScriptExchange {
 			const args = b.argList();
 			if (args.length > 0) {
 				const varName = args[0];
-				const op = b.primName();
+				const op = b.selector;
 				if (['v', '=', '+='].includes(op)) varRefs.push(varName);
 				if (['local', 'for'].includes(op)) localVars.push(varName);
 			}
@@ -1324,13 +1332,13 @@ function testLoad() {
 		project.loadFromString(contents);
 		let msecs = Date.now() - startT;
 		console.log(fileName, project.stats(), msecs, 'msecs');
-		MB_GUI.removeAllScripts();
+		MB_editor.removeAllScripts();
 		project.main.scripts.forEach( (entry) => {
 			let x = entry[0], y = entry[1], script = entry[2];
-			MB_GUI.addBlockToScriptsAt(script, x, y);
+			MB_editor.addBlockToScriptsAt(script, x, y);
 		});
 	}
-	MB_GUI.importLocalFile(loadFile);
+	MB_editor.importLocalFile(loadFile);
 }
 
 function testShow() {
@@ -1341,7 +1349,7 @@ function testShow() {
 		"[display:mbDisplayOff]\n";
 	let parseTree = MB_Parser.parse(codeString);
 	let b = MB_Parser.blockFor(parseTree);
-	MB_GUI.addBlockToScripts(b);
+	MB_editor.addBlockToScripts(b);
 }
 
 function testLoad2() {
@@ -1355,7 +1363,7 @@ function testLoad2() {
 		console.log(s2);
 console.log("Lengths:", s1.length, s2.length, s1 == s2);
 	}
-	MB_GUI.importLocalFile(loadFile);
+	MB_editor.importLocalFile(loadFile);
 }
 
 async function testLoadExamples() {

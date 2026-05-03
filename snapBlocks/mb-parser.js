@@ -8,7 +8,7 @@
 	MB_Parser - Parser for the MicroBlocks language textual representation.
 */
 
-/* global MB_Parser, MB_GUI, MB_Specs, CommandBlockMorph, CommandSlotMorph, ReporterBlockMorph, HatBlockMorph */
+/* global MB_editor, MB_Parser, MB_Specs, CommandBlockMorph, CommandSlotMorph, ReporterBlockMorph, HatBlockMorph */
 
 class MB_Parser {
 	constructor(srcString, fileName = '<string>') {
@@ -559,7 +559,7 @@ function parser_test4() {
 function parser_test(s) {
 	let cmds = MB_Parser.parse(s);
 	cmds.forEach( (cmd) => {
-		MB_GUI.addBlockToScripts(MB_Parser.blockFor(cmd));
+		MB_editor.addBlockToScripts(MB_Parser.blockFor(cmd));
 	});
 }
 
@@ -597,5 +597,5 @@ function parser_testFile() {
 		}
 		console.log(fileName, 'parse time:', parseTime, 'msecs');
 	}
-	MB_GUI.importLocalFile(parseFile);
+	MB_editor.importLocalFile(parseFile);
 }
