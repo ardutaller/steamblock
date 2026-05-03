@@ -8,180 +8,244 @@
 	MB_GUI - MicroBlocks user interface.
 */
 
-/* global MB_Parser, MB_Specs, Color, Point, BlockMorph, ScriptsMorph, ScrollFrameMorph, StringMorph, world */
+/* global MB_Parser, MB_Specs, MB_Project, Color, Point, BlockMorph, ScriptsMorph, ScrollFrameMorph, StringMorph, world */
 
-MB_GUI = {}
+class MB_Editor {
+	constructor() {
+		this.palette = null;
+		this.scripts = null;
+		this.project = new MB_Project();
+		this.codeManager = new MB_CodeManager(this.project);
+		this.readFromBoard = false;
+	}
 
-MB_GUI.addMicroBlocksGUI = function (world) {
-	const scriptingHeight = 500;
-	const paletteWidth = 200;
+	open(world) {
+		const scriptingHeight = 500;
+		const paletteWidth = 200;
 
-	let palette = new ScrollFrameMorph();
-	palette.color = new Color(180, 180, 180);
-	palette.setExtent(new Point(paletteWidth, scriptingHeight));
-	this.addBlocksToPalette(palette);
-	palette.contents.adjustBounds();
-	palette.contents.acceptsDrops = true;
-	palette.contents.reactToDropOf = (droppedMorph) => {
-		if (droppedMorph instanceof BlockMorph) {
-			droppedMorph.destroy();
-		}
-	};
-	world.add(palette);
+		this.palette = new ScrollFrameMorph();
+		this.palette.color = new Color(180, 180, 180);
+		this.palette.setExtent(new Point(paletteWidth, scriptingHeight));
+		this.addBlocksToPalette(this.palette);
+		this.palette.contents.adjustBounds();
+		this.palette.contents.acceptsDrops = true;
+		this.palette.contents.reactToDropOf = (droppedMorph) => {
+			if (droppedMorph instanceof BlockMorph) {
+				droppedMorph.destroy();
+			}
+		};
 
-	let scripts = new ScriptsMorph();
-	scripts.color = new Color(150, 150, 150);
-	scripts.setLeft(paletteWidth);
-	scripts.setExtent(new Point(1000, scriptingHeight));
-	world.add(scripts);
-}
+		this.scripts = new ScriptsMorph();
+		this.scripts.color = new Color(150, 150, 150);
+		this.scripts.setLeft(paletteWidth);
+		this.scripts.setExtent(new Point(1000, scriptingHeight));
 
-MB_GUI.scriptsPane = function () {
-	// Return the scripts pane.
-	// Hack: Assume the scripts pane is the second child of the world.
-	// This allows dynmically reloading of mb-blocks.js which breaks
-	// "childThatIsA(ScriptsMorph)" by redefining the ScriptsMorph prototype.
+		world.add(this.palette);
+		world.add(this.scripts);
+	}
 
-	return world.children[1];
-}
+	scriptsPane() {
+		// Return the scripts pane.
+		// Hack: Assume the scripts pane is the second child of the world.
+		// This allows dynmically reloading of mb-blocks.js which breaks
+		// "childThatIsA(ScriptsMorph)" by redefining the ScriptsMorph prototype.
 
-MB_GUI.removeAllScripts = function () {
-	let allScripts = this.scriptsPane().children.slice();
-	allScripts.forEach((m) => { m.destroy(); });
-}
+		return world.children[1];
+	}
 
-MB_GUI.addBlockToScripts = function (b) {
-	// For testing. Add the given block to the scripts pane at a random position.
+	removeAllScripts() {
+		let allScripts = this.scriptsPane().children.slice();
+		allScripts.forEach((m) => { m.destroy(); });
+	}
 
-	let scriptsPane = this.scriptsPane();
-	b.setPosition(new Point(this.randomBetween(200, 800), this.randomBetween(10, 300)));
-	scriptsPane.add(b);
-	scriptsPane.changed();
-}
+	addBlockToScripts(b) {
+		// For testing. Add the given block to the scripts pane at a random position.
 
-MB_GUI.addBlockToScriptsAt = function (b, x, y) {
-	// For testing. Add the given block to the scripts pane at the given position.
+		let scriptsPane = this.scriptsPane();
+		b.setPosition(new Point(this.randomBetween(200, 800), this.randomBetween(10, 300)));
+		scriptsPane.add(b);
+		scriptsPane.changed();
+	}
 
-	let scriptsPane = this.scriptsPane();
-	b.setPosition(new Point(300 + x, y));
-	scriptsPane.add(b);
-	scriptsPane.changed();
-}
+	addBlockToScriptsAt(b, x, y) {
+		// For testing. Add the given block to the scripts pane at the given position.
 
+		let scriptsPane = this.scriptsPane();
+		b.setPosition(new Point(300 + x, y));
+		scriptsPane.add(b);
+		scriptsPane.changed();
+	}
 
-MB_GUI.randomBetween = function (min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+	randomBetween(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
 
-MB_GUI.handlePaste = function (event) {
-	let s = event.data;
-	if (!s.startsWith('GP Script')) return; // ignore non-script paste
+	handlePaste(event) {
+		let s = event.data;
+		if (!s.startsWith('GP Script')) return; // ignore non-script paste
 
-	let i = s.indexOf('script'); // find first script
-	if (i < 0) return; // no scripts
+		let i = s.indexOf('script'); // find first script
+		if (i < 0) return; // no scripts
 
-	let p = new MB_Parser(s.slice(i));
-	while (true) {
-		let script = p.readCmd(false);
-		if (script === null) break;
-		if (script.length == 4) {
-			this.addBlockToScripts(MB_Parser.blockFor(script[3]));
+		let p = new MB_Parser(s.slice(i));
+		while (true) {
+			let script = p.readCmd(false);
+			if (script === null) break;
+			if (script.length == 4) {
+				this.addBlockToScripts(MB_Parser.blockFor(script[3]));
+			}
 		}
 	}
-}
 
-// ***** Populate the blocks palette *****
+	// ***** Populate the blocks palette *****
 
-MB_GUI.addBlocksToPalette = function (palette) {
-	const specs = MB_Specs.mbBlockSpecs();
-	let y = 10;
-	let currentCategory = 'Output';
-	for (let i = 0; i < 169; i++) {
-		let item = specs[i];
-		if (Array.isArray(item)) { // block spec
-			let b = MB_Specs.blockForSpec(item, currentCategory);
-			b.setPosition(new Point(15, y));
-			b.isTemplate = true;
-			palette.contents.add(b);
-			y += b.height() + 10;
-		} else if ('-' == item) { // separator
-			y += 15;
+	addBlocksToPalette(palette) {
+		const specs = MB_Specs.mbBlockSpecs();
+		let y = 10;
+		let currentCategory = 'Output';
+		for (let i = 0; i < 169; i++) {
+			let item = specs[i];
+			if (Array.isArray(item)) { // block spec
+				let b = MB_Specs.blockForSpec(item, currentCategory);
+				b.setPosition(new Point(15, y));
+				b.isTemplate = true;
+				palette.contents.add(b);
+				y += b.height() + 10;
+			} else if ('-' == item) { // separator
+				y += 15;
+			} else {
+				if (item.indexOf('cat;') == 0) {
+					item = item.substring(4);
+				}
+				let fullCategoryName = item;
+				if (item.indexOf('-Advanced') > 0) {
+					item = item.substring(0, item.indexOf('-Advanced'));
+				}
+				currentCategory = item;
+				if (y > 10) y += 15;
+				let label = new StringMorph(fullCategoryName, 14);
+				label.toggleWeight();
+				label.setPosition(new Point(5, y));
+				palette.contents.add(label);
+				y += label.height() + 15;
+			}
+		}
+	}
+
+	// File Open
+
+	importLocalFile(callback) {
+		async function processFile(file) {
+			let txt = await file.text();
+			if (callback) callback(file.name, txt);
+		}
+
+		var inp = document.createElement('input');
+		inp.type = 'file';
+		inp.multiple = true;
+		inp.addEventListener(
+			'change',
+			(evt) => {
+				document.body.removeChild(inp);
+				for (const file of inp.files) {
+					processFile(file);
+				}
+			},
+			false
+		);
+		document.body.appendChild(inp);
+		inp.click(); // show the input dialog
+	}
+
+	// Run/stop
+
+	startAll() {
+console.log('starting'); // xxx
+		this.codeManager.syncAndStartAll();
+	}
+
+	stopAll() {
+console.log('stopping'); // xxx
+		this.codeManager.stopAndSyncScripts();
+	}
+
+	// File operations
+
+	newProject() {
+		this.project = new MB_Project();
+		this.codeManager = new MB_CodeManager(this.project);
+		this.removeAllScripts();
+	}
+
+	openProject() {
+		function loadFile(fileName, contents) {
+			this.project = new MB_Project();
+			this.codeManager = new MB_CodeManager(this.project);
+			MB_connection.setCodeManager(this.codeManager);
+			this.project.loadFromString(contents);
+			this.removeAllScripts();
+			this.project.main.scripts.forEach( (entry) => {
+				let x = entry[0], y = entry[1], script = entry[2];
+				this.addBlockToScriptsAt(script, x, y);
+			});
+			console.log("Loaded:", fileName,
+				this.project.main.scripts.length, 'scripts,',
+				this.project.allFunctions().length, 'functions'
+			);
+		}
+		this.importLocalFile(loadFile.bind(this));
+	}
+
+	// Connect/Disconnect
+
+	justConnected() {
+		if (this.readFromBoard) {
+			this.readFromBoard = false;
+			this.readCodeFromBoard();
 		} else {
-			if (item.indexOf('cat;') == 0) {
-				item = item.substring(4);
+			const reuseCodeIfPossible = false; // set this to true to attempt to reuse code on board
+			if (!reuseCodeIfPossible || !this.boardHasSameProject()) {
+				if (reuseCodeIfPossible) console.log('Full download');
+				MB_connection.clearBoardIfConnected();
+			} else {
+				console.log('Incremental download', this.vmVersion, this.boardType);
 			}
-			let fullCategoryName = item;
-			if (item.indexOf('-Advanced') > 0) {
-				item = item.substring(0, item.indexOf('-Advanced'));
-			}
-			currentCategory = item;
-			if (y > 10) y += 15;
-			let label = new StringMorph(fullCategoryName, 14);
-			label.toggleWeight();
-			label.setPosition(new Point(5, y));
-			palette.contents.add(label);
-			y += label.height() + 15;
+			MB_editor.showDownloadProgress(2, 0);
+			this.codeManager.stopAndSyncScripts(true);
 		}
 	}
-}
 
-MB_GUI.importLocalFile = function (callback) {
-	async function processFile(file) {
-		let txt = await file.text();
-		if (callback) callback(file.name, txt);
+	boardHasSameProject() {
+		// XXX TODO
+		return false;
 	}
 
-	var inp = document.createElement('input');
-	inp.type = 'file';
-	inp.multiple = true;
-	inp.addEventListener(
-		'change',
-		(evt) => {
-			document.body.removeChild(inp);
-			for (const file of inp.files) {
-				processFile(file);
-			}
-		},
-		false
-	);
-	document.body.appendChild(inp);
-	inp.click(); // show the input dialog
-};
+	// Placeholder functions for UI actopms
 
-// Placeholder functions for eventual MB_Editor
+	inform(msg) {
+		// XXX TO DO
+		console.log(msg);
+	}
 
-MB_GUI.inform = function (msg) {
-	// XXX TO DO
-	console.log(msg);
+	showError(blockMorph, errorString) {
+		// XXX TO DO
+		console.log('Error:', errorString);
+	}
+
+	showDownloadProgress(phase, percent) {
+		// XXX TO DO
+	}
+
+	clearRunningHighlights() {
+		// XXX TO DO
+	}
+
 }
 
-MB_GUI.showError = function (blockMorph, errorString) {
-	// XXX TO DO
-	console.log(errorString);
-}
-
-MB_GUI.showDownloadProgress = function (phase, percent) {
-	// XXX TO DO
-}
-
-MB_GUI.showDownloadProgress = function (phase, percent) {
-	// XXX TO DO
-}
-
-MB_GUI.clearRunningHighlights = function () {
-	// XXX TO DO
-}
-
-MB_GUI.justConnected = function () {
-	// XXX TO DO
-}
-
-MB_GUI.sortedScripts = function () {
-	// XXX TO DO
-	return [];
-}
+// Singleton instance
+const MB_editor = new MB_Editor();
 
 // Debugging Utility Function
 
@@ -246,6 +310,3 @@ function varMustBeQuoted(varName) {
 	const ch = varName[0];
 	return /\d/.test(ch) || ch === '-';
 }
-
-// MB_GUI is a placeholder for the eventual MB_Editor
-const MB_editor = MB_GUI;
