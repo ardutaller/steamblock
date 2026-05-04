@@ -13,6 +13,10 @@
 #include <string.h>
 #include <string.h>
 
+#ifdef __ZEPHYR__
+	#include <Arduino.h>
+#endif
+
 #if defined(GNUBLOCKS) && !defined(EMSCRIPTEN)
 #include "../linux+pi/linux.h"
 #endif

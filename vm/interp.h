@@ -389,7 +389,7 @@ OBJ primResumeUpdates(int argCount, OBJ *args);
 // TFT Support
 
 extern int useTFT;
-extern int isOLED1106;
+extern int isCodingBox;
 
 void tftInit();
 void tftClear();

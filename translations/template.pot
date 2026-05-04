@@ -1769,6 +1769,22 @@ msgstr ""
 msgid "draw pixel row _ x _ y _"
 msgstr ""
 
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr ""
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr ""
+
+#. TFT Display library block
+msgid "image _"
+msgstr ""
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr ""
+
 #. TFT Display library and Color library block
 msgid "gray _ %"
 msgstr ""
@@ -3022,6 +3038,14 @@ msgid "go to x _ y _"
 msgstr ""
 
 #. Turtle Geometry library block
+msgid "turtle x"
+msgstr ""
+
+#. Turtle Geometry library block
+msgid "turtle y"
+msgstr ""
+
+#. Turtle Geometry library block
 msgid "point in direction _"
 msgstr ""
 
@@ -3087,6 +3111,10 @@ msgstr ""
 
 #. File System library block
 msgid "file names"
+msgstr ""
+
+#. File System library block
+msgid "directory names"
 msgstr ""
 
 #. File System library block
@@ -3425,6 +3453,50 @@ msgstr ""
 
 #. Touch Screen library block
 msgid "TFT touch pressure"
+msgstr ""
+
+#. ESP Now library label
+msgid "ESP Now"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow send pair _ = _"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow pair received?"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow last number"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow last string"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow set group _ (0-255)"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow group"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow send raw _"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow receive raw"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow set channel _"
+msgstr ""
+
+#. ESP Now library label
+msgid "espNow channel"
 msgstr ""
 
 #. HTTP Client library label
@@ -5137,10 +5209,6 @@ msgid "set emoji _ scale _"
 msgstr ""
 
 #. CoCube emoji block
-msgid "happy"
-msgstr ""
-
-#. CoCube emoji block
 msgid "naughty"
 msgstr ""
 
@@ -5190,10 +5258,6 @@ msgstr ""
 
 #. CoCube emoji block
 msgid "scared"
-msgstr ""
-
-#. CoCube emoji block
-msgid "angry"
 msgstr ""
 
 #. CoCube emoji block
@@ -7117,20 +7181,24 @@ msgstr ""
 msgid "blockdef;delete"
 msgstr ""
 
-#. Block input right-click context menu
-msgid "Input type:"
-msgstr ""
-
-#. Block input right-click context menu option
-msgid "string only"
-msgstr ""
-
-#. Block input right-click context menu option
+#. Slot type menu option
 msgid "string or number"
 msgstr ""
 
-#. Block input right-click context menu option
+#. Slot type menu option
 msgid "number only"
+msgstr ""
+
+#. Slot type menu option
+msgid "string only"
+msgstr ""
+
+#. Slot type menu option
+msgid "boolean switch"
+msgstr ""
+
+#. Slot type menu option
+msgid "color patch"
 msgstr ""
 
 #. Text right-click context menu option

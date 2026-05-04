@@ -1,6 +1,6 @@
 module TFT Output
 author MicroBlocks
-version 1 17 
+version 1 18 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -37,9 +37,20 @@ Line 2' 50 20 16716113 2
   space
   spec ' ' '[tft:setBacklight]' 'set TFT backlight _ (0-10)' 'num' 10
   spec ' ' '[tft:invertDisplay]' 'invert TFT display _' 'bool' false
+  advanced
+  spec ' ' 'tft_deferOLEDDisplayUpdates' 'defer OLED display updates'
+  spec ' ' 'tft_resumeOLEDDisplayUpdates' 'resume OLED display updates'
   space
   spec ' ' '_deferMonochromeDisplayUpdates' '_defer monochrome display updates'
   spec ' ' '_resumeMonochromeDisplayUpdates' '_resume monochrome display updates'
+
+to 'tft_deferOLEDDisplayUpdates' {
+  '[tft:deferUpdates]'
+}
+
+to 'tft_resumeOLEDDisplayUpdates' {
+  '[tft:resumeUpdates]'
+}
 
 to '_deferMonochromeDisplayUpdates' {
   '[tft:deferUpdates]'
@@ -88,7 +99,7 @@ of 0 and 1 characters where each line is one row of the image. 1 means that pixe
       y += scale
       x = left
     } else {
-      if (ch == 49) {'[tft:rect]' x y scale scale true}
+      if (ch == 49) {'[tft:rect]' x y scale scale c}
       x += scale
     }
   }

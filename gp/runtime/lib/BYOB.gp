@@ -932,7 +932,8 @@ method typesMenu InputDeclaration {
 	// slot types: 'auto' 'num' 'str' 'bool' 'color' 'cmd' 'var' 'menu'
 	items = (list)
 	// 'label' 'callback' 'tip' 'image' 'class' 'isChecked'
-	add items (array 'auto' nil 'number or string' (fullCostume (morph (element this 'auto'))) '--input' ('auto' == typeString))
+	add items (array 'auto' nil 'string or number' (fullCostume (morph (element this 'auto'))) '--input' ('auto' == typeString))
+
 	if (devMode) {
 		add items (array 'num' nil 'number only' (fullCostume (morph (element this 'num'))) '--input' ('num' == typeString))
 		add items (array 'str' nil 'string only' (fullCostume (morph (element this 'str'))) '--input' ('str' == typeString))

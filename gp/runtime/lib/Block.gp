@@ -206,9 +206,7 @@ method fixLayout Block {
 						}
 						lineArgCount = 0
 					}
-					if (not isForcedBreak) {
-						add currentLine each
-					}
+					add currentLine each
 					h = (max h (height (morph each)))
 					fastSetLeft (morph each) x
 					if isArgSlot { lineArgCount += 1 }

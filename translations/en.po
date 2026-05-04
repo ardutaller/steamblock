@@ -1769,6 +1769,22 @@ msgstr "set TFT backlight _ (0-10)"
 msgid "draw pixel row _ x _ y _"
 msgstr "draw pixel row _ x _ y _"
 
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr "draw image _ on TFT at x _ y _ color _"
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr "#BR# scale _"
+
+#. TFT Display library block
+msgid "image _"
+msgstr "image _"
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr "invert TFT display _"
+
 #. TFT Display library and Color library block
 msgid "gray _ %"
 msgstr "gray _ %"
@@ -3022,6 +3038,14 @@ msgid "go to x _ y _"
 msgstr "go to x _ y _"
 
 #. Turtle Geometry library block
+msgid "turtle x"
+msgstr "turtle x"
+
+#. Turtle Geometry library block
+msgid "turtle y"
+msgstr "turtle y"
+
+#. Turtle Geometry library block
 msgid "point in direction _"
 msgstr "point in direction _"
 
@@ -3088,6 +3112,10 @@ msgstr "a ByteArray"
 #. File System library block
 msgid "file names"
 msgstr "file names"
+
+#. File System library block
+msgid "directory names"
+msgstr "directory names"
 
 #. File System library block
 msgid "in directory _"
@@ -3426,6 +3454,50 @@ msgstr "TFT touch Y position"
 #. Touch Screen library block
 msgid "TFT touch pressure"
 msgstr "TFT touch pressure"
+
+#. ESP Now library label
+msgid "ESP Now"
+msgstr "ESP Now"
+
+#. ESP Now library label
+msgid "espNow send pair _ = _"
+msgstr "espNow send pair _ = _"
+
+#. ESP Now library label
+msgid "espNow pair received?"
+msgstr "espNow pair received?"
+
+#. ESP Now library label
+msgid "espNow last number"
+msgstr "espNow last number"
+
+#. ESP Now library label
+msgid "espNow last string"
+msgstr "espNow last string"
+
+#. ESP Now library label
+msgid "espNow set group _ (0-255)"
+msgstr "espNow set group _ (0-255)"
+
+#. ESP Now library label
+msgid "espNow group"
+msgstr "espNow group"
+
+#. ESP Now library label
+msgid "espNow send raw _"
+msgstr "espNow send raw _"
+
+#. ESP Now library label
+msgid "espNow receive raw"
+msgstr "espNow receive raw"
+
+#. ESP Now library label
+msgid "espNow set channel _"
+msgstr "espNow set channel _"
+
+#. ESP Now library label
+msgid "espNow channel"
+msgstr "espNow channel"
 
 #. HTTP Client library label
 msgid "HTTP client"
@@ -5137,10 +5209,6 @@ msgid "set emoji _ scale _"
 msgstr "set emoji _ scale _"
 
 #. CoCube emoji block
-msgid "happy"
-msgstr "happy"
-
-#. CoCube emoji block
 msgid "naughty"
 msgstr "naughty"
 
@@ -5191,10 +5259,6 @@ msgstr "cool"
 #. CoCube emoji block
 msgid "scared"
 msgstr "scared"
-
-#. CoCube emoji block
-msgid "angry"
-msgstr "angry"
 
 #. CoCube emoji block
 msgid "cold"
@@ -7118,21 +7182,25 @@ msgstr "delete"
 msgid "blockdef;delete"
 msgstr "delete"
 
-#. Block input right-click context menu
-msgid "Input type:"
-msgstr "Input type:"
-
-#. Block input right-click context menu option
-msgid "string only"
-msgstr "string only"
-
-#. Block input right-click context menu option
+#. Slot type menu option
 msgid "string or number"
 msgstr "string or number"
 
-#. Block input right-click context menu option
+#. Slot type menu option
 msgid "number only"
 msgstr "number only"
+
+#. Slot type menu option
+msgid "string only"
+msgstr "string only"
+
+#. Slot type menu option
+msgid "boolean switch"
+msgstr "boolean switch"
+
+#. Slot type menu option
+msgid "color patch"
+msgstr "color patch"
 
 #. Text right-click context menu option
 msgid "stop editing"
