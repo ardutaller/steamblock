@@ -192,6 +192,13 @@ class MB_CodeManager {
 		return this.chunkIDs.get(aBlock) || null;
 	}
 
+	blockForChunkID(chunkID) {
+		for (const [key, entry] of this.chunkIDs.entries()) {
+			if (entry[0] === chunkID) return key; // return block
+		}
+		return null;
+	}
+
 	assignFunctionIDs() {
 		// Ensure that there is a chunk ID for every user-defined function.
 		// This must be done before generating any code to allow for recursive calls.

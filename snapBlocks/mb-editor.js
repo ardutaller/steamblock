@@ -17,6 +17,7 @@ class MB_Editor {
 		this.project = new MB_Project();
 		this.codeManager = new MB_CodeManager(this.project);
 		this.readFromBoard = false;
+		this.runningChunks = new Map(); // used for block highlighting
 	}
 
 	open(world) {
@@ -134,7 +135,84 @@ class MB_Editor {
 		}
 	}
 
-	// File Open
+	// Run/stop
+
+	startAll() {
+console.log('starting'); // xxx
+		this.codeManager.syncAndStartAll();
+	}
+
+	stopAll() {
+console.log('stopping'); // xxx
+		this.codeManager.stopAndSyncScripts();
+	}
+
+	toggleRunning(aBlock) {
+		let top = aBlock.topBlock();
+		let runningChunkID = this.runningChunks.get(top);
+		if (runningChunkID !== undefined) {
+			MB_connection.sendMsg('stopChunkMsg', runningChunkID);
+		} else {
+			let chunkID = this.codeManager.ensureChunkIdFor(top);
+			this.compileAndRun(top, chunkID);
+		}
+	}
+
+	async compileAndRun(aBlock, chunkID) {
+		// Compile and run the given block.
+
+		let code = new MB_Compiler(this.project, this.codeManager).compiledBytesFor(aBlock);
+		while ((code.length % 4) !== 0) {
+			// pad code with zeros to make chunk length be a multiple of four bytes
+			// this ensures 32-bit word chunk alignment in the code store
+			code.push(0);
+		}
+
+		let chunkType = aBlock.chunkType();
+		code.unshift(chunkType); // prepend the chunk type
+		MB_connection.sendMsg('chunkCode16Msg', chunkID, code);
+		MB_connection.sendMsg('startChunkMsg', chunkID);
+	}
+
+	updateRunning(chunkID, isRunning) {
+		let runningBlock = this.codeManager.blockForChunkID(chunkID);
+		if (runningBlock == null) return; // unknown chunk
+
+		if (isRunning) {
+			runningBlock.addHighlight();
+			this.runningChunks.set(runningBlock, chunkID);
+		} else {
+			runningBlock.removeHighlight();
+			this.runningChunks.delete(runningBlock);
+		}
+	}
+
+	// File operations
+
+	newProject() {
+		this.project = new MB_Project();
+		this.codeManager = new MB_CodeManager(this.project);
+		this.removeAllScripts();
+	}
+
+	openProject() {
+		function loadFile(fileName, contents) {
+			MB_editor.project = new MB_Project();
+			MB_editor.codeManager = new MB_CodeManager(MB_editor.project);
+			MB_connection.setCodeManager(MB_editor.codeManager);
+			MB_editor.project.loadFromString(contents);
+			MB_editor.removeAllScripts();
+			MB_editor.project.main.scripts.forEach( (entry) => {
+				let x = entry[0], y = entry[1], script = entry[2];
+				MB_editor.addBlockToScriptsAt(script, x, y);
+			});
+			console.log("Loaded:", fileName,
+				MB_editor.project.main.scripts.length, 'scripts,',
+				MB_editor.project.allFunctions().length, 'functions'
+			);
+		}
+		this.importLocalFile(loadFile.bind(this));
+	}
 
 	importLocalFile(callback) {
 		async function processFile(file) {
@@ -159,45 +237,6 @@ class MB_Editor {
 		inp.click(); // show the input dialog
 	}
 
-	// Run/stop
-
-	startAll() {
-console.log('starting'); // xxx
-		this.codeManager.syncAndStartAll();
-	}
-
-	stopAll() {
-console.log('stopping'); // xxx
-		this.codeManager.stopAndSyncScripts();
-	}
-
-	// File operations
-
-	newProject() {
-		this.project = new MB_Project();
-		this.codeManager = new MB_CodeManager(this.project);
-		this.removeAllScripts();
-	}
-
-	openProject() {
-		function loadFile(fileName, contents) {
-			this.project = new MB_Project();
-			this.codeManager = new MB_CodeManager(this.project);
-			MB_connection.setCodeManager(this.codeManager);
-			this.project.loadFromString(contents);
-			this.removeAllScripts();
-			this.project.main.scripts.forEach( (entry) => {
-				let x = entry[0], y = entry[1], script = entry[2];
-				this.addBlockToScriptsAt(script, x, y);
-			});
-			console.log("Loaded:", fileName,
-				this.project.main.scripts.length, 'scripts,',
-				this.project.allFunctions().length, 'functions'
-			);
-		}
-		this.importLocalFile(loadFile.bind(this));
-	}
-
 	// Connect/Disconnect
 
 	justConnected() {
@@ -209,6 +248,7 @@ console.log('stopping'); // xxx
 			if (!reuseCodeIfPossible || !this.boardHasSameProject()) {
 				if (reuseCodeIfPossible) console.log('Full download');
 				MB_connection.clearBoardIfConnected();
+				this.runningChunks = new Map();
 			} else {
 				console.log('Incremental download', this.vmVersion, this.boardType);
 			}
@@ -244,7 +284,7 @@ console.log('stopping'); // xxx
 
 }
 
-// Singleton instance
+// Global singleton instance
 const MB_editor = new MB_Editor();
 
 // Debugging Utility Function

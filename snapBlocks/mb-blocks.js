@@ -1377,6 +1377,8 @@ BlockMorph.prototype.toString = function () {
 
 // BlockMorph utilities
 
+BlockMorph.prototype.isFunctionDefinition = function () { return false; };
+
 BlockMorph.prototype.allBlocks = function () {
 	let result = [];
 	this.forAllBlocks( b => { result.push(b); });
@@ -1652,7 +1654,7 @@ BlockMorph.prototype.userMenu = function () {
 	menu.addLine();
 	menu.addItem(
 		'run/stop',
-		() => { MB_connection.toggleRunning(this.topBlock()); },
+		() => { MB_editor.toggleRunning(this.topBlock()); },
 		'run or stop this script'
 	);
 
@@ -2511,7 +2513,7 @@ BlockMorph.prototype.pickUp = function (wrrld) {
 // BlockMorph events
 
 BlockMorph.prototype.mouseClickLeft = function () {
-	MB_connection.toggleRunning(this.topBlock());
+	MB_editor.toggleRunning(this.topBlock());
 	return;
 
 	var top = this.topBlock(),
