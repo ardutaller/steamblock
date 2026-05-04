@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-04-28 10:09+0000\n"
+"PO-Revision-Date: 2026-05-05 07:09+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -8302,3 +8302,75 @@ msgstr "mostra de color"
 #. Library name
 msgid "MIDI Player"
 msgstr "Reproductor MIDI"
+
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr "dibuixa la imatge _ a TFT en x _ y _ color _"
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr "#BR# escala _"
+
+#. TFT Display library block
+msgid "image _"
+msgstr "imatge _"
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr "inverteix la pantalla TFT _"
+
+#. Turtle Geometry library block
+msgid "turtle x"
+msgstr "tortuga x"
+
+#. Turtle Geometry library block
+msgid "turtle y"
+msgstr "tortuga y"
+
+#. File System library block
+msgid "directory names"
+msgstr "noms de directori"
+
+#. ESP Now library label
+msgid "ESP Now"
+msgstr "ESP Now"
+
+#. ESP Now library label
+msgid "espNow send pair _ = _"
+msgstr "espNow envia parell _ = _"
+
+#. ESP Now library label
+msgid "espNow pair received?"
+msgstr "espNow parell rebut?"
+
+#. ESP Now library label
+msgid "espNow last number"
+msgstr "espNow darrer número"
+
+#. ESP Now library label
+msgid "espNow last string"
+msgstr "espNow darrer text"
+
+#. ESP Now library label
+msgid "espNow set group _ (0-255)"
+msgstr "espNow selecciona grup _ (0-255)"
+
+#. ESP Now library label
+msgid "espNow group"
+msgstr "espNow grup"
+
+#. ESP Now library label
+msgid "espNow send raw _"
+msgstr "espNow envia dades en brut _"
+
+#. ESP Now library label
+msgid "espNow receive raw"
+msgstr "espNow rep dades en cru"
+
+#. ESP Now library label
+msgid "espNow set channel _"
+msgstr "espNow selecciona canal _"
+
+#. ESP Now library label
+msgid "espNow channel"
+msgstr "espNow canal"
