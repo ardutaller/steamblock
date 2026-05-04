@@ -1,3 +1,11 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright 2026 John Maloney and Bernat Romagosa
+
+// mb-connection.js - Implements MicroBlocks communication protocol.
+
 /* globals MB_CommPort, waitMSecs, isMobile, localized */
 
 class MB_Connection {

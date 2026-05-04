@@ -2,11 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+// Copyright 2026 John Maloney and Bernat Romagosa
 
-/*
-	MB_GUI - MicroBlocks user interface.
-*/
+// mb-editor.js - MicroBlocks top-level editor.
 
 /* global MB_Parser, MB_Specs, MB_Project, Color, Point, BlockMorph, ScriptsMorph, ScrollFrameMorph, StringMorph, world */
 

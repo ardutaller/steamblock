@@ -4,8 +4,9 @@
 //
 // Copyright 2026 John Maloney and Bernat Romagosa
 
+// mb-project.js - MicroBlocks project and library operations.
 /*
-	MB_Project - MicroBlocks project and library operations.
+	MB_Project
 
 	A MicroBlocks project consists of a main MB_Module object containing the
 	top-level scripts and function definitions and zero or more MB_Modules for

@@ -2,10 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-// Copyright 2019 John Maloney, Bernat Romagosa, and Jens Mönig
+// Copyright 2026 John Maloney and Bernat Romagosa
 
-// mb-compiler.js - Blocks compiler for MicroBlocks
-// Ported from MicroBlocksCompiler.gp (GP language)
+// mb-compiler.js - MicroBlocks compiler.
 
 /* globals BlockMorph, CommandBlockMorph, CommandSlotMorph, MB_Function, ReporterBlockMorph */
 

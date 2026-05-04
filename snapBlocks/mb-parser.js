@@ -2,11 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-// Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
+// Copyright 2026 John Maloney and Bernat Romagosa
 
-/*
-	MB_Parser - Parser for the MicroBlocks language textual representation.
-*/
+// mb-parser.js - Parser for the MicroBlocks language textual representation.
 
 /* global MB_editor, MB_Parser, MB_Specs, CommandBlockMorph, CommandSlotMorph, ReporterBlockMorph, HatBlockMorph */
 
