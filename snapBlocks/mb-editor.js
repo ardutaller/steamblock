@@ -267,9 +267,24 @@ console.log('stopping'); // xxx
 		console.log(msg);
 	}
 
+	showResult(chunkID, value) {
+		console.log(value);
+	}
+
 	showError(blockMorph, errorString) {
 		// XXX TO DO
 		console.log('Error:', errorString);
+	}
+
+	showChunkError(chunkID, errorString)  {
+		// Report a runtime error from the board in the given chunk .
+
+		console.log(errorString, 'in chunk', chunkID);
+	}
+
+	addLoggedData(value) {
+		// Used for debugging.
+		console.log(value);
 	}
 
 	showDownloadProgress(phase, percent) {
@@ -279,7 +294,6 @@ console.log('stopping'); // xxx
 	clearRunningHighlights() {
 		// XXX TO DO
 	}
-
 }
 
 // Global singleton instance

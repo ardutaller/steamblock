@@ -448,25 +448,25 @@ class MB_Connection {
 		this.lastPingRecvMSecs = Date.now(); // reset ping timer when any valid message is received
 		const op = msg[1];
 		if (op === this.msgNameToID('taskStartedMsg')) {
-			this.updateRunning(msg[2], true);
+			MB_editor.updateRunning(msg[2], true);
 		} else if (op === this.msgNameToID('taskDoneMsg')) {
-			this.updateRunning(msg[2], false);
+			MB_editor.updateRunning(msg[2], false);
 		} else if (op === this.msgNameToID('taskReturnedValueMsg')) {
 			const chunkID = msg[2];
-			this.showResult(chunkID, this.returnedValue(msg), false, true);
-			this.updateRunning(chunkID, false);
+			MB_editor.showResult(chunkID, this.returnedValue(msg));
+			MB_editor.updateRunning(chunkID, false);
 		} else if (op === this.msgNameToID('taskErrorMsg')) {
 			const chunkID = msg[2];
-			this.showError(chunkID, this.errorString(msg[5]));
-			this.updateRunning(chunkID, false);
+			MB_editor.showChunkError(chunkID, this.errorString(msg[5]));
+			MB_editor.updateRunning(chunkID, false);
 		} else if (op === this.msgNameToID('outputValueMsg')) {
 			const chunkID = msg[2];
 			if (chunkID === 255) {
-				console.log(this.returnedValue(msg));
+				console.log(this.returnedValue(msg)); // OutputString (used for debugging)
 			} else if (chunkID === 254) {
-				this.addLoggedData(String(this.returnedValue(msg)));
+				MB_editor.addLoggedData(String(this.returnedValue(msg))); // used for debugging
 			} else {
-				this.showResult(chunkID, this.returnedValue(msg), false, true);
+				MB_editor.showResult(chunkID, this.returnedValue(msg));
 			}
 		} else if (op === this.msgNameToID('varValueMsg')) {
 			// not currently used
@@ -695,38 +695,21 @@ class MB_Connection {
 		return words.slice(1).join(' ');
 	}
 
-	// --- Code File Updates ---
-
-	suspendCodeFileUpdates() {
-//		this.sendMsgSync('extendedMsg', 2);
-	}
-
-	resumeCodeFileUpdates() {
-//		this.sendMsg('extendedMsg', 3);
-	}
-
-	// --- Testing... ---
+	// --- CRC Reception ---
 
 	crcReceived(chunkID, crc) {
 		if (this.codeManager) this.codeManager.crcReceived(chunkID, crc);
 	}
 
-	showError(errorString) {
-		console.log(errorString);
+	// --- Code File Updates ---
+
+	suspendCodeFileUpdates() {
+		this.sendMsgSync('extendedMsg', 2);
 	}
 
-	showResult(chunkID, value, arg3, arg4) {
-		console.log(value);
+	resumeCodeFileUpdates() {
+		this.sendMsg('extendedMsg', 3);
 	}
-
-	addLoggedData(value) {
-		console.log(value);
-	}
-
-	updateRunning(chunkID, isRunning) {
-		MB_editor.updateRunning(chunkID, isRunning);
-	}
-
 }
 
 // Global singleton
