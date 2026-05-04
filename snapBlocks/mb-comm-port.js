@@ -50,16 +50,6 @@ class MB_CommPort {
 		this.boardieFrame = null;
 	}
 
-	// --- Feature detection ---
-
-	hasWebSerial() {
-		return typeof navigator !== 'undefined' && typeof navigator.serial !== 'undefined';
-	}
-
-	hasWebBluetooth() {
-		return typeof navigator !== 'undefined' && typeof navigator.bluetooth !== 'undefined';
-	}
-
 	// --- API ---
 
 	isConnected() {
@@ -117,26 +107,6 @@ class MB_CommPort {
 		}
 	}
 
-	// --- Serial Handshaking Control (WebSerial only) ---
-
-	async setDTR(flag) {
-		if (!this.serialPort) return;
-		await this.serialPort.setSignals({ dtr: flag, dataTerminalReady: flag }).catch(() => {});
-	}
-
-	async setRTS(flag) {
-		if (!this.serialPort) return;
-		await this.serialPort.setSignals({ rts: flag, requestToSend: flag }).catch(() => {});
-	}
-
-	async setDTRandRTS(dtrFlag, rtsFlag) {
-		if (!this.serialPort) return;
-		await this.serialPort.setSignals({
-			dtr: dtrFlag, dataTerminalReady: dtrFlag,
-			rts: rtsFlag, requestToSend: rtsFlag,
-		}).catch(() => {});
-	}
-
 	// --- WebSerial ---
 
 	async serialConnect() {
@@ -188,6 +158,26 @@ class MB_CommPort {
 		writer.write(data.buffer);
 		writer.releaseLock();
 		return data.byteLength;
+	}
+
+	// --- Serial Handshaking Control (WebSerial only) ---
+
+	async setDTR(flag) {
+		if (!this.serialPort) return;
+		await this.serialPort.setSignals({ dtr: flag, dataTerminalReady: flag }).catch(() => {});
+	}
+
+	async setRTS(flag) {
+		if (!this.serialPort) return;
+		await this.serialPort.setSignals({ rts: flag, requestToSend: flag }).catch(() => {});
+	}
+
+	async setDTRandRTS(dtrFlag, rtsFlag) {
+		if (!this.serialPort) return;
+		await this.serialPort.setSignals({
+			dtr: dtrFlag, dataTerminalReady: dtrFlag,
+			rts: rtsFlag, requestToSend: rtsFlag,
+		}).catch(() => {});
 	}
 
 	// --- WebBluetooth ---
@@ -271,6 +261,3 @@ class MB_CommPort {
 		this.boardieFrame = null;
 	}
 }
-
-// Global singleton used by MB_Connection
-const MB_port = new MB_CommPort();

@@ -1,8 +1,9 @@
-/* globals waitMSecs, isMobile, localized */
+/* globals MB_CommPort, waitMSecs, isMobile, localized */
 
 class MB_Connection {
 	constructor() {
 		this.msgDict = null;
+		this.port = null;
 		this.portName = null;
 		this.connectionStartTime = null;
 		this.pingSentMSecs = 0;
@@ -11,17 +12,14 @@ class MB_Connection {
 		this.vmVersion = null;
 		this.boardType = null;
 		this.codeManager = null;
-
-		this.nextChunkID = 0;
-		this.chunkIDs = new Map();
-		this.runningChunks = new Map();
 	}
 
 	// --- Process Messages Every Animation Frame (for now) ---
 
 	startMessageProcessing() {
+		let commPort = this.port;
 		function processMsgCB() {
-			if (MB_port.isConnected()) {
+			if (commPort.isConnected()) {
 				MB_connection.updateConnection();
 			}
 			requestAnimationFrame(processMsgCB);
@@ -48,11 +46,6 @@ class MB_Connection {
 		this.sendMsg('systemResetMsg'); // send the reset message
 		this.sendMsgSync('deleteAllCodeMsg'); // delete all code from board
 		this.sendMsgSync('clearVarsMsg'); // delete all variable names from board
-
-		// temporary: clear interim chunkID system
-		this.nextChunkID = 0;
-		this.chunkIDs = new Map();
-		this.runningChunks = new Map();
 	}
 
 	// --- Decompiler ---
@@ -61,21 +54,32 @@ class MB_Connection {
 		// XXX TODO
 	}
 
+	// --- Feature detection ---
+
+	hasWebSerial() {
+		return typeof navigator !== 'undefined' && typeof navigator.serial !== 'undefined';
+	}
+
+	hasWebBluetooth() {
+		return typeof navigator !== 'undefined' && typeof navigator.bluetooth !== 'undefined';
+	}
+
 	// --- Connection Handling ---
 
 	async connect(portType = 'serial', boardieIFrame = null) {
-		if (!MB_port.hasWebSerial()) {
+		this.port = new MB_CommPort();
+		if (!this.hasWebSerial()) {
 			// running in a browser w/o WebSerial (or it is not enabled)
 			alert(localized('This browser does not support WebSerial.'));
 			return;
 		}
-		if (!MB_port.hasWebBluetooth()) {
+		if (!this.hasWebBluetooth()) {
 			// running in a browser w/o WebBluetooth (or it is not enabled)
 			alert(localized('This browser does not support WebBluetooth.'));
 			return;
 		}
 		this.portName = portType;
-		MB_port.connect(portType, boardieIFrame);
+		this.port.connect(portType, boardieIFrame);
 		if (portType == 'boardie') {
 			await waitMSecs(100); // make sure Boardie is ready to receive messages
 		}
@@ -90,7 +94,7 @@ class MB_Connection {
 // 		MB_editor.stopAndSyncScripts();
 // 		MB_editor.startAll();
 
-		MB_port.disconnect();
+		this.port.disconnect();
 		this.portName = null;
 		this.vmVersion = null;
 		this.boardType = null;
@@ -100,12 +104,12 @@ class MB_Connection {
 	}
 
 	isConnected() {
-		return MB_port.isConnected();
+		return this.port.isConnected();
 	}
 
 	connectedToBoard() {
 		const pingTimeout = 8000;
-		if (!MB_port.isConnected()) return false;
+		if (!this.port.isConnected()) return false;
 		if (this.lastPingRecvMSecs == null || this.lastPingRecvMSecs === 0) return false;
 		return (Date.now() - this.lastPingRecvMSecs) < pingTimeout;
 	}
@@ -130,7 +134,7 @@ class MB_Connection {
 		}
 
 		// if port is not open, disconnect
-		if (!MB_port.isConnected()) {
+		if (!this.port.isConnected()) {
 			MB_editor.clearRunningHighlights();
 			this.disconnect();
 			this.portName = null;
@@ -178,7 +182,7 @@ class MB_Connection {
 		// Called when connectionStartTime is not null, indicating that we are trying
 		// to establish a connection to a board.
 
-		if (!MB_port.isConnected()) return 'not connected'; // Port is not yet connected...
+		if (!this.port.isConnected()) return 'not connected'; // Port is not yet connected...
 
 		this.sendMsg('pingMsg');
 
@@ -339,10 +343,10 @@ class MB_Connection {
 
 	async readAvailableSerialData() {
 		// Read any available data into recvBuf so that waitForResponse will await fresh data.
-		if (!MB_port.isConnected()) return;
+		if (!this.port.isConnected()) return;
 		await waitMSecs(20); // leave some time for queued data to arrive
 		if (this.recvBuf == null) this.recvBuf = new Uint8Array(0);
-		const s = MB_port.read();
+		const s = this.port.read();
 		if (s != null) this.recvBuf = this.joinBytes(this.recvBuf, s);
 	}
 
@@ -354,8 +358,8 @@ class MB_Connection {
 		let iter = 1;
 		const start = Date.now();
 		while ((Date.now() - start) < timeout) {
-			if (!MB_port.isConnected()) return false;
-			const s = MB_port.read();
+			if (!this.port.isConnected()) return false;
+			const s = this.port.read();
 			if (s != null) {
 				this.recvBuf = this.joinBytes(this.recvBuf, s);
 				return true;
@@ -376,10 +380,10 @@ class MB_Connection {
 
 	processNextMessage() {
 		// Process the next message, if any. Return false when there are no more messages.
-		if (!MB_port.isConnected()) return false;
+		if (!this.port.isConnected()) return false;
 
 		// Read any available bytes and append to recvBuf
-		const s = MB_port.read();
+		const s = this.port.read();
 		if (s != null) this.recvBuf = this.joinBytes(this.recvBuf, s);
 		if (this.recvBuf.length < 3) return false; // not enough bytes for even a short message
 
@@ -597,7 +601,7 @@ class MB_Connection {
 	// --- Message sending ---
 
 	async sendMsg(msgName, chunkID = 0, byteList = null) {
-		if (!MB_port.isConnected()) return;
+		if (!this.port.isConnected()) return;
 
 		if (chunkID == null) chunkID = 0;
 		const msgID = this.msgNameToID(msgName);
@@ -614,12 +618,12 @@ class MB_Connection {
 		let dataToSend = new Uint8Array(msgArr);
 
 		if (this.portName === 'boardie') { // send all data at once to boardie
-			MB_port.write(dataToSend);
+			this.port.write(dataToSend);
 			return;
 		}
 
 		while (dataToSend.length > 0) {
-			if (!MB_port.isConnected()) return; // connection lost
+			if (!this.port.isConnected()) return; // connection lost
 			let chunkSize = dataToSend.length;
 			if (this.portName !== 'BLE' || isMobile()) {
 				// Note: Serial receive buffer is only 63 bytes on many boards so limit chunkSize.
@@ -628,7 +632,7 @@ class MB_Connection {
 				chunkSize = Math.min(63, chunkSize);
 			}
 			const chunk = dataToSend.slice(0, chunkSize);
-			const bytesSent = MB_port.write(chunk);
+			const bytesSent = this.port.write(chunk);
 			await waitMSecs(3); // limit throughput to avoid overrunning buffer when board is busy
 			if (bytesSent < chunkSize) await waitMSecs(25); // output queue full; wait a bit
 			dataToSend = dataToSend.slice(bytesSent);
@@ -712,54 +716,7 @@ class MB_Connection {
 	}
 
 	updateRunning(chunkID, isRunning) {
-		let runningBlock = null;
-		for (const [key, value] of this.chunkIDs.entries()) {
-			if (value === chunkID) {
-				runningBlock = key;
-				break;
-			}
-		}
-		if (runningBlock == null) return; // unknown chunk
-
-		if (isRunning) {
-			runningBlock.addHighlight();
-			this.runningChunks.set(runningBlock, chunkID);
-		} else {
-			runningBlock.removeHighlight();
-			this.runningChunks.delete(runningBlock);
-		}
-	}
-
-	toggleRunning(aBlock) {
-		let top = aBlock.topBlock();
-		let runningChunkID = this.runningChunks.get(top);
-		if (runningChunkID !== undefined) {
-			this.sendMsg('stopChunkMsg', runningChunkID);
-		} else {
-			let chunkID = this.chunkIDs.get(top);
-			if (chunkID == undefined) {
-				chunkID = this.nextChunkID++;
-				this.chunkIDs.set(top, chunkID);
-			}
-			this.compileAndRun(top, chunkID);
-		}
-	}
-
-	async compileAndRun(aBlock, chunkID) {
-		// Compile and run the given block.
-
-		if (this.project == null) this.project = new MB_Project();
-		let code = new MB_Compiler(this.project).compiledBytesFor(aBlock);
-		while ((code.length % 4) !== 0) {
-			// pad code with zeros to make chunk length be a multiple of four bytes
-			// this ensures 32-bit word chunk alignment in the code store
-			code.push(0);
-		}
-
-		let chunkType = aBlock.chunkType();
-		code.unshift(chunkType); // prepend the chunk type
-		this.sendMsg('chunkCode16Msg', chunkID, code);
-		this.sendMsg('startChunkMsg', chunkID);
+		MB_editor.updateRunning(chunkID, isRunning);
 	}
 
 }
