@@ -45,10 +45,11 @@ IDE.resize = function () {
 		tipBarHeight = IDE.tipBarElement.clientHeight,
 		winWidth = window.innerWidth,
 		leftBarWidth = IDE.leftBarElement.clientWidth,
-		newHeight = winHeight - (topBarHeight + tipBarHeight);
+		newHeight = winHeight - (topBarHeight + tipBarHeight),
+		newWidth = winWidth - leftBarWidth;
 
-	// document.querySelector('[data-ide="workspace"]').style.height = newHeight + 'px';
-	GP.apiCall('ide.resize', [ winWidth - leftBarWidth, newHeight ]);
+	//document.querySelector('[data-ide="workspace"]').style.height = newHeight + 'px';
+	GP.apiCall('ide.resize', [ newWidth, newHeight ]);
 };
 
 window.addEventListener('resize', () => { IDE.resize(); });
@@ -334,18 +335,24 @@ IDE.collapseLeftBar = {
 		collapseButton.addEventListener('click', () => {
 			IDE.element.classList.toggle('--is-left-collapsed');
 			IDE.element.classList.add('--is-transitioning');
+		});
 
-			clearInterval(resizeInterval);
-			resizeInterval = setInterval(() => { IDE.resize(); }, 100);
+		IDE.leftBarElement.addEventListener('transitionstart', () => {
+			if (event.propertyName == 'max-width') {
+				clearInterval(resizeInterval);
+				resizeInterval = setInterval(() => { IDE.resize(); }, 100);
+			}
 		});
 
 		IDE.leftBarElement.addEventListener('transitionend', () => {
-			IDE.element.classList.remove('--is-transitioning');
+			if (event.propertyName == 'max-width') {
+				IDE.element.classList.remove('--is-transitioning');
 
-			clearInterval(resizeInterval);
-			resizeInterval = null;
+				clearInterval(resizeInterval);
+				resizeInterval = null;
 
-			IDE.resize();
+				IDE.resize();
+			}
 		});
 	}
 };
