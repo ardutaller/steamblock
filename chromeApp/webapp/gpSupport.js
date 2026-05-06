@@ -934,17 +934,19 @@ function makeDraggable (element) {
 		maxZIndex++;
 		element.style.zIndex = maxZIndex;
 
-		// compute max position
-		var maxX = document.querySelector('.ide').clientWidth - element.clientWidth;
-		var maxY = document.querySelector('.ide').clientHeight - element.clientHeight;
+		// edge positions, offset by 50 to make sure we don't lose the window
+		var maxX = document.querySelector('.ide').clientWidth - 50,
+			maxY = document.querySelector('.ide').clientHeight - 50,
+			minX = (element.width - 50) * -1,
+			minY = (element.height - 50) * -1;
 
 		// calculate the new cursor position:
-		var newX = Math.round(element.offsetLeft + (e.clientX - lastX));
-		var newY = Math.round(element.offsetTop + (e.clientY - lastY));
+		var newX = Math.round(element.offsetLeft + (e.clientX - lastX)),
+			newY = Math.round(element.offsetTop + (e.clientY - lastY));
 
 		// constrain top left corner to be at least partially on screen
-		newX = (newX < 0) ? 0 : ((newX < maxX) ? newX : maxX);
-		newY = (newY < 0) ? 0 : ((newY < maxY) ? newY : maxY);
+		newX = (newX < minX) ? minX : ((newX < maxX) ? newX : maxX);
+		newY = (newY < minY) ? minY : ((newY < maxY) ? newY : maxY);
 		lastX = e.clientX;
 		lastY = e.clientY;
 		// set the element's new position:
