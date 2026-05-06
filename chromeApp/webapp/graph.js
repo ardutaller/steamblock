@@ -139,7 +139,7 @@ Graph.setColor = function (index) {
 Graph.drawData = function () {
 	this.dataTracks.forEach((dataPoints, track) => {
 		let x = 45,
-			hRange = this.width - 50,
+			hRange = Math.floor(this.width) - 50,
 			end = dataPoints.length,
 			start = Math.max(0, end - hRange);
 
