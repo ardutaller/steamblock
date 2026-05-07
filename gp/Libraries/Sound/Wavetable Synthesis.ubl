@@ -4,8 +4,10 @@ version 1 0
 choices wt_instruments piano bass saxophone violin 'sin wave' 'tri wave' 'square wave' 'saw wave' 
 description 'Sound synthesis directly on the microcontroller using wave tables. Supports 10 different channels for which you can select different instruments in the same style of the MIDI library.
 '
-variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_env_r 
+variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_env_r _wt_destination 
 
+  spec ' ' 'wt_config pin' 'set output pin to _ resolution _' 'auto auto' '10' '10'
+  space
   spec ' ' 'wt_select instrument' 'select instrument _ for channel _' 'menu.wt_instruments auto' 'tri wave' 1
   spec ' ' 'wt_play MIDI note' 'play MIDI note _ for _ ms on channel _ volume _' 'auto auto auto auto' 60 500 1 500
   spec ' ' 'wt_stop all notes on channel' 'stop  channel _ in _ ms' 'auto auto' 1 500
@@ -43,10 +45,6 @@ variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_e
   spec ' ' '_wt_set envelope ad_piano' '_wt_set envelope ad_piano _' 'auto' '10'
   spec ' ' '_arp play MIDI note' '_arp play MIDI note _ for _ on channel _ volume _' 'auto auto auto auto' 60 500 1 127
 
-to '_arp play MIDI note' note ms c vol {
-  'wt_play MIDI note' note ms c (vol * 39)
-}
-
 to '_wt_MIDI to factor' 'MIDI note' {
   return ((at (((v 'MIDI note') % 12) + 1) _wt_note_factors) / (at (((v 'MIDI note') / 12) - 1) ('[data:makeList]' 1 2 4 8 16 32 64 128 256)))
 }
@@ -72,12 +70,8 @@ to '_wt_init' {
       atPut i _wt_env_r ('[data:newByteArray]' 256)
       'wt_select instrument' 'tri wave' i
     }
+    'wt_config pin' -1 ''
     _wt_note_factors = ('[data:makeList]' 119360 112768 106368 100352 94720 89408 84416 79680 75220 71040 67072 63232)
-    if ((boardType) == 'WeAct STM32H743') {
-      _wt_pin = 56
-    } else {
-      _wt_pin = 25
-    }
   }
   sendBroadcast '_wt_play'
 }
@@ -96,7 +90,11 @@ to '_wt_play' {
     for i (size _wt_waves) {
       sum += (((at (((((microsOp) * 1000) / (at i _wt_freqs)) % 256) + 1) (at i _wt_waves)) * (at i _wt_amps)) / 100)
     }
-    analogWriteOp _wt_pin sum
+    if (_wt_destination == 'pwm') {
+      '[io:pwmAudioOut]' sum
+    } else {
+      analogWriteOp _wt_pin sum
+    }
   }
 }
 
@@ -233,6 +231,23 @@ to '_wt_violin2' {
   return ('[data:split]' '151,151,150,149,148,146,145,143,143,142,143,145,147,151,155,160,163,165,165,162,157,149,141,133,127,121,120,122,126,133,139,145,151,155,156,155,154,152,150,148,148,148,147,147,145,142,138,133,128,123,120,118,119,121,124,127,129,130,129,128,125,122,119,116,113,112,111,112,113,114,116,119,120,122,123,124,125,126,127,127,126,127,126,126,125,123,120,117,113,108,104,102,102,102,103,104,105,104,103,101,98,92,84,75,65,57,50,44,40,40,45,53,63,74,84,93,98,99,98,93,85,79,74,72,74,82,90,101,110,117,124' ',' true)
 }
 
+to 'wt_config pin' pin res {
+  _wt_destination = 'pwm'
+  if (pin == -1) {
+    if ((boardType) == 'WeAct STM32H743') {
+      _wt_destination = 'dac'
+      _wt_pin = 56
+    } else {
+      _wt_pin = 27
+    }
+  } else {
+    _wt_pin = pin
+  }
+  if (_wt_destination == 'pwm') {
+    '[io:pwmAudioInit]' _wt_pin res
+  }
+}
+
 to 'wt_graph envelope for channel' c {
   local 'vol' 100
   local 'env_ad' (at c _wt_env_ad)
@@ -290,3 +305,6 @@ to 'wt_stop all notes on channel' c ms {
   atPut c _wt_amps 0
 }
 
+to '_arp play MIDI note' note ms channel vol {
+  'wt_play MIDI note' note ms channel vol
+}

@@ -1,16 +1,16 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
 version 1 17 
-choices outputTypes 'asy;pin' 'asy;MCP4725' 
 description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
 
 You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will, or create sound textures by mixing waves.
 
 Amplitude range: -32768 to 32767 (16 bits signed)
 '
-variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends '_mcp4725 out' _asynth_ramp_frequencies 
+variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends _asynth_ramp_frequencies _asynth_pin _asynth_destination _asynth_resolution 
 
-  spec ' ' 'asynth output' 'output _ to _ : number/address _ : asynth;resolution _' 'num menu.outputTypes num num' 1024 'asy;pin' 25 10
+  spec ' ' 'asynth output' 'output _' 'num' 1024
+  spec ' ' 'asynth config output' 'set output pin to _ and resolution _' 'num num' 21 10
   space
   spec 'r' 'asynth sin' '#SVG#wave-sine _ Hz _ #SVG#double-arrow-v' 'num num' 440 10000
   spec 'r' 'asynth square' '#SVG#wave-square _ Hz _ #SVG#double-arrow-v' 'num num' 185 8000
@@ -77,6 +77,30 @@ to '_asynth init' {
   _asynth_ramp_frequencies = (newList 8)
 }
 
+to 'asynth config output' pin res {
+  _asynth_pin = pin
+  _asynth_destination = 'pwm'
+  _asynth_resolution = res
+  if (pin == -1) {
+    if ((boardType) == 'micro:bit v2') {
+      _asynth_pin = 27
+      _asynth_destination = 'pwm'
+      _asynth_resolution = 8
+    } ((boardType) == 'WeAct STM32H743') {
+      _asynth_pin = 56
+      _asynth_destination = 'dac'
+      _asynth_resolution = 12
+    } else {
+      _asynth_pin = 0
+      _asynth_destination = 'pwm'
+      _asynth_resolution = 10
+    }
+  }
+  if (_asynth_destination == 'pwm') {
+    '[io:pwmAudioInit]' _asynth_pin _asynth_resolution
+  }
+}
+
 to 'asynth envelope' amp att hold release gate {
   '_asynth init'
   atPut gate _asynth_amplitudes amp
@@ -140,16 +164,15 @@ to 'asynth noise gate' gate {
   return 0
 }
 
-to 'asynth output' sample 'output type' destination bits {
-  if ((v 'output type') == 'asy;pin') {
-    local 'res' (argOrDefault 4 10)
-    analogWriteOp (ifExpression (and ((argOrDefault 3 -1) == -1) ((boardType) == 'micro:bit v2')) 27 destination) (maximum 0 (minimum (((1 << res) / 2) + (sample >> (16 - res))) ((1 << res) - 1)))
+to 'asynth output' value {
+  local 'sample' (maximum 0 (minimum (((1 << _asynth_resolution) / 2) + (value >> (16 - _asynth_resolution))) ((1 << _asynth_resolution) - 1)))
+  if (_asynth_destination == 0) {
+    'asynth config output' -1 8
+  }
+  if (_asynth_destination == 'pwm') {
+    '[io:pwmAudioOut]' sample
   } else {
-    if ((v '_mcp4725 out') == 0) {'_mcp4725 out' = (newList 3 64)}
-    sample = (maximum 0 (minimum (2048 + (sample >> 4)) 4095))
-    atPut 2 (v '_mcp4725 out') ((sample >> 8) & 15)
-    atPut 3 (v '_mcp4725 out') (sample & 255)
-    '[sensors:i2cWrite]' (argOrDefault 3 96) (v '_mcp4725 out')
+    analogWriteOp _asynth_pin sample
   }
 }
 
