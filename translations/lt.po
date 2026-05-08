@@ -1,47 +1,47 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-05-08 11:12+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-05-09 12:11+0000\n"
+"Last-Translator: Giedrius Baronas <g.baronas@gmail.com>\n"
+"Language-Team: Lithuanian <https://hosted.weblate.org/projects/microblocks/"
+"ide/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
-"19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
-"1 : 2);\n"
-"X-Generator: Translate Toolkit 3.19.8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 2026.5-dev\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
-msgstr ""
+msgstr "Išvestis"
 
 #. Block in Output category
 msgid "set user LED _"
-msgstr ""
+msgstr "Nustatyti vartotojo LED _"
 
 #. Block in Output category
 msgid "say _"
-msgstr ""
+msgstr "Sakyk _"
 
 #. Block in Output category
 msgid "graph _"
-msgstr ""
+msgstr "Grafikas _"
 
 #. "Input" blocks category label
 msgid "cat;Input"
-msgstr ""
+msgstr "Įvestis"
 
 #. Block in Input category
 msgid "button A"
-msgstr ""
+msgstr "Knopkė A"
 
 #. Block in Input category
 msgid "button B"
-msgstr ""
+msgstr "Knopkė B"
 
 #. Block in Input category
 msgid "timer"
@@ -53,59 +53,59 @@ msgstr ""
 
 #. Block in Input category
 msgid "seconds"
-msgstr ""
+msgstr "sekundės"
 
 #. Block in Input category
 msgid "microseconds"
-msgstr ""
+msgstr "mikrosekundės"
 
 #. Block in Input category
 msgid "milliseconds"
-msgstr ""
+msgstr "milisekundės"
 
 #. Block in Input category
 msgid "board type"
-msgstr ""
+msgstr "plokštės tipas"
 
 #. Block in Input category
 msgid "version"
-msgstr ""
+msgstr "versija"
 
 #. Block in Input category
 msgid "milliseconds since _"
-msgstr ""
+msgstr "nuo kurios milisekundės_"
 
 #. Block in Input category
 msgid "end time _"
-msgstr ""
+msgstr "pabaigos laikas _"
 
 #. Block in Input category
 msgid "microseconds since _"
-msgstr ""
+msgstr "nuo kurios mikrosekundės _"
 
 #. Block in Input category
 msgid "BLE id"
-msgstr ""
+msgstr "BLE id"
 
 #. Block in Input category
 msgid "BLE connected"
-msgstr ""
+msgstr "BLE susijungęs"
 
 #. Block in Input category
 msgid "connected to IDE"
-msgstr ""
+msgstr "prisijungęs prie IDE"
 
 #. "Pins" blocks category label
 msgid "cat;Pins"
-msgstr ""
+msgstr "Kontaktai"
 
 #. Block in Pins category
 msgid "read digital pin _"
-msgstr ""
+msgstr "nuskaityti skaitmeninį kontaktą _"
 
 #. Block in Pins category
 msgid "read analog pin _"
-msgstr ""
+msgstr "nuskaityti analoginį kontaktą _"
 
 #. Block in Pins category
 msgid "pullup _"
