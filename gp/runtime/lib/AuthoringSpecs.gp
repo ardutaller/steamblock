@@ -504,7 +504,11 @@ method languageNameForCode AuthoringSpecs langCode {
 
 method languageCodeList AuthoringSpecs {
 	// Return an array of (<languageName> <abbreviation>) pairs."
-	return (jsonParse (readEmbeddedFile 'translations/locales.json'))
+	if (isEmpty listEmbeddedFiles) {
+		return (jsonParse (readFile '../translations/locales.json'))
+	} else {
+		return (jsonParse (readEmbeddedFile 'translations/locales.json'))
+	}
 }
 
 method isRTL AuthoringSpecs {

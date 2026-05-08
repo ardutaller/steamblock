@@ -2213,12 +2213,12 @@ msgid "#SVG#wave-noise gate _"
 msgstr "#SVG#wave-noise gate _"
 
 #. Analog Synthesis library block
-msgid "set amplitude _ attack _ hold _ release _ for gate _"
-msgstr "set amplitude _ attack _ hold _ release _ for gate _"
+msgid "set attack _ release _ for gate _"
+msgstr "set attack _ release _ for gate _"
 
 #. Analog Synthesis library block
-msgid "trigger gate _ MIDI key _"
-msgstr "trigger gate _ MIDI key _"
+msgid "play MIDI key _ for _ ms on gate _ amplitude _"
+msgstr "play MIDI key _ for _ ms on gate _ amplitude _"
 
 #. Analog Synthesis library block
 msgid "set frequency ramp from _ % to _ % for gate _"
@@ -2233,28 +2233,14 @@ msgid "frequency for gate _"
 msgstr "frequency for gate _"
 
 #. Analog Synthesis library block
-#. example: output [16320] to [analog pin]
-#. example: output [16320] to [MCP4725 DAC]
-msgid "output _ to _"
-msgstr "output _ to _"
-
-#. Analog Synthesis library block
-#. as in pin number or i2c address
-msgid "number/address _"
-msgstr "number/address _"
+#. example: output [16320]
+msgid "output _"
+msgstr "output _"
 
 #. Analog Synthesis library block
 #. as in digital resolution (8 bit, 16 bit...)
-msgid "asynth;resolution _"
-msgstr "resolution _"
-
-#. Analog Synthesis library block menu option
-msgid "asy;pin"
-msgstr "analog pin"
-
-#. Analog Synthesis library block menu option
-msgid "asy;MCP4725"
-msgstr "MCP4725 I2C DAC"
+msgid "set output pin to _ and resolution _"
+msgstr "set output pin to _ and resolution _"
 
 #. General MIDI drum instrument name
 msgid "Acoustic Bass Drum"
@@ -6608,8 +6594,7 @@ msgstr "by %1, %2 & %3."
 msgid "Created with GP"
 msgstr "Created with GP"
 
-#. About window info.
-#. The %1 tag becomes a hyperlink to https://microblocks.fun
+#. About window info
 msgid "More info at %1"
 msgstr "More info at %1"
 
