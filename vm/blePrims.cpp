@@ -721,9 +721,26 @@ static OBJ primStartBLEKeyboard(int argCount, OBJ *args) {
 
 #endif // BLE_KEYBOARD
 
+static OBJ primEnableAdvertising(int argCount, OBJ *args) {
+	int enable = ((argCount > 0) && (args[0] == trueObj));
+
+	#if defined(BLE_IDE)
+		if (enable) {
+			BLE_resumeAdvertising();
+			outputString("BLE advertisting on");
+		} else {
+			BLE_pauseAdvertising();
+			outputString("BLE advertisting off");
+		}
+	#endif
+
+	return falseObj;
+}
+
 static PrimEntry entries[] = {
 
 	{"bleConnected", primBLE_connected},
+	{"enableAdvertising", primEnableAdvertising},
 
 	#if defined(BLE_OCTO)
 		{"octoStartBeam", primOctoStartBeam},
