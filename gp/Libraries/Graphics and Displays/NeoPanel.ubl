@@ -1,6 +1,6 @@
 module NeoPanel Output
 author 'José García Yeste & Víctor Casado'
-version 1 11
+version 1 12
 depends _NeoPixel _BMP
 description 'Draw lines, rectangles, circles, text, and images on a NeoPixel panels (e.g. 8x8, 16x16 or 32x8) in either horizontal or vertical orientation. Panels can be daisy-chained to create larger displays if there is sufficient power to drive them.
 See: https://www.btf-lighting.com/collections/led-matrix-display/products/ws2812b-panel-screen-8-8-16-16-8-32-pixel-256-pixels-digital-flexible-led-programmed-individually-addressable-full-color-dc5v#
@@ -221,8 +221,8 @@ to neoPanel_draw_rectangle x y width height color optionalFilled {
   }
 }
 
-to neopanel_scrollText text color msec {
-  local 'delay' (argOrDefault 3 100)
+to neopanel_scrollText text color optionalDelay {
+  local 'msec' (argOrDefault 3 100)
   local 'totalW' ((size text) * 6)
   local 'x' _neoPanel_width
   repeatUntil (x < (0 - totalW)) {
