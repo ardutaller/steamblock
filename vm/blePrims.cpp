@@ -724,7 +724,7 @@ static OBJ primStartBLEKeyboard(int argCount, OBJ *args) {
 static OBJ primEnableAdvertising(int argCount, OBJ *args) {
 	int enable = ((argCount > 0) && (args[0] == trueObj));
 
-	#if defined(BLE_IDE)
+	#if defined(BLE_IDE) || defined(BLE_PICO)
 		if (enable) {
 			BLE_resumeAdvertising();
 			outputString("BLE advertisting on");
