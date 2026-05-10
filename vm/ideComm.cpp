@@ -341,8 +341,8 @@ void BLE_resumeAdvertising() {
 	pAdvertising->removeServices();
 	pAdvertising->addServiceUUID(MB_SERVICE_UUID);
 	pAdvertising->setName(bleDeviceName);
-	pAdvertising->setMinInterval(32); // 20 msecs (minumum allowable interval)
-	pAdvertising->setMaxInterval(40); // 25 msecs
+	pAdvertising->setMinInterval(480); // 300 msecs
+	pAdvertising->setMaxInterval(640); // 400 msecs
 	pAdvertising->start();
 }
 
@@ -453,7 +453,7 @@ void BLE_resumeAdvertising() {
 	gap_scan_response_set_data(sizeof(scan_resp_data), scan_resp_data);
 
 	BLE_setPicoAdvertisingData(NULL, MB_SERVICE_UUID); // resume BLE advertisting
-	setAdvertisingInterval(100, 150);
+	setAdvertisingInterval(480, 640); // 300 to 400 msecs
 	BTstack.startAdvertising();
 }
 
@@ -663,6 +663,7 @@ void BLE_start() { }
 void BLE_stop() { }
 void BLE_pauseAdvertising() { }
 void BLE_resumeAdvertising() { }
+//void setAdvertisingInterval(int minInterval, int maxInterval);
 
 #endif
 
