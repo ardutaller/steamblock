@@ -250,5 +250,6 @@ to 'asynth trigger gate' key ms gate amp {
   atPut gate _asynth_trigger_times (millisOp)
   atPut gate _asynth_trigger_active (booleanConstant true)
   atPut gate _asynth_ramp_frequencies ((base * (at gate _asynth_ramp_starts)) / 100)
+  waitMillis ms
 }
 
