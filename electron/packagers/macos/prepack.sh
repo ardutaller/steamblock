@@ -25,5 +25,6 @@ mv en.lproj ..
 rm -R *.lproj
 mv ../en.lproj .
 cd ../../../../..
+mv LICENSE LICENSES.chromium.html version Electron.app
 mv Electron.app MicroBlocks.app
 

@@ -39,6 +39,7 @@ snapBlocks/Libraries
 
 electron/electron-v*.zip
 electron/prepack
+electron/out
 
 # probably overkill, but this is what the official docs recommend
 
