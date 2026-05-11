@@ -57,7 +57,7 @@ pio run -e weact_h743vitx
 cp .pio/build/weact_h743vitx/firmware.bin precompiled/vm_weact_stm32.bin
 
 # Copy Linux VMs
-cp linux+pi/vm_* precompiled/
+#cp linux+pi/vm_* precompiled/
 
 # Create micro:bit Universal Hex File
 # Make sure we have the proper dep(s) installed

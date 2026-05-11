@@ -36,6 +36,10 @@ snapBlocks/Examples
 snapBlocks/Libraries
 
 # ELECTRON STUFF BELOW
+
+electron/electron-v*.zip
+electron/prepack
+
 # probably overkill, but this is what the official docs recommend
 
 electron/package-lock.json

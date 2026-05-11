@@ -38,21 +38,6 @@ if test -n "$help"; then
 	exit 0
 fi
 
-systems=("linux64bit" "linux32bit" "raspberryPi" "win" "mac")
-
-currentOS=`uname -s`
-if [ "$currentOS" == "Darwin" ]; then
-	gp="gp-mac"
-elif [ "$currentOS" == "Linux" ]; then
-	gp="gp-linux64bit"
-else
-	echo "Platform $currentOS is not (yet?) supported by this build script."
-	echo "Try to find the gp executable for your platform in this folder and run:"
-	echo "cd gp; [command-to-run-GP] runtime/lib/* loadIDE.gp buildApps.gp"
-	echo "Good luck!"
-	exit 1
-fi
-
 if test -n "$locale"; then
 	if [ $locale == '--locale' ]; then
 		echo "Currently available locales:"
@@ -91,9 +76,13 @@ if test -n "$tools"; then
 	# try to install all tooling needed to build and pack the apps
 	echo "Installing Electron and dependencies"
 	(cd electron; npm install)
+	echo "Installing Electron ASAR"
+        (cd electron; npm install --engine-strict @electron/asar)
 	if [ "$currentOS" == "Linux" ]; then
 		echo "Adding Flatpack repo"
 		(cd electron; flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo)
+		echo "Installing flathub"
+		(cd electron; flatpak install -y --noninteractive flathub org.freedesktop.Platform//25.08 org.freedesktop.Sdk//25.08 org.electronjs.Electron2.BaseApp//25.08)
 		echo "Note that you'll additionally need to install the following packages manually:"
 		if [ -z `command -v flatpak` ]; then echo "flatpack"; fi
 		if [ -z `command -v flatpak-builder` ]; then echo "flatpack-builder"; fi
@@ -119,9 +108,9 @@ fi
 
 if test -n "$electron"; then
 	if test -n "$pack"; then
-		(cd electron; npm run make)
+		(cd electron; ./pack.sh)
 	else
-		(cd electron; npm start)
+		(cd electron; npm run start)
 	fi
 	exit 0
 fi

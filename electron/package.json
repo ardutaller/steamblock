@@ -1,14 +1,11 @@
 {
   "name": "microblocks",
-  "productName": "microblocks",
+  "productName": "MicroBlocks",
   "version": "2.1.0",
   "description": "MicroBlocks is a free, Scratch-like blocks programming language for learning physical computing with educational microcontroller boards",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "start": "electron .",
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
@@ -18,18 +15,9 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.1"
+    "@electron/asar": "^4.2.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.8.1",
-    "@electron-forge/maker-deb": "^7.8.1",
-    "@electron-forge/maker-dmg": "^7.9.0",
-    "@electron-forge/maker-flatpak": "^7.10.2",
-    "@electron-forge/maker-rpm": "^7.8.1",
-    "@electron-forge/maker-squirrel": "^7.8.1",
-    "@electron-forge/maker-zip": "^7.10.2",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
-    "@electron-forge/plugin-fuses": "^7.8.1",
     "@electron/fuses": "^1.8.0",
     "electron": "36.4.0"
   }

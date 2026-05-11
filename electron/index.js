@@ -4,11 +4,6 @@ const path = require('node:path');
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 app.commandLine.appendSwitch('gtk-version', '3');
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
-	app.quit();
-}
-
 let bleStartMSecs;
 let bleMenu;
 
@@ -128,7 +123,7 @@ const createWindow = () => {
 	mainWindow.loadFile(
 		app.isPackaged ?
 			path.join(process.resourcesPath, '/webapp/microblocks.html') :
-			path.join(__dirname, '../../chromeApp/webapp/microblocks.html')
+			path.join(__dirname, '../chromeApp/webapp/microblocks.html')
 	);
 };
 
