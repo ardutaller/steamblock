@@ -10,7 +10,7 @@ rm -Rf prepack/macos
 mkdir -p prepack/macos/
 cd prepack/macos/
 unzip -q ../../electron-$tag-darwin-arm64.zip
-cp ../../Info.plist Electron.app/Contents
+cp ../../packagers/macos/Info.plist Electron.app/Contents
 mv Electron.app/Contents/MacOS/Electron Electron.app/Contents/MacOS/MicroBlocks
 cp -rL ../../../chromeApp/webapp Electron.app/Contents/Resources
 cd Electron.app/Contents/Resources
