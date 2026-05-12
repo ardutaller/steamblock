@@ -16,6 +16,8 @@ if test -n "$help"; then
 	echo "--pack                        Create packages and installers. If --system parameter"
 	echo "                              is present, it will only create it for the specified"
 	echo "                              platform."
+	echo "  --system=[SYSTEM]           Specify which system to pack for. Valid values are"
+	echo "                              linux, macos and windows."
 	echo "--version=[VERSION-NUMBER]    Specify a version number, i.e. 0.1.16rc3. If not set,"
 	echo "                              it will try to parse it from the GP source files."
 	echo "--vm                          Build VMs for all officially supported boards. These"
@@ -108,7 +110,7 @@ fi
 
 if test -n "$electron"; then
 	if test -n "$pack"; then
-		(cd electron; ./pack.sh)
+		(cd electron; ./pack.sh $system)
 	else
 		(cd electron; npm run start)
 	fi
