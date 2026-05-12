@@ -4,7 +4,7 @@
 
 // Copyright 2025 John Maloney, Bernat Romagosa, and Jens Mönig
 
-// dfuUploader.js - Upload firmware to DFU-enabled boards
+// flasher.js - Upload firmware to ESP32 and DFU-enabled boards
 
 // Bernat Romagosa, 2026
 
@@ -13,7 +13,7 @@ const DFUpload = {
 		'WeAct STM32H743': {
 			name: 'WeAct STM32H743',
 			vmFileName: 'vm_weact_stm32.bin',
-			pageSize: 1048576,
+			pageSize: 131072,
 			flashSize: 2097152,
 			filter: { vendorId: 1155, productId: 57105 }
 		},
@@ -28,9 +28,6 @@ const DFUpload = {
 };
 
 DFUpload.flashBoard = function (boardName) {
-	let board = this.boards[boardName];
-	window.dfu = new usbDfuDevice();
-
 	IDE.spinner.show(
 		'Uploading MicroBlocks to board...', // title
 		null, // subtitle
@@ -38,27 +35,43 @@ DFUpload.flashBoard = function (boardName) {
 		() => { dfu.disconnect(); }, // onCancel
 	);
 
+	let board = this.boards[boardName];
+	window.dfu = new usbDfuDevice();
+
 	fetch(`precompiled/${board.vmFileName}`)
 		.then(res => res.arrayBuffer())
 		.then(buffer => {
 			if (buffer) {
 				dfu.disconnect()
+					.then(()=>IDE.spinner.show())
+					.then(()=>IDE.spinner.setTitle('Connecting...'))
 					.then(()=>dfu.connect(board.filter))
 					.then(()=>dfu.setFlashAndPageSizes(board.flashSize, board.pageSize))
 					.then(()=>dfu.clearStatus())
+					.then(()=>IDE.spinner.setTitle('Erasing...'))
 					.then(()=>dfu.erase())
 					.then(()=>dfu.sleep(5000))
+					.then(()=>IDE.spinner.setTitle('Flashing...'))
 					.then(()=>dfu.program(buffer))
+					.then(()=>dfu.sleep(250, 'Booting...'))
 					.then(()=>dfu.detach())
+					.then(()=>dfu.sleep(250, 'Disconnecting...'))
 					.then(()=>dfu.disconnect());
 			}
 		});
 };
 
-dfuProgressHandler = function (percent) {
-	IDE.spinner.setPercent(percent);
+dfuStatusHandler = function (label) { IDE.spinner.setTitle(label); }
+dfuProgressHandler = function (percent) { IDE.spinner.setPercent(percent); };
+dfuDisconnectHandler = function () { IDE.spinner.hide(); };
+
+const ESPUpload = { };
+
+ESPUpload.repoUrl = function (version) {
+	return (location.protocol == 'http' ? 'http' : 'https') +
+		'://microblocks.fun/downloads/' + version + '/vm/';
 };
 
-dfuDisconnectHandler = function () {
-	IDE.spinner.hide();
+ESPUpload.flashFromRepo = function (version) {
+	let html = fetch(this.repoUrl(version));
 };

@@ -41,6 +41,12 @@ Tips
 [ ] Nat + John: Proposar la opció d'amagar els tips (Advanced mode?)
 
 
+Spinner
+=======
+[ ] Do not switch browser tabs label
+[ ] Make ESC work
+
+
 Menus
 ===
 [x] Als context menu amb checks que són single option, afegir classe --single-option

@@ -25,7 +25,10 @@ method initialize MicroBlocksFlasher board serialPortName eraseFlashFlag downloa
 method spinner MicroBlocksFlasher { return spinner }
 
 method espToolStatus MicroBlocksFlasher {
-	if (notNil espTool) { return (status espTool) }
+	if (notNil espTool) {
+		notify (api (smallRuntime)) 'spinner.setTitle' (status espTool)
+		return (status espTool)
+	}
 }
 
 method espToolDone MicroBlocksFlasher {
@@ -118,6 +121,7 @@ method downloadProgress MicroBlocksFlasher actionLabel {
 	if (bytesExpected > 0) {
 		percent = (round ((100 * (fetchBytesReceived fetchID)) / bytesExpected))
 	}
+	notify (api (smallRuntime)) 'spinner.setPercent' percent
 	return (join (localized 'Downloading...') ' ' percent  '%')
 }
 
@@ -143,6 +147,7 @@ method downloadURLInBrowser MicroBlocksFlasher url {
 
 	downloadProgress = 0
 	spinner = (newSpinner (action 'downloadProgress' this) (action 'downloadCompleted' this))
+	notify (api (smallRuntime)) 'spinner.setLabel' 'Downloading...'
 	setStopAction spinner (action 'abortDownload' this)
 	addPart (global 'page') spinner
 
@@ -172,6 +177,7 @@ method downloadURL MicroBlocksFlasher url {
 
 	downloadProgress = 0
 	spinner = (newSpinner (action 'downloadProgress' this 'downloaded') (action 'downloadCompleted' this))
+	notify (api (smallRuntime)) 'spinner.setLabel' 'Downloading...'
 	setStopAction spinner (action 'abortDownload' this)
 	addPart (global 'page') spinner
 
@@ -201,6 +207,7 @@ method downloadURL MicroBlocksFlasher url {
 				}
 			}
 			downloadProgress = (floor ((100 * (byteCount data)) / bytesNeeded))
+			notify (api (smallRuntime)) 'spinner.setPercent' downloadProgress
 		} else {
 			waitMSecs 1
 		}

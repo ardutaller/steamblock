@@ -254,7 +254,10 @@ IDE.spinner = {
 	},
 
 	setPercent: function (percent) {
-		this.spinner.style.setProperty('--percent', (percent ?? 75)/100 * 360 + 'deg');
+		this.spinner.style.setProperty(
+			'--percent',
+			(percent ?? 75)/100 * 360 + 'deg'
+		);
 		if ((percent >= 100) && this.onDone) {
 			this.onDone.call();
 			this.hide();
@@ -267,6 +270,26 @@ IDE.spinner = {
 		this.onDone = null;
 	}
 };
+
+document.addEventListener('spinner.show', e => {
+	let options = e.detail.value;
+	IDE.spinner.show(
+		options.title,
+		options.subtitle,
+		options.percent
+		//TODO ondone, oncancel
+	);
+});
+
+document.addEventListener('spinner.setTitle', e => {
+	IDE.spinner.setTitle(e.detail.value);
+});
+
+document.addEventListener('spinner.setPercent', e => {
+	IDE.spinner.setPercent(e.detail.value);
+});
+
+document.addEventListener('spinner.hide', e => { IDE.spinner.hide(); });
 
 // Zoom buttons and undo/redo
 IDE.populateScriptControls = function (element) {

@@ -492,12 +492,11 @@ let usbDfuDevice = class {
 		}
 	}
 
-	async sleep(ms) {
+	async sleep(ms, msg) {
 		return new Promise(resolve => {
-			console.log('sleeping for ' + ms + 'ms');
 			let remaining = ms;
 			IDE.spinner.show(
-				'Uploading MicroBlocks to board...', // title
+				msg || 'Sleeping...', // title
 				null, // subtitle
 				0, // percent
 				() => { dfu.disconnect(); }, // onCancel
