@@ -2712,7 +2712,7 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 		cocube.Update();
 		#if !defined(COCUBE_SOCCER)
 			cocube.EncoderUpdate();
-			checkPowerButton();
+//xxx		checkPowerButton(); // this causes intermittent reset on old model CoCubes
 			checkResetButton();
 		#endif
 	}

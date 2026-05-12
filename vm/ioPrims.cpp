@@ -2852,7 +2852,7 @@ static OBJ primPWMAudioInit(int argCount, OBJ *args) {
 	// Have not tested the different sample rates with a low-pass filter.
 
 	if (argCount < 2) return fail(notEnoughArguments);
-	if (!isInt(args[0]) || !isInt(args[0])) return fail(needsIntegerError);
+	if (!isInt(args[0]) || !isInt(args[1])) return fail(needsIntegerError);
 
 	if (pwmAudioPin >= 0) ledcDetachPin(pwmAudioPin);
 	pwmAudioPin = -1;
@@ -2890,6 +2890,50 @@ static OBJ primPWMAudioOut(int argCount, OBJ *args) {
 	if (pwm > pwmAudioMaxSample) pwm = pwmAudioMaxSample;
 
 	ledcWrite(LEDC_AUDIO_CHANNEL, pwm);
+	return falseObj;
+}
+
+#elif defined(NRF52)
+
+static int pwmAudioPin = -1; // -1 means audio is not initialized
+
+static OBJ primPWMAudioInit(int argCount, OBJ *args) {
+	// Sampling rate on nRF52 is zzz kHz with 8-bit samples using PWM.
+
+	if (argCount < 1) return fail(notEnoughArguments);
+	if (!isInt(args[0])) return fail(needsIntegerError);
+
+	pwmAudioPin = obj2int(args[0]);
+	if ((pwmAudioPin < 0) || (pwmAudioPin >= DIGITAL_PINS)) return falseObj;
+
+	setPinMode(pwmAudioPin, OUTPUT);
+	analogWriteResolution(8);
+
+	return falseObj;
+}
+
+static OBJ primPWMAudioOut(int argCount, OBJ *args) {
+	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
+
+	int signed16bit = obj2int(args[0]); // signed 16-bit sample
+
+	if (pwmAudioPin < 0) {
+		outputString("PWM Audio not initialized");
+		return falseObj;
+	}
+
+	int value = (signed16bit >> 9) + 128;
+	if (value < 0) value = 0;
+	if (value > 255) value = 255;
+
+	// On NRF52, wait until last PWM cycle is finished before writing a new value.
+	// Prevents a tight loop writing audio samples from exceeding the PWM sample rate.
+	NRF_PWM_Type* pwm = NRF_PWM0;
+	if (pwm->EVENTS_SEQSTARTED[0]) {
+		while (!pwm->EVENTS_PWMPERIODEND) /* wait */;
+		pwm->EVENTS_PWMPERIODEND = 0;
+	}
+	analogWrite(pwmAudioPin, value); // set the PWM duty cycle on a digital pin
 	return falseObj;
 }
 
