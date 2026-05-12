@@ -274,11 +274,11 @@ Menus.scriptingArea = {
 		},
 		{ label: '-' },
 		{
-			label: 'copy all scripts to clibboard',
+			label: 'copy all scripts to clipboard',
 			action: () => { GP.apiCall('scripts.copyToClipboard'); }
 		},
 		{
-			label: 'copy all scripts to clibboard as URL',
+			label: 'copy all scripts to clipboard as URL',
 			action: () => { GP.apiCall('scripts.copyToClipboardAsURL'); }
 		},
 		{ label: '-' },

@@ -2,7 +2,7 @@
   "name": "microblocks",
   "productName": "MicroBlocks",
   "version": "2.1.0",
-  "description": "MicroBlocks is a free, Scratch-like blocks programming language for learning physical computing with educational microcontroller boards",
+  "description": "MicroBlocks is a free, live blocks programming language for learning physical computing with educational microcontroller boards",
   "main": "index.js",
   "scripts": {
     "start": "electron .",

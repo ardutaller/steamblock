@@ -1378,7 +1378,7 @@ async function GP_ReadFile(ext) {
 			accepts: [{ description: 'MicroBlocks', extensions: [ext] }]
 		};
 		chrome.fileSystem.chooseEntry(options, onFileSelected);
-	} else if (GP_isMobile()) {
+	} else if (GP_isMobile() || isElectron()) {
 		GP_UploadFiles();
 	} else if (typeof window.showOpenFilePicker != 'undefined') { // Native Filesystem API
 		var options = {};
@@ -1439,7 +1439,7 @@ async function GP_writeFile(data, fName, id) {
 			accepts: [{ description: 'MicroBlocks', extensions: [ext] }]
 		};
 		chrome.fileSystem.chooseEntry(options, onFileSelected);
-	} else if (typeof window.showSaveFilePicker != 'undefined') { // Native Filesystem API
+	} else if (typeof window.showSaveFilePicker != 'undefined' && !isElectron()) { // Native Filesystem API
 		if (/(CrOS)/.test(navigator.userAgent) || /Linux/.test(navigator.userAgent)) {
 			// On Chromebooks and Linux, the extension is not automatically appended.
 			fName = fName + '.' + ext;
