@@ -946,11 +946,7 @@ method doOneCycle Page {
 	wakeUpDisplayTasks taskMaster
 	stepTasks taskMaster 75
 	if (or redrawAll (notEmpty damages)) { fixDamages this }
-
-	// sleep for any extra time, but always sleep a little to ensure that
-	// we get events (and to return control to the browser)
-	sleepTime = (max 1 (15 - (msecs t)))
-	waitMSecs sleepTime
+	waitMSecs 1 // return control to the browser until next animation frame
 }
 
 method updateDisplay Page {

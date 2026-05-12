@@ -403,7 +403,7 @@ method updateFPS MicroBlocksEditor {
 // browser support
 
 method browserResize MicroBlocksEditor newWidth newHeight {
-	openWindow newWidth newHeight true
+//	openWindow newWidth newHeight true
 	oldScale = (global 'scale')
 	page = (global 'page')
 	updateScale page

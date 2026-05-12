@@ -48,7 +48,12 @@ IDE.resize = function () {
 		newHeight = winHeight - (topBarHeight + tipBarHeight),
 		newWidth = winWidth - leftBarWidth;
 
-	//document.querySelector('[data-ide="workspace"]').style.height = newHeight + 'px';
+	// Always use 'retina mode' in browser (i.e. double resolution)
+	document.querySelector('#canvas').style.height = newHeight + 'px';
+	document.querySelector('#canvas').style.width = newWidth + 'px';
+	document.querySelector('#canvas').height = 2 * newHeight;
+	document.querySelector('#canvas').width = 2 * newWidth;
+
 	GP.apiCall('ide.resize', [ newWidth, newHeight ]);
 };
 

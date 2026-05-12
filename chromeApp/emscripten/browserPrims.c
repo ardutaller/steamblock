@@ -791,9 +791,6 @@ static OBJ primOpenWindow(int nargs, OBJ args[]) {
 		var w = $0;
 		var h = $1;
 
-		// make background same color as the IDE to make any gaps less noticable
-		document.body.style.backgroundColor = "#2d3143";
-
 		var winCnv = document.getElementById('canvas');
 		if (winCnv) {
 			winCnv.style.setProperty('width', w + 'px');
