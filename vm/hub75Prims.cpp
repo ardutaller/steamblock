@@ -7,7 +7,6 @@
 // hub75Prims.cpp - MicroBlocks HUB75 LED Panels primitives
 // José García, May 2025
 
-
 #include <Arduino.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,46 +16,46 @@
 
 int h75initialized = false;
 
-#define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow operations	
+#define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow operations
 
 #if defined(ESP32_S3_MATRIX_PORTAL)
 
 #include <ESP32-HUB75-MatrixPanel-I2S-DMA.h>
 
-#define PANEL_WIDTH  128	
-#define PANEL_HEIGHT 64  
+#define PANEL_WIDTH 128
+#define PANEL_HEIGHT 64
 #define PANELS 1
 
 MatrixPanel_I2S_DMA *dma_display = nullptr;
 
 static OBJ primh75Init(int argCount, OBJ *args) {
 
-	if (!h75initialized) {	
+	if (!h75initialized) {
 		HUB75_I2S_CFG mxconfig(PANEL_WIDTH, PANEL_HEIGHT, PANELS);
 
-    		mxconfig.gpio.r1 = 42;
-    		mxconfig.gpio.g1 = 41;
-   		mxconfig.gpio.b1 = 40;  
-	
-    		mxconfig.gpio.r2 = 38;
-    		mxconfig.gpio.g2 = 39;
-   		mxconfig.gpio.b2 = 37; 
+		mxconfig.gpio.r1 = 42;
+		mxconfig.gpio.g1 = 41;
+		mxconfig.gpio.b1 = 40;
 
-    		mxconfig.gpio.a = 45;
-    		mxconfig.gpio.b = 36;
-   		mxconfig.gpio.c = 48;
-   		mxconfig.gpio.d = 35;
+		mxconfig.gpio.r2 = 38;
+		mxconfig.gpio.g2 = 39;
+		mxconfig.gpio.b2 = 37;
+
+		mxconfig.gpio.a = 45;
+		mxconfig.gpio.b = 36;
+		mxconfig.gpio.c = 48;
+		mxconfig.gpio.d = 35;
 		mxconfig.gpio.e = 21;
 
 		mxconfig.gpio.lat = 47;
- 		mxconfig.gpio.oe = 14;
- 		mxconfig.gpio.clk =  2;
+		mxconfig.gpio.oe = 14;
+		mxconfig.gpio.clk = 2;
 
 		dma_display = new MatrixPanel_I2S_DMA(mxconfig);
-  		dma_display->begin();
-  		dma_display->setBrightness8(180); //0-255
-  		dma_display->clearScreen();
-		
+		dma_display->begin();
+		dma_display->setBrightness8(180); //0-255
+		dma_display->clearScreen();
+
 	};
 
 	h75initialized = true;
@@ -66,7 +65,7 @@ static OBJ primh75Init(int argCount, OBJ *args) {
 
 static OBJ primh75Clear(int argCount, OBJ *args) {
 	if (!h75initialized) return falseObj;
-	
+
 	dma_display->clearScreen();
 	UPDATE_DISPLAY();
 	return falseObj;
@@ -94,13 +93,13 @@ uint16_t bufferPixelsH75[BUFFER_PIXELS_SIZE]; // used by primPixelRow and primDr
 static int color24to16b(int color24b) {
 	// Convert 24-bit RGB888 format to the TFT's target pixel format.
 	// Return RGB565 16-bit color.
- 
+
 	int r, g, b;
 
 	r = (color24b >> 19) & 0x1F; // 5 bits
 	g = (color24b >> 10) & 0x3F; // 6 bits
 	b = (color24b >> 3) & 0x1F; // 5 bits
-	
+
 	return (r << 11) | (g << 5) | b; // color order: RGB
 }
 
@@ -109,7 +108,7 @@ static OBJ primh75SetPixel(int argCount, OBJ *args) {
 		int x = obj2int(args[0]);
 		int y = obj2int(args[1]);
 		int color16b = color24to16b(obj2int(args[2]));
-	
+
 		dma_display->drawPixel(x, y, color16b);
 		UPDATE_DISPLAY();
 	}
@@ -226,7 +225,7 @@ static OBJ primh75Text(int argCount, OBJ *args) {
 		sprintf(s, "%d", obj2int(value));
 		if (bgColor != -1) dma_display->fillRect(x, y, strlen(s) * letterW, lineH, bgColor);
 		dma_display->print(s);
-	};	
+	};
 	UPDATE_DISPLAY();
 	return falseObj;
 }
@@ -374,7 +373,7 @@ static OBJ primh75DrawBuffer(int argCount, OBJ *args) {
 #else // stubs
 
 
-static OBJ primh75Init(int argCount, OBJ *args) { return falseObj;} 
+static OBJ primh75Init(int argCount, OBJ *args) { return falseObj; }
 static OBJ primh75Clear(int argCount, OBJ *args) { return falseObj; }
 static OBJ primh75GetWidth(int argCount, OBJ *args) { return int2obj(0); }
 static OBJ primh75GetHeight(int argCount, OBJ *args) { return int2obj(0); }
@@ -411,5 +410,3 @@ static PrimEntry entries[] = {
 void addH75Prims() {
 	addPrimitiveSet(H75Prims,"h75", sizeof(entries) / sizeof(PrimEntry), entries);
 }
-
-
