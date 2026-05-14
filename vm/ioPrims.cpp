@@ -1816,6 +1816,11 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 void primAnalogWrite(OBJ *args) {
 	if (!isInt(args[0]) || !isInt(args[1])) { fail(needsIntegerError); return; }
 	int pinNum = obj2int(args[0]);
+	#if defined(USE_DIGITAL_PIN_MAP) && !defined(DUELink)
+		if ((pinNum < 0) || (pinNum >= DIGITAL_PINS)) return;
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return;
+	#endif
 	#if defined(ADAFRUIT_ITSYBITSY_M0)
 		if (pinNum > 25) return;
 	#elif defined(ADAFRUIT_TRINKET_M0)
