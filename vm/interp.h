@@ -447,6 +447,7 @@ typedef enum {
 	OneWirePrims,
 	EncoderPrims,
 	SDCardPrims,
+	H75Prims,
 	PrimitiveSetCount
 } PrimitiveSetIndex;
 
@@ -467,6 +468,7 @@ void addCameraPrims();
 void addOneWirePrims();
 void addEncoderPrims();
 void addSDCardPrims();
+void addH75Prims();
 
 // Named Primitive Support
 

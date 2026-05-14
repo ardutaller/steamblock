@@ -222,6 +222,7 @@ void primsInit() {
 	addCameraPrims();
 	addEncoderPrims();
 	addSDCardPrims();
+	addH75Prims();
 #endif
 }
 
