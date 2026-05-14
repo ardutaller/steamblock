@@ -1368,7 +1368,9 @@ static inline int napIfPossible() {
 	#if defined(GNUBLOCKS)
 		usleep(napMicroSecs); // nap a while to relinquish the CPU
 	#else
-		lightSleep(4);
+		#if !defined(ESP32_S3_MATRIX_PORTAL)
+			lightSleep(4);
+		#endif
 	#endif
 	return true;
 }

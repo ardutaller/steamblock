@@ -447,6 +447,7 @@ typedef enum {
 	OneWirePrims,
 	EncoderPrims,
 	SDCardPrims,
+	LGVLPrims,
 	H75Prims,
 	PrimitiveSetCount
 } PrimitiveSetIndex;
