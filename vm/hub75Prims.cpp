@@ -378,7 +378,7 @@ static OBJ primh75Clear(int argCount, OBJ *args) { return falseObj; }
 static OBJ primh75GetWidth(int argCount, OBJ *args) { return int2obj(0); }
 static OBJ primh75GetHeight(int argCount, OBJ *args) { return int2obj(0); }
 static OBJ primh75SetPixel(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75Text(int argCount, OBJ *args) { return falseObj; }
+static OBJ primh75PixelRow(int argCount, OBJ *args) { return falseObj; }
 static OBJ primh75Line(int argCount, OBJ *args) { return falseObj; }
 static OBJ primh75Rect(int argCount, OBJ *args) { return falseObj; }
 static OBJ primh75RoundedRect(int argCount, OBJ *args) { return falseObj; }
