@@ -86,6 +86,11 @@ static int microBitDisplayBits = 0;
 static int lightLevel = 0;
 static int lightReadingRequested = false;
 
+extern "C" int displayIsActive() {
+	if (disableLEDDisplay) return false;
+	return !microBitDisplayBits;
+}
+
 #if defined(ARDUINO_BBC_MICROBIT) || defined(ARDUINO_CALLIOPE_MINI)
 
 static unsigned int lightLevelReadTime = 0;

@@ -325,6 +325,7 @@ void setPinMode(int pin, int newMode);
 void turnOffPins();
 void resetTimer();
 int hasI2CPullups();
+int displayIsActive();
 void updateMicrobitDisplay();
 void checkButtons();
 void resetRadio();
