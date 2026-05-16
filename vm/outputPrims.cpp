@@ -386,27 +386,30 @@ static int displayCycle = 0;
 static int rowPins[5] = {8, 17, 10, 38, 6};
 static int columnPins[5] = {3, 2, 14, 15, 16};
 
-#define DISPLAY_BIT(n) (((displaySnapshot >> (n - 1)) & 1) ? LOW : HIGH)
+#define DISPLAY_BIT(n) (((displaySnapshot >> n) & 1) ? HIGH : LOW)
 
 static void turnDisplayOn() {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++) { // turn off columns
 		setPinMode(columnPins[i], OUTPUT);
 		digitalWrite(columnPins[i], HIGH);
+	}
+	for (int i = 0; i < 5; i++) { // turn off rows
 		setPinMode(rowPins[i], OUTPUT);
-		digitalWrite(rowPins[i], LOW);
+		digitalWrite(rowPins[i], HIGH);
 	}
 }
 
 static void turnDisplayOff() {
 	for (int i = 0; i < 5; i++) {
-		digitalWrite(columnPins[i], HIGH); // Was LOW
+		digitalWrite(columnPins[i], HIGH); // turn off all columns
 	}
 }
 
 void updateMicrobitDisplay() {
-	// Update the display by cycling through the three columns, turning on the rows
+	// Update the display by cycling through the five columns, turning on the row LEDs
 	// for each column. To minimize display artifacts, the display bits are snapshot
 	// at the start of each cycle and the snapshot is not changed during the cycle.
+	// An LED lights when the corresponding row is high and the column is low.
 
 	if (disableLEDDisplay) return;
 
@@ -426,14 +429,12 @@ void updateMicrobitDisplay() {
 		turnDisplayOn();
 	}
 	int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
-	digitalWrite(columnPins[previousColumn], HIGH);
+	digitalWrite(columnPins[previousColumn], HIGH); //  turn off previous column
 
-	int offset = displayCycle;
-	for (int i = 0; i < 5; i++) {
-		digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i) + 1));
+	for (int row = 0; row < 5; row++) {
+		digitalWrite(rowPins[row], DISPLAY_BIT((5 * row) + displayCycle));
 	}
-	setPinMode(columnPins[displayCycle], OUTPUT);
-	digitalWrite(columnPins[displayCycle], LOW);
+	digitalWrite(columnPins[displayCycle], LOW); // turn on current column
 	displayCycle = (displayCycle + 1) % 5;
 }
 
