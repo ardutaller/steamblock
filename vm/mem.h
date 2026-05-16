@@ -43,6 +43,7 @@ extern "C" {
 	// CincoBit = 1, PixoBit = 2; ID's 3-15 are reserved for future boards with edge connectors
 	#define DUE_HAS_EDGE_CONNECTOR (DUE_PID < 16)
 	#define IS_DUE_CINCO (DUE_PID == 1)
+	#define IS_DUE_PIXO (DUE_PID == 2) // check the PID
 	#define IS_DUE_STEM (DUE_PID == 16)
 	#define IS_DUE_CLIPIT (DUE_PID == 17)
 	#define IS_DUE_CHRONO (DUE_PID == 0x0C0004)

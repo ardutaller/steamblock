@@ -193,6 +193,11 @@ void hardwareInit() {
 		WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // disable brownout detector
 		cocubeSensorInit();
 	#endif
+	#if defined(DUELink)
+		// Ping the DUELink address so any connected DUELink modules will use I2C mode.
+		// This must be the first I2C transaction after power up.
+		readI2CReg(82, 0);
+	#endif
 }
 
 // General Purpose I/O Pins
@@ -1596,13 +1601,16 @@ void turnOffPins() {
 		if (turnOffPin) {
 			#if defined(DUELink)
 				if (OUTPUT == currentMode[pin]) {
-					int duePin = mapDigitalPinNum(pin);
-					if (duePin >= 0) digitalWrite(duePin, LOW);
+					if ((IS_DUE_PIXO || IS_DUE_STEM) && (pin == mapDigitalPinNum(22))) {
+						continue; // skip OLED reset pin
+					}
+					digitalWrite(pin, LOW); // set low before switching to input
 				}
 			#endif
 			#if defined(PICO_RP2350)
+				 // workaround for RP2350 chip bug; set low before switching to input
 				pinMode(pin, OUTPUT);
-				digitalWrite(pin, LOW); // workaround for RP2350 chip bug; set low before switching to input
+				digitalWrite(pin, LOW);
 				delayMicroseconds(10);
 				pinMode(pin, INPUT);
 			#endif
