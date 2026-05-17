@@ -1,6 +1,6 @@
 module OctoStudio Comm
 author wwj718
-version 1 11 
+version 1 12 
 choices octo_shapes 'octo;circle' 'octo;square' 'octo;star' 'octo;heart' 'octo;triangle' 'octo;clover' 'octo;diamond' 'octo;moon' 
 description 'Communicate with OctoStudio (https://octostudio.org/)
 '
@@ -10,13 +10,15 @@ variables _octoGroup _octoLastBeamShape _octoLastBeamGroup _octoShapes _octoIsBe
   space
   spec 'r' 'octoBeamReceived' 'Octo beam received?'
   spec 'r' 'octoLastBeam' 'Octo last beam'
-  spec 'r' 'octoLastGroup' 'Octo last beam group'
+  spec 'r' 'octoLastBeamWas' 'Octo last beam was _' 'menu.octo_shapes' 'octo;heart'
   space
-  spec ' ' 'octoSetGroup' 'Octo set group _ (0-99)' 'auto' 0
+  spec ' ' 'octoSetGroup' 'Octo set group _ (0-99)' 'auto' ''
+  advanced
+  spec 'r' 'octoLastGroup' 'Octo last beam group'
   space
   spec ' ' '_octoInit' '_octoInit'
   spec 'r' '_octoShapeForID' '_octoShapeForID _' 'num' 1
-  spec 'r' '_octoMakeMessage' '_octoMakeMessage _' 'menu.octo_shapes' 'octo;heart'
+  spec 'r' '_octoMakeMessage' '_octoMakeMessage _ group _' 'menu.octo_shapes num' 'octo;heart' 0
   spec 'r' '_octoHexDigit' '_octoHexDigit _' 'num' 10
 
 to '_octoHexDigit' n {
@@ -24,7 +26,7 @@ to '_octoHexDigit' n {
 }
 
 to '_octoInit' {
-  if (_octoShapes == 0) {_octoShapes = ('[data:makeList]' 'octo;circle' 'octo;square' 'octo;star' 'octo;heart' 'octo;triangle' 'octo;clover' 'octo;diamond' 'octo;moon')}
+  if (_octoShapes == 0) {_octoShapes = ('[data:makeList]' 'circle' 'square' 'star' 'heart' 'triangle' 'clover' 'diamond' 'moon')}
 }
 
 to '_octoMakeMessage' shape group {
@@ -36,6 +38,10 @@ to '_octoMakeMessage' shape group {
   }
   repeat 4 {
     '[data:addLast]' 0 result
+  }
+  if (('[data:find]' 'octo;' shape) == 1) {
+    comment 'Remove ''octo;'' prefix from menu selection'
+    shape = ('[data:copyFromTo]' shape 6)
   }
   local 'shapeNum' (('[data:find]' shape _octoShapes) - 1)
   if (shapeNum < 0) {
@@ -86,6 +92,18 @@ to octoLastBeam {
   return _octoLastBeamShape
 }
 
+to octoLastBeamWas shape {
+  comment 'Return true if the last beam was the given shape.'
+  if (isType shape 'number') {
+    comment 'If argument was a number, convert it to a shape name.'
+    shape = ('_octoShapeForID' shape)
+  } (('[data:find]' 'octo;' shape) == 1) {
+    comment 'Remove ''octo;'' prefix from menu selection'
+    shape = ('[data:copyFromTo]' shape 6)
+  }
+  return (shape == _octoLastBeamShape)
+}
+
 to octoLastGroup {
   comment 'Return the group of the last beam received.'
   if (_octoLastBeamShape == 0) {
@@ -110,6 +128,7 @@ to octoSendBeam shape optionalDuration optionalGroup {
 }
 
 to octoSetGroup group {
+  comment 'Setting the group to the empty string will receive beams from all groups.'
   _octoGroup = group
 }
 
