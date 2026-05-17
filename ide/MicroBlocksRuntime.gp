@@ -1294,7 +1294,7 @@ method checkVmVersion SmallRuntime {
 	if ((latestVmVersion this) > vmVersion) {
 		offerToUpdate = (not (isOneOf boardType
 			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
-			'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'ESP8266'))
+			'RP2040' 'Pico W' 'ESP8266'))
 		if (or (dueBoardConnected this) (isMobile)) { offerToUpdate = false }
 		if (not offerToUpdate) {
 			// Inform the user but don't offer to update these boards since updating
@@ -3045,12 +3045,12 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 		}
 		popUpAtHand menu (global 'page')
 	} (notNil boardType) {
-		if (and (contains (array 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'ESP32' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT') boardType)
+		if (and (contains (array 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'ESP32' 'Databot') boardType)
 				(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 		} (isOneOf boardType 'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort') {
 			adaFruitResetMessage this
-		} (isOneOf boardType 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040') {
+		} (isOneOf boardType 'RP2040' 'Pico W') { // 'Pico:ed' 'Wukong2040'
 			rp2040ResetMessage this
 		}
 	} else {
@@ -3067,8 +3067,8 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 				'Citilab ED1'
 				'CoCube'
 				'Databot'
-				'Foxbit'
-				'KidsBits'
+//				'Foxbit'
+//				'KidsBits'
 				'micro:STEAMakers'
 //				'M5Stack-Core'
 				'ESP32'
@@ -3079,9 +3079,8 @@ method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
 		if (not eraseFlashFlag) {
 			addLine menu
 //			addItem menu 'ELECFREAKS Pico:ed' (action 'rp2040ResetMessage' this)
-			addItem menu 'ELECFREAKS Wukong2040' (action 'rp2040ResetMessage' this)
+//			addItem menu 'ELECFREAKS Wukong2040' (action 'rp2040ResetMessage' this)
 			addItem menu 'RP2040 (Pico or Pico-W)' (action 'rp2040ResetMessage' this)
-			addLine menu
 			addItem menu 'MakerPort' (action 'adaFruitResetMessage' this)
 			addItem menu 'Adafruit Board' (action 'adaFruitResetMessage' this)
 		}
@@ -3160,7 +3159,7 @@ method picoVMFileName SmallRuntime {
 	tmp = (array nil)
 	menu = (menu 'Pico board type?' (action 'atPut' tmp 1) true)
 //	addItem menu 'ELECFREAKS Pico:ed'
-	addItem menu 'ELECFREAKS Wukong2040'
+//	addItem menu 'ELECFREAKS Wukong2040'
 	addItem menu 'RP2040 (Pico or Pico W)'
 	waitForSelection menu
 	result = (first tmp)
@@ -3227,10 +3226,10 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 // 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Clue'
 	} ('MakerPort' == boardType) {
 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'MakerPort'
-	} (isOneOf boardType 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040') {
+	} (isOneOf boardType 'RP2040' 'Pico W') { // 'Pico:ed' 'Wukong2040'
 		rp2040ResetMessage this
 	} (and
-		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT')
+		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'Databot')
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
 	} else {
@@ -3239,8 +3238,8 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addItem menu 'Citilab ED1'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
-			addItem menu 'KidsBits'
-			addItem menu 'Foxbit'
+//			addItem menu 'KidsBits'
+//			addItem menu 'Foxbit'
 			addItem menu 'micro:STEAMakers'
 //			addItem menu 'M5Stack-Core'
 			addLine menu
@@ -3253,14 +3252,13 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addItem menu 'Citilab ED1'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
-			addItem menu 'KidsBits'
-			addItem menu 'Foxbit'
+//			addItem menu 'KidsBits'
+//			addItem menu 'Foxbit'
 			addItem menu 'micro:STEAMakers'
 			addLine menu
 //			addItem menu 'ELECFREAKS Pico:ed'
-			addItem menu 'ELECFREAKS Wukong2040'
+//			addItem menu 'ELECFREAKS Wukong2040'
 			addItem menu 'RP2040 (Pico or Pico W)'
-			addLine menu
 			addItem menu 'MakerPort'
 			addLine menu
 // 			addItem menu 'Circuit Playground Express'
@@ -3294,7 +3292,7 @@ method flashVMInBrowser SmallRuntime boardName eraseFlashFlag downloadLatestFlag
 }
 
 method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boardName {
-	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot' 'CodingBox' 'Foxbit' 'KidsIOT' 'KidsBits') {
+	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot') {
 		flashVM this boardName eraseFlashFlag downloadLatestFlag
 		return
 	}

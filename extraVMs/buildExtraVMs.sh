@@ -10,8 +10,16 @@ python precompiled/uf2conv.py -c .pio/build/cplay52/firmware.hex -f 0xADA52840 -
 pio run -e clue
 python precompiled/uf2conv.py -c -f 0xada52840 .pio/build/clue/firmware.hex -o extraVMs/vm_clue.uf2
 
+pio run -e kids-bits
+cp .pio/build/kids-bits/firmware.bin extraVMs/vm_kids_bits.bin
+pio run -e foxbit
+cp .pio/build/foxbit/firmware.bin extraVMs/vm_foxbit.bin
+
+pio run -e wukong2040
+cp .pio/build/wukong2040/firmware.uf2 extraVMs/vm_wukong2040.uf2
 pio run -e pico-ed
 cp .pio/build/pico-ed/firmware.uf2 extraVMs/vm_pico_ed.uf2
+
 pio run -e m5stack
 cp .pio/build/m5stack/firmware.bin extraVMs/vm_m5stack.bin
 pio run -e nodemcu
