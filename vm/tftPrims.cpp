@@ -12,8 +12,8 @@
 #include "interp.h"
 #include <inttypes.h>
 
-#if defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
-	defined(__ZEPHYR__) || defined(DUELink) || defined(ESP8266)
+#if defined(ARDUINO_WEACT) || defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
+	defined(__ZEPHYR__) || defined(DUELink) || defined(ESP8266) || defined(ESP32_S3_MATRIX_PORTAL)
 
 // TFT primitives are not supported
 #define NO_EXTERNAL_DISPLAY_PRIMS

@@ -2060,6 +2060,14 @@ msgid "start tone _ Hz"
 msgstr "start tone _ Hz"
 
 #. Tone library block
+msgid "start note _ octave _"
+msgstr "start note _ octave _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "start midi key _"
+
+#. Tone library block
 msgid "stop tone"
 msgstr "stop tone"
 
@@ -5004,6 +5012,10 @@ msgstr "Octo beam received?"
 #. Octostudio communication library block
 msgid "Octo last beam"
 msgstr "Octo last beam"
+
+#. Octostudio communication library block
+msgid "Octo last beam was _"
+msgstr "Octo last beam was _"
 
 #. Octostudio communication library block
 msgid "Octo last beam group"

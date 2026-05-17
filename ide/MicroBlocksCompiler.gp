@@ -597,7 +597,8 @@ method initPrimsets SmallCompiler {
 		1wire
 		encoder
 		sd
-		lgvl'
+		lgvl
+		h75'
 
 	primsets = (dictionary)
 	primSetIndex = 0

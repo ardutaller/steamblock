@@ -86,6 +86,11 @@ static int microBitDisplayBits = 0;
 static int lightLevel = 0;
 static int lightReadingRequested = false;
 
+extern "C" int displayIsActive() {
+	if (disableLEDDisplay) return false;
+	return !microBitDisplayBits;
+}
+
 #if defined(ARDUINO_BBC_MICROBIT) || defined(ARDUINO_CALLIOPE_MINI)
 
 static unsigned int lightLevelReadTime = 0;
@@ -98,12 +103,14 @@ static void turnDisplayOn() {
 	char pins[] = {COL1, COL2, COL3, ROW1, ROW2, ROW3, ROW4, ROW5, ROW6, ROW7, ROW8, ROW9};
 
 	for (int i = 0; i < 12; i++) setPinMode(pins[i], OUTPUT);
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
 	char pins[] = {COL1, COL2, COL3, ROW1, ROW2, ROW3, ROW4, ROW5, ROW6, ROW7, ROW8, ROW9};
 
 	for (int i = 0; i < 12; i++) setPinMode(pins[i], INPUT);
+	displayCycle = 0;
 }
 
 static int updateLightLevel() {
@@ -261,6 +268,7 @@ static void turnDisplayOn() {
 		setPinMode(rowPins[i], OUTPUT);
 		setHighDrive(rowPins[i]);
 	}
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
@@ -268,6 +276,7 @@ static void turnDisplayOff() {
 		setPinMode(columnPins[i], INPUT);
 		setPinMode(rowPins[i], INPUT);
 	}
+	displayCycle = 0;
 }
 
 static int microsSince(uint32 startMicros) {
@@ -386,27 +395,32 @@ static int displayCycle = 0;
 static int rowPins[5] = {8, 17, 10, 38, 6};
 static int columnPins[5] = {3, 2, 14, 15, 16};
 
-#define DISPLAY_BIT(n) (((displaySnapshot >> (n - 1)) & 1) ? LOW : HIGH)
+#define DISPLAY_BIT(n) (((displaySnapshot >> n) & 1) ? HIGH : LOW)
 
 static void turnDisplayOn() {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++) { // turn off columns
 		setPinMode(columnPins[i], OUTPUT);
 		digitalWrite(columnPins[i], HIGH);
-		setPinMode(rowPins[i], OUTPUT);
-		digitalWrite(rowPins[i], LOW);
 	}
+	for (int i = 0; i < 5; i++) { // turn off rows
+		setPinMode(rowPins[i], OUTPUT);
+		digitalWrite(rowPins[i], HIGH);
+	}
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
 	for (int i = 0; i < 5; i++) {
-		digitalWrite(columnPins[i], HIGH); // Was LOW
+		digitalWrite(columnPins[i], HIGH); // turn off all columns
 	}
+	displayCycle = 0;
 }
 
 void updateMicrobitDisplay() {
-	// Update the display by cycling through the three columns, turning on the rows
+	// Update the display by cycling through the five columns, turning on the row LEDs
 	// for each column. To minimize display artifacts, the display bits are snapshot
 	// at the start of each cycle and the snapshot is not changed during the cycle.
+	// An LED lights when the corresponding row is high and the column is low.
 
 	if (disableLEDDisplay) return;
 
@@ -426,20 +440,20 @@ void updateMicrobitDisplay() {
 		turnDisplayOn();
 	}
 	int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
-	digitalWrite(columnPins[previousColumn], HIGH);
+	digitalWrite(columnPins[previousColumn], HIGH); //  turn off previous column
 
-	int offset = displayCycle;
-	for (int i = 0; i < 5; i++) {
-		digitalWrite(rowPins[i], !DISPLAY_BIT(offset + (5 * i) + 1));
+	for (int row = 0; row < 5; row++) {
+		digitalWrite(rowPins[row], DISPLAY_BIT((5 * row) + displayCycle));
 	}
-	setPinMode(columnPins[displayCycle], OUTPUT);
-	digitalWrite(columnPins[displayCycle], LOW);
+	digitalWrite(columnPins[displayCycle], LOW); // turn on current column
 	displayCycle = (displayCycle + 1) % 5;
 }
 
 #elif defined(DUELink)
 
 #define DUELINK_HAS_LED_DISPLAY (IS_DUE_CINCO || IS_DUE_CLIPIT || IS_DUE_CHRONO)
+
+#include <Wire.h>
 
 static int displaySnapshot = 0;
 static uint8 displayCycle = 0;
@@ -495,6 +509,7 @@ static void turnDisplayOn() {
 		setPinMode(rowPins[i], INPUT);
 		setPinMode(columnPins[i], OUTPUT);
 	}
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
@@ -502,38 +517,125 @@ static void turnDisplayOff() {
 	if (!dueLEDInitialized) initDUELedPins();
 
 	for (int i = 0; i < 5; i++) {
-		setPinMode(columnPins[i], INPUT);
 		setPinMode(rowPins[i], INPUT);
+		setPinMode(columnPins[i], INPUT);
+	}
+	displayCycle = 0;
+}
+
+// Simulated 5x5 display on DUELink PixoBit and DUEStem boards
+
+#define OLED_ADDR 60
+
+int oledResetPin = -1; // non-negative value indicates that the OLED has been initialized
+
+static void oledCmd(uint8 cmd) {
+	writeI2CReg(OLED_ADDR, 0x80, cmd);
+}
+
+static void initOLED() {
+	// Initialize the OLED display on first use (i.e. when oledResetPin == -1).
+
+	// ensure OLED is on
+	oledResetPin = mapDigitalPinNum(22);
+	setPinMode(oledResetPin, OUTPUT);
+	digitalWrite(oledResetPin, HIGH);
+
+	// minimal OLED setup commands
+	oledCmd(0xAE); // turn display off
+	oledCmd(0xA1); // horizontal flip (A0 or A1)
+	oledCmd(0xC8); // vertical flip (C0 or C8)
+	oledCmd(0x8D); oledCmd(0x14); // Enable charge pump (8D 14)
+	oledCmd(0xAF); // turn display on
+}
+
+static void i2cWriteBytes(uint8 *bytes, int byteCount) {
+	Wire.beginTransmission(OLED_ADDR);
+	for (int i = 0; i < byteCount; i++) Wire.write(bytes[i]);
+	Wire.endTransmission(false);
+}
+
+static void writeOLEDbuffer(uint8 *pixels) {
+	// Send the entire OLED buffer to the display via i2c.
+	// Takes about 30 msecs for 128x64. Periodically capture incoming bytes while updating.
+
+	if (oledResetPin == -1) initOLED();
+
+	const int oledHeight = 64;
+	uint8 buffer[65];
+	buffer[0] = 0x40;
+	for (int i = 0; i < (oledHeight / 8); i++) {
+		// do time-sensitive background tasks
+		captureIncomingBytes();
+
+		oledCmd(0x10); oledCmd(0); // column offset
+		oledCmd(0xB0 + i);
+
+		// write 128 bytes of data in two i2c writes
+		memcpy(&buffer[1], pixels, 64);
+		i2cWriteBytes(buffer, 65);
+		pixels += 64;
+		memcpy(&buffer[1], pixels, 64);
+		i2cWriteBytes(buffer, 65);
+		pixels += 64;
 	}
 }
 
-static int updateLightLevel() { // placeholder
-	lightReadingRequested = false;
-	return true;
+static void drawBigPixel(uint8 *buffer, int left, int top) {
+	// Draw a 10 by 10 pixel square on the given OLED buffer.
+	// Assume x and y are chosen so the square fits within the display bounds.
+
+	for (int y = top; y < (top + 10); y++) {
+		uint8 mask = (1 << (y % 8));
+		for (int x = left; x < (left + 10); x++) {
+			buffer[(128 * (y / 8)) + x] |= mask;
+		}
+	}
 }
+
+static void updateOLEDdisplay() {
+	// Similuate the 5x5 LED display a PixoBit or DUEStem OLED display.
+
+	uint8 pixels[1024] = {0}; // zero filled (cleared)
+	for (int x = 0; x < 5; x++) {
+		for (int y = 0; y < 5; y++) {
+			int isOn = (displaySnapshot >> ((5 * y) + x)) & 1;
+			if (isOn) {
+				drawBigPixel(pixels, (35 + (12 * x)), 3 + (12 * y));
+			}
+		}
+	}
+	writeOLEDbuffer(pixels);
+	taskSleep(3); // make this task sleep a bit since writing to OLED takes 30+ msecs
+}
+
+// DUELink LED display update
 
 void updateMicrobitDisplay() {
 	// Update the display by cycling through the three columns, turning on the rows
 	// for each column. To minimize display artifacts, the display bits are snapshot
 	// at the start of each cycle and the snapshot is not changed during the cycle.
 
-	if (!DUELINK_HAS_LED_DISPLAY) return;
 	if (disableLEDDisplay) return;
-	if (!dueLEDInitialized) initDUELedPins();
 
-	if (!microBitDisplayBits && !displaySnapshot) { // display is off
-		if (lightReadingRequested) updateLightLevel();
+	if (IS_DUE_PIXO || IS_DUE_STEM) {
+		// Simulate 5x5 LED display on the OLED display.
+		if (microBitDisplayBits == displaySnapshot) return; // no change
+		displaySnapshot = microBitDisplayBits; // snapshot current display bits
+		updateOLEDdisplay();
 		return;
 	}
 
+	if (!DUELINK_HAS_LED_DISPLAY) return;
+	if (!dueLEDInitialized) initDUELedPins();
 	if (0 == displayCycle) { // starting a new cycle
-		if (lightReadingRequested && !updateLightLevel()) return; // reading light level
-
 		if (displaySnapshot && !microBitDisplayBits) { // display just became off
 			displaySnapshot = 0;
 			turnDisplayOff();
 			return;
 		}
+
+		if (!microBitDisplayBits && !displaySnapshot) return; // display is off
 
 		// take a snapshot of the display bits for the next cycle
 		displaySnapshot = microBitDisplayBits;

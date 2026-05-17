@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-04-27 07:09+0000\n"
+"PO-Revision-Date: 2026-05-05 09:12+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -322,7 +322,7 @@ msgstr "vorwärts"
 
 #. Block input right-click context menu option
 msgid "string or number"
-msgstr "Zahl oder Zeichenkette"
+msgstr "Zeichenkette oder Zahl"
 
 #. MicroBlocks IDE information
 msgid "Drag the firmware file you just saved to the %1 drive."
@@ -3565,7 +3565,7 @@ msgstr "löschen"
 
 #. Block input right-click context menu option
 msgid "string only"
-msgstr "Zeichenkette"
+msgstr "nur Zeichenkette"
 
 #. Block input right-click context menu option
 msgid "number only"
@@ -8437,3 +8437,75 @@ msgstr "Wahrheitsschalter"
 #. Slot type menu option
 msgid "color patch"
 msgstr "Farbfleck"
+
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr "zeichne Bild _ auf TFT bei x _ y _ Farbe _"
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr "#BR# Größe _"
+
+#. TFT Display library block
+msgid "image _"
+msgstr "Bild _"
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr "invertiere TFT-Display _"
+
+#. Turtle Geometry library block
+msgid "turtle x"
+msgstr "Turtle x"
+
+#. Turtle Geometry library block
+msgid "turtle y"
+msgstr "Turtle y"
+
+#. File System library block
+msgid "directory names"
+msgstr "Verzeichnisnamen"
+
+#. ESP Now library label
+msgid "ESP Now"
+msgstr "ESP Now"
+
+#. ESP Now library label
+msgid "espNow send pair _ = _"
+msgstr "espNow sende Paar _ = _"
+
+#. ESP Now library label
+msgid "espNow pair received?"
+msgstr "espNow Paar empfangen?"
+
+#. ESP Now library label
+msgid "espNow last number"
+msgstr "espNow letzte Zahl"
+
+#. ESP Now library label
+msgid "espNow last string"
+msgstr "espNow letzte Zeichenkette"
+
+#. ESP Now library label
+msgid "espNow set group _ (0-255)"
+msgstr "espNow setze Gruppe _ (0-255)"
+
+#. ESP Now library label
+msgid "espNow group"
+msgstr "espNow Gruppe"
+
+#. ESP Now library label
+msgid "espNow send raw _"
+msgstr "espNow sende Rohdaten _"
+
+#. ESP Now library label
+msgid "espNow receive raw"
+msgstr "espNow empfange Rohdaten"
+
+#. ESP Now library label
+msgid "espNow set channel _"
+msgstr "espNow setze Kanal _"
+
+#. ESP Now library label
+msgid "espNow channel"
+msgstr "espNow Kanal"

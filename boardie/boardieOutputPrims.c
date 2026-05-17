@@ -153,7 +153,8 @@ OBJ primMBDrawShape(int argCount, OBJ *args) {
 
 // Stubs
 
-static OBJ primLightLevel(int argCount, OBJ *args) { return int2obj(0); }
+static OBJ primLightLevel(int argCount, OBJ *args) { return zeroObj; }
+OBJ primMBEnableDisplay(int argCount, OBJ *args) { return falseObj; }
 OBJ primNeoPixelSend(int argCount, OBJ *args) { return falseObj; }
 OBJ primNeoPixelSetPin(int argCount, OBJ *args) { return falseObj; }
 void turnOffInternalNeoPixels() {}

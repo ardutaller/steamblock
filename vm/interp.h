@@ -325,6 +325,7 @@ void setPinMode(int pin, int newMode);
 void turnOffPins();
 void resetTimer();
 int hasI2CPullups();
+int displayIsActive();
 void updateMicrobitDisplay();
 void checkButtons();
 void resetRadio();
@@ -447,6 +448,8 @@ typedef enum {
 	OneWirePrims,
 	EncoderPrims,
 	SDCardPrims,
+	LGVLPrims,
+	H75Prims,
 	PrimitiveSetCount
 } PrimitiveSetIndex;
 
@@ -467,6 +470,7 @@ void addCameraPrims();
 void addOneWirePrims();
 void addEncoderPrims();
 void addSDCardPrims();
+void addH75Prims();
 
 // Named Primitive Support
 

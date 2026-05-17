@@ -222,6 +222,9 @@ void primsInit() {
 	addCameraPrims();
 	addEncoderPrims();
 	addSDCardPrims();
+	#if defined(ESP32_S3_MATRIX_PORTAL)
+		addH75Prims();
+	#endif
 #endif
 }
 
@@ -545,13 +548,12 @@ static void softReset(int clearMemoryFlag) {
 	OBJ off = falseObj;
 	if (!useTFT) primSetUserLED(&off);
 
-#if defined(ARDUINO_BBC_MICROBIT) || defined(ARDUINO_BBC_MICROBIT_V2) || \
-	defined(ARDUINO_CALLIOPE_MINI) || defined(CALLIOPE_V3)
+	#if defined(HAS_LED_MATRIX)
 		OBJ enable = trueObj;
-		primMBEnableDisplay(1, &enable);
 		primMBDisplayOff(0, NULL);
+		primMBEnableDisplay(1, &enable);
 		updateMicrobitDisplay();
-#endif
+	#endif
 
 	resetRadio();
 	stopPWM();
