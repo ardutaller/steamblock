@@ -5020,6 +5020,10 @@ msgid "Octo last beam"
 msgstr "Octo last beam"
 
 #. Octostudio communication library block
+msgid "Octo last beam was _"
+msgstr "Octo last beam was _"
+
+#. Octostudio communication library block
 msgid "Octo last beam group"
 msgstr "Octo last beam group"
 
