@@ -1348,8 +1348,9 @@ static void runTask(Task *task) {
 #if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD) || \
 	defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
 
-	#if !defined(ESP32_ORIGINAL)
+	#if !defined(ESP32_ORIGINAL) && !defined(ESP32_S3_MATRIX_PORTAL)
 		// original ESP32 fails with TG1WDT_SYS_RESET when napping
+		// S3_MATRIX_PORTAL pixel scanning (DMA) does not work with napping enabled
 		#define CAN_NAP 1
 	#endif
 
@@ -1370,9 +1371,7 @@ static inline int napIfPossible() {
 	#if defined(GNUBLOCKS)
 		usleep(napMicroSecs); // nap a while to relinquish the CPU
 	#else
-		#if !defined(ESP32_S3_MATRIX_PORTAL)
-			lightSleep(4);
-		#endif
+		lightSleep(4);
 	#endif
 	return true;
 }
