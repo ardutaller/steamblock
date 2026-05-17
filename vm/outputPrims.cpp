@@ -103,12 +103,14 @@ static void turnDisplayOn() {
 	char pins[] = {COL1, COL2, COL3, ROW1, ROW2, ROW3, ROW4, ROW5, ROW6, ROW7, ROW8, ROW9};
 
 	for (int i = 0; i < 12; i++) setPinMode(pins[i], OUTPUT);
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
 	char pins[] = {COL1, COL2, COL3, ROW1, ROW2, ROW3, ROW4, ROW5, ROW6, ROW7, ROW8, ROW9};
 
 	for (int i = 0; i < 12; i++) setPinMode(pins[i], INPUT);
+	displayCycle = 0;
 }
 
 static int updateLightLevel() {
@@ -266,6 +268,7 @@ static void turnDisplayOn() {
 		setPinMode(rowPins[i], OUTPUT);
 		setHighDrive(rowPins[i]);
 	}
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
@@ -273,6 +276,7 @@ static void turnDisplayOff() {
 		setPinMode(columnPins[i], INPUT);
 		setPinMode(rowPins[i], INPUT);
 	}
+	displayCycle = 0;
 }
 
 static int microsSince(uint32 startMicros) {
@@ -402,12 +406,14 @@ static void turnDisplayOn() {
 		setPinMode(rowPins[i], OUTPUT);
 		digitalWrite(rowPins[i], HIGH);
 	}
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
 	for (int i = 0; i < 5; i++) {
 		digitalWrite(columnPins[i], HIGH); // turn off all columns
 	}
+	displayCycle = 0;
 }
 
 void updateMicrobitDisplay() {
@@ -503,6 +509,7 @@ static void turnDisplayOn() {
 		setPinMode(rowPins[i], INPUT);
 		setPinMode(columnPins[i], OUTPUT);
 	}
+	displayCycle = 0;
 }
 
 static void turnDisplayOff() {
@@ -513,6 +520,7 @@ static void turnDisplayOff() {
 		setPinMode(rowPins[i], INPUT);
 		setPinMode(columnPins[i], INPUT);
 	}
+	displayCycle = 0;
 }
 
 // Simulated 5x5 display on DUELink PixoBit and DUEStem boards
