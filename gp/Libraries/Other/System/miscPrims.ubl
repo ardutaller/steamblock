@@ -32,3 +32,5 @@ description 'Miscellaneous system primitives.
   space
   spec ' ' '[misc:launchCodeSnapshot]'	'launch code snapshot _' 'str'
   spec ' ' '[misc:deepSleep]'			'esp32 deep sleep for _ secs' 'num' 60
+  space
+  spec ' ' '[ble:enableAdvertising]'	'enable BLE advertising _' 'bool' true
