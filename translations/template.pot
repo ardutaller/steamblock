@@ -2060,6 +2060,14 @@ msgid "start tone _ Hz"
 msgstr ""
 
 #. Tone library block
+msgid "start note _ octave _"
+msgstr ""
+
+#. Tone library block
+msgid "start midi key _"
+msgstr ""
+
+#. Tone library block
 msgid "stop tone"
 msgstr ""
 
