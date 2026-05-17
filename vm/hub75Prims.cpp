@@ -14,10 +14,6 @@
 #include "mem.h"
 #include "interp.h"
 
-int h75initialized = false;
-
-#define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow operations
-
 #if defined(ESP32_S3_MATRIX_PORTAL)
 
 #include <ESP32-HUB75-MatrixPanel-I2S-DMA.h>
@@ -26,7 +22,10 @@ int h75initialized = false;
 #define PANEL_HEIGHT 64
 #define PANELS 1
 
+static int h75initialized = false;
 MatrixPanel_I2S_DMA *dma_display = nullptr;
+
+#define UPDATE_DISPLAY() { taskSleep(-1); } // yield after potentially slow operations
 
 static OBJ primh75Init(int argCount, OBJ *args) {
 
@@ -77,7 +76,6 @@ static OBJ primh75GetWidth(int argCount, OBJ *args) {
 	}
 	return int2obj(0);
 }
-
 
 static OBJ primh75GetHeight(int argCount, OBJ *args) {
 	if (h75initialized) {
@@ -192,7 +190,6 @@ static OBJ primh75PixelRow(int argCount, OBJ *args) {
 	return falseObj;
 }
 
-
 static OBJ primh75Text(int argCount, OBJ *args) {
 	if (!h75initialized) return falseObj;
 
@@ -229,7 +226,6 @@ static OBJ primh75Text(int argCount, OBJ *args) {
 	UPDATE_DISPLAY();
 	return falseObj;
 }
-
 
 static OBJ primh75Line(int argCount, OBJ *args) {
 	if (!h75initialized) return falseObj;
@@ -370,24 +366,23 @@ static OBJ primh75DrawBuffer(int argCount, OBJ *args) {
 	return falseObj;
 }
 
-#else // stubs
-
-
-static OBJ primh75Init(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75Clear(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75GetWidth(int argCount, OBJ *args) { return int2obj(0); }
-static OBJ primh75GetHeight(int argCount, OBJ *args) { return int2obj(0); }
-static OBJ primh75SetPixel(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75PixelRow(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75Line(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75Rect(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75RoundedRect(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75Circle(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75Triangle(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75Text(int argCount, OBJ *args) { return falseObj; }
-static OBJ primh75DrawBuffer(int argCount, OBJ *args) { return falseObj; }
-
-#endif
+// #else // stubs
+//
+// static OBJ primh75Init(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75Clear(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75GetWidth(int argCount, OBJ *args) { return int2obj(0); }
+// static OBJ primh75GetHeight(int argCount, OBJ *args) { return int2obj(0); }
+// static OBJ primh75SetPixel(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75PixelRow(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75Line(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75Rect(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75RoundedRect(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75Circle(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75Triangle(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75Text(int argCount, OBJ *args) { return falseObj; }
+// static OBJ primh75DrawBuffer(int argCount, OBJ *args) { return falseObj; }
+//
+// #endif
 
 // Primitives
 
@@ -410,3 +405,5 @@ static PrimEntry entries[] = {
 void addH75Prims() {
 	addPrimitiveSet(H75Prims,"h75", sizeof(entries) / sizeof(PrimEntry), entries);
 }
+
+#endif // ESP32_S3_MATRIX_PORTAL support

@@ -222,7 +222,9 @@ void primsInit() {
 	addCameraPrims();
 	addEncoderPrims();
 	addSDCardPrims();
-	addH75Prims();
+	#if defined(ESP32_S3_MATRIX_PORTAL)
+		addH75Prims();
+	#endif
 #endif
 }
 
