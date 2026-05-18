@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Querying latest electron version..."
-tag=`curl --silent -m 10 --connect-timeout 5 "https://api.github.com/repos/electron/electron/releases/latest" | grep tag_name | sed -E 's/.*"([^"]+)".*/\1/'` 
+tag=`curl --silent -m 10 --connect-timeout 5 "https://api.github.com/repos/electron/electron/releases/latest" | grep tag_name | sed -E 's/.*"([^"]+)".*/\1/'`
 
 system=$1
 
@@ -19,8 +19,8 @@ if [[ -z "$system" || "$system" == 'windows' ]]; then
 echo "Windows file tree built"
 fi
 
-echo "Cleaning up previous builds..."
-rm -rf out/*
+echo "Ensure 'out' directory exists"
+mkdir -p out
 cd out
 
 echo "Creating standalone zip releases..."
