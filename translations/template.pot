@@ -6504,6 +6504,111 @@ msgstr ""
 msgid "set hours _ minutes _ seconds _"
 msgstr ""
 
+#. MakerPort library choice
+msgid "MP3"
+msgstr ""
+
+#. MakerPort library choice
+msgid "mp3 player"
+msgstr ""
+
+#. MakerPort library choice
+msgid "analog pin (13)"
+msgstr ""
+
+#. MakerPort library choice
+msgid "extra pin (17)"
+msgstr ""
+
+#. MakerPort library block
+msgid "MakerPort tone _ Hz for _ msecs"
+msgstr ""
+
+#. MakerPort library block
+msgid "MakerPort initialize"
+msgstr ""
+
+#. MakerPort library block
+msgid "loudness pin _"
+msgstr ""
+
+#. MakerPort library block
+msgid "mp3 player has Flash card"
+msgstr ""
+
+#. MakerPort library block
+msgid "set all MakerPort LEDs _"
+msgstr ""
+
+#. MakerPort library block
+msgid "type _ to computer"
+msgstr ""
+
+#. LCD Display library block
+msgid "draw char _ on LCD line _ column _"
+msgstr ""
+
+#. LCD Display library block
+msgid "clear LCD"
+msgstr ""
+
+#. LCD Display library block
+msgid "is LCD connected?"
+msgstr ""
+
+#. LCD Display library block
+msgid "write _ on LCD line _"
+msgstr ""
+
+#. LCD Display library block
+msgid "write field _ on LCD line _ from _ to _"
+msgstr ""
+
+#. MP3 Player library choice
+msgid "MakerPort"
+msgstr ""
+
+#. MP3 Player library choice
+msgid "MakerBit/HyperDuino"
+msgstr ""
+
+#. MP3 Player library choice
+msgid "DFRobot"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 initialize _ pin _"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 play next track"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 pause"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _ until done"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 repeat all in folder _"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 resume"
+msgstr ""
+
+#. MP3 Player library block
+msgid "mp3 set volume _ (0-30)"
+msgstr ""
+
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr ""

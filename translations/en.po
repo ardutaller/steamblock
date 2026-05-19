@@ -6504,6 +6504,111 @@ msgstr "set year _ month _ day _"
 msgid "set hours _ minutes _ seconds _"
 msgstr "set hours _ minutes _ seconds _"
 
+#. MakerPort library choice
+msgid "MP3"
+msgstr "MP3"
+
+#. MakerPort library choice
+msgid "mp3 player"
+msgstr "mp3 player"
+
+#. MakerPort library choice
+msgid "analog pin (13)"
+msgstr "analog pin (13)"
+
+#. MakerPort library choice
+msgid "extra pin (17)"
+msgstr "extra pin (17)"
+
+#. MakerPort library block
+msgid "MakerPort tone _ Hz for _ msecs"
+msgstr "MakerPort tone _ Hz for _ msecs"
+
+#. MakerPort library block
+msgid "MakerPort initialize"
+msgstr "MakerPort initialize"
+
+#. MakerPort library block
+msgid "loudness pin _"
+msgstr "loudness pin _"
+
+#. MakerPort library block
+msgid "mp3 player has Flash card"
+msgstr "mp3 player has Flash card"
+
+#. MakerPort library block
+msgid "set all MakerPort LEDs _"
+msgstr "set all MakerPort LEDs _"
+
+#. MakerPort library block
+msgid "type _ to computer"
+msgstr "type _ to computer"
+
+#. LCD Display library block
+msgid "draw char _ on LCD line _ column _"
+msgstr "draw char _ on LCD line _ column _"
+
+#. LCD Display library block
+msgid "clear LCD"
+msgstr "clear LCD"
+
+#. LCD Display library block
+msgid "is LCD connected?"
+msgstr "is LCD connected?"
+
+#. LCD Display library block
+msgid "write _ on LCD line _"
+msgstr "write _ on LCD line _"
+
+#. LCD Display library block
+msgid "write field _ on LCD line _ from _ to _"
+msgstr "write field _ on LCD line _ from _ to _"
+
+#. MP3 Player library choice
+msgid "MakerPort"
+msgstr "MakerPort"
+
+#. MP3 Player library choice
+msgid "MakerBit/HyperDuino"
+msgstr "MakerBit/HyperDuino"
+
+#. MP3 Player library choice
+msgid "DFRobot"
+msgstr "DFRobot"
+
+#. MP3 Player library block
+msgid "mp3 initialize _ pin _"
+msgstr "mp3 initialize _ pin _"
+
+#. MP3 Player library block
+msgid "mp3 play next track"
+msgstr "mp3 play next track"
+
+#. MP3 Player library block
+msgid "mp3 pause"
+msgstr "mp3 pause"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _"
+msgstr "mp3 play track _ in folder _"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _ until done"
+msgstr "mp3 play track _ in folder _ until done"
+
+#. MP3 Player library block
+msgid "mp3 repeat all in folder _"
+msgstr "mp3 repeat all in folder _"
+
+#. MP3 Player library block
+msgid "mp3 resume"
+msgstr "mp3 resume"
+
+#. MP3 Player library block
+msgid "mp3 set volume _ (0-30)"
+msgstr "mp3 set volume _ (0-30)"
+
+
 #. In MicroBlocks IDE project menu
 msgid "New"
 msgstr "New"
