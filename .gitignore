@@ -38,6 +38,10 @@ snapBlocks/files.txt
 snapBlocks/Examples
 snapBlocks/Libraries
 
+# ignore Electron build stuff
+electron/out/*
+electron/electron-v*.zip
+
 # Node modules
 electron/node_modules/*
 **/node_modules/*
