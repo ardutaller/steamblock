@@ -35,7 +35,7 @@ fi
 if [[ -z "$system" || "$system" == 'macos' ]]; then
 echo "Zipping MacOS release..."
 mv ../prepack/macos/MicroBlocks.app .
-zip -rq microblocks-macos.zip MicroBlocks.app
+zip -ryq microblocks-macos.zip MicroBlocks.app
 rm -rf MicroBlocks.app
 fi
 
