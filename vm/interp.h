@@ -318,6 +318,7 @@ void writeI2CReg(int deviceID, int reg, int value);
 // I/O Support
 
 extern int mbDisplayColor;
+extern int resetDoubleTap;
 
 int pinCount();
 int mapDigitalPinNum(int userPinNum);
