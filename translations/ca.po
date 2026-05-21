@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-05-05 09:12+0000\n"
+"PO-Revision-Date: 2026-05-21 15:11+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -8374,3 +8374,7 @@ msgstr "espNow selecciona canal _"
 #. ESP Now library label
 msgid "espNow channel"
 msgstr "espNow canal"
+
+#. Tone library block
+msgid "start note _ octave _"
+msgstr "inicia la nota _ octava _"
