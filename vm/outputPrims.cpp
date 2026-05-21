@@ -88,7 +88,7 @@ static int lightReadingRequested = false;
 
 extern "C" int displayIsActive() {
 	if (disableLEDDisplay) return false;
-	return !microBitDisplayBits;
+	return microBitDisplayBits;
 }
 
 #if defined(ARDUINO_BBC_MICROBIT) || defined(ARDUINO_CALLIOPE_MINI)
