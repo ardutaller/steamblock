@@ -392,6 +392,7 @@ OBJ primResumeUpdates(int argCount, OBJ *args);
 
 extern int useTFT;
 extern int isCodingBox;
+extern int isSpringbotGold;
 
 void tftInit();
 void tftClear();

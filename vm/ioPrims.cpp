@@ -198,6 +198,10 @@ void hardwareInit() {
 		// This must be the first I2C transaction after power up.
 		readI2CReg(82, 0);
 	#endif
+	#if defined(SPRINGBOT)
+		// Check for NFC chip (I2C address 87). Only Springbot Gold has that chip.
+		isSpringbotGold = (readI2CReg(87, 0) >= 0);
+	#endif
 }
 
 // General Purpose I/O Pins
@@ -936,11 +940,7 @@ void hardwareInit() {
 		0, 0, 0};
 
 #elif defined(SPRINGBOT)
-	#if defined(SPRINGBOT_GOLD)
-		#define BOARD_TYPE "Springbot Gold"
-	#else
-		#define BOARD_TYPE "Springbot Green"
-	#endif
+	#define BOARD_TYPE "SPRINGBOT"
 	#define DIGITAL_PINS 41
 	#define ANALOG_PINS 20
 	#define TOTAL_PINS 43
@@ -986,6 +986,8 @@ void hardwareInit() {
 		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0};
+
+	int isSpringbotGold; // set at startup to distinguish between Green and Gold Springbots
 
 #elif defined(ESP32_S2)
 	#define BOARD_TYPE "ESP32-S2"
@@ -1481,6 +1483,12 @@ const char * boardType() {
 		if (DUE_PID == 0x0C0006) return "Snowy";
 		if (DUE_PID == 0x0C0007) return "Cubicle";
 		if (DUE_PID == 0x0C0008) return "Controller";
+	#elif defined(SPRINGBOT)
+		if (isSpringbotGold) {
+			return "Springbot Gold";
+		} else {
+			return "Springbot Green";
+		}
 	#endif
 	return BOARD_TYPE;
 }
@@ -2143,12 +2151,9 @@ OBJ primButtonA(OBJ *args) {
 			return (buttonReadings[4] < CAP_THRESHOLD) ? trueObj : falseObj;
 		#elif defined(FOXBIT)
 			setPinMode(PIN_BUTTON_A, INPUT_PULLUP); // ESP32 pin number not edge pin
-		#elif defined(SPRINGBOT_GREEN)
-			if (touchRead(T11)>25700) return trueObj;
-			else return falseObj;
-		#elif defined(SPRINGBOT_GOLD)
-			if (touchRead(T11)>27700) return trueObj;
-			else return falseObj;
+		#elif defined(SPRINGBOT)
+			int threshold = isSpringbotGold ? 27700: 25700;
+			return (touchRead(T11) > threshold) ? trueObj : falseObj;
 		#elif defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_ARCH_ESP32) || \
 			  defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
@@ -2175,12 +2180,9 @@ OBJ primButtonB(OBJ *args) {
 			return (buttonReadings[3] < CAP_THRESHOLD) ? trueObj : falseObj;
 		#elif defined(FOXBIT)
 			setPinMode(PIN_BUTTON_B, INPUT_PULLUP); // ESP32 pin number not edge pin
-		#elif defined(SPRINGBOT_GREEN)
-			if (touchRead(T12)>19300) return trueObj;
-			else return falseObj;
-		#elif defined(SPRINGBOT_GOLD)
-			if (touchRead(T12)>15700) return trueObj;
-			else return falseObj;
+		#elif defined(SPRINGBOT)
+			int threshold = isSpringbotGold ? 15700 : 19300;
+			return (touchRead(T12) > threshold) ? trueObj : falseObj;
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
 		#else
