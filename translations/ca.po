@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-05-21 15:11+0000\n"
+"PO-Revision-Date: 2026-05-24 10:11+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -8378,3 +8378,115 @@ msgstr "espNow canal"
 #. Tone library block
 msgid "start note _ octave _"
 msgstr "inicia la nota _ octava _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "inicia la nota midi _"
+
+#. Octostudio communication library block
+msgid "Octo last beam was _"
+msgstr "Octo l'últim missatge va ser _"
+
+#. MakerPort library choice
+msgid "MP3"
+msgstr "MP3"
+
+#. MakerPort library choice
+msgid "mp3 player"
+msgstr "Reproductor MP3"
+
+#. MakerPort library choice
+msgid "analog pin (13)"
+msgstr "pin analògic (13)"
+
+#. MakerPort library choice
+msgid "extra pin (17)"
+msgstr "pin extra (17)"
+
+#. MakerPort library block
+msgid "MakerPort tone _ Hz for _ msecs"
+msgstr "MakerPort to _ Hz durant _ msecs"
+
+#. MakerPort library block
+msgid "MakerPort initialize"
+msgstr "inicialitza MakerPort"
+
+#. MakerPort library block
+msgid "loudness pin _"
+msgstr "pin del volum _"
+
+#. MakerPort library block
+msgid "mp3 player has Flash card"
+msgstr "el reproductor MP3 té targeta Flash"
+
+#. MakerPort library block
+msgid "set all MakerPort LEDs _"
+msgstr "posa tots els LEDs de MakerPort _"
+
+#. MakerPort library block
+msgid "type _ to computer"
+msgstr "escriu _ a l'ordinador"
+
+#. LCD Display library block
+msgid "draw char _ on LCD line _ column _"
+msgstr "mostra el caràcter _ a la línia _ columna _ de la pantalla LCD"
+
+#. LCD Display library block
+msgid "clear LCD"
+msgstr "neteja LCD"
+
+#. LCD Display library block
+msgid "is LCD connected?"
+msgstr "pantalla LCD connectada?"
+
+#. LCD Display library block
+msgid "write _ on LCD line _"
+msgstr "escriu _ a la línia _ de la pantalla LCD"
+
+#. LCD Display library block
+msgid "write field _ on LCD line _ from _ to _"
+msgstr "escriu el camp _ a la línia _ de la pantalla LCD, des de _ fins _"
+
+#. MP3 Player library choice
+msgid "MakerPort"
+msgstr "MakerPort"
+
+#. MP3 Player library choice
+msgid "MakerBit/HyperDuino"
+msgstr "MakerBit/HyperDuino"
+
+#. MP3 Player library choice
+msgid "DFRobot"
+msgstr "DFRobot"
+
+#. MP3 Player library block
+msgid "mp3 initialize _ pin _"
+msgstr "mp3 inicialitza _ pin _"
+
+#. MP3 Player library block
+msgid "mp3 play next track"
+msgstr "mp3 reproduiex la pista següent"
+
+#. MP3 Player library block
+msgid "mp3 pause"
+msgstr "mp3 pausa"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _"
+msgstr "mp3 reprodueix la pista _ de la carpeta _"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _ until done"
+msgstr "mp3 reprodueix la pista _ a la carpeta _ fins que s'acabi"
+
+#. MP3 Player library block
+msgid "mp3 repeat all in folder _"
+msgstr "mp3 repeteix tot el que hi ha a la carpeta _"
+
+#. MP3 Player library block
+msgid "mp3 resume"
+msgstr "mp3 reprèn"
+
+#. MP3 Player library block
+msgid "mp3 set volume _ (0-30)"
+msgstr "mp3 volum a _ (0-30)"
