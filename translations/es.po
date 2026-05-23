@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-05-20 14:28+0000\n"
-"Last-Translator: Roger Wagner <roger@1010technologies.com>\n"
+"PO-Revision-Date: 2026-05-24 10:11+0000\n"
+"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -8494,3 +8494,59 @@ msgstr "continuar mp3"
 #. MP3 Player library block
 msgid "mp3 set volume _ (0-30)"
 msgstr "mp3 establecer volumen _ (0-30)"
+
+#. Tone library block
+msgid "start note _ octave _"
+msgstr "inicia la nota _ octava _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "inicia la nota midi _"
+
+#. Octostudio communication library block
+msgid "Octo last beam was _"
+msgstr "Octo el último mensaje fue _"
+
+#. MakerPort library choice
+msgid "analog pin (13)"
+msgstr "pin analógico (13)"
+
+#. MakerPort library choice
+msgid "extra pin (17)"
+msgstr "pin extrta (17)"
+
+#. MakerPort library block
+msgid "loudness pin _"
+msgstr "pin del volumen _"
+
+#. MakerPort library block
+msgid "type _ to computer"
+msgstr "escribe _ en el ordenador"
+
+#. LCD Display library block
+msgid "draw char _ on LCD line _ column _"
+msgstr "muestra el carácter _ en la línea _ columna _ de la pantalla LCD"
+
+#. LCD Display library block
+msgid "clear LCD"
+msgstr "limpia pantalla LCD"
+
+#. LCD Display library block
+msgid "is LCD connected?"
+msgstr "¿pantalla LCD conectada?"
+
+#. LCD Display library block
+msgid "write _ on LCD line _"
+msgstr "escribe _ en la línea _ de la pantalla LCD"
+
+#. LCD Display library block
+msgid "write field _ on LCD line _ from _ to _"
+msgstr "escribe el campo _ en la línea _ de la pantalla LCD, desde _ hasta _"
+
+#. MP3 Player library choice
+msgid "MakerBit/HyperDuino"
+msgstr "MakerBit/HyperDuino"
+
+#. MP3 Player library choice
+msgid "DFRobot"
+msgstr "DFRobot"
