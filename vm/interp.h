@@ -311,6 +311,7 @@ const char *boardType();
 int hasPSRAM();
 void hardwareInit(void);
 void processStartupGesture();
+void loadStartCodeOrClear();
 
 int readI2CReg(int deviceID, int reg);
 void writeI2CReg(int deviceID, int reg, int value);

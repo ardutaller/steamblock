@@ -1094,7 +1094,6 @@ void loadStartCodeOrClear() {
 		softReset(true);
 		if (useTFT) tftClear();
 		restoreScripts();
-		startAll();
 	}
 }
 
@@ -1110,6 +1109,7 @@ void processStartupGesture() {
 			startupClickCount++;
 			if (startupClickCount >= 3) {
 				loadStartCodeOrClear();
+				startAll();
 				startupClickCount = 0;
 			}
 			startupButtonPressed = true;

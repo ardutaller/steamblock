@@ -54,6 +54,7 @@ void setup() {
 	outputString((char *) "Welcome to MicroBlocks!");
 	restoreScripts();
 	if (BLE_isEnabled()) BLE_start();
+	if (resetDoubleTap) loadStartCodeOrClear();
 	startAll();
 }
 
