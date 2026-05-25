@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-05-24 10:11+0000\n"
-"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
+"PO-Revision-Date: 2026-05-25 15:11+0000\n"
+"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -6786,7 +6786,7 @@ msgstr "cb joystick _"
 
 #. WiFi library block
 msgid "wifi set local domain name _ .local"
-msgstr "wifi nom de domini local _.local"
+msgstr "wifi nom de domini local _ .local"
 
 #. Firmware install instruction
 msgid "Connecting..."
