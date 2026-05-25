@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-05-24 10:11+0000\n"
-"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
+"PO-Revision-Date: 2026-05-25 15:11+0000\n"
+"Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
 "Language: es\n"
@@ -6843,7 +6843,7 @@ msgstr "cb pon el servo a _ grados (0 a 180)"
 
 #. WiFi library block
 msgid "wifi set local domain name _ .local"
-msgstr "wifi nombre de dominio local _.local"
+msgstr "wifi nombre de dominio local _ .local"
 
 #. Firmware install instruction
 msgid "Connecting..."
@@ -8461,7 +8461,7 @@ msgstr "Reproductor de MP3"
 
 #. MakerPort library block
 msgid "mp3 player has Flash card"
-msgstr "El reproductor de MP3 tiene una tarjeta Flash."
+msgstr "El reproductor de MP3 tiene una tarjeta Flash"
 
 #. MP3 Player library block
 msgid "mp3 initialize _ pin _"
