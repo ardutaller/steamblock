@@ -2131,11 +2131,11 @@ method serialDelayMenu SmallRuntime {
 }
 
 method setDefaultSerialDelay SmallRuntime {
-	setSerialDelay this 'reset to default'
+	setSerialDelay this 'reset to default (10)'
 }
 
 method setSerialDelay SmallRuntime newDelay {
-	if ('reset to default' == newDelay) {
+	if ('reset to default (10)' == newDelay) {
 		newDelay = 5
 	}
 	sendMsg this 'extendedMsg' 1 (list newDelay)
