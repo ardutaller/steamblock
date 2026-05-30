@@ -943,7 +943,7 @@ void hardwareInit() {
 	#define BOARD_TYPE "SPRINGBOT"
 	#define DIGITAL_PINS 41
 	#define ANALOG_PINS 20
-	#define TOTAL_PINS 43
+	#define TOTAL_PINS 47
 	static const int analogPin[] = {};
 
 	#define PIN_LED 40
@@ -955,7 +955,7 @@ void hardwareInit() {
 
 	// Special pins (MicroBlocks pin numbers):
 	// 21 - red LED (GPIO 40)
-	// 22 - Neopixel (GPIO 29)
+	// 22 - Neopixel (GPIO 39)
 	// 23 - buzzer (GPIO 33)
 	// 24 - phototransistor (GPIO 7)
 	// 25 - SD Card CS (GPIO 34)
@@ -985,7 +985,7 @@ void hardwareInit() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0};
+		0, 0, 0, 0, 0, 0, 0};
 
 	int isSpringbotGold; // set at startup to distinguish between Green and Gold Springbots
 
