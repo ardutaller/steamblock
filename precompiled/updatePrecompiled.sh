@@ -36,6 +36,9 @@ cp .pio/build/ed1/firmware.bin precompiled/vm_citilab-ed1.bin
 pio run -e cocube
 esptool.py --chip ESP32 merge_bin -o precompiled/vm_cocube.bin --flash_mode dio --flash_size 4MB 0x1000 esp32/bootloader_dio_40m.bin 0xe000 esp32/boot_app0.bin 0x8000 esp32/partitionsMicroBlocks.bin 0x10000 .pio/build/cocube/firmware.bin 0x1e8000 .pio/libdeps/cocube/CoCube-Assets/firmware/mbcode.bin 0x210000 .pio/libdeps/cocube/CoCube-Assets/firmware/littlefs.bin
 
+pio run -e springbot
+cp .pio/build/springbot/firmware.bin precompiled/vm_springbot.bin
+
 pio run -e esp32
 cp .pio/build/esp32/firmware.bin precompiled/vm_esp32.bin
 pio run -e pico-w
