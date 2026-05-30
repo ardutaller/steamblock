@@ -3236,7 +3236,8 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'Databot')
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag downloadLatestFlag
-	} (and (notNil (findSubstring 'Springbot' boardType))
+	} (and (notNil boardType)
+			(notNil (findSubstring 'Springbot' boardType))
 			(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this 'Springbot' eraseFlashFlag downloadLatestFlag
 	} else {
@@ -3260,6 +3261,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 			addItem menu 'Citilab ED1'
 			addItem menu 'CoCube'
 			addItem menu 'Databot'
+			addItem menu 'Springbot'
 //			addItem menu 'KidsBits'
 //			addItem menu 'Foxbit'
 			addItem menu 'micro:STEAMakers'
@@ -3300,11 +3302,11 @@ method flashVMInBrowser SmallRuntime boardName eraseFlashFlag downloadLatestFlag
 }
 
 method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boardName {
-	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot'  'Springbot Green' 'Springbot Gold') {
+	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot') {
 		flashVM this boardName eraseFlashFlag downloadLatestFlag
 		return
 	}
-	if (notNil (findSubstring 'Springbot' boardType)) {
+	if (notNil (findSubstring 'Springbot' boardName)) {
 		flashVM this 'Springbot' eraseFlashFlag downloadLatestFlag
 		return
 	}
