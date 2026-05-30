@@ -97,7 +97,7 @@ method baudForBoard ESPTool boardName {
 	} ('Databot' == boardName) {
 		return 230400
 	} ('Springbot' == boardName) {
-		return 460800
+		return 230400
 	} ('Mbits' == boardName) {
 		return 230400
 	} ('CoCube'  == boardName) {
