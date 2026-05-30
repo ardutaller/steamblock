@@ -201,6 +201,7 @@ void hardwareInit() {
 	#if defined(SPRINGBOT)
 		// Check for NFC chip (I2C address 87). Only Springbot Gold has that chip.
 		isSpringbotGold = (readI2CReg(87, 0) >= 0);
+		useTFT = isSpringbotGold;
 	#endif
 }
 
