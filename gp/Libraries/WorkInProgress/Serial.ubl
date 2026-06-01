@@ -1,25 +1,30 @@
-module 'Serial Reader' Input
+module Serial Input
 author MicroBlocks
 version 1 0 
-description 'Reads fixed-size data chunks from the serial port, storing any leftover bytes in a buffer for later read operations. Includes operations to read integers of various sizes.
+description 'Buffered serial operations.
+
+Reads fixed-size data chunks from the serial port, storing any leftover bytes in a buffer for later read operations. Includes operations to read integers of various sizes.
+Writes arbitrarily long strings or byte arrays using multiple calls if necessary.
 
 Assumes the serial port has been opened at the desired baud rate.
 '
-variables _serRead_buffer 
+variables _serial_read_buffer 
 
-  spec 'r' 'serRead_available' 'reader bytes available'
-  spec 'r' 'serRead_next' 'read _ bytes : as string _' 'num bool' 10 false
+  spec 'r' 'serial_available' 'serial bytes available'
+  spec 'r' 'serial_next' 'read _ bytes : as string _' 'num bool' 10 false
   space
-  spec ' ' 'serRead_skip' 'skip _ bytes' 'num' 10
-  spec ' ' 'serRead_clear' 'clear buffer'
+  spec ' ' 'serial_skip' 'skip _ bytes' 'num' 10
+  spec ' ' 'serial_clear' 'clear serial input'
   space
-  spec 'r' 'serRead_8bit' 'read 8-bit number signed _' 'bool' false
-  spec 'r' 'serRead_16bit' 'read 16-bit number MSB _ signed _' 'bool bool' false false
-  spec 'r' 'serRead_24bit' 'read 24-bit number MSB _ signed _' 'bool bool' false false
-  spec 'r' 'serRead_32bit' 'read 32-bit number MSB _' 'bool' false
+  spec 'r' 'serial_8bit' 'read 8-bit number signed _' 'bool' false
+  spec 'r' 'serial_16bit' 'read 16-bit number MSB _ signed _' 'bool bool' false false
+  spec 'r' 'serial_24bit' 'read 24-bit number MSB _ signed _' 'bool bool' false false
+  spec 'r' 'serial_32bit' 'read 32-bit number MSB _' 'bool' false
+  space
+  spec ' ' 'serial_writeAll' 'serial write all _' 'str' 'ABC'
 
-to serRead_16bit msb signed {
-  local 'bytes' (serRead_next 2)
+to serial_16bit msb signed {
+  local 'bytes' (serial_next 2)
   if msb {
     local 'result' (((at 1 bytes) << 8) | (at 2 bytes))
   } else {
@@ -32,8 +37,8 @@ to serRead_16bit msb signed {
   return result
 }
 
-to serRead_24bit msb signed {
-  local 'bytes' (serRead_next 3)
+to serial_24bit msb signed {
+  local 'bytes' (serial_next 3)
   if msb {
     local 'result' (((at 1 bytes) << 16) | (((at 2 bytes) << 8) | (at 3 bytes)))
   } else {
@@ -46,8 +51,8 @@ to serRead_24bit msb signed {
   return result
 }
 
-to serRead_32bit msb {
-  local 'bytes' (serRead_next 4)
+to serial_32bit msb {
+  local 'bytes' (serial_next 4)
   if msb {
     local 'high byte' (at 1 bytes)
     local 'result' ((((at 1 bytes) << 24) | ((at 2 bytes) << 16)) | (((at 3 bytes) << 8) | (at 4 bytes)))
@@ -62,12 +67,12 @@ to serRead_32bit msb {
   return result
 }
 
-to serRead_8bit signed {
-  repeatUntil ((serRead_available) > 0) {
+to serial_8bit signed {
+  repeatUntil ((serial_available) > 0) {
     waitMillis 1
   }
-  local 'result' (at 1 _serRead_buffer)
-  _serRead_buffer = ('[data:copyFromTo]' _serRead_buffer 2)
+  local 'result' (at 1 _serial_read_buffer)
+  _serial_read_buffer = ('[data:copyFromTo]' _serial_read_buffer 2)
   if signed {
     comment 'Sign-extend the result'
     result = ((result << 23) >> 23)
@@ -75,32 +80,54 @@ to serRead_8bit signed {
   return result
 }
 
-to serRead_available {
-  if (_serRead_buffer == 0) {_serRead_buffer = ('[data:newByteArray]' 0)}
+to serial_available {
+  comment 'Return the number of bytes available for reading.'
+  if (_serial_read_buffer == 0) {
+    _serial_read_buffer = ('[data:newByteArray]' 0)
+  }
   local 'newData' ('[serial:read]')
   if ((size newData) != 0) {
-    _serRead_buffer = ('[data:join]' _serRead_buffer newData)
+    _serial_read_buffer = ('[data:join]' _serial_read_buffer newData)
   }
-  return (size _serRead_buffer)
+  return (size _serial_read_buffer)
 }
 
-to serRead_clear {
-  _serRead_buffer = ('[data:newByteArray]' 0)
+to serial_clear {
+  _serial_read_buffer = ('[data:newByteArray]' 0)
 }
 
-to serRead_next byteCount optionalStringFlag {
-  repeatUntil ((serRead_available) >= byteCount) {
+to serial_next byteCount optionalStringFlag {
+  comment 'Wait until byteCount bytes have been received, then return them
+as a byte array or, with the optional flag, as a string.'
+  repeatUntil ((serial_available) >= byteCount) {
     waitMillis 1
   }
-  local 'result' ('[data:copyFromTo]' _serRead_buffer 1 byteCount)
-  _serRead_buffer = ('[data:copyFromTo]' _serRead_buffer (byteCount + 1))
+  local 'result' ('[data:copyFromTo]' _serial_read_buffer 1 byteCount)
+  _serial_read_buffer = ('[data:copyFromTo]' _serial_read_buffer (byteCount + 1))
   if (argOrDefault 2 false) {
     result = ('[data:convertType]' result 'string')
   }
   return result
 }
 
-to serRead_skip byteCount {
-  local 'ignore' (serRead_next byteCount false)
+to serial_skip byteCount {
+  local 'ignore' (serial_next byteCount false)
+}
+
+to serial_writeAll data {
+  comment 'Write the given byte array or string using multiple write operations if necessary.'
+  data = ('[data:convertType]' data 'byte array')
+  repeatUntil ((size data) == 0) {
+    local 'bytesWritten' ('[serial:writeBytes]' data 1)
+    if (bytesWritten > 0) {
+      sayIt bytesWritten
+      if (bytesWritten == (size data)) {
+        return 0
+      } else {
+        data = ('[data:copyFromTo]' data (bytesWritten + 1))
+        waitMillis 5
+      }
+    }
+  }
 }
 
