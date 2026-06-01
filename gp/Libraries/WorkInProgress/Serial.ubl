@@ -120,7 +120,6 @@ to serial_writeAll data {
   repeatUntil ((size data) == 0) {
     local 'bytesWritten' ('[serial:writeBytes]' data 1)
     if (bytesWritten > 0) {
-      sayIt bytesWritten
       if (bytesWritten == (size data)) {
         return 0
       } else {
