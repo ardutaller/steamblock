@@ -940,6 +940,8 @@ void hardwareInit() {
 		1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0};
 
+	int isSpringbotGold; // set at startup to distinguish between Green and Gold Springbots
+
 #elif defined(SPRINGBOT)
 	#define BOARD_TYPE "SPRINGBOT"
 	#define DIGITAL_PINS 41
