@@ -310,7 +310,10 @@ static void serialReadBytes(uint8 *buf, uint32 byteCount) {
 
 static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 	if (!isOpen) return 0;
-	return SERIAL_PORT.write(buf, byteCount);
+	int maxWritable = SERIAL_PORT.availableForWrite();
+	if (byteCount > maxWritable) byteCount = maxWritable;
+	SERIAL_PORT.write(buf, byteCount);
+	return byteCount;
 }
 
 #endif
