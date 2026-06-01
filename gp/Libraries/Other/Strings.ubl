@@ -157,6 +157,7 @@ to string_left_pad s desiredLength padChar {
 }
 
 to string_reversed s {
+  if (isType s 'number') {s = ('[data:convertType]' s 'string')}
   local 'chars' ('[data:split]' s '')
   local 'i' 1
   local 'j' (size chars)
