@@ -124,7 +124,7 @@ to serial_writeAll data {
         return 0
       } else {
         data = ('[data:copyFromTo]' data (bytesWritten + 1))
-        waitMillis 5
+        waitMillis 10
       }
     }
   }
