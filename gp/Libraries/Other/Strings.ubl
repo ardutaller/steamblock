@@ -1,7 +1,7 @@
 module Strings Data
 author MicroBlocks
 version 1 6 
-choices string_numBase binary decimal hexadecimal 
+choices string_numBase '2' '10' '16' 
 description 'String operations.'
 
   spec 'r' 'isDigit' '_ is a digit' 'str' '5'
@@ -26,8 +26,8 @@ description 'String operations.'
   spec 'r' 'stringToUnicodes' 'unicodes _' 'auto' 'aString'
   spec 'r' 'unicodesToString' 'string from unicodes _' 'auto' 'aList'
   space
-  spec 'r' 'num2str' 'num2str _ : base _' 'num menu.string_numBase' 42 'decimal'
-  spec 'r' 'str2num' 'str2num _ : base _' 'str menu.string_numBase' '123' 'decimal'
+  spec 'r' 'num2str' 'num2str _ : base _' 'num menu.string_numBase' 25 '10'
+  spec 'r' 'str2num' 'str2num _ : base _' 'str menu.string_numBase' '101' '10'
   space
   spec 'r' '_string_toBinary' '_string_toBinary _' 'num' 15
   spec 'r' '_string_toHex' '_string_toHex _' 'num' 127
@@ -119,22 +119,22 @@ to lowercase string {
 }
 
 to num2str n optionalBase {
-  local 'base' (argOrDefault 2 'decimal')
-  if ('binary' == base) {
+  local 'base' (argOrDefault 2 '10')
+  if (base == ('[data:toString]' 2)) {
     return ('_string_toBinary' n)
   }
-  if ('hexadecimal' == base) {
+  if (base == ('[data:toString]' 16)) {
     return ('_string_toHex' n)
   }
   return ('[data:join]' '' n)
 }
 
 to str2num s optionalBase {
-  local 'base' (argOrDefault 2 'decimal')
-  if ('binary' == base) {
+  local 'base' (argOrDefault 2 '10')
+  if (base == ('[data:toString]' 2)) {
     return ('[misc:binToInt]' s)
   }
-  if ('hexadecimal' == base) {
+  if (base == ('[data:toString]' 16)) {
     return (hexToInt s)
   }
   return (0 + s)
