@@ -95,6 +95,7 @@ static uint32 lastMicrosecs = 0;
 uint64 totalMicrosecs() {
 	// Returns a 64-bit integer containing microseconds since start.
 
+	handleMicosecondClockWrap();
 	return ((uint64) microsecondHighBits << 32) | microsecs();
 }
 
