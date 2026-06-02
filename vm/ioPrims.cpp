@@ -1633,7 +1633,9 @@ void turnOffPins() {
 
 int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return digitalPin[pinNum];
+		if ((pinNum < 0) || (pinNum >= DIGITAL_PINS)) return -1; // out of range
+		if (digitalPin[pinNum] == 255) return -1; // unused pin
+		return digitalPin[pinNum];
 	#elif defined(DUELink)
 		int duePin = -1; // -1 means pin is out of range or undefined
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
@@ -1837,7 +1839,7 @@ void primAnalogWrite(OBJ *args) {
 	if (!isInt(args[0]) || !isInt(args[1])) { fail(needsIntegerError); return; }
 	int pinNum = obj2int(args[0]);
 	#if defined(USE_DIGITAL_PIN_MAP) && !defined(DUELink)
-		if ((pinNum < 0) || (pinNum >= DIGITAL_PINS)) return;
+		// DUELink case handled below
 		pinNum = mapDigitalPinNum(pinNum);
 		if (pinNum < 0) return;
 	#endif
@@ -1873,11 +1875,8 @@ void primAnalogWrite(OBJ *args) {
 			return;
 		}
 	#elif defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
-			pinNum = digitalPin[pinNum];
-		} else {
-			return;
-		}
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return;
 	#endif
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
@@ -1966,15 +1965,9 @@ OBJ primDigitalRead(int argCount, OBJ *args) {
 	#elif defined(ARDUINO_SAM_ZERO) // M0
 		if ((pinNum == 14) || (pinNum == 15) ||
 			((18 <= pinNum) && (pinNum <= 23))) return falseObj;
-	#elif defined(DUELink)
+	#elif defined(DUELink) || defined(USE_DIGITAL_PIN_MAP)
 		pinNum = mapDigitalPinNum(pinNum);
 		if (pinNum < 0) return falseObj;
-	#elif defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
-			pinNum = digitalPin[pinNum];
-		} else {
-			return falseObj;
-		}
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pinNum) && (pinNum <= 139)) {
 			pinNum = pinNum - 100; // allows access to unmapped IO pins 0-39 as 100-139
@@ -2041,11 +2034,8 @@ void primDigitalSet(int pinNum, int flag) {
 		}
 		return;
 	#elif defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
-			pinNum = digitalPin[pinNum];
-		} else {
-			return;
-		}
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return;
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pinNum) && (pinNum <= 139)) {
 			pinNum = pinNum - 100; // allows access to unmapped IO pins 0-39 as 100-139
@@ -3010,7 +3000,8 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 	#endif
 
 	#if defined(USE_DIGITAL_PIN_MAP)
-		pin = digitalPin[pin];
+		pin = mapDigitalPinNum(pin);
+		if (pin < 0) return falseObj;
 	#endif
 
 	#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
@@ -3056,7 +3047,8 @@ OBJ primSetServo(int argCount, OBJ *args) {
 	int pin = obj2int(pinArg);
 	if ((pin < 0) || (pin >= DIGITAL_PINS)) return falseObj;
 	#if defined(USE_DIGITAL_PIN_MAP)
-		pin = digitalPin[pin];
+		pin = mapDigitalPinNum(pin);
+		if (pin < 0) return falseObj;
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pin) && (pin <= 139)) {
 			pin = pin - 100; // allows access to unmapped IO pins 0-39 as 100-139
