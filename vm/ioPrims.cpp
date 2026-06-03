@@ -796,7 +796,7 @@ void hardwareInit() {
 	static const char digitalPin[DIGITAL_PINS] = {
 		12, 14, 32, 13, 27,  0, 2,  25,  17, 16,
 		26,  4, 15, 18, 19, 23, 5, 255, 255, 22,
-		21, 33, 35, 36, 39}; // edge connector pins 17 & 18 are not used (-1)
+		21, 33, 35, 36, 39}; // edge connector pins 17 & 18 are not used (255)
 	// 21 (GPIO 33) - buzzer
 	// 22 (GPIO 35) - loudness sensor
 	// 23 (GPIO 36) - current sensor
@@ -864,7 +864,7 @@ void hardwareInit() {
 	static const char digitalPin[28] = {
 		12, 14, 32, 13, 27, 0, 2, 25, 4, 16,
 		26, 17, 15, 18, 19, 23, 5, 255, 255, 22,
-		21, 33, 35, 36, 39, 20, 24, 34}; // edge connector pins 17 & 18 are not used (255 in map)
+		21, 33, 35, 36, 39, 20, 24, 34}; // edge connector pins 17 & 18 are not used (255)
 
 	#define DEFAULT_TONE_PIN 21
 	static char reservedPin[TOTAL_PINS] = {
@@ -1744,13 +1744,22 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		}
 	#endif
 	#ifdef ARDUINO_ARCH_ESP32
-		#if defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
-			if ((0 <= pinNum) && (pinNum < DIGITAL_PINS) && (pinNum != 17) && (pinNum != 18)) {
-				pinNum = digitalPin[pinNum]; // map edge connector pin number to ESP32 pin number
-			}
+		#if defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT) || defined(SPRINGBOT)
+			pinNum = mapDigitalPinNum(pinNum); // map edge connector pin number to ESP32 pin number
+			if (pinNum < 0) return zeroObj;
 		#endif
+
+		// don't try to read from pins without ADC on newer ESP32 boards
+		#if defined(ESP32_S2) || defined(ESP32_S3)
+			if ((pinNum < 1) || (pinNum > 20)) return zeroObj;
+		#elif defined(ESP32_C3)
+			if ((pinNum > 5) return zeroObj;
+		#elif defined(ESP32_C6)
+			if ((pinNum > 6) return zeroObj;
+		#endif
+
 		// use the ESP32 pin number directly (if not reserved)
-		if (RESERVED(pinNum)) return int2obj(0);
+		if (RESERVED(pinNum)) return zeroObj;
 		SET_MODE(pinNum, INPUT);
 		return int2obj(analogRead(pinNum) >> 2); // convert from 12-bit to 10-bit resolution
 	#elif defined(ARDUINO_SAM_ZERO) // M0
