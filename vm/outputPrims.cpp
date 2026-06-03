@@ -88,7 +88,7 @@ static int lightReadingRequested = false;
 
 extern "C" int displayIsActive() {
 	if (disableLEDDisplay) return false;
-	return !microBitDisplayBits;
+	return microBitDisplayBits;
 }
 
 #if defined(ARDUINO_BBC_MICROBIT) || defined(ARDUINO_CALLIOPE_MINI)
@@ -388,7 +388,7 @@ void updateMicrobitDisplay() {
 	digitalWrite(columnPins[displayCycle], LOW);
 	displayCycle = (displayCycle + 1) % 5;
 }
-#elif defined(SPRINGBOT_GREEN)
+#elif defined(SPRINGBOT)
 
 static int displaySnapshot = 0;
 static int displayCycle = 0;
@@ -423,10 +423,8 @@ void updateMicrobitDisplay() {
 	// An LED lights when the corresponding row is high and the column is low.
 
 	if (disableLEDDisplay) return;
-
-	if (!microBitDisplayBits && !displaySnapshot) { // display is off
-		return;
-	}
+	if (isSpringbotGold) return; // does not have 5x5 LED display
+	if (!microBitDisplayBits && !displaySnapshot) return; // display is off
 
 	if (0 == displayCycle) { // starting a new cycle
 		if (displaySnapshot && !microBitDisplayBits) { // display just became off
@@ -440,7 +438,7 @@ void updateMicrobitDisplay() {
 		turnDisplayOn();
 	}
 	int previousColumn = (displayCycle > 0) ? (displayCycle - 1) : 4;
-	digitalWrite(columnPins[previousColumn], HIGH); //  turn off previous column
+	digitalWrite(columnPins[previousColumn], HIGH); // turn off previous column
 
 	for (int row = 0; row < 5; row++) {
 		digitalWrite(rowPins[row], DISPLAY_BIT((5 * row) + displayCycle));
@@ -703,11 +701,14 @@ OBJ primMBDisplayOff(int argCount, OBJ *args) {
 	microBitDisplayBits = 0;
 	#if !defined(HAS_LED_MATRIX)
 		// If the board does not have a built-in LED matrix but does have a TFT display
-		// then it simulates an LED matrix on the TFT display. In that case, this operation
-		// should clear the simulated the simulates an LED matrix on the TFT screen.
-		// If the boards has a built-in LED matrix AND a TFT display just clear the LED matrix
-		// so that the two displays are independent.
+		// then it simulates an LED matrix on the TFT display. In that case, this
+		// operation should clear the simulated LED matrix on the TFT screen.
+		// If the boards has a built-in LED matrix AND a TFT display just clear
+		// the LED matrix so that the two displays are independent.
 		if (useTFT) tftClear();
+	#elif defined(SPRINGBOT)
+		// only clear TFT if it is the built-in one on Springbot Gold
+		if (isSpringbotGold) tftClear();
 	#endif
 	return falseObj;
 }
@@ -749,7 +750,7 @@ static OBJ primLightLevel(int argCount, OBJ *args) {
 		lightLevel = (int) (log10((float) analogRead(39)) * 27.684);
 	#elif defined(FOXBIT)
 		lightLevel = analogRead(39) * 1000 / 4095; // output range 0-1000
-	#elif defined(SPRINGBOT_GREEN) || defined(SPRINGBOT_GOLD)
+	#elif defined(SPRINGBOT)
 		lightLevel = analogRead(7) * 1000 / 4095; // output range 0-1000
 	#elif defined(DUELink)
 		int lightPin =

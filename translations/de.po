@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-05-05 09:12+0000\n"
+"PO-Revision-Date: 2026-05-21 15:11+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -1296,7 +1296,7 @@ msgstr "Bruchnenner _"
 
 #. Tone library block
 msgid "start tone _ Hz"
-msgstr "spiele Ton mit _ Hz"
+msgstr "starte Ton mit _ Hz"
 
 #. Lists library block
 msgid "shuffle _"
@@ -8509,3 +8509,119 @@ msgstr "espNow setze Kanal _"
 #. ESP Now library label
 msgid "espNow channel"
 msgstr "espNow Kanal"
+
+#. Tone library block
+msgid "start note _ octave _"
+msgstr "starte Note _ Oktave _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "starte Midi Key _"
+
+#. Octostudio communication library block
+msgid "Octo last beam was _"
+msgstr "Octo letzter Beam war _"
+
+#. MakerPort library choice
+msgid "MP3"
+msgstr "MP3"
+
+#. MakerPort library choice
+msgid "mp3 player"
+msgstr "MP3 Player"
+
+#. MakerPort library choice
+msgid "analog pin (13)"
+msgstr "Analog Pin (13)"
+
+#. MakerPort library choice
+msgid "extra pin (17)"
+msgstr "Extra Pin (17)"
+
+#. MakerPort library block
+msgid "MakerPort tone _ Hz for _ msecs"
+msgstr "MakerPort spiele Ton _ Hz für _ ms"
+
+#. MakerPort library block
+msgid "MakerPort initialize"
+msgstr "MakerPort initialisiere"
+
+#. MakerPort library block
+msgid "loudness pin _"
+msgstr "Loudness Pin _"
+
+#. MakerPort library block
+msgid "mp3 player has Flash card"
+msgstr "MP3 Player hat eine Speicherkarte"
+
+#. MakerPort library block
+msgid "set all MakerPort LEDs _"
+msgstr "setze alle MakerPort LEDs _"
+
+#. MakerPort library block
+msgid "type _ to computer"
+msgstr "tippe _ zum Computer"
+
+#. LCD Display library block
+msgid "draw char _ on LCD line _ column _"
+msgstr "zeichne Zeichen _ auf LCD Zeile _ Spalte _"
+
+#. LCD Display library block
+msgid "clear LCD"
+msgstr "lösche LCD"
+
+#. LCD Display library block
+msgid "is LCD connected?"
+msgstr "ist LCD verbunden?"
+
+#. LCD Display library block
+msgid "write _ on LCD line _"
+msgstr "schreibe _ auf LCD Zeile _"
+
+#. LCD Display library block
+msgid "write field _ on LCD line _ from _ to _"
+msgstr "schreibe Feld _ auf LCD Zeile _ von _ bis _"
+
+#. MP3 Player library choice
+msgid "MakerPort"
+msgstr "MakerPort"
+
+#. MP3 Player library choice
+msgid "MakerBit/HyperDuino"
+msgstr "MakerBit/HyperDuino"
+
+#. MP3 Player library choice
+msgid "DFRobot"
+msgstr "DFRobot"
+
+#. MP3 Player library block
+msgid "mp3 initialize _ pin _"
+msgstr "MP3 initialisiere _ Pin _"
+
+#. MP3 Player library block
+msgid "mp3 play next track"
+msgstr "MP3 spiele nächsten Track"
+
+#. MP3 Player library block
+msgid "mp3 pause"
+msgstr "MP3 Pause"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _"
+msgstr "MP3 spiele Track _ im Verzeichnis _"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _ until done"
+msgstr "MP3 spiele Track _ im Verzeichnis _ bis fertig"
+
+#. MP3 Player library block
+msgid "mp3 repeat all in folder _"
+msgstr "MP3 wiederhole alles im Verzeichnis _"
+
+#. MP3 Player library block
+msgid "mp3 resume"
+msgstr "MP3 weiter"
+
+#. MP3 Player library block
+msgid "mp3 set volume _ (0-30)"
+msgstr "MP3 setze Lautstärke _ (0-30)"

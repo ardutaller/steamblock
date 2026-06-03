@@ -95,6 +95,7 @@ static uint32 lastMicrosecs = 0;
 uint64 totalMicrosecs() {
 	// Returns a 64-bit integer containing microseconds since start.
 
+	handleMicosecondClockWrap();
 	return ((uint64) microsecondHighBits << 32) | microsecs();
 }
 
@@ -197,6 +198,11 @@ void hardwareInit() {
 		// Ping the DUELink address so any connected DUELink modules will use I2C mode.
 		// This must be the first I2C transaction after power up.
 		readI2CReg(82, 0);
+	#endif
+	#if defined(SPRINGBOT)
+		// Check for NFC chip (I2C address 87). Only Springbot Gold has that chip.
+		isSpringbotGold = (readI2CReg(87, 0) >= 0);
+		useTFT = isSpringbotGold;
 	#endif
 }
 
@@ -935,15 +941,13 @@ void hardwareInit() {
 		1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0};
 
+	int isSpringbotGold; // set at startup to distinguish between Green and Gold Springbots
+
 #elif defined(SPRINGBOT)
-	#if defined(SPRINGBOT_GOLD)
-		#define BOARD_TYPE "Springbot Gold"
-	#else
-		#define BOARD_TYPE "Springbot Green"
-	#endif
+	#define BOARD_TYPE "SPRINGBOT"
 	#define DIGITAL_PINS 41
 	#define ANALOG_PINS 20
-	#define TOTAL_PINS 43
+	#define TOTAL_PINS 47
 	static const int analogPin[] = {};
 
 	#define PIN_LED 40
@@ -955,7 +959,7 @@ void hardwareInit() {
 
 	// Special pins (MicroBlocks pin numbers):
 	// 21 - red LED (GPIO 40)
-	// 22 - Neopixel (GPIO 29)
+	// 22 - Neopixel (GPIO 39)
 	// 23 - buzzer (GPIO 33)
 	// 24 - phototransistor (GPIO 7)
 	// 25 - SD Card CS (GPIO 34)
@@ -985,7 +989,9 @@ void hardwareInit() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0};
+		0, 0, 0, 0, 0, 0, 0};
+
+	int isSpringbotGold; // set at startup to distinguish between Green and Gold Springbots
 
 #elif defined(ESP32_S2)
 	#define BOARD_TYPE "ESP32-S2"
@@ -1484,6 +1490,12 @@ const char * boardType() {
 		if (DUE_PID == 0x0C0006) return "Snowy";
 		if (DUE_PID == 0x0C0007) return "Cubicle";
 		if (DUE_PID == 0x0C0008) return "Controller";
+	#elif defined(SPRINGBOT)
+		if (isSpringbotGold) {
+			return "Springbot Gold";
+		} else {
+			return "Springbot Green";
+		}
 	#endif
 	return BOARD_TYPE;
 }
@@ -1624,7 +1636,9 @@ void turnOffPins() {
 
 int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) return digitalPin[pinNum];
+		if ((pinNum < 0) || (pinNum >= DIGITAL_PINS)) return -1; // out of range
+		if (digitalPin[pinNum] == 255) return -1; // unused pin
+		return digitalPin[pinNum];
 	#elif defined(DUELink)
 		int duePin = -1; // -1 means pin is out of range or undefined
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
@@ -1828,7 +1842,7 @@ void primAnalogWrite(OBJ *args) {
 	if (!isInt(args[0]) || !isInt(args[1])) { fail(needsIntegerError); return; }
 	int pinNum = obj2int(args[0]);
 	#if defined(USE_DIGITAL_PIN_MAP) && !defined(DUELink)
-		if ((pinNum < 0) || (pinNum >= DIGITAL_PINS)) return;
+		// DUELink case handled below
 		pinNum = mapDigitalPinNum(pinNum);
 		if (pinNum < 0) return;
 	#endif
@@ -1864,11 +1878,8 @@ void primAnalogWrite(OBJ *args) {
 			return;
 		}
 	#elif defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
-			pinNum = digitalPin[pinNum];
-		} else {
-			return;
-		}
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return;
 	#endif
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
@@ -1956,15 +1967,9 @@ OBJ primDigitalRead(int argCount, OBJ *args) {
 	#elif defined(ARDUINO_SAM_ZERO) // M0
 		if ((pinNum == 14) || (pinNum == 15) ||
 			((18 <= pinNum) && (pinNum <= 23))) return falseObj;
-	#elif defined(DUELink)
+	#elif defined(DUELink) || defined(USE_DIGITAL_PIN_MAP)
 		pinNum = mapDigitalPinNum(pinNum);
 		if (pinNum < 0) return falseObj;
-	#elif defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
-			pinNum = digitalPin[pinNum];
-		} else {
-			return falseObj;
-		}
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pinNum) && (pinNum <= 139)) {
 			pinNum = pinNum - 100; // allows access to unmapped IO pins 0-39 as 100-139
@@ -2031,11 +2036,8 @@ void primDigitalSet(int pinNum, int flag) {
 		}
 		return;
 	#elif defined(USE_DIGITAL_PIN_MAP)
-		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
-			pinNum = digitalPin[pinNum];
-		} else {
-			return;
-		}
+		pinNum = mapDigitalPinNum(pinNum);
+		if (pinNum < 0) return;
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pinNum) && (pinNum <= 139)) {
 			pinNum = pinNum - 100; // allows access to unmapped IO pins 0-39 as 100-139
@@ -2145,12 +2147,9 @@ OBJ primButtonA(OBJ *args) {
 			return (buttonReadings[4] < CAP_THRESHOLD) ? trueObj : falseObj;
 		#elif defined(FOXBIT)
 			setPinMode(PIN_BUTTON_A, INPUT_PULLUP); // ESP32 pin number not edge pin
-		#elif defined(SPRINGBOT_GREEN)
-			if (touchRead(T11)>25700) return trueObj;
-			else return falseObj;
-		#elif defined(SPRINGBOT_GOLD)
-			if (touchRead(T11)>27700) return trueObj;
-			else return falseObj;
+		#elif defined(SPRINGBOT)
+			int threshold = isSpringbotGold ? 27700: 25700;
+			return (touchRead(T11) > threshold) ? trueObj : falseObj;
 		#elif defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_ARCH_ESP32) || \
 			  defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
@@ -2177,12 +2176,9 @@ OBJ primButtonB(OBJ *args) {
 			return (buttonReadings[3] < CAP_THRESHOLD) ? trueObj : falseObj;
 		#elif defined(FOXBIT)
 			setPinMode(PIN_BUTTON_B, INPUT_PULLUP); // ESP32 pin number not edge pin
-		#elif defined(SPRINGBOT_GREEN)
-			if (touchRead(T12)>19300) return trueObj;
-			else return falseObj;
-		#elif defined(SPRINGBOT_GOLD)
-			if (touchRead(T12)>15700) return trueObj;
-			else return falseObj;
+		#elif defined(SPRINGBOT)
+			int threshold = isSpringbotGold ? 15700 : 19300;
+			return (touchRead(T12) > threshold) ? trueObj : falseObj;
 		#elif defined(ARDUINO_NRF52840_CLUE)
 			SET_MODE(PIN_BUTTON_B, INPUT_PULLUP);
 		#else
@@ -3006,7 +3002,8 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 	#endif
 
 	#if defined(USE_DIGITAL_PIN_MAP)
-		pin = digitalPin[pin];
+		pin = mapDigitalPinNum(pin);
+		if (pin < 0) return falseObj;
 	#endif
 
 	#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
@@ -3052,7 +3049,8 @@ OBJ primSetServo(int argCount, OBJ *args) {
 	int pin = obj2int(pinArg);
 	if ((pin < 0) || (pin >= DIGITAL_PINS)) return falseObj;
 	#if defined(USE_DIGITAL_PIN_MAP)
-		pin = digitalPin[pin];
+		pin = mapDigitalPinNum(pin);
+		if (pin < 0) return falseObj;
 	#elif defined(ARDUINO_CITILAB_ED1)
 		if ((100 <= pin) && (pin <= 139)) {
 			pin = pin - 100; // allows access to unmapped IO pins 0-39 as 100-139

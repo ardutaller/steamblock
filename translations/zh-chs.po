@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-04-30 20:41+0000\n"
-"Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
+"PO-Revision-Date: 2026-05-25 15:11+0000\n"
+"Last-Translator: 梁帅 <jiangren1209@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
 "Language: zh-chs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 
 #. Block in Control category
 msgid "by _"
@@ -1144,7 +1144,7 @@ msgstr "海龟绘图"
 
 #. Tone library block
 msgid "start tone _ Hz"
-msgstr "弹奏音调 _ 赫兹"
+msgstr "发出音调 _ 赫兹"
 
 #. Citilab ED1 Buttons library label
 msgid "ED1 Buttons"
@@ -1496,7 +1496,7 @@ msgstr "_ 是小写字母"
 
 #. Tone library block
 msgid "play midi key _ for _ ms"
-msgstr "弹奏midi键 _ 持续 _ 毫秒"
+msgstr "弹奏 midi 键 _ 持续 _ 毫秒"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Beak Down"
@@ -6327,3 +6327,11 @@ msgstr "目录名"
 #. ESP Now library label
 msgid "ESP Now"
 msgstr "ESP Now 通讯"
+
+#. Tone library block
+msgid "start note _ octave _"
+msgstr "发出音符 _ 音阶 _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "发出 midi 键 _"

@@ -1122,7 +1122,7 @@ static int readTemperature() {
 	return temp;
 }
 
-#elif defined(ARDUINO_CITILAB_ED1)
+#elif defined(ARDUINO_CITILAB_ED1) || defined(ESP32_S3_MATRIX_PORTAL)
 
 typedef enum {
 	accel_unknown = -1,

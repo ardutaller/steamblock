@@ -28,7 +28,11 @@ static int serialAvailable() { return -1; }
 static void serialReadBytes(uint8 *buf, uint32 byteCount) { fail(primitiveNotImplemented); }
 static int serialWriteBytes(uint8 *buf, uint32 byteCount) { fail(primitiveNotImplemented); return 0; }
 
-#elif defined(NRF52) // use custom UART
+#elif defined(NRF52) && \
+	!defined(ARDUINO_NRF52840_FEATHER) && \
+	!defined(ARDUINO_NRF52840_CLUE) && \
+	!defined(ARDUINO_NRF52840_CIRCUITPLAY)
+	// use custom UART
 
 // Pin numbers for nRF52 boards. May be changed before calling serialOpen().
 #if defined(CALLIOPE_V3)
@@ -310,7 +314,16 @@ static void serialReadBytes(uint8 *buf, uint32 byteCount) {
 
 static int serialWriteBytes(uint8 *buf, uint32 byteCount) {
 	if (!isOpen) return 0;
-	return SERIAL_PORT.write(buf, byteCount);
+	uint32 maxWritable = SERIAL_PORT.availableForWrite();
+	#if defined(RP2040_PHILHOWER)
+		// workaround:
+		// on Pico, availableForWrite() returns 0 or 1
+		// however, when it returns 1 it can actually buffer 30 bytes for writing
+		if (maxWritable > 0) maxWritable = 30;
+	#endif
+	if (byteCount > maxWritable) byteCount = maxWritable;
+	SERIAL_PORT.write(buf, byteCount);
+	return byteCount;
 }
 
 #endif

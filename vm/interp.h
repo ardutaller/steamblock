@@ -311,6 +311,7 @@ const char *boardType();
 int hasPSRAM();
 void hardwareInit(void);
 void processStartupGesture();
+void loadStartCodeOrClear();
 
 int readI2CReg(int deviceID, int reg);
 void writeI2CReg(int deviceID, int reg, int value);
@@ -318,6 +319,7 @@ void writeI2CReg(int deviceID, int reg, int value);
 // I/O Support
 
 extern int mbDisplayColor;
+extern int resetDoubleTap;
 
 int pinCount();
 int mapDigitalPinNum(int userPinNum);
@@ -391,6 +393,7 @@ OBJ primResumeUpdates(int argCount, OBJ *args);
 
 extern int useTFT;
 extern int isCodingBox;
+extern int isSpringbotGold;
 
 void tftInit();
 void tftClear();

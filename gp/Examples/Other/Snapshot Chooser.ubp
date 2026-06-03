@@ -1,8 +1,8 @@
 module main
 author unknown
-version 1 0
+version 1 0 
 description ''
-variables snapshots selected
+variables snapshots selected 
 
   spec ' ' 'writeCentered' 'write _ centered at scale _ y _ color _' 'str auto auto color' 'Hello!' 3 '10'
   spec ' ' 'showMenu' 'show  menu'
@@ -10,12 +10,18 @@ variables snapshots selected
   spec ' ' 'updateSelection' 'update selection'
 
 to showMenu {
-  '[tft:clear]'
-  writeCentered 'Menu' 4 10 (colorSwatch 180 180 180 255)
-  local 'y' (('[tft:getHeight]') - 20)
-  '[tft:text]' 'A <' 12 y (colorSwatch 180 180 180 255) 2 false
-  '[tft:text]' '> B' (('[tft:getWidth]') - 45) y (colorSwatch 180 180 180 255) 2 false
-  writeCentered 'A+B Run' 2 y (colorSwatch 180 180 180 255)
+  if (('[tft:getWidth]') == 0) {
+    comment 'No TFT; show current selection'
+    sendBroadcast 'scroll selection'
+  } else {
+    comment 'Draw menu on TFT'
+    '[tft:clear]'
+    writeCentered 'Menu' 4 10 (colorSwatch 180 180 180 255)
+    local 'y' (('[tft:getHeight]') - 20)
+    '[tft:text]' 'A <' 12 y (colorSwatch 180 180 180 255) 2 false
+    '[tft:text]' '> B' (('[tft:getWidth]') - 45) y (colorSwatch 180 180 180 255) 2 false
+    writeCentered 'A+B Run' 2 y (colorSwatch 180 180 180 255)
+  }
 }
 
 to snapshotName filename {
@@ -28,9 +34,15 @@ to updateSelection {
   if ((size snapshots) == 0) {
     return 0
   }
-  '[tft:rect]' 0 80 ('[tft:getWidth]') (('[tft:getHeight]') - 100) (colorSwatch 0 0 0 255)
-  writeCentered (snapshotName (at selected snapshots)) 3 80 (colorSwatch 34 244 26 255)
-  writeCentered ('[data:join]' '' selected ' of ' (size snapshots)) 2 160 (colorSwatch 34 244 26 255)
+  if (('[tft:getWidth]') == 0) {
+    comment 'No TFT display; use LED Display'
+    sendBroadcast 'scroll selection'
+  } else {
+    comment 'Use TFT or OLED display'
+    '[tft:rect]' 0 80 ('[tft:getWidth]') (('[tft:getHeight]') - 100) (colorSwatch 0 0 0 255)
+    writeCentered (snapshotName (at selected snapshots)) 3 80 (colorSwatch 34 244 26 255)
+    writeCentered ('[data:join]' '' selected ' of ' (size snapshots)) 2 160 (colorSwatch 34 244 26 255)
+  }
 }
 
 to writeCentered text scale y color {
@@ -39,7 +51,7 @@ to writeCentered text scale y color {
   '[tft:text]' text x y color scale true
 }
 
-script 76 50 {
+script 58 50 {
 whenStarted
 snapshots = ('[data:makeList]')
 for filename ('file names') {
@@ -52,8 +64,9 @@ showMenu
 updateSelection
 }
 
-script 548 51 {
+script 530 51 {
 whenButtonPressed 'A'
+stopAll
 selected += -1
 if (selected < 1) {
   selected = 1
@@ -61,8 +74,9 @@ if (selected < 1) {
 updateSelection
 }
 
-script 546 289 {
+script 528 289 {
 whenButtonPressed 'B'
+stopAll
 selected += 1
 if (selected > (size snapshots)) {
   selected = (size snapshots)
@@ -70,23 +84,29 @@ if (selected > (size snapshots)) {
 updateSelection
 }
 
-script 77 471 {
+script 59 471 {
 whenButtonPressed 'A+B'
+stopAll
 if (selected > (size snapshots)) {
   showMenu
 } else {
+  '[display:mbDisplayOff]'
   '[tft:clear]'
   stopAll
   waitMillis 100
-  sayIt (at selected snapshots)
   '[misc:launchCodeSnapshot]' (at selected snapshots)
 }
+}
+
+script 60 860 {
+whenBroadcastReceived 'scroll selection'
+scroll_text ('[data:join]' '' selected '-' (snapshotName (at selected snapshots))) 75
 }
 
 
 module Files Data
 author MicroBlocks
-version 1 5
+version 1 5 
 description 'Flash file system operations. Currently supports the LittleFS file system on ESP8266 and ESP32 boards. The GnuBlocks virtual machine (Linux and Raspberry Pi) supports the native system.'
 
   spec ' ' '[file:open]' 'open file _' 'str'
@@ -154,9 +174,117 @@ to file_contents fileName optionBinary {
 }
 
 
+module 'LED Display' Output
+author MicroBlocks
+version 1 15 
+choices led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors 
+description 'Display primitives for the 5x5 LED display on the BBC micro:bit, Calliope mini and M5Atom Matrix. Boards with TFT displays (such as the Citilab ED1 or the M5Stack family) support these primitives with a simulated "fat pixel" display.
+'
+variables _stop_scrolling_text 
+
+  spec ' ' '[display:mbDisplay]' 'display _' 'microbitDisplay' 15237440
+  spec ' ' 'led_displayImage' 'display image _ : x _ y _' 'menu.led_imageMenu num num' 'happy' 1 1
+  spec ' ' '[display:mbDisplayOff]' 'clear display'
+  space
+  spec ' ' '[display:mbPlot]' 'plot x _ y _' 'num num' 3 3
+  spec ' ' '[display:mbUnplot]' 'unplot x _ y _' 'num num' 3 3
+  space
+  spec ' ' 'displayCharacter' 'display character _' 'str' 'A'
+  spec ' ' 'scroll_text' 'scroll text _ : pausing _ ms' 'str num' 'HELLO ROSA!' 100
+  spec ' ' 'stopScrollingText' 'stop scrolling'
+  advanced
+  spec ' ' 'set display color' 'set display color _' 'color'
+  spec 'r' 'led_image' 'LED image #BR# _' 'microbitDisplay' 15237440
+  space
+  spec 'r' '_led_namedImage' '_led_namedImage _' 'menu.led_imageMenu' 'happy'
+  spec 'r' '_led_imageData' '_led_imageData'
+
+to '_led_imageData' {
+  return 'heart:4685802,small heart:145728,yes:2269696,no:18157905,happy:15237440,sad:18284864,confused:22348096,angry:23036241,asleep:459616,surprised:4526090,silly:25984017,fabulous:15008639,meh:2236443,t-shirt:15154043,roller skate:11534104,duck:489702,house:10976708,tortoise:359872,butterfly:29332475,stick figure:18158564,ghost:23068334,sword:4657284,giraffe:10946627,skull:15171246,umbrella:6460398,snake:469859,rabbit:16104613,cow:4685361,quarter note:7573636,eight note:7590276,pitchfork:4357813,target:4681156,triangle:1026176,left triangle:32805985,chess board:11184810,diamond:4539716,small diamond:141440,square:33080895,small square:469440,scissors:20287859,'
+}
+
+to '_led_namedImage' name {
+  local 'data' ('_led_imageData')
+  local 'i' ('[data:find]' name data)
+  if (i == -1) {
+    comment 'Name not found'
+    return 0
+  }
+  local 'start' (('[data:find]' ':' data i) + 1)
+  local 'end' (('[data:find]' ',' data i) - 1)
+  return ('[data:convertType]' ('[data:copyFromTo]' data start end) 'number')
+}
+
+to displayCharacter s {
+  s = ('[data:join]' '' s)
+  if ((size s) == 0) {
+    '[display:mbDisplayOff]'
+    return 0
+  }
+  '[display:mbDrawShape]' ('[display:mbShapeForLetter]' (at 1 s)) 1 1
+}
+
+to led_displayImage imageName optionalX optionalY {
+  local 'image' imageName
+  if (isType image 'string') {
+    image = ('_led_namedImage' imageName)
+  }
+  '[display:mbDrawShape]' image (argOrDefault 2 1) (argOrDefault 3 1)
+}
+
+to led_image twentyFiveBitInt {
+  comment 'An LED image is a 25-bit integer'
+  return twentyFiveBitInt
+}
+
+to scroll_text text optionalDelay {
+  text = ('[data:join]' '' text)
+  local 'delay' 100
+  if ((pushArgCount) > 1) {
+    delay = optionalDelay
+  }
+  _stop_scrolling_text = (booleanConstant false)
+  if ('Pico:ed' == (boardType)) {
+    for position (((size text) * 6) + 18) {
+      if _stop_scrolling_text {return 0}
+      '[display:mbDisplayOff]'
+      '[tft:text]' text (17 - position) 0 (colorSwatch 125 125 125 255) 1 true
+      waitMillis (delay / 2)
+    }
+  } (or ('KidsIOT' == (boardType)) ('CodingBox' == (boardType))) {
+    for position (((size text) * 6) + 21) {
+      if _stop_scrolling_text {return 0}
+      '[tft:deferUpdates]'
+      '[tft:clear]'
+      '[tft:text]' text (128 - (6 * position)) 6 (colorSwatch 255 255 255 255) 6 false
+      '[tft:resumeUpdates]'
+      waitMillis (delay / 8)
+    }
+  } else {
+    for position (((size text) * 6) + 6) {
+      if _stop_scrolling_text {return 0}
+      for i (size text) {
+        '[display:mbDrawShape]' ('[display:mbShapeForLetter]' ('[data:unicodeAt]' i text)) (((i * 6) + 2) - position) 1
+      }
+      waitMillis delay
+    }
+  }
+}
+
+to 'set display color' color {
+  '[display:mbSetColor]' color
+}
+
+to stopScrollingText {
+  _stop_scrolling_text = (booleanConstant true)
+  waitMillis 10
+  '[display:mbDisplayOff]'
+}
+
+
 module TFT Output
 author MicroBlocks
-version 1 17
+version 1 18 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -193,6 +321,9 @@ Line 2' 50 20 nil 2
   space
   spec ' ' '[tft:setBacklight]' 'set TFT backlight _ (0-10)' 'num' 10
   spec ' ' '[tft:invertDisplay]' 'invert TFT display _' 'bool' false
+  advanced
+  spec ' ' 'tft_deferOLEDDisplayUpdates' 'defer OLED display updates'
+  spec ' ' 'tft_resumeOLEDDisplayUpdates' 'resume OLED display updates'
   space
   spec ' ' '_deferMonochromeDisplayUpdates' '_defer monochrome display updates'
   spec ' ' '_resumeMonochromeDisplayUpdates' '_resume monochrome display updates'
@@ -234,6 +365,10 @@ to tft_colorSwatch color {
   return color
 }
 
+to tft_deferOLEDDisplayUpdates {
+  '[tft:deferUpdates]'
+}
+
 to tft_drawImage imageString x y c optionalScale {
   comment 'Draw an image at the given position. An image is represented by a multi-line string
 of 0 and 1 characters where each line is one row of the image. 1 means that pixel on (lit).'
@@ -244,7 +379,7 @@ of 0 and 1 characters where each line is one row of the image. 1 means that pixe
       y += scale
       x = left
     } else {
-      if (ch == 49) {'[tft:rect]' x y scale scale true}
+      if (ch == 49) {'[tft:rect]' x y scale scale c}
       x += scale
     }
   }
@@ -275,21 +410,27 @@ to tft_image s {
   return ('[data:convertType]' s 'string')
 }
 
+to tft_resumeOLEDDisplayUpdates {
+  '[tft:resumeUpdates]'
+}
+
 
 module Tone Output
 author MicroBlocks
-version 1 10
-tags tone sound music audio note speaker
-choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b'
+version 1 11 
+tags tone sound music audio note speaker 
+choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 
 description 'Audio tone generation. Make music with MicroBlocks!
 '
-variables _tonePin _toneInitalized _toneLoopOverhead _toneNoteNames _toneArezzoNotes _toneFrequencies
+variables _tonePin _toneInitalized _toneLoopOverhead _toneNoteNames _toneArezzoNotes _toneFrequencies 
 
   spec ' ' 'play tone' 'play note _ octave _ for _ ms' 'str.tone_NoteName num num' 'nt;c' 0 500
   spec ' ' 'playMIDIKey' 'play midi key _ for _ ms' 'num num' 60 500
   spec ' ' 'play frequency' 'play frequency _ for _ ms' 'num num' 261 500
   space
   spec ' ' 'startTone' 'start tone _ Hz' 'num' 440
+  spec ' ' 'tone_startNote' 'start note _ octave _' 'str.tone_NoteName num' 'nt;c' 0
+  spec ' ' 'tone_startMIDIKey' 'start midi key _' 'num' 60
   spec ' ' 'stopTone' 'stop tone'
   space
   spec ' ' 'attach buzzer to pin' 'attach buzzer to pin _' 'auto' ''
@@ -449,5 +590,35 @@ to startTone freq {
 
 to stopTone {
   startTone 0
+}
+
+to tone_startMIDIKey key {
+  local 'freq' ('_baseFreqForSemitone' ((key % 12) + 1))
+  local 'octave' ((key / 12) - 5)
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
+}
+
+to tone_startNote note octave {
+  local 'freq' ('_baseFreqForNote' note)
+  if (freq <= 10000) {
+    return 0
+  }
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
 }
 
