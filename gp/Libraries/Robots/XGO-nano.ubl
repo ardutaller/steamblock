@@ -1,6 +1,6 @@
 module 'XGO-nano' Output
 author luwudynamics
-version 3 2 
+version 3 3 
 choices XGO_motor_Menu 'Upper(-30°~30°)' 'Middle(-70°~90°)' 'Lower(-85°~50°)' 
 choices XGO_direction_Menu 'counter-clockwise' clockwise 
 choices XGO_attitude_Menu R P Y 
@@ -72,13 +72,11 @@ variables _XGO_actions _buttons
   spec ' ' '_XGO_sendRequest' '_XGO_sendRequest _ _' 'num num' 1 1
 
 to 'XGO-nano_init' {
-  if ('micro:bit v2' == (boardType)) {
-    callCustomCommand '[serial:setPins]' ('[data:makeList]' 13 14)
-  } (or (or ('Foxbit' == (boardType)) ('micro:STEAMakers' == (boardType))) ('Mbits' == (boardType))) {
-    callCustomCommand '[serial:setPins]' ('[data:makeList]' 13 14 115200)
-    return 0
+  if (or (or ('micro:bit v2' == (boardType)) ('Foxbit' == (boardType))) (or ('micro:STEAMakers' == (boardType)) ('Mbits' == (boardType)))) {
+    '[serial:open]' 115200 13 14
+  } else {
+    '[serial:open]' 115200
   }
-  '[serial:open]' 115200
 }
 
 to XGO_2P mode {

@@ -1,6 +1,6 @@
 module 'PicoBricks-mb'
 author MicroBlocks
-version 0 89 
+version 0 90 
 depends 'IR Motion (PIR)' 'IR Remote' 'Light & Gesture (APDS9960)' NeoPixel 'Temperature Humidity (SHTC3)' Tone 
 choices servoNumMenu '1' '2' '3' '4' ALL 
 choices dcNumMenu 'M1:1' 'M2:2' ALL 
@@ -240,7 +240,7 @@ configure Touch Options.
     _pbmb_pin_TX = 14
     _pbmb_pin_RX = 15
     '[serial:close]'
-    callCustomCommand '[serial:setPins]' ('[data:makeList]' 15 14)
+    '[serial:open]' 9600 15 14
   }
   _pbmb_initialized = (booleanConstant true)
 }
