@@ -1807,38 +1807,51 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 
 #if defined(ESP32)
 
-	#define MAX_ESP32_CHANNELS 16
-	int esp32Channels[MAX_ESP32_CHANNELS];
+	#if defined(ESP32_ORIGINAL)
+		#define MAX_LEDC_CHANNELS 16
+		static int ledcChannels[MAX_LEDC_CHANNELS] = {
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	#else
+		#define MAX_LEDC_CHANNELS 8
+		static int ledcChannels[MAX_LEDC_CHANNELS] = {
+			-1, -1, -1, -1, -1, -1, -1, -1};
+	#endif
 
-	int pinAttached(int pin) {
-		// Note: channel 0 is used by Tone
-		if (!pin) return 0;
-		for (int i = 1; i < MAX_ESP32_CHANNELS; i++) {
-			if (esp32Channels[i] == pin) return i;
+	static int ledcChannelForPin(int pin) {
+		// Return the LEDC channel used by the given pin or 0 if none.
+		// Note: LEDC channels 0-1 and 8-9 are reserved for Tone
+
+		if (pin < 0) return 0;
+		for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
+			if (ledcChannels[i] == pin) return i;
 		}
 		return 0; // not attached
 	}
 
 	void analogAttach(int pin) {
-		int esp32Channel = 1;
-		// Note: Do not use channels 0-1 or 8-9; those use timer0, which is used by Tone.
-		// Note: Channel 2 is used by audio pwm
-		while ((esp32Channel < MAX_ESP32_CHANNELS) && ((esp32Channels[esp32Channel] > 0) || ((esp32Channel & 7) <= 1))) {
-			esp32Channel++;
+		// Allocate an LEDC channel for the given pin and start PWM.
+
+		// Note: Do not use channels 0-1 or 8-9; those use timer 0, which is used by Tone
+		// Note: Channel 2 may be used by audio pwm
+		int channel;
+		for (channel = 2; channel < MAX_LEDC_CHANNELS; channel++) {
+			// Find an unused channel entry (i.e. -1) avoiding channels 0-1 and 8-9
+			if ((ledcChannels[channel] == -1) && ((channel & 7) > 1)) break;
 		}
-		if (esp32Channel < MAX_ESP32_CHANNELS) {
-			ledcSetup(esp32Channel, 100, 10); // 100Hz, 10 bits (same clock rate as servos)
-			ledcAttachPin(pin, esp32Channel);
-			esp32Channels[esp32Channel] = pin;
+		if (channel < MAX_LEDC_CHANNELS) {
+			ledcSetup(channel, 100, 10); // 100Hz, 10 bits (same clock rate as servos)
+			ledcAttachPin(pin, channel);
+			ledcChannels[channel] = pin;
 		}
 	}
 
-	void pinDetach(int pin) {
-		int esp32Channel = pinAttached(pin);
-		if (esp32Channel > 0) {
-			ledcWrite(esp32Channel, 0);
+	static void pinDetach(int pin) {
+		if (pin < 0) return;
+		int channel = ledcChannelForPin(pin);
+		if (channel) {
+			ledcWrite(channel, 0);
 			ledcDetachPin(pin);
-			esp32Channels[esp32Channel] = 0;
+			ledcChannels[channel] = -1;
 		}
 	}
 
@@ -1936,9 +1949,9 @@ void primAnalogWrite(OBJ *args) {
 		if (value == 0) {
 			pinDetach(pinNum);
 		} else {
-			if (!pinAttached(pinNum)) analogAttach(pinNum);
-			int esp32Channel = pinAttached(pinNum);
-			if (esp32Channel) ledcWrite(esp32Channel, value);
+			if (!ledcChannelForPin(pinNum)) analogAttach(pinNum);
+			int channel = ledcChannelForPin(pinNum);
+			if (channel) ledcWrite(channel, value);
 		}
 	#else
 		#ifdef NRF52
@@ -2397,11 +2410,11 @@ static void setServo(int pin, int usecs) {
 
 static int attachServo(int pin) {
 	// Note: Do not use channels 0-1 or 8-9; those use timer0, which is used by Tone.
-	for (int i = 1; i < MAX_ESP32_CHANNELS; i++) {
-		if ((0 == esp32Channels[i]) && ((i & 7) > 1)) { // free channel
+	for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
+		if ((-1 == ledcChannels[i]) && ((i & 7) > 1)) { // free channel
 			ledcSetup(i, 100, 10); // 100Hz, 10 bits
 			ledcAttachPin(pin, i);
-			esp32Channels[i] = pin;
+			ledcChannels[i] = pin;
 			return i;
 		}
 	}
@@ -2412,18 +2425,18 @@ static void setServo(int pin, int usecs) {
 	if (usecs <= 0) {
 		pinDetach(pin);
 	} else {
-		int esp32Channel = pinAttached(pin);
-		if (!esp32Channel) esp32Channel = attachServo(pin);
-		if (esp32Channel > 0) {
-			ledcWrite(esp32Channel, usecs * 1024 / 10000);
+		int channel = ledcChannelForPin(pin);
+		if (!channel) channel = attachServo(pin);
+		if (channel > 0) {
+			ledcWrite(channel, usecs * 1024 / 10000);
 		}
 	}
 }
 
 void stopServos() {
-	for (int i = 1; i < MAX_ESP32_CHANNELS; i++) {
-		int pin = esp32Channels[i];
-		if (pin) pinDetach(pin);
+	for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
+		int pin = ledcChannels[i];
+		if (pin != -1) pinDetach(pin);
 	}
 }
 
