@@ -87,7 +87,7 @@ method microBlocksSpecs SmallCompiler {
 		(array ' ' '[sensors:spiSetup]'		'spi setup speed _ : mode _ : rpi channel _ : bit order _' 'num num num str' 1000000 0 0 'MSB')
 		(array ' ' '[sensors:spiExchange]'	'spi exchange bytes _' 'auto' 'aByteArray')
 		'-'
-		(array ' ' '[serial:open]'			'serial open _ baud' 'num' 9600)
+		(array ' ' '[serial:open]'			'serial open _ baud : rx pin _ tx pin _' 'num num num' 9600 0 1)
 		(array ' ' '[serial:close]'			'serial close')
 		(array 'r' '[serial:read]'			'serial read')
 		(array ' ' '[serial:write]'			'serial write _' 'auto' 'anIntegerStringListOrByteArray')
