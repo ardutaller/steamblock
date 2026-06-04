@@ -850,7 +850,7 @@ method selectPort SmallRuntime {
 	if ('Browser' == (platform)) {
 		menu = (menu 'Connect' (action 'webSerialConnect' this) true)
 		if (and (isNil port) ('boardie' != portName)) {
-			if (browserHasWebSerial) {
+			if (not (isMobile)) {
 				addItem menu 'connect (USB)'
 			}
 			addItem menu 'connect (BLE)'
