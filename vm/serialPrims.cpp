@@ -368,12 +368,12 @@ static OBJ primSerialOpen(int argCount, OBJ *args) {
 
 	if ((argCount >= 3) && isInt(args[1]) && isInt(args[2])) {
 		// Following opens the serial port with the given pins
-		int rxPin = mapDigitalPinNum(obj2int(args[0]));
-		int txPin = mapDigitalPinNum(obj2int(args[1]));
+		int rxPin = mapDigitalPinNum(obj2int(args[1]));
+		int txPin = mapDigitalPinNum(obj2int(args[2]));
 		if ((rxPin < 0) || (txPin < 0)) {
 			serialOpen(baudRate); // bad pin number; open with default pins
 		} else {
-			setSerialPins(obj2int(rxPin, txPin, baudRate);
+			setSerialPins(rxPin, txPin, baudRate);
 		}
 	} else {
 		// Open serial port with default pins
