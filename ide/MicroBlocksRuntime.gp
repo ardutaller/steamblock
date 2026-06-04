@@ -115,6 +115,11 @@ method chunkBytesFor SmallRuntime aBlockOrFunction {
 	bytes = (compiledBytesFor this aBlockOrFunction)
 	// handle script too large
 	if ((count bytes) > 1000) {
+		if (isClass aBlockOrFunction 'Function') {
+			print (join (localized 'Script is too large to send to board.') ' (' (functionName aBlockOrFunction) ')')
+		} else {
+			print (localized 'Script is too large to send to board.')
+		}
 		// Replace compiled code with a stub that just reports a "Script too large" error.
 		bytes = (compiledBytesFor this (block 'command' (color 255 0 0) '[misc:scriptTooLarge]'))
 	}
