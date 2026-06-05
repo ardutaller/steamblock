@@ -1753,9 +1753,9 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		#if defined(ESP32_S2) || defined(ESP32_S3)
 			if ((pinNum < 1) || (pinNum > 20)) return zeroObj;
 		#elif defined(ESP32_C3)
-			if ((pinNum > 5) return zeroObj;
+			if (pinNum > 5) return zeroObj;
 		#elif defined(ESP32_C6)
-			if ((pinNum > 6) return zeroObj;
+			if (pinNum > 6) return zeroObj;
 		#endif
 
 		// use the ESP32 pin number directly (if not reserved)
