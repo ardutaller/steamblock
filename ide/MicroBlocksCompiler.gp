@@ -1231,10 +1231,10 @@ method appendDecompilerMetadata SmallCompiler aBlockOrFunction instructionList {
 	add instructionList (array 'metadata' functionLibrary functionSpec varNames functionName )
 }
 
-method notEmbeddedLibrary SmallCompiler libNmae {
+method notEmbeddedLibrary SmallCompiler libName {
 	// Return true if the given library is not one of the embedded libraries.
 
-	return (isNil (fileNameForLibraryNamed (scripter (smallRuntime))))
+	return (isNil (fileNameForLibraryNamed (scripter (smallRuntime)) libName))
 }
 
 // binary code generation
