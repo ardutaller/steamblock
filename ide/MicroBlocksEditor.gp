@@ -730,7 +730,7 @@ method processDroppedFile MicroBlocksEditor fName data {
 	} (endsWith lcFilename '.bin') {
 		// install ESP firmware file
 		if (isNil data) { return } // could not read file
-		installESPFirmwareFromFile (smallRuntime) fName data
+		installESPFirmwareFromFile (new 'MicroBlocksFirmwareInstaller') fName data
 	} (endsWith lcFilename '.po') {
 		if (notNil data) {
 			installTranslation (authoringSpecs) (toString data)
@@ -1160,7 +1160,7 @@ method gearMenu MicroBlocksEditor {
 	setIsTopMenu menu true
 	addItem menu 'about...' (action 'showAboutBox' (smallRuntime))
 	addLine menu
-	addItem menu 'update firmware on board' (action 'installVM' (smallRuntime) false false) // do not wipe flash, do not download VM from server
+	addItem menu 'update firmware on board' (action 'installVM' (new 'MicroBlocksFirmwareInstaller') false) // do not erase flash
 	addLine menu
 	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addItem menu 'dark mode' (action 'toggleDarkMode' this false) 'make the IDE darker' (newCheckmark this (darkModeEnabled this))
@@ -1175,9 +1175,9 @@ method gearMenu MicroBlocksEditor {
 		addLine menu
 		addItem menu 'open vm folder on microblocks.fun' (action 'openVMFolder' this)
 		addLine menu
-		addItem menu 'install ESP firmware from URL' (action 'installESPFirmwareFromURL' (smallRuntime))
-		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (smallRuntime))
-		addItem menu 'erase flash and update firmware on ESP board' (action 'installVM' (smallRuntime) true false) // wipe flash first, do not download VM from server
+		addItem menu 'install ESP firmware from URL' (action 'installESPFirmwareFromURL' (new 'MicroBlocksFirmwareInstaller'))
+		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (new 'MicroBlocksFirmwareInstaller'))
+		addItem menu 'erase flash and update firmware on ESP board' (action 'installVM' (new 'MicroBlocksFirmwareInstaller') true) // erase flash, then install firmware
 		addLine menu
 		if (and
 				isConnected

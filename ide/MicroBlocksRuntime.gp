@@ -1313,7 +1313,7 @@ method checkVmVersion SmallRuntime {
 			(localized 'The MicroBlocks in your board is not current')
 			' (v' vmVersion ' vs. v' (latestVmVersion this) ').' (newline)
 			(localized 'Try to update MicroBlocks on the board?')))
-		if ok { installVM this }
+		if ok { installVM (new 'MicroBlocksFirmwareInstaller') false }
 	}
 }
 
