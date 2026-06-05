@@ -9,8 +9,6 @@
 
 defineClass MicroBlocksFirmwareInstaller boardType boardMenu espBoards duelinkBoards
 
-// Helper Functions
-
 method initialize MicroBlocksFirmwareInstaller {
 	boardType = (checkBoardType (smallRuntime))
 	boardMenu = (array
@@ -20,23 +18,21 @@ method initialize MicroBlocksFirmwareInstaller {
 		'Citilab ED1'
 		'CoCube'
 		'Databot'
-		'Springbot'
 		'micro:STEAMakers'
+		'Springbot'
 		'-'
 		'RP2040 (Pico or Pico W)'
 		'MakerPort'
 		'-'
 		'ESP32')
 	espBoards = (array
-		'Citilab ED1' 'CoCube' 'ESP32' 'Databot' 'micro:STEAMakers'
+		'Citilab ED1' 'CoCube' 'Databot' 'ESP32' 'micro:STEAMakers'
 		'Springbot' 'Springbot Green' 'Springbot Gold')
 	duelinkBoards = (array
 		'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
 }
 
-method isESPBoard MicroBlocksFirmwareInstaller {
-	return (and (notNil boardType) (contains espBoards boardType))
-}
+// Helper Function
 
 method closePort MicroBlocksFirmwareInstaller {
 	setPort (smallRuntime) 'disconnect'
@@ -44,7 +40,7 @@ method closePort MicroBlocksFirmwareInstaller {
 
 // Browser Virtual Machine Intaller
 
-method installVM MicroBlocksFirmwareInstaller eraseFlashFlag downloadLatestFlag {
+method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	initialize this
 	closeAllDialogs (findMicroBlocksEditor)
 	if (contains duelinkBoards boardType) {
@@ -63,9 +59,9 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag downloadLatestFlag 
 	} (and
 		(contains espBoards boardType)
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
-			flashVM this boardType eraseFlashFlag downloadLatestFlag
+			flashVM this boardType eraseFlashFlag
 	} else {
-		menu = (menu 'Select board type:' (action 'installBoardFromMenu' this eraseFlashFlag downloadLatestFlag) true)
+		menu = (menu 'Select board type:' (action 'installBoardFromMenu' this eraseFlashFlag) true)
 		for item boardMenu {
 			if ('-' == item) {
 				addLine menu
@@ -77,11 +73,11 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag downloadLatestFlag 
 	}
 }
 
-method installBoardFromMenu MicroBlocksFirmwareInstaller eraseFlashFlag downloadLatestFlag boardName {
+method installBoardFromMenu MicroBlocksFirmwareInstaller eraseFlashFlag boardName {
 	if (beginsWith 'Springbot' boardName) {
-		flashVM this 'Springbot' eraseFlashFlag downloadLatestFlag
+		flashVM this 'Springbot' eraseFlashFlag
 	} (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'ESP32' 'Databot') {
-		flashVM this boardName eraseFlashFlag downloadLatestFlag
+		flashVM this boardName eraseFlashFlag
 	} else {
 		installHexOrUF2File this boardName true
 	}
@@ -165,9 +161,6 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 		browserWriteFile vmData vmFileName 'vmInstall'
 		waitMSecs 5000 // leave time for file to download before showing next prompt
 	} else {
-// xxx
-// print (microBlocksFileToWrite vmFileName (list))
-// return
 		msg = (join prefix (localized 'Save firmware file to download folder: %1' vmFileName))
 		response = (inform msg (localized 'Firmware Install'))
 		if (isNil response) { return }
@@ -211,27 +204,10 @@ method otherReconnectMessage MicroBlocksFirmwareInstaller {
 
 // Espressif board flashing
 
-method flasher MicroBlocksFirmwareInstaller { return flasher }
-
-method confirmRemoveFlasher MicroBlocksFirmwareInstaller { // xxx needed?
-	ok = (confirm
-		(global 'page')
-		nil
-		(localized 'Are you sure you want to cancel the upload process?'))
-	if ok { removeFlasher this }
-}
-
-method removeFlasher MicroBlocksFirmwareInstaller {
-	destroy flasher
-	flasher = nil
-}
-
-method flashVM MicroBlocksFirmwareInstaller boardName eraseFlashFlag downloadLatestFlag {
+method flashVM MicroBlocksFirmwareInstaller boardName eraseFlashFlag {
 	portName = (getField (smallRuntime) 'portName')
 	closePort this // close serial port to avoid interaction with install process
-print 'flashVM' portName
-
-	flasher = (newFlasher boardName portName eraseFlashFlag downloadLatestFlag)
+	flasher = (newFlasher boardName portName eraseFlashFlag false)
 	addPart (global 'page') (spinner flasher)
 	startFlasher flasher nil
 }
@@ -241,7 +217,6 @@ print 'flashVM' portName
 method installESPFirmwareFromFile MicroBlocksFirmwareInstaller fileName data {
 	portName = (getField (smallRuntime) 'portName')
 	closePort this // close serial port to avoid interaction with install process
-print 'installESPFirmwareFromFile' portName
 	flasher = (newFlasher fileName portName false false)
 	installFromData flasher nil fileName data
 }
@@ -260,17 +235,22 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 }
 
 method installESPFirmwareFromRepo MicroBlocksFirmwareInstaller {
-	setCursor 'wait'
 	if (isPilot (findMicroBlocksEditor)) {
 		version = 'pilot'
 	} else {
+		ideVersion = (ideVersion (smallRuntime))
 		version = (join 'v' ideVersion)
 	}
 	if (endsWith version '-pilot') {
 		version = (substring version 1 ((count version) - 6))
 	}
-	menu = (menu 'Select firmware:' this)
+
+	// get list firmware files
+	setCursor 'wait'
 	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
+	setCursor 'normal'
+
+	menu = (menu 'Select firmware:' this)
 	for line (lines html) {
 		if (beginsWith line '<a href="vm_') {
 			binIndex = (findSubstring '.bin' line)
@@ -281,7 +261,6 @@ method installESPFirmwareFromRepo MicroBlocksFirmwareInstaller {
 			}
 		}
 	}
-	setCursor 'normal'
 	popUpAtHand menu (global 'page')
 }
 

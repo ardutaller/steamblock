@@ -87,19 +87,19 @@ method installFromData MicroBlocksFlasher serialPortID fileNameOrURL data {
 		}
 
 		if (isOpenSerialPort 1) { serialPortID = 1 }
+		if (isNil serialPortID) { return } // port not opened before timeout
 	}
 
 	espTool = (newESPTool)
 	if (notNil serialPortID) {
 		setPort espTool serialPortID
-		ok = true
+	} ('Browser' != (platform)) {
+		if (not (openPort espTool portName boardName)) {
+			inform 'Could not open serial port'
+			return
+		}
 	} else {
-		ok = (openPort espTool portName boardName)
-	}
-	if (not ok) {
-		destroy this
-		inform 'Could not open serial port'
-		return
+		return // no serial port
 	}
 
 	if (notNil (findSubstring 'databot2.0_' fileNameOrURL)) { setAllInOneBinary espTool true }
