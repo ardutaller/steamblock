@@ -110,7 +110,7 @@ typedef int * OBJ;
 #define falseObj ((OBJ) 0)
 #define trueObj ((OBJ) 4)
 
-#define isBoolean(obj) ((obj) <= trueObj)
+#define isBoolean(obj) ((obj == falseObj) || (obj == trueObj))
 
 // Integers
 
