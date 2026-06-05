@@ -850,7 +850,9 @@ method checkLatestVersion MicroBlocksEditor {
 	latestVersion = (fetchLatestVersionNumber this) // fetch version, even in browser, to log usage
 	if ('Browser' == (platform)) {
 		// skip version check in browser/Chromebook but set isPilot based on URL
-		isPilot = (notNil (findSubstring 'run-pilot' (browserURL)))
+		isPilot = (or
+			(notNil (findSubstring 'run-pilot' (browserURL)))
+			(notNil (findSubstring ':8000'  (browserURL))))
 		return
 	}
 
