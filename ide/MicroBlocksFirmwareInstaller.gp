@@ -32,10 +32,14 @@ method initialize MicroBlocksFirmwareInstaller {
 		'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
 }
 
-// Helper Function
+// Helper Functions
 
 method closePort MicroBlocksFirmwareInstaller {
 	setPort (smallRuntime) 'disconnect'
+}
+
+method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
+	return (or (contains boardMenu boardName) (contains espBoards boardName))
 }
 
 // Browser Virtual Machine Intaller
@@ -172,12 +176,12 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 
 	if (endsWith vmFileName '.uf2') {
 		if (or ('MAKERBOOT' == driveName) ('RPI-RP2' == driveName)) {
-			otherReconnectMessage this
+			reconnectMessage this
 		} else {
 			adaFruitReconnectMessage this
 		}
 	} else {
-		otherReconnectMessage this
+		reconnectMessage this
 	}
 }
 
@@ -196,7 +200,7 @@ method rp2040ResetMessage MicroBlocksFirmwareInstaller {
 	inform (localized 'Connect USB cable while holding down the white BOOTSEL button and try again.')
 }
 
-method otherReconnectMessage MicroBlocksFirmwareInstaller {
+method reconnectMessage MicroBlocksFirmwareInstaller {
 	title = (localized 'Firmware Installed')
 	msg = (localized 'Reconnect to the board by clicking the "Connect" button.')
 	inform (global 'page') msg title nil true
