@@ -13,7 +13,7 @@ method initialize MicroBlocksFirmwareInstaller {
 	boardType = (checkBoardType (smallRuntime))
 	boardMenu = (array
 		'micro:bit'
-		'Calliope mini'
+		'Calliope'
 		'-'
 		'Citilab ED1'
 		'CoCube'
@@ -39,6 +39,8 @@ method closePort MicroBlocksFirmwareInstaller {
 }
 
 method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
+	initialize this
+	if (isOneOf boardName 'micro:bit v2' 'Calliope v3') { return true } // variants
 	return (or (contains boardMenu boardName) (contains espBoards boardName))
 }
 
@@ -54,8 +56,8 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	}
 	if (isOneOf boardType 'micro:bit' 'micro:bit v2') {
 		installHexOrUF2File this 'micro:bit' false
-	} (isOneOf boardType 'Calliope' 'Calliope mini' 'Calliope v3') {
-		installHexOrUF2File this 'Calliope mini' false
+	} (isOneOf boardType 'Calliope' 'Calliope v3') {
+		installHexOrUF2File this 'Calliope' false
 	} ('MakerPort' == boardType) {
 		adaFruitResetMessage this
 	} (isOneOf boardType 'RP2040' 'Pico W') {
@@ -96,7 +98,7 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 	if (or ('micro:bit' == boardName) ('micro:bit v2' == boardName)) {
 		vmFileName = 'vm_microbit-universal.hex'
 		driveName = 'MICROBIT'
-	} (or ('Calliope mini' == boardName) ('Calliope v3' == boardName)) {
+	} (or ('Calliope' == boardName) ('Calliope v3' == boardName)) {
 		vmFileName = 'vm_calliope-universal.hex'
 		driveName = 'MINI'
 	} ('Circuit Playground Express' == boardName) {
