@@ -1,5 +1,6 @@
 #!/bin/bash
 # Rebuild and update the precompiled binaries.
+# *** NOTE: Use Arduino IDE to build the DUELink before running this script! ***
 
 # Check that npm and node installed
 if ! command -v node > /dev/null; then
@@ -38,6 +39,9 @@ esptool.py --chip ESP32 merge_bin -o precompiled/vm_cocube.bin --flash_mode dio 
 
 pio run -e springbot
 cp .pio/build/springbot/firmware.bin precompiled/vm_springbot.bin
+
+# NOTE: Assume Arduino IDE "export compiled binary" has was run before running this script
+cp vm/build/STMicroelectronics.stm32.Nucleo_64/vm.ino.bin precompiled/vm_duelink.bin
 
 pio run -e esp32
 cp .pio/build/esp32/firmware.bin precompiled/vm_esp32.bin
