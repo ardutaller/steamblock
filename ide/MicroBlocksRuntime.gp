@@ -3043,7 +3043,7 @@ method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
 //			add items (array 'ESP8266')
 			add items (array '-')
 			add items (array 'WeAct STM32H743')
-			add items (array 'DueLink')
+			add items (array 'DUELink')
 		}
 		menuFor api items (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag)
 	}
@@ -3073,7 +3073,7 @@ method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boa
 		return
 	}
 
-	if (isOneOf boardName 'WeAct STM32H743' 'DueLink') {
+	if (isOneOf boardName 'WeAct STM32H743' 'DUELink') {
 		browserDfuUpload boardName
 		return
 	}

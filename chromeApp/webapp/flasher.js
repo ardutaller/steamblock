@@ -17,8 +17,8 @@ const DFUpload = {
 			flashSize: 2097152,
 			filter: { vendorId: 1155, productId: 57105 }
 		},
-		'DueLink': {
-			name: 'DueLink',
+		'DUELink': {
+			name: 'DUELink',
 			vmFileName: 'vm_duelink.bin',
 			pageSize: 2048,
 			flashSize: 131072,
