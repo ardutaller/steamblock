@@ -985,6 +985,8 @@ method closePort SmallRuntime {
 	clearRunningHighlights this
 }
 
+// Espressif board flashing support
+
 method enableAutoConnect SmallRuntime success {
 	// Called by Flasher and ESPTool after installing firmware.
 
@@ -1002,6 +1004,26 @@ method enableAutoConnect SmallRuntime success {
 	}
 	disconnected = false
 	stopAndSyncScripts this
+}
+
+method flasher SmallRuntime {
+	// Called by Keyboard in morphicFramework to handle escape key.
+
+	return (partThatIs (morph (global 'page')) 'MicroBlocksSpinner')
+}
+
+method confirmRemoveFlasher SmallRuntime {
+	// Called by Keyboard in morphicFramework to handle escape key.
+
+	flasher = (partThatIs (morph (global 'page')) 'MicroBlocksSpinner')
+	if (isNil flasher) { return }
+	ok = (confirm
+		(global 'page')
+		nil
+		(localized 'Are you sure you want to cancel the upload process?'))
+	if ok {
+		destroy flasher
+	}
 }
 
 method connectedToBoard SmallRuntime {
