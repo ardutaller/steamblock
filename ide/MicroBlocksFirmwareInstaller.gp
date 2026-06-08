@@ -7,7 +7,7 @@
 // MicroBlocksFirmwareInstaller.gp - Support for installing MicroBlocks firmware
 // John Maloney, June, 2026
 
-defineClass MicroBlocksFirmwareInstaller boardType boardMenu espBoards duelinkBoards
+defineClass MicroBlocksFirmwareInstaller boardType boardMenu espBoards dfuBoards
 
 method initialize MicroBlocksFirmwareInstaller {
 	boardType = (checkBoardType (smallRuntime))
@@ -24,12 +24,16 @@ method initialize MicroBlocksFirmwareInstaller {
 		'RP2040 (Pico or Pico W)'
 		'MakerPort'
 		'-'
+// Uncomment the following in Electron:
+// 		'WeAct STM32H743'
+// 		'DUELink'
+		'-'
 		'ESP32')
 	espBoards = (array
 		'Citilab ED1' 'CoCube' 'Databot' 'ESP32' 'micro:STEAMakers'
 		'Springbot' 'Springbot Green' 'Springbot Gold')
-	duelinkBoards = (array
-		'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
+	dfuBoards = (array
+		'WeAct STM32H743' 'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
 }
 
 // Helper Functions
@@ -41,7 +45,10 @@ method closePort MicroBlocksFirmwareInstaller {
 method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
 	initialize this
 	if (isOneOf boardName 'micro:bit v2' 'Calliope v3') { return true } // variants
-	return (or (contains boardMenu boardName) (contains espBoards boardName))
+	return (or
+		(contains boardMenu boardName)
+		(contains espBoards boardName)
+		(contains dfuBoards boardName))
 }
 
 // Browser Virtual Machine Intaller
@@ -49,11 +56,6 @@ method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
 method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	initialize this
 	closeAllDialogs (findMicroBlocksEditor)
-	if (contains duelinkBoards boardType) {
-		closePort this
-		openURL 'https://loader.duelink.com/microblocks'
-		return
-	}
 	if (isOneOf boardType 'micro:bit' 'micro:bit v2') {
 		installHexOrUF2File this 'micro:bit' false
 	} (isOneOf boardType 'Calliope' 'Calliope v3') {
@@ -62,6 +64,8 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 		adaFruitResetMessage this
 	} (isOneOf boardType 'RP2040' 'Pico W') {
 		rp2040ResetMessage this
+	} (contains dfuBoards boardType) {
+		installDFUFirmware this boardType
 	} (and
 		(contains espBoards boardType)
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
@@ -79,11 +83,26 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	}
 }
 
+method installDFUFirmware MicroBlocksFirmwareInstaller boardName {
+		closePort this
+
+		// temporary for non-Electron version only
+		if (and
+			('Browser' != (platform))
+			('WeAct STM32H743' != boardName)) {
+				openURL 'https://loader.duelink.com/microblocks'
+				return
+		}
+		browserDfuUpload boardName
+}
+
 method installBoardFromMenu MicroBlocksFirmwareInstaller eraseFlashFlag boardName {
 	if (beginsWith 'Springbot' boardName) {
 		flashVM this 'Springbot' eraseFlashFlag
 	} (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'ESP32' 'Databot') {
 		flashVM this boardName eraseFlashFlag
+	} (contains dfuBoards boardName) {
+		installDFUFirmware this boardName
 	} else {
 		installHexOrUF2File this boardName true
 	}
