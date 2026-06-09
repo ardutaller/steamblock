@@ -438,15 +438,10 @@ method processBrowserDroppedFile MicroBlocksEditor {
 method processBrowserFileSave MicroBlocksEditor {
 	lastSavedName = (browserLastSaveName)
 	if (notNil lastSavedName) {
-		if (endsWith lastSavedName '.hex') {
-			startFirmwareCountdown (smallRuntime) lastSavedName
-		} (endsWith lastSavedName '.ubp') {
+		if (endsWith lastSavedName '.ubp') {
 			// Update the title (note: updateTitle will remove the extension)
 			fileName = lastSavedName
 			updateTitle this
-		}
-		if ('_no_file_selected_' == lastSavedName) {
-			startFirmwareCountdown (smallRuntime) lastSavedName
 		}
 	}
 }
@@ -484,7 +479,7 @@ method processDroppedFile MicroBlocksEditor fName data {
 	} (endsWith lcFilename '.bin') {
 		// install ESP firmware file
 		if (isNil data) { return } // could not read file
-		installESPFirmwareFromFile (smallRuntime) fName data
+		installESPFirmwareFromFile (new 'MicroBlocksFirmwareInstaller') fName data
 	} (endsWith lcFilename '.po') {
 		if (notNil data) {
 			installTranslation (authoringSpecs) (toString data)
@@ -505,7 +500,10 @@ method processDroppedText MicroBlocksEditor text {
 		url = (substring text ((findFirst text ':') + 3))
 		host = (substring url 1 ((findFirst url '/') - 1))
 		path = (substring url (findFirst url '/'))
-		fileName = (substring path ((findLast path '/') + 1) ((findLast path '.') - 1))
+		fileName = (substring path ((findLast path '/') + 1))
+		if (notNil (findLast fileName '.')) {
+			fileName = (substring fileName 1 ((findLast path '.') - 1))
+		}
 
 		if (or ((findSubstring 'scripts=' url) > 0) ((findSubstring 'project=' url) > 0)) {
 			importFromURL this url
@@ -597,7 +595,9 @@ method checkLatestVersion MicroBlocksEditor {
 
 	if ('web' == os) {
 		// skip version check in browser/Chromebook but set isPilot based on URL
-		isPilot = (notNil (findSubstring 'run-pilot' (browserURL)))
+		isPilot = (or
+			(notNil (findSubstring 'run-pilot' (browserURL)))
+			(notNil (findSubstring ':8000'  (browserURL))))
 		return
 	}
 
@@ -839,7 +839,7 @@ method gearMenu MicroBlocksEditor {
 	setIsTopMenu menu true
 	addItem menu 'about...' (action 'showAboutBox' (smallRuntime))
 	addLine menu
-	addItem menu 'update firmware on board' (action 'installVM' (smallRuntime) false false) // do not wipe flash, do not download VM from server
+	addItem menu 'update firmware on board' (action 'installVM' (new 'MicroBlocksFirmwareInstaller') false) // do not erase flash
 	addLine menu
 	addItem menu 'inform of new versions' (action 'toggleVersionCheck' this false) 'when opening the IDE, show a notification if a new version of MicroBlocks has been released' (newCheckmark this versionCheckOnStartup)
 	addItem menu 'dark mode' (action 'toggleDarkMode' this false) 'make the IDE darker' (newCheckmark this (darkModeEnabled this))
@@ -854,9 +854,9 @@ method gearMenu MicroBlocksEditor {
 		addLine menu
 		addItem menu 'open vm folder on microblocks.fun' (action 'openVMFolder' this)
 		addLine menu
-		addItem menu 'install ESP firmware from URL' (action 'installESPFirmwareFromURL' (smallRuntime))
-		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (smallRuntime))
-		addItem menu 'erase flash and update firmware on ESP board' (action 'installVM' (smallRuntime) true false) // wipe flash first, do not download VM from server
+		addItem menu 'install ESP firmware from URL' (action 'installESPFirmwareFromURL' (new 'MicroBlocksFirmwareInstaller'))
+		addItem menu 'install ESP firmware from microblocks.fun' (action 'installESPFirmwareFromRepo' (new 'MicroBlocksFirmwareInstaller'))
+		addItem menu 'erase flash and update firmware on ESP board' (action 'installVM' (new 'MicroBlocksFirmwareInstaller') true) // erase flash, then install firmware
 		addLine menu
 		if (and
 				isConnected

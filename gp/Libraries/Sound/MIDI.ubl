@@ -251,7 +251,7 @@ to '_MIDI init' {
         '[serial:close]'
       }
     } else {
-      callCustomCommand '[serial:setPins]' ('[data:makeList]' _MIDI_pin)
+      '[serial:open]' 31250 0 _MIDI_pin
     }
     _MIDI_initialized = (booleanConstant true)
     for i 16 {

@@ -119,6 +119,11 @@ method chunkBytesFor SmallRuntime aBlockOrFunction {
 	bytes = (compiledBytesFor this aBlockOrFunction)
 	// handle script too large
 	if ((count bytes) > 1000) {
+		if (isClass aBlockOrFunction 'Function') {
+			print (join (localized 'Script is too large to send to board.') ' (' (functionName aBlockOrFunction) ')')
+		} else {
+			print (localized 'Script is too large to send to board.')
+		}
 		// Replace compiled code with a stub that just reports a "Script too large" error.
 		bytes = (compiledBytesFor this (block 'command' (color 255 0 0) '[misc:scriptTooLarge]'))
 	}
@@ -843,24 +848,6 @@ method webSerialConnect SmallRuntime action {
 	}
 }
 
-method selectPort SmallRuntime {
-	if (isNil disconnected) { disconnected = false }
-
-	menu = (menu 'Connect' (action 'webSerialConnect' this) true)
-	if (and (isNil port) ('boardie' != portName)) {
-		if (not (isMobile)) {
-			addItem menu 'connect (USB)'
-		}
-		addItem menu 'connect (BLE)'
-		addLine menu
-		addItem menu 'open Boardie'
-	} else {
-		addItem menu 'disconnect'
-	}
-	popUpAtHand menu (global 'page')
-	return
-}
-
 method portList SmallRuntime {
 	portList = (list)
 	listSerialPorts // first call triggers callback
@@ -920,14 +907,21 @@ method closePort SmallRuntime {
 	clearRunningHighlights this
 }
 
+// Espressif board flashing support
+
 method enableAutoConnect SmallRuntime success {
+	// Called by Flasher and ESPTool after installing firmware.
+
 	closeAllDialogs (findMicroBlocksEditor)
 	// In the browser, the serial port must be closed and re-opened after installing
 	// firmware on an ESP board. Not sure why. Adding a delay did not help.
 	closePort this
 	closeSerialPort 1 // make sure port is really disconnected
 	disconnected = true
-	if success { otherReconnectMessage this }
+	if success {
+		reconnectMessage (new 'MicroBlocksFirmwareInstaller')
+	}
+	return
 }
 
 method connectedToBoard SmallRuntime {
@@ -1176,23 +1170,20 @@ method checkVmVersion SmallRuntime {
 	// prevent version check from running while the decompiler is working
 	if readFromBoard { return }
 	if ((latestVmVersion this) > vmVersion) {
-		offerToUpdate = (not (isOneOf boardType
-			'CircuitPlayground' 'CircuitPlayground Bluefruit' 'Clue' 'MakerPort'
-			'RP2040' 'Pico W' 'ESP8266'))
-		if (or (dueBoardConnected this) (isMobile)) { offerToUpdate = false }
-		if (not offerToUpdate) {
+		if (and (not (isMobile)) (isUpdatableBoard (new 'MicroBlocksFirmwareInstaller') boardType)) {
+			// Offer to update the firmware
+			ok = (confirm (global 'page') nil (join
+				(localized 'The MicroBlocks in your board is not current')
+				' (v' vmVersion ' vs. v' (latestVmVersion this) ').' (newline)
+				(localized 'Try to update MicroBlocks on the board?')))
+			if ok { installVM (new 'MicroBlocksFirmwareInstaller') false }
+		} else {
 			// Inform the user but don't offer to update these boards since updating
 			// then requires the user to put the board into boot mode.
 			inform (global 'page') (join
 				(localized 'The MicroBlocks in your board is not current')
 				' (v' vmVersion ' vs. v' (latestVmVersion this) ').') 'Firmware version'
-			return
 		}
-		ok = (confirm (global 'page') nil (join
-			(localized 'The MicroBlocks in your board is not current')
-			' (v' vmVersion ' vs. v' (latestVmVersion this) ').' (newline)
-			(localized 'Try to update MicroBlocks on the board?')))
-		if ok { installVM this }
 	}
 }
 
@@ -1247,7 +1238,7 @@ method installBoardSpecificBlocks SmallRuntime {
 	} ('IOT-BUS' == boardType) {
 		importEmbeddedLibrary scripter 'LED Display'
 		importEmbeddedLibrary scripter 'TFT'
-		importEmbeddedLibrary scripter 'touchScreenPrims'
+		importEmbeddedLibrary scripter 'Touch Screen'
 	} ('ESP32' == boardType) {
 		importEmbeddedLibrary scripter 'HTTP client'
 	} ('TTGO RP2040' == boardType) {
@@ -2893,385 +2884,6 @@ method showOutputStrings SmallRuntime {
 	}
 }
 
-// Virtual Machine Installer
-
-method dueBoardConnected SmallRuntime {
-	if (isNil boardType) { return false }
-	return (isOneOf boardType
-		'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
-}
-
-method installVM SmallRuntime eraseFlashFlag downloadLatestFlag {
-	closeAllDialogs (findMicroBlocksEditor)
-	if (dueBoardConnected this) {
-		openURL 'https://www.duelink.com/docs/language/microblocks#standalone-with-microblocks'
-		return
-	}
-	installVMInBrowser this eraseFlashFlag downloadLatestFlag
-}
-
-method niceBoardName SmallRuntime board {
-	name = (first board)
-	if (beginsWith name 'MICROBIT') {
-		return 'micro:bit'
-	} (beginsWith name 'MINI') {
-		return 'Calliope mini'
-	} (beginsWith name 'CPLAYBOOT') {
-		return 'Circuit Playground Express'
-	} (beginsWith name 'CPLAYBTBOOT') {
-		return 'Circuit Playground Bluefruit'
-	} (beginsWith name 'CLUE') {
-		return 'Clue'
-	} (beginsWith name 'RPI-RP2') {
-		return 'Raspberry Pi Pico'
-	}
-	return name
-}
-
-method picoVMFileName SmallRuntime {
-	tmp = (array nil)
-	menu = (menu 'Pico board type?' (action 'atPut' tmp 1) true)
-//	addItem menu 'ELECFREAKS Pico:ed'
-//	addItem menu 'ELECFREAKS Wukong2040'
-	addItem menu 'RP2040 (Pico or Pico W)'
-	waitForSelection menu
-	result = (first tmp)
-	if ('ELECFREAKS Pico:ed' == result) {
-		return 'vm_pico_ed.uf2'
-	} ('ELECFREAKS Wukong2040' == result) {
-		return 'vm_wukong2040.uf2'
-	} ('RP2040 (Pico or Pico W)' == result) {
-		return 'vm_pico_w.uf2'
-	}
-	return 'none'
-}
-
-method copyVMToBoard SmallRuntime driveName boardPath {
-	// disable auto-connect and close the serial port
-	disconnected = true
-	closePort this
-
-	if ('MICROBIT' == driveName) {
-		vmFileName = 'vm_microbit-universal.hex'
-	} ('MINI' == driveName) {
-		vmFileName = 'vm_calliope-universal.hex'
-	} ('CPLAYBOOT' == driveName) {
-		vmFileName = 'vm_circuitplay.uf2'
-	} ('CPLAYBTBOOT' == driveName) {
-		vmFileName = 'vm_cplay52.uf2'
-	} ('CLUEBOOT' == driveName) {
-		vmFileName = 'vm_clue.uf2'
-	} ('MAKERBOOT' == driveName) {
-		vmFileName = 'vm_makerport.uf2'
-	} ('RPI-RP2' == driveName) {
-		vmFileName = (picoVMFileName this)
-	} else {
-		print 'unknown drive name in "copyVMToBoard"' // shouldn't happen
-		return
-	}
-	vmData = (readEmbeddedFile (join 'precompiled/' vmFileName) true)
-	if (isNil vmData) {
-		error (localized 'Could not read %1.' (join 'precompiled/' vmFileName))
-	}
-	writeFile (join boardPath vmFileName) vmData
-	vmVersion = nil
-	boardType = nil
-	print 'Installed' (join boardPath vmFileName) (join '(' (byteCount vmData) ' bytes)')
-	waitMSecs 2000
-	if (isOneOf driveName 'MICROBIT' 'MINI') { waitMSecs 8000 }
-	disconnected = false
-}
-
-// Browser Virtual Machine Intaller
-
-method installVMInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag {
-	if ('micro:bit' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'micro:bit'
-	} ('micro:bit v2' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'micro:bit v2'
-	} (isOneOf boardType 'Calliope' 'Calliope v3') {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Calliope mini'
-// 	} ('CircuitPlayground' == boardType) {
-// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Express'
-// 	} ('CircuitPlayground Bluefruit' == boardType) {
-// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Circuit Playground Bluefruit'
-// 	} ('Clue' == boardType) {
-// 		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'Clue'
-	} ('MakerPort' == boardType) {
-		copyVMToBoardInBrowser this eraseFlashFlag downloadLatestFlag 'MakerPort'
-	} (isOneOf boardType 'RP2040' 'Pico W') { // 'Pico:ed' 'Wukong2040'
-		rp2040ResetMessage this
-	} (and
-		(isOneOf boardType 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'Databot')
-		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
-			flashVM this boardType eraseFlashFlag downloadLatestFlag
-	} else {
-		items = (list)
-		if eraseFlashFlag {
-			add items (array 'Citilab ED1')
-			add items (array 'CoCube')
-			add items (array 'Databot')
-//			add items (array 'KidsBits')
-//			add items (array 'Foxbit')
-			add items (array 'micro:STEAMakers')
-//			add items (array 'M5Stack-Core')
-			add items (array 'ESP32')
-//			add items (array 'ESP8266')
-		} else {
-			add items (array 'micro:bit')
-			add items (array 'Calliope mini')
-			add items (array '-')
-			add items (array 'Citilab ED1')
-			add items (array 'micro:STEAMakers')
-//			add items (array 'KidsBits')
-//			add items (array 'Foxbit')
-			add items (array 'CoCube')
-			add items (array 'Databot')
-			add items (array '-')
-//			add items (array 'ELECFREAKS Pico:ed')
-//			add items (array 'ELECFREAKS Wukong2040')
-			add items (array 'RP2040 (Pico or Pico W)')
-			add items (array '-')
-			add items (array 'MakerPort')
-			add items (array '-')
-//			add items (array 'Circuit Playground Express')
-//			add items (array 'Circuit Playground Bluefruit')
-//			add items (array 'Clue')
-			add items (array '-')
-//			add items (array 'M5Stack-Core')
-			add items (array 'ESP32')
-//			add items (array 'ESP8266')
-			add items (array '-')
-			add items (array 'WeAct STM32H743')
-			add items (array 'DUELink')
-		}
-		menuFor api items (action 'copyVMToBoardInBrowser' this eraseFlashFlag downloadLatestFlag)
-	}
-}
-
-method flashVMInBrowser SmallRuntime boardName eraseFlashFlag downloadLatestFlag {
-	if (isNil port) {
-		// prompt user to open the serial port
-		selectPort this
-		timeout = 10000 // ten seconds
-		start = (msecsSinceStart)
-		while (and (not (isOpenSerialPort 1)) (((msecsSinceStart) - start) < timeout)) {
-			// do UI cycles until serial port is opened or timeout
-			doOneCycle (global 'page')
-			waitMSecs 10 // refresh screen
-		}
-	}
-	if (isOpenSerialPort 1) {
-		port = 1
-		flashVM this boardName eraseFlashFlag downloadLatestFlag
-	}
-}
-
-method copyVMToBoardInBrowser SmallRuntime eraseFlashFlag downloadLatestFlag boardName {
-	if (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'M5Stack-Core' 'ESP32' 'ESP8266' 'Databot') {
-		flashVM this boardName eraseFlashFlag downloadLatestFlag
-		return
-	}
-
-	if (isOneOf boardName 'WeAct STM32H743' 'DUELink') {
-		browserDfuUpload boardName
-		return
-	}
-
-	if ('micro:bit' == boardName) {
-		vmFileName = 'vm_microbit-universal.hex'
-		driveName = 'MICROBIT'
-	} ('micro:bit v2' == boardName) {
-		vmFileName = 'vm_microbit-universal.hex'
-		driveName = 'MICROBIT'
-	} ('Calliope mini' == boardName) {
-		vmFileName = 'vm_calliope-universal.hex'
-		driveName = 'MINI'
-	} ('Calliope v3' == boardName) {
-		vmFileName = 'vm_calliope-universal.hex'
-		driveName = 'MINI'
-	} ('Circuit Playground Express' == boardName) {
-		vmFileName = 'vm_circuitplay.uf2'
-		driveName = 'CPLAYBOOT'
-	} ('Circuit Playground Bluefruit' == boardName) {
-		vmFileName = 'vm_cplay52.uf2'
-		driveName = 'CPLAYBTBOOT'
-	} ('Clue' == boardName) {
-		vmFileName = 'vm_clue.uf2'
-		driveName = 'CLUEBOOT'
-	} ('MakerPort' == boardName) {
-		vmFileName = 'vm_makerport.uf2'
-		driveName = 'MAKERBOOT'
-	} ('RP2040 (Pico or Pico W)' == boardName) {
-		vmFileName = 'vm_pico_w.uf2'
-		driveName = 'RPI-RP2'
-	} ('ELECFREAKS Pico:ed' == boardName) {
-		vmFileName = 'vm_pico_ed.uf2'
-		driveName = 'RPI-RP2'
-	} ('ELECFREAKS Wukong2040' == boardName) {
-		vmFileName = 'vm_wukong2040.uf2'
-		driveName = 'RPI-RP2'
-	} else {
-		return // bad board name
-	}
-
-	prefix = ''
-	if (endsWith vmFileName '.uf2') {
-		if ('RPI-RP2' == driveName) {
-			// Extra instruction for RP2040 Pico
-			prefix = (join
-				prefix
-				(localized 'Connect USB cable while holding down the white BOOTSEL button before proceeding.')
-				(newline) (newline))
-		} ('MAKERBOOT' == driveName) {
-			// Extra instruction for MakerPort
-			prefix = (join
-				prefix
-				(localized 'Press the reset button on the board twice before proceeding.')
-				(newline) (newline))
-		} else {
-			// Extra instruction for Adafruit boards
-			prefix = (join
-				prefix
-				(localized 'Press the reset button on the board twice before proceeding. The NeoPixels should turn green.')
-				(newline) (newline))
-		}
-	}
-	msg = (join prefix (localized 'Save the firmware file when prompted.'))
-	response = (inform msg (localized 'Firmware Install'))
-	if (isNil response) { return }
-
-	vmData = (readFile (join 'precompiled/' vmFileName) true)
-	if (isNil vmData) { return } // could not read file
-
-	// disconnect before updating VM; avoids micro:bit autoconnect issue on Chromebooks
-	disconnected = true
-	closePort this
-	updateIndicator (findMicroBlocksEditor)
-
-	if (endsWith vmFileName '.hex') {
-		// for micro:bit & calliope, filename must be less than 9 letter before the extension
-		filePart = (filePart vmFileName)
-		vmFileName = (join (substring filePart 1 (min 9 (count filePart))) '.hex')
-	}
-
-	browserWriteFile vmData vmFileName 'vmInstall'
-	waitMSecs 5000 // leave time for file to download before showing next prompt
-
-	inform (localized 'Drag the firmware file you just saved to the %1 drive.' driveName)
-	waitMSecs 1000 // leave time for file dialog box to appear before showing next prompt
-
-	if (endsWith vmFileName '.uf2') {
-		if (or ('MAKERBOOT' == driveName) ('RPI-RP2' == driveName)) {
-			otherReconnectMessage this
-		} else {
-			adaFruitReconnectMessage this
-		}
-	} else {
-		otherReconnectMessage this
-	}
-}
-
-method noBoardFoundMessage SmallRuntime {
-	inform (localized 'No boards found; is your board plugged in?') 'No boards found'
-}
-
-method adaFruitResetMessage SmallRuntime {
-	inform (localized 'For Adafruit boards and MakerPort, double-click reset button and try again.')
-}
-
-method adaFruitReconnectMessage SmallRuntime {
-	msg = (join
-		(localized 'When the NeoPixels turn off') ', '
-		(localized 'reconnect to the board by clicking the "Connect" button.'))
-	inform msg
-}
-
-method rp2040ResetMessage SmallRuntime {
-	inform (localized 'Connect USB cable while holding down the white BOOTSEL button and try again.')
-}
-
-method otherReconnectMessage SmallRuntime {
-	title = (localized 'Firmware Installed')
-	msg = (localized 'Reconnect to the board by clicking the "Connect" button.')
-	inform (global 'page') msg title nil true
-}
-
-// Countdown for firmware install on nRF5x boards; not currently used
-
-method waitForFirmwareInstall SmallRuntime {
-	firmwareInstallTimer = nil
-	spinner = (newSpinner (action 'firmwareInstallStatus' this) (action 'firmwareInstallDone' this))
-	addPart (global 'page') spinner
-}
-
-method startFirmwareCountdown SmallRuntime fileName {
-	// Called by editor after firmware file is saved.
-
-	if ('_no_file_selected_' == fileName) {
-		spinner = (findMorph 'MicroBlocksSpinner')
-		if (notNil spinner) { destroy (handler spinner) }
-	} else {
-		firmwareInstallTimer = (newTimer)
-	}
-}
-
-method firmwareInstallSecsRemaining SmallRuntime {
-	if (isNil firmwareInstallTimer) { return 0 }
-	installWaitMSecs = 6000
-	if (browserIsChromeOS) {
-		installWaitMSecs = 16000
-	}
-	return (ceiling ((installWaitMSecs - (msecs firmwareInstallTimer)) / 1000))
-}
-
-method firmwareInstallStatus SmallRuntime {
-	if (isNil firmwareInstallTimer) { return 'Installing firmware...' }
-	return (localized '%1 seconds remaining.' (firmwareInstallSecsRemaining this))
-}
-
-method firmwareInstallDone SmallRuntime {
-	if (isNil firmwareInstallTimer) { return false }
-
-	if ((firmwareInstallSecsRemaining this) <= 0) {
-		firmwareInstallTimer = nil
-		otherReconnectMessage this
-		return true
-	}
-	return false
-}
-
-// espressif board flashing
-
-method flasher SmallRuntime { return flasher }
-
-method confirmRemoveFlasher SmallRuntime { // xxx needed?
-	ok = (confirm
-		(global 'page')
-		nil
-		(localized 'Are you sure you want to cancel the upload process?'))
-	if ok { removeFlasher this }
-}
-
-method removeFlasher SmallRuntime {
-	destroy flasher
-	flasher = nil
-}
-
-method flashVM SmallRuntime boardName eraseFlashFlag downloadLatestFlag {
-	disconnected = true
-	flasherPort = port
-	port = nil
-	// workaround for ESP32 install issue introduced in 1.2.89:
-	flasherPort = nil
-	portName = 'webserial'
-	vmVersion = nil
-	boardType = nil
-	flasher = (newFlasher boardName portName eraseFlashFlag downloadLatestFlag)
-	addPart (global 'page') (spinner flasher)
-	startFlasher flasher flasherPort
-}
-
 // data logging
 
 method lastDataIndex SmallRuntime { return loggedDataNext }
@@ -3365,4 +2977,3 @@ method installESPFirmwareFromFile SmallRuntime fileName data {
 	flasher = (newFlasher fileName portName false false)
 	installFromData flasher flasherPort fileName data
 }
-

@@ -84,13 +84,13 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'board.installVM') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		// params: wipeFlash (bool), downloadFromServer (bool)
-		installVM runtime (at params 1) (at params 2)
+		installVM (new 'MicroBlocksFirmwareInstaller') (at params 1) (at params 2)
 	} (endPoint == 'board.installVMfromURL') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
-		installESPFirmwareFromURL runtime
+		installESPFirmwareFromURL (new 'MicroBlocksFirmwareInstaller')
 	} (endPoint == 'board.installVMfromRepo') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
-		installESPFirmwareFromRepo runtime
+		installESPFirmwareFromRepo (new 'MicroBlocksFirmwareInstaller')
 	} (endPoint == 'board.compactStorage') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		sendMsg runtime 'systemResetMsg' 2 nil

@@ -507,6 +507,8 @@ method vmNameForBoard ESPTool boardName {
 	} ('M5Atom-Matrix' == boardName) { return 'vm_m5atom.bin'
 	} ('Databot' == boardName) { return 'vm_databot.bin'
 	} ('Springbot' == boardName) { return 'vm_springbot.bin'
+	} ('Springbot Green' == boardName) { return 'vm_springbot.bin'
+	} ('Springbot Gold' == boardName) { return 'vm_springbot.bin'
 	} ('Mbits' == boardName) { return 'vm_mbits.bin'
 	}
 	return nil

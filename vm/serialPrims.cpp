@@ -361,10 +361,25 @@ static void serialWriteSync(uint8 *buf, int bytesToWrite) {
 // primitives
 
 static OBJ primSerialOpen(int argCount, OBJ *args) {
+	// Required parameter: baudRate; optional parameters: rxPin, txPin
 	if (argCount < 1) return fail(notEnoughArguments);
 	if (!isInt(args[0])) return fail(needsIntegerError);
 	int baudRate = obj2int(args[0]);
-	serialOpen(baudRate);
+
+	if ((argCount >= 3) && isInt(args[1]) && isInt(args[2])) {
+		// Following opens the serial port with the given pins
+		int rxPin = mapDigitalPinNum(obj2int(args[1]));
+		int txPin = mapDigitalPinNum(obj2int(args[2]));
+		if ((rxPin < 0) || (txPin < 0)) {
+			serialOpen(baudRate); // bad pin number; open with default pins
+		} else {
+			setSerialPins(rxPin, txPin, baudRate);
+		}
+	} else {
+		// Open serial port with default pins
+		// Note: On non-Adafruit nRF52 boards, use the most recently specified serial pins
+		serialOpen(baudRate);
+	}
 
 	// wait a bit, then discard any initial garbage byte(s)
 	delayMicroseconds(250);
