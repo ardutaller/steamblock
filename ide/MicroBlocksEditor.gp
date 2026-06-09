@@ -755,7 +755,10 @@ method processDroppedText MicroBlocksEditor text {
 		url = (substring text ((findFirst text ':') + 3))
 		host = (substring url 1 ((findFirst url '/') - 1))
 		path = (substring url (findFirst url '/'))
-		fileName = (substring path ((findLast path '/') + 1) ((findLast path '.') - 1))
+		fileName = (substring path ((findLast path '/') + 1))
+		if (notNil (findLast fileName '.')) {
+			fileName = (substring fileName 1 ((findLast path '.') - 1))
+		}
 
 		if (or ((findSubstring 'scripts=' url) > 0) ((findSubstring 'project=' url) > 0)) {
 			importFromURL this url
