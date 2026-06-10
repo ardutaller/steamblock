@@ -1,6 +1,6 @@
 module 'DUELink Daisylink' Comm
 author 'GHI Electronics'
-version 0 17 
+version 0 18 
 choices due_combx b0 b1 b2 b3 b4 b5 b6 b7 
 description 'Handles tethered communications via I2C or serial (UART) to DUELink Daisylink module(s).
 
@@ -9,7 +9,7 @@ By default, this library uses serial over the Downlink port on DUELink boards an
 See https://www.duelink.com/docs/language/microblocks on how tethering works.
 
 '
-variables _dueUseI2C _dueReadTimeout 
+variables _dueUseI2C _dueReadTimeout _dueDeviceList _dueDeviceCount 
 
   spec ' ' 'due_select_device' 'select device _' 'auto' 1
   spec 'r' 'due_connected' 'connected?'
@@ -22,8 +22,10 @@ variables _dueUseI2C _dueReadTimeout
   spec 'r' 'due_returnStr' 'do command _ returns string' 'str' 'version()'
   space
   space
+  spec 'r' 'due_discover' 'discover'
   spec 'r' 'due_device_PID' 'device PID'
   spec 'r' 'due_device_version' 'device firmware version'
+  spec 'r' 'due_find_pid' 'find devices by PID _' 'str' '0x050005'
   advanced
   spec ' ' 'due_setReadTimeout' 'set response timeout _ ms' 'auto' 1000
   spec ' ' 'due_useI2C' 'use I2C _' 'bool' true
@@ -228,8 +230,52 @@ to due_device_version {
   return (due_returnNum '100*info(1)')
 }
 
+to due_discover {
+  comment 'Called only once'
+  if (_dueDeviceCount == 0) {
+    _dueDeviceCount = (due_returnNum 'getcnt()')
+    if (_dueDeviceCount == 0) {
+      comment 'Nothing connected, return 0'
+      return 0
+    }
+    _dueDeviceList = ('[data:makeList]')
+    for i _dueDeviceCount {
+      due_select_device i
+      '[data:addLast]' (due_device_PID) _dueDeviceList
+    }
+  }
+  comment 'return the list'
+  return _dueDeviceList
+}
+
 to due_exec {
   due_run 'run'
+}
+
+to due_find_pid pid {
+  comment 'get the list from discover block'
+  local 'device_list' (due_discover)
+  if (device_list == 0) {
+    return 0
+  }
+  local 'pid_list' ('[data:makeList]')
+  local 'pid_number' 0
+  comment 'check if pid is a number'
+  if (isType pid 'string') {
+    pid_number = (hexToInt pid)
+  } else {
+    comment 'Invalid input'
+    return 0
+  }
+  for i _dueDeviceCount {
+    if (pid_number == (hexToInt (at i device_list))) {'[data:addLast]' i pid_list}
+  }
+  if ((size pid_list) == 0) {
+    comment 'Not found anything'
+    return 0
+  }
+  comment 'return the list'
+  return pid_list
 }
 
 to due_make_command s optionalArgs {
@@ -342,7 +388,23 @@ to due_run cmd {
 }
 
 to due_select_device dev {
-  due_run (due_make_command 'sel' dev)
+  if (isType dev 'number') {
+    due_run (due_make_command 'sel' dev)
+  } else {
+    if (isType dev 'string') {
+      due_run ('[data:join]' 'sel(' dev ')')
+    } else {
+      local 'cmd' ('[data:join]' 'sel' '(')
+      for i (size dev) {
+        cmd = ('[data:join]' cmd (at i dev))
+        if (i < (size dev)) {
+          cmd = ('[data:join]' cmd ',')
+        }
+      }
+      cmd = ('[data:join]' cmd ')')
+      due_run cmd
+    }
+  }
 }
 
 to due_setReadTimeout millisecond {
