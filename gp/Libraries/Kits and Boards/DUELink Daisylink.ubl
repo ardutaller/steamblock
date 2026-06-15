@@ -1,6 +1,6 @@
 module 'DUELink Daisylink' Comm
 author 'GHI Electronics'
-version 0 18 
+version 0 19 
 choices due_combx b0 b1 b2 b3 b4 b5 b6 b7 
 description 'Handles tethered communications via I2C or serial (UART) to DUELink Daisylink module(s).
 
@@ -9,7 +9,7 @@ By default, this library uses serial over the Downlink port on DUELink boards an
 See https://www.duelink.com/docs/language/microblocks on how tethering works.
 
 '
-variables _dueUseI2C _dueReadTimeout _dueDeviceList _dueDeviceCount 
+variables _dueUseI2C _dueReadTimeout _dueDeviceList 
 
   spec ' ' 'due_select_device' 'select device _' 'auto' 1
   spec 'r' 'due_connected' 'connected?'
@@ -231,15 +231,13 @@ to due_device_version {
 }
 
 to due_discover {
-  comment 'Called only once'
-  if (_dueDeviceCount == 0) {
-    _dueDeviceCount = (due_returnNum 'getcnt()')
-    if (_dueDeviceCount == 0) {
-      comment 'Nothing connected, return 0'
-      return 0
-    }
+  comment 'Return a list of Daisylinked devices.
+Result may be an empty list.'
+  if (_dueDeviceList == 0) {
+    comment 'collect devices list
+(only the first time discover is called)'
     _dueDeviceList = ('[data:makeList]')
-    for i _dueDeviceCount {
+    for i (due_returnNum 'getcnt()') {
       due_select_device i
       '[data:addLast]' (due_device_PID) _dueDeviceList
     }
@@ -253,29 +251,19 @@ to due_exec {
 }
 
 to due_find_pid pid {
-  comment 'get the list from discover block'
+  comment 'Return a list of indices for devices in the
+Daisylink chain with the given PID. An
+index can be used with "select device"
+to send commands to that device.
+The result can be an empty list'
+  pid = (hexToInt pid)
+  local 'result' ('[data:makeList]')
   local 'device_list' (due_discover)
-  if (device_list == 0) {
-    return 0
-  }
-  local 'pid_list' ('[data:makeList]')
-  local 'pid_number' 0
-  comment 'check if pid is a number'
-  if (isType pid 'string') {
-    pid_number = (hexToInt pid)
-  } else {
-    comment 'Invalid input'
-    return 0
-  }
-  for i _dueDeviceCount {
-    if (pid_number == (hexToInt (at i device_list))) {'[data:addLast]' i pid_list}
-  }
-  if ((size pid_list) == 0) {
-    comment 'Not found anything'
-    return 0
+  for i (size device_list) {
+    if (pid == (hexToInt (at i device_list))) {'[data:addLast]' i result}
   }
   comment 'return the list'
-  return pid_list
+  return result
 }
 
 to due_make_command s optionalArgs {
