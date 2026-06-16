@@ -7579,6 +7579,10 @@ msgid "hide all block definitions"
 msgstr ""
 
 #. Library label right click context menu option
+msgid "reload library"
+msgstr ""
+
+#. Library label right click context menu option
 msgid "export this library"
 msgstr ""
 
