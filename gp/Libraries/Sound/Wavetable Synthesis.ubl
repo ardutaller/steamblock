@@ -74,7 +74,7 @@ to '_wt_init' {
       atPut i _wt_env_r ('[data:newByteArray]' 256)
       'wt_select instrument' 'tri wave' i
     }
-    'wt_config pin' -1 ''
+    'wt_config pin' -1 10
     _wt_note_factors = ('[data:makeList]' 119360 112768 106368 100352 94720 89408 84416 79680 75220 71040 67072 63232)
   }
   sendBroadcast '_wt_play'
