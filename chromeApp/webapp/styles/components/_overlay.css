@@ -64,7 +64,15 @@
 
 
 .overlay__subtitle {
-	margin-top: var(--space-16);
+	margin-top: var(--space-24);
+	color: var(--color-blue-grey-200);
+
+	text-wrap: balance;
+}
+
+
+.overlay__note {
+	margin-top: var(--space-12);
 	color: var(--color-blue-grey-400);
 
 	text-wrap: balance;

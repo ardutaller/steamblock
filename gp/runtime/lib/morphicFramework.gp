@@ -1427,11 +1427,22 @@ method confirm Page title question yesLabel noLabel callback {
 }
 
 method inform Page details title yesLabel nonBlocking {
+	api = (api (smallRuntime))
+	id = (nextId api)
+
 	options = (dictionary)
 	atPut options 'title' title
 	atPut options 'text' details
-	notify (api (smallRuntime)) 'window.inform' options
-	return
+	atPut options 'id' id
+
+	notify api 'window.inform' options
+	response = (browserResponse api id)
+	while (response == nil) {
+		response = (browserResponse api id)
+		doOneCycle this
+	}
+
+	return response
 }
 
 // events

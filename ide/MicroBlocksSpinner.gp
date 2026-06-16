@@ -39,7 +39,8 @@ method initialize MicroBlocksSpinner labelReporter doneReporter {
 
 	dict = (dictionary)
 	atPut dict 'title' (call labelGetter)
-	atPut dict 'subtitle' '(press ESC to cancel)'
+	atPut dict 'subtitle' 'Do not switch browser tabs!'
+	atPut dict 'note' '(press ESC to cancel)'
 	atPut dict 'percent' 0
 	notify (api (smallRuntime)) 'spinner.show' dict
 

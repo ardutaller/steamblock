@@ -30,7 +30,8 @@ const DFUpload = {
 DFUpload.flashBoard = function (boardName) {
 	IDE.spinner.show(
 		'Uploading MicroBlocks to board...', // title
-		null, // subtitle
+		'Do not switch browser tabs!', // subtitle
+		null, // note
 		0, // percent
 		() => { dfu.disconnect(); }, // onCancel
 	);

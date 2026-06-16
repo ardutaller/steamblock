@@ -40,6 +40,10 @@ IDE.init = function () {
 
 IDE.resize = function () {
 	// TODO Rename vars to match CSS classes (new naming)
+	if (!IDE.topBarElement) {
+		IDE.topBarElement = document.querySelector('[data-ide="top-bar"]');
+	}
+
 	let winHeight = window.innerHeight,
 		topBarHeight = IDE.topBarElement.clientHeight,
 		tipBarHeight = IDE.tipBarElement.clientHeight,
@@ -215,7 +219,7 @@ IDE.tipBar.setTip = function (title, content) {
 // Spinner and overlay
 //
 // Testing with:
-// IDE.spinner.show('Testing', 'Doing some stuff...', 30)
+// IDE.spinner.show('Testing', 'Doing some stuff...', 'Please hold on', 30)
 // IDE.spinner.setPercent(50)
 IDE.spinner = {
 	init: function () {
@@ -223,6 +227,7 @@ IDE.spinner = {
 		this.spinner = this.overlay.querySelector('[data-ide="overlay-spinner"]');
 		this.titleSpan = this.overlay.querySelector('[data-ide="overlay-title"]');
 		this.subtitleSpan = this.overlay.querySelector('[data-ide="overlay-subtitle"]');
+		this.noteSpan = this.overlay.querySelector('[data-ide="overlay-note"]');
 
 		this.overlay.onkeypress = function (e) {
 			if (e.key == 'Escape') {
@@ -232,16 +237,17 @@ IDE.spinner = {
 		}
 	},
 
-	show: function (title, subtitle, percent, onCancel, onDone) {
+	show: function (title, subtitle, note, percent, onCancel, onDone) {
 		this.onCancel = onCancel;
 		this.onDone = onDone;
-		this.update(title, subtitle ?? '(press ESC to cancel)', percent);
+		this.update(title, subtitle, note ?? '(press ESC to cancel)', percent);
 		this.overlay.classList.add('--is-active');
 	},
 
-	update: function (title, subtitle, percent) {
+	update: function (title, subtitle, note, percent) {
 		this.setTitle(title);
 		this.setSubtitle(subtitle);
+		this.setNote(note);
 		this.setPercent(percent);
 	},
 
@@ -251,6 +257,10 @@ IDE.spinner = {
 
 	setSubtitle: function (subtitle) {
 		if (subtitle) { this.subtitleSpan.innerText = GetText.localize(subtitle); }
+	},
+
+	setNote: function (note) {
+		if (note) { this.noteSpan.innerText = GetText.localize(note); }
 	},
 
 	setPercent: function (percent) {
@@ -276,6 +286,7 @@ document.addEventListener('spinner.show', e => {
 	IDE.spinner.show(
 		options.title,
 		options.subtitle,
+		options.note,
 		options.percent
 		//TODO ondone, oncancel
 	);
@@ -283,6 +294,10 @@ document.addEventListener('spinner.show', e => {
 
 document.addEventListener('spinner.setTitle', e => {
 	IDE.spinner.setTitle(e.detail.value);
+});
+
+document.addEventListener('spinner.setNote', e => {
+	IDE.spinner.setNote(e.detail.note);
 });
 
 document.addEventListener('spinner.setPercent', e => {

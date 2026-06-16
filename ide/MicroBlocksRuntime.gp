@@ -2568,7 +2568,10 @@ method snapshotCode SmallRuntime defaultFileName {
 // busy tells the MicroBlocksEditor to suspend board communciations during file transfers
 method busy SmallRuntime { return (notNil fileTransferProgress) }
 
-method fileTransferProgress SmallRuntime actionLabel { return (join '' fileTransferProgress '% ' (localized actionLabel)) }
+method fileTransferProgress SmallRuntime actionLabel {
+	notify (api (smallRuntime)) 'spinner.setPercent' fileTransferProgress
+	return (join '' fileTransferProgress '% ' (localized actionLabel))
+}
 
 method abortFileTransfer SmallRuntime {
 	if (not (fileTransferCompleted this)) { fileTransferProgress = nil }

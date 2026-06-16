@@ -209,11 +209,11 @@ customElements.define('win-', FloatingWindow);
 
 // Generic Window Definitions
 
-FloatingWindow.inform = function (title, text) {
+FloatingWindow.inform = function (title, text, onAccept) {
 	let win = new FloatingWindow({
 		title: title ?? 'Information',
 		body: GetText.localize(text),
-		buttons: [{ label: 'Ok', action: ()=>{}, closesWindow: true }],
+		buttons: [{ label: 'Ok', action: onAccept ?? (()=>{}), closesWindow: true }],
 		width: 320,
 		resizable: false
 	});
@@ -296,8 +296,9 @@ document.addEventListener(
 	(e) => {
 		let descriptor = e.detail.value;
 		FloatingWindow.inform(
-			descriptor .title,
-			descriptor .text
+			descriptor.title,
+			descriptor.text,
+			() => { GP.apiResponses[descriptor.id] = JSON.stringify(true); }
 		);
 	}
 );
