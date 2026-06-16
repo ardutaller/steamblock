@@ -339,5 +339,5 @@ Menus.serialDelay = {
 Menus.serialDelay.items.push({ label: '-' });
 Menus.serialDelay.items.push({
 	label: 'reset to default (10)',
-	action: (target, event) => { Graph.setSerialDelay(10); }
+	action: () => { GP.apiCall('ide.setSerialDelay', [10]); }
 });
