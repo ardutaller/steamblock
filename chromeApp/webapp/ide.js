@@ -66,8 +66,6 @@ IDE.resize = function () {
 	GP.apiCall('ide.resize', [ newWidth, newHeight ]);
 };
 
-//window.addEventListener('resize', () => { IDE.resize(); });
-
 IDE.emptyProject = function () {
 	return { title: null, hasCustomBlocks: false };
 };
