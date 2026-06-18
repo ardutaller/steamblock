@@ -36,6 +36,11 @@ IDE.init = function () {
 	this.applyUserPreferences();
 	this.build();
 	GetText.setLocale(this.userPreference('locale'));
+	const resizeObserver = new ResizeObserver((entries) => {
+		// resize a bunch of times. Why just once doesn't work? I don't know!
+		for (let i = 0; i <= 8; i++) { setTimeout(()=>{ IDE.resize(); }, i * 5); }
+	});
+	resizeObserver.observe(IDE.element);
 };
 
 IDE.resize = function () {
@@ -61,7 +66,7 @@ IDE.resize = function () {
 	GP.apiCall('ide.resize', [ newWidth, newHeight ]);
 };
 
-window.addEventListener('resize', () => { IDE.resize(); });
+//window.addEventListener('resize', () => { IDE.resize(); });
 
 IDE.emptyProject = function () {
 	return { title: null, hasCustomBlocks: false };
