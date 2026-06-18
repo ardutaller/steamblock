@@ -1,5 +1,6 @@
-const { app, ipcMain, BrowserWindow, Menu, MenuItem } = require('electron');
+const { app, dialog, ipcMain, BrowserWindow, Menu, MenuItem } = require('electron');
 const path = require('node:path');
+const fs = require('fs');
 
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 app.commandLine.appendSwitch('gtk-version', '3');
@@ -64,6 +65,33 @@ function usbSelectMenu(deviceList, callback) {
 	usbMenu.append(new MenuItem({label: 'cancel'}));
 	usbMenu.popup();
 }
+
+// File Open and Save Dialogs
+
+ipcMain.handle('dialog:openFile', async () => {
+	const { canceled, filePaths } = await dialog.showOpenDialog();
+	if (!canceled && filePaths.length > 0) {
+		// Read the file natively using Node's fs module
+		const data = fs.readFileSync(filePaths[0], 'utf8');
+		return { filePath: filePaths[0], content: data };
+	}
+	return null;
+});
+
+ipcMain.handle('dialog:saveFile', async (event, suggestedName, isBinary, data) => {
+	const { canceled, filePath } = await dialog.showSaveDialog({ defaultPath: suggestedName });
+	if (!canceled && filePath) {
+		if (isBinary) {
+			await fs.writeFileSync(filePath, data); // to write binary not pass a third parameter
+		} else {
+			await fs.writeFileSync(filePath, data, 'utf8');
+		}
+		return filePath;
+	}
+	return null;
+});
+
+// main window
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({

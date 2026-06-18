@@ -1352,34 +1352,14 @@ const bleSerial = new NimBLESerial();
 
 // File read/write
 
-function hasChromeFilesystem() {
-	return ((typeof chrome != 'undefined') && (typeof chrome.fileSystem != 'undefined'))
-}
-
 async function GP_ReadFile(ext) {
 	// Upload using Native File API.
 
-	function onFileSelected(entry) {
-		void chrome.runtime.lastError; // suppress error message
-		if (!entry) return; // no file selected
-		entry.file(function(file) {
-			var reader = new FileReader();
-			reader.onload = function(evt) {
-				GP.droppedFiles.push({ name: toUTF8Array(file.name), contents: evt.target.result });
-			};
-			reader.readAsArrayBuffer(file);
-		});
-	}
-
-	if (hasChromeFilesystem()) {
-		if ('' == ext) ext = 'txt';
-		const options = {
-			type: 'openFile',
-			accepts: [{ description: 'MicroBlocks', extensions: [ext] }]
-		};
-		chrome.fileSystem.chooseEntry(options, onFileSelected);
-	} else if (GP_isMobile() || isElectron()) {
+	if (GP_isMobile()) {
 		GP_UploadFiles();
+	} else if (isElectron()) {
+		const result = await window.electronAPI.openFile();
+		GP.droppedFiles.push({ name: toUTF8Array(result.filePath), contents: result.content });
 	} else if (typeof window.showOpenFilePicker != 'undefined') { // Native Filesystem API
 		var options = {};
 		if ('' != ext) {
@@ -1417,29 +1397,21 @@ async function GP_writeFile(data, fName, id) {
 	// id is hint for the operation type (e.g. 'project' for saving a project file).
 	// The browser remembers the folder for the last save with that id.
 
-	function onFileSelected(entry) {
-		void chrome.runtime.lastError; // suppress error message
-		if (entry) entry.createWriter(function(writer) {
-			GP.lastSavedFileName = entry.name;
-			writer.write(new Blob([data], {type: 'text/plain'})); });
-	}
+	if (fName.length == 0) fName = 'Untitled';
 
-	i = fName.lastIndexOf('.');
-	ext = (i >= 0) ? fName.substr(i + 1) : '';
+	if (isElectron()) {
+		const isBinary = fName.endsWith('.hex') || fName.endsWith('.uf2');
+		const savedFilePath = await window.electronAPI.saveFile(fName, isBinary, data);
+		const i = savedFilePath.lastIndexOf('/');
+		GP.lastSavedFileName = (i >= 0) ? savedFilePath.substr(i + 1) : savedFilePath;
+	} else if (typeof window.showSaveFilePicker != 'undefined') { // Native Filesystem API
+		const ext = '';
+		const i = fName.lastIndexOf('.');
+		if (i >= 0) {
+			ext = fName.substr(i + 1);
+			fName = fName.substr(0, i);
+		}
 
-	i = fName.lastIndexOf('.');
-	if (i > 0) fName = fName.substr(0, i);
-	if (i == 0) fName = 'Untitled';
-
-	if (hasChromeFilesystem()) {
-		// extract the extension from fName
-		const options = {
-			type: 'saveFile',
-			suggestedName: fName + '.' + ext,
-			accepts: [{ description: 'MicroBlocks', extensions: [ext] }]
-		};
-		chrome.fileSystem.chooseEntry(options, onFileSelected);
-	} else if (typeof window.showSaveFilePicker != 'undefined' && !isElectron()) { // Native Filesystem API
 		if (/(CrOS)/.test(navigator.userAgent) || /Linux/.test(navigator.userAgent)) {
 			// On Chromebooks and Linux, the extension is not automatically appended.
 			fName = fName + '.' + ext;
@@ -1464,7 +1436,8 @@ async function GP_writeFile(data, fName, id) {
 		await writable.close().catch(() => {});
 		GP.lastSavedFileName = fileHandle.name;
 	} else {
-		saveAs(new Blob([data]), fName + '.' + ext);
+		saveAs(new Blob([data]), fName);
+		GP.lastSavedFileName = fName;
 	}
 }
 
@@ -1782,7 +1755,7 @@ window.onbeforeunload = function() {
 // progressive web app service worker
 
 window.onload = function() {
-	if (('serviceWorker' in navigator) && !hasChromeFilesystem()) {
+	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('sw.js');
 	}
 }
