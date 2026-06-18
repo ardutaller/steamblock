@@ -1332,7 +1332,7 @@ async function GP_writeFile(data, fName, id) {
 		const i = savedFilePath.lastIndexOf('/');
 		GP.lastSavedFileName = (i >= 0) ? savedFilePath.substr(i + 1) : savedFilePath;
 	} else if (typeof window.showSaveFilePicker != 'undefined') { // Native Filesystem API
-		const ext = '';
+		let ext = '';
 		const i = fName.lastIndexOf('.');
 		if (i >= 0) {
 			ext = fName.substr(i + 1);
