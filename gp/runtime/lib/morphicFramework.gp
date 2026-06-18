@@ -652,9 +652,8 @@ method processEvent Keyboard evt {
 			if (isNil focus) {
 				pe = (findProjectEditor)
 				if (27 == key) { // escape key
-					if (notNil (flasher (smallRuntime))) {
-						confirmRemoveFlasher (smallRuntime)
-					} (not (decompilerDone (smallRuntime))) {
+					notify (api (smallRuntime)) 'ide.keyPressed' 'ESC'
+					if (not (decompilerDone (smallRuntime))) {
 						stopDecompilation (smallRuntime)
 					} (notNil (findMorph 'MicroBlocksFilePicker')) {
 						destroy (findMorph 'MicroBlocksFilePicker')

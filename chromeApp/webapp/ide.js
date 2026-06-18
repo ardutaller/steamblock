@@ -230,9 +230,9 @@ IDE.spinner = {
 		this.noteSpan = this.overlay.querySelector('[data-ide="overlay-note"]');
 
 		this.overlay.onkeypress = function (e) {
+			console.log('keypress from ide.js');
 			if (e.key == 'Escape') {
-				if (this.onCancel) { this.onCancel.call(); }
-				this.hide();
+				IDE.spinner.cancel();
 			}
 		}
 	},
@@ -242,6 +242,7 @@ IDE.spinner = {
 		this.onDone = onDone;
 		this.update(title, subtitle, note ?? '(press ESC to cancel)', percent);
 		this.overlay.classList.add('--is-active');
+		this.overlay.focus();
 	},
 
 	update: function (title, subtitle, note, percent) {
@@ -278,6 +279,12 @@ IDE.spinner = {
 		this.overlay.classList.remove('--is-active');
 		this.onCancel = null;
 		this.onDone = null;
+	},
+
+	cancel: function () {
+		if (this.onCancel) { this.onCancel(); }
+		GP.apiCall('ide.spinnerCancelled');
+		this.hide();
 	}
 };
 
@@ -302,6 +309,10 @@ document.addEventListener('spinner.setNote', e => {
 
 document.addEventListener('spinner.setPercent', e => {
 	IDE.spinner.setPercent(e.detail.value);
+});
+
+document.addEventListener('ide.keyPressed', e => {
+	if (e.detail.value == 'ESC') { IDE.spinner.cancel(); }
 });
 
 document.addEventListener('spinner.hide', e => { IDE.spinner.hide(); });

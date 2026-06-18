@@ -56,6 +56,10 @@ method dispatchCall MicroBlocksAPI callObject {
 		browserResize editor (at params 1) (at params 2)
 	} (endPoint == 'ide.version') {
 		respondAPIRequest this id (ideVersion runtime)
+	} (endPoint == 'ide.spinnerCancelled') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		spinner = (partThatIs (morph (global 'page')) 'MicroBlocksSpinner')
+		if (notNil spinner) { destroy spinner }
 
 	// Project
 	} (endPoint == 'project.save') {
