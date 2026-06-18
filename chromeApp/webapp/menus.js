@@ -222,6 +222,10 @@ Menus.library = {
 			action: (libName) => { GP.apiCall('library.showInfoDialog', [libName]); },
 		},
 		{
+			label: 'reload library',
+			action: (libName) => { GP.apiCall('library.reload', [libName]); },
+		},
+		{
 			label: 'show all block definitions',
 			action: (libName) => { GP.apiCall('library.showDefs', [libName]); },
 		},

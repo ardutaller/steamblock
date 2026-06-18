@@ -521,6 +521,8 @@ method addLibraryFromString MicroBlocksProject s libName fileName {
 		}
 		if (beginsWith fileName '//Libraries/') {
 			setPath lib (withoutExtension (substring fileName ((count '//Libraries/') + 1)))
+		} (beginsWith fileName 'Libraries/') {
+			setPath lib (withoutExtension (substring fileName ((count 'Libraries/') + 1)))
 		} (beginsWith fileName 'http://') {
 			setPath lib fileName
 		} (beginsWith fileName (join (gpFolder) '/Libraries')) {
