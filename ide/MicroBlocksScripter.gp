@@ -148,6 +148,10 @@ method handleListContextRequest MicroBlocksScripter anArray {
 	libName = (last anArray)
 	menu = (menu)
 	addItem menu 'library information' (action 'showLibraryInfo' this libName)
+	library = (libraryNamed mbProject libName)
+	if (not (beginsWith (path library) '/')) {
+		addItem menu 'reload library' (action 'importEmbeddedLibrary' this libName)
+	}
 	if (devMode) {
 		addItem menu 'show all block definitions' (action 'showAllLibraryDefinitions' this libName)
 		addItem menu 'hide all block definitions' (action 'hideAllLibraryDefinitions' this libName)
