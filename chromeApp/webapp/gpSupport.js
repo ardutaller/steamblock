@@ -1,31 +1,13 @@
 // Handlers are ignored in gp.html when running as a Chrome App so must be added here:
 
 function addGPHandlers() {
-	var kbdButton = document.getElementById('KeyboardButton');
-	var backspaceButton = document.getElementById('BackspaceButton');
-	var fullscreenButton = document.getElementById('FullscreenButton');
-	var enableMicrophoneButton = document.getElementById('EnableMicrophoneButton');
-	var uploadButton = document.getElementById('UploadButton');
-	var seeInsideButton = document.getElementById('SeeInsideButton');
-	var presentButton = document.getElementById('PresentButton');
-	var goButton = document.getElementById('GoButton');
-	var stopButton = document.getElementById('StopButton');
 	var fileUploader = document.getElementById('FileUploader');
-	var canvas = document.getElementById('canvas');
-
-	kbdButton.onclick = function(evt) { GP.clipboard.focus(); };
-	backspaceButton.onclick = function(evt) { GP_backspace(); };
-	fullscreenButton.onclick = function(evt) { GP_toggleFullscreen(); };
-	uploadButton.onclick = function(evt) { GP_UploadFiles(); };
-	enableMicrophoneButton.onclick = function(evt) { GP_startAudioInput(1024, 22050); };
-	seeInsideButton.onclick = function(evt) { queueGPMessage('seeInside'); };
-	presentButton.onclick = function(evt) { queueGPMessage('present'); };
-	goButton.onclick = function(evt) { queueGPMessage('go'); };
-	stopButton.onclick = function(evt) { queueGPMessage('stop'); };
 	fileUploader.onchange = function(evt) { uploadFiles(fileUploader.files); };
+	var canvas = document.getElementById('canvas');
 	canvas.oncontextmenu = function(evt) { evt.preventDefault(); }
 }
 addGPHandlers();
+
 
 // GP variables
 
@@ -532,61 +514,6 @@ function uploadFiles(files) {
 		recordFile(todo.shift());
 	}
 }
-
-function adjustButtonVisibility() {
-	// Show the appropriate buttons in a mobile or non-mobile browser.
-	var kbdButton = document.getElementById('KeyboardButton');
-	var bsButton = document.getElementById('BackspaceButton');
-	var fsButton = document.getElementById('FullscreenButton');
-	var userAgent = navigator.userAgent;
-	var isKindle = /Kindle|Silk|KFAPW|KFARWI|KFASWI|KFFOWI|KFJW|KFMEWI|KFOT|KFS‌​AW|KFSOWI|KFTBW|KFTH‌​W|KFTT|WFFOWI/i.test(userAgent);
-	var isOtherMobile = /Android|webOS|iPhone|iPad|iPod|CriOS|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-	if (isKindle || isOtherMobile) {
-		kbdButton.style.display = 'inline';
-	} else {
-		kbdButton.style.display = 'none';
-	}
-	if (isKindle || /Android/i.test(navigator.userAgent)) {
-		bsButton.style.display = 'inline';
-	} else {
-		bsButton.style.display = 'none';
-	}
-	if (/iPhone|iPad|iPod|CriOS/i.test(userAgent)) {
-		fsButton.style.display = 'none';
-	} else {
-		fsButton.style.display = 'inline';
-	}
-
-	if (window.parent === window) {
-		document.getElementById('EnableMicrophoneButton').style.display = 'none';
-	}
-
-	// adjust buttons when opened with 'go.html' URL
-	if ((typeof window !== 'undefined') && (window.location.href.includes('go.html'))) {
-		document.getElementById('SeeInsideButton').style.display = 'inline';
-		document.getElementById('PresentButton').style.display = 'none';
-	} else if ((typeof window !== 'undefined') && (window.location.href.includes('microblocks'))) {
-		document.getElementById('controls').style.display = 'none';
-		if (isKindle || isOtherMobile) {
-			// show the keyboard button on mobile devices, but hide others
-			document.getElementById('controls').style.display = 'inline';
-			document.getElementById('KeyboardButton').style.display = 'inline';
-			document.getElementById('BackspaceButton').style.display = 'none';
-			document.getElementById('FullscreenButton').style.display = 'none';
-			document.getElementById('UploadButton').style.display = 'none';
-			document.getElementById('EnableMicrophoneButton').style.display = 'none';
-			document.getElementById('SeeInsideButton').style.display = 'none';
-			document.getElementById('PresentButton').style.display = 'none';
-			document.getElementById('GoButton').style.display = 'none';
-			document.getElementById('StopButton').style.display = 'none';
-		}
-	} else {
-		document.getElementById('SeeInsideButton').style.display = 'none';
-		document.getElementById('PresentButton').style.display = 'inline';
-	}
-}
-// don't show keyboard button
-//adjustButtonVisibility();
 
 // Canvas shadow effects
 
