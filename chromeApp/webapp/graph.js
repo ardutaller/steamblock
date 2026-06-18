@@ -1,6 +1,9 @@
 FloatingWindow.graph = function () {
-	// only one Graph window allowed
-	if (Graph.isOpen()) { return; }
+	if (Graph.isOpen()) {
+		// toggle graph
+		Graph.window.remove();
+		return;
+	}
 
 	if (!Graph.body) { Graph.build(); }
 
@@ -20,6 +23,7 @@ FloatingWindow.graph = function () {
 		target: Graph
 	});
 
+	Graph.window = win;
 	win.popUp();
 	return win;
 };
