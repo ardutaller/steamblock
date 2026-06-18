@@ -26,16 +26,6 @@ var GP = {
 	lastSavedFileName: null,
 	messages: [],
 
-	audioOutBuffer: null,
-	audioOutIsStereo: false,
-	audioOutReady: false,
-
-	audioInBuffer: null,
-	audioInDownsampling: false,
-	audioInReady: false,
-	audioInSource: null,
-	audioInCapture: null,
-
 	lastCallId: 0,
 	callQueue: [],
 	apiResponses: {},
@@ -114,14 +104,6 @@ function GP_setInputPosition(x, y) {
 
 	GP.clipboard.style.left = (rect.left + x) + 'px';
 	GP.clipboard.style.top = (rect.top + y) + 'px';
-}
-
-function isChromeOS() {
-	return (
-		(typeof chrome !== 'undefined') &&
-		(typeof chrome.app !== 'undefined') &&
-		(typeof chrome.app.runtime !== 'undefined') &&
-		(typeof chrome.app.window !== 'undefined'));
 }
 
 function isElectron() {
@@ -539,168 +521,14 @@ function clearShadow() {
 	GP.shadowBlur = 0;
 }
 
-// audio input and output support
+// stubs for unused GP primitives
 
-function GP_audioContext() {
-	// Note: Cache the audio context because browsers only allow you to create a few of them.
-	if (GP.cachedAudioContext) return GP.cachedAudioContext;
-
-	function unsuspendAudioContext () {
-		// On iOS, the audio context is suspended until resumed by a touch event.
-		if (GP.cachedAudioContext &&  ('suspended' === GP.cachedAudioContext.state)) {
-			GP.cachedAudioContext.resume();
-		}
-	}
-	var AudioContextClass = (window.AudioContext || window.webkitAudioContext ||
-		window.mozAudioContext || window.msAudioContext || window.oAudioContext);
-	if (!AudioContextClass) {
-		console.warn('This browser does not support audio');
-		return null;
-	}
-	GP.cachedAudioContext = new AudioContextClass();
-	document.body.addEventListener('touchend', unsuspendAudioContext, false);
-	return GP.cachedAudioContext;
-}
-
-// iOS hack -- create the audio context at startup so a touch event
-// can unsuspend the audio context before we actually need it:
-// Still needed? Commented out for now... (April, 2020)
-//GP_audioContext();
-
-function GP_startAudioInput(inputSampleCount, sampleRate) {
-	if (GP.audioInCapture && GP.audioInSource) return; // already open
-
-	function doSoundInput(evt) {
-		var buf = evt.inputBuffer.getChannelData(0);
-		if (GP.audioInDownsampling) {
-			for (i = 0; i < buf.length; i += 2) {
-				var n = ((buf[i] + buf[i + 1]) * 16383) | 0; // average two samples and convert to signed int (16383 is 32767 / 2)
-				GP.audioInBuffer[i / 2] = n;
-			}
-		} else {
-			for (i = 0; i < buf.length; i++) {
-				GP.audioInBuffer[i] = (buf[i] * 32767) | 0; // convert to signed int
-			}
-		}
-		GP.audioInReady = true;
-	}
-	function openAudioInput(stream) {
-		var rawSampleCount = GP.audioInDownsampling ? (2 * inputSampleCount) : inputSampleCount;
-		GP.audioInSource = audioContext.createMediaStreamSource(stream);
-		GP.audioInCapture = audioContext.createScriptProcessor(rawSampleCount, 1); // will down-sample to 22050
-		GP.audioInCapture.onaudioprocess = doSoundInput;
-		GP.audioInSource.connect(GP.audioInCapture);
-		GP.audioInCapture.connect(audioContext.destination);
-	}
-	function openAudioInputFailed(e) {
-		console.warn('Could not open audio input: ' + e);
-	}
-
-	audioContext = GP_audioContext();
-	if (!audioContext) return;
-
-	var data = new ArrayBuffer(2 * inputSampleCount); // two-bytes per sample
-	GP.audioInBuffer = new Int16Array(data);
-	GP.audioInDownsampling = (sampleRate < audioContext.sampleRate);
-	GP.audioInReady = false;
-
-	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-		navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-	if (navigator.getUserMedia) {
-		navigator.getUserMedia({audio: true}, openAudioInput, openAudioInputFailed);
-	} else {
-		console.warn('Audio input is not supported by this browser');
-	}
-}
-
-function GP_stopAudioInput() {
-	if (GP.audioInSource) GP.audioInSource.disconnect();
-	if (GP.audioInCapture) GP.audioInCapture.disconnect();
-	GP.audioInSource = null;
-	GP.audioInCapture = null;
-	GP.audioInReady = false;
-}
-
-function GP_startAudioOutput(frameCount, isStereo) {
-	if (GP.callbackID) return; // already open
-
-	audioContext = GP_audioContext();
-	if (!audioContext) return;
-
-	function soundProcess() {
-		if (!GP.callbackID) return; // audio output closed
-		if (audioContext.currentTime <= GP.audioOutFlipTime) {
-			GP.callbackID = requestAnimationFrame(soundProcess);
-			return;
-		}
-
-		// select the buffer to fill and swap buffers
-		var buf = GP.audioOutBuffers[GP.audioOutBufferIndex];
-		GP.audioOutBufferIndex = (GP.audioOutBufferIndex + 1) % 2;
-
-		if (GP.audioOutReady) {
-			if (GP.audioOutIsStereo) { // stereo
-				var left = buf.getChannelData(0);
-				var right = buf.getChannelData(1);
-				for (var i = 0; i < left.length; i++) {
-					left[i] = GP.audioOutBuffer[2 * i];
-					right[i] = GP.audioOutBuffer[(2 * i) + 1];
-				}
-			} else { // mono
-				var samples = buf.getChannelData(0);
-				for (var i = 0; i < samples.length; i++) samples[i] = GP.audioOutBuffer[i];
-			}
-		} else { // no GP audio data available; fill all channels with silence
-			for (var chan = 0; chan < buf.numberOfChannels; chan++) {
-				var samples = buf.getChannelData(chan);
-				for (var i = 0; i < samples.length; i++) samples[i] = 0;
-			}
-		}
-		GP.audioOutReady = false;
-
-		var startTime = GP.audioOutFlipTime + buf.duration;
-		if (audioContext.currentTime > startTime) startTime = audioContext.currentTime;
-		var source = audioContext.createBufferSource();
-		source.buffer = buf;
-		source.start(startTime);
-		source.connect(audioContext.destination);
-		GP.audioOutFlipTime = startTime; // when this buffer starts playing, GP can fill the other one
-		GP.callbackID = requestAnimationFrame(soundProcess);
-	}
-
-	var channelCount = isStereo ? 2 : 1;
-	var data = new ArrayBuffer(4 * frameCount * channelCount); // four-bytes per sample (Float32's)
-	GP.audioOutBuffer = new Float32Array(data);
-	GP.audioOutIsStereo = isStereo;
-	GP.audioOutReady = false;
-
-	GP.audioOutBuffers = [];
-	GP.audioOutBuffers.push(audioContext.createBuffer(channelCount, frameCount, 22050));
-	GP.audioOutBuffers.push(audioContext.createBuffer(channelCount, frameCount, 22050));
-	GP.audioOutBufferIndex = 0;
-	GP.audioOutFlipTime = -1;
-
-	GP.callbackID = requestAnimationFrame(soundProcess);
-}
-
-function GP_stopAudioOutput() {
-	if (!GP.callbackID) cancelAnimationFrame(GP.callbackID);
-	GP.callbackID = null;
-}
-
-function GP_toggleFullscreen() {
-	var doc = window.document;
-	var docEl = doc.documentElement;
-
-	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-	if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-		requestFullScreen.call(docEl);
-	} else {
-		cancelFullScreen.call(doc);
-	}
-}
+function GP_audioContext() {}
+function GP_startAudioInput(inputSampleCount, sampleRate) {}
+function GP_stopAudioInput() {}
+function GP_startAudioOutput(frameCount, isStereo) {}
+function GP_stopAudioOutput() {}
+function GP_toggleFullscreen() {}
 
 // Boardie Support
 
@@ -1366,27 +1194,6 @@ async function GP_writeFile(data, fName, id) {
 		saveAs(new Blob([data]), fName);
 		GP.lastSavedFileName = fName;
 	}
-}
-
-// On ChromeOS, read the file opened to launch the application, if any
-
-function GP_ChromebookLaunch(bgPage) {
-	if (bgPage.launchFileEntry) {
-		var fName = bgPage.launchFileEntry.fullPath;
-		bgPage.launchFileEntry.file(function(file) {
-			var reader = new FileReader();
-			reader.onload = function(evt) {
-				GP.droppedFiles.push({ name: toUTF8Array(fName), contents: evt.target.result });
-			};
-			reader.readAsArrayBuffer(file);
-		});
-	}
-}
-
-if ((typeof chrome != 'undefined') &&
-	(typeof chrome.runtime != 'undefined') &&
-	(typeof chrome.runtime.getBackgroundPage != 'undefined')) {
-		chrome.runtime.getBackgroundPage(GP_ChromebookLaunch);
 }
 
 // Floating Keyboard Input dialog for mobile browsers
