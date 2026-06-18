@@ -72,7 +72,7 @@ ipcMain.handle('dialog:openFile', async () => {
 	const { canceled, filePaths } = await dialog.showOpenDialog();
 	if (!canceled && filePaths.length > 0) {
 		// Read the file natively using Node's fs module
-		const data = fs.readFileSync(filePaths[0], 'utf8');
+		const data = fs.readFileSync(filePaths[0]);
 		return { filePath: filePaths[0], content: data };
 	}
 	return null;
