@@ -84,6 +84,7 @@
 
 		max-width: var(--space-120);
 		overflow: hidden;
+		text-overflow: ellipsis;
 		white-space: nowrap;
 
 		transition: max-width var(--duration-400) ease-in-out;
