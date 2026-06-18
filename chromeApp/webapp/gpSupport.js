@@ -864,8 +864,8 @@ function makeDraggable (element) {
 		// edge positions, offset by 50 to make sure we don't lose the window
 		var maxX = document.querySelector('.ide').clientWidth - 50,
 			maxY = document.querySelector('.ide').clientHeight - 50,
-			minX = (element.width - 50) * -1,
-			minY = (element.height - 50) * -1;
+			minX = (element.clientWidth - 50) * -1,
+			minY = (element.clientHeight - 50) * -1;
 
 		// calculate the new cursor position:
 		var newX = Math.round(element.offsetLeft + (e.clientX - lastX)),

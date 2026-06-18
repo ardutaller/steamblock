@@ -36,6 +36,11 @@ IDE.init = function () {
 	this.applyUserPreferences();
 	this.build();
 	GetText.setLocale(this.userPreference('locale'));
+	const resizeObserver = new ResizeObserver((entries) => {
+		// resize a bunch of times. Why just once doesn't work? I don't know!
+		for (let i = 0; i <= 8; i++) { setTimeout(()=>{ IDE.resize(); }, i * 5); }
+	});
+	resizeObserver.observe(IDE.element);
 };
 
 IDE.resize = function () {
@@ -60,8 +65,6 @@ IDE.resize = function () {
 
 	GP.apiCall('ide.resize', [ newWidth, newHeight ]);
 };
-
-window.addEventListener('resize', () => { IDE.resize(); });
 
 IDE.emptyProject = function () {
 	return { title: null, hasCustomBlocks: false };
@@ -230,9 +233,9 @@ IDE.spinner = {
 		this.noteSpan = this.overlay.querySelector('[data-ide="overlay-note"]');
 
 		this.overlay.onkeypress = function (e) {
+			console.log('keypress from ide.js');
 			if (e.key == 'Escape') {
-				if (this.onCancel) { this.onCancel.call(); }
-				this.hide();
+				IDE.spinner.cancel();
 			}
 		}
 	},
@@ -242,6 +245,7 @@ IDE.spinner = {
 		this.onDone = onDone;
 		this.update(title, subtitle, note ?? '(press ESC to cancel)', percent);
 		this.overlay.classList.add('--is-active');
+		this.overlay.focus();
 	},
 
 	update: function (title, subtitle, note, percent) {
@@ -278,6 +282,12 @@ IDE.spinner = {
 		this.overlay.classList.remove('--is-active');
 		this.onCancel = null;
 		this.onDone = null;
+	},
+
+	cancel: function () {
+		if (this.onCancel) { this.onCancel(); }
+		GP.apiCall('ide.spinnerCancelled');
+		this.hide();
 	}
 };
 
@@ -302,6 +312,10 @@ document.addEventListener('spinner.setNote', e => {
 
 document.addEventListener('spinner.setPercent', e => {
 	IDE.spinner.setPercent(e.detail.value);
+});
+
+document.addEventListener('ide.keyPressed', e => {
+	if (e.detail.value == 'ESC') { IDE.spinner.cancel(); }
 });
 
 document.addEventListener('spinner.hide', e => { IDE.spinner.hide(); });

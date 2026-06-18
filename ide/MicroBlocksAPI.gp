@@ -56,6 +56,10 @@ method dispatchCall MicroBlocksAPI callObject {
 		browserResize editor (at params 1) (at params 2)
 	} (endPoint == 'ide.version') {
 		respondAPIRequest this id (ideVersion runtime)
+	} (endPoint == 'ide.spinnerCancelled') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		spinner = (partThatIs (morph (global 'page')) 'MicroBlocksSpinner')
+		if (notNil spinner) { destroy spinner }
 
 	// Project
 	} (endPoint == 'project.save') {
@@ -189,6 +193,13 @@ method dispatchCall MicroBlocksAPI callObject {
 	} (endPoint == 'library.delete') {
 		respondAPIRequest this id 0 // respond first so the request is deleted
 		removeLibraryNamed scripter (at params 1)
+	} (endPoint == 'library.reload') {
+		respondAPIRequest this id 0 // respond first so the request is deleted
+		libName = (at params 1)
+		library = (libraryNamed (project scripter) libName)
+		if (and (notNil (path library)) (not (beginsWith (path library) '/'))) {
+			importEmbeddedLibrary scripter libName
+		}
 
 	// API endpoint not found
 	} else {
