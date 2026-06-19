@@ -232,7 +232,7 @@ static OBJ primEncoderCount(int argCount, OBJ *args) {
 	int encoderIndex = obj2int(args[0]) - 1;
 
 	int result = 0;
-	if (encoderIndex >= 1 || encoderIndex <= NUM_ENCODERS) {
+	if ((encoderIndex >= 0) && (encoderIndex < NUM_ENCODERS)) {
 		result = encoders[encoderIndex].count;
 	}
 	return int2obj(result);
