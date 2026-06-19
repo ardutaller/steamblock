@@ -309,6 +309,7 @@ void deepSleep(int secs);
 
 const char *boardType();
 int hasPSRAM();
+void beep(int freq, int msecs);
 void hardwareInit(void);
 void processStartupGesture();
 void loadStartCodeOrClear();

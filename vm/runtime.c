@@ -7,6 +7,8 @@
 // runtime.c - Runtime for uBlocks, including code chunk storage and task management
 // John Maloney, April 2017
 
+#include <Arduino.h>
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -27,8 +29,6 @@
 #include "version.h"
 
 // Forward Reference Declarations
-
-void delay(unsigned long); // Arduino delay function
 
 static void softReset(int clearMemoryFlag);
 static void sendMessage(int msgType, int chunkIndex, int dataSize, char *data);
@@ -1078,10 +1078,6 @@ int indexOfVarNamed(const char *s) {
 
 // Startup gestures
 
-int startupButtonPressed = false;
-int startupFirstPressMSecs = 0;
-int startupClickCount = 0;
-
 void loadStartCodeOrClear() {
 	if (ideConnected()) return; // do nothing if connected to IDE; would break IDE/board sync
 
@@ -1097,17 +1093,30 @@ void loadStartCodeOrClear() {
 	}
 }
 
+#if defined(HAS_A_B_BUTTONS)
+
+int startupButtonPressed = false;
+int startupFirstPressMSecs = 0;
+int startupClickCount = 0;
+
 void processStartupGesture() {
 	OBJ noArgs;
-	if (startupFirstPressMSecs && ((millisecs() - startupFirstPressMSecs) > 1200)) {
+	if (startupFirstPressMSecs && ((millisecs() - startupFirstPressMSecs) > 1500)) {
 		startupClickCount = 0;
+	}
+	if (trueObj != primButtonB(&noArgs)) {
+		// B button is not pressed
+		startupClickCount = 0;
+		return;
 	}
 	int buttonDown = (trueObj == primButtonA(&noArgs));
 	if (buttonDown) {
 		if (!startupButtonPressed) {
 			if (startupClickCount == 0) startupFirstPressMSecs = millisecs();
 			startupClickCount++;
-			if (startupClickCount >= 3) {
+			if (startupClickCount >= 4) {
+				beep(784, 200); // G
+				beep(659, 200); // E
 				loadStartCodeOrClear();
 				startAll();
 				startupClickCount = 0;
@@ -1120,6 +1129,12 @@ void processStartupGesture() {
 		startupButtonPressed = false;
 	}
 }
+
+#else // no A/B buttons
+
+void processStartupGesture() {} // do nothing
+
+#endif
 
 // Receiving Messages from IDE
 
