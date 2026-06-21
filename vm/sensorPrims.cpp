@@ -2585,135 +2585,16 @@ static OBJ primMicrophone(int argCount, OBJ *args) {
 
 #if defined (COCUBE)
 	#include <CoCubeSensor.h>
-	#include "persist.h"
-	#include "fileSys.h"
-	#define PIN_BUTTON 36 // Power Button
-	#define PIN_BUTTON_A 38
-	#define PIN_BUTTON_B 37
 	CoCubeSensor cocube;
-
-	int clickCount = 0;
-	unsigned long lastClickTime = 0;
-
-	const unsigned long TIMEOUT_MS = 800; // 连按判定窗口
-
-	int clickCountPower = 0;
-	unsigned long lastClickTimePower = 0;
-
-
-	void checkResetButton() {
-		static int lastStateA = HIGH;
-		int stateA = digitalRead(PIN_BUTTON_A);
-		int stateB = digitalRead(PIN_BUTTON_B);
-
-		if (stateB == LOW) {
-			if (lastStateA == HIGH && stateA == LOW) {
-				unsigned long now = millis();
-
-				if (now - lastClickTime > TIMEOUT_MS) {
-					clickCount = 0;
-				}
-
-				clickCount++;
-				lastClickTime = now;
-				delay(50);
-			}
-
-			if (clickCount >= 4) {
-				delay(200);
-				// primLaunchCodeSnapshot();
-				char* targetFile = (char*) "startup.ucode"; // 确保文件名正确
-    			loadCodeSnapshot(targetFile);
-				// backupMbcodeToSPIFFS("backup_shay");
-				clickCount = 0;
-			}
-
-		} else {
-			if (clickCount > 0) {
-				clickCount = 0;
-			}
-		}
-
-		lastStateA = stateA;
-	}
-
-	// 检测引脚是否稳定保持在指定电平（采样 20ms，要求全部一致）
-	int pinIsStable(int pin, int expectedLevel) {
-		for (int i = 0; i < 20; i++) {
-			if (digitalRead(pin) != expectedLevel) return 0;
-			delay(1);
-		}
-		return 1;
-	}
-
-	void checkPowerButton() {
-		static int lastState = HIGH;
-		static int pinDisabled = -1; // -1=未检测, 0=正常, 1=悬空已禁用
-		static int falseFireCount = 0; // 运行时误触发计数
-
-		// 首次调用：采样 200ms 检测引脚是否悬空
-		if (pinDisabled == -1) {
-			int toggles = 0;
-			int prev = digitalRead(PIN_BUTTON);
-			for (int i = 0; i < 1000; i++) {
-				delayMicroseconds(200); // 共 200ms
-				int cur = digitalRead(PIN_BUTTON);
-				if (cur != prev) toggles++;
-				prev = cur;
-			}
-			pinDisabled = (toggles > 3) ? 1 : 0;
-		}
-		if (pinDisabled) return;
-
-		int currentState = digitalRead(PIN_BUTTON);
-		unsigned long now = millis();
-
-		// 1. 超时自动重置点击计数（放在检测逻辑之前）
-		if (clickCountPower > 0 && (now - lastClickTimePower > TIMEOUT_MS)) {
-			clickCountPower = 0;
-		}
-
-		// 2. 边缘检测：按下瞬间 (HIGH -> LOW)
-		if (lastState == HIGH && currentState == LOW) {
-			// 要求引脚持续稳定 LOW 20ms（悬空引脚做不到）
-			if (pinIsStable(PIN_BUTTON, LOW)) {
-				clickCountPower++;
-				lastClickTimePower = now;
-				falseFireCount = 0;
-			} else {
-				falseFireCount++;
-				// 连续多次不稳定 → 判定为悬空，永久禁用
-				if (falseFireCount >= 5) {
-					pinDisabled = 1;
-					clickCountPower = 0;
-					return;
-				}
-			}
-		}
-		lastState = digitalRead(PIN_BUTTON); // 用最新读数更新状态
-
-		// 3. 立即触发逻辑：达到 3 次立即执行，不再等待超时
-		if (clickCountPower >= 3) {
-			delay(200);
-			char* targetFile = (char*) "startup.ucode";
-			loadCodeSnapshot(targetFile);
-			clickCountPower = 0;
-		}
-	}
 
 	void cocubeSensorInit() {
 		cocube.Init();
-		#if !defined(COCUBE_SOCCER)
-			pinMode(PIN_BUTTON, INPUT);
-		#endif
 	}
 
 	void cocubeSensorUpdate() {
 		cocube.Update();
 		#if !defined(COCUBE_SOCCER)
 			cocube.EncoderUpdate();
-//xxx		checkPowerButton(); // this causes intermittent reset on old model CoCubes
-			checkResetButton();
 		#endif
 	}
 

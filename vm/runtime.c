@@ -1101,13 +1101,15 @@ int startupClickCount = 0;
 
 void processStartupGesture() {
 	OBJ noArgs;
-	if (startupFirstPressMSecs && ((millisecs() - startupFirstPressMSecs) > 1500)) {
-		startupClickCount = 0;
-	}
 	if (trueObj != primButtonB(&noArgs)) {
 		// B button is not pressed
+		startupButtonPressed = false;
+		startupFirstPressMSecs = 0;
 		startupClickCount = 0;
 		return;
+	}
+	if (startupFirstPressMSecs && ((millisecs() - startupFirstPressMSecs) > 1500)) {
+		startupClickCount = 0;
 	}
 	int buttonDown = (trueObj == primButtonA(&noArgs));
 	if (buttonDown) {
@@ -1117,12 +1119,13 @@ void processStartupGesture() {
 			if (startupClickCount >= 4) {
 				beep(784, 200); // G
 				beep(659, 200); // E
+				delay(400); // silence
 				loadStartCodeOrClear();
 				startAll();
 				startupClickCount = 0;
 			}
-			startupButtonPressed = true;
 			delay(10); // debounce down transition
+			startupButtonPressed = true;
 		}
 	} else {
 		if (startupButtonPressed) delay(10); // debounce up transition
