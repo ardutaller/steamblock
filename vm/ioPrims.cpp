@@ -2406,40 +2406,6 @@ static void setServo(int pin, int usecs) {
 	}
 }
 
-#elif defined(ESP32)
-
-static int attachServo(int pin) {
-	// Note: Do not use channels 0-1 or 8-9; those use timer0, which is used by Tone.
-	for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
-		if ((-1 == ledcChannels[i]) && ((i & 7) > 1)) { // free channel
-			ledcSetup(i, 100, 10); // 100Hz, 10 bits
-			ledcAttachPin(pin, i);
-			ledcChannels[i] = pin;
-			return i;
-		}
-	}
-	return 0;
-}
-
-static void setServo(int pin, int usecs) {
-	if (usecs <= 0) {
-		pinDetach(pin);
-	} else {
-		int channel = ledcChannelForPin(pin);
-		if (!channel) channel = attachServo(pin);
-		if (channel > 0) {
-			ledcWrite(channel, usecs * 1024 / 10000);
-		}
-	}
-}
-
-void stopServos() {
-	for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
-		int pin = ledcChannels[i];
-		if (pin != -1) pinDetach(pin);
-	}
-}
-
 #elif ARDUINO_ARCH_MBED
 
 #include <mbed.h>
@@ -2517,6 +2483,93 @@ static void setServo(int pin, int usecs) {
 			servoPulseWidth[i] = usecs;
 			return;
 		}
+	}
+}
+
+#elif defined(ESP32)
+
+#define MAX_SERVOS 8
+#define UNUSED 255
+
+static volatile int esp32_servoIndex = 0;
+static volatile char esp32_servoPinHigh = false;
+static volatile char esp32_servoPin[MAX_SERVOS] = {UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED};
+static volatile unsigned short esp32_servoPulseWidth[MAX_SERVOS] = {1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500};
+
+hw_timer_t * esp32_servoTimer = NULL;
+static char esp32ServoTimerStarted = 0;
+
+extern "C" void ARDUINO_ISR_ATTR esp32_servo_IRQHandler() {
+	int pin;
+	if (esp32_servoPinHigh && (0 <= esp32_servoIndex) && (esp32_servoIndex < MAX_SERVOS)) {
+		pin = esp32_servoPin[esp32_servoIndex]; // Note: pin may have become UNUSED
+ 		if (pin != UNUSED) digitalWrite(pin, LOW); // end the current servo pulse
+	}
+
+	// find the next active servo
+	esp32_servoIndex = (esp32_servoIndex + 1) % MAX_SERVOS;
+	while ((esp32_servoIndex < MAX_SERVOS) && (UNUSED == esp32_servoPin[esp32_servoIndex])) {
+		esp32_servoIndex++;
+	}
+
+	uint64_t now = timerReadMicros(esp32_servoTimer);
+	if (esp32_servoIndex < MAX_SERVOS) { // start servo pulse for the next servo
+		pin = esp32_servoPin[esp32_servoIndex]; // Note: pin may have become UNUSED
+ 		if (pin != UNUSED) digitalWrite(pin, HIGH);
+		esp32_servoPinHigh = true;
+		timerAlarmWrite(esp32_servoTimer, now + esp32_servoPulseWidth[esp32_servoIndex], false);
+	} else { // idle until next set of pulses
+		esp32_servoIndex = -1;
+		esp32_servoPinHigh = false;
+		timerAlarmWrite(esp32_servoTimer, now + 18000, false);
+	}
+}
+
+static void startESP32ServoTimer() {
+	esp32_servoTimer = timerBegin(3, 80, true); // group 1/timer 1, divide 80 Mhz by 80, count up
+	timerAttachInterrupt(esp32_servoTimer, &esp32_servo_IRQHandler, false);
+	timerAlarmEnable(esp32_servoTimer);
+	esp32ServoTimerStarted = true;
+}
+
+static void esp32_detachServo(int pin) {
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (pin == esp32_servoPin[i]) {
+			esp32_servoPulseWidth[i] = 1500;
+			esp32_servoPin[i] = UNUSED;
+		}
+	}
+}
+
+static void setServo(int pin, int usecs) {
+	if (!esp32ServoTimerStarted) startESP32ServoTimer();
+
+	if (usecs <= 0) { // turn off servo
+		esp32_detachServo(pin);
+		return;
+	}
+
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (pin == esp32_servoPin[i]) { // update the pulse width for the given pin
+			esp32_servoPulseWidth[i] = usecs;
+			return;
+		}
+	}
+
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (UNUSED == esp32_servoPin[i]) { // found unused servo entry
+			SET_MODE(pin, OUTPUT);
+			esp32_servoPulseWidth[i] = usecs;
+			esp32_servoPin[i] = pin;
+			return;
+		}
+	}
+}
+
+void stopServos() {
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		esp32_servoPulseWidth[i] = 1500;
+		esp32_servoPin[i] = UNUSED;
 	}
 }
 
