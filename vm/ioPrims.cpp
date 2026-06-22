@@ -1832,14 +1832,13 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		// Allocate an LEDC channel for the given pin and start PWM.
 
 		// Note: Do not use channels 0-1 or 8-9; those use timer 0, which is used by Tone
-		// Note: Channel 2 may be used by audio pwm
 		int channel;
 		for (channel = 2; channel < MAX_LEDC_CHANNELS; channel++) {
 			// Find an unused channel entry (i.e. -1) avoiding channels 0-1 and 8-9
 			if ((ledcChannels[channel] == -1) && ((channel & 7) > 1)) break;
 		}
 		if (channel < MAX_LEDC_CHANNELS) {
-			ledcSetup(channel, 100, 10); // 100Hz, 10 bits (same clock rate as servos)
+			ledcSetup(channel, 78125, 10); // 78125 Hz, 10 bits (for audio)
 			ledcAttachPin(pin, channel);
 			ledcChannels[channel] = pin;
 		}
@@ -1852,6 +1851,16 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 			ledcWrite(channel, 0);
 			ledcDetachPin(pin);
 			ledcChannels[channel] = -1;
+		}
+	}
+
+	static void stopPWM_ESP32() {
+		for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
+			int pin = ledcChannels[i];
+			if (pin >= 0) {
+				pinDetach(pin);
+				SET_MODE(pin, INPUT);
+			}
 		}
 	}
 
@@ -1948,10 +1957,14 @@ void primAnalogWrite(OBJ *args) {
 	  #endif
 		if (value == 0) {
 			pinDetach(pinNum);
+			pwmRunning[pinNum] = false;
 		} else {
 			if (!ledcChannelForPin(pinNum)) analogAttach(pinNum);
 			int channel = ledcChannelForPin(pinNum);
-			if (channel) ledcWrite(channel, value);
+			if (channel) {
+				SET_MODE(pinNum, OUTPUT);
+				ledcWrite(channel, value);
+			}
 		}
 	#else
 		#ifdef NRF52
@@ -2285,6 +2298,8 @@ void stopPWM() {
 				pwmRunning[i] = false;
 			}
 		}
+	#elif defined(ESP32)
+		stopPWM_ESP32();
 	#endif
 }
 
