@@ -35,12 +35,24 @@ IDE.init = function () {
 	this.board = this.emptyBoard();
 	this.applyUserPreferences();
 	this.build();
+	this.element.lastWidth = this.element.clientWidth;
+	this.element.lastHeight = this.element.clientHeight;
+	setInterval(
+		()=>{
+			let newWidth = this.element.clientWidth,
+				newHeight = this.element.clientHeight;
+			if (this.element.lastHeight !== newHeight) {
+				this.element.lastHeight = newHeight;
+				this.resize();
+			}
+			if (this.element.lastWidth !== newWidth) {
+				this.element.lastWidth = newWidth;
+				this.resize();
+			}
+		},
+		100
+	);
 	GetText.setLocale(this.userPreference('locale'));
-	const resizeObserver = new ResizeObserver((entries) => {
-		// resize a bunch of times. Why just once doesn't work? I don't know!
-		for (let i = 0; i <= 8; i++) { setTimeout(()=>{ IDE.resize(); }, i * 5); }
-	});
-	resizeObserver.observe(IDE.element);
 };
 
 IDE.resize = function () {
@@ -53,15 +65,17 @@ IDE.resize = function () {
 		topBarHeight = IDE.topBarElement.clientHeight,
 		tipBarHeight = IDE.tipBarElement.clientHeight,
 		winWidth = window.innerWidth,
-		leftBarWidth = IDE.leftBarElement.clientWidth,
+		leftBarWidth =
+			IDE.element.classList.contains('--is-left-collapsed') ? 64 : 192,
 		newHeight = winHeight - (topBarHeight + tipBarHeight),
-		newWidth = winWidth - leftBarWidth;
+		newWidth = winWidth - leftBarWidth,
+		canvas = document.querySelector('#canvas');
 
 	// Always use 'retina mode' in browser (i.e. double resolution)
-	document.querySelector('#canvas').style.height = newHeight + 'px';
-	document.querySelector('#canvas').style.width = newWidth + 'px';
-	document.querySelector('#canvas').height = 2 * newHeight;
-	document.querySelector('#canvas').width = 2 * newWidth;
+	canvas.style.height = newHeight + 'px';
+	canvas.style.width = newWidth + 'px';
+	canvas.height = 2 * newHeight;
+	canvas.width = 2 * newWidth;
 
 	GP.apiCall('ide.resize', [ newWidth, newHeight ]);
 };

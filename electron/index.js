@@ -98,6 +98,8 @@ const createWindow = () => {
 		width: 800,
 		height: 600,
 		autoHideMenuBar: true,
+		minWidth: 640,
+		minHeight: 480,
 		webPreferences: {
 			nodeIntegration: true, // to allow require
 			//contextIsolation: false, // allow use with Electron 12+
@@ -116,9 +118,7 @@ const createWindow = () => {
 	});
 
 	// Force-quit electron when window is closed (needed on MacOS).
-	mainWindow.on('close', (e) => {
-		app.exit();
-	});
+	mainWindow.on('close', (e) => { app.exit(); });
 
 	mainWindow.webContents.session.on(
 		'select-serial-port',
