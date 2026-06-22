@@ -444,7 +444,6 @@ method installFirmware ESPTool boardName eraseFlag downloadFlag vmData {
 	) {
 		ok = (uploadESP8266VM this vmData eraseFlag)
 	} else {
-		setAllInOneBinary this ('CoCube' == boardName)
 		ok = (uploadESP32VM this vmData eraseFlag)
 	}
 

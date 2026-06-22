@@ -233,8 +233,7 @@ method flashVM MicroBlocksFirmwareInstaller boardName eraseFlashFlag {
 	portName = (getField (smallRuntime) 'portName')
 	closePort this // close serial port to avoid interaction with install process
 	flasher = (newFlasher boardName portName eraseFlashFlag false)
-	addPart (global 'page') (spinner flasher)
-	startFlasher flasher nil
+	installBuiltinFirmware flasher boardName
 }
 
 // Install ESP firmware from file
@@ -243,7 +242,7 @@ method installESPFirmwareFromFile MicroBlocksFirmwareInstaller fileName data {
 	portName = (getField (smallRuntime) 'portName')
 	closePort this // close serial port to avoid interaction with install process
 	flasher = (newFlasher fileName portName false false)
-	installFromData flasher nil fileName data
+	installFromData flasher fileName data
 }
 
 // Install ESP firmware from URL
@@ -293,5 +292,5 @@ method flashESPFirmwareFromURL MicroBlocksFirmwareInstaller boardName url {
 	portName = (getField (smallRuntime) 'portName')
 	closePort this // close serial port to avoid interaction with install process
 	flasher = (newFlasher boardName portName false false)
-	installFromURL flasher nil url
+	installFromURL flasher url
 }
