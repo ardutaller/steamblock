@@ -81,7 +81,7 @@ MicroBlocks pin numbers follow the labels of each board - on the ESP8266 that me
 Coordinates: x = 1..(8 * modules) left to right, y = 1..8 top to bottom. Text uses the built-in MicroBlocks font via [misc:shapeforChar].
 
 ORIENTATION: use "MAX7219 rotation _" (0/90/180/270) to match how the panel is mounted. 0 and 180 keep the full (8*modules) x 8 canvas (180 = upside-down); 90/270 give a tall 8 x (8*modules) canvas, handy for pixel graphics on a vertically-mounted strip (only one character of text fits across). Separately, cheap 4-in-1 (FC16) panels are often wired mirrored: use "MAX7219 flip horizontal _" / "MAX7219 flip vertical _" to correct per-module mirroring (flip horizontal defaults ON, which suits the common 4-in-1). For panels whose modules are out of order on the chain, see the KNOB comments inside "MAX7219 show".'
-variables _max_buf _max_count _max_width _max_din _max_clk _max_cs _max_flipH _max_flipV _max_rot
+variables _max7219_buf _max7219_count _max7219_width _max7219_din _max7219_clk _max7219_cs _max7219_flipH _max7219_flipV _max7219_rot
 choices m7align left right center
 choices m7rotation '0' '90' '180' '270'
 
@@ -124,16 +124,16 @@ choices m7rotation '0' '90' '180' '270'
   spec ' ' '_max7219_line' '_MAX7219 line x _ y _ to x _ y _' 'num num num num' 1 1 8 8
 
 to max7219_begin din clk cs modules {
-  _max_din = din
-  _max_clk = clk
-  _max_cs = cs
-  _max_count = modules
-  _max_width = (modules * 8)
-  _max_flipH = (booleanConstant true)
-  _max_flipV = (booleanConstant false)
-  _max_rot = 0
-  _max_buf = (newList _max_width 0)
-  digitalWriteOp _max_cs true
+  _max7219_din = din
+  _max7219_clk = clk
+  _max7219_cs = cs
+  _max7219_count = modules
+  _max7219_width = (modules * 8)
+  _max7219_flipH = (booleanConstant true)
+  _max7219_flipV = (booleanConstant false)
+  _max7219_rot = 0
+  _max7219_buf = (newList _max7219_width 0)
+  digitalWriteOp _max7219_cs true
   comment 'Init each module: test off, no BCD decode, scan all 8 rows, medium brightness, wake up.'
   '_max7219_write_all' (hexToInt '0F') 0
   '_max7219_write_all' (hexToInt '09') 0
@@ -145,7 +145,7 @@ to max7219_begin din clk cs modules {
 
 to '_max7219_ensure' {
   comment 'Auto-start with sensible per-board default pins if begin was not called. Defaults assume the board hardware-SPI pins (DIN=MOSI, CLK=SCK) plus a free CS; call "MAX7219 begin" to match your own wiring.'
-  if (_max_buf == 0) {
+  if (_max7219_buf == 0) {
     if ((boardType) == 'ESP32') {
       max7219_begin 23 18 5 4
     } (or ((boardType) == 'micro:bit v2') ((boardType) == 'micro:bit')) {
@@ -176,42 +176,42 @@ to max7219_power on {
 
 to max7219_clear {
   '_max7219_ensure'
-  for i _max_width {atPut i _max_buf 0}
+  for i _max7219_width {atPut i _max7219_buf 0}
   max7219_show
 }
 
 to max7219_set_pixel x y on {
   comment 'Set one pixel in the current rotation frame (1,1 = top-left). Mapped to the physical buffer via rotation then flip. Call "MAX7219 show" to push the buffer. lw/lh are inlined here (not via _max7219_w / _max7219_h) to keep this hot, deeply-nested function shallow on the call stack.'
-  local 'lw' _max_width
+  local 'lw' _max7219_width
   local 'lh' 8
-  if (or (_max_rot == 90) (_max_rot == 270)) {
+  if (or (_max7219_rot == 90) (_max7219_rot == 270)) {
     lw = 8
-    lh = _max_width
+    lh = _max7219_width
   }
   if (and (and (x > 0) (x <= lw)) (and (y > 0) (y <= lh))) {
-    comment 'rotation: logical (x,y) -> base px (1.._max_width), py (1..8)'
+    comment 'rotation: logical (x,y) -> base px (1.._max7219_width), py (1..8)'
     local 'px' x
     local 'py' y
-    if (_max_rot == 180) {
-      px = ((_max_width + 1) - x)
+    if (_max7219_rot == 180) {
+      px = ((_max7219_width + 1) - x)
       py = (9 - y)
-    } (_max_rot == 90) {
+    } (_max7219_rot == 90) {
       px = y
       py = (9 - x)
-    } (_max_rot == 270) {
-      px = ((_max_width + 1) - y)
+    } (_max7219_rot == 270) {
+      px = ((_max7219_width + 1) - y)
       py = x
     }
     comment 'panel wiring correction (independent of rotation)'
-    if _max_flipH {px = ((_max_width + 1) - px)}
-    if _max_flipV {py = (9 - py)}
-    local 'b' (at px _max_buf)
+    if _max7219_flipH {px = ((_max7219_width + 1) - px)}
+    if _max7219_flipV {py = (9 - py)}
+    local 'b' (at px _max7219_buf)
     if on {
       b = (b | (1 << (py - 1)))
     } else {
       b = (b & ('~' (1 << (py - 1))))
     }
-    atPut px _max_buf b
+    atPut px _max7219_buf b
   }
 }
 
@@ -231,15 +231,15 @@ to max7219_show {
   comment 'Push the column buffer to the chips. The buffer is column-major (one byte per x, bit (y-1) = row y); MAX7219 wants one byte per ROW per module, so we transpose here.'
   '_max7219_ensure'
   for r 8 {
-    digitalWriteOp _max_cs false
-    for mm _max_count {
+    digitalWriteOp _max7219_cs false
+    for mm _max7219_count {
       comment 'KNOB 1 (module order): far module first. If text is split/reversed across modules, use m = mm instead.'
-      local 'm' ((_max_count - mm) + 1)
+      local 'm' ((_max7219_count - mm) + 1)
       local 'rowBits' 0
       for c 8 {
         local 'x' (((m - 1) * 8) + c)
         comment 'KNOB 3 (rows): if the display is upside-down, use (1 << (8 - r)).'
-        if (((at x _max_buf) & (1 << (r - 1))) != 0) {
+        if (((at x _max7219_buf) & (1 << (r - 1))) != 0) {
           comment 'KNOB 2 (columns): if each module is mirrored left-right, use (1 << (8 - c)).'
           rowBits = (rowBits | (1 << (c - 1)))
         }
@@ -247,27 +247,27 @@ to max7219_show {
       '_max7219_send' r
       '_max7219_send' rowBits
     }
-    digitalWriteOp _max_cs true
+    digitalWriteOp _max7219_cs true
   }
 }
 
 to '_max7219_send' b {
   comment 'Shift out one byte, most-significant bit first.'
   for i 8 {
-    digitalWriteOp _max_din (((b >> (8 - i)) & 1) == 1)
-    digitalWriteOp _max_clk true
-    digitalWriteOp _max_clk false
+    digitalWriteOp _max7219_din (((b >> (8 - i)) & 1) == 1)
+    digitalWriteOp _max7219_clk true
+    digitalWriteOp _max7219_clk false
   }
 }
 
 to '_max7219_write_all' reg data {
   comment 'Send the same register+data to every module (used for init / brightness / lamp test). One frame per module, latched together.'
-  digitalWriteOp _max_cs false
-  repeat _max_count {
+  digitalWriteOp _max7219_cs false
+  repeat _max7219_count {
     '_max7219_send' reg
     '_max7219_send' data
   }
-  digitalWriteOp _max_cs true
+  digitalWriteOp _max7219_cs true
 }
 
 to max7219_draw_text text x {
@@ -308,7 +308,7 @@ to max7219_number whole frac places {
   local 'digits' ('[data:join]' wstr fstr)
   local 'startx' (((('_max7219_w') - (((size digits) * 6) - 1)) / 2) + 1)
   if (startx < 1) {startx = 1}
-  for i _max_width {atPut i _max_buf 0}
+  for i _max7219_width {atPut i _max7219_buf 0}
   max7219_draw_text digits startx
   max7219_sep startx (size wstr) '.'
   max7219_show
@@ -329,7 +329,7 @@ to max7219_time mins secs hund {
   }
   local 'startx' (((('_max7219_w') - (((size digits) * 6) - 1)) / 2) + 1)
   if (startx < 1) {startx = 1}
-  for i _max_width {atPut i _max_buf 0}
+  for i _max7219_width {atPut i _max7219_buf 0}
   max7219_draw_text digits startx
   if (mins > 0) {max7219_sep startx (size mstr) ':'}
   max7219_sep startx ((size mstr) + 2) '.'
@@ -341,7 +341,7 @@ to max7219_print text optionalAlign optionalShow {
   '_max7219_ensure'
   local 'a' (argOrDefault 2 'left')
   text = ('[data:toString]' text)
-  for i _max_width {atPut i _max_buf 0}
+  for i _max7219_width {atPut i _max7219_buf 0}
   local 'x' 1
   if (a == 'right') {
     x = ((('_max7219_w') - ('_max7219_textWidth' text)) + 1)
@@ -370,7 +370,7 @@ to max7219_scroll text optionalDelay {
   local 'totalW' ((size text) * 6)
   local 'x' (('_max7219_w') + 1)
   repeatUntil (x < (0 - totalW)) {
-    for i _max_width {atPut i _max_buf 0}
+    for i _max7219_width {atPut i _max7219_buf 0}
     max7219_draw_text text x
     max7219_show
     x += -1
@@ -380,34 +380,34 @@ to max7219_scroll text optionalDelay {
 
 to max7219_flip_h on {
   '_max7219_ensure'
-  _max_flipH = on
+  _max7219_flipH = on
 }
 
 to max7219_flip_v on {
   '_max7219_ensure'
-  _max_flipV = on
+  _max7219_flipV = on
 }
 
 to max7219_set_rotation deg {
   comment 'Rotate the whole display: 0/90/180/270 degrees. 0/180 keep the (8*modules)x8 canvas (180 = upside-down); 90/270 give an 8x(8*modules) canvas.'
   '_max7219_ensure'
-  _max_rot = ('[data:convertType]' deg 'number')
+  _max7219_rot = ('[data:convertType]' deg 'number')
 }
 
 to '_max7219_w' {
   comment 'Logical canvas width in the current rotation (valid x range).'
   '_max7219_ensure'
-  if (or (_max_rot == 90) (_max_rot == 270)) {
+  if (or (_max7219_rot == 90) (_max7219_rot == 270)) {
     return 8
   }
-  return _max_width
+  return _max7219_width
 }
 
 to '_max7219_h' {
   comment 'Logical canvas height in the current rotation (valid y range).'
   '_max7219_ensure'
-  if (or (_max_rot == 90) (_max_rot == 270)) {
-    return _max_width
+  if (or (_max7219_rot == 90) (_max7219_rot == 270)) {
+    return _max7219_width
   }
   return 8
 }
@@ -492,7 +492,7 @@ to max7219_circle x0 y0 radius filled {
 to max7219_bar percent {
   comment 'Horizontal level bar filling left-to-right (0-100%). Good for a speed/level meter.'
   '_max7219_ensure'
-  for i _max_width {atPut i _max_buf 0}
+  for i _max7219_width {atPut i _max7219_buf 0}
   local 'lw' ('_max7219_w')
   local 'cols' ((percent * lw) / 100)
   if (cols > lw) {cols = lw}
@@ -508,11 +508,11 @@ to max7219_wipe_in optionalDelay {
   comment 'Reveal whatever is currently in the buffer, sweeping left to right.'
   '_max7219_ensure'
   local 'delay' (argOrDefault 1 25)
-  local 'saved' (newList _max_width 0)
-  for i _max_width {atPut i saved (at i _max_buf)}
-  for i _max_width {atPut i _max_buf 0}
-  for k _max_width {
-    atPut k _max_buf (at k saved)
+  local 'saved' (newList _max7219_width 0)
+  for i _max7219_width {atPut i saved (at i _max7219_buf)}
+  for i _max7219_width {atPut i _max7219_buf 0}
+  for k _max7219_width {
+    atPut k _max7219_buf (at k saved)
     max7219_show
     waitMillis delay
   }
@@ -522,8 +522,8 @@ to max7219_wipe_out optionalDelay {
   comment 'Clear the display, sweeping left to right.'
   '_max7219_ensure'
   local 'delay' (argOrDefault 1 25)
-  for k _max_width {
-    atPut k _max_buf 0
+  for k _max7219_width {
+    atPut k _max7219_buf 0
     max7219_show
     waitMillis delay
   }
