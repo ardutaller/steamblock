@@ -1878,20 +1878,6 @@ void primAnalogWrite(OBJ *args) {
 		if (pinNum > 25) return;
 	#elif defined(ADAFRUIT_TRINKET_M0)
 		if (pinNum > 4) return;
-	#elif defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
-		#if defined(ARDUINO_CITILAB_ED1)
-			if ((100 <= pinNum) && (pinNum <= 139)) {
-				pinNum = pinNum - 100; // allows access to unmapped IO pins 0-39 as 100-139
-			} else if ((1 <= pinNum) && (pinNum <= 4)) {
-				pinNum = ed1DigitalPinMap[pinNum - 1];
-			}
-		#endif
-		#if defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
-			if ((0 <= pinNum) && (pinNum < DIGITAL_PINS) && (pinNum != 17) && (pinNum != 18)) {
-				pinNum = digitalPin[pinNum]; // map edge connector pin number to ESP32 pin number
-			}
-		#endif
-		if (RESERVED(pinNum)) return;
 	#elif defined(ARDUINO_SAM_DUE) || defined(ARDUINO_NRF52840_FEATHER)
 		if (pinNum < 2) return;
 	#elif defined(ARDUINO_SAM_ZERO) // M0
@@ -1905,9 +1891,6 @@ void primAnalogWrite(OBJ *args) {
 		} else {
 			return;
 		}
-	#elif defined(USE_DIGITAL_PIN_MAP)
-		pinNum = mapDigitalPinNum(pinNum);
-		if (pinNum < 0) return;
 	#endif
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
