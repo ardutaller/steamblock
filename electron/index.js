@@ -95,8 +95,8 @@ ipcMain.handle('dialog:saveFile', async (event, suggestedName, isBinary, data) =
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: 1024,
+		height: 768,
 		autoHideMenuBar: true,
 		minWidth: 640,
 		minHeight: 480,
