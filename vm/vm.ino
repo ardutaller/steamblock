@@ -11,28 +11,16 @@
 int resetDoubleTap = false;
 
 #if defined(SPRINGBOT)
-	#define BUZZER_PIN 33
 	#define RED_LED_PIN 40
 	#define DOUBLE_TAP_PIN 42
 
-	void springbotBeep(int halfPeriod) {
-		pinMode(BUZZER_PIN, OUTPUT);
-		for (int i = 0; i < 80; i++) {
-			digitalWrite(BUZZER_PIN, HIGH);
-			delayMicroseconds(halfPeriod);
-			digitalWrite(BUZZER_PIN, LOW);
-			delayMicroseconds(halfPeriod);
-		}
-		pinMode(BUZZER_PIN, INPUT);
-	}
-
 	void checkForDoubleTap() {
-		// read the remembered state as early as possible
+		// read the remembered pin state as early as possible
 		pinMode(DOUBLE_TAP_PIN, INPUT);
 		resetDoubleTap = digitalRead(DOUBLE_TAP_PIN);
 		if (resetDoubleTap) {
-			springbotBeep(642); // G
-			springbotBeep(764); // E
+			beep(784, 200); // G
+			beep(659, 200); // E
 			return;
 		}
 
@@ -53,14 +41,12 @@ int resetDoubleTap = false;
 		pinMode(RED_LED_PIN, INPUT); // turn off red LED
 		pinMode(DOUBLE_TAP_PIN, INPUT); // release DOUBLE_TAP_PIN
 	}
-
 #endif
 
 void setup() {
 #ifdef ARDUINO_NRF52_PRIMO
 	sd_softdevice_disable();
-#endif
-#if defined(SPRINGBOT)
+#elif defined(SPRINGBOT)
 	checkForDoubleTap();
 #endif
 

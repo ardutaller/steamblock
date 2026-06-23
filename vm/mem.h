@@ -72,6 +72,14 @@ extern "C" {
 		#define HAS_LED_MATRIX 1
 #endif
 
+#if defined(ARDUINO_BBC_MICROBIT) || defined(ARDUINO_BBC_MICROBIT_V2) || \
+	defined(ARDUINO_CALLIOPE_MINI) || defined(CALLIOPE_V3) || defined(PICO_ED) || \
+	defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_NRF52840_CLUE) || \
+	defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT) || defined(DUELink) || \
+	defined(SPRINGBOT) || defined(COCUBE) || defined(GNUBLOCKS)
+		#define HAS_A_B_BUTTONS 1
+#endif
+
 // Integer types
 
 typedef unsigned char uint8;

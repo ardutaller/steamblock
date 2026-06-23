@@ -2699,6 +2699,42 @@ void stopTone() {
 
 #endif // tone
 
+// beep function for feedback and debugging
+
+#if defined(DEFAULT_TONE_PIN)
+
+void beep(int freq, int msecs) {
+		int tonePin = DEFAULT_TONE_PIN;
+		#if defined(USE_DIGITAL_PIN_MAP)
+			tonePin = mapDigitalPinNum(tonePin);
+			if (tonePin < 0) return;
+		#endif
+
+		#if defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3)
+			setHighDrive(tonePin);
+		#endif
+
+		int halfPeriod = (1000000 / freq) / 2;
+		int cycleCount = (msecs * 1000) / (2 * halfPeriod);
+
+		pinMode(tonePin, OUTPUT);
+		for (int i = 0; i < cycleCount; i++) {
+			digitalWrite(tonePin, HIGH);
+			delayMicroseconds(halfPeriod);
+			digitalWrite(tonePin, LOW);
+			delayMicroseconds(halfPeriod);
+		}
+		pinMode(tonePin, INPUT);
+	}
+
+#else // no built-in speaker
+
+void beep(int freq, int msecs) { }
+
+#endif
+
+// I2S support
+
 #if defined(HAS_I2S)
 
 OBJ primI2SInit(int argCount, OBJ *args) {
