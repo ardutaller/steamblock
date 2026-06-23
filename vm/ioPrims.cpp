@@ -1558,7 +1558,7 @@ static void initPins(void) {
 		analogWriteFreq(122070);
 	#elif defined(ESP8266)
 		// only supports 8-bit resolution
-		analogWriteFreq(20000);
+		analogWriteFreq(10000);
 		analogWriteRange(255);
 	#elif defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		analogWriteResolution(12);
