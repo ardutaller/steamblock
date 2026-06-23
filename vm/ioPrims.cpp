@@ -1543,6 +1543,13 @@ static void initPins(void) {
 		// The analog write primitve takes a 10-bit value, as it does on all MicroBlocks boards,
 		// but on NRF52 only the 8 most signifcant bits are used.
 		analogWriteResolution(8);
+	#elif defined(ARDUINO_ARCH_RP2040)
+		analogWriteResolution(10);
+		analogWriteFreq(122070);
+	#elif defined(ESP8266)
+		// only supports 8-bit resolution
+		analogWriteFreq(40000);
+		analogWriteRange(255);
 	#elif defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		analogWriteResolution(12);
 	#elif !defined(ESP8266) && !defined(ARDUINO_ARCH_ESP32) && !defined(__ZEPHYR__)
@@ -1866,11 +1873,15 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 
 #endif
 
+#if defined(NRF51)
+	static int nrf51PWMClockInitialized = false;
+#endif
+
 void primAnalogWrite(OBJ *args) {
 	if (!isInt(args[0]) || !isInt(args[1])) { fail(needsIntegerError); return; }
 	int pinNum = obj2int(args[0]);
-	#if defined(USE_DIGITAL_PIN_MAP) && !defined(DUELink)
-		// DUELink case handled below
+	#if defined(USE_DIGITAL_PIN_MAP) && !defined(DUELink) && !defined(ARDUINO_ARCH_SAMD)
+		// DUELink and SAMD cases handled below
 		pinNum = mapDigitalPinNum(pinNum);
 		if (pinNum < 0) return;
 	#endif
@@ -1894,8 +1905,11 @@ void primAnalogWrite(OBJ *args) {
 	#endif
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
-	#if defined(ARDUINO_SAM_DUE)
+	#if defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		if (value > 4095) value = 4095;
+	#elif defined(NRF52) || defined(ESP8266)
+		value = value >> 2; // PWM has only 8-bit resolution
+		if (value > 255) value = 255;
 	#else
 		if (value > 1023) value = 1023;
 	#endif
@@ -1958,10 +1972,18 @@ void primAnalogWrite(OBJ *args) {
 				while (!pwm->EVENTS_PWMPERIODEND) /* wait */;
 				pwm->EVENTS_PWMPERIODEND = 0;
 			}
-			value = (value >> 2); // On NRF52, use only the top 8-bits of the 10-bit value
 		#endif
 
 		analogWrite(pinNum, value); // sets the PWM duty cycle on a digital pin
+
+		#if defined(NRF51)
+			if (!nrf51PWMClockInitialized) {
+				// change nRF51 timer prescaler after first call to analogWrite()
+    			NRF_TIMER1->PRESCALER = 3; // divides 16 Mhz by 2^N
+				nrf51PWMClockInitialized = true;
+			}
+		#endif
+
 	#endif
 	if (OUTPUT == currentMode[pinNum]) { // using PWM, not DAC
 		pwmRunning[pinNum] = true;
@@ -2278,6 +2300,14 @@ void stopPWM() {
 				if (pwmPin >= 0) pwm_stop((PinName) pwmPin);
 				int duePin = mapDigitalPinNum(i);
 				if (duePin >= 0) SET_MODE(duePin, INPUT);
+				pwmRunning[i] = false;
+			}
+		}
+	#elif defined(ESP8266)
+		for (int i = 0; i < TOTAL_PINS; i++) {
+			if (pwmRunning[i]) {
+				analogWrite(i, 0);
+				SET_MODE(i, INPUT);
 				pwmRunning[i] = false;
 			}
 		}
