@@ -15,6 +15,10 @@
 #include <zephyr/random/random.h>
 #endif
 
+#if defined(ESP8266)
+#include "user_interface.h" // used to set clock rate and decrease power usage
+#endif
+
 #include "mem.h"
 #include "interp.h"
 
@@ -203,6 +207,12 @@ void hardwareInit() {
 		// Check for NFC chip (I2C address 87). Only Springbot Gold has that chip.
 		isSpringbotGold = (readI2CReg(87, 0) >= 0);
 		useTFT = isSpringbotGold;
+	#endif
+	#if defined(ESP8266)
+		// doing this at startup reduces power usage from ~70 to ~20 mA; not sure why!
+		system_update_cpu_freq(80);
+		delay(1);
+		system_update_cpu_freq(160);
 	#endif
 }
 
@@ -1548,7 +1558,7 @@ static void initPins(void) {
 		analogWriteFreq(122070);
 	#elif defined(ESP8266)
 		// only supports 8-bit resolution
-		analogWriteFreq(40000);
+		analogWriteFreq(20000);
 		analogWriteRange(255);
 	#elif defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		analogWriteResolution(12);
@@ -3520,12 +3530,12 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 	}
 
 #elif defined(ESP8266)
-	#include "user_interface.h"
 
 	extern "C" void lightSleep(int msecs) {
-		system_update_cpu_freq(80);
-		delay(msecs);
-		system_update_cpu_freq(160);
+		// Commented out because causes a crash when using PWM:
+		// system_update_cpu_freq(80);
+		// delay(msecs);
+		// system_update_cpu_freq(160);
 	}
 
 	extern "C" void deepSleep(int secs) {
