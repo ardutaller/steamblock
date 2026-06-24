@@ -7,8 +7,6 @@
 // runtime.c - Runtime for uBlocks, including code chunk storage and task management
 // John Maloney, April 2017
 
-#include <Arduino.h>
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -28,32 +26,14 @@
 #include "persist.h"
 #include "version.h"
 
+void delay(unsigned long); // Arduino delay function
+
 // Forward Reference Declarations
 
 static void softReset(int clearMemoryFlag);
 static void sendMessage(int msgType, int chunkIndex, int dataSize, char *data);
 static void sendChunkCRC(int chunkID);
 static void sendData();
-
-// debugging
-
-#ifdef DEBUG_BEEP
-
-static void debugBeep(int count) {
-	// Useful for audio debugging communication issues.
-
-	const int speakerPin = 27;
-	pinMode(speakerPin, 1); // output pin
-	for (int i = 0; i < 10; i++) {
-		digitalWrite(speakerPin, true);
-		delay(count);
-		digitalWrite(speakerPin, false);
-		delay(count);
-	}
-	delay(20);
-}
-
-#endif
 
 // DUELink support
 
