@@ -1770,6 +1770,14 @@ msgid "draw pixel row _ x _ y _"
 msgstr "draw pixel row _ x _ y _"
 
 #. TFT Display library block
+msgid "bytes per pixel"
+msgstr "bytes per pixel"
+
+#. TFT Display library block
+msgid "palette _"
+msgstr "palette _"
+
+#. TFT Display library block
 msgid "draw image _ on TFT at x _ y _ color _"
 msgstr "draw image _ on TFT at x _ y _ color _"
 
@@ -1821,6 +1829,15 @@ msgstr "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
 #. External Displays Library block
 msgid "attach OLED w _ h _"
 msgstr "attach OLED w _ h _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# flip vertical _"
+msgstr "#BR# flip vertical _"
+
+#. External Displays Library block
+msgid "x offset _"
+msgstr "x offset _"
 
 #. External Displays Library block
 msgid "reset pin _"
