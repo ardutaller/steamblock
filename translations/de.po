@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-06-24 15:45+0000\n"
+"PO-Revision-Date: 2026-06-25 16:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1853,7 +1853,7 @@ msgstr "normal (65%)"
 
 #. As in load a "Custom" language file
 msgid "Custom..."
-msgstr "Nutzerdefiniert ..."
+msgstr "Nutzerdefiniert …"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the absolute value of the given number (always >= 0)."
@@ -8097,7 +8097,7 @@ msgstr "Farbnummer für r _ g _ b _ (0-255)"
 
 #. 8 Bit Graphics Library block
 msgid "draw palette table _"
-msgstr "zeichen Palettentafel _"
+msgstr "zeichne Palettentafel _"
 
 #. 8 Bit Graphics Library block
 msgid "current palette"
