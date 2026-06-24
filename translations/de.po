@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-06-18 09:01+0000\n"
+"PO-Revision-Date: 2026-06-24 15:45+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -110,7 +110,9 @@ msgstr "prefix"
 
 #. Example text for lowercase and uppercase Strings library block
 msgid "THIS is a String! :)"
-msgstr "DAS ist eine Zeichenkette! :-)"
+msgstr ""
+"DAS ist eine \n"
+"Zeichenkette! :-)"
 
 #. Example text for Strings library block
 msgid "Hello, world!"
@@ -2712,8 +2714,8 @@ msgstr "Eingabe"
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to see value, or drop into an input slot. [r] menu."
 msgstr ""
-"[l] klicke zum Anzeigen des Werts. Oder schiebe Block in ein Eingabefeld im "
-"Skript. [r] Menü."
+"[l] klicke zum Anzeigen des Werts. Oder bewege den Block in ein Eingabefeld. "
+"[r] Menü."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
@@ -3192,25 +3194,25 @@ msgstr ""
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] toggle value, or drop a reporter into it."
-msgstr "[l] wähle den Wert. Oder schiebe einen Rückgabeblock hinein."
+msgstr "[l] wähle den Wert. Oder bewege einen Rückgabeblock hinein."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] change the color, or drop a reporter into it."
-msgstr "[l] ändere die Farbe. Oder schiebe einen Rückgabeblock hinein."
+msgstr "[l] ändere die Farbe. Oder bewege einen Rückgabeblock hinein."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 msgid "[l] edit its value, or drop a reporter into it."
-msgstr "[l] bearbeite den Wert. Oder schiebe einen Rückgabeblock hinein."
+msgstr "[l] bearbeite den Wert. Oder bewege einen Rückgabeblock hinein."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
 #. The [r] tag turns into an icon of a mouse with the right button pressed
 msgid "[l] to run, or drag to build scripts. [r] menu."
 msgstr ""
-"[l] klicke zum Starten. Oder schiebe Block zum Bauen eines Skripts nach "
-"rechts. [r] Menü."
+"[l] klicke zum Starten. Oder bewege den Block nach rechts, um ein Skript zu "
+"bauen. [r] Menü."
 
 #. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
 #. The [l] tag turns into an icon of a mouse with the left button pressed
@@ -4221,7 +4223,7 @@ msgstr "setze Display _"
 
 #. OLED Graphics library block
 msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
-msgstr "init i2c _ Adresse (hex) _ reset Pin _ flip _"
+msgstr "init i2c _ Adresse (hex) _ reset-Pin _ drehe vertikal _"
 
 #. General MIDI control change
 msgid "hold"
@@ -4319,7 +4321,7 @@ msgstr ""
 
 #. OLED Graphics library block
 msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
-msgstr "init spi _ dc Pin _ reset Pin _ flip _"
+msgstr "init spi _ dc-Pin _ reset-Pin _ drehe vertikal _"
 
 #. OLED Graphics library block
 msgid "write _ at x _ y _ inverse _"
@@ -4595,14 +4597,14 @@ msgstr "zeige erweiterte Blöcke, Menüpunkte und Editorfunktionen"
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the milliseconds since the given start milliseconds. Handles clock wrap."
 msgstr ""
-"gibt die Millisekunden nach den angegebenen Startmillisekunden an. Handles "
-"Clock Wrap."
+"gibt die Millisekunden nach den angegebenen Startmillisekunden an und "
+"berücksichtigt den Überlauf."
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report the microseconds since the given start microseconds. Handles clock wrap."
 msgstr ""
-"Gibt die Mikrosekunden nach den angegebenen Startmikrosekunden an. Handles "
-"Clock Wrap."
+"gibt die Mikrosekunden nach den angegebenen Startmikrosekunden an und "
+"berücksichtigt den Überlauf."
 
 #. Block in Control category
 msgid "exit loop"
@@ -7125,7 +7127,7 @@ msgstr "S2"
 
 #. OLED Graphics library block
 msgid "initialize i2c(auto) reset pin# _ flip _"
-msgstr "init i2c (auto) reset Pin _ flip _"
+msgstr "init i2c (auto) reset-Pin _ drehe vertikal _"
 
 #. Files library block
 msgid "contents of file _"
@@ -7981,12 +7983,12 @@ msgstr "Funktion _ existiert?"
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 msgstr ""
-"verbinde ST7735 b _ h _ Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
+"verbinde ST7735 b _ h _ Rotation _ #BR# dc-Pin _ cs-Pin _ backlight-Pin _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "#BR# reset pin _ invert colors _"
-msgstr "#BR# reset Pin _ invertierte Farben _"
+msgstr "#BR# reset-Pin _ invertierte Farben _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
@@ -7997,17 +7999,17 @@ msgstr "#BR# x-Offset _ y-Offset _"
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 msgstr ""
-"verbinde ST7789 b _ h _ Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
+"verbinde ST7789 b _ h _ Rotation _ #BR# dc-Pin _ cs-Pin _ backlight-Pin _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
 msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 msgstr ""
-"verbinde ST7796 b _ h _ Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
+"verbinde ST7796 b _ h _ Rotation _ #BR# dc-Pin _ cs-Pin _ backlight-Pin _"
 
 #. External Displays Library block
 msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
-msgstr "verbinde ILI9341 Rotation _ #BR# dc Pin _ cs Pin _ backlight Pin _"
+msgstr "verbinde ILI9341 Rotation _ #BR# dc-Pin _ cs-Pin _ backlight-Pin _"
 
 #. External Displays Library block
 msgid "attach OLED w _ h _"
