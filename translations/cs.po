@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2026-05-02 10:09+0000\n"
+"PO-Revision-Date: 2026-06-25 16:01+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklimos@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
 "cs/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -2887,9 +2887,8 @@ msgid "Circuit Playground slide switch"
 msgstr "Circuit Playground posuvný spínač"
 
 #. DotStar LED library block
-#, fuzzy
 msgid "attach _ DotStar LEDs to data pin _ clock pin _"
-msgstr "připoj _ DotStar LED pin data _ pin hodiny _"
+msgstr "připoj _ DotStar LED data pin _ clock pin _"
 
 #. DotStar LED library block
 msgid "set all DotStar LEDs to r _ g _ b _"
@@ -3162,79 +3161,79 @@ msgstr ""
 
 #. MiKe Robot library block
 msgid "MiKe front obstacle (cm)"
-msgstr ""
+msgstr "MiKe překážka vpředu (cm)"
 
 #. MiKe Robot library block
 msgid "MiKe _ obstacle ?"
-msgstr ""
+msgstr "MiKe _ překážka ?"
 
 #. MiKe Robot library block
 msgid "MiKe black line on _ ?"
-msgstr ""
+msgstr "MiKe černá čára na _ ?"
 
 #. MiKe Robot library block
 msgid "MiKe back light"
-msgstr ""
+msgstr "MiKe zadní světlo"
 
 #. MiKe Robot library block
 msgid "MiKe IR"
-msgstr ""
+msgstr "MiKe IR"
 
 #. MiKe Robot library block
 msgid "MiKe digital D8 sensor"
-msgstr ""
+msgstr "MiKe digitální senzor D8"
 
 #. MiKe Robot library block
 msgid "MiKe stop motors"
-msgstr ""
+msgstr "MiKe zastav motory"
 
 #. MiKe Robot library block
 msgid "MiKe Robot go _ at _ %"
-msgstr ""
+msgstr "Mike Robot jdi _ rychlostí _ %"
 
 #. MiKe Robot library block
 msgid "MiKe Robot speed _ %"
-msgstr ""
+msgstr "Mike Robot rychlost _ %"
 
 #. MiKe Robot library block
 msgid "MiKe Robot direction _"
-msgstr ""
+msgstr "MiKe Robot směr _"
 
 #. MiKe Robot library block
 msgid "MiKe turn _ motor _"
-msgstr ""
+msgstr "Mike otoč _ motor _"
 
 #. MiKe Robot library block
 msgid "MiKe speed _ motor at _ %"
-msgstr ""
+msgstr "MiKe motor _ rychlost _ %"
 
 #. MiKe Robot library block
 msgid "MiKe front lights off"
-msgstr ""
+msgstr "Mike zhasni přední světla"
 
 #. MiKe Robot library block
 msgid "MiKe front lights to _"
-msgstr ""
+msgstr "Mike nastav přední světla na _"
 
 #. MiKe Robot library block
 msgid "MiKe circle lights off"
-msgstr ""
+msgstr "MiKe zhasni kruhová světla"
 
 #. MiKe Robot library block
 msgid "MiKe circle ligths to _"
-msgstr ""
+msgstr "Mike nastav kruhová světla na _"
 
 #. MiKe Robot library block
 msgid "MiKe circle light _ (1-18) to _"
-msgstr ""
+msgstr "Mike nastav kruhové světlo _ (1-18) na _"
 
 #. MiKe Robot library block
 msgid "MiKe rotate lights by _"
-msgstr ""
+msgstr "Mike rotuj světla o _"
 
 #. MiKe Robot library block
 msgid "MiKe digital D8 to _"
-msgstr ""
+msgstr "Mike digitální pin D8 na _"
 
 #. Shield:bit library block
 msgid "sb LEDs off"
@@ -3833,7 +3832,6 @@ msgid "MQTT set will topic _ payload _"
 msgstr "MQTT závěť nastav topic _ payload _"
 
 #. MQTT library block
-#, fuzzy
 msgid "testWill"
 msgstr "MQTT test závěti"
 
@@ -6123,7 +6121,6 @@ msgid "power on module"
 msgstr "zapnout modul"
 
 #. NeZha2 robot library block
-#, fuzzy
 msgid "Nezha line sensor _ sees line on left _ right _"
 msgstr "Nezha senzor čáry _ vidí čáru vlevo _ vpravo _"
 
@@ -6154,16 +6151,14 @@ msgid "Nezha set motor _ speed to _ (-100-100)"
 msgstr "Nezha motor _ rychlost _ (-100 až 100)"
 
 #. Calliope NeoPixel library block
-#, fuzzy
 msgid "Calliope rotate NeoPixels by _"
-msgstr "Calliope rotuj NeoPixel o _"
+msgstr "Calliope rotuj NeoPixely o _"
 
 #. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
 msgid "_ with _ items replaced by _"
 msgstr "_ s _ položkami nahrazenými _"
 
 #. Calliope NeoPixel library block
-#, fuzzy
 msgid "Calliope set NeoPixels _ _ _"
 msgstr "Calliope nastav NeoPixely _ _ _"
 
@@ -6172,7 +6167,6 @@ msgid "Calliope set all NeoPixels to _"
 msgstr "Calliope nastav všechny NeoPixely na _"
 
 #. Calliope NeoPixel library block
-#, fuzzy
 msgid "Calliope set brightness to _ %"
 msgstr "Calliope nastav jas na _ %"
 
@@ -6185,22 +6179,18 @@ msgid "Calliope set continous servo _ to speed _ (-100~100)"
 msgstr "Calliope nastav kontinuální servo _ rychlost _ (-100~100)"
 
 #. Calliope Servoboard library block
-#, fuzzy
 msgid "Calliope stop all motors and servos"
 msgstr "Calliope zastav všechny montory a serva"
 
 #. Calliope Servoboard library block
-#, fuzzy
 msgid "Calliope set _ servo _ to angle _ °"
-msgstr "Calliope nastav _ servo _ úhel _"
+msgstr "Calliope nastav _ servo _ do úhlu _ °"
 
 #. Calliope Servoboard library block
-#, fuzzy
 msgid "Calliope set motor _ to speed _ (-100~100)"
 msgstr "Calliope nastav motor _ rychlost _ (-100 - 100)"
 
 #. Calliope Servoboard library block
-#, fuzzy
 msgid "Calliope stop motor _"
 msgstr "Calliope zastav motor _"
 
@@ -6217,7 +6207,6 @@ msgid "lps331;hPa"
 msgstr "hPa"
 
 #. Calliope NeoPixel library block
-#, fuzzy
 msgid "Calliope set NeoPixel _ to _"
 msgstr "Calliope nastav NeoPixel _ na _"
 
@@ -6230,7 +6219,6 @@ msgid "when opening the IDE, show a notification if a new version of MicroBlocks
 msgstr "Zobrazit upozornění na novou verzi MicroBlocks při spuštění IDE"
 
 #. Barometer (LPS331AP) library block
-#, fuzzy
 msgid "numeric (x100) _"
 msgstr "(x100) _"
 
@@ -6263,9 +6251,8 @@ msgid "LPS331AP temperature _"
 msgstr "LPS331AP teplota _"
 
 #. Calliope NeoPixel library block
-#, fuzzy
 msgid "Calliope clear all NeoPixels"
-msgstr "Calliope smaž všechny NeoPixely"
+msgstr "Calliope zhasni všechny NeoPixely"
 
 #. Microphone library block
 msgid "turn off microphone"
@@ -6965,3 +6952,151 @@ msgstr "zkopíruj volatelné jméno"
 #. Slot type menu option
 msgid "color patch"
 msgstr "barevná skvrna"
+
+#. Calliope MotionKit library block
+msgid "mk2;bright"
+msgstr "jas"
+
+#. Calliope MotionKit library block
+msgid "mk2;dark"
+msgstr "tmavý"
+
+#. Calliope MotionKit library block
+msgid "mk2;ok"
+msgstr "ok"
+
+#. Calliope MotionKit library block
+msgid "mk2;up"
+msgstr "nahoru"
+
+#. Calliope MotionKit library block
+msgid "mk2;down"
+msgstr "dolů"
+
+#. Calliope MotionKit library block
+msgid "mk2;S1"
+msgstr "S1"
+
+#. Calliope MotionKit library block
+msgid "mk2;S2"
+msgstr "S2"
+
+#. Calliope MotionKit library block
+msgid "MotionKit distance (cm)"
+msgstr "MotionKit vzdálenost (cm)"
+
+#. Calliope MotionKit library block
+msgid "IR key _ pressed?"
+msgstr "stisknuto _ tlačítko IR ?"
+
+#. Calliope MotionKit library block
+msgid "MotionKit set NeoPixels _"
+msgstr "MotionKit nastav NeoPixely _"
+
+#. Calliope MotionKit library block
+msgid "MotionKit clear NeoPixels"
+msgstr "MotionKit zhasni NeoPixely"
+
+#. Calliope MotionKit library block
+msgid "MotionKit set motor _ _ speed _ (0~100)"
+msgstr "MotionKit nastav motor _ _ rychlost _ (0-100)"
+
+#. Calliope MotionKit library block
+msgid "MotionKit stop motor _"
+msgstr "MotionKit zastav motor _"
+
+#. Calliope MotionKit library block
+msgid "MotionKit stop all"
+msgstr "MotionKit zastav všechny motory"
+
+#. Calliope MotionKit library block
+msgid "MotionKit set led _ _"
+msgstr "MotionKit nastav LED _ _"
+
+#. Calliope MotionKit library block
+msgid "MotionKit line sensor _ _"
+msgstr "MotionKit senzor čáry _ _"
+
+#. Calliope MotionKit library block
+msgid "IR code received?"
+msgstr "Přijat IR kód?"
+
+#. Calliope MotionKit library block
+msgid "MotionKit set servo _ to _ degrees (0-180)"
+msgstr "MotionKit nastav servo _ do úhlu _ (0-180)"
+
+#. Calliope MotionKit library block
+msgid "MotionKit set _ servo _ to _ degrees"
+msgstr "MotionKit nastav servo _ do úhlu _"
+
+#. Calliope MotionKit library block
+msgid "MotionKit rotate servo _ _ speed _ (0~100)"
+msgstr "MotionKit roztoč servo _ rychlostí _ (0-100)"
+
+#. LCD Display library block
+msgid "draw char _ on LCD line _ column _"
+msgstr "zobraz znak _ na LCD řádek _ sloupec _"
+
+#. LCD Display library block
+msgid "clear LCD"
+msgstr "smaž LCD"
+
+#. LCD Display library block
+msgid "is LCD connected?"
+msgstr "je LCD připojen ?"
+
+#. LCD Display library block
+msgid "write _ on LCD line _"
+msgstr "zobraz _ na LCD v řádku _"
+
+#. LCD Display library block
+msgid "write field _ on LCD line _ from _ to _"
+msgstr "zobraz pole _ na LCD v řádku _ od _ do _"
+
+#. MP3 Player library choice
+msgid "MakerPort"
+msgstr "MakerPort"
+
+#. MP3 Player library choice
+msgid "DFRobot"
+msgstr "DFRobot"
+
+#. MP3 Player library choice
+msgid "MakerBit/HyperDuino"
+msgstr "MakerBit/HyperDuino"
+
+#. MP3 Player library block
+msgid "mp3 initialize _ pin _"
+msgstr "aktivuj MP3 _ pin _"
+
+#. MP3 Player library block
+msgid "mp3 play next track"
+msgstr "MP3 přehraj následující skladbu"
+
+#. MP3 Player library block
+msgid "mp3 pause"
+msgstr "MP3 pauza"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _"
+msgstr "MP3 přehraj skladbu _ ze složky _"
+
+#. MP3 Player library block
+msgid "mp3 play track _ in folder _ until done"
+msgstr "MP3 hraj skladbu _ ze složky _ až do konce"
+
+#. MP3 Player library block
+msgid "mp3 repeat all in folder _"
+msgstr "MP3 opakuj vše ze složky _"
+
+#. MP3 Player library block
+msgid "mp3 resume"
+msgstr "MP3 pokračuj"
+
+#. MP3 Player library block
+msgid "mp3 set volume _ (0-30)"
+msgstr "MP3 nastav hlasitost _ (0-30)"
+
+#. Library label right click context menu option
+msgid "reload library"
+msgstr "načti knihovnu znovu"
