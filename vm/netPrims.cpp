@@ -498,7 +498,7 @@ static OBJ primRespondToHttpRequest(int argCount, OBJ *args) {
 static WiFiClient httpClient;
 static Client *activeHttpClient = &httpClient;
 
-#if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
+#if defined(ARDUINO_ARCH_ESP32)
 	static WiFiClientSecure httpsClient;
 	#define HAS_HTTPS_CLIENT 1
 #else
