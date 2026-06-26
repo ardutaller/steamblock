@@ -15,10 +15,6 @@
 #include <zephyr/random/random.h>
 #endif
 
-#if defined(ESP8266)
-#include "user_interface.h" // used to set clock rate and decrease power usage
-#endif
-
 #include "mem.h"
 #include "interp.h"
 
@@ -207,12 +203,6 @@ void hardwareInit() {
 		// Check for NFC chip (I2C address 87). Only Springbot Gold has that chip.
 		isSpringbotGold = (readI2CReg(87, 0) >= 0);
 		useTFT = isSpringbotGold;
-	#endif
-	#if defined(ESP8266)
-		// doing this at startup reduces power usage from ~70 to ~20 mA; not sure why!
-		system_update_cpu_freq(80);
-		delay(1);
-		system_update_cpu_freq(160);
 	#endif
 }
 
@@ -1556,13 +1546,9 @@ static void initPins(void) {
 	#elif defined(ARDUINO_ARCH_RP2040)
 		analogWriteResolution(10);
 		analogWriteFreq(122070);
-	#elif defined(ESP8266)
-		// only supports 8-bit resolution
-		analogWriteFreq(10000);
-		analogWriteRange(255);
 	#elif defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		analogWriteResolution(12);
-	#elif !defined(ESP8266) && !defined(ARDUINO_ARCH_ESP32) && !defined(__ZEPHYR__)
+	#elif !defined(ARDUINO_ARCH_ESP32) && !defined(__ZEPHYR__)
 		analogWriteResolution(10); // 0-1023; low-order bits ignored on boards with lower resolution
 	#endif
 
@@ -1917,7 +1903,7 @@ void primAnalogWrite(OBJ *args) {
 	if (value < 0) value = 0;
 	#if defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		if (value > 4095) value = 4095;
-	#elif defined(NRF52) || defined(ESP8266)
+	#elif defined(NRF52)
 		value = value >> 2; // PWM has only 8-bit resolution
 		if (value > 255) value = 255;
 	#else
@@ -3530,12 +3516,12 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 	}
 
 #elif defined(ESP8266)
+	#include "user_interface.h"
 
 	extern "C" void lightSleep(int msecs) {
-		// Commented out because causes a crash when using PWM:
-		// system_update_cpu_freq(80);
-		// delay(msecs);
-		// system_update_cpu_freq(160);
+		system_update_cpu_freq(80);
+		delay(msecs);
+		system_update_cpu_freq(160);
 	}
 
 	extern "C" void deepSleep(int secs) {
