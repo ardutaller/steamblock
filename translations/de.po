@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-06-27 14:01+0000\n"
+"PO-Revision-Date: 2026-06-28 17:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8542,7 +8542,7 @@ msgstr "Extra Pin (17)"
 
 #. MakerPort library block
 msgid "MakerPort tone _ Hz for _ msecs"
-msgstr "MakerPort spiele Ton _ Hz für _ ms"
+msgstr "MakerPort Ton _ Hz für _ ms"
 
 #. MakerPort library block
 msgid "MakerPort initialize"
