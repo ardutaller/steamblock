@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2026-06-25 16:01+0000\n"
+"PO-Revision-Date: 2026-06-28 17:01+0000\n"
 "Last-Translator: Miroslav Klimoš <miraklimos@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
 "cs/>\n"
@@ -4147,11 +4147,11 @@ msgstr "Wukong nastav jas LED na _"
 
 #. Sphero-RVR robot library block
 msgid "wake"
-msgstr ""
+msgstr "probuď"
 
 #. Sphero-RVR robot library block
 msgid "sleep"
-msgstr ""
+msgstr "spi"
 
 #. Sphero-RVR robot library block
 msgid "reset the yaw"
@@ -7100,3 +7100,141 @@ msgstr "MP3 nastav hlasitost _ (0-30)"
 #. Library label right click context menu option
 msgid "reload library"
 msgstr "načti knihovnu znovu"
+
+#. Example string. Tells the user this input accepts a list of strings.
+msgid "a list of strings"
+msgstr "Ukázkový text/řetězec. Tento vstup akceptuje seznam řetězců"
+
+#. NeoPanel library block
+msgid "NeoPanel scroll text _ color _"
+msgstr "Neopanel roluj text _ barva _"
+
+#. NeoPanel library block
+msgid "pausing _ msecs"
+msgstr "pauza _ msec"
+
+#. Example for the draw text block
+msgid "Hello"
+msgstr "Ahoj"
+
+#. NeoPanel library block
+msgid "separation _"
+msgstr "oddělení _"
+
+#. Infrared Remote library block
+msgid "attach IR transmitter to pin _"
+msgstr "přípoj IR vysílač k pinu _"
+
+#. Infrared Remote library block
+msgid "IR code"
+msgstr "IR kód"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "LED obrázek #BR# _"
+
+#. TFT Display library block
+msgid "defer OLED display updates"
+msgstr "pozastav aktualizace OLED"
+
+#. TFT Display library block
+msgid "resume OLED display updates"
+msgstr "obnov aktualizace OLED"
+
+#. TFT Display library block
+msgid "palette _"
+msgstr "paleta _"
+
+#. TFT Display library block
+msgid "bytes per pixel _"
+msgstr "bytů na bod _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _ BGR colors _"
+msgstr "#BR# reset pin _ invertovat barvy _ BGR barvy _"
+
+#. TFT Display library example
+msgid "a list of colors"
+msgstr "seznam barev"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# flip vertical _"
+msgstr "#BR# překlop svisle _"
+
+#. External Displays Library block
+msgid "x offset _"
+msgstr "x offset _"
+
+#. External Displays Library block
+msgid "set display SPI clk pin _ mosi pin _ miso pin _"
+msgstr "displej nastav SPI clk pin _ mosi pin _ miso pin _"
+
+#. External Displays Library block
+msgid "spi _"
+msgstr "SPI _"
+
+#. External Displays Library block
+msgid "send OLED commands _"
+msgstr "pošli OLED příkazy _"
+
+#. Tone library block
+msgid "start note _ octave _"
+msgstr "spusť notu _ oktáva _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "spusť tón midi klávesy _"
+
+#. Strings library block
+msgid "left pad _ to _ with _"
+msgstr "doplnit zleva od _ do _ znak _"
+
+#. Strings library block
+msgid "right pad _ to _ with _"
+msgstr "doplnit prava od _ do _ znak _"
+
+#. micro:STEAMakers library block
+msgid "ms scroll text _ with color _"
+msgstr "MS roluj text _ barva _"
+
+#. MakerPort library choice
+msgid "MP3"
+msgstr "MP3"
+
+#. MakerPort library choice
+msgid "mp3 player"
+msgstr "MP3 přehrávač"
+
+#. MakerPort library choice
+msgid "analog pin (13)"
+msgstr "analogový pin (13)"
+
+#. MakerPort library choice
+msgid "extra pin (17)"
+msgstr "extra pin (17)"
+
+#. MakerPort library block
+msgid "MakerPort tone _ Hz for _ msecs"
+msgstr "MakerPort tón _ Hz po _ msecs"
+
+#. MakerPort library block
+msgid "volume _ (0-10)"
+msgstr "hlasitost _ (0-10)"
+
+#. MakerPort library block
+msgid "MakerPort initialize"
+msgstr "MakerPort inicializuj"
+
+#. MakerPort library block
+msgid "loudness pin _"
+msgstr "hlasitost pin _"
+
+#. MakerPort library block
+msgid "mp3 player has Flash card"
+msgstr "MP3 přehravač má TF kartu"
+
+#. MP3 Player library block
+msgid "rx pin _"
+msgstr "rx pin _"
