@@ -2336,6 +2336,55 @@ msgstr "output _"
 msgid "set output pin to _ and resolution _"
 msgstr "set output pin to _ and resolution _"
 
+#. Wavetable Synthesis library label
+#. Generate synthesized instrument sounds on a DAC or PWM pin
+msgid "Wavetable Synthesis"
+msgstr "Wavetable Synthesis"
+
+#. Wavetable Synthesis library block
+msgid "set output pin to _"
+msgstr "set output pin to _"
+
+#. Wavetable Synthesis library block
+msgid "select instrument _ for channel _"
+msgstr "select instrument _ for channel _"
+
+#. Wavetable Synthesis library block
+msgid "stop channel _ in _ ms"
+msgstr "stop channel _ in _ ms"
+
+#. Wavetable Synthesis library block
+msgid "graph envelope for channel _"
+msgstr "graph envelope for channel _"
+
+#. Wavetable Synthesis library block
+msgid "graph wave table for channel _"
+msgstr "graph wave table for channel _"
+
+#. Wavetable instrument name
+msgid "saxophone"
+msgstr "saxophone"
+
+#. Wavetable instrument name
+msgid "violin"
+msgstr "violin"
+
+#. Wavetable instrument name
+msgid "sin wave"
+msgstr "sin wave"
+
+#. Wavetable instrument name
+msgid "tri wave"
+msgstr "tri wave"
+
+#. Wavetable instrument name
+msgid "square wave"
+msgstr "square wave"
+
+#. Wavetable instrument name
+msgid "saw wave"
+msgstr "saw wave"
+
 #. General MIDI drum instrument name
 msgid "Acoustic Bass Drum"
 msgstr "Acoustic Bass Drum"
