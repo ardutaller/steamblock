@@ -40,6 +40,19 @@ if test -n "$help"; then
 	exit 0
 fi
 
+currentOS=`uname -s`
+if [ "$currentOS" == "Darwin" ]; then
+	gp="gp-mac"
+elif [ "$currentOS" == "Linux" ]; then
+	gp="gp-linux64bit"
+else
+	echo "Platform $currentOS is not (yet?) supported by this build script."
+	echo "Try to find the gp executable for your platform in this folder and run:"
+	echo "cd gp; [command-to-run-GP] runtime/lib/* loadIDE.gp buildApps.gp"
+	echo "Good luck!"
+	exit 1
+fi
+
 if test -n "$locale"; then
 	if [ $locale == '--locale' ]; then
 		echo "Currently available locales:"
