@@ -18,6 +18,7 @@ method initialize MicroBlocksFlasher board serialPortName eraseFlashFlag downloa
 	portName = serialPortName
 	eraseFlag = eraseFlashFlag
 	downloadFlag = downloadLatestFlag
+	espTool = (newESPTool)
 	spinner = (newSpinner (action 'espToolStatus' this) (action 'espToolDone' this))
 	return this
 }
@@ -40,11 +41,11 @@ method destroy MicroBlocksFlasher {
 	enableAutoConnect (smallRuntime) (success espTool)
 }
 
-method startFlasher MicroBlocksFlasher serialPortID {
-	espTool = (newESPTool)
-	if (notNil serialPortID) {
-		setPort espTool serialPortID
-		ok = true
+method installBuiltinFirmware MicroBlocksFlasher vmName {
+	boardName = vmName
+	ok = false
+	if ('Browser' == (platform)) {
+		ok = (openSerialPortInBrowser this)
 	} else {
 		ok = (openPort espTool portName boardName)
 	}
@@ -53,9 +54,34 @@ method startFlasher MicroBlocksFlasher serialPortID {
 		inform 'Could not open serial port'
 		return
 	}
+	spinner = (newSpinner (action 'espToolStatus' this) (action 'espToolDone' this))
 	setTask spinner (launch
 		(global 'page')
 		(action 'installFirmware' espTool boardName eraseFlag downloadFlag))
+	addPart (global 'page') spinner
+}
+
+method openSerialPortInBrowser MicroBlocksFlasher {
+	// Attempt to open the serial port in the browser.
+
+	// must request a user gesture to open port in browser after long download
+	ok = (confirm (global 'page') nil (join (localized 'Open port?')))
+	if (not ok) { return false }
+
+	timeout = 20000 // ten seconds
+	openSerialPort 'webserial' 115200
+	start = (msecsSinceStart)
+	while (and (not (isOpenSerialPort 1)) (((msecsSinceStart) - start) < timeout)) {
+		// do UI cycles until serial port is opened or timeout
+		doOneCycle (global 'page')
+		waitMSecs 10 // refresh screen
+	}
+
+	if (isOpenSerialPort 1) {
+		setPort espTool 1
+		return true
+	}
+i	return false
 }
 
 // Installing from data
@@ -65,43 +91,25 @@ method startFlasher MicroBlocksFlasher serialPortID {
 method installFromURL MicroBlocksFlasher serialPortID url {
 	data = (downloadURLInBrowser this url)
 	if ((byteCount data) == 0) { return }
-	installFromData this serialPortID url data
+	installFromData this url data
 }
 
-method installFromData MicroBlocksFlasher serialPortID fileNameOrURL data {
+method installFromData MicroBlocksFlasher fileNameOrURL data {
 	if ((byteCount data) == 0) { return }
 
-	if (isNil serialPortID) {
-		// must request a user gesture to open port in browser after long download
-		ok = (confirm (global 'page') nil (join (localized 'Open port?')))
-		if (not ok) { return }
-
-		timeout = 20000 // ten seconds
-		openSerialPort 'webserial' 115200
-		start = (msecsSinceStart)
-		while (and (not (isOpenSerialPort 1)) (((msecsSinceStart) - start) < timeout)) {
-			// do UI cycles until serial port is opened or timeout
-			doOneCycle (global 'page')
-			waitMSecs 10 // refresh screen
-		}
-
-		if (isOpenSerialPort 1) { serialPortID = 1 }
-		if (isNil serialPortID) { return } // port not opened before timeout
-	}
-
-	espTool = (newESPTool)
-	if (notNil serialPortID) {
-		setPort espTool serialPortID
-	} ('Browser' != (platform)) {
-		if (not (openPort espTool portName boardName)) {
-			inform 'Could not open serial port'
-			return
-		}
+	ok = false
+	if ('Browser' == (platform)) {
+		ok = (openSerialPortInBrowser this)
 	} else {
-		return // no serial port
+		ok = (openPort espTool portName boardName)
+	}
+	if (not ok) {
+		inform 'Could not open serial port'
+		return
 	}
 
 	if (notNil (findSubstring 'databot2.0_' fileNameOrURL)) { setAllInOneBinary espTool true }
+	if (notNil (findSubstring 'cocube' (toLowerCase fileNameOrURL))) { setAllInOneBinary espTool true }
 	if (notNil (findSubstring 'waveshare_s3_matrix' fileNameOrURL)) { setAllInOneBinary espTool true }
 	if (notNil (findSubstring '_all.bin' fileNameOrURL)) { setAllInOneBinary espTool true }
 

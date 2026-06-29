@@ -7,8 +7,6 @@
 // runtime.c - Runtime for uBlocks, including code chunk storage and task management
 // John Maloney, April 2017
 
-#include <Arduino.h>
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -28,32 +26,14 @@
 #include "persist.h"
 #include "version.h"
 
+void delay(unsigned long); // Arduino delay function
+
 // Forward Reference Declarations
 
 static void softReset(int clearMemoryFlag);
 static void sendMessage(int msgType, int chunkIndex, int dataSize, char *data);
 static void sendChunkCRC(int chunkID);
 static void sendData();
-
-// debugging
-
-#ifdef DEBUG_BEEP
-
-static void debugBeep(int count) {
-	// Useful for audio debugging communication issues.
-
-	const int speakerPin = 27;
-	pinMode(speakerPin, 1); // output pin
-	for (int i = 0; i < 10; i++) {
-		digitalWrite(speakerPin, true);
-		delay(count);
-		digitalWrite(speakerPin, false);
-		delay(count);
-	}
-	delay(20);
-}
-
-#endif
 
 // DUELink support
 
@@ -1101,13 +1081,15 @@ int startupClickCount = 0;
 
 void processStartupGesture() {
 	OBJ noArgs;
-	if (startupFirstPressMSecs && ((millisecs() - startupFirstPressMSecs) > 1500)) {
-		startupClickCount = 0;
-	}
 	if (trueObj != primButtonB(&noArgs)) {
 		// B button is not pressed
+		startupButtonPressed = false;
+		startupFirstPressMSecs = 0;
 		startupClickCount = 0;
 		return;
+	}
+	if (startupFirstPressMSecs && ((millisecs() - startupFirstPressMSecs) > 1500)) {
+		startupClickCount = 0;
 	}
 	int buttonDown = (trueObj == primButtonA(&noArgs));
 	if (buttonDown) {
@@ -1117,12 +1099,13 @@ void processStartupGesture() {
 			if (startupClickCount >= 4) {
 				beep(784, 200); // G
 				beep(659, 200); // E
+				delay(400); // silence
 				loadStartCodeOrClear();
 				startAll();
 				startupClickCount = 0;
 			}
-			startupButtonPressed = true;
 			delay(10); // debounce down transition
+			startupButtonPressed = true;
 		}
 	} else {
 		if (startupButtonPressed) delay(10); // debounce up transition

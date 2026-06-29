@@ -1,12 +1,12 @@
 module main
 author MicroBlocks
-version 1 0
+version 1 0 
 description ''
 
-script 43 43 {
+script 50 50 {
 whenCondition (bleScan_scanReceived)
 local 'name' (bleScan_deviceName)
-if (and (name != '') (name != '0000000000000000')) {
+if (and (name != '') (name != ('[data:toString]' '0000000000000000'))) {
   sayIt name
 }
 }
@@ -14,9 +14,9 @@ if (and (name != '') (name != '0000000000000000')) {
 
 module 'BLE Scanner' Input
 author MicroBlocks
-version 1 0
+version 1 0 
 description ''
-variables _bleScan_data
+variables _bleScan_data 
 
   spec 'r' 'bleScan_scanReceived' 'scan received'
   space

@@ -424,6 +424,10 @@ msgstr "starting at _"
 msgid "join items of list _"
 msgstr "join items of list _"
 
+#. Example string. Tells the user this input accepts a list of strings.
+msgid "a list of strings"
+msgstr "a list of strings"
+
 #. Block in Data category
 msgid "separator _"
 msgstr "separator _"
@@ -589,6 +593,14 @@ msgstr "aStringListOrByteArray"
 #. Block in Comm category
 msgid "soft serial write byte _ pin _ baud _"
 msgstr "soft serial write byte _ pin _ baud _"
+
+#. Block in Comm category
+msgid "duelink receive"
+msgstr "duelink receive"
+
+#. Block in Comm category
+msgid "duelink send _ starting at _"
+msgstr "duelink send _ starting at _"
 
 #. Block in Comm category
 msgid "print _"
@@ -791,8 +803,24 @@ msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
 msgstr "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
 
 #. NeoPanel library block
+msgid "NeoPanel scroll text _ color _"
+msgstr "NeoPanel scroll text _ color _"
+
+#. NeoPanel library block
+msgid "pausing _ msecs"
+msgstr "pausing _ msecs"
+
+#. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
 msgstr "NeoPanel draw text _ at x _ y _ color _"
+
+#. Example for the draw text block
+msgid "Hello"
+msgstr "Hello"
+
+#. NeoPanel library block
+msgid "separation _"
+msgstr "separation _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw BMP file _ at x _ y _"
@@ -1043,6 +1071,10 @@ msgid "receive IR code"
 msgstr "receive IR code"
 
 #. Infrared Remote library block
+msgid "IR code"
+msgstr "IR code"
+
+#. Infrared Remote library block
 msgid "receive IR code from device _"
 msgstr "receive IR code from device _"
 
@@ -1053,6 +1085,10 @@ msgstr "test IR"
 #. Infrared Remote library block
 msgid "attach IR receiver to pin _"
 msgstr "attach IR receiver to pin _"
+
+#. Infrared Remote library block
+msgid "attach IR transmitter to pin _"
+msgstr "attach IR transmitter to pin _"
 
 #. Infrared Remote library block
 msgid "IR transmit device _ command _"
@@ -1761,6 +1797,14 @@ msgstr "bg color _"
 msgid "draw bitmap _ palette _ on TFT at x _ y _"
 msgstr "draw bitmap _ palette _ on TFT at x _ y _"
 
+#. TFT Display library example
+msgid "aBitmap"
+msgstr "aBitmap"
+
+#. TFT Display library example
+msgid "a list of colors"
+msgstr "a list of colors"
+
 #. TFT Display library block
 msgid "set TFT backlight _ (0-10)"
 msgstr "set TFT backlight _ (0-10)"
@@ -1768,6 +1812,14 @@ msgstr "set TFT backlight _ (0-10)"
 #. TFT Display library block
 msgid "draw pixel row _ x _ y _"
 msgstr "draw pixel row _ x _ y _"
+
+#. TFT Display library block
+msgid "bytes per pixel _"
+msgstr "bytes per pixel _"
+
+#. TFT Display library block
+msgid "palette _"
+msgstr "palette _"
 
 #. TFT Display library block
 msgid "draw image _ on TFT at x _ y _ color _"
@@ -1785,6 +1837,14 @@ msgstr "image _"
 msgid "invert TFT display _"
 msgstr "invert TFT display _"
 
+#. TFT Display library block
+msgid "defer OLED display updates"
+msgstr "defer OLED display updates"
+
+#. TFT Display library block
+msgid "resume OLED display updates"
+msgstr "resume OLED display updates"
+
 #. TFT Display library and Color library block
 msgid "gray _ %"
 msgstr "gray _ %"
@@ -1796,8 +1856,8 @@ msgstr "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
-msgid "#BR# reset pin _ invert colors _"
-msgstr "#BR# reset pin _ invert colors _"
+msgid "#BR# reset pin _ invert colors _ BGR colors _"
+msgstr "#BR# reset pin _ invert colors _ BGR colors _"
 
 #. External Displays Library block
 #. The #BR# tag must be kept intact. It translates to a new line
@@ -1819,16 +1879,42 @@ msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
 msgstr "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
 
 #. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _"
+msgstr "#BR# reset pin _ invert colors _"
+
+#. External Displays Library block
 msgid "attach OLED w _ h _"
 msgstr "attach OLED w _ h _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# flip vertical _"
+msgstr "#BR# flip vertical _"
+
+#. External Displays Library block
+msgid "x offset _"
+msgstr "x offset _"
+
+#. External Displays Library block
+msgid "detach display"
+msgstr "detach display"
+
+#. External Displays Library block
+msgid "set display SPI clk pin _ mosi pin _ miso pin _"
+msgstr "set display SPI clk pin _ mosi pin _ miso pin _"
+
+#. External Displays Library block
+msgid "spi _"
+msgstr "spi _"
 
 #. External Displays Library block
 msgid "reset pin _"
 msgstr "reset pin _"
 
 #. External Displays Library block
-msgid "detach display"
-msgstr "detach display"
+msgid "send OLED commands _"
+msgstr "send OLED commands _"
 
 #. 8 Bit Graphics Library block
 msgid "set scale _"
@@ -3189,6 +3275,14 @@ msgid "_ without white space"
 msgstr "_ without white space"
 
 #. Strings library block
+msgid "left pad _ to _ with _"
+msgstr "left pad _ to _ with _"
+
+#. Strings library block
+msgid "right pad _ to _ with _"
+msgstr "right pad _ to _ with _"
+
+#. Strings library block
 msgid "join string list _ separator _"
 msgstr "join string list _ separator _"
 
@@ -3841,8 +3935,8 @@ msgid "ms display character _ with _"
 msgstr "ms display character _ with _"
 
 #. micro:STEAMakers library block
-msgid "ms scroll text _ with color _ "
-msgstr "ms scroll text _ with color _ "
+msgid "ms scroll text _ with color _"
+msgstr "ms scroll text _ with color _"
 
 #. micro:STEAMakers library block
 msgid "ms stop scrolling"
@@ -6511,6 +6605,10 @@ msgid "MakerPort tone _ Hz for _ msecs"
 msgstr "MakerPort tone _ Hz for _ msecs"
 
 #. MakerPort library block
+msgid "volume _ (0-10)"
+msgstr "volume _ (0-10)"
+
+#. MakerPort library block
 msgid "MakerPort initialize"
 msgstr "MakerPort initialize"
 
@@ -6565,6 +6663,10 @@ msgstr "DFRobot"
 #. MP3 Player library block
 msgid "mp3 initialize _ pin _"
 msgstr "mp3 initialize _ pin _"
+
+#. MP3 Player library block
+msgid "rx pin _"
+msgstr "rx pin _"
 
 #. MP3 Player library block
 msgid "mp3 play next track"

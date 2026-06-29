@@ -1,16 +1,16 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 2 0 
+version 2 1 
 description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
 
 You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will, or create sound textures by mixing waves.
 
 Amplitude range: -32768 to 32767 (16 bits signed)
 '
-variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends _asynth_ramp_frequencies _asynth_pin _asynth_destination _asynth_resolution 
+variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends _asynth_ramp_frequencies _asynth_pin _asynth_resolution 
 
   spec ' ' 'asynth output' 'output _' 'num' 1024
-  spec ' ' 'asynth config output' 'set output pin to _ and resolution _' 'num num' 21 10
+  spec ' ' 'asynth config output' 'set output pin to _' 'num' 21
   space
   spec 'r' 'asynth sin' '#SVG#wave-sine _ Hz _ #SVG#double-arrow-v' 'num num' 440 10000
   spec 'r' 'asynth square' '#SVG#wave-square _ Hz _ #SVG#double-arrow-v' 'num num' 185 8000
@@ -77,27 +77,25 @@ to '_asynth init' {
   _asynth_ramp_frequencies = (newList 8)
 }
 
-to 'asynth config output' pin res {
+to 'asynth config output' pin {
   _asynth_pin = pin
-  _asynth_destination = 'pwm'
-  _asynth_resolution = res
   if (pin == -1) {
     if ((boardType) == 'micro:bit v2') {
       _asynth_pin = 27
-      _asynth_destination = 'pwm'
-      _asynth_resolution = 8
     } ((boardType) == 'WeAct STM32H743') {
       _asynth_pin = 56
-      _asynth_destination = 'dac'
-      _asynth_resolution = 12
+    } ((boardType) == 'Due') {
+      _asynth_pin = 66
     } else {
       _asynth_pin = 0
-      _asynth_destination = 'pwm'
-      _asynth_resolution = 10
     }
   }
-  if (_asynth_destination == 'pwm') {
-    '[io:pwmAudioInit]' _asynth_pin _asynth_resolution
+  comment 'Resolution is determined by the hardware PWM and/or DAC resolution. It is 10-bits on most boards.'
+  if (or ((boardType) == 'WeAct STM32H743') ((boardType) == 'Due')) {
+    _asynth_resolution = 12
+  } else {
+    comment 'For compatibility reasons, the micro:bit v2 uses a 10-bit PWM resolution even though it only uses 8-bits internally.'
+    _asynth_resolution = 10
   }
 }
 
@@ -162,15 +160,9 @@ to 'asynth noise gate' gate {
 }
 
 to 'asynth output' value {
+  if (_asynth_resolution == 0) {'asynth config output' -1}
   local 'sample' (maximum 0 (minimum (((1 << _asynth_resolution) / 2) + (value >> (16 - _asynth_resolution))) ((1 << _asynth_resolution) - 1)))
-  if (_asynth_destination == 0) {
-    'asynth config output' -1 8
-  }
-  if (_asynth_destination == 'pwm') {
-    '[io:pwmAudioOut]' sample
-  } else {
-    analogWriteOp _asynth_pin sample
-  }
+  analogWriteOp _asynth_pin sample
 }
 
 to 'asynth ramp' start end gate {

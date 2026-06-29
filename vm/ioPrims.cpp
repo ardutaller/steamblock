@@ -1439,9 +1439,6 @@ void hardwareInit() {
 
 #elif defined(ARDUINO_WEACT)
 	#define BOARD_TYPE "WeAct STM32H743"
-	#define PIN_BUTTON_A 47
-	#undef BUTTON_PRESSED
-	#define BUTTON_PRESSED HIGH
 	#define DIGITAL_PINS 82
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 82
@@ -1546,9 +1543,12 @@ static void initPins(void) {
 		// The analog write primitve takes a 10-bit value, as it does on all MicroBlocks boards,
 		// but on NRF52 only the 8 most signifcant bits are used.
 		analogWriteResolution(8);
+	#elif defined(ARDUINO_ARCH_RP2040)
+		analogWriteResolution(10);
+		analogWriteFreq(122070);
 	#elif defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		analogWriteResolution(12);
-	#elif !defined(ESP8266) && !defined(ARDUINO_ARCH_ESP32) && !defined(__ZEPHYR__)
+	#elif !defined(ARDUINO_ARCH_ESP32) && !defined(__ZEPHYR__)
 		analogWriteResolution(10); // 0-1023; low-order bits ignored on boards with lower resolution
 	#endif
 
@@ -1835,14 +1835,13 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		// Allocate an LEDC channel for the given pin and start PWM.
 
 		// Note: Do not use channels 0-1 or 8-9; those use timer 0, which is used by Tone
-		// Note: Channel 2 may be used by audio pwm
 		int channel;
 		for (channel = 2; channel < MAX_LEDC_CHANNELS; channel++) {
 			// Find an unused channel entry (i.e. -1) avoiding channels 0-1 and 8-9
 			if ((ledcChannels[channel] == -1) && ((channel & 7) > 1)) break;
 		}
 		if (channel < MAX_LEDC_CHANNELS) {
-			ledcSetup(channel, 100, 10); // 100Hz, 10 bits (same clock rate as servos)
+			ledcSetup(channel, 78125, 10); // 78125 Hz, 10 bits (for audio)
 			ledcAttachPin(pin, channel);
 			ledcChannels[channel] = pin;
 		}
@@ -1858,13 +1857,27 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		}
 	}
 
+	static void stopPWM_ESP32() {
+		for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
+			int pin = ledcChannels[i];
+			if (pin >= 0) {
+				pinDetach(pin);
+				SET_MODE(pin, INPUT);
+			}
+		}
+	}
+
+#endif
+
+#if defined(NRF51)
+	static int nrf51PWMClockInitialized = false;
 #endif
 
 void primAnalogWrite(OBJ *args) {
 	if (!isInt(args[0]) || !isInt(args[1])) { fail(needsIntegerError); return; }
 	int pinNum = obj2int(args[0]);
-	#if defined(USE_DIGITAL_PIN_MAP) && !defined(DUELink)
-		// DUELink case handled below
+	#if defined(USE_DIGITAL_PIN_MAP) && !defined(DUELink) && !defined(ARDUINO_ARCH_SAMD)
+		// DUELink and SAMD cases handled below
 		pinNum = mapDigitalPinNum(pinNum);
 		if (pinNum < 0) return;
 	#endif
@@ -1872,20 +1885,6 @@ void primAnalogWrite(OBJ *args) {
 		if (pinNum > 25) return;
 	#elif defined(ADAFRUIT_TRINKET_M0)
 		if (pinNum > 4) return;
-	#elif defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
-		#if defined(ARDUINO_CITILAB_ED1)
-			if ((100 <= pinNum) && (pinNum <= 139)) {
-				pinNum = pinNum - 100; // allows access to unmapped IO pins 0-39 as 100-139
-			} else if ((1 <= pinNum) && (pinNum <= 4)) {
-				pinNum = ed1DigitalPinMap[pinNum - 1];
-			}
-		#endif
-		#if defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
-			if ((0 <= pinNum) && (pinNum < DIGITAL_PINS) && (pinNum != 17) && (pinNum != 18)) {
-				pinNum = digitalPin[pinNum]; // map edge connector pin number to ESP32 pin number
-			}
-		#endif
-		if (RESERVED(pinNum)) return;
 	#elif defined(ARDUINO_SAM_DUE) || defined(ARDUINO_NRF52840_FEATHER)
 		if (pinNum < 2) return;
 	#elif defined(ARDUINO_SAM_ZERO) // M0
@@ -1899,14 +1898,14 @@ void primAnalogWrite(OBJ *args) {
 		} else {
 			return;
 		}
-	#elif defined(USE_DIGITAL_PIN_MAP)
-		pinNum = mapDigitalPinNum(pinNum);
-		if (pinNum < 0) return;
 	#endif
 	int value = obj2int(args[1]);
 	if (value < 0) value = 0;
-	#if defined(ARDUINO_SAM_DUE) || defined(ARDUINO_WEACT)
+	#if defined(ARDUINO_WEACT) || defined(ARDUINO_SAM_DUE)
 		if (value > 4095) value = 4095;
+	#elif defined(NRF52)
+		value = value >> 2; // PWM has only 8-bit resolution
+		if (value > 255) value = 255;
 	#else
 		if (value > 1023) value = 1023;
 	#endif
@@ -1951,10 +1950,14 @@ void primAnalogWrite(OBJ *args) {
 	  #endif
 		if (value == 0) {
 			pinDetach(pinNum);
+			pwmRunning[pinNum] = false;
 		} else {
 			if (!ledcChannelForPin(pinNum)) analogAttach(pinNum);
 			int channel = ledcChannelForPin(pinNum);
-			if (channel) ledcWrite(channel, value);
+			if (channel) {
+				SET_MODE(pinNum, OUTPUT);
+				ledcWrite(channel, value);
+			}
 		}
 	#else
 		#ifdef NRF52
@@ -1965,9 +1968,18 @@ void primAnalogWrite(OBJ *args) {
 				while (!pwm->EVENTS_PWMPERIODEND) /* wait */;
 				pwm->EVENTS_PWMPERIODEND = 0;
 			}
-			value = (value >> 2); // On NRF52, use only the top 8-bits of the 10-bit value
 		#endif
+
 		analogWrite(pinNum, value); // sets the PWM duty cycle on a digital pin
+
+		#if defined(NRF51)
+			if (!nrf51PWMClockInitialized) {
+				// change nRF51 timer prescaler after first call to analogWrite()
+    			NRF_TIMER1->PRESCALER = 3; // divides 16 Mhz by 2^N
+				nrf51PWMClockInitialized = true;
+			}
+		#endif
+
 	#endif
 	if (OUTPUT == currentMode[pinNum]) { // using PWM, not DAC
 		pwmRunning[pinNum] = true;
@@ -2287,6 +2299,16 @@ void stopPWM() {
 				pwmRunning[i] = false;
 			}
 		}
+	#elif defined(ESP8266)
+		for (int i = 0; i < TOTAL_PINS; i++) {
+			if (pwmRunning[i]) {
+				analogWrite(i, 0);
+				SET_MODE(i, INPUT);
+				pwmRunning[i] = false;
+			}
+		}
+	#elif defined(ESP32)
+		stopPWM_ESP32();
 	#endif
 }
 
@@ -2408,40 +2430,6 @@ static void setServo(int pin, int usecs) {
 	}
 }
 
-#elif defined(ESP32)
-
-static int attachServo(int pin) {
-	// Note: Do not use channels 0-1 or 8-9; those use timer0, which is used by Tone.
-	for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
-		if ((-1 == ledcChannels[i]) && ((i & 7) > 1)) { // free channel
-			ledcSetup(i, 100, 10); // 100Hz, 10 bits
-			ledcAttachPin(pin, i);
-			ledcChannels[i] = pin;
-			return i;
-		}
-	}
-	return 0;
-}
-
-static void setServo(int pin, int usecs) {
-	if (usecs <= 0) {
-		pinDetach(pin);
-	} else {
-		int channel = ledcChannelForPin(pin);
-		if (!channel) channel = attachServo(pin);
-		if (channel > 0) {
-			ledcWrite(channel, usecs * 1024 / 10000);
-		}
-	}
-}
-
-void stopServos() {
-	for (int i = 2; i < MAX_LEDC_CHANNELS; i++) {
-		int pin = ledcChannels[i];
-		if (pin != -1) pinDetach(pin);
-	}
-}
-
 #elif ARDUINO_ARCH_MBED
 
 #include <mbed.h>
@@ -2519,6 +2507,93 @@ static void setServo(int pin, int usecs) {
 			servoPulseWidth[i] = usecs;
 			return;
 		}
+	}
+}
+
+#elif defined(ESP32)
+
+#define MAX_SERVOS 8
+#define UNUSED 255
+
+static volatile int esp32_servoIndex = 0;
+static volatile char esp32_servoPinHigh = false;
+static volatile char esp32_servoPin[MAX_SERVOS] = {UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED};
+static volatile unsigned short esp32_servoPulseWidth[MAX_SERVOS] = {1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500};
+
+hw_timer_t * esp32_servoTimer = NULL;
+static char esp32ServoTimerStarted = 0;
+
+extern "C" void ARDUINO_ISR_ATTR esp32_servo_IRQHandler() {
+	int pin;
+	if (esp32_servoPinHigh && (0 <= esp32_servoIndex) && (esp32_servoIndex < MAX_SERVOS)) {
+		pin = esp32_servoPin[esp32_servoIndex]; // Note: pin may have become UNUSED
+ 		if (pin != UNUSED) digitalWrite(pin, LOW); // end the current servo pulse
+	}
+
+	// find the next active servo
+	esp32_servoIndex = (esp32_servoIndex + 1) % MAX_SERVOS;
+	while ((esp32_servoIndex < MAX_SERVOS) && (UNUSED == esp32_servoPin[esp32_servoIndex])) {
+		esp32_servoIndex++;
+	}
+
+	uint64_t now = timerReadMicros(esp32_servoTimer);
+	if (esp32_servoIndex < MAX_SERVOS) { // start servo pulse for the next servo
+		pin = esp32_servoPin[esp32_servoIndex]; // Note: pin may have become UNUSED
+ 		if (pin != UNUSED) digitalWrite(pin, HIGH);
+		esp32_servoPinHigh = true;
+		timerAlarmWrite(esp32_servoTimer, now + esp32_servoPulseWidth[esp32_servoIndex], false);
+	} else { // idle until next set of pulses
+		esp32_servoIndex = -1;
+		esp32_servoPinHigh = false;
+		timerAlarmWrite(esp32_servoTimer, now + 18000, false);
+	}
+}
+
+static void startESP32ServoTimer() {
+	esp32_servoTimer = timerBegin(3, 80, true); // group 1/timer 1, divide 80 Mhz by 80, count up
+	timerAttachInterrupt(esp32_servoTimer, &esp32_servo_IRQHandler, false);
+	timerAlarmEnable(esp32_servoTimer);
+	esp32ServoTimerStarted = true;
+}
+
+static void esp32_detachServo(int pin) {
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (pin == esp32_servoPin[i]) {
+			esp32_servoPulseWidth[i] = 1500;
+			esp32_servoPin[i] = UNUSED;
+		}
+	}
+}
+
+static void setServo(int pin, int usecs) {
+	if (!esp32ServoTimerStarted) startESP32ServoTimer();
+
+	if (usecs <= 0) { // turn off servo
+		esp32_detachServo(pin);
+		return;
+	}
+
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (pin == esp32_servoPin[i]) { // update the pulse width for the given pin
+			esp32_servoPulseWidth[i] = usecs;
+			return;
+		}
+	}
+
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (UNUSED == esp32_servoPin[i]) { // found unused servo entry
+			SET_MODE(pin, OUTPUT);
+			esp32_servoPulseWidth[i] = usecs;
+			esp32_servoPin[i] = pin;
+			return;
+		}
+	}
+}
+
+void stopServos() {
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		esp32_servoPulseWidth[i] = 1500;
+		esp32_servoPin[i] = UNUSED;
 	}
 }
 

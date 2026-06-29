@@ -1393,10 +1393,11 @@ void vmLoop() {
 			#endif
 			#if defined(COCUBE)
 				cocubeSensorUpdate();
+				processStartupGesture();
 			#endif
 			handleMicosecondClockWrap();
-			#if !defined(DUELink)
-				if (totalMicrosecs() < (10 * 1000000)) { // first N seconds after startup
+			#if !defined(DUELink) && !defined(COCUBE)
+				if (totalMicrosecs() < (15 * 1000000)) { // first N seconds after startup
 					processStartupGesture();
 				}
 			#endif
