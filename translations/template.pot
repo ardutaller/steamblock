@@ -2307,11 +2307,11 @@ msgid "#SVG#wave-noise gate _"
 msgstr ""
 
 #. Analog Synthesis library block
-msgid "set amplitude _ attack _ hold _ release _ for gate _"
+msgid "set attack _ release _ for gate _"
 msgstr ""
 
 #. Analog Synthesis library block
-msgid "trigger gate _ MIDI key _"
+msgid "play MIDI key _ for _ ms on gate _ amplitude _"
 msgstr ""
 
 #. Analog Synthesis library block
@@ -2327,27 +2327,62 @@ msgid "frequency for gate _"
 msgstr ""
 
 #. Analog Synthesis library block
-#. example: output [16320] to [analog pin]
-#. example: output [16320] to [MCP4725 DAC]
-msgid "output _ to _"
-msgstr ""
-
-#. Analog Synthesis library block
-#. as in pin number or i2c address
-msgid "number/address _"
+#. example: output [16320]
+msgid "output _"
 msgstr ""
 
 #. Analog Synthesis library block
 #. as in digital resolution (8 bit, 16 bit...)
-msgid "asynth;resolution _"
+msgid "set output pin to _ and resolution _"
 msgstr ""
 
-#. Analog Synthesis library block menu option
-msgid "asy;pin"
+#. Wavetable Synthesis library label
+#. Generate synthesized instrument sounds on a DAC or PWM pin
+msgid "Wavetable Synthesis"
 msgstr ""
 
-#. Analog Synthesis library block menu option
-msgid "asy;MCP4725"
+#. Wavetable Synthesis library block
+msgid "set output pin to _"
+msgstr ""
+
+#. Wavetable Synthesis library block
+msgid "select instrument _ for channel _"
+msgstr ""
+
+#. Wavetable Synthesis library block
+msgid "stop channel _ in _ ms"
+msgstr ""
+
+#. Wavetable Synthesis library block
+msgid "graph envelope for channel _"
+msgstr ""
+
+#. Wavetable Synthesis library block
+msgid "graph wave table for channel _"
+msgstr ""
+
+#. Wavetable instrument name
+msgid "saxophone"
+msgstr ""
+
+#. Wavetable instrument name
+msgid "violin"
+msgstr ""
+
+#. Wavetable instrument name
+msgid "sin wave"
+msgstr ""
+
+#. Wavetable instrument name
+msgid "tri wave"
+msgstr ""
+
+#. Wavetable instrument name
+msgid "square wave"
+msgstr ""
+
+#. Wavetable instrument name
+msgid "saw wave"
 msgstr ""
 
 #. General MIDI drum instrument name
@@ -6828,7 +6863,7 @@ msgid "Created with GP"
 msgstr ""
 
 #. About window info
-msgid "More info at http://microblocks.fun"
+msgid "More info at %1"
 msgstr ""
 
 #. MicroBlocks IDE error message.

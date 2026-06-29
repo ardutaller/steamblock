@@ -2307,12 +2307,12 @@ msgid "#SVG#wave-noise gate _"
 msgstr "#SVG#wave-noise gate _"
 
 #. Analog Synthesis library block
-msgid "set amplitude _ attack _ hold _ release _ for gate _"
-msgstr "set amplitude _ attack _ hold _ release _ for gate _"
+msgid "set attack _ release _ for gate _"
+msgstr "set attack _ release _ for gate _"
 
 #. Analog Synthesis library block
-msgid "trigger gate _ MIDI key _"
-msgstr "trigger gate _ MIDI key _"
+msgid "play MIDI key _ for _ ms on gate _ amplitude _"
+msgstr "play MIDI key _ for _ ms on gate _ amplitude _"
 
 #. Analog Synthesis library block
 msgid "set frequency ramp from _ % to _ % for gate _"
@@ -2327,28 +2327,63 @@ msgid "frequency for gate _"
 msgstr "frequency for gate _"
 
 #. Analog Synthesis library block
-#. example: output [16320] to [analog pin]
-#. example: output [16320] to [MCP4725 DAC]
-msgid "output _ to _"
-msgstr "output _ to _"
-
-#. Analog Synthesis library block
-#. as in pin number or i2c address
-msgid "number/address _"
-msgstr "number/address _"
+#. example: output [16320]
+msgid "output _"
+msgstr "output _"
 
 #. Analog Synthesis library block
 #. as in digital resolution (8 bit, 16 bit...)
-msgid "asynth;resolution _"
-msgstr "resolution _"
+msgid "set output pin to _ and resolution _"
+msgstr "set output pin to _ and resolution _"
 
-#. Analog Synthesis library block menu option
-msgid "asy;pin"
-msgstr "analog pin"
+#. Wavetable Synthesis library label
+#. Generate synthesized instrument sounds on a DAC or PWM pin
+msgid "Wavetable Synthesis"
+msgstr "Wavetable Synthesis"
 
-#. Analog Synthesis library block menu option
-msgid "asy;MCP4725"
-msgstr "MCP4725 I2C DAC"
+#. Wavetable Synthesis library block
+msgid "set output pin to _"
+msgstr "set output pin to _"
+
+#. Wavetable Synthesis library block
+msgid "select instrument _ for channel _"
+msgstr "select instrument _ for channel _"
+
+#. Wavetable Synthesis library block
+msgid "stop channel _ in _ ms"
+msgstr "stop channel _ in _ ms"
+
+#. Wavetable Synthesis library block
+msgid "graph envelope for channel _"
+msgstr "graph envelope for channel _"
+
+#. Wavetable Synthesis library block
+msgid "graph wave table for channel _"
+msgstr "graph wave table for channel _"
+
+#. Wavetable instrument name
+msgid "saxophone"
+msgstr "saxophone"
+
+#. Wavetable instrument name
+msgid "violin"
+msgstr "violin"
+
+#. Wavetable instrument name
+msgid "sin wave"
+msgstr "sin wave"
+
+#. Wavetable instrument name
+msgid "tri wave"
+msgstr "tri wave"
+
+#. Wavetable instrument name
+msgid "square wave"
+msgstr "square wave"
+
+#. Wavetable instrument name
+msgid "saw wave"
+msgstr "saw wave"
 
 #. General MIDI drum instrument name
 msgid "Acoustic Bass Drum"
@@ -6828,8 +6863,8 @@ msgid "Created with GP"
 msgstr "Created with GP"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "More info at http://microblocks.fun"
+msgid "More info at %1"
+msgstr "More info at %1"
 
 #. MicroBlocks IDE error message.
 msgid "Script is too large to send to board."
