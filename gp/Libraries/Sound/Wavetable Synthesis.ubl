@@ -10,7 +10,7 @@ variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_e
   space
   spec ' ' 'wt_select instrument' 'select instrument _ for channel _' 'menu.wt_instruments auto' 'tri wave' 1
   spec ' ' 'wt_play MIDI note' 'play MIDI note _ for _ ms on channel _ volume _' 'auto auto auto auto' 60 500 1 500
-  spec ' ' 'wt_stop all notes on channel' 'stop  channel _ in _ ms' 'auto auto' 1 500
+  spec ' ' 'wt_stop all notes on channel' 'stop channel _ in _ ms' 'auto auto' 1 500
   space
   spec ' ' 'wt_graph envelope for channel' 'graph envelope for channel _' 'auto' 1
   spec ' ' 'wt_graph wave for channel' 'graph wave table for channel _' 'auto' 1
