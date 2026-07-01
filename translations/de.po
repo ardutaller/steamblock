@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-07-01 08:55+0000\n"
+"PO-Revision-Date: 2026-07-02 10:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -6480,7 +6480,7 @@ msgstr "Calliope setze NeoPixel _ auf _"
 
 #. Calliope NeoPixel library block
 msgid "Calliope set brightness to _ %"
-msgstr "Calliope setze NeoPixel auf Helligkeit _"
+msgstr "Calliope setze NeoPixel auf Helligkeit _ %"
 
 #. Calliope Servoboard library block
 msgid "Calliope set motor _ to speed _ (-100~100)"
@@ -8634,7 +8634,7 @@ msgstr "lade Modul neu"
 
 #. Example string. Tells the user this input accepts a list of strings.
 msgid "a list of strings"
-msgstr "eine Liste mit Stings"
+msgstr "Liste von Zeichenketten"
 
 #. Block in Comm category
 msgid "duelink receive"
@@ -8674,7 +8674,7 @@ msgstr "eine Bitmap"
 
 #. TFT Display library example
 msgid "a list of colors"
-msgstr "eine Farbliste"
+msgstr "Liste von Farben"
 
 #. TFT Display library block
 msgid "bytes per pixel _"
