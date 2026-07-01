@@ -51,6 +51,18 @@ method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
 		(contains dfuBoards boardName))
 }
 
+method presentBoardTypeMenu MicroBlocksFirmwareInstaller eraseFlashFlag {
+	menu = (menu 'Select board type:' (action 'installBoardFromMenu' this eraseFlashFlag) true)
+	for item boardMenu {
+		if ('-' == item) {
+			addLine menu
+		} (or (not eraseFlashFlag) (contains espBoards item)) {
+			addItem menu item
+		}
+	}
+	popUpAtHand menu (global 'page')
+}
+
 // Browser Virtual Machine Intaller
 
 method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
@@ -71,15 +83,7 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag
 	} else {
-		menu = (menu 'Select board type:' (action 'installBoardFromMenu' this eraseFlashFlag) true)
-		for item boardMenu {
-			if ('-' == item) {
-				addLine menu
-			} (or (not eraseFlashFlag) (contains espBoards item)) {
-				addItem menu item
-			}
-		}
-		popUpAtHand menu (global 'page')
+		presentBoardTypeMenu this eraseFlashFlag
 	}
 }
 
@@ -111,6 +115,7 @@ method installBoardFromMenu MicroBlocksFirmwareInstaller eraseFlashFlag boardNam
 method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 	if (not fromMenu) {
 		if (not (confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
+			presentBoardTypeMenu this false
 			return
 		}
 	}
@@ -179,18 +184,18 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 		vmFileName = (join (substring filePart 1 (min 9 (count filePart))) '.hex')
 	}
 
+	msg = (join prefix (localized 'Save the firmware file when prompted.'))
+	response = (inform msg (localized 'Firmware Install'))
+	if (isNil response) { return } // user aborted
+
 	if ('Browser' == (platform)) {
-		msg = (join prefix (localized 'Save the firmware file when prompted.'))
-		response = (inform msg (localized 'Firmware Install'))
-		if (isNil response) { return }
 		browserWriteFile vmData vmFileName 'vmInstall'
-		waitMSecs 5000 // leave time for file to download before showing next prompt
 	} else {
-		msg = (join prefix (localized 'Save firmware file to download folder: %1' vmFileName))
-		response = (inform msg (localized 'Firmware Install'))
-		if (isNil response) { return }
-		writeFile (join (userHomePath) '/Downloads/' vmFileName) vmData
+		vmFileName = (fileToWrite (join (userHomePath) '/Downloads/' vmFileName))
+		if ('' == (filePart vmFileName)) { return } // user aborted
+		writeFile vmFileName vmData
 	}
+	waitMSecs 1000 // leave time for file to get written before showing next prompt
 
 	inform (localized 'Drag the firmware file you just saved to the %1 drive.' driveName)
 	waitMSecs 1000 // leave time for file dialog box to appear before showing next prompt
