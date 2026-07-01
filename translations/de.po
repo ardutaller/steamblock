@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-06-28 17:01+0000\n"
+"PO-Revision-Date: 2026-07-01 08:55+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8737,3 +8737,74 @@ msgstr "Lautstärke _ (0-10)"
 #. MP3 Player library block
 msgid "rx pin _"
 msgstr "rx-Pin _"
+
+#. Analog Synthesis library block
+msgid "set attack _ release _ for gate _"
+msgstr "setze Attack _ Release _ für Gate _"
+
+#. Analog Synthesis library block
+msgid "play MIDI key _ for _ ms on gate _ amplitude _"
+msgstr "spiele MIDI Key _ für _ ms auf Gate _ Amplitude _"
+
+#. Analog Synthesis library block
+#. example: output [16320]
+msgid "output _"
+msgstr "Ausgabe _"
+
+#. Analog Synthesis library block
+#. as in digital resolution (8 bit, 16 bit...)
+msgid "set output pin to _ and resolution _"
+msgstr "setze Ausgabe-Pin _ und Auflösung _"
+
+#. Wavetable Synthesis library label
+#. Generate synthesized instrument sounds on a DAC or PWM pin
+msgid "Wavetable Synthesis"
+msgstr "Wavetable-Synthese"
+
+#. Wavetable Synthesis library block
+msgid "set output pin to _"
+msgstr "setze Ausgabe-Pin _"
+
+#. Wavetable Synthesis library block
+msgid "select instrument _ for channel _"
+msgstr "wähle Instrument _ für Kanal _"
+
+#. Wavetable Synthesis library block
+msgid "stop channel _ in _ ms"
+msgstr "stoppe Kanal _ in _ ms"
+
+#. Wavetable Synthesis library block
+msgid "graph envelope for channel _"
+msgstr "Grafische Hüllkurve für Kanal _"
+
+#. Wavetable Synthesis library block
+msgid "graph wave table for channel _"
+msgstr "Grafisches Wavetable für Kanal _"
+
+#. Wavetable instrument name
+msgid "saxophone"
+msgstr "Saxofon"
+
+#. Wavetable instrument name
+msgid "violin"
+msgstr "Violine"
+
+#. Wavetable instrument name
+msgid "sin wave"
+msgstr "Sinuswelle"
+
+#. Wavetable instrument name
+msgid "tri wave"
+msgstr "Dreieckswelle"
+
+#. Wavetable instrument name
+msgid "square wave"
+msgstr "Rechteckwelle"
+
+#. Wavetable instrument name
+msgid "saw wave"
+msgstr "Sägezahnwelle"
+
+#. About window info
+msgid "More info at %1"
+msgstr "Mehr Infos auf %1"
