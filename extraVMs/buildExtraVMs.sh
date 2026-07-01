@@ -3,6 +3,9 @@
 rm -f *.hex *.bin *.uf2
 cd ..
 
+pio run -e calliope
+cp .pio/build/calliope/firmware.hex extraVMs/vm_calliope_v1_v2.hex
+
 pio run -e cpx
 python precompiled/uf2conv.py -c .pio/build/cpx/firmware.bin -o extraVMs/vm_circuitplay.uf2
 pio run -e cplay52
