@@ -1841,7 +1841,7 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 			if ((ledcChannels[channel] == -1) && ((channel & 7) > 1)) break;
 		}
 		if (channel < MAX_LEDC_CHANNELS) {
-			ledcSetup(channel, 78125, 10); // 78125 Hz, 10 bits (for audio)
+			ledcSetup(channel, 78125, 9); // 78125 Hz, 9 bits (for audio)
 			ledcAttachPin(pin, channel);
 			ledcChannels[channel] = pin;
 		}
@@ -1906,6 +1906,9 @@ void primAnalogWrite(OBJ *args) {
 	#elif defined(NRF52)
 		value = value >> 2; // PWM has only 8-bit resolution
 		if (value > 255) value = 255;
+	#elif defined(ESP32)
+		value = value >> 1; // PWM has only 9-bit resolution
+		if (value > 511) value = 511;
 	#else
 		if (value > 1023) value = 1023;
 	#endif
