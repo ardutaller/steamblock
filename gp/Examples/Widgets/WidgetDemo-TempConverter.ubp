@@ -33,7 +33,7 @@ widget_setValue (v 'C text') ('[data:join]' 'C: ' (widget_value (v 'C slider')))
 
 module TFT Output
 author MicroBlocks
-version 1 17 
+version 1 19 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -50,7 +50,7 @@ description 'Draw graphics and write text on boards with a TFT display, such as 
 Line 2' 50 20 nil 2
   space
   spec ' ' '[tft:setPixel]' 'set TFT pixel x _ y _ to _' 'num num color' 10 10
-  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytesPerPixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
+  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytes per pixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
   spec ' ' '[tft:drawBitmap]' 'draw bitmap _ palette _ on TFT at x _ y _' 'str str num num' 'aBitmap' 'a list of colors' 10 10
   space
   spec 'r' 'tft_colorSwatch' '_' 'color'
@@ -70,6 +70,9 @@ Line 2' 50 20 nil 2
   space
   spec ' ' '[tft:setBacklight]' 'set TFT backlight _ (0-10)' 'num' 10
   spec ' ' '[tft:invertDisplay]' 'invert TFT display _' 'bool' false
+  advanced
+  spec ' ' 'tft_deferOLEDDisplayUpdates' 'defer OLED display updates'
+  spec ' ' 'tft_resumeOLEDDisplayUpdates' 'resume OLED display updates'
   space
   spec ' ' '_deferMonochromeDisplayUpdates' '_defer monochrome display updates'
   spec ' ' '_resumeMonochromeDisplayUpdates' '_resume monochrome display updates'
@@ -111,6 +114,10 @@ to tft_colorSwatch color {
   return color
 }
 
+to tft_deferOLEDDisplayUpdates {
+  '[tft:deferUpdates]'
+}
+
 to tft_drawImage imageString x y c optionalScale {
   comment 'Draw an image at the given position. An image is represented by a multi-line string
 of 0 and 1 characters where each line is one row of the image. 1 means that pixel on (lit).'
@@ -121,7 +128,7 @@ of 0 and 1 characters where each line is one row of the image. 1 means that pixe
       y += scale
       x = left
     } else {
-      if (ch == 49) {'[tft:rect]' x y scale scale true}
+      if (ch == 49) {'[tft:rect]' x y scale scale c}
       x += scale
     }
   }
@@ -152,6 +159,10 @@ to tft_image s {
   return ('[data:convertType]' s 'string')
 }
 
+to tft_resumeOLEDDisplayUpdates {
+  '[tft:resumeUpdates]'
+}
+
 
 module 'Touch Screen' Input
 author MicroBlocks
@@ -166,7 +177,7 @@ description 'Mouse pointer support for Boardie and the Linux VM, plus support fo
 
 module Widgets
 author MicroBlocks
-version 1 3 
+version 1 4 
 depends '_Touch Screen' TFT 
 description 'Simple interactive monochrome widgets using the TFT library.
 Supports interation via touch screen, when available, or A and B buttons.
