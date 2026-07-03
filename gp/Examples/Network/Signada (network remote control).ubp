@@ -495,7 +495,7 @@ to 'stop steppers' {
 
 module Files Data
 author MicroBlocks
-version 1 4 
+version 1 5 
 description 'Flash file system operations. Currently supports the LittleFS file system on ESP8266 and ESP32 boards. The GnuBlocks virtual machine (Linux and Raspberry Pi) supports the native system.'
 
   spec ' ' '[file:open]' 'open file _' 'str'
@@ -518,7 +518,20 @@ description 'Flash file system operations. Currently supports the LittleFS file 
   spec ' ' 'file_SkipBytes' 'skip _ bytes of file _' 'num str' 4 ''
   space
   spec 'r' 'file names' 'file names : in directory _' 'str'
+  spec 'r' 'file directories' 'directory names : in directory _' 'str'
+  space
   spec 'r' '[file:systemInfo]' 'file system info'
+
+to 'file directories' dir {
+  '[file:startList]' dir
+  local 'result' ('[data:makeList]')
+  local 'fileName' ('[file:nextDirInList]')
+  repeatUntil (fileName == '') {
+    '[data:addLast]' fileName result
+    fileName = ('[file:nextDirInList]')
+  }
+  return result
+}
 
 to 'file names' dir {
   '[file:startList]' dir
@@ -635,7 +648,7 @@ description 'Very fast and efficient primitives to parse JSON strings.'
 
 module 'LED Display' Output
 author MicroBlocks
-version 1 14 
+version 1 15 
 choices led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors 
 description 'Display primitives for the 5x5 LED display on the BBC micro:bit, Calliope mini and M5Atom Matrix. Boards with TFT displays (such as the Citilab ED1 or the M5Stack family) support these primitives with a simulated "fat pixel" display.
 '
@@ -710,7 +723,7 @@ to scroll_text text optionalDelay {
       '[tft:text]' text (17 - position) 0 (colorSwatch 125 125 125 255) 1 true
       waitMillis (delay / 2)
     }
-  } ('kidsIOT' == (boardType)) {
+  } (or ('KidsIOT' == (boardType)) ('CodingBox' == (boardType))) {
     for position (((size text) * 6) + 21) {
       if _stop_scrolling_text {return 0}
       '[tft:deferUpdates]'
@@ -743,7 +756,7 @@ to stopScrollingText {
 
 module TFT Output
 author MicroBlocks
-version 1 12 
+version 1 19 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -760,7 +773,7 @@ description 'Draw graphics and write text on boards with a TFT display, such as 
 Line 2' 50 20 nil 2
   space
   spec ' ' '[tft:setPixel]' 'set TFT pixel x _ y _ to _' 'num num color' 10 10
-  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytesPerPixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
+  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytes per pixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
   spec ' ' '[tft:drawBitmap]' 'draw bitmap _ palette _ on TFT at x _ y _' 'str str num num' 'aBitmap' 'a list of colors' 10 10
   space
   spec 'r' 'tft_colorSwatch' '_' 'color'
@@ -768,10 +781,21 @@ Line 2' 50 20 nil 2
   spec 'r' 'makeGray' 'gray _ %' 'num' 50
   spec 'r' 'randomColor' 'random color'
   space
+  spec ' ' 'tft_drawImage' 'draw image _ on TFT at x _ y _ color _ : #BR# scale _' 'str num num color num' '' 0 0 nil 1
+  spec 'r' 'tft_image' 'image _' 'str' '00000
+01010
+00000
+10001
+01110'
+  space
   spec 'r' '[tft:getWidth]' 'TFT width'
   spec 'r' '[tft:getHeight]' 'TFT height'
   space
   spec ' ' '[tft:setBacklight]' 'set TFT backlight _ (0-10)' 'num' 10
+  spec ' ' '[tft:invertDisplay]' 'invert TFT display _' 'bool' false
+  advanced
+  spec ' ' 'tft_deferOLEDDisplayUpdates' 'defer OLED display updates'
+  spec ' ' 'tft_resumeOLEDDisplayUpdates' 'resume OLED display updates'
   space
   spec ' ' '_deferMonochromeDisplayUpdates' '_defer monochrome display updates'
   spec ' ' '_resumeMonochromeDisplayUpdates' '_resume monochrome display updates'
@@ -813,6 +837,26 @@ to tft_colorSwatch color {
   return color
 }
 
+to tft_deferOLEDDisplayUpdates {
+  '[tft:deferUpdates]'
+}
+
+to tft_drawImage imageString x y c optionalScale {
+  comment 'Draw an image at the given position. An image is represented by a multi-line string
+of 0 and 1 characters where each line is one row of the image. 1 means that pixel on (lit).'
+  local 'scale' (argOrDefault 5 1)
+  local 'left' x
+  for ch ('[data:convertType]' imageString 'byte array') {
+    if (ch == 10) {
+      y += scale
+      x = left
+    } else {
+      if (ch == 49) {'[tft:rect]' x y scale scale c}
+      x += scale
+    }
+  }
+}
+
 to tft_drawText s x y color optionalScale optionalBGColor {
   s = ('[data:convertType]' s 'string')
   local 'scale' (argOrDefault 5 2)
@@ -834,10 +878,18 @@ to tft_drawVector x y angle length color {
   '[tft:line]' x y endX endY color
 }
 
+to tft_image s {
+  return ('[data:convertType]' s 'string')
+}
+
+to tft_resumeOLEDDisplayUpdates {
+  '[tft:resumeUpdates]'
+}
+
 
 module Tone Output
 author MicroBlocks
-version 1 10 
+version 1 11 
 tags tone sound music audio note speaker 
 choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 
 description 'Audio tone generation. Make music with MicroBlocks!
@@ -849,6 +901,8 @@ variables _tonePin _toneInitalized _toneLoopOverhead _toneNoteNames _toneArezzoN
   spec ' ' 'play frequency' 'play frequency _ for _ ms' 'num num' 261 500
   space
   spec ' ' 'startTone' 'start tone _ Hz' 'num' 440
+  spec ' ' 'tone_startNote' 'start note _ octave _' 'str.tone_NoteName num' 'nt;c' 0
+  spec ' ' 'tone_startMIDIKey' 'start midi key _' 'num' 60
   spec ' ' 'stopTone' 'stop tone'
   space
   spec ' ' 'attach buzzer to pin' 'attach buzzer to pin _' 'auto' ''
@@ -1008,6 +1062,36 @@ to startTone freq {
 
 to stopTone {
   startTone 0
+}
+
+to tone_startMIDIKey key {
+  local 'freq' ('_baseFreqForSemitone' ((key % 12) + 1))
+  local 'octave' ((key / 12) - 5)
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
+}
+
+to tone_startNote note octave {
+  local 'freq' ('_baseFreqForNote' note)
+  if (freq <= 10000) {
+    return 0
+  }
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
 }
 
 
