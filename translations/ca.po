@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-06-29 10:22+0000\n"
-"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
+"PO-Revision-Date: 2026-07-04 09:01+0000\n"
+"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.dev0\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -8561,3 +8561,113 @@ msgstr "ona quadrada"
 #. Wavetable instrument name
 msgid "saw wave"
 msgstr "ona de serra"
+
+#. Example string. Tells the user this input accepts a list of strings.
+msgid "a list of strings"
+msgstr "una llista de cadenes"
+
+#. NeoPanel library block
+msgid "NeoPanel scroll text _ color _"
+msgstr "NeoPanel desplaça el text _ color _"
+
+#. NeoPanel library block
+msgid "pausing _ msecs"
+msgstr "pausa de _ ms"
+
+#. Example for the draw text block
+msgid "Hello"
+msgstr "Hola"
+
+#. NeoPanel library block
+msgid "separation _"
+msgstr "separació _"
+
+#. Infrared Remote library block
+msgid "IR code"
+msgstr "codi IR"
+
+#. Infrared Remote library block
+msgid "attach IR transmitter to pin _"
+msgstr "connecta el transmissor IR al pin _"
+
+#. TFT Display library example
+msgid "aBitmap"
+msgstr "un bitmap"
+
+#. TFT Display library example
+msgid "a list of colors"
+msgstr "una llista de colors"
+
+#. TFT Display library block
+msgid "bytes per pixel _"
+msgstr "bytes per píxel _"
+
+#. TFT Display library block
+msgid "palette _"
+msgstr "paleta _"
+
+#. TFT Display library block
+msgid "defer OLED display updates"
+msgstr "ajorna les actualitzacions de la pantalla OLED"
+
+#. TFT Display library block
+msgid "resume OLED display updates"
+msgstr "reprèn les actualitzacions de la pantalla OLED"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _ BGR colors _"
+msgstr "#BR# reinicia pin _ inverteix colors _ colors BGR _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# flip vertical _"
+msgstr "#BR# gira verticalment _"
+
+#. External Displays Library block
+msgid "x offset _"
+msgstr "offset x _"
+
+#. External Displays Library block
+msgid "set display SPI clk pin _ mosi pin _ miso pin _"
+msgstr "estableix els pins SPI de la pantallaː clk _ mosi _ miso _"
+
+#. External Displays Library block
+msgid "spi _"
+msgstr "spi _"
+
+#. External Displays Library block
+msgid "send OLED commands _"
+msgstr "envia comandes OLED _"
+
+#. Strings library block
+msgid "left pad _ to _ with _"
+msgstr "omple per l'esquerra _ fins a _ amb _"
+
+#. Strings library block
+msgid "right pad _ to _ with _"
+msgstr "omple per la dreta _ fins a _ amb _"
+
+#. micro:STEAMakers library block
+msgid "ms scroll text _ with color _"
+msgstr "ms desplaça text _ amb color _"
+
+#. Block in Comm category
+msgid "duelink send _ starting at _"
+msgstr "duelink envia _ començant a _"
+
+#. MakerPort library block
+msgid "volume _ (0-10)"
+msgstr "volume _ (0-10)"
+
+#. MP3 Player library block
+msgid "rx pin _"
+msgstr "pin rx _"
+
+#. About window info
+msgid "More info at %1"
+msgstr "Més informació a %1"
+
+#. Block in Comm category
+msgid "duelink receive"
+msgstr "duelink rebre"
