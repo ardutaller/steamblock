@@ -2522,6 +2522,7 @@ static volatile int esp32_servoIndex = 0;
 static volatile char esp32_servoPinHigh = false;
 static volatile char esp32_servoPin[MAX_SERVOS] = {UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED};
 static volatile unsigned short esp32_servoPulseWidth[MAX_SERVOS] = {1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500};
+static int servosRunning = false;
 
 hw_timer_t * esp32_servoTimer = NULL;
 static char esp32ServoTimerStarted = 0;
@@ -2566,6 +2567,12 @@ static void esp32_detachServo(int pin) {
 			esp32_servoPin[i] = UNUSED;
 		}
 	}
+
+	// check for all servos idle
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (esp32_servoPin[i] != UNUSED) return; // found a running servo; return
+	}
+	servosRunning = false; // all servo channels are idle
 }
 
 static void setServo(int pin, int usecs) {
@@ -2588,6 +2595,7 @@ static void setServo(int pin, int usecs) {
 			SET_MODE(pin, OUTPUT);
 			esp32_servoPulseWidth[i] = usecs;
 			esp32_servoPin[i] = pin;
+			servosRunning = true;
 			return;
 		}
 	}
@@ -2598,6 +2606,7 @@ void stopServos() {
 		esp32_servoPulseWidth[i] = 1500;
 		esp32_servoPin[i] = UNUSED;
 	}
+	servosRunning = false;
 }
 
 #elif defined(DUELink)
@@ -3498,6 +3507,7 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
  	#include <esp_sleep.h>
 
 	extern "C" void lightSleep(int msecs) {
+		if (servosRunning) return; // changing clock speed messes up servo timing
 		#if defined(ESP32_S2) || defined(ESP32_C3) || defined(ESP32_C6)
 			setCpuFrequencyMhz(80); // lowest safe clock speed on S2, C3, and C6 is 80 MHz
 		#else
