@@ -2986,118 +2986,6 @@ static int writeDAC(int sample) { return 0; }
 
 #endif
 
-// Experimental LEDC PWM audio output
-// Note: LEDC channels are also used by servos and by analog write; this feature could conflict.
-// Maybe just set PWM to 10-bits, 39062 Hz for analog output and use analog write primitive?
-
-#if defined(ESP32)
-
-#define LEDC_AUDIO_CHANNEL 5 // last LEDC channel on C3
-static int pwmAudioPin = -1; // -1 means audio is not initialized
-static int pwmAudioResolution = 10;
-
-static OBJ primPWMAudioInit(int argCount, OBJ *args) {
-	// Sampling rate is 40 MHz / 2^resolution:
-	//	 8 bits, 156250 kSamples/sec
-	//	 9 bits, 78125 kSamples/sec
-	//	10 bits, 39062 kSamples/sec
-	//	11 bits, 19531 kSamples/sec
-	// 9-bit at 78k sounds good up for a 6 kHz sine wave with no low-pass filter on output
-	// Have not tested the different sample rates with a low-pass filter.
-
-	if (argCount < 2) return fail(notEnoughArguments);
-	if (!isInt(args[0]) || !isInt(args[1])) return fail(needsIntegerError);
-
-	if (pwmAudioPin >= 0) ledcDetachPin(pwmAudioPin);
-	pwmAudioPin = -1;
-
-	int outputPin = mapDigitalPinNum(obj2int(args[0]));
-	if (outputPin < 0) return falseObj;
-
-	pwmAudioResolution = obj2int(args[1]);
-	if (pwmAudioResolution < 8) pwmAudioResolution = 8;
-	if (pwmAudioResolution > 11) pwmAudioResolution = 11;
-
-	uint32_t sampleRate = 40000000 / (1 << pwmAudioResolution);
-
-	int rc = ledcSetup(LEDC_AUDIO_CHANNEL, sampleRate, pwmAudioResolution);
-	ledcAttachPin(outputPin, LEDC_AUDIO_CHANNEL);
-	pwmAudioPin = outputPin;
-
-	return falseObj;
-}
-
-static OBJ primPWMAudioOut(int argCount, OBJ *args) {
-	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
-
-	int signed16bit = obj2int(args[0]); // signed 16-bit sample
-
-	if (pwmAudioPin < 0) {
-		outputString("PWM Audio not initialized");
-		return falseObj;
-	}
-
-	int pwmAudioMaxSample = (1 << pwmAudioResolution) - 1;
-
-	int pwm = (signed16bit >> (16 - pwmAudioResolution)) + (1 << (pwmAudioResolution - 1));
-	if (pwm < 0) pwm = 0;
-	if (pwm > pwmAudioMaxSample) pwm = pwmAudioMaxSample;
-
-	ledcWrite(LEDC_AUDIO_CHANNEL, pwm);
-	return falseObj;
-}
-
-#elif defined(NRF52)
-
-static int pwmAudioPin = -1; // -1 means audio is not initialized
-
-static OBJ primPWMAudioInit(int argCount, OBJ *args) {
-	// Sampling rate on nRF52 is zzz kHz with 8-bit samples using PWM.
-
-	if (argCount < 1) return fail(notEnoughArguments);
-	if (!isInt(args[0])) return fail(needsIntegerError);
-
-	pwmAudioPin = obj2int(args[0]);
-	if ((pwmAudioPin < 0) || (pwmAudioPin >= DIGITAL_PINS)) return falseObj;
-
-	setPinMode(pwmAudioPin, OUTPUT);
-	analogWriteResolution(8);
-
-	return falseObj;
-}
-
-static OBJ primPWMAudioOut(int argCount, OBJ *args) {
-	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
-
-	int signed16bit = obj2int(args[0]); // signed 16-bit sample
-
-	if (pwmAudioPin < 0) {
-		outputString("PWM Audio not initialized");
-		return falseObj;
-	}
-
-	int value = (signed16bit >> 9) + 128;
-	if (value < 0) value = 0;
-	if (value > 255) value = 255;
-
-	// On NRF52, wait until last PWM cycle is finished before writing a new value.
-	// Prevents a tight loop writing audio samples from exceeding the PWM sample rate.
-	NRF_PWM_Type* pwm = NRF_PWM0;
-	if (pwm->EVENTS_SEQSTARTED[0]) {
-		while (!pwm->EVENTS_PWMPERIODEND) /* wait */;
-		pwm->EVENTS_PWMPERIODEND = 0;
-	}
-	analogWrite(pwmAudioPin, value); // set the PWM duty cycle on a digital pin
-	return falseObj;
-}
-
-#else
-
-static OBJ primPWMAudioInit(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
-static OBJ primPWMAudioOut(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
-
-#endif
-
 // Tone Primitives
 
 #ifndef DEFAULT_TONE_PIN
@@ -3582,8 +3470,6 @@ static OBJ primAnalogWrite2(int argCount, OBJ *args) { primAnalogWrite(args); re
 static OBJ primDigitalWrite2(int argCount, OBJ *args) { primDigitalWrite(args); return falseObj; }
 
 static PrimEntry entries[] = {
-	{"pwmAudioOut", primPWMAudioOut},
-	{"pwmAudioInit", primPWMAudioInit},
 	{"hasTone", primHasTone},
 	{"playTone", primPlayTone},
 	{"hasServo", primHasServo},
