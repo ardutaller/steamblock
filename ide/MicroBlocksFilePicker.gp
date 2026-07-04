@@ -216,18 +216,18 @@ method addShortcutButtons MicroBlocksFilePicker {
 	showMicroBlocks = (and
 		(not (contains hidden 'MicroBlocks'))
 		('Browser' != (platform)))
-		showExamples = (and
+	showExamples = (and
 		(not (contains hidden 'Examples'))
 		(not forSaving)
 		(isClass extensions 'Array')
 		(contains extensions '.gpp'))
-		showLibraries = (and
+	showLibraries = (and
 		(not (contains hidden 'Libraries'))
 		(not forSaving)
 		(isClass extensions 'Array')
 		(contains extensions '.ubl'))
-		showDesktop = (not (contains hidden 'Desktop'))
-		showDownloads = (and
+	showDesktop = (not (contains hidden 'Desktop'))
+	showDownloads = (and
 		(not (contains hidden 'Downloads'))
 		('Linux' != (platform))
 	)
