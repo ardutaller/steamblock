@@ -1,6 +1,6 @@
 module 'LED Matrix (MAX7219)' Output
 author 'Sam McHardy'
-version 2 0
+version 2 1
 tags display led matrix max7219 spi scrolling text graphics rotation 2d grid
 description 'Drive a MAX7219 LED matrix (one or several 8x8 modules daisy-chained, e.g. the common "4-in-1" 32x8) from MicroBlocks, in pure blocks over a bit-banged SPI connection. No extra hardware library needed.
 
@@ -565,7 +565,7 @@ to '_max7219_show2d' {
         local 'lr' r
         if colFlip {lc = (9 - c)}
         if rowFl {lr = (9 - r)}
-        local 'idx' (((((bc * 8) + lc) - 1) * _max7219_rows) + br + 1)
+        local 'idx' ((((((bc * 8) + lc) - 1) * _max7219_rows) + br) + 1)
         if (((at idx _max7219_buf) & (1 << (lr - 1))) != 0) {
           rowBits = (rowBits | (1 << (c - 1)))
         }
