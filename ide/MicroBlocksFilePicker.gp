@@ -226,6 +226,11 @@ method addShortcutButtons MicroBlocksFilePicker {
 		(not forSaving)
 		(isClass extensions 'Array')
 		(contains extensions '.ubl'))
+	if (and showLibraries ('Browser' == (platform))) {
+		// hide Desktop but show Cloud in library dialog
+		// (Cloud only works in browser because most servers require HTTPS)
+		hidden = (array 'Desktop')
+	}
 	showDesktop = (not (contains hidden 'Desktop'))
 	showDownloads = (and
 		(not (contains hidden 'Downloads'))
