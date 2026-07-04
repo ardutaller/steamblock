@@ -69,8 +69,11 @@ method clearLibraryInfo MicroBlocksLibraryImportDialog {
 method promptLibUrl MicroBlocksLibraryImportDialog {
 	page = (global 'page')
 	url = (prompt page 'Library URL?' 'http://')
-	if (and (notEmpty url) (endsWith url '.ubl') ((findLast url '/') > 10)) {
-		result = (importLibraryFromUrl (scripter (smallRuntime)) url)
+	if (and
+		(notEmpty url)
+		(or (endsWith url '.ubl') (endsWith url '.ubp'))
+		((findLast url '/') > 10)) {
+			result = (importLibraryFromUrl (scripter (smallRuntime)) url)
 	} (notEmpty url) {
 		inform page 'Invalid URL'
 	}

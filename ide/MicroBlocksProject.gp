@@ -516,6 +516,7 @@ method addLibraryFromString MicroBlocksProject s libName fileName {
 	cmdsByModule = (splitCmdListIntoModules this cmdList)
 	for cmdList cmdsByModule {
 		lib = (loadFromCmds (newMicroBlocksModule) cmdList)
+	if ('main' != (moduleName lib)) {
 		if (isNil (moduleName lib)) {
 			setModuleName lib libName
 		}
@@ -541,6 +542,7 @@ method addLibraryFromString MicroBlocksProject s libName fileName {
 			importDependencies lib (scripter (smallRuntime))
 		}
 		addLibrary this lib
+	}
 	}
 	return moduleName
 }
