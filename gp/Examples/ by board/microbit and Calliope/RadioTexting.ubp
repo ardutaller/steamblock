@@ -169,7 +169,7 @@ to setAccelRange n {
 
 module 'Button Events' Input
 author MicroBlocks
-version 1 0 
+version 1 1 
 tags event button double long press 
 description 'Provides blocks to detect press, long press and double press events on buttons.'
 variables _buttons 
@@ -187,7 +187,7 @@ to '_button' 'pin or name' {
     if ((at 1 (v 'each button')) == (v 'pin or name')) {return (v 'each button')}
   }
   comment 'This button has not been initialized. Let''s add it.'
-  local 'new button' ('[data:makeList]' (v 'pin or name') '' '' 'waiting')
+  local 'new button' ('[data:makeList]' (v 'pin or name') '' '' 'waiting' '')
   '[data:addLast]' (v 'new button') _buttons
   return (v 'new button')
 }
@@ -205,6 +205,10 @@ to '_read button' 'pin or name' {
 to '_updateButtons' {
   if (_buttons == 0) {_buttons = ('[data:makeList]')}
   for button _buttons {
+    atPut 5 button ((millisOp) - (at 2 button))
+    if ((at 5 button) > 1000) {
+      atPut 4 button 'waiting'
+    }
     local 'currently pressed' ('_read button' (at 1 button))
     local 'previous state' (at 4 button)
     if (and ((v 'previous state') == 'waiting') (v 'currently pressed')) {
@@ -274,7 +278,7 @@ to 'button pressed' 'pin or name' {
 
 module 'LED Display' Output
 author MicroBlocks
-version 1 14 
+version 1 15 
 choices led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors 
 description 'Display primitives for the 5x5 LED display on the BBC micro:bit, Calliope mini and M5Atom Matrix. Boards with TFT displays (such as the Citilab ED1 or the M5Stack family) support these primitives with a simulated "fat pixel" display.
 '
@@ -349,7 +353,7 @@ to scroll_text text optionalDelay {
       '[tft:text]' text (17 - position) 0 (colorSwatch 125 125 125 255) 1 true
       waitMillis (delay / 2)
     }
-  } ('kidsIOT' == (boardType)) {
+  } (or ('KidsIOT' == (boardType)) ('CodingBox' == (boardType))) {
     for position (((size text) * 6) + 21) {
       if _stop_scrolling_text {return 0}
       '[tft:deferUpdates]'

@@ -207,8 +207,15 @@ method addShortcutButtons MicroBlocksFilePicker {
 		(not forSaving)
 		(isClass extensions 'Array')
 		(contains extensions '.ubl'))
+	if showLibraries {
+		// hide Desktop but show Cloud in library dialog
+		hidden = (array 'Desktop')
+	}
 	showDesktop = (not (contains hidden 'Desktop'))
-	showDownloads = (not (contains hidden 'Downloads'))
+	showDownloads = (and
+		(not (contains hidden 'Downloads'))
+		('Linux' != (platform))
+	)
 	showComputer = (not (contains hidden 'Computer'))
 
 	buttonX = ((left morph) + (17 * scale))

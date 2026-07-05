@@ -89,6 +89,7 @@ i	return false
 // Downloading from URL
 
 method installFromURL MicroBlocksFlasher serialPortID url {
+	url = (join url '?v=' (rand 0 1000000))
 	data = (downloadURLInBrowser this url)
 	if ((byteCount data) == 0) { return }
 	installFromData this url data

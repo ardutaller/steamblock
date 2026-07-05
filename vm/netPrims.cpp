@@ -975,6 +975,9 @@ static void setWiFiChannel(int channel) {
 	// ensure WiFi is on
 	if (WiFi.status() != WL_CONNECTED) {
 		WiFi.mode(WIFI_STA);	// start the WiFi radio
+		#if defined(C3_MINI)
+			WiFi.setTxPower(WIFI_POWER_8_5dBm);
+		#endif
 		WiFi.disconnect();		// ... but do not connect to an access point
 	}
 
@@ -1004,6 +1007,9 @@ static void startESPNow() {
 	// ensure that the WiFi radio is on (must be turned on before calling esp_now_init())
 	if (WiFi.status() != WL_CONNECTED) {
 		WiFi.mode(WIFI_STA);	// start the WiFi radio
+		#if defined(C3_MINI)
+			WiFi.setTxPower(WIFI_POWER_8_5dBm);
+		#endif
 		WiFi.disconnect();		// ... but do not connect to an access point
 	}
 

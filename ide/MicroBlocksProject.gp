@@ -516,33 +516,35 @@ method addLibraryFromString MicroBlocksProject s libName fileName {
 	cmdsByModule = (splitCmdListIntoModules this cmdList)
 	for cmdList cmdsByModule {
 		lib = (loadFromCmds (newMicroBlocksModule) cmdList)
-		if (isNil (moduleName lib)) {
-			setModuleName lib libName
-		}
-		if (beginsWith fileName '//Libraries/') {
-			setPath lib (withoutExtension (substring fileName ((count '//Libraries/') + 1)))
-		} (beginsWith fileName 'Libraries/') {
-			setPath lib (withoutExtension (substring fileName ((count 'Libraries/') + 1)))
-		} (beginsWith fileName 'http://') {
-			setPath lib fileName
-		} (beginsWith fileName (join (gpFolder) '/Libraries')) {
-			setPath lib (withoutExtension (substring fileName ((count (join (gpFolder) '/Libraries')) + 1)))
-		} else {
-			// Local files sourced from places other than the MicroBlocks folder
-			// are unsupported as dependencies.
-			setPath lib nil
-		}
-		updatePrimitives lib
-		fixFunctionLocals this
+		if ('main' != (moduleName lib)) {
+			if (isNil (moduleName lib)) {
+				setModuleName lib libName
+			}
+			if (beginsWith fileName '//Libraries/') {
+				setPath lib (withoutExtension (substring fileName ((count '//Libraries/') + 1)))
+			} (beginsWith fileName 'Libraries/') {
+				setPath lib (withoutExtension (substring fileName ((count 'Libraries/') + 1)))
+			} (beginsWith fileName 'http://') {
+				setPath lib fileName
+			} (beginsWith fileName (join (gpFolder) '/Libraries')) {
+				setPath lib (withoutExtension (substring fileName ((count (join (gpFolder) '/Libraries')) + 1)))
+			} else {
+				// Local files sourced from places other than the MicroBlocks folder
+				// are unsupported as dependencies.
+				setPath lib nil
+			}
+			updatePrimitives lib
+			fixFunctionLocals this
 
-		moduleName = (moduleName lib)
-		if (notNil (libraryNamed this moduleName)) {
-			// updating an existing library: just replace it and don't import dependencies
-			removeLibraryNamed this moduleName
-		} else {
-			importDependencies lib (scripter (smallRuntime))
+			moduleName = (moduleName lib)
+			if (notNil (libraryNamed this moduleName)) {
+				// updating an existing library: just replace it and don't import dependencies
+				removeLibraryNamed this moduleName
+			} else {
+				importDependencies lib (scripter (smallRuntime))
+			}
+			addLibrary this lib
 		}
-		addLibrary this lib
 	}
 	return moduleName
 }

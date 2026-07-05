@@ -43,11 +43,21 @@ method closePort MicroBlocksFirmwareInstaller {
 
 method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
 	initialize this
-	if (isOneOf boardName 'micro:bit v2' 'Calliope v3') { return true } // variants
+	if (isOneOf boardName 'micro:bit v2' 'Calliope v3' 'RP2040') { return true } // variants
 	return (or
 		(contains boardMenu boardName)
 		(contains espBoards boardName)
 		(contains dfuBoards boardName))
+}
+
+method presentBoardTypeMenu MicroBlocksFirmwareInstaller eraseFlashFlag {
+	items = (list)
+	for item boardMenu {
+		if (or (not eraseFlashFlag) (contains espBoards item)) {
+			add items (array item)
+		}
+	}
+	menuFor (api (smallRuntime)) items (action 'installBoardFromMenu' this eraseFlashFlag)
 }
 
 // Browser Virtual Machine Intaller
@@ -60,9 +70,9 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	} (isOneOf boardType 'Calliope' 'Calliope v3') {
 		installHexOrUF2File this 'Calliope' false
 	} ('MakerPort' == boardType) {
-		adaFruitResetMessage this
+		installHexOrUF2File this 'MakerPort' false
 	} (isOneOf boardType 'RP2040' 'Pico W') {
-		rp2040ResetMessage this
+		installHexOrUF2File this 'RP2040 (Pico or Pico W)' false
 	} (contains dfuBoards boardType) {
 		installDFUFirmware this boardType
 	} (and
@@ -70,22 +80,12 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
 			flashVM this boardType eraseFlashFlag
 	} else {
-		items = (list)
-		for i boardMenu { add items (array i) }
-		menuFor (api (smallRuntime)) items (action 'installBoardFromMenu' this eraseFlashFlag)
+		presentBoardTypeMenu this eraseFlashFlag
 	}
 }
 
 method installDFUFirmware MicroBlocksFirmwareInstaller boardName {
 		closePort this
-
-		// temporary for non-Electron version only
-		if (and
-			('Browser' != (platform))
-			('WeAct STM32H743' != boardName)) {
-				openURL 'https://loader.duelink.com/microblocks'
-				return
-		}
 		browserDfuUpload boardName
 }
 
@@ -104,6 +104,7 @@ method installBoardFromMenu MicroBlocksFirmwareInstaller eraseFlashFlag boardNam
 method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 	if (not fromMenu) {
 		if (not (confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
+			presentBoardTypeMenu this false
 			return
 		}
 	}
@@ -172,18 +173,18 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 		vmFileName = (join (substring filePart 1 (min 9 (count filePart))) '.hex')
 	}
 
+	msg = (join prefix (localized 'Save the firmware file when prompted.'))
+	response = (inform msg (localized 'Firmware Install'))
+	if (isNil response) { return } // user aborted
+
 	if ('Browser' == (platform)) {
-		msg = (join prefix (localized 'Save the firmware file when prompted.'))
-		response = (inform msg (localized 'Firmware Install'))
-		if (isNil response) { return }
 		browserWriteFile vmData vmFileName 'vmInstall'
-		waitMSecs 5000 // leave time for file to download before showing next prompt
 	} else {
-		msg = (join prefix (localized 'Save firmware file to download folder: %1' vmFileName))
-		response = (inform msg (localized 'Firmware Install'))
-		if (isNil response) { return }
-		writeFile (join (userHomePath) '/Downloads/' vmFileName) vmData
+		vmFileName = (fileToWrite (join (userHomePath) '/Downloads/' vmFileName))
+		if ('' == (filePart vmFileName)) { return } // user aborted
+		writeFile vmFileName vmData
 	}
+	waitMSecs 1000 // leave time for file to get written before showing next prompt
 
 	inform (localized 'Drag the firmware file you just saved to the %1 drive.' driveName)
 	waitMSecs 1000 // leave time for file dialog box to appear before showing next prompt
@@ -199,19 +200,11 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 	}
 }
 
-method adaFruitResetMessage MicroBlocksFirmwareInstaller {
-	inform (localized 'For Adafruit boards and MakerPort, double-click reset button and try again.')
-}
-
 method adaFruitReconnectMessage MicroBlocksFirmwareInstaller {
 	msg = (join
 		(localized 'When the NeoPixels turn off') ', '
 		(localized 'reconnect to the board by clicking the "Connect" button.'))
 	inform msg
-}
-
-method rp2040ResetMessage MicroBlocksFirmwareInstaller {
-	inform (localized 'Connect USB cable while holding down the white BOOTSEL button and try again.')
 }
 
 method reconnectMessage MicroBlocksFirmwareInstaller {
@@ -244,7 +237,6 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 	defaultURL = ''
 	if ('Databot' == boardType) {
 		defaultURL = 'http://microblocks.fun/downloads/databot/databot2.0_V2.18.bin'
-		if ('Browser' == (platform)) { closeSerialPort 1 }
 	}
 	url = (trim (freshPrompt (global 'page') 'ESP32 firmware URL?' defaultURL))
 	if ('' == url) { return }

@@ -26,10 +26,11 @@ sayIt (getLastBroadcast)
 
 module CoCube
 author 'Liang Shuai'
-version 2 18 
-depends Tone Display TFT '_Motors/PID' 'Robots/CoCube Module' 
+version 2 20 
+depends Tone Display TFT '_Motors/PID' 'Robots/CoCube Module' '_Graphics and Displays/8 Bit Graphics' 
 tags 'cocube robot' 
 choices cocube_rotate_Menu 'cocube;left' 'cocube;right' 
+choices cocube_emoji_Menu happy naughty 'star-struck' kiss laughing neutral smug crying sleeping awkward shocked nerdy cool scared angry cold hot nauseated vomiting dizzy 
 choices cocube_move_Menu 'cocube;forward' 'cocube;backward' 
 description 'CoCube Robot library
 
@@ -81,6 +82,8 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec 'r' 'CoCube on the mat' 'on the mat'
   spec 'r' 'CoCube card ID' 'card ID'
   space
+  spec ' ' 'CoCube set emoji' 'set emoji _ scale _' 'menu.cocube_emoji_Menu menu.range:1-5' 'happy' 4
+  space
   spec ' ' 'CoCube draw ArUco marker on TFT' 'draw ArUco marker on TFT _' 'num' 0
   spec ' ' 'CoCube draw AprilTag on TFT' 'draw AprilTag on TFT _' 'num' 0
   space
@@ -90,10 +93,10 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' '_cocube_pid_control' '_cocube_pid_control'
   spec ' ' '_cocube_calculate_angle_error_' '_cocube_calculate_angle_error angle _' 'num' 0
   spec ' ' '_cocube_calculate_distance_error target_x _ target_y _' '_cocube_calculate_distance_error Target_X _ Target_Y _' 'num num' 0 0
-  spec ' ' 'CoCube set TFT backlight' 'obsolete obsolete set TFT backlight _' 'bool' false
-  spec ' ' '_cocube_pid_init' 'obsolete obsolete _cocube_pid_init'
-  spec ' ' '_cocube_pid_right_motor' 'obsolete obsolete _cocube_pid_right_motor'
-  spec ' ' '_cocube_pid_left_motor' 'obsolete obsolete _cocube_pid_left_motor'
+  spec ' ' 'CoCube set TFT backlight' 'obsolete obsolete obsolete set TFT backlight _' 'bool' false
+  spec ' ' '_cocube_pid_init' 'obsolete obsolete obsolete _cocube_pid_init'
+  spec ' ' '_cocube_pid_right_motor' 'obsolete obsolete obsolete _cocube_pid_right_motor'
+  spec ' ' '_cocube_pid_left_motor' 'obsolete obsolete obsolete _cocube_pid_left_motor'
 
 to 'CoCube battery percentage' {
   return (minimum (((254 * ('[misc:rescale]' (analogReadOp 34) 0 1023 0 3300)) - 680000) / 1600) 100)
@@ -275,6 +278,27 @@ to 'CoCube rotate to angle' angle speed {
       exitLoop
     }
   }
+}
+
+to 'CoCube set emoji' emoji scale {
+  comment 'Show emojis on the TFT Screen.
+Emojis are stored in BMP format in the _emoji/ directory.'
+  '8bit_set scale _' (scale + 3)
+  local 'file' ('[data:join]' '_emoji/' emoji '.bmp')
+  '8bit_set palette' ('8bit_palette from BMP file' file)
+  local 'offset' 3
+  if (scale == 1) {
+    offset = 18
+  } (scale == 2) {
+    offset = 12
+  } (scale == 3) {
+    offset = 8
+  } (scale == 4) {
+    offset = 5
+  }
+  '8bit_merge' ('8bit_bitmap from BMP file' file) offset offset
+  '8bit_draw buffer'
+  '[file:close]' file
 }
 
 to 'CoCube set wheel' speed_left speed_right {
@@ -1456,7 +1480,7 @@ to stopServo which {
 
 module TFT Output
 author MicroBlocks
-version 1 17 
+version 1 19 
 description 'Draw graphics and write text on boards with a TFT display, such as the M5Stack, M5Stick, Citilab ED1 or (discontinued) IoT-Bus.'
 
   spec ' ' '[tft:clear]' 'clear TFT display'
@@ -1473,7 +1497,7 @@ description 'Draw graphics and write text on boards with a TFT display, such as 
 Line 2' 50 20 nil 2
   space
   spec ' ' '[tft:setPixel]' 'set TFT pixel x _ y _ to _' 'num num color' 10 10
-  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytesPerPixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
+  spec ' ' '[tft:pixelRow]' 'draw pixel row _ x _ y _ : bytes per pixel _ : palette _' 'auto num num num str' 'aList' 0 0 4
   spec ' ' '[tft:drawBitmap]' 'draw bitmap _ palette _ on TFT at x _ y _' 'str str num num' 'aBitmap' 'a list of colors' 10 10
   space
   spec 'r' 'tft_colorSwatch' '_' 'color'
@@ -1493,6 +1517,9 @@ Line 2' 50 20 nil 2
   space
   spec ' ' '[tft:setBacklight]' 'set TFT backlight _ (0-10)' 'num' 10
   spec ' ' '[tft:invertDisplay]' 'invert TFT display _' 'bool' false
+  advanced
+  spec ' ' 'tft_deferOLEDDisplayUpdates' 'defer OLED display updates'
+  spec ' ' 'tft_resumeOLEDDisplayUpdates' 'resume OLED display updates'
   space
   spec ' ' '_deferMonochromeDisplayUpdates' '_defer monochrome display updates'
   spec ' ' '_resumeMonochromeDisplayUpdates' '_resume monochrome display updates'
@@ -1534,6 +1561,10 @@ to tft_colorSwatch color {
   return color
 }
 
+to tft_deferOLEDDisplayUpdates {
+  '[tft:deferUpdates]'
+}
+
 to tft_drawImage imageString x y c optionalScale {
   comment 'Draw an image at the given position. An image is represented by a multi-line string
 of 0 and 1 characters where each line is one row of the image. 1 means that pixel on (lit).'
@@ -1544,7 +1575,7 @@ of 0 and 1 characters where each line is one row of the image. 1 means that pixe
       y += scale
       x = left
     } else {
-      if (ch == 49) {'[tft:rect]' x y scale scale true}
+      if (ch == 49) {'[tft:rect]' x y scale scale c}
       x += scale
     }
   }
@@ -1575,10 +1606,14 @@ to tft_image s {
   return ('[data:convertType]' s 'string')
 }
 
+to tft_resumeOLEDDisplayUpdates {
+  '[tft:resumeUpdates]'
+}
+
 
 module Tone Output
 author MicroBlocks
-version 1 10 
+version 1 11 
 tags tone sound music audio note speaker 
 choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 
 description 'Audio tone generation. Make music with MicroBlocks!
@@ -1590,6 +1625,8 @@ variables _tonePin _toneInitalized _toneLoopOverhead _toneNoteNames _toneArezzoN
   spec ' ' 'play frequency' 'play frequency _ for _ ms' 'num num' 261 500
   space
   spec ' ' 'startTone' 'start tone _ Hz' 'num' 440
+  spec ' ' 'tone_startNote' 'start note _ octave _' 'str.tone_NoteName num' 'nt;c' 0
+  spec ' ' 'tone_startMIDIKey' 'start midi key _' 'num' 60
   spec ' ' 'stopTone' 'stop tone'
   space
   spec ' ' 'attach buzzer to pin' 'attach buzzer to pin _' 'auto' ''
@@ -1749,6 +1786,36 @@ to startTone freq {
 
 to stopTone {
   startTone 0
+}
+
+to tone_startMIDIKey key {
+  local 'freq' ('_baseFreqForSemitone' ((key % 12) + 1))
+  local 'octave' ((key / 12) - 5)
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
+}
+
+to tone_startNote note octave {
+  local 'freq' ('_baseFreqForNote' note)
+  if (freq <= 10000) {
+    return 0
+  }
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
 }
 
 

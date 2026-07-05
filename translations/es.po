@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-06-24 15:45+0000\n"
+"PO-Revision-Date: 2026-07-04 09:01+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.dev0\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -8554,3 +8554,180 @@ msgstr "DFRobot"
 #. Library label right click context menu option
 msgid "reload library"
 msgstr "recarga la biblioteca"
+
+#. Example string. Tells the user this input accepts a list of strings.
+msgid "a list of strings"
+msgstr "una lista de cadenas"
+
+#. Block in Comm category
+msgid "duelink receive"
+msgstr "duelink recibir"
+
+#. Block in Comm category
+msgid "duelink send _ starting at _"
+msgstr "duelink envia _ empezando en _"
+
+#. NeoPanel library block
+msgid "NeoPanel scroll text _ color _"
+msgstr "Neopanel desplaza el texto _ color _"
+
+#. NeoPanel library block
+msgid "pausing _ msecs"
+msgstr "pausa de _ ms"
+
+#. Example for the draw text block
+msgid "Hello"
+msgstr "Hola"
+
+#. NeoPanel library block
+msgid "separation _"
+msgstr "separación _"
+
+#. Infrared Remote library block
+msgid "IR code"
+msgstr "código IR"
+
+#. Infrared Remote library block
+msgid "attach IR transmitter to pin _"
+msgstr "conecta el emissor IR al pin _"
+
+#. TFT Display library example
+msgid "aBitmap"
+msgstr "un bitmap"
+
+#. TFT Display library example
+msgid "a list of colors"
+msgstr "una lista de colores"
+
+#. TFT Display library block
+msgid "bytes per pixel _"
+msgstr "bytes por píxel _"
+
+#. TFT Display library block
+msgid "palette _"
+msgstr "paleta _"
+
+#. TFT Display library block
+msgid "defer OLED display updates"
+msgstr "aplaza las actualizaciones de la pantalla OLED"
+
+#. TFT Display library block
+msgid "resume OLED display updates"
+msgstr "reanuda las actualizaciones de la pantalla OLED"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _ BGR colors _"
+msgstr "#BR# reinicia pin _ invierte colores _ colores BGR _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# flip vertical _"
+msgstr "#BR# gira verticalmente _"
+
+#. External Displays Library block
+msgid "x offset _"
+msgstr "offset x _"
+
+#. External Displays Library block
+msgid "set display SPI clk pin _ mosi pin _ miso pin _"
+msgstr "establece los pines SPI de la pantallaː clk _ mosi _ miso _"
+
+#. External Displays Library block
+msgid "spi _"
+msgstr "spi _"
+
+#. External Displays Library block
+msgid "send OLED commands _"
+msgstr "envia comandos OLED _"
+
+#. Analog Synthesis library block
+msgid "set attack _ release _ for gate _"
+msgstr "establece ataque _ liberación _ para puerta _"
+
+#. Analog Synthesis library block
+msgid "play MIDI key _ for _ ms on gate _ amplitude _"
+msgstr "toca la nota MIDI _ durante _ ms en la puerta _ con amplitud _"
+
+#. Analog Synthesis library block
+#. example: output [16320]
+msgid "output _"
+msgstr "reproduce _"
+
+#. Analog Synthesis library block
+#. as in digital resolution (8 bit, 16 bit...)
+msgid "set output pin to _ and resolution _"
+msgstr "establece el pin de salida a _ con resolución _"
+
+#. Wavetable Synthesis library label
+#. Generate synthesized instrument sounds on a DAC or PWM pin
+msgid "Wavetable Synthesis"
+msgstr "Síntesis de tabla de ondas"
+
+#. Wavetable Synthesis library block
+msgid "set output pin to _"
+msgstr "establece el pin de salida a _"
+
+#. Wavetable Synthesis library block
+msgid "select instrument _ for channel _"
+msgstr "selecciona instrumento _ para el canal _"
+
+#. Wavetable Synthesis library block
+msgid "stop channel _ in _ ms"
+msgstr "silencia canal _ en _ ms"
+
+#. Wavetable Synthesis library block
+msgid "graph envelope for channel _"
+msgstr "dibuja gráfico de la envolvente del canal _"
+
+#. Wavetable Synthesis library block
+msgid "graph wave table for channel _"
+msgstr "dibuja gráfico de la tabla de onda del canal _"
+
+#. Wavetable instrument name
+msgid "saxophone"
+msgstr "saxofón"
+
+#. Wavetable instrument name
+msgid "violin"
+msgstr "violín"
+
+#. Wavetable instrument name
+msgid "sin wave"
+msgstr "onda sinusoidal"
+
+#. Wavetable instrument name
+msgid "tri wave"
+msgstr "onda triangular"
+
+#. Wavetable instrument name
+msgid "square wave"
+msgstr "onda cuadrada"
+
+#. Wavetable instrument name
+msgid "saw wave"
+msgstr "onda de sierra"
+
+#. Strings library block
+msgid "left pad _ to _ with _"
+msgstr "rellena por la izquierda _ hasta _ con _"
+
+#. Strings library block
+msgid "right pad _ to _ with _"
+msgstr "rellena por la derecha _ hasta _ con _"
+
+#. micro:STEAMakers library block
+msgid "ms scroll text _ with color _"
+msgstr "ms desplaza texto _ con color _"
+
+#. MakerPort library block
+msgid "volume _ (0-10)"
+msgstr "volumen _ (0-10)"
+
+#. MP3 Player library block
+msgid "rx pin _"
+msgstr "pin rx _"
+
+#. About window info
+msgid "More info at %1"
+msgstr "Más información en %1"

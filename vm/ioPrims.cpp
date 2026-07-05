@@ -1638,7 +1638,7 @@ int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
 		if ((pinNum < 0) || (pinNum >= DIGITAL_PINS)) return -1; // out of range
 		if (digitalPin[pinNum] == 255) return -1; // unused pin
-		return digitalPin[pinNum];
+		pinNum = digitalPin[pinNum];
 	#elif defined(DUELink)
 		int duePin = -1; // -1 means pin is out of range or undefined
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
@@ -1912,7 +1912,13 @@ void primAnalogWrite(OBJ *args) {
 	#else
 		if (value > 1023) value = 1023;
 	#endif
+
+	// make sure pin is valid
 	if ((pinNum < 0) || (pinNum >= TOTAL_PINS)) return;
+	#if defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_RP2040)
+		if (RESERVED(pinNum)) return;
+	#endif
+
 	#if defined(ARDUINO_ARCH_SAMD) && defined(PIN_DAC0)
 		#if defined(ADAFRUIT_GEMMA_M0)
 			if (1 == pinNum) pinNum = PIN_DAC0; // pin 1 is DAC on Gemma M0
@@ -2522,6 +2528,7 @@ static volatile int esp32_servoIndex = 0;
 static volatile char esp32_servoPinHigh = false;
 static volatile char esp32_servoPin[MAX_SERVOS] = {UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED, UNUSED};
 static volatile unsigned short esp32_servoPulseWidth[MAX_SERVOS] = {1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500};
+static int servosRunning = false;
 
 hw_timer_t * esp32_servoTimer = NULL;
 static char esp32ServoTimerStarted = 0;
@@ -2553,7 +2560,7 @@ extern "C" void ARDUINO_ISR_ATTR esp32_servo_IRQHandler() {
 }
 
 static void startESP32ServoTimer() {
-	esp32_servoTimer = timerBegin(3, 80, true); // group 1/timer 1, divide 80 Mhz by 80, count up
+	esp32_servoTimer = timerBegin(0, 80, true); // divide 80 Mhz by 80, count up
 	timerAttachInterrupt(esp32_servoTimer, &esp32_servo_IRQHandler, false);
 	timerAlarmEnable(esp32_servoTimer);
 	esp32ServoTimerStarted = true;
@@ -2566,6 +2573,12 @@ static void esp32_detachServo(int pin) {
 			esp32_servoPin[i] = UNUSED;
 		}
 	}
+
+	// check for all servos idle
+	for (int i = 0; i < MAX_SERVOS; i++) {
+		if (esp32_servoPin[i] != UNUSED) return; // found a running servo; return
+	}
+	servosRunning = false; // all servo channels are idle
 }
 
 static void setServo(int pin, int usecs) {
@@ -2588,6 +2601,7 @@ static void setServo(int pin, int usecs) {
 			SET_MODE(pin, OUTPUT);
 			esp32_servoPulseWidth[i] = usecs;
 			esp32_servoPin[i] = pin;
+			servosRunning = true;
 			return;
 		}
 	}
@@ -2598,6 +2612,7 @@ void stopServos() {
 		esp32_servoPulseWidth[i] = 1500;
 		esp32_servoPin[i] = UNUSED;
 	}
+	servosRunning = false;
 }
 
 #elif defined(DUELink)
@@ -2974,118 +2989,6 @@ static int writeDAC(int sample) {
 
 static void initDAC(int pin, int sampleRate) { }
 static int writeDAC(int sample) { return 0; }
-
-#endif
-
-// Experimental LEDC PWM audio output
-// Note: LEDC channels are also used by servos and by analog write; this feature could conflict.
-// Maybe just set PWM to 10-bits, 39062 Hz for analog output and use analog write primitive?
-
-#if defined(ESP32)
-
-#define LEDC_AUDIO_CHANNEL 5 // last LEDC channel on C3
-static int pwmAudioPin = -1; // -1 means audio is not initialized
-static int pwmAudioResolution = 10;
-
-static OBJ primPWMAudioInit(int argCount, OBJ *args) {
-	// Sampling rate is 40 MHz / 2^resolution:
-	//	 8 bits, 156250 kSamples/sec
-	//	 9 bits, 78125 kSamples/sec
-	//	10 bits, 39062 kSamples/sec
-	//	11 bits, 19531 kSamples/sec
-	// 9-bit at 78k sounds good up for a 6 kHz sine wave with no low-pass filter on output
-	// Have not tested the different sample rates with a low-pass filter.
-
-	if (argCount < 2) return fail(notEnoughArguments);
-	if (!isInt(args[0]) || !isInt(args[1])) return fail(needsIntegerError);
-
-	if (pwmAudioPin >= 0) ledcDetachPin(pwmAudioPin);
-	pwmAudioPin = -1;
-
-	int outputPin = mapDigitalPinNum(obj2int(args[0]));
-	if (outputPin < 0) return falseObj;
-
-	pwmAudioResolution = obj2int(args[1]);
-	if (pwmAudioResolution < 8) pwmAudioResolution = 8;
-	if (pwmAudioResolution > 11) pwmAudioResolution = 11;
-
-	uint32_t sampleRate = 40000000 / (1 << pwmAudioResolution);
-
-	int rc = ledcSetup(LEDC_AUDIO_CHANNEL, sampleRate, pwmAudioResolution);
-	ledcAttachPin(outputPin, LEDC_AUDIO_CHANNEL);
-	pwmAudioPin = outputPin;
-
-	return falseObj;
-}
-
-static OBJ primPWMAudioOut(int argCount, OBJ *args) {
-	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
-
-	int signed16bit = obj2int(args[0]); // signed 16-bit sample
-
-	if (pwmAudioPin < 0) {
-		outputString("PWM Audio not initialized");
-		return falseObj;
-	}
-
-	int pwmAudioMaxSample = (1 << pwmAudioResolution) - 1;
-
-	int pwm = (signed16bit >> (16 - pwmAudioResolution)) + (1 << (pwmAudioResolution - 1));
-	if (pwm < 0) pwm = 0;
-	if (pwm > pwmAudioMaxSample) pwm = pwmAudioMaxSample;
-
-	ledcWrite(LEDC_AUDIO_CHANNEL, pwm);
-	return falseObj;
-}
-
-#elif defined(NRF52)
-
-static int pwmAudioPin = -1; // -1 means audio is not initialized
-
-static OBJ primPWMAudioInit(int argCount, OBJ *args) {
-	// Sampling rate on nRF52 is zzz kHz with 8-bit samples using PWM.
-
-	if (argCount < 1) return fail(notEnoughArguments);
-	if (!isInt(args[0])) return fail(needsIntegerError);
-
-	pwmAudioPin = obj2int(args[0]);
-	if ((pwmAudioPin < 0) || (pwmAudioPin >= DIGITAL_PINS)) return falseObj;
-
-	setPinMode(pwmAudioPin, OUTPUT);
-	analogWriteResolution(8);
-
-	return falseObj;
-}
-
-static OBJ primPWMAudioOut(int argCount, OBJ *args) {
-	if ((argCount < 1) || !isInt(args[0])) return fail(needsIntegerError);
-
-	int signed16bit = obj2int(args[0]); // signed 16-bit sample
-
-	if (pwmAudioPin < 0) {
-		outputString("PWM Audio not initialized");
-		return falseObj;
-	}
-
-	int value = (signed16bit >> 9) + 128;
-	if (value < 0) value = 0;
-	if (value > 255) value = 255;
-
-	// On NRF52, wait until last PWM cycle is finished before writing a new value.
-	// Prevents a tight loop writing audio samples from exceeding the PWM sample rate.
-	NRF_PWM_Type* pwm = NRF_PWM0;
-	if (pwm->EVENTS_SEQSTARTED[0]) {
-		while (!pwm->EVENTS_PWMPERIODEND) /* wait */;
-		pwm->EVENTS_PWMPERIODEND = 0;
-	}
-	analogWrite(pwmAudioPin, value); // set the PWM duty cycle on a digital pin
-	return falseObj;
-}
-
-#else
-
-static OBJ primPWMAudioInit(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
-static OBJ primPWMAudioOut(int argCount, OBJ *args) { return fail(primitiveNotImplemented); }
 
 #endif
 
@@ -3498,6 +3401,7 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
  	#include <esp_sleep.h>
 
 	extern "C" void lightSleep(int msecs) {
+		if (servosRunning) return; // changing clock speed messes up servo timing
 		#if defined(ESP32_S2) || defined(ESP32_C3) || defined(ESP32_C6)
 			setCpuFrequencyMhz(80); // lowest safe clock speed on S2, C3, and C6 is 80 MHz
 		#else
@@ -3572,8 +3476,6 @@ static OBJ primAnalogWrite2(int argCount, OBJ *args) { primAnalogWrite(args); re
 static OBJ primDigitalWrite2(int argCount, OBJ *args) { primDigitalWrite(args); return falseObj; }
 
 static PrimEntry entries[] = {
-	{"pwmAudioOut", primPWMAudioOut},
-	{"pwmAudioInit", primPWMAudioInit},
 	{"hasTone", primHasTone},
 	{"playTone", primPlayTone},
 	{"hasServo", primHasServo},
