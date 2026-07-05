@@ -1638,7 +1638,7 @@ int mapDigitalPinNum(int pinNum) {
 	#if defined(USE_DIGITAL_PIN_MAP)
 		if ((pinNum < 0) || (pinNum >= DIGITAL_PINS)) return -1; // out of range
 		if (digitalPin[pinNum] == 255) return -1; // unused pin
-		return digitalPin[pinNum];
+		pinNum = digitalPin[pinNum];
 	#elif defined(DUELink)
 		int duePin = -1; // -1 means pin is out of range or undefined
 		if ((0 <= pinNum) && (pinNum < DIGITAL_PINS)) {
@@ -1912,7 +1912,13 @@ void primAnalogWrite(OBJ *args) {
 	#else
 		if (value > 1023) value = 1023;
 	#endif
+
+	// make sure pin is valid
 	if ((pinNum < 0) || (pinNum >= TOTAL_PINS)) return;
+	#if defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_RP2040)
+		if (RESERVED(pinNum)) return;
+	#endif
+
 	#if defined(ARDUINO_ARCH_SAMD) && defined(PIN_DAC0)
 		#if defined(ADAFRUIT_GEMMA_M0)
 			if (1 == pinNum) pinNum = PIN_DAC0; // pin 1 is DAC on Gemma M0
