@@ -86,6 +86,7 @@ i	return false
 // Downloading from URL
 
 method installFromURL MicroBlocksFlasher url {
+	url = (join url '?v=' (rand 0 1000000))
 	if ('Browser' == (platform)) {
 		data = (downloadURLInBrowser this url)
 	} else {
