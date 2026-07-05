@@ -44,7 +44,7 @@ method closePort MicroBlocksFirmwareInstaller {
 
 method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
 	initialize this
-	if (isOneOf boardName 'micro:bit v2' 'Calliope v3') { return true } // variants
+	if (isOneOf boardName 'micro:bit v2' 'Calliope v3' 'RP2040') { return true } // variants
 	return (or
 		(contains boardMenu boardName)
 		(contains espBoards boardName)
@@ -73,9 +73,9 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	} (isOneOf boardType 'Calliope' 'Calliope v3') {
 		installHexOrUF2File this 'Calliope' false
 	} ('MakerPort' == boardType) {
-		adaFruitResetMessage this
+		installHexOrUF2File this 'MakerPort' false
 	} (isOneOf boardType 'RP2040' 'Pico W') {
-		rp2040ResetMessage this
+		installHexOrUF2File this 'RP2040 (Pico or Pico W)' false
 	} (contains dfuBoards boardType) {
 		installDFUFirmware this boardType
 	} (and
@@ -211,19 +211,11 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 	}
 }
 
-method adaFruitResetMessage MicroBlocksFirmwareInstaller {
-	inform (localized 'For Adafruit boards and MakerPort, double-click reset button and try again.')
-}
-
 method adaFruitReconnectMessage MicroBlocksFirmwareInstaller {
 	msg = (join
 		(localized 'When the NeoPixels turn off') ', '
 		(localized 'reconnect to the board by clicking the "Connect" button.'))
 	inform msg
-}
-
-method rp2040ResetMessage MicroBlocksFirmwareInstaller {
-	inform (localized 'Connect USB cable while holding down the white BOOTSEL button and try again.')
 }
 
 method reconnectMessage MicroBlocksFirmwareInstaller {
@@ -256,7 +248,7 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 	defaultURL = ''
 	if ('Databot' == boardType) {
 		defaultURL = 'http://microblocks.fun/downloads/databot/databot2.0_V2.18.bin'
-		if ('Browser' == (platform)) { closeSerialPort 1 }
+//xxx		if ('Browser' == (platform)) { closeSerialPort 1 }
 	}
 	url = (trim (freshPrompt (global 'page') 'ESP32 firmware URL?' defaultURL))
 	if ('' == url) { return }
