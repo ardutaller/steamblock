@@ -1192,19 +1192,6 @@ method gearMenu MicroBlocksEditor {
 		}
 		addLine menu
 		addItem menu 'show program size on board' (action 'sendMsg' (smallRuntime) 'systemResetMsg' 2 nil) nil nil true (not isConnected)
-
-// Let's deprecate the HTTP server since it doesn't work in browser?
-// Don't think anyone is using it now that we have so many other ways to communicate.
-// And we might not want to -- or be able to -- implement it when we rewrite MicroBlocks.
-//		if ('Browser' != (platform)) {
-//			addLine menu
-//			if (not (isRunning httpServer)) {
-//				addItem menu 'start HTTP server' 'startHTTPServer'
-//			} else {
-//				addItem menu 'stop HTTP server' 'stopHTTPServer'
-//			}
-//		}
-
 	}
 	return menu
 }
