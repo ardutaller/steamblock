@@ -3022,18 +3022,6 @@ msgstr ""
 msgid "Maj7"
 msgstr ""
 
-#. Sound destination for arpeggiate block in Scales & Chords library
-msgid "MIDI channel"
-msgstr ""
-
-#. Sound destination for arpeggiate block in Scales & Chords library
-msgid "tone pin"
-msgstr ""
-
-#. Sound destination for arpeggiate block in Scales & Chords library
-msgid "gate trigger"
-msgstr ""
-
 #. Scales & Chords library block
 msgid "_ scale root _"
 msgstr ""
@@ -3055,7 +3043,7 @@ msgid "_ chord for root _"
 msgstr ""
 
 #. Scales & Chords library block
-msgid "arpeggiate _ in order _ duration _ and volume _ on _ _"
+msgid "arpeggiate _ in order _ duration _ and volume _ on channel _"
 msgstr ""
 
 #. Scales & Chords library block
@@ -3063,7 +3051,7 @@ msgid "improvised arpeggio over _ for _ bars with durations _"
 msgstr ""
 
 #. Scales & Chords library block
-msgid "improvise over _ for _ bars with durations _ on _ _ volume _"
+msgid "improvise over _ for _ bars with durations _ and volume _ on channel _"
 msgstr ""
 
 #. Scales & Chords library block
