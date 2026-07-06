@@ -135,6 +135,7 @@ static uint8 * appendUTF8(uint8 *s, int unicode) {
 static int substringIsInteger(char *start, char *end) {
 	// Return true if the substring from start up to end represents an integer.
 
+	while ((start < end) && (*start <= 32)) start++; // skip leading white space, if any
 	if ((start < end) && ('-' == *start)) start++; // skip leading minus sign, if any
 	if (start >= end) return false; // no digits; not an integer
 	while (start < end) {
@@ -148,6 +149,7 @@ static int substringToInteger(char *start, char *end) {
 	// Return the integer represented by the substring from start up to end.
 
 	char s[20];
+	while ((start < end) && (*start <= 32)) start++; // skip leading white space, if any
 	int count = end - start;
 	if (count > 19) count = 19;
 	strncpy(s, start, count);
@@ -585,8 +587,8 @@ OBJ primSplit(int argCount, OBJ *args) {
 	FIELD(tempGCRoot, 0) = int2obj(resultCount);
 
 	// add substrings to the result list
-	if (delimLen == 0) {
-		// no delimiter provided; return a list containing the characters of s
+	if ((delimLen == 0) && !convertNums) {
+		// empty delimiter and convertNums false; return a list containing the characters of s
 		char *last = s;
 		char *next = nextUTF8(last);
 		for (int i = 0; i < resultCount; i++) {
@@ -604,11 +606,11 @@ OBJ primSplit(int argCount, OBJ *args) {
 		int i = 1;
 		char *last = s;
 		char *end = s + strlen(s);
-		char *next = strstr(last, delim);
+		char *next = (delimLen == 0) ? last + 1 : strstr(last, delim);
 		while (next && (i <= resultCount)) {
 			OBJ item;
 			int byteCount = next - last;
-			if (convertNums && (substringIsInteger(last, next))) {
+			if (convertNums && substringIsInteger(last, next)) {
 				item = int2obj(substringToInteger(last, next));
 			} else {
 				item = newStringFromBytes(last, byteCount);
@@ -616,7 +618,7 @@ OBJ primSplit(int argCount, OBJ *args) {
 			}
 			FIELD(tempGCRoot, i++) = item;
 			last = next + delimLen;
-			next = strstr(last, delim);
+			next = (delimLen == 0) ? last + 1 : strstr(last, delim);
 			if (!next) next = end; // handle string after final delimiter
 		}
 	}
