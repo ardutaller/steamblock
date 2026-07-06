@@ -915,7 +915,7 @@ to rc522_read_uid {
 
 module Strings Data
 author MicroBlocks
-version 1 6 
+version 1 7 
 choices string_numBase '2' '10' '16' 
 description 'String operations.'
 
@@ -1073,17 +1073,18 @@ to string_left_pad s desiredLength padChar {
 
 to string_reversed s {
   if (isType s 'number') {s = ('[data:convertType]' s 'string')}
-  local 'chars' ('[data:split]' s '')
+  if (not (isType s 'string')) {return 'String expected!'}
+  local 'chars' ('[data:convertType]' s 'list')
   local 'i' 1
   local 'j' (size chars)
-  repeatUntil (i > j) {
+  repeatUntil (i >= j) {
     local 'tmp' (at i chars)
     atPut i chars (at j chars)
     atPut j chars tmp
     i += 1
     j += -1
   }
-  return ('[data:joinStrings]' chars)
+  return ('[data:convertType]' chars 'string')
 }
 
 to string_right_pad s desiredLength padChar {
