@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-07-04 09:01+0000\n"
-"Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
+"PO-Revision-Date: 2026-07-06 15:59+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -8671,3 +8671,11 @@ msgstr "Més informació a %1"
 #. Block in Comm category
 msgid "duelink receive"
 msgstr "duelink rebre"
+
+#. Scales & Chords library block
+msgid "arpeggiate _ in order _ duration _ and volume _ on channel _"
+msgstr "arpegia _ amb ordre _ durades _ i volum _ al canal _"
+
+#. Scales & Chords library block
+msgid "improvise over _ for _ bars with durations _ and volume _ on channel _"
+msgstr "improvisa sobre _ durant _ amb durades _ i volum _ al canal _"
