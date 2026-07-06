@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-07-04 09:01+0000\n"
+"PO-Revision-Date: 2026-07-07 20:01+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -8731,3 +8731,11 @@ msgstr "pin rx _"
 #. About window info
 msgid "More info at %1"
 msgstr "Más información en %1"
+
+#. Scales & Chords library block
+msgid "arpeggiate _ in order _ duration _ and volume _ on channel _"
+msgstr "arpegia _ con orden _ duraciones _ y volumen _ en el canal _"
+
+#. Scales & Chords library block
+msgid "improvise over _ for _ bars with durations _ and volume _ on channel _"
+msgstr "improvisa sobre _ durante _ con duraciones _ y volumen _ en el canal _"
