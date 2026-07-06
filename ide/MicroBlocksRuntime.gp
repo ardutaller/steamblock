@@ -2935,12 +2935,11 @@ method installESPFirmwareFromURL SmallRuntime {
 
 method flashESPFirmwareFromURL SmallRuntime boardName url {
 	disconnected = true
-	flasherPort = port
 	port = nil
 	vmVersion = nil
 	boardType = nil
 	flasher = (newFlasher boardName portName false false)
-	installFromURL flasher flasherPort url
+	installFromURL flasher url
 }
 
 method installESPFirmwareFromRepo SmallRuntime {
@@ -2973,10 +2972,9 @@ method installESPFirmwareFromRepo SmallRuntime {
 
 method installESPFirmwareFromFile SmallRuntime fileName data {
 	disconnected = true
-	flasherPort = port
 	port = nil
 	vmVersion = nil
 	boardType = nil
 	flasher = (newFlasher fileName portName false false)
-	installFromData flasher flasherPort fileName data
+	installFromData flasher fileName data
 }

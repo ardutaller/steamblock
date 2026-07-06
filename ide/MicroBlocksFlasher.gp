@@ -43,12 +43,7 @@ method destroy MicroBlocksFlasher {
 
 method installBuiltinFirmware MicroBlocksFlasher vmName {
 	boardName = vmName
-	ok = false
-	if ('Browser' == (platform)) {
-		ok = (openSerialPortInBrowser this)
-	} else {
-		ok = (openPort espTool portName boardName)
-	}
+	ok = (openSerialPortInBrowser this)
 	if (not ok) {
 		destroy this
 		inform 'Could not open serial port'
@@ -88,7 +83,7 @@ i	return false
 
 // Downloading from URL
 
-method installFromURL MicroBlocksFlasher serialPortID url {
+method installFromURL MicroBlocksFlasher url {
 	url = (join url '?v=' (rand 0 1000000))
 	data = (downloadURLInBrowser this url)
 	if ((byteCount data) == 0) { return }
@@ -98,12 +93,7 @@ method installFromURL MicroBlocksFlasher serialPortID url {
 method installFromData MicroBlocksFlasher fileNameOrURL data {
 	if ((byteCount data) == 0) { return }
 
-	ok = false
-	if ('Browser' == (platform)) {
-		ok = (openSerialPortInBrowser this)
-	} else {
-		ok = (openPort espTool portName boardName)
-	}
+	ok = (openSerialPortInBrowser this)
 	if (not ok) {
 		inform 'Could not open serial port'
 		return
