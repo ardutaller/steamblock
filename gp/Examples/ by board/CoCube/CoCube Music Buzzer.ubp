@@ -849,6 +849,7 @@ variables _MIDI_initialized _MIDI_pin _MIDI_drums _MIDI_clock_on
   spec ' ' '_MIDI clock loop' '_MIDI clock loop'
   space
   spec 'r' '_trimmedLowercase' '_trimmedLowercase _' 'str' 'A. b C...'
+  spec ' ' '_arp play MIDI note' '_arp play MIDI note _ for _ on channel _ volume _' 'auto auto auto auto' 60 500 1 127
 
 to 'MIDI_change MIDI control' control channel value {
   local 'controlChangeCmd' 11
@@ -1087,6 +1088,10 @@ to '_MIDI_Roland_control' control value channel {
   } (control == 75) {
     '_MIDI_NRPN' 1 100 channel value
   }
+}
+
+to '_arp play MIDI note' note ms c vol {
+  'MIDI_play MIDI note' note ms c vol
 }
 
 to '_trimmedLowercase' s {
