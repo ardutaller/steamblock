@@ -156,11 +156,7 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 		}
 	}
 
-	if ('Browser' == (platform)) {
-		vmData = (readFile (join 'precompiled/' vmFileName) true)
-	} else {
-		vmData = (readEmbeddedFile (join 'precompiled/' vmFileName) true)
-	}
+	vmData = (readFile (join 'precompiled/' vmFileName) true)
 	if (isNil vmData) { return } // could not read file
 
 	// disconnect before updating VM; avoids micro:bit autoconnect issue on Chromebooks
@@ -177,13 +173,7 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 	response = (inform msg (localized 'Firmware Install'))
 	if (isNil response) { return } // user aborted
 
-	if ('Browser' == (platform)) {
-		browserWriteFile vmData vmFileName 'vmInstall'
-	} else {
-		vmFileName = (fileToWrite (join (userHomePath) '/Downloads/' vmFileName))
-		if ('' == (filePart vmFileName)) { return } // user aborted
-		writeFile vmFileName vmData
-	}
+	browserWriteFile vmData vmFileName 'vmInstall'
 	waitMSecs 1000 // leave time for file to get written before showing next prompt
 
 	inform (localized 'Drag the firmware file you just saved to the %1 drive.' driveName)
