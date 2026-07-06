@@ -1,11 +1,12 @@
 module dec2anyBase
 author 'Turgut Guneysu'
-version 1 3 
-choices BaseMenu '2' '8' '16' '32' 
+version 1 4
+choices BaseMenu '2' '8' '16' '32'
+depends 'Strings'
 description 'Converts DEC numbers into any Base system.
 eg: BIN (base=2) or OCT (base=8) or HEX (base=16)
 
-Changes: 
+Changes:
 - fix padding
 - expand padding to 32 bits
 '
@@ -31,15 +32,7 @@ to 'dec2any Base' base decNo padLength reversed {
   if (and (padLength > 0) ((size _output) < padLength)) {
     _output = ('[data:join]' ('[data:copyFromTo]' '00000000000000000000000000000000' 1 (padLength - (size _output))) _output)
   }
-  if reversed {
-    _answer = ('[data:split]' _output '')
-    _output = ('[data:makeList]')
-    repeat (size _answer) {
-      '[data:addLast]' (at 'last' _answer) _output
-      '[data:delete]' 'last' _answer
-    }
-    _output = ('[data:join]' '' ('[data:joinStrings]' _output))
-  }
+  if reversed {_output = (string_reversed _output)}
   return _output
 }
 
