@@ -154,7 +154,10 @@ to '_readHTTPResponse' {
 to '_request_url' url method body optionalPort optionalHTTPS optionalExtraHeaders {
   local 'useHTTPS' (argOrDefault 5 (booleanConstant false))
   local 'port' (argOrDefault 4 (ifExpression useHTTPS 443 80))
-  local 'extraHeaders' (argOrDefault 6 '')
+  local 'extraHeaders' (argOrDefault 6 ('[data:makeList]'))
+  if (isType extraHeaders 'string') {
+    extraHeaders = ('[data:makeList]' extraHeaders)
+  }
   local 'host' ''
   local 'path' ''
   local 'slashPosition' ('[data:find]' '/' url)
@@ -176,7 +179,7 @@ to '_request_url' url method body optionalPort optionalHTTPS optionalExtraHeader
   if (not ('[net:httpIsConnected]')) {
     return ('[data:join]' '0 Could not connect to server' ('_line_end'))
   }
-  '[net:httpRequest]' method ('[data:join]' host ':' port) path body extraHeaders
+  '[net:httpRequest]' method ('[data:join]' host ':' port) path body ('[data:joinStrings]' extraHeaders ('_line_end'))
   return ('_readHTTPResponse')
 }
 
@@ -222,7 +225,7 @@ to 'http܃//' url optionalPort {
 to request method data url optionalPort optionalHTTPS optionalExtraHeaders {
   local 'useHTTPS' (argOrDefault 5 (booleanConstant false))
   local 'port' (argOrDefault 4 (ifExpression useHTTPS 443 80))
-  local 'extraHeaders' (argOrDefault 6 '')
+  local 'extraHeaders' (argOrDefault 6 ('[data:makeList]'))
   local 'response' ('_request_url' url method data port useHTTPS extraHeaders)
   if (response != '') {
     local 'status' ('_http_status' response)
