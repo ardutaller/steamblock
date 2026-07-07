@@ -18,6 +18,7 @@ method initialize MicroBlocksFirmwareInstaller {
 		'Citilab ED1'
 		'CoCube'
 		'Databot'
+		'KidsBits'
 		'micro:STEAMakers'
 		'Springbot'
 		'-'
@@ -31,6 +32,7 @@ method initialize MicroBlocksFirmwareInstaller {
 		'ESP32')
 	espBoards = (array
 		'Citilab ED1' 'CoCube' 'Databot' 'ESP32' 'micro:STEAMakers'
+		'KidsBits' 'CodingBox' 'KidsIOT'
 		'Springbot' 'Springbot Green' 'Springbot Gold')
 	dfuBoards = (array
 		'WeAct STM32H743' 'DUELink' 'CincoBit' 'PixoBit' 'Clipit' 'DueSTEM' 'Ghizzy' 'Holiday Tree')
@@ -103,7 +105,7 @@ method installDFUFirmware MicroBlocksFirmwareInstaller boardName {
 method installBoardFromMenu MicroBlocksFirmwareInstaller eraseFlashFlag boardName {
 	if (beginsWith 'Springbot' boardName) {
 		flashVM this 'Springbot' eraseFlashFlag
-	} (isOneOf boardName 'Citilab ED1' 'CoCube' 'micro:STEAMakers' 'ESP32' 'Databot') {
+	} (contains espBoards boardName) {
 		flashVM this boardName eraseFlashFlag
 	} (contains dfuBoards boardName) {
 		installDFUFirmware this boardName
@@ -248,7 +250,6 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 	defaultURL = ''
 	if ('Databot' == boardType) {
 		defaultURL = 'http://microblocks.fun/downloads/databot/databot2.0_V2.18.bin'
-//xxx		if ('Browser' == (platform)) { closeSerialPort 1 }
 	}
 	url = (trim (freshPrompt (global 'page') 'ESP32 firmware URL?' defaultURL))
 	if ('' == url) { return }
