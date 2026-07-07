@@ -613,6 +613,8 @@ static OBJ primHttpRequest(int argCount, OBJ *args) {
 	const char *host	= obj2str(args[1]);
 	const char *path	= obj2str(args[2]);
 	const char *body = ((argCount > 3) && IS_TYPE(args[3], StringType)) ? obj2str(args[3]) : "";
+	const char *extraHeaders = ((argCount > 4) && IS_TYPE(args[4], StringType)) ? obj2str(args[4]) : "";
+	const char extraHeadersLen = strlen(extraHeaders);
 
 	activeHttpClient->write((const uint8_t *) reqType, strlen(reqType));
 	activeHttpClient->write((const uint8_t *) " ", 1);
@@ -638,6 +640,17 @@ static OBJ primHttpRequest(int argCount, OBJ *args) {
 	"User-Agent: MicroBlocks\r\n"
 	"Accept: */*\r\n";
 	activeHttpClient->write((const uint8_t *) headers, strlen(headers));
+
+	// Add extra headers, if any
+	if (extraHeadersLen > 0) {
+		activeHttpClient->write((const uint8_t *) extraHeaders, strlen(extraHeaders));
+		if ((extraHeaders[extraHeadersLen - 2] != '\r') ||
+			(extraHeaders[extraHeadersLen - 1] != '\n')) {
+				// add CR-LF after extra headers string if it was omitted
+				// Note: If string has multiple headers client must separate them with CR-LFs
+				activeHttpClient->write((const uint8_t *) "\r\n", 2);
+		}
+	}
 
 	// Body
 	int body_length = strlen(body);

@@ -1,9 +1,9 @@
 module 'HTTP client' Comm
 author MicroBlocks
-version 1 12
-depends WiFi
-tags http network get post put delete
-choices requestTypes GET POST PUT DELETE
+version 1 13 
+depends WiFi 
+tags http network get post put delete 
+choices requestTypes GET POST PUT DELETE 
 description 'Send HTTP requests and get responses back. You can use this library to fetch or store data in online servers, or to control other Wifi-enabled boards.
 '
 
@@ -12,7 +12,7 @@ description 'Send HTTP requests and get responses back. You can use this library
   spec 'r' 'http܃//' 'http #SVG#colon-double-slash _ : port _' 'auto num' 'microblocks.fun/example.txt' 80
   spec 'r' 'https܃//' 'https #SVG#colon-double-slash _ : port _' 'auto num' 'microblocks.fun/example.txt' 443
   space
-  spec ' ' 'request' '_ data _ to http #SVG#colon-double-slash _ : port _ : useHTTPS _' 'menu.requestTypes str str num bool' 'POST' 'MicroBlocks is fun' 'microblocks.fun' 80 false
+  spec ' ' 'request' '_ data _ to http #SVG#colon-double-slash _ : port _ : useHTTPS _ : extra headers _' 'menu.requestTypes str str num bool str' 'POST' 'MicroBlocks is fun' 'microblocks.fun' 80 false
   space
   spec 'r' '_http_body_start' '_http_body_start _' 'auto' ''
   spec 'r' '_http_header_text' '_http_header_text _' 'auto' ''
@@ -28,17 +28,15 @@ description 'Send HTTP requests and get responses back. You can use this library
   spec 'r' '_httpResponseBody' '_httpResponseBody _' 'str' ''
 
 to '_httpResponseBody' response {
-  if (response != '') {
-    if (('_http_status' response) == 200) {
-      if (('[data:find]' 'Transfer-Encoding: chunked' response) > 0) {
-        return ('_http_dechunk' response)
-      } else {
-        return ('[data:copyFromTo]' response ('_http_body_start' response))
-      }
+  if (response != '') {if (('_http_status' response) == 200) {
+    if (('[data:find]' 'Transfer-Encoding: chunked' response) > 0) {
+      return ('_http_dechunk' response)
     } else {
-      return ('_http_status_text' response)
+      return ('[data:copyFromTo]' response ('_http_body_start' response))
     }
-  }
+  } else {
+    return ('_http_status_text' response)
+  }}
   return 'Failed to get response'
 }
 
@@ -153,9 +151,10 @@ to '_readHTTPResponse' {
   return response
 }
 
-to '_request_url' url method body optionalPort optionalHTTPS {
+to '_request_url' url method body optionalPort optionalHTTPS optionalExtraHeaders {
   local 'useHTTPS' (argOrDefault 5 (booleanConstant false))
   local 'port' (argOrDefault 4 (ifExpression useHTTPS 443 80))
+  local 'extraHeaders' (argOrDefault 6 '')
   local 'host' ''
   local 'path' ''
   local 'slashPosition' ('[data:find]' '/' url)
@@ -177,7 +176,7 @@ to '_request_url' url method body optionalPort optionalHTTPS {
   if (not ('[net:httpIsConnected]')) {
     return ('[data:join]' '0 Could not connect to server' ('_line_end'))
   }
-  '[net:httpRequest]' method ('[data:join]' host ':' port) path body
+  '[net:httpRequest]' method ('[data:join]' host ':' port) path body extraHeaders
   return ('_readHTTPResponse')
 }
 
@@ -220,10 +219,11 @@ to 'http܃//' url optionalPort {
   return ('_httpResponseBody' response)
 }
 
-to request method data url optionalPort optionalHTTPS {
+to request method data url optionalPort optionalHTTPS optionalExtraHeaders {
   local 'useHTTPS' (argOrDefault 5 (booleanConstant false))
   local 'port' (argOrDefault 4 (ifExpression useHTTPS 443 80))
-  local 'response' ('_request_url' url method data port useHTTPS)
+  local 'extraHeaders' (argOrDefault 6 '')
+  local 'response' ('_request_url' url method data port useHTTPS extraHeaders)
   if (response != '') {
     local 'status' ('_http_status' response)
     local 'body start' ('_http_body_start' response)
