@@ -53,6 +53,131 @@ void tftInit() {
 				return 'rgb(' + ((color24b >> 16) & 255) + ',' +
 					((color24b >> 8) & 255) + ',' + (color24b & 255) + ')';
 			};
+
+			window.tftPlot = function (x, y) {
+				window.ctx.fillRect(x | 0, y | 0, 1, 1);
+			};
+
+			window.tftLine = function (x0, y0, x1, y1, color24b) {
+				x0 |= 0;
+				y0 |= 0;
+				x1 |= 0;
+				y1 |= 0;
+				window.ctx.fillStyle = window.rgbFrom24b(color24b);
+
+				if (x0 === x1) {
+					window.ctx.fillRect(x0, Math.min(y0, y1), 1, Math.abs(y1 - y0) + 1);
+					return;
+				}
+				if (y0 === y1) {
+					window.ctx.fillRect(Math.min(x0, x1), y0, Math.abs(x1 - x0) + 1, 1);
+					return;
+				}
+
+				var dx = Math.abs(x1 - x0);
+				var sx = (x0 < x1) ? 1 : -1;
+				var dy = -Math.abs(y1 - y0);
+				var sy = (y0 < y1) ? 1 : -1;
+				var err = dx + dy;
+				while (true) {
+					window.tftPlot(x0, y0);
+					if ((x0 === x1) && (y0 === y1)) return;
+					var e2 = 2 * err;
+					if (e2 >= dy) {
+						err += dy;
+						x0 += sx;
+					}
+					if (e2 <= dx) {
+						err += dx;
+						y0 += sy;
+					}
+				}
+			};
+
+			window.tftRect = function (x, y, w, h, color24b) {
+				x |= 0;
+				y |= 0;
+				w |= 0;
+				h |= 0;
+				if ((w <= 0) || (h <= 0)) return;
+				window.ctx.fillStyle = window.rgbFrom24b(color24b);
+				window.ctx.fillRect(x, y, w, 1);
+				window.ctx.fillRect(x, y + h - 1, w, 1);
+				window.ctx.fillRect(x, y, 1, h);
+				window.ctx.fillRect(x + w - 1, y, 1, h);
+			};
+
+			window.tftCircle = function (cx, cy, r, color24b) {
+				cx |= 0;
+				cy |= 0;
+				r |= 0;
+				if (r < 0) return;
+				window.ctx.fillStyle = window.rgbFrom24b(color24b);
+				var x = 0;
+				var y = r;
+				var d = 3 - (2 * r);
+				while (y >= x) {
+					window.tftPlot(cx + x, cy + y);
+					window.tftPlot(cx - x, cy + y);
+					window.tftPlot(cx + x, cy - y);
+					window.tftPlot(cx - x, cy - y);
+					window.tftPlot(cx + y, cy + x);
+					window.tftPlot(cx - y, cy + x);
+					window.tftPlot(cx + y, cy - x);
+					window.tftPlot(cx - y, cy - x);
+					if (d < 0) {
+						d += (4 * x) + 6;
+					} else {
+						d += (4 * (x - y)) + 10;
+						y--;
+					}
+					x++;
+				}
+			};
+
+			window.tftRoundRect = function (x, y, w, h, r, color24b) {
+				x |= 0;
+				y |= 0;
+				w |= 0;
+				h |= 0;
+				r |= 0;
+				if ((w <= 0) || (h <= 0)) return;
+				if (r < 0) r = 0;
+				if ((2 * r) >= h) r = (h >> 1) - 1;
+				if ((2 * r) >= w) r = (w >> 1) - 1;
+				if (r < 0) r = 0;
+
+				window.ctx.fillStyle = window.rgbFrom24b(color24b);
+				window.ctx.fillRect(x + r, y, w - (2 * r), 1);
+				window.ctx.fillRect(x + r, y + h - 1, w - (2 * r), 1);
+				window.ctx.fillRect(x, y + r, 1, h - (2 * r));
+				window.ctx.fillRect(x + w - 1, y + r, 1, h - (2 * r));
+
+				var left = x + r;
+				var right = x + w - r - 1;
+				var top = y + r;
+				var bottom = y + h - r - 1;
+				var px = 0;
+				var py = r;
+				var d = 3 - (2 * r);
+				while (py >= px) {
+					window.tftPlot(left - px, top - py);
+					window.tftPlot(left - py, top - px);
+					window.tftPlot(right + px, top - py);
+					window.tftPlot(right + py, top - px);
+					window.tftPlot(right + px, bottom + py);
+					window.tftPlot(right + py, bottom + px);
+					window.tftPlot(left - px, bottom + py);
+					window.tftPlot(left - py, bottom + px);
+					if (d < 0) {
+						d += (4 * px) + 6;
+					} else {
+						d += (4 * (px - py)) + 10;
+						py--;
+					}
+					px++;
+				}
+			};
 		}, TFT_WIDTH, TFT_HEIGHT);
 	}
 }
@@ -200,11 +325,7 @@ static OBJ primPixelRow(int argCount, OBJ *args) {
 static OBJ primLine(int argCount, OBJ *args) {
 	tftInit();
 	EM_ASM_({
-			window.ctx.strokeStyle = window.rgbFrom24b($4);
-			window.ctx.beginPath();
-			window.ctx.moveTo($0, $1);
-			window.ctx.lineTo($2, $3);
-			window.ctx.stroke();
+			window.tftLine($0, $1, $2, $3, $4);
 		},
 		obj2int(args[0]), // x0
 		obj2int(args[1]), // y0
@@ -223,8 +344,7 @@ static OBJ primRect(int argCount, OBJ *args) {
 				window.ctx.fillStyle = window.rgbFrom24b($4);
 				window.ctx.fillRect($0, $1, $2, $3);
 			} else {
-				window.ctx.strokeStyle = window.rgbFrom24b($4);
-				window.ctx.strokeRect($0, $1, $2, $3);
+				window.tftRect($0, $1, $2, $3, $4);
 			}
 		},
 		obj2int(args[0]), // x
@@ -251,10 +371,7 @@ static OBJ primCircle(int argCount, OBJ *args) {
 				window.ctx.arc(x, y, r, 0, 2 * Math.PI);
 				window.ctx.fill();
 			} else {
-				window.ctx.strokeStyle = window.rgbFrom24b($3);
-				window.ctx.beginPath();
-				window.ctx.arc(x, y, r, 0, 2 * Math.PI);
-				window.ctx.stroke();
+				window.tftCircle(x, y, r, $3);
 			}
 		},
 		obj2int(args[0]), // x
@@ -311,7 +428,7 @@ static OBJ primRoundedRect(int argCount, OBJ *args) {
 			if ($6) {
 				window.ctx.fill();
 			} else {
-				window.ctx.stroke();
+				window.tftRoundRect($0, $1, $2, $3, $4, $5);
 			}
 		},
 		obj2int(args[0]), // x
@@ -344,7 +461,9 @@ static OBJ primTriangle(int argCount, OBJ *args) {
 			if ($7) {
 				window.ctx.fill();
 			} else {
-				window.ctx.stroke();
+				window.tftLine($0, $1, $2, $3, $6);
+				window.tftLine($2, $3, $4, $5, $6);
+				window.tftLine($4, $5, $0, $1, $6);
 			}
 		},
 		obj2int(args[0]), // x0
