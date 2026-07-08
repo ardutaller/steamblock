@@ -844,12 +844,13 @@ void hardwareInit() {
 	#define TOTAL_PINS 40
 	static const int analogPin[] = {};
 	// databot does not have a user LED; map it to unused pin 12
+	// Note: Pin 27 is reserved on databot
 	#define PIN_LED 12
 	#define DEFAULT_TONE_PIN 32
 	static char reservedPin[TOTAL_PINS] = {
 		0, 1, 0, 1, 0, 0, 1, 1, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-		1, 1, 1, 0, 1, 0, 0, 0, 1, 1,
+		1, 1, 1, 0, 1, 0, 0, 1, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 1, 1, 0};
 
 #elif defined(STEAMaker)
@@ -1532,6 +1533,15 @@ static void reservePinsForPSRAM() {
 	#endif
 }
 
+static int inputOnlyPin(int pin) {
+	#if defined(ESP32_ORIGINAL)
+		return (pin > 33); // on original ESP32 pins 34-39 are input only
+	#elif defined(ESP32_S2)
+		return (pin == 46);
+	#endif
+	return false;
+}
+
 static void initPins(void) {
 	// Initialize currentMode to MODE_NOT_SET (neither INPUT nor OUTPUT)
 	// to force the pin's mode to be set on first use.
@@ -1917,6 +1927,7 @@ void primAnalogWrite(OBJ *args) {
 	if ((pinNum < 0) || (pinNum >= TOTAL_PINS)) return;
 	#if defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_RP2040)
 		if (RESERVED(pinNum)) return;
+		if (inputOnlyPin(pinNum)) return;
 	#endif
 
 	#if defined(ARDUINO_ARCH_SAMD) && defined(PIN_DAC0)
@@ -2090,6 +2101,7 @@ void primDigitalSet(int pinNum, int flag) {
 		if (RESERVED(pinNum)) return;
 	#elif defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
 		if (RESERVED(pinNum)) return;
+		if (inputOnlyPin(pinNum)) return;
 	#elif defined(ARDUINO_SAM_DUE) || defined(ARDUINO_NRF52840_FEATHER)
 		if (pinNum < 2) return;
 	#elif defined(ARDUINO_SAM_ZERO) // M0
@@ -2584,6 +2596,8 @@ static void esp32_detachServo(int pin) {
 static void setServo(int pin, int usecs) {
 	if (!esp32ServoTimerStarted) startESP32ServoTimer();
 
+	if (inputOnlyPin(pin)) return;
+
 	if (usecs <= 0) { // turn off servo
 		esp32_detachServo(pin);
 		return;
@@ -3047,6 +3061,7 @@ OBJ primPlayTone(int argCount, OBJ *args) {
 
 	#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
 		if (RESERVED(pin)) return falseObj;
+		if (inputOnlyPin(pin)) return falseObj;
 	#elif defined(ARDUINO_SAM_DUE) || defined(ARDUINO_NRF52840_FEATHER)
 		if (pin < 2) return falseObj;
 	#endif
@@ -3099,6 +3114,7 @@ OBJ primSetServo(int argCount, OBJ *args) {
 	#endif
 	#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_SAMD_ATMEL_SAMW25_XPRO) || defined(ARDUINO_ARCH_RP2040)
 		if (RESERVED(pin)) return falseObj;
+		if (inputOnlyPin(pin)) return falseObj;
 	#endif
 	int usecs = obj2int(usecsArg);
 	if (usecs > 5000) { usecs = 5000; } // maximum pulse width is 5000 usecs

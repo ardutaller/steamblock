@@ -1167,11 +1167,7 @@ async function GP_writeFile(data, fName, id) {
 			fName = fName.substr(0, i);
 		}
 
-		if (/(CrOS)/.test(navigator.userAgent) || /Linux/.test(navigator.userAgent)) {
-			// On Chromebooks and Linux, the extension is not automatically appended.
-			fName = fName + '.' + ext;
-		}
-		options = { suggestedName: fName, id: id };
+		options = { suggestedName: fName + '.' + ext, id: id };
 		if ('' != ext) {
 			if ('.' != ext[0]) ext = '.' + ext;
 			if (('.hex' == ext) || ('.uf2' == ext)) {

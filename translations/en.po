@@ -5886,8 +5886,8 @@ msgid "IR code received?"
 msgstr "IR code received?"
 
 #. Calliope MotionKit library block
-msgid "MotionKit set servo _ to _ degrees (0-180)"
-msgstr "MotionKit set servo _ to _ degrees (0-180)"
+msgid "MotionKit set servo _ to _ degrees (-90~90)"
+msgstr "MotionKit set servo _ to _ degrees (-90~90)"
 
 #. Calliope MotionKit library block
 msgid "MotionKit set _ servo _ to _ degrees"
