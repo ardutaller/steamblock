@@ -1,6 +1,6 @@
 module 'Scales & Chords' Data
 author MicroBlocks
-version 3 0 
+version 3 1 
 depends Rhythm 
 choices scales ionian dorian phrygian lydian mixolydian aeolian locrian chromatic tonal 
 choices pentatonics major minor 
@@ -117,7 +117,7 @@ to scales_arpeggiate 'note list' order duration volume channel {
     _scales_delay = 12
   } ((boardType) == 'micro:bit v2') {
     _scales_delay = 5
-  } (destination == 'gate trigger') {
+  } (_asynth_resolution != 0) {
     _scales_delay = 4
   }}
   if (isType (v 'note list') 'string') {'note list' = ('_scales parsed shorthand' (v 'note list'))}
