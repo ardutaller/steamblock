@@ -1313,6 +1313,7 @@ static void runTask(Task *task) {
 				if (arg == 2) { // has an optional parameters list (the second argument)
 					if (IS_TYPE(params, ListType)) { // push the parameters onto the stack
 						paramCount = (obj2int(FIELD(params, 0)) & 0xFF);
+						STACK_CHECK(paramCount); // a large parameter list must not overflow the task stack
 						for (int i = 1; i <= paramCount; i++) {
 							*sp++ = FIELD(params, i);
 						}

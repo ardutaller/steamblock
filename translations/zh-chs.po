@@ -4906,6 +4906,10 @@ msgid "show program size on board"
 msgstr "显示开发板上的程序大小"
 
 #. Settings menu option
+msgid "snapshot code on board"
+msgstr "保存板上代码快照"
+
+#. Settings menu option
 msgid "install ESP firmware from microblocks.fun"
 msgstr "从 microblocks.fun 安装 ESP 固件"
 
