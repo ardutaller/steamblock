@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-07-07 20:01+0000\n"
+"PO-Revision-Date: 2026-07-08 08:11+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8816,3 +8816,7 @@ msgstr "arpeggieren _ in Reihenfolge _ Dauer _ und Lautstärke _ auf Kanal _"
 #. Scales & Chords library block
 msgid "improvise over _ for _ bars with durations _ and volume _ on channel _"
 msgstr "improvisiere über _ Takte mit Dauer _ und Lautstärke _ auf Kanal _"
+
+#. Calliope MotionKit library block
+msgid "MotionKit set servo _ to _ degrees (-90~90)"
+msgstr "MotionKit setze Servo _ auf Winkel _ ° (-90~90)"
