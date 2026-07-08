@@ -1256,7 +1256,7 @@ method addBytesForInstructionTo SmallCompiler instr bytes {
 	add bytes opcodeByte
 
 	if ('pushImmediate' == op) {
-		// immedate object (integer or boolean) fits into the 8 bit arg byte
+		// immediate object (integer or boolean) fits into the 8 bit arg byte
 		add bytes (arg & 255)
 	} ('pushLargeInteger' == op) {
 		// append a 24-bit integer object (little endian)
