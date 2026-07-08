@@ -7114,6 +7114,10 @@ msgstr ""
 msgid "show program size on board"
 msgstr ""
 
+#. Settings menu option
+msgid "snapshot code on board"
+msgstr ""
+
 #. Program size information
 msgid "Using %1 out of %2 bytes"
 msgstr ""
