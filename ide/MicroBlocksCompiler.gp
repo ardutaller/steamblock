@@ -755,8 +755,11 @@ method instructionsForCmd SmallCompiler cmd {
 		// exitLoop is always two words (like longJmp)
 		add result (array 'exitLoop' nil)
 		add result (array 'placeholder' 0)
-	} (and ('digitalWriteOp' == op) (isClass (first args) 'Integer') (isClass (last args) 'Boolean')) {
-		pinNum = ((first args) & 255)
+	} (and ('digitalWriteOp' == op) (isClass (first args) 'Integer') (isClass (last args) 'Boolean') (0 <= (first args)) ((first args) <= 127)) {
+		// Optimize a constant-pin digital write to digitalSet/digitalClear. The pin is
+		// encoded in the instruction's 8-bit arg, so only optimize pins that fit; other
+		// values fall through to the general primitive, which does its own pin check.
+		pinNum = (first args)
 		if (true == (last args)) {
 			add result (array 'digitalSet' pinNum)
 		} else {
