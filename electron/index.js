@@ -95,6 +95,7 @@ ipcMain.handle('dialog:saveFile', async (event, suggestedName, isBinary, data) =
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
+		icon: path.join(__dirname, 'MicroBlocks.png'),
 		width: 1024,
 		height: 768,
 		autoHideMenuBar: true,

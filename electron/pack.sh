@@ -5,6 +5,11 @@ tag=`curl --silent -m 10 --connect-timeout 5 "https://api.github.com/repos/elect
 system=$1
 version=$2
 
+if test -n "$version"; then
+	cp package.json package.json.bak
+	sed -i -E "s/(.*version.*)\".*\"/\1\"$version\"/" package.json
+fi
+
 if [[ -z "$system" || "$system" == 'linux' ]]; then
 ./packagers/linux/prepack.sh $tag
 echo "Linux file tree built"
@@ -30,6 +35,7 @@ if [[ -z "$system" || "$system" == 'linux' ]]; then
 echo "Zipping Linux release..."
 mv ../prepack/linux microblocks-linux
 zip -rq microblocks-linux.zip microblocks-linux
+echo "Building .deb installer..."
 rm -rf microblocks-linux
 fi
 

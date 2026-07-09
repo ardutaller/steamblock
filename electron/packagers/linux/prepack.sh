@@ -22,12 +22,13 @@ npx asar extract default_app.asar default_app
 cp ../../../index.js default_app
 cp ../../../preload.js default_app
 cp ../../../package.json default_app
+cp ../../../MicroBlocks.png default_app/icon.png
+cp ../../../MicroBlocks.png default_app
 
 rm default_app/index.html
 rm default_app/main.js
 rm default_app/default_app.js
 rm default_app/styles.css
-rm default_app/icon.png
 rm -r default_app/octicon
 
 npx asar pack default_app default_app.asar

@@ -114,12 +114,16 @@ if test -n "$boardie"; then
 	(cd boardie; ./buildBoardie.sh)
 fi
 
-if test -n "$webapp"; then
+if test -n "$gp"; then
 	(cd chromeApp/emscripten; ./buildEmcc.sh)
 	if [ -z $electron ]; then
 		# quit the script unless we're also being asked to build the electron wrapper
 		exit 0
 	fi
+fi
+
+if [ -z $system ]; then
+	system="all"
 fi
 
 if test -n "$electron"; then
@@ -131,14 +135,6 @@ if test -n "$electron"; then
 	exit 0
 fi
 
-if [ -z $system ]; then
-	# build for all systems
-	for sys in ${systems[@]}; do
-		(cd gp; ./$gp runtime/lib/* loadIDE.gp buildApps.gp -- $sys)
-	done
-else
-	(cd gp; ./$gp runtime/lib/* loadIDE.gp buildApps.gp -- $system)
-fi
 
 echo
 echo "Done building $version"
