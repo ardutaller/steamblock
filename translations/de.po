@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-07-08 08:11+0000\n"
+"PO-Revision-Date: 2026-07-09 10:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2975,7 +2975,7 @@ msgstr "str2num _"
 
 #. WiFi library block
 msgid "wifi create hotspot _ password _"
-msgstr "WiFi erstelle Hotspot _ mit Kennwort _"
+msgstr "WiFi starte Hotspot _ mit Kennwort _"
 
 #. WiFi library block
 msgid "MAC address"
@@ -6812,7 +6812,7 @@ msgstr "cb Lichtsträrke"
 
 #. WiFi library block
 msgid "wifi set local domain name _ .local"
-msgstr "WiFi setze lokalen Domain Name _ .local"
+msgstr "WiFi setze Domain Name _ .local"
 
 #. Foxbit library block
 msgid "fb loudness"
