@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>MicroBlocks</string>
 	<key>CFBundleIconFile</key>
-	<string>electron.icns</string>
+	<string>MicroBlocks.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>fun.MicroBlocks</string>
 	<key>CFBundleInfoDictionaryVersion</key>

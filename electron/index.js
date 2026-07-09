@@ -1,4 +1,4 @@
-const { app, dialog, ipcMain, BrowserWindow, Menu, MenuItem } = require('electron');
+const { app, dialog, ipcMain, BrowserWindow, Menu, MenuItem, nativeImage } = require('electron');
 const path = require('node:path');
 const fs = require('fs');
 
@@ -94,8 +94,13 @@ ipcMain.handle('dialog:saveFile', async (event, suggestedName, isBinary, data) =
 // main window
 
 const createWindow = () => {
+	// Use nativeImage for stable rendering across different Linux distros
+// xxx setting the icon is handled in whenReady()
+// 	const iconPath = path.join(__dirname, 'MicroBlocks.png');
+// 	const appIcon = nativeImage.createFromPath(iconPath);
+
 	const mainWindow = new BrowserWindow({
-		icon: path.join(__dirname, 'MicroBlocks.png'),
+//		icon: appIcon,
 		width: 1024,
 		height: 768,
 		autoHideMenuBar: true,
@@ -157,6 +162,20 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+	const iconPath = path.join(__dirname, 'MicroBlocks_1024.png');
+	const iconImage = nativeImage.createFromPath(iconPath);
+
+	if (process.platform === 'darwin') {
+		try {
+			app.dock.setIcon(iconImage);
+		} catch (error) {
+			console.error("Failed to set macOS Dock icon:", error);
+		}
+	} else {
+		// Linux and Windows
+		mainWindow.setIcon(iconImage);
+	}
+
 	createWindow();
 
 	// On OS X it's common to re-create a window in the app when the

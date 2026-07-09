@@ -14,6 +14,10 @@ cp ../../packagers/macos/Info.plist Electron.app/Contents
 mv Electron.app/Contents/MacOS/Electron Electron.app/Contents/MacOS/MicroBlocks
 cp -rL ../../../chromeApp/webapp Electron.app/Contents/Resources
 cd Electron.app/Contents/Resources
+
+# Add icon file to Resources
+cp ../../../../../MicroBlocks.png .
+
 npx asar extract default_app.asar default_app
 cp ../../../../../index.js default_app
 cp ../../../../../preload.js default_app
@@ -23,7 +27,6 @@ rm default_app/index.html
 rm default_app/main.js
 rm default_app/default_app.js
 rm default_app/styles.css
-cp electron/MicroBlocks.png default_app/icon.png
 rm -r default_app/octicon
 
 npx asar pack default_app default_app.asar
@@ -35,4 +38,3 @@ mv ../en.lproj .
 cd ../../../../..
 mv LICENSE LICENSES.chromium.html version Electron.app
 mv Electron.app MicroBlocks.app
-
