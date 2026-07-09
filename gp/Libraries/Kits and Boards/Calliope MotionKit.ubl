@@ -10,7 +10,7 @@ choices mk2_direction forward backward
 choices mk2_servoType '180°' '270°' '360°' 
 choices mk2_servo 'mk2;S1' 'mk2;S2' both 
 description 'Calliope MotionKit2
-The Calliope MotionKit2 from TinySuperLab is a fully i2c controlled driving kit for the Calliope v3. It also works with Calliope v1 and v2. The MotionKit will be connected to the Calliope via i2c on the Grove port A0.
+The Calliope MotionKit2 from TinySuperLab is a fully i2c controlled driving kit. The MotionKit will be connected to the Calliope via i2c on the Grove port A0.
 - 2 motors
 - 2 red front LEDs
 - 4 NeoPixels on bottom
@@ -28,7 +28,7 @@ variables _mk2_i2cAddr _mk2_lastIRcode
   spec ' ' 'mk2_stopAll' 'MotionKit stop all'
   space
   spec ' ' 'mk2_setLED' 'MotionKit set led _ _' 'menu.mk2_motor bool' 'both' true
-  spec ' ' 'mk2_setNeoPixels' 'MotionKit set NeoPixels _ : brightness _' 'color num' nil 50
+  spec ' ' 'mk2_setNeoPixels' 'MotionKit set NeoPixels _ : brightness _' 'color num' 255 50
   spec ' ' 'mk2_setNeoPixels2' 'MotionKit set NeoPixels _ : brightness _' 'menu.mk2_color num' 'blue' 50
   spec ' ' 'mk2_clearNeoPixels' 'MotionKit clear NeoPixels'
   space
