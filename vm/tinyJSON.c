@@ -218,6 +218,13 @@ int tjr_readInteger(char *p) {
 	int sign = 1;
 	if ('-' == *p) { sign = -1; p++; }
 	while (isDigit(*p)) {
+		// 214748363 is the largest result for which result*10 + 9 still fits in
+		// a signed 32-bit int (INT_MAX = 2^31 - 1, i.e. INT_MAX/10 with room for
+		// the next digit); beyond it the multiply-add below would overflow (UB).
+		if (result > 214748363) {
+			result = 2147483647; // saturate at INT_MAX
+			break;
+		}
 		result = (10 * result) + (*p++ - '0');
 	}
 	return sign * result;
@@ -243,6 +250,10 @@ void tjr_readStringInto(char *p, char *dstString, int dstSize) {
 		if ('\\' == ch) {
 			// Note: the \uHHHH escape is not handled; it is passed through unchanged
 			ch = *p++;
+			if ('\0' == ch) { // string ends with a lone backslash; don't read past the end
+				*dstString = '\0';
+				return;
+			}
 			if ('b' == ch) ch = '\b';
 			if ('f' == ch) ch = '\f';
 			if ('n' == ch) ch = '\n';
