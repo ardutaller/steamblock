@@ -3,6 +3,7 @@ echo "Querying latest electron version..."
 tag=`curl --silent -m 10 --connect-timeout 5 "https://api.github.com/repos/electron/electron/releases/latest" | grep tag_name | sed -E 's/.*"([^"]+)".*/\1/'`
 
 system=$1
+version=$2
 
 if [[ -z "$system" || "$system" == 'linux' ]]; then
 ./packagers/linux/prepack.sh $tag
@@ -19,7 +20,7 @@ if [[ -z "$system" || "$system" == 'windows' ]]; then
 echo "Windows file tree built"
 fi
 
-echo "Ensure 'out' directory exists"
+echo "Ensuring 'out' directory exists"
 mkdir -p out
 cd out
 
@@ -43,6 +44,10 @@ if [[ -z "$system" || "$system" == 'windows' ]]; then
 echo "Zipping Windows release..."
 mv ../prepack/windows microblocks-windows
 zip -rq microblocks-windows.zip microblocks-windows
+echo "Creating Windows installer..."
+cd ../packagers/windows/
+./build-installer.sh ../../out/microblocks-windows ../../out $version
+cd ../../out
 rm -rf microblocks-windows
 fi
 

@@ -23,15 +23,15 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "ublocks-win.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "microblocks-windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "microBlocks.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\microBlocks"; Filename: "{app}\ublocks-win.exe"; IconFilename: "{app}\microBlocks.ico"; WorkingDir: "{app}"
 Name: "{group}\{cm:ProgramOnTheWeb,microBlocks}"; Filename: "http://microblocks.fun"
 Name: "{group}\{cm:UninstallProgram,microBlocks}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\microBlocks"; Filename: "{app}\ublocks-win.exe"; IconFilename: "{app}\microBlocks.ico"; Tasks: desktopicon; WorkingDir: "{app}"
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\microBlocks"; Filename: "{app}\ublocks-win.exe"; Tasks: quicklaunchicon; WorkingDir: "{app}"
+Name: "{commondesktop}\microBlocks"; Filename: "{app}\microblocks.exe"; IconFilename: "{app}\microBlocks.ico"; Tasks: desktopicon; WorkingDir: "{app}"
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\microBlocks"; Filename: "{app}\microblocks.exe"; Tasks: quicklaunchicon; WorkingDir: "{app}"
 
 [Run]
-Filename: "{app}\ublocks-win.exe"; Description: "{cm:LaunchProgram,microBlocks}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\microblocks.exe"; Description: "{cm:LaunchProgram,microBlocks}"; Flags: nowait postinstall skipifsilent

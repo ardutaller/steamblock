@@ -31,11 +31,11 @@ if test -n "$help"; then
 	echo "                              backup copy of the current locale file will be"
 	echo "                              created in your OS temporary files directory."
 	echo "                              Run with \"=all\" to update all existing locales."
-	echo "--webapp                      Rebuild MicroBlocks as a webapp."
+	echo "--gp                          Rebuild the GP part of MicroBlocks."
 	echo "--boardie                     Build Boardie."
-	echo "--electron                    Run the webapp as an Electron app. Can be combined"
-	echo "                              with --webapp to make sure you're running the latest"
-	echo "                              version of the web application."
+	echo "--electron                    Run the an Electron app. Can be combined with --gp"
+	echo "                              to make sure you're running the latest version of"
+	echo "                              the GP part of the IDE."
 	echo
 	exit 0
 fi
@@ -92,7 +92,7 @@ if test -n "$tools"; then
 	echo "Installing Electron and dependencies"
 	(cd electron; npm install)
 	echo "Installing Electron ASAR"
-        (cd electron; npm install --engine-strict @electron/asar)
+	(cd electron; npm install --engine-strict @electron/asar)
 	if [ "$currentOS" == "Linux" ]; then
 		echo "Adding Flatpack repo"
 		(cd electron; flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo)
@@ -104,6 +104,7 @@ if test -n "$tools"; then
 		if [ -z `command -v eu-strip` ]; then echo "elfutils"; fi
 		if [ -z `command -v wine` ]; then echo "wine"; fi
 		if [ -z `command -v mono` ]; then echo "mono"; fi
+		(cd electron/packagers/windows; ./install-inno.sh)
 		echo "If you get a Mono/Wine error when packaging for Windows, remove the ~/.wine folder and run winecfg"
 	fi
 	exit 0
@@ -123,7 +124,7 @@ fi
 
 if test -n "$electron"; then
 	if test -n "$pack"; then
-		(cd electron; ./pack.sh $system)
+		(cd electron; ./pack.sh $system $version)
 	else
 		(cd electron; npm run start)
 	fi
