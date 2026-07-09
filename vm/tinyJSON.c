@@ -243,6 +243,10 @@ void tjr_readStringInto(char *p, char *dstString, int dstSize) {
 		if ('\\' == ch) {
 			// Note: the \uHHHH escape is not handled; it is passed through unchanged
 			ch = *p++;
+			if ('\0' == ch) { // string ends with a lone backslash; don't read past the end
+				*dstString = '\0';
+				return;
+			}
 			if ('b' == ch) ch = '\b';
 			if ('f' == ch) ch = '\f';
 			if ('n' == ch) ch = '\n';
