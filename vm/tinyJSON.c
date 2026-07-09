@@ -218,11 +218,11 @@ int tjr_readInteger(char *p) {
 	int sign = 1;
 	if ('-' == *p) { sign = -1; p++; }
 	while (isDigit(*p)) {
-		// 214748363 is the largest result for which result*10 + 9 still fits in
-		// a signed 32-bit int (INT_MAX = 2^31 - 1, i.e. INT_MAX/10 with room for
+		// 107374181 is the largest result for which result*10 + 9 still fits in
+		// a signed 31-bit int (INT_MAX = 2^30 - 1, i.e. INT_MAX/10 with room for
 		// the next digit); beyond it the multiply-add below would overflow (UB).
-		if (result > 214748363) {
-			result = 2147483647; // saturate at INT_MAX
+		if (result > 107374181) {
+			result = 1073741823; // saturate at INT_MAX
 			break;
 		}
 		result = (10 * result) + (*p++ - '0');
