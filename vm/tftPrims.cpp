@@ -153,8 +153,8 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
- 					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
+			tft = new Arduino_ST7735(bus, TFT_RST, 0, false,
+					TFT_WIDTH, TFT_HEIGHT, 2, 3, 2, 3);
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
 			} else {
@@ -172,7 +172,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
+			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
@@ -431,7 +431,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			AXP192_begin();
 
 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, true);
+			tft = new Arduino_ILI9341(bus, TFT_RST, 1, true);
 
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
@@ -543,10 +543,10 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tftWidth = TFT_WIDTH;
 			tftHeight = TFT_HEIGHT;
 			useTFT = true;
- 		}
+		}
 
 	#elif defined(ARDUINO_IOT_BUS)
- 		#include <XPT2046_Touchscreen.h>
+		#include <XPT2046_Touchscreen.h>
 
 		#define HAS_TOUCH_SCREEN 1
 		#define TOUCH_CS_PIN 16
@@ -558,7 +558,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 		void tftInit() {
 			Arduino_DataBus *bus = new Arduino_HWSPI(TFT_DC, TFT_CS);
- 			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
+			tft = new Arduino_ILI9341(bus, TFT_RST, 1, false);
 
 			if (!tft->begin()) {
 				outputString("tftInit() failed!");
@@ -645,7 +645,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
 			// Draw to canvas. We do our own OLED initialization and updating
 			// in order to support SH1106 128x128 displays.
- 			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, NULL, 0, 0, true);
+			tft = new Arduino_Canvas_Mono(TFT_WIDTH, TFT_HEIGHT, NULL, 0, 0, true);
 			if (!tft->begin()) {
 				oledAddr = 0;
 				outputString("tftInit() failed!");
@@ -695,7 +695,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		#define TFT_HEIGHT 128
 
 		void tftInit() {
- 			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
+			Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI);
 			tft = new Arduino_ST7735(bus, TFT_RST, 3, false,
 					TFT_WIDTH, TFT_HEIGHT);
 			if (!tft->begin()) {
@@ -1775,10 +1775,10 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 
 	// process bitmap arg
 	if (!IS_TYPE(bitmapObj, ListType) ||
-	 	(obj2int(FIELD(bitmapObj, 0)) != 2) ||
-	 	!isInt(FIELD(bitmapObj, 1)) ||
-	 	!IS_TYPE(FIELD(bitmapObj, 2), ByteArrayType)) {
-	 		return fail(bad8BitBitmap);
+		(obj2int(FIELD(bitmapObj, 0)) != 2) ||
+		!isInt(FIELD(bitmapObj, 1)) ||
+		!IS_TYPE(FIELD(bitmapObj, 2), ByteArrayType)) {
+			return fail(bad8BitBitmap);
 	}
 	int bitmapWidth = obj2int(FIELD(bitmapObj, 1));
 	OBJ bitmapBytesObj = FIELD(bitmapObj, 2);
