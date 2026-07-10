@@ -35,7 +35,6 @@ Arduino_GFX *tft;
 
 #endif
 
-
 int useTFT = false; // true means simulate 5x5 LED display on TFT display
 int isCodingBox = false;
 
@@ -1233,11 +1232,6 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		pinMode(34, OUTPUT);
 		analogWrite(34, brightness * 25); // nRF5x boards use 8-bit analogWrite resolution
 	#elif defined(TTGO_RP2040) || defined(ARDUINO_WEACT)
-		pinMode(TFT_BL, OUTPUT);
-		if (brightness < 0) brightness = 0;
-		if (brightness > 10) brightness = 10;
-		analogWrite(TFT_BL, brightness * 25);
-	#elif defined(ARDUINO_WEACT)
 		pinMode(TFT_BL, OUTPUT);
 		if (brightness < 0) brightness = 0;
 		if (brightness > 10) brightness = 10;
