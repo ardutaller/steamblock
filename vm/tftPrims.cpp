@@ -12,13 +12,13 @@
 #include "interp.h"
 #include <inttypes.h>
 
-#if defined(ARDUINO_WEACT) || defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
+#if defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
 	defined(__ZEPHYR__) || defined(DUELink) || defined(ESP8266) || defined(ESP32_S3_MATRIX_PORTAL)
 
 // TFT primitives are not supported
 #define NO_EXTERNAL_DISPLAY_PRIMS
 
-#elif defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE)
+#elif defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_WEACT)
 
 #include <Adafruit_GFX.h>
 #define draw16bitRGBBitmap drawRGBBitmap
@@ -54,7 +54,8 @@ static int deferUpdates = false;
 #define BUFFER_PIXELS_SIZE 480 // maximum display width
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
-#if !(defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
+#if !(defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE) || \
+	defined(ARDUINO_WEACT) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
 	// Helper functions for OLED displays.
 
 	static void oledCmd(uint8 cmd) {
@@ -525,7 +526,7 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 		Adafruit_ST7789 display = Adafruit_ST7789(&SPI1, TFT_CS, TFT_DC, TFT_RST);
 
 		void tftInit() {
-			display.init(240, 240);
+			display.init(TFT_WIDTH, TFT_HEIGHT);
 			display.setRotation(1);
 			display.fillScreen(0);
 			uint8_t rtna = 0x01; // Screen refresh rate control (datasheet 9.2.18, FRCTRL2)
@@ -544,6 +545,40 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			tftHeight = TFT_HEIGHT;
 			useTFT = true;
 		}
+
+	#elif defined(ARDUINO_WEACT)
+		#include "Adafruit_ST7735.h"
+
+		#define TFT_MOSI	72
+		#define TFT_SCLK	70
+		#define TFT_CS		69
+		#define TFT_DC		71
+		#define TFT_RST		NULL
+		#define TFT_WIDTH	160
+		#define TFT_HEIGHT	80
+		#define TFT_BL		68
+
+		Adafruit_ST7735 display = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+
+		void tftInit() {
+			pinMode(TFT_CS, OUTPUT);
+			pinMode(TFT_BL, OUTPUT);
+
+			display.initSPI(27000000, SPI_MODE1);
+			display.initR(INITR_MINI160x80_PLUGIN);
+
+			display.setRotation(1);
+			display.fillScreen(0);
+
+			tft = &display;
+			tftWidth = TFT_WIDTH;
+			tftHeight = TFT_HEIGHT;
+			useTFT = true;
+		}
+
+		#define UPDATE_DISPLAY() { taskSleep(10); }
+		#undef oledCmd
+		#define oledCmd(cmd) {}
 
 	#elif defined(ARDUINO_IOT_BUS)
 		#include <XPT2046_Touchscreen.h>
@@ -1196,7 +1231,7 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		if (brightness > 10) brightness = 10;
 		pinMode(34, OUTPUT);
 		analogWrite(34, brightness * 25); // nRF5x boards use 8-bit analogWrite resolution
-	#elif defined(TTGO_RP2040)
+	#elif defined(TTGO_RP2040) || defined(ARDUINO_WEACT)
 		pinMode(TFT_BL, OUTPUT);
 		if (brightness < 0) brightness = 0;
 		if (brightness > 10) brightness = 10;
