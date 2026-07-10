@@ -1633,7 +1633,7 @@ void turnOffPins() {
 				}
 			#endif
 			#if defined(PICO_RP2350)
-				 // workaround for RP2350 chip bug; set low before switching to input
+				// workaround for RP2350 chip bug; set low before switching to input
 				pinMode(pin, OUTPUT);
 				digitalWrite(pin, LOW);
 				delayMicroseconds(10);
@@ -1963,10 +1963,10 @@ void primAnalogWrite(OBJ *args) {
 
 	#if defined(ESP32)
 		#if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(ESP32_C6) && !defined(COCUBE)
-		if ((25 == pinNum) || (26 == pinNum)) { // ESP32 and ESP32-S2 DAC pins
-			dacWrite(pinNum, (value >> 2)); // convert 10-bit to 8-bit value for ESP32 DAC
-			return;
-		}
+			if ((25 == pinNum) || (26 == pinNum)) { // ESP32 and ESP32-S2 DAC pins
+				dacWrite(pinNum, (value >> 2)); // convert 10-bit to 8-bit value for ESP32 DAC
+				return;
+			}
 		#endif
 		if (value == 0) {
 			pinDetach(pinNum);

@@ -12,20 +12,13 @@
 #include "interp.h"
 #include <inttypes.h>
 
-#if defined(ARDUINO_WEACT) || defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
+#if defined(NRF51) || defined(ARDUINO_ARCH_SAMD) || \
 	defined(__ZEPHYR__) || defined(DUELink) || defined(ESP8266) || defined(ESP32_S3_MATRIX_PORTAL)
 
 // TFT primitives are not supported
 #define NO_EXTERNAL_DISPLAY_PRIMS
 
-#elif defined(ARDUINO_WEACT)
-#include <Adafruit_GFX.h>
-#define draw16bitRGBBitmap drawRGBBitmap
-Adafruit_GFX *tft;
-#define NO_EXTERNAL_DISPLAY_PRIMS
-#define HAS_TFT_PRIMS true
-
-#elif defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE)
+#elif defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_WEACT)
 
 #include <Adafruit_GFX.h>
 #define draw16bitRGBBitmap drawRGBBitmap
@@ -62,7 +55,8 @@ static int deferUpdates = false;
 #define BUFFER_PIXELS_SIZE 480 // maximum display width
 uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 
-#if !(defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
+#if !(defined(PICO_ED) || defined(ARDUINO_NRF52840_CLUE) || \
+	defined(ARDUINO_WEACT) || defined(NO_EXTERNAL_DISPLAY_PRIMS))
 	// Helper functions for OLED displays.
 
 	static void oledCmd(uint8 cmd) {
@@ -578,7 +572,6 @@ uint16_t bufferPixels[BUFFER_PIXELS_SIZE];
 			display.fillScreen(0);
 
 			tft = &display;
-
 			tftWidth = TFT_WIDTH;
 			tftHeight = TFT_HEIGHT;
 			useTFT = true;
@@ -1239,7 +1232,7 @@ OBJ primSetBacklight(int argCount, OBJ *args) {
 		if (brightness > 10) brightness = 10;
 		pinMode(34, OUTPUT);
 		analogWrite(34, brightness * 25); // nRF5x boards use 8-bit analogWrite resolution
-	#elif defined(TTGO_RP2040)
+	#elif defined(TTGO_RP2040) || defined(ARDUINO_WEACT)
 		pinMode(TFT_BL, OUTPUT);
 		if (brightness < 0) brightness = 0;
 		if (brightness > 10) brightness = 10;
@@ -1823,10 +1816,10 @@ static OBJ primDrawBitmap(int argCount, OBJ *args) {
 
 	// process bitmap arg
 	if (!IS_TYPE(bitmapObj, ListType) ||
-	 	(obj2int(FIELD(bitmapObj, 0)) != 2) ||
-	 	!isInt(FIELD(bitmapObj, 1)) ||
-	 	!IS_TYPE(FIELD(bitmapObj, 2), ByteArrayType)) {
-	 		return fail(bad8BitBitmap);
+		(obj2int(FIELD(bitmapObj, 0)) != 2) ||
+		!isInt(FIELD(bitmapObj, 1)) ||
+		!IS_TYPE(FIELD(bitmapObj, 2), ByteArrayType)) {
+			return fail(bad8BitBitmap);
 	}
 	int bitmapWidth = obj2int(FIELD(bitmapObj, 1));
 	OBJ bitmapBytesObj = FIELD(bitmapObj, 2);
