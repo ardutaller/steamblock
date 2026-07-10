@@ -742,7 +742,7 @@ OBJ primFind(int argCount, OBJ *args) {
 			// search for a byte in a ByteArray
 			int soughtByte = obj2int(arg0);
 			if ((soughtByte < 0) || (soughtByte > 255)) return fail(byteOutOfRange);
-			for (int i = startOffset - 1; i <= targetSize; i++) {
+			for (int i = startOffset - 1; i < targetSize; i++) {
 				if (target[i] == soughtByte) return int2obj(i + 1);
 			}
 			return int2obj(-1);
