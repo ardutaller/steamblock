@@ -1633,7 +1633,7 @@ void turnOffPins() {
 				}
 			#endif
 			#if defined(PICO_RP2350)
-				 // workaround for RP2350 chip bug; set low before switching to input
+				// workaround for RP2350 chip bug; set low before switching to input
 				pinMode(pin, OUTPUT);
 				digitalWrite(pin, LOW);
 				delayMicroseconds(10);
@@ -1995,7 +1995,7 @@ void primAnalogWrite(OBJ *args) {
 		#if defined(NRF51)
 			if (!nrf51PWMClockInitialized) {
 				// change nRF51 timer prescaler after first call to analogWrite()
-	 			NRF_TIMER1->PRESCALER = 3; // divides 16 Mhz by 2^N
+				NRF_TIMER1->PRESCALER = 3; // divides 16 Mhz by 2^N
 				nrf51PWMClockInitialized = true;
 			}
 		#endif
