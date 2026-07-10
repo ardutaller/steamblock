@@ -2687,10 +2687,8 @@ OBJ primCaptureCount(int argCount, OBJ *args) {
 }
 
 OBJ primCaptureEnd(int argCount, OBJ *args) {
-	if (pulsePin >= 0) {
-		detachInterrupt(pulsePin); // stop pin change interrupts, if any
-		setPinMode(pulsePin, INPUT); // reset the pin while pulsePin still holds it
-	}
+	if (pulsePin >= 0) detachInterrupt(pulsePin); // stop pin change interrupts, if any
+	setPinMode(pulsePin, INPUT);
 	pulsePin = -1;
 
 	int count = pulseIndex;
