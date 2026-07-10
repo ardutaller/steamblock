@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-07-09 10:01+0000\n"
+"PO-Revision-Date: 2026-07-11 08:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1254,7 +1254,7 @@ msgstr "Calliope setze LED rot _ grün _ blau _"
 
 #. HTTP Server library block
 msgid "method of request _"
-msgstr "Methode der Anfrage _"
+msgstr "Anfrage-Methode _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "radio last number"
@@ -1578,7 +1578,7 @@ msgstr "Feststelltaste"
 
 #. HTTP Server library block
 msgid "content length of request _"
-msgstr "Inhaltslänge der Anfrage _"
+msgstr "Länge des Anfrage-Inhalts _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Accelerometer _"
@@ -2311,7 +2311,7 @@ msgstr "antworte _ auf HTTP-Anfrage"
 
 #. HTTP Server library block
 msgid "body of request _"
-msgstr "Body der Anfrage _"
+msgstr "Anfrage-Body _"
 
 #. WebSocket Server library block
 msgid "start WebSocket server"
@@ -2640,7 +2640,7 @@ msgstr "TCS34725 verbunden"
 
 #. HTTP Server library block
 msgid "path of request _"
-msgstr "Pfad der Anfrage _"
+msgstr "Anfrage-Pfad _"
 
 #. Web Things library block
 msgid "set boolean property _ title _ @Type _"
@@ -3015,7 +3015,7 @@ msgstr "Willkommen auf dem MicroBlocks HTTP-Server"
 
 #. HTTP Server library block
 msgid "headers of request _"
-msgstr "Header der Anfrage _"
+msgstr "Anfrage-Header _"
 
 #. WebSocket server library label
 msgid "WebSocket server"
