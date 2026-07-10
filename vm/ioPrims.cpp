@@ -313,7 +313,7 @@ void hardwareInit() {
 
 	// See variant.cpp in variants/Sinbit folder for a detailed pin map.
 	// Pins 0-19 are for the large pads and 26 pin connector
-	//	(but pin numbers 17-18 correspond to 3.3 volt pads, not actual I/O pins)
+	// (but pin numbers 17-18 correspond to 3.3 volt pads, not actual I/O pins)
 	// Pins 21-22: RX, TX (for USB Serial?)
 	// Pins 23-28: COL4, COL5, COL6, ROW1, ROW2, ROW3
 	// Button A: pin 5
