@@ -226,6 +226,7 @@ method decompile MicroBlocksDecompiler chunkID chunkType chunkData {
 	if (cmdIs this (last opcodes) 'codeEnd' 0) { removeLast opcodes } // remove final codeEnd
 	gpCode = (codeForSequence this 1 (count opcodes))
 	gpCode = (removePrefix this gpCode)
+	if (3 == chunkType) { gpCode = (removeFinalReturnFalse this gpCode) }
 	gpCode = (addHatBlock this chunkID chunkType gpCode)
 	if (isNil gpCode) {
 		return (newCommand 'comment' 'Stand-alone comment')
@@ -333,6 +334,28 @@ method removePrefix MicroBlocksDecompiler gpCode {
 		// remove 'recvBroadcast' from a parameterless function
 		msgName = (first (argList gpCode)) // record the message name
 		gpCode = (nextBlock gpCode)
+	}
+	return gpCode
+}
+
+method removeFinalReturnFalse MicroBlocksDecompiler gpCode {
+	// Remove the trailing 'return false' from a function body. The compiler
+	// appends an implicit 'pushImmediate false; returnResult' to the end of
+	// every function chunk, so without this the decompiled function shows an
+	// extra 'return false' block, and gains one more on every save/decompile
+	// cycle. If the user's function ends with an explicit 'return false' the
+	// compiler still appends its own, so removing one keeps the user's.
+
+	if (isNil gpCode) { return nil }
+	prev = nil
+	last = gpCode
+	while (notNil (nextBlock last)) {
+		prev = last
+		last = (nextBlock last)
+	}
+	if (and ('return' == (primName last)) (1 == (count (argList last))) (false == (first (argList last)))) {
+		if (isNil prev) { return nil } // body was only the implicit return
+		setField prev 'nextBlock' nil
 	}
 	return gpCode
 }

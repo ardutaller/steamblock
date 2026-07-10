@@ -130,7 +130,7 @@ void memClear() {
 	lastBroadcast = zeroObj;
 
 	// zero objectstore memory (not essential)
-	memset(objstore, 0, sizeof(objstore));
+	memset(objstore, 0, 4 * OBJSTORE_WORDS);
 
 	// create the free chunk (prefixed by a forwarding word)
 	objstore[0] = (OBJ) 0; // forwarding word
