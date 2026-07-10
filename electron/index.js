@@ -95,12 +95,11 @@ ipcMain.handle('dialog:saveFile', async (event, suggestedName, isBinary, data) =
 
 const createWindow = () => {
 	// Use nativeImage for stable rendering across different Linux distros
-// xxx setting the icon is handled in whenReady()
-// 	const iconPath = path.join(__dirname, 'MicroBlocks.png');
-// 	const appIcon = nativeImage.createFromPath(iconPath);
+	const iconPath = path.join(__dirname, 'MicroBlocks.png');
+	const appIcon = nativeImage.createFromPath(iconPath);
 
 	const mainWindow = new BrowserWindow({
-//		icon: appIcon,
+		icon: appIcon,
 		width: 1024,
 		height: 768,
 		autoHideMenuBar: true,
@@ -162,18 +161,13 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-	const iconPath = path.join(__dirname, 'MicroBlocks_1024.png');
-	const iconImage = nativeImage.createFromPath(iconPath);
-
 	if (process.platform === 'darwin') {
+		const iconPath = path.join(__dirname, 'MicroBlocks.png');
 		try {
-			app.dock.setIcon(iconImage);
+			app.dock.setIcon(nativeImage.createFromPath(iconPath));
 		} catch (error) {
 			console.error("Failed to set macOS Dock icon:", error);
 		}
-	} else {
-		// Linux and Windows
-		mainWindow.setIcon(iconImage);
 	}
 
 	createWindow();
