@@ -1962,12 +1962,12 @@ void primAnalogWrite(OBJ *args) {
 	#endif
 
 	#if defined(ESP32)
-	  #if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(ESP32_C6) && !defined(COCUBE)
-		if ((25 == pinNum) || (26 == pinNum)) { // ESP32 and ESP32-S2 DAC pins
-			dacWrite(pinNum, (value >> 2)); // convert 10-bit to 8-bit value for ESP32 DAC
-			return;
-		}
-	  #endif
+		#if !defined(ESP32_S3) && !defined(ESP32_C3) && !defined(ESP32_C6) && !defined(COCUBE)
+			if ((25 == pinNum) || (26 == pinNum)) { // ESP32 and ESP32-S2 DAC pins
+				dacWrite(pinNum, (value >> 2)); // convert 10-bit to 8-bit value for ESP32 DAC
+				return;
+			}
+		#endif
 		if (value == 0) {
 			pinDetach(pinNum);
 			pwmRunning[pinNum] = false;
@@ -1995,7 +1995,7 @@ void primAnalogWrite(OBJ *args) {
 		#if defined(NRF51)
 			if (!nrf51PWMClockInitialized) {
 				// change nRF51 timer prescaler after first call to analogWrite()
-    			NRF_TIMER1->PRESCALER = 3; // divides 16 Mhz by 2^N
+	 			NRF_TIMER1->PRESCALER = 3; // divides 16 Mhz by 2^N
 				nrf51PWMClockInitialized = true;
 			}
 		#endif
@@ -2206,7 +2206,7 @@ OBJ primButtonA(OBJ *args) {
 			int threshold = isSpringbotGold ? 27700: 25700;
 			return (touchRead(T11) > threshold) ? trueObj : falseObj;
 		#elif defined(ARDUINO_NRF52840_CLUE) || defined(ARDUINO_ARCH_ESP32) || \
-			  defined(ESP8266) || defined(M5STAMP)
+				defined(ESP8266) || defined(M5STAMP)
 			SET_MODE(PIN_BUTTON_A, INPUT_PULLUP);
 		#else
 			SET_MODE(PIN_BUTTON_A, INPUT);
