@@ -194,9 +194,12 @@ static OBJ primEncoderStart(int argCount, OBJ *args) {
 		return fail(needsIntegerIndexError);
 	}
 	int encoderIndex = obj2int(args[0]) - 1;
-	int pinA = obj2int(args[1]);
-	int pinB = obj2int(args[2]);
+	int pinA = mapDigitalPinNum(obj2int(args[1]));
+	int pinB = mapDigitalPinNum(obj2int(args[2]));
 	bool fullRes = (argCount > 3) && (trueObj == args[3]);
+
+	// mapDigitalPinNum() returns -1 for reserved or out of range pins
+	if ((pinA < 0) || (pinB < 0)) return fail(encoderNotStarted);
 
 	int err = 1;
 	if ((encoderIndex >= 0) && (encoderIndex < NUM_ENCODERS)) {
@@ -244,8 +247,11 @@ static OBJ primStartPulseCounter(int argCount, OBJ *args) {
 		return fail(needsIntegerIndexError);
 	}
 	int encoderIndex = obj2int(args[0]) - 1;
-	int pin = obj2int(args[1]);
+	int pin = mapDigitalPinNum(obj2int(args[1]));
 	int edgeType = ((argCount > 2) && isInt(args[2])) ? obj2int(args[2]) : 0;
+
+	// mapDigitalPinNum() returns -1 for reserved or out of range pins
+	if (pin < 0) return fail(encoderNotStarted);
 
 	int err = 1;
 	if ((encoderIndex >= 0) && (encoderIndex < NUM_ENCODERS)) {
