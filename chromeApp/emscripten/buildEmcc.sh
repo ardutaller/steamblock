@@ -11,8 +11,8 @@
 # Increased memory to 268435456 (256 MB) (June 2022)
 
 # copy folders to be included in embedded file system
-cp -r ../../gp/Examples .
-cp -r ../../gp/Libraries .
+cp -r ../../Examples .
+cp -r ../../Libraries .
 mkdir precompiled
 cp -r ../../precompiled/*.hex precompiled
 cp -r ../../precompiled/*.uf2 precompiled

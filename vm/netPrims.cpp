@@ -613,7 +613,8 @@ static OBJ primHttpRequest(int argCount, OBJ *args) {
 	const char *host	= obj2str(args[1]);
 	const char *path	= obj2str(args[2]);
 	const char *body = ((argCount > 3) && IS_TYPE(args[3], StringType)) ? obj2str(args[3]) : "";
-	const char *extraHeaders = ((argCount > 4) && IS_TYPE(args[4], StringType)) ? obj2str(args[4]) : "";
+	const char *contentType = ((argCount > 4) && IS_TYPE(args[4], StringType)) ? obj2str(args[4]) : "";
+	const char *extraHeaders = ((argCount > 5) && IS_TYPE(args[5], StringType)) ? obj2str(args[5]) : "";
 	const char extraHeadersLen = strlen(extraHeaders);
 
 	activeHttpClient->write((const uint8_t *) reqType, strlen(reqType));
@@ -659,7 +660,13 @@ static OBJ primHttpRequest(int argCount, OBJ *args) {
 		// NOTE: WiFiClientSecure.write() fails with a zero-length string/data.
 
 		// Content-Type
-		activeHttpClient->write((const uint8_t *) "Content-Type: text/plain\r\n", 26);
+		if (strlen(contentType) == 0) {
+			activeHttpClient->write((const uint8_t *) "Content-Type: text/plain\r\n", 26);
+		} else {
+			activeHttpClient->write((const uint8_t *) "Content-Type: ", 14);
+			activeHttpClient->write((const uint8_t *) contentType, strlen(contentType));
+			activeHttpClient->write((const uint8_t *) "\r\n", 2);
+		}
 
 		// Content-Length
 		char lenStr[50];

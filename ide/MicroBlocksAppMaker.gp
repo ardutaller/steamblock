@@ -42,8 +42,8 @@ method createEmbeddedFS MicroBlocksAppMaker system {
 	addFolderToEmbeddedFS this libDir 'lib' zip
 	addFolderToEmbeddedFS this '../img' 'img' zip
 	addFolderToEmbeddedFS this '../ide' 'lib' zip // note: must add MicroBlocks ide after GP lib
-	addFolderToEmbeddedFS this '../gp/Examples' 'Examples' zip
-	addFolderToEmbeddedFS this '../gp/Libraries' 'Libraries' zip
+	addFolderToEmbeddedFS this '../Examples' 'Examples' zip
+	addFolderToEmbeddedFS this '../Libraries' 'Libraries' zip
 	addFolderToEmbeddedFS this '../precompiled' 'precompiled' zip
 	addFolderToEmbeddedFS this '../translations' 'translations' zip
 	addFolderToEmbeddedFS this '../esp32' 'esp32' zip
