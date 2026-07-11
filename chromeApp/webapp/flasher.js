@@ -24,7 +24,8 @@ const DFUpload = {
 			flashSize: 131072,
 			filter: { vendorId: 1155 }
 		}
-	}
+	};
+	duelinkBoards: ['CincoBit', 'PixoBit', 'Clipit', 'DueSTEM', 'Ghizzy', 'Holiday Tree'];
 };
 
 DFUpload.flashBoard = function (boardName) {
@@ -36,6 +37,7 @@ DFUpload.flashBoard = function (boardName) {
 		() => { dfu.disconnect(); }, // onCancel
 	);
 
+	if (this.duelinkBoards.includes(boardName)) boardName = 'DUELink';
 	let board = this.boards[boardName];
 	window.dfu = new usbDfuDevice();
 
