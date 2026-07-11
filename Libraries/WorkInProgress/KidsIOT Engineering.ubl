@@ -1,23 +1,23 @@
 module 'KidsIOT Engineering'
 author MicroBlocks
 version 1 0 
-depends '_IR Remote' _Servo _Tone '_Distance (HC-SR04)' TFT 'LED Display'
-choices eng_twoPins '1' '3' '4' '6' '7' '8' '9'
-choices eng_analogSensors 'kiot;potentiometer' 'kiot;steam'
-choices eng_allPorts '1' '2' '3' '4' '6' '7' '8' '9' 
-choices eng_motor '1' '3' '9' 
-choices eng_analogPins '3' '4' '6' '7' '8'
-choices eng_rotation 'kiot;clockwise' 'kiot;counter-clockwise'
-choices eng_threePins '1' '9' 
+depends '_IR Remote' _Servo _Tone '_Distance (HC-SR04)' TFT 'LED Display' 
+choices eng_servo_port '1 (io33)' '2 (io32)' 
+choices eng_analogSensors 'kiot;potentiometer' 'kiot;steam' 
+choices eng_rotation 'kiot;clockwise' 'kiot;counter-clockwise' 
 choices eng_joystick X Y 'kiot;button pressed?' 
+choices eng_allPorts '1' '2' '3' '4' '6' '7' '8' '9' 
 choices eng_digitalSensors 'kiot;button pressed?' 'kiot;receive IR code' 'kiot;touching?' 
-choices eng_servo_port  '1 (io33)' '2 (io32)'
+choices eng_twoPins '1' '3' '4' '6' '7' '8' '9' 
+choices eng_analogPins '3' '4' '6' '7' '8' 
+choices eng_motor '1' '3' '9' 
+choices eng_threePins '1' '9' 
 description 'Specific library for "KidsIOT Smart Engineering" kit.
 Components:
 ultrasound, IR receiver, potentiometer, button, buzzer, I2C joystick, steam sensor, capacitive button, servo 270º and servo 360º (continuous rotation)
 '
 
-  spec ' ' 'eng play note' '#SVG#square11#0070ff play note _ octave _ for _ port _' 'menu.tone_NoteName num num menu.eng_allPorts' 'nt;c' 0 500 1  
+  spec ' ' 'eng play note' '#SVG#square11#0070ff play note _ octave _ for _ port _' 'menu.tone_NoteName num num menu.eng_allPorts' 'nt;c' 0 500 1
   space
   spec 'r' 'eng buttonPressed' '#SVG#square11#0070ff button pressed? _' 'menu.eng_allPorts' 1
   spec 'r' 'eng touching' '#SVG#square11#0070ff touching? _' 'menu.eng_allPorts' 1
@@ -32,7 +32,15 @@ ultrasound, IR receiver, potentiometer, button, buzzer, I2C joystick, steam sens
   spec ' ' 'eng servoToDegrees' '#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270) : reversed _' 'menu.eng_servo_port num bool' '1 (io33)' 90 false
   spec ' ' 'eng servoToSpeed' '#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _ : for _ seconds' 'menu.eng_servo_port num menu.eng_rotation num' '1 (io33)' 100 'kiot;clockwise' 1
   spec ' ' 'eng stopServo' '#SVG#square11#FFA500 stop servo _' 'menu.eng_servo_port' '1 (io33)'
-  
+
+to 'eng buttonPressed' port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
+    local 'pin' (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18))
+    return (not (digitalReadOp pin))
+  } else {
+    return 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
+  }
+}
 
 to 'eng distance' port {
   if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 3 4 6 7 8 9)) > 0) {
@@ -74,6 +82,25 @@ to 'eng play note' note octave time port {
   }
 }
 
+to 'eng potentiometer' port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 3 4 6 7 8)) > 0) {
+    local 'value' (analogReadOp (at ('[data:convertType]' port 'number') ('[data:makeList]' '' '' 4 39 '' 36 35 34)))
+    return value
+  } else {
+    return 'Invalid port number. Valid ports: 3, 4, 6, 7 & 8'
+  }
+}
+
+to 'eng receiveIRCode' port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
+    local 'pin' (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18))
+    attachIR pin
+    return (receiveIR)
+  } else {
+    return 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
 to 'eng servoToDegrees' which degrees reversed {
   if ((size which) == 8) {which = (34 - ('[data:convertType]' ('[data:copyFromTo]' which 1 1) 'number'))}
   if ((pushArgCount) > 2) {if reversed {
@@ -97,28 +124,18 @@ to 'eng servoToSpeed' which speed rotation seconds {
   }
 }
 
+to 'eng steam' port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 3 4 6 7 8)) > 0) {
+    local 'value' (analogReadOp (at ('[data:convertType]' port 'number') ('[data:makeList]' '' '' 4 39 '' 36 35 34)))
+    return value
+  } else {
+    return 'Invalid port number. Valid ports: 3, 4, 6, 7 & 8'
+  }
+}
+
 to 'eng stopServo' servo {
   if ((size servo) == 8) {servo = (34 - ('[data:convertType]' ('[data:copyFromTo]' servo 1 1) 'number'))}
   stopServo servo
-}
-
-to 'eng buttonPressed' port {
-  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
-    local 'pin' (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18))
-    return (not (digitalReadOp pin))
-  } else {
-    return 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
-  }
-}
-
-to 'eng receiveIRCode' port {
-  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
-    local 'pin' (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18))
-    attachIR pin
-    return (receiveIR)
-  } else {
-    return 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
-  }
 }
 
 to 'eng touching' port {
@@ -130,20 +147,3 @@ to 'eng touching' port {
   }
 }
 
-to 'eng potentiometer' port {
-  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 3 4 6 7 8)) > 0) {
-    local 'value' (analogReadOp (at ('[data:convertType]' port 'number') ('[data:makeList]' '' '' 4 39 '' 36 35 34)))
-    return value
-  } else {
-    return 'Invalid port number. Valid ports: 3, 4, 6, 7 & 8'
-  }
-}
-
-to 'eng steam' port {
-  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 3 4 6 7 8)) > 0) {
-    local 'value' (analogReadOp (at ('[data:convertType]' port 'number') ('[data:makeList]' '' '' 4 39 '' 36 35 34)))
-    return value
-  } else {
-    return 'Invalid port number. Valid ports: 3, 4, 6, 7 & 8'
-  }
-}
