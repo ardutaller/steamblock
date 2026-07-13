@@ -1522,6 +1522,8 @@ int pinCount() { return TOTAL_PINS; }
 void setPinMode(int pin, int newMode) {
 	// Function to set pin modes from other modules. (The SET_MODE macro is local to this file.)
 
+	if ((pin < 0) || (pin >= TOTAL_PINS)) return; // ignore out of range pins
+
 	SET_MODE(pin, newMode);
 }
 
