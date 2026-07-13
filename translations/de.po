@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-07-11 08:01+0000\n"
+"PO-Revision-Date: 2026-07-14 04:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1.dev0\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -6086,7 +6086,7 @@ msgstr "Akkordfolge _ mit Grundton _"
 
 #. Scales & Chords library block
 msgid "improvised arpeggio over _ for _ bars with durations _"
-msgstr "improvisiertes Arpeggio über _ für _ Takte mit Dauern _"
+msgstr "improvisiertes Arpeggio über _ für _ Takte mit Dauer _"
 
 #. Square Wave Chords library label
 msgid "Square Wave Chords"
