@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-07-09 10:01+0000\n"
+"PO-Revision-Date: 2026-07-14 04:01+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1.dev0\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
 #. Block part type, while making a new block
 msgid "input"
@@ -4075,7 +4075,7 @@ msgstr "valor absoluto de _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr "mánimo entre _ y _"
+msgstr "máximo entre _ y _"
 
 #. Block in Operators category
 msgid "random _ to _"
