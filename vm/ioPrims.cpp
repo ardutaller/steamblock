@@ -2860,10 +2860,18 @@ OBJ primI2SInit(int argCount, OBJ *args) {
 	I2SsampleRate = obj2int(args[3]);
 
 #ifdef ESP32
+	int sckPin = obj2int(args[0]);
+	int dataPin = obj2int(args[1]);
+	int fsPin = obj2int(args[2]);
+
+	// mapDigitalPinNum() returns -1 for reserved or out of range pins
+	if ((mapDigitalPinNum(sckPin) < 0) || (mapDigitalPinNum(dataPin) < 0) ||
+		(mapDigitalPinNum(fsPin) < 0)) return fail(badPinError);
+
 	I2S.end();
-	I2S.setSckPin(obj2int(args[0]));
-	I2S.setDataPin(obj2int(args[1]));
-	I2S.setFsPin(obj2int(args[2]));
+	I2S.setSckPin(sckPin);
+	I2S.setDataPin(dataPin);
+	I2S.setFsPin(fsPin);
 #elif defined(ARDUINO_SAMD_MKR1000)
 	outputString("Pins in the MKR1000 are preset to\nCLK: 2\nLRC: 3\nDATA: A6");
 #endif
