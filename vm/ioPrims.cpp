@@ -2857,17 +2857,20 @@ OBJ primI2SInit(int argCount, OBJ *args) {
 	// args[2]: LRCK / WS
 	// args[3]: sample rate
 	// args[4]: bits per sample
+
+	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]) && \
+		isInt(args[3]) && isInt(args[4]))) {
+			fail(needsIntegerError);
+	}
+	int sckPin = mapDigitalPinNum(obj2int(args[0]));
+	int dataPin = mapDigitalPinNum(obj2int(args[1]));
+	int fsPin = mapDigitalPinNum(obj2int(args[2]));
+	if ((sckPin < 0) || (dataPin < 0) || (fsPin < 0)) return fail(badPinError);
+
 	I2SsampleRate = obj2int(args[3]);
+	int bitsPerSample = obj2int(args[4]);
 
 #ifdef ESP32
-	int sckPin = obj2int(args[0]);
-	int dataPin = obj2int(args[1]);
-	int fsPin = obj2int(args[2]);
-
-	// mapDigitalPinNum() returns -1 for reserved or out of range pins
-	if ((mapDigitalPinNum(sckPin) < 0) || (mapDigitalPinNum(dataPin) < 0) ||
-		(mapDigitalPinNum(fsPin) < 0)) return fail(badPinError);
-
 	I2S.end();
 	I2S.setSckPin(sckPin);
 	I2S.setDataPin(dataPin);
@@ -2875,7 +2878,7 @@ OBJ primI2SInit(int argCount, OBJ *args) {
 #elif defined(ARDUINO_SAMD_MKR1000)
 	outputString("Pins in the MKR1000 are preset to\nCLK: 2\nLRC: 3\nDATA: A6");
 #endif
-	I2S.begin(I2S_PHILIPS_MODE, I2SsampleRate, obj2int(args[4]));
+	I2S.begin(I2S_PHILIPS_MODE, I2SsampleRate, bitsPerSample);
 	return falseObj;
 }
 
