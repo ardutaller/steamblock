@@ -22,6 +22,8 @@ OneWire oneWire(0);
 
 static OBJ primInitOneWire(int argCount, OBJ *args) {
 	int pinNum = (argCount > 0) ? obj2int(args[0]) : 0;
+	pinNum = mapDigitalPinNum(pinNum);
+	if ((pinNum < 0) || inputOnlyPin(pinNum)) return fail(badPinError);
 	oneWire.begin(pinNum);
 	return falseObj;
 }
