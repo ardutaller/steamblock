@@ -23,7 +23,7 @@ to espTest {
 	openPort espTool '/dev/cu.usbserial-110' 'ESP32-C3'
 	vmData = (readFile '../blink_c3.bin' true)
 
-	uploadESP32VM espTool vmData false
+	uploadESP32VM espTool vmData false ''
 	closeSerialPort port
 }
 
@@ -447,7 +447,7 @@ method installFirmware ESPTool boardName eraseFlag downloadFlag vmData {
 	) {
 		ok = (uploadESP8266VM this vmData eraseFlag)
 	} else {
-		ok = (uploadESP32VM this vmData eraseFlag)
+		ok = (uploadESP32VM this vmData eraseFlag boardName)
 	}
 
 	if ok {
@@ -530,7 +530,7 @@ method uploadESP8266VM ESPTool vmData eraseFlag {
 	return true
 }
 
-method uploadESP32VM ESPTool vmData eraseFlag {
+method uploadESP32VM ESPTool vmData eraseFlag boardName {
 	if (isNil eraseFlag) { eraseFlag = false }
 
 	ok = (connect this)
@@ -543,6 +543,13 @@ method uploadESP32VM ESPTool vmData eraseFlag {
 	if (not ok) { return false }
 
 	if eraseFlag { eraseFlash this }
+
+	vmFileName = (vmNameForBoard this boardName)
+	if (isNil vmFileName) { vmFileName = boardName } // URL
+	if (notNil (findSubstring 'databot2.0_' vmFileName)) { setAllInOneBinary this true }
+	if (notNil (findSubstring 'cocube' (toLowerCase vmFileName))) { setAllInOneBinary this true }
+	if (notNil (findSubstring 'waveshare_s3_matrix' vmFileName)) { setAllInOneBinary this true }
+	if (notNil (findSubstring '_all.bin' vmFileName)) { setAllInOneBinary this true }
 
 	if allInOneBinary {
 		uploadCompressed this 0 vmData // binary includes all subparts and loads at address 0
