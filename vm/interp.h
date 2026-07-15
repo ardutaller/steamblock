@@ -326,6 +326,7 @@ int pinCount();
 int mapDigitalPinNum(int userPinNum);
 void setPinMode(int pin, int newMode);
 void turnOffPins();
+int inputOnlyPin(int pin);
 void resetTimer();
 int hasI2CPullups();
 int displayIsActive();

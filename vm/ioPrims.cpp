@@ -1533,7 +1533,7 @@ static void reservePinsForPSRAM() {
 	#endif
 }
 
-static int inputOnlyPin(int pin) {
+int inputOnlyPin(int pin) {
 	#if defined(ESP32_ORIGINAL)
 		return (pin > 33); // on original ESP32 pins 34-39 are input only
 	#elif defined(ESP32_S2)
