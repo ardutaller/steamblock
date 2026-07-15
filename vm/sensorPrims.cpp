@@ -425,6 +425,9 @@ static OBJ primI2cSetPins(int argCount, OBJ *args) {
 	int pinSCL = obj2int(args[1]);
 
 	#if defined(ARDUINO_ARCH_ESP32) || defined(NRF52_SERIES)
+		// mapDigitalPinNum() returns -1 for reserved or out of range pins
+		if ((mapDigitalPinNum(pinSDA) < 0) || (mapDigitalPinNum(pinSCL) < 0)) return fail(badPinError);
+
 		Wire.end();
 		Wire.setPins(pinSDA, pinSCL);
 		Wire.begin();
