@@ -1851,7 +1851,11 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 			if ((ledcChannels[channel] == -1) && ((channel & 7) > 1)) break;
 		}
 		if (channel < MAX_LEDC_CHANNELS) {
-			ledcSetup(channel, 78125, 9); // 78125 Hz, 9 bits (for audio)
+			#if defined(COCUBE)
+				ledcSetup(channel, 100, 9); // 100 Hz, 9 bits (for CoCube motors)
+			#else
+				ledcSetup(channel, 78125, 9); // 78125 Hz, 9 bits (for audio)
+			#endif
 			ledcAttachPin(pin, channel);
 			ledcChannels[channel] = pin;
 		}
