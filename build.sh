@@ -94,13 +94,7 @@ if test -n "$tools"; then
 	echo "Installing Electron ASAR"
 	(cd electron; npm install --engine-strict @electron/asar)
 	if [ "$currentOS" == "Linux" ]; then
-		echo "Adding Flatpack repo"
-		(cd electron; flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo)
-		echo "Installing flathub"
-		(cd electron; flatpak install -y --noninteractive flathub org.freedesktop.Platform//25.08 org.freedesktop.Sdk//25.08 org.electronjs.Electron2.BaseApp//25.08)
 		echo "Note that you'll additionally need to install the following packages manually:"
-		if [ -z `command -v flatpak` ]; then echo "flatpack"; fi
-		if [ -z `command -v flatpak-builder` ]; then echo "flatpack-builder"; fi
 		if [ -z `command -v eu-strip` ]; then echo "elfutils"; fi
 		if [ -z `command -v wine` ]; then echo "wine"; fi
 		if [ -z `command -v mono` ]; then echo "mono"; fi
