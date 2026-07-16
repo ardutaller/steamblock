@@ -2125,6 +2125,7 @@ method errorString SmallRuntime errID {
 #define scriptTooLarge			54	// Script too large
 #define udpPortNotOpen			55	// UDP port not open
 #define cannotUseWhileIDEConnected 56 // This primitive cannot be used while connected to the IDE
+#define badPinError				57	// Pin is reserved or not available on this board
 '
 	for line (lines defsFromHeaderFile) {
 		words = (words line)

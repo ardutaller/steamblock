@@ -1522,6 +1522,8 @@ int pinCount() { return TOTAL_PINS; }
 void setPinMode(int pin, int newMode) {
 	// Function to set pin modes from other modules. (The SET_MODE macro is local to this file.)
 
+	if ((pin < 0) || (pin >= TOTAL_PINS)) return; // ignore out of range pins
+
 	SET_MODE(pin, newMode);
 }
 
@@ -1533,7 +1535,7 @@ static void reservePinsForPSRAM() {
 	#endif
 }
 
-static int inputOnlyPin(int pin) {
+int inputOnlyPin(int pin) {
 	#if defined(ESP32_ORIGINAL)
 		return (pin > 33); // on original ESP32 pins 34-39 are input only
 	#elif defined(ESP32_S2)
@@ -1851,7 +1853,11 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 			if ((ledcChannels[channel] == -1) && ((channel & 7) > 1)) break;
 		}
 		if (channel < MAX_LEDC_CHANNELS) {
-			ledcSetup(channel, 78125, 9); // 78125 Hz, 9 bits (for audio)
+			#if defined(COCUBE)
+				ledcSetup(channel, 100, 9); // 100 Hz, 9 bits (for CoCube motors)
+			#else
+				ledcSetup(channel, 78125, 9); // 78125 Hz, 9 bits (for audio)
+			#endif
 			ledcAttachPin(pin, channel);
 			ledcChannels[channel] = pin;
 		}
@@ -2851,17 +2857,28 @@ OBJ primI2SInit(int argCount, OBJ *args) {
 	// args[2]: LRCK / WS
 	// args[3]: sample rate
 	// args[4]: bits per sample
+
+	if (!(isInt(args[0]) && isInt(args[1]) && isInt(args[2]) && \
+		isInt(args[3]) && isInt(args[4]))) {
+			fail(needsIntegerError);
+	}
+	int sckPin = mapDigitalPinNum(obj2int(args[0]));
+	int dataPin = mapDigitalPinNum(obj2int(args[1]));
+	int fsPin = mapDigitalPinNum(obj2int(args[2]));
+	if ((sckPin < 0) || (dataPin < 0) || (fsPin < 0)) return fail(badPinError);
+
 	I2SsampleRate = obj2int(args[3]);
+	int bitsPerSample = obj2int(args[4]);
 
 #ifdef ESP32
 	I2S.end();
-	I2S.setSckPin(obj2int(args[0]));
-	I2S.setDataPin(obj2int(args[1]));
-	I2S.setFsPin(obj2int(args[2]));
+	I2S.setSckPin(sckPin);
+	I2S.setDataPin(dataPin);
+	I2S.setFsPin(fsPin);
 #elif defined(ARDUINO_SAMD_MKR1000)
 	outputString("Pins in the MKR1000 are preset to\nCLK: 2\nLRC: 3\nDATA: A6");
 #endif
-	I2S.begin(I2S_PHILIPS_MODE, I2SsampleRate, obj2int(args[4]));
+	I2S.begin(I2S_PHILIPS_MODE, I2SsampleRate, bitsPerSample);
 	return falseObj;
 }
 
