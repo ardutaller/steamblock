@@ -37,7 +37,10 @@ rm -rf microblocks-linux
 mv ../prepack/linux microblocks-linux
 rm -f microblocks-linux.zip
 zip -rq microblocks-linux.zip microblocks-linux
-#echo "Building .deb installer..."
+echo "Building .deb installer..."
+cd ../packagers/linux/deb/
+./build-deb.sh ../../../out/microblocks-linux ../../../out $version amd64
+cd ../../../out
 rm -rf microblocks-linux
 fi
 
