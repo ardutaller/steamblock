@@ -24,8 +24,8 @@ const DFUpload = {
 			flashSize: 131072,
 			filter: { vendorId: 1155 }
 		}
-	};
-	duelinkBoards: ['CincoBit', 'PixoBit', 'Clipit', 'DueSTEM', 'Ghizzy', 'Holiday Tree'];
+	},
+	duelinkBoards: ['CincoBit', 'PixoBit', 'Clipit', 'DueSTEM', 'Ghizzy', 'Holiday Tree']
 };
 
 DFUpload.flashBoard = function (boardName) {
