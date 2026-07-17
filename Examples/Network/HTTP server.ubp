@@ -7,8 +7,7 @@ variables responses
   spec ' ' 'initializeResponses' 'initializeResponses'
 
 to initializeResponses {
-  responses = ('[data:makeList]' ('[data:makeList]' '/' '<h1>Hello!</h1>
-<p>This is the MicroBlocks HTTP server.</p>
+  responses = ('[data:makeList]' ('[data:makeList]' '/' '<p>This is the MicroBlocks HTTP server.</p>
 <p>You can test the following URLs:</p>
 <ul>
 <li>/test</li>
@@ -20,7 +19,7 @@ to initializeResponses {
 <img src="https://microblocks.fun/assets/img/logos/MicroBlocks.svg"/>'))
 }
 
-script 50 50 {
+script 60 50 {
 comment 'This is an example HTTP server written in MicroBlocks.
 It responds to the following URLs:
   /
@@ -32,15 +31,15 @@ You can also try a random URL and get back a 404 page.
 
 The server responds to all request methods in the same way,
 but you can easily add checks for other methods (like POST)
-by using the ( method of request [ ] ) block.
+by using the "method of request" block.
 
 You can also extract the body of a request (when it has one)
-by using the ( body of request [ ] ) block.
+by using the "body of request" block.
 
 Enjoy!'
 }
 
-script 52 347 {
+script 62 347 {
 whenStarted
 comment 'Remember to use your network name (SSID) and password below'
 wifiConnect 'Network_Name' ''
@@ -49,13 +48,24 @@ local 'request' ''
 forever {
   request = ('[net:httpServerGetRequest]')
   if (request != '') {
+    local 'not found' (booleanConstant true)
     for response responses {
-      if (('path of request' request) == (at 1 response)) {'[net:respondToHttpRequest]' '200 OK' (at 2 response)}
+      if (('path of request' request) == (at 1 response)) {
+        '[net:respondToHttpRequest]' '200 OK' (at 2 response)
+        'not found' = (booleanConstant false)
+        exitLoop
+      }
     }
-    '[net:respondToHttpRequest]' '404 Not Found' '<h1>404 Not Found</h1><p>I''m sorry, this page does not exist :(</p>'
+    if (v 'not found') {
+      '[net:respondToHttpRequest]' '404 Not Found' '<p></p><h1>404 Not Found</h1><p>I''m sorry, this page does not exist :(</p>'
+    }
   }
   waitMillis 10
 }
+}
+
+script 63 1164 {
+to initializeResponses {}
 }
 
 
