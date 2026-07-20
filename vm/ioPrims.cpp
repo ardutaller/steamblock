@@ -2865,8 +2865,10 @@ OBJ primI2SInit(int argCount, OBJ *args) {
 	int sckPin = mapDigitalPinNum(obj2int(args[0]));
 	int dataPin = mapDigitalPinNum(obj2int(args[1]));
 	int fsPin = mapDigitalPinNum(obj2int(args[2]));
-	if ((sckPin < 0) || (dataPin < 0) || (fsPin < 0)) return fail(badPinError);
-
+	if ((sckPin < 0) || (dataPin < 0) || (fsPin < 0) ||
+		inputOnlyPin(sckPin) || inputOnlyPin(dataPin) || inputOnlyPin(fsPin)) {
+			return fail(badPinError);
+	}
 	I2SsampleRate = obj2int(args[3]);
 	int bitsPerSample = obj2int(args[4]);
 
