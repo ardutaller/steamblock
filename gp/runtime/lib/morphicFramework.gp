@@ -649,6 +649,19 @@ method processEvent Keyboard evt {
 			if (and (at currentKeys key) (8 != key)) { return } // suppress duplicated keyDown events on Gnome and some other Linux desktops
 			atPut currentKeys key true
 
+			if (isClass focus 'Caret') {
+				// clear stale keyboard focus: if the caret's target is no longer on
+				// the page (e.g. its owner was removed without stopping editing),
+				// stuck focus would silently disable all global keyboard shortcuts
+				t = (target focus)
+				if (or (isNil t) (not ((root (morph t)) === (morph (global 'page'))))) {
+					stopEditing this
+					// consume this keystroke; it was aimed at the removed text, and
+					// letting it fall through would trigger the global shortcuts below
+					return
+				}
+			}
+
 			if (isNil focus) {
 				pe = (findProjectEditor)
 				if (27 == key) { // escape key
@@ -705,6 +718,12 @@ method processEvent Keyboard evt {
 						redo (scripter pe)
 					} else {
 						undo (scripter pe)
+					}
+				}
+				if (and (32 == key) (or (controlKeyDown this) (commandKeyDown this))) {
+					// ctrl-space or cmd-space - search for blocks and variables
+					if (and (notNil pe) (implements (scripter pe) 'showSearchBox')) {
+						showSearchBox (scripter pe)
 					}
 				}
 			}

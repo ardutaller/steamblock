@@ -7829,6 +7829,14 @@ msgstr ""
 msgid "Add Library"
 msgstr ""
 
+#. Placeholder text in the block search box (ctrl-space)
+msgid "search blocks and variables..."
+msgstr ""
+
+#. Shown in the block search box when no block matches the search
+msgid "no matches"
+msgstr ""
+
 #. the %1 tag should be kept intact. Seconds remaining for a process to finish.
 msgid "%1 seconds remaining"
 msgstr ""

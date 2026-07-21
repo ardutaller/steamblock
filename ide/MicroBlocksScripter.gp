@@ -6,7 +6,7 @@
 
 // MicroBlocksScripter.gp - MicroBlocks script editor w/ built-in palette
 
-defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle undoStack redoStack
+defineClass MicroBlocksScripter morph mbProject projectEditor saveNeeded categorySelector catResizer libHeader libSelector categoryFrame categoryPane libAddButton libAddIcons lastLibraryFolder blocksFrame blocksResizer scriptsFrame nextX nextY embeddedLibraries selection cornerIcon trashcanIcon spacer topGradient topGradientBitmap bottomGradient bottomGradientBitmap lastLibraryButtonStyle lastLibraryHeaderStyle undoStack redoStack searchRecents searchLibIndex searchBuiltinIndex
 
 method blockPalette MicroBlocksScripter { return (contents blocksFrame) }
 method scriptEditor MicroBlocksScripter { return (contents scriptsFrame) }
@@ -1566,4 +1566,807 @@ xmpVl9zAWU+nS9y263KtjrdtYn6J+lgq8U+i9ROhl96J95poEWGWVcR+EKu2L1YTCyI9a09dZG/BZTWx
 mRfjy+uJlAd7e82xAccGs6SMzEQ4/u2piMzLwwj/eJ9nZ0/INycVXhY1IwAAAABJRU5ErkJggg=='
 	if (2 == (global 'scale')) { data = dataRetina }
 	return (readFrom (new 'PNGReader') (base64Decode data))
+}
+
+// block/variable search (ctrl-space)
+
+method showSearchBox MicroBlocksScripter {
+	existing = (findMorph 'MicroBlocksBlockSearchBox')
+	if (notNil existing) {
+		startEditing (handler existing)
+		return
+	}
+	box = (newMicroBlocksBlockSearchBox this)
+	pageM = (morph (global 'page'))
+	setCenter (morph box) (hCenter (bounds pageM)) ((top pageM) + ((height pageM) / 3))
+	addPart pageM (morph box)
+	startEditing box
+	showRecents box
+	// building the embedded-library index reads every library file, so warm
+	// the cache while the box opens rather than during the first search
+	searchLibIndex this
+}
+
+method searchRecents MicroBlocksScripter {
+	if (isNil searchRecents) { searchRecents = (list) }
+	return searchRecents
+}
+
+method recordSearchRecent MicroBlocksScripter desc {
+	if (isNil searchRecents) { searchRecents = (list) }
+	// the set/change entries are variants of a single template row, so keep
+	// only the most recent one of each kind, whatever variable it recorded
+	prefix = nil
+	if (beginsWith desc 'set ') { prefix = 'set ' }
+	if (beginsWith desc 'chg ') { prefix = 'chg ' }
+	if (notNil prefix) {
+		remaining = (list)
+		for d searchRecents {
+			if (not (beginsWith d prefix)) { add remaining d }
+		}
+		searchRecents = remaining
+	}
+	remove searchRecents desc
+	addFirst searchRecents desc
+	if ((count searchRecents) > 6) { removeLast searchRecents }
+}
+
+method searchLibIndex MicroBlocksScripter {
+	// Answer the search index covering ALL embedded libraries, building it on
+	// first use and rebuilding it when the language changes. Each entry is
+	// (array matchWords libraryName blockSpec).
+
+	lang = (language (authoringSpecs))
+	if (and (notNil searchLibIndex)
+		(lang == (first searchLibIndex))
+		((blockSearchIncludesTags) == (at searchLibIndex 2))
+		((devMode) == (at searchLibIndex 4)) // advanced sections are indexed only in developer mode
+	) {
+		return (at searchLibIndex 3)
+	}
+	entries = (list)
+	if ('Browser' == (platform)) {
+		for filePath (allFilesInDir this 'Libraries') {
+			if (and (endsWith filePath '.ubl') (isNil (findSubstring 'Other/System' filePath))) {
+				addLibraryToSearchIndex this entries (readFile filePath) filePath
+			}
+		}
+	} else {
+		for filePath (listEmbeddedFiles) {
+			if (and (endsWith filePath '.ubl') (isNil (findSubstring 'Other/System' filePath))) {
+				addLibraryToSearchIndex this entries (readEmbeddedFile filePath) filePath
+			}
+		}
+	}
+	searchLibIndex = (array lang (blockSearchIncludesTags) entries (devMode))
+	return entries
+}
+
+method addLibraryToSearchIndex MicroBlocksScripter entries data filePath {
+	if (isNil data) { return }
+	cmdList = (parse (toString data))
+	if (isEmpty cmdList) { return }
+	cmd = (first cmdList)
+	if ('module' != (primName cmd)) { return }
+	libName = (first (argList cmd))
+	if (not (isClass libName 'String')) { // unquoted name: mapped to (v 'name') by the parser
+		libName = (first (argList libName))
+	}
+	if (beginsWith libName '_') { return } // skip implementation libraries
+	cat = nil // the library's declared category determines its block color
+	if ((count (argList cmd)) > 1) {
+		cat = (at (argList cmd) 2)
+		if (isClass cat 'Reporter') { cat = (first (argList cat)) } // unquoted category
+	}
+	if (isNil cat) { cat = 'Library' }
+	// kit/board libraries import many dependencies, so they rank below component libraries
+	isKit = (notNil (findSubstring 'Kits and Boards' filePath))
+	// the library name (and its curated tags, when enabled) are extra match words
+	extraWords = libName
+	if (blockSearchIncludesTags) {
+		for tcmd cmdList {
+			if ('tags' == (primName tcmd)) {
+				for tag (argList tcmd) {
+					if (isClass tag 'Reporter') { tag = (first (argList tag)) } // unquoted tag
+					extraWords = (join extraWords ' ' (toString tag))
+				}
+			}
+		}
+	}
+	// walk the spec commands in palette order so that, as in the palette,
+	// blocks after an 'advanced' marker are omitted unless developer mode is on
+	specs = (parsedSpecs mbProject cmdList)
+	seenOps = (dictionary)
+	cmdCount = (count cmdList)
+	i = 1
+	while (i <= cmdCount) {
+		cmd = (at cmdList i)
+		if (and ('advanced' == (primName cmd)) (not (devMode))) {
+			i = (cmdCount + 1) // skip this library's advanced section
+		} ('spec' == (primName cmd)) {
+			op = (at (argList cmd) 2)
+			spec = (at specs op nil)
+			if (and (notNil spec) (not (beginsWith op '_')) (not (contains seenOps op))) {
+				add seenOps op
+				add entries (array (blockSearchWords spec extraWords) libName spec cat isKit)
+			}
+		}
+		i += 1
+	}
+}
+
+// MicroBlocksBlockSearchBox
+// An incremental search box for blocks and variables, opened with ctrl-space.
+// Based on the GP runtime's BlockSearchBox, extended to match project variables,
+// My Blocks and loaded-library blocks as well as built-in block specs, and to
+// match translated block labels. Transient: it dismisses itself when a block is
+// grabbed, when escape is pressed, or when it loses the keyboard focus.
+
+defineClass MicroBlocksBlockSearchBox morph scripter searchText hintText menu searchIndex matches pendingSearch lastEditMSecs lastEditText
+
+method morph MicroBlocksBlockSearchBox { return morph }
+
+to newMicroBlocksBlockSearchBox aScripter {
+	return (initialize (new 'MicroBlocksBlockSearchBox') aScripter)
+}
+
+method initialize MicroBlocksBlockSearchBox aScripter {
+	scale = (global 'scale')
+	scripter = aScripter
+	morph = (newMorph this)
+	setFPS morph 10 // debounced search runs from step (see textEdited)
+	lastEditText = ''
+
+	if (darkModeEnabled (findProjectEditor)) {
+		bgColor = (microBlocksColor 'blueGray' 700)
+		outlineColor = (microBlocksColor 'blueGray' 500)
+		textColor = (gray 230)
+		hintColor = (microBlocksColor 'blueGray' 400)
+	} else {
+		bgColor = (gray 240)
+		outlineColor = (gray 150)
+		textColor = (gray 30)
+		hintColor = (gray 150)
+	}
+
+	boxW = (min (440 * scale) ((width (morph (global 'page'))) - (20 * scale))) // fit narrow screens
+	bm = (newBitmap boxW (40 * scale))
+	fillRoundedRect (newShapeMaker bm) (rect 0 0 (width bm) (height bm)) (8 * scale) bgColor (1 * scale) outlineColor outlineColor
+	drawBitmap bm (searchIcon this) (12 * scale) (12 * scale) 130
+	setCostume morph bm
+	costumeChanged morph
+
+	searchText = (newText)
+	setFont searchText nil (20 * scale)
+	setColor searchText textColor
+	setEditRule searchText 'editable' // 'line' does not work; shift key is inserted as character
+	setGrabRule (morph searchText) 'ignore'
+	setPosition (morph searchText) (40 * scale) (8 * scale)
+	addPart morph (morph searchText)
+
+	hintText = (newText (localized 'search blocks and variables...'))
+	setFont hintText nil (20 * scale)
+	setColor hintText hintColor
+	setGrabRule (morph hintText) 'ignore'
+	setPosition (morph hintText) (40 * scale) (8 * scale)
+	addPart morph (morph hintText)
+
+	matches = (list)
+	buildIndex this
+	return this
+}
+
+method startEditing MicroBlocksBlockSearchBox {
+	edit (keyboard (global 'page')) searchText 1
+}
+
+method handDownOn MicroBlocksBlockSearchBox hand {
+	edit searchText hand
+	return true
+}
+
+// search index
+// Entries are (array matchWords kind payload) where matchWords is an uppercased
+// array of words to match against, kind is 'var', 'varSet' or 'spec', and payload
+// is the variable name or BlockSpec. Entry order determines result ranking:
+// variables, then My Blocks, then built-in palette blocks, then loaded libraries.
+// (Blocks from not-yet-loaded libraries are ranked last, by findMatches.)
+
+method buildIndex MicroBlocksBlockSearchBox {
+	searchIndex = (list)
+	seenOps = (dictionary)
+	proj = (project scripter)
+	showHidden = (showHiddenBlocksEnabled (findProjectEditor))
+	authoringSpecs = (authoringSpecs)
+
+	// project variables: a reporter for each variable, plus single 'set' and
+	// 'change' templates (as in the palette). The templates also match on any
+	// variable name, and preload the variable matched by the query.
+	visibleVars = (sorted (toArray (visibleVars scripter)) 'caseInsensitiveLessThan')
+	allVarWords = (list)
+	for varName visibleVars {
+		varWords = (words (toUpperCase varName))
+		add searchIndex (array varWords 'var' varName)
+		addAll allVarWords varWords
+	}
+	setSpec = (specForOp authoringSpecs '=')
+	if (notNil setSpec) {
+		add searchIndex (array (join (blockSearchWords setSpec) (toArray allVarWords)) 'varSet' visibleVars)
+	}
+	changeSpec = (specForOp authoringSpecs '+=')
+	if (notNil changeSpec) {
+		add searchIndex (array (join (blockSearchWords changeSpec) (toArray allVarWords)) 'varChange' visibleVars)
+	}
+
+	// My Blocks (functions defined in this project)
+	projectSpecs = (blockSpecs proj)
+	for f (functions (main proj)) {
+		op = (functionName f)
+		if (and (not (contains seenOps op)) (or showHidden (not (beginsWith op '_')))) {
+			add seenOps op
+			spec = (at projectSpecs op nil)
+			if (isNil spec) { spec = (specForOp authoringSpecs op) }
+			if (isNil spec) { spec = (blockSpecFor f) }
+			add searchIndex (array (blockSearchWords spec) 'spec' spec)
+		}
+	}
+
+	// built-in blocks, mirroring the palette's visibility rules; the entries
+	// are cached on the scripter because they only change with the language,
+	// developer mode, or the show-hidden-blocks setting
+	for entry (builtinSearchIndex scripter) {
+		op = (blockOp (at entry 3))
+		if (not (contains seenOps op)) {
+			add seenOps op
+			add searchIndex entry
+		}
+	}
+
+	// blocks from loaded libraries; the library name and tags are extra match
+	// words. As in the palette, blocks after an 'advanced' marker are omitted
+	// unless developer mode is on.
+	for libName (sorted (keys (libraries proj))) {
+		lib = (at (libraries proj) libName)
+		libWords = (moduleName lib)
+		if (blockSearchIncludesTags) {
+			for tag (tags lib) { libWords = (join libWords ' ' tag) }
+		}
+		ops = (blockList lib)
+		opCount = (count ops)
+		i = 1
+		while (i <= opCount) {
+			op = (at ops i)
+			if (and ('advanced' == op) (not (devMode))) {
+				i = (opCount + 1) // skip this library's advanced section
+			} (and ('-' != op) ('advanced' != op)
+				(not (contains seenOps op))
+				(or showHidden (not (beginsWith op '_')))
+			) {
+				add seenOps op
+				spec = (at projectSpecs op nil)
+				if (isNil spec) { spec = (specForOp authoringSpecs op) }
+				if (notNil spec) {
+					add searchIndex (array (blockSearchWords spec libWords) 'spec' spec)
+				}
+			}
+			i += 1
+		}
+	}
+}
+
+to blockSearchIncludesTags {
+	// When true, a library's curated tags (e.g. 'tags servo motor rotation')
+	// are included as search match words for that library's blocks. Set to
+	// false to match on block labels and library names only.
+
+	return true
+}
+
+to blockSearchWords spec extraWords {
+	// Answer an uppercased array of words to match a block spec against:
+	// the translated spec words, the original English spec words (when a
+	// translation is active), plus any extra words (e.g. a library name).
+
+	s = (first (specs (translateToCurrentLanguage (authoringSpecs) spec)))
+	englishS = (first (specs spec))
+	if (s != englishS) { s = (join s ' ' englishS) }
+	if (notNil extraWords) { s = (join s ' ' extraWords) }
+	return (toArray (copyWithout (words (toUpperCase s)) '_'))
+}
+
+method isVisibleBuiltinCategory MicroBlocksScripter cat {
+	if (isNil cat) { return false }
+	if ('cat;Variables' == cat) { return false } // variable blocks are added per-variable
+	if (endsWith cat '-Advanced') { return (devMode) }
+	// deriving visibility from the palette's own category list keeps the two
+	// in lockstep; it also excludes the 'Prims-* (not in palette)'
+	// legacy-rendering specs and 'Obsolete', which are not palette categories
+	return (contains (categories this) cat)
+}
+
+method builtinSearchIndex MicroBlocksScripter {
+	// Answer the search index entries for the built-in palette blocks,
+	// building them on first use and rebuilding when the language or developer
+	// mode changes. (Built-in blocks have no hidden variants, so the
+	// show-hidden-blocks setting does not affect this index.)
+
+	lang = (language (authoringSpecs))
+	dev = (devMode)
+	if (and (notNil searchBuiltinIndex)
+		(lang == (at searchBuiltinIndex 1))
+		(dev == (at searchBuiltinIndex 2))
+	) {
+		return (at searchBuiltinIndex 3)
+	}
+	entries = (list)
+	seenOps = (dictionary)
+	for entry (allSpecs (authoringSpecs)) {
+		op = (at entry 2)
+		if (not (contains seenOps op)) {
+			if (isVisibleBuiltinCategory this (categoryFor (authoringSpecs) op)) {
+				add seenOps op
+				spec = (specForEntry (authoringSpecs) entry)
+				add entries (array (blockSearchWords spec) 'spec' spec)
+			}
+		}
+	}
+	searchBuiltinIndex = (array lang dev entries)
+	return entries
+}
+
+// incremental search
+
+method textEdited MicroBlocksBlockSearchBox {
+	s = (text searchText)
+	if ('' == s) {
+		lastEditText = ''
+		pendingSearch = nil
+		show (morph hintText)
+		showRecents this
+		return
+	}
+	if (s == (join lastEditText (newline))) {
+		// enter key ('line' editRule does not work): the only change since the
+		// last edit is a newline at the end. A pasted string that happens to
+		// end with a newline does not match this test and is searched instead.
+		runPendingSearch this // search text typed within the debounce interval
+		if (and (menuIsOpen this) (notEmpty matches)) {
+			// add the selected match to the scripts pane (a hand grab would
+			// attach it to the pointer, which may be anywhere during keyboard use)
+			idx = (indexOf (triggers menu) (getField menu 'selection'))
+			if (or (isNil idx) (idx < 1)) { idx = 1 }
+			if (idx > (count matches)) { idx = (count matches) }
+			placeMatch this (at matches idx)
+			return
+		}
+		setText searchText lastEditText // strip the newline
+		return
+	}
+	if (notNil (findSubstring (newline) s)) {
+		// newlines from pasted text are not the enter key; fold them into spaces
+		s = (joinStrings (lines s) ' ')
+		setText searchText s
+	}
+	hide (morph hintText)
+	// debounce: rescanning the block index and re-rendering the results menu on
+	// every keystroke lags on slow hosts (e.g. the browser IDE), so the search
+	// runs from step once the user pauses typing
+	lastEditText = s
+	pendingSearch = s
+	lastEditMSecs = (msecsSinceStart)
+}
+
+method runPendingSearch MicroBlocksBlockSearchBox {
+	if (isNil pendingSearch) { return }
+	s = pendingSearch
+	pendingSearch = nil
+	matches = (findMatches this s)
+	showMatchesMenu this true
+}
+
+method findMatches MicroBlocksBlockSearchBox searchString {
+	// Answer a list of result entries: (array 'block' aBlock) for blocks
+	// available in the project and (array 'lib' libName spec) for blocks from
+	// embedded libraries that are not loaded yet (grabbing one imports the
+	// library). Prefix matches rank above substring-only matches.
+
+	maxMatches = 10
+	soughtWords = (words (toUpperCase searchString))
+	if (isEmpty soughtWords) { return (list) }
+	prefixEntries = (list)
+	substringEntries = (list)
+	i = 1
+	indexCount = (count searchIndex)
+	// stop scanning once enough prefix matches are found; later substring-only
+	// matches could not displace them
+	while (and (i <= indexCount) ((count prefixEntries) < maxMatches)) {
+		entry = (at searchIndex i)
+		if (allWordsMatch this soughtWords (at entry 1)) {
+			add prefixEntries entry
+		} (allWordsContained this soughtWords (at entry 1)) {
+			add substringEntries entry
+		}
+		i += 1
+	}
+	result = (list)
+	for entry (join prefixEntries substringEntries) {
+		if ((count result) < maxMatches) {
+			addBlocksForEntry this entry result soughtWords
+		}
+	}
+
+	// blocks from embedded libraries that are not loaded yet;
+	// kit/board libraries rank below component libraries
+	remaining = (maxMatches - (count result))
+	if (remaining < 1) { return result } // skip the library scan when already full
+	proj = (project scripter)
+	libMatches = (list)
+	kitMatches = (list)
+	libIndex = (searchLibIndex scripter)
+	i = 1
+	indexCount = (count libIndex)
+	// stop scanning once enough component-library matches are found; kit
+	// matches only fill leftover slots
+	while (and (i <= indexCount) ((count libMatches) < remaining)) {
+		entry = (at libIndex i)
+		libName = (at entry 2)
+		if (and
+			(isNil (libraryNamed proj libName))
+			(or
+				(allWordsMatch this soughtWords (at entry 1))
+				(allWordsContained this soughtWords (at entry 1)))
+		) {
+			if (true == (at entry 5)) {
+				add kitMatches (array 'lib' libName (at entry 3) (at entry 4))
+			} else {
+				add libMatches (array 'lib' libName (at entry 3) (at entry 4))
+			}
+		}
+		i += 1
+	}
+	for m (join libMatches kitMatches) {
+		if ((count result) < maxMatches) { add result m }
+	}
+	return result
+}
+
+method addBlocksForEntry MicroBlocksBlockSearchBox entry result soughtWords {
+	kind = (at entry 2)
+	if ('var' == kind) {
+		add result (array 'block' (toBlock (newReporter 'v' (at entry 3))))
+	} ('varSet' == kind) {
+		add result (array 'block' (toBlock (newCommand '=' (varForQuery this (at entry 3) soughtWords) 0)))
+	} ('varChange' == kind) {
+		add result (array 'block' (toBlock (newCommand '+=' (varForQuery this (at entry 3) soughtWords) 1)))
+	} else {
+		add result (array 'block' (blockForSpec (at entry 3)))
+	}
+}
+
+method varForQuery MicroBlocksBlockSearchBox varNames soughtWords {
+	// Answer the variable best matched by the query, or the first
+	// variable, or the empty string (an empty variable dropdown).
+	// An exact word match beats a prefix match beats a substring match,
+	// so 'set x' preloads variable 'x' even when another variable (such
+	// as 'offset') contains one of the query words as a substring.
+
+	best = nil
+	bestScore = 0
+	for varName varNames {
+		for w (words (toUpperCase varName)) {
+			for sought soughtWords {
+				score = 0
+				if (sought == w) {
+					score = 3
+				} (beginsWith w sought) {
+					score = 2
+				} (notNil (findSubstring sought w)) {
+					score = 1
+				}
+				if (score > bestScore) {
+					bestScore = score
+					best = varName
+				}
+			}
+		}
+	}
+	if (notNil best) { return best }
+	if (notEmpty varNames) { return (first varNames) }
+	return ''
+}
+
+method allWordsMatch MicroBlocksBlockSearchBox soughtWords specWords {
+	// Answer true if every sought word is a prefix of some word in specWords.
+
+	for sought soughtWords {
+		match = false
+		for w specWords {
+			if (beginsWith w sought) { match = true }
+		}
+		if (not match) { return false }
+	}
+	return true
+}
+
+method allWordsContained MicroBlocksBlockSearchBox soughtWords specWords {
+	// Answer true if every sought word appears within some word in specWords.
+
+	for sought soughtWords {
+		match = false
+		for w specWords {
+			if (notNil (findSubstring sought w)) { match = true }
+		}
+		if (not match) { return false }
+	}
+	return true
+}
+
+// block selection menu
+
+method showMatchesMenu MicroBlocksBlockSearchBox showNoMatch {
+	if (notNil menu) { destroy (morph menu) }
+	if (isEmpty matches) {
+		if (true != showNoMatch) { return }
+		menu = (menu nil this)
+		setField menu 'returnFocus' searchText
+		addItem menu 'no matches' nil nil nil true true // disabled item
+		popUp menu (page morph) (left morph) (bottom morph) true // suppress focus
+		return
+	}
+	menu = (menu nil this)
+	setField menu 'returnFocus' searchText
+	itemW = ((width morph) - (12 * (global 'scale'))) // menu items span the box width
+	lastKind = nil
+	for m matches {
+		kind = (first m)
+		if (and ('lib' == kind) ('block' == lastKind)) {
+			addLine menu // divider between project blocks and library blocks
+		}
+		lastKind = kind
+		if ('block' == kind) {
+			b = (at m 2)
+			fixLayout b
+			addItem menu (paddedCostume this b itemW) (action 'grabBlock' this b)
+		} ('lib' == kind) {
+			libName = (at m 2)
+			spec = (at m 3)
+			b = (blockForSpec spec)
+			// show the block in the color it will have once its library is loaded
+			setField b 'color' (blockColorForCategory (authoringSpecs) (at m 4))
+			setField b 'pathCache' nil
+			fixLayout b
+			addItem menu (libraryCostume this b libName itemW) (action 'grabLibraryBlock' this libName spec)
+		}
+	}
+	popUp menu (page morph) (left morph) (bottom morph) true // suppress focus
+	selectFirstItem menu // highlight the first match; enter grabs it, arrows move
+}
+
+method paddedCostume MicroBlocksBlockSearchBox aBlock itemW {
+	// Pad the block costume to itemW so all menu items (and their selection
+	// highlight) span the full width of the search box.
+
+	bm = (fullCostume (morph aBlock))
+	if ((width bm) >= itemW) { return bm }
+	wide = (newBitmap itemW (height bm))
+	drawBitmap wide bm 0 0
+	return wide
+}
+
+method libraryCostume MicroBlocksBlockSearchBox aBlock libName itemW {
+	// Like paddedCostume, but with the library name right-aligned in gray to
+	// show which (not yet loaded) library the block comes from.
+
+	scale = (global 'scale')
+	bm = (fullCostume (morph aBlock))
+	label = (newText libName 'Arial' (11 * scale) (gray 120))
+	fixLayout label
+	labelBM = (fullCostume (morph label))
+	w = (max itemW (((width bm) + (width labelBM)) + (16 * scale)))
+	wide = (newBitmap w (height bm))
+	drawBitmap wide bm 0 0
+	drawBitmap wide labelBM (w - ((width labelBM) + (4 * scale))) (half (max 0 ((height bm) - (height labelBM))))
+	return wide
+}
+
+method menuIsOpen MicroBlocksBlockSearchBox {
+	return (and (notNil menu) (notNil (owner (morph menu))))
+}
+
+method selectNextMatch MicroBlocksBlockSearchBox {
+	// down arrow or tab while editing the search text
+	if (and (menuIsOpen this) (notEmpty matches)) { selectNextItem menu }
+}
+
+method selectPreviousMatch MicroBlocksBlockSearchBox {
+	// up arrow or shift-tab while editing the search text
+	if (and (menuIsOpen this) (notEmpty matches)) { selectPreviousItem menu }
+}
+
+// recently grabbed blocks (shown when the search is empty)
+
+method showRecents MicroBlocksBlockSearchBox {
+	matches = (wrapAsBlockEntries this (recentBlocks this))
+	showMatchesMenu this
+}
+
+method recentBlocks MicroBlocksBlockSearchBox {
+	// Rebuild blocks for the recents list, skipping any that no longer
+	// exist in the current project (deleted variables, unloaded libraries).
+
+	result = (list)
+	vars = (visibleVars scripter)
+	for desc (searchRecents scripter) {
+		if (beginsWith desc 'var ') {
+			varName = (substring desc 5)
+			if (contains vars varName) { add result (toBlock (newReporter 'v' varName)) }
+		} (beginsWith desc 'set ') {
+			varName = (substring desc 5)
+			if (not (contains vars varName)) { varName = '' } // deleted or never set: empty dropdown
+			add result (toBlock (newCommand '=' varName 0))
+		} (beginsWith desc 'chg ') {
+			varName = (substring desc 5)
+			if (not (contains vars varName)) { varName = '' }
+			add result (toBlock (newCommand '+=' varName 1))
+		} (beginsWith desc 'op ') {
+			spec = (specForSearchOp this (substring desc 4))
+			if (notNil spec) { add result (blockForSpec spec) }
+		}
+	}
+	return result
+}
+
+method wrapAsBlockEntries MicroBlocksBlockSearchBox blocks {
+	result = (list)
+	for b blocks { add result (array 'block' b) }
+	return result
+}
+
+method specForSearchOp MicroBlocksBlockSearchBox op {
+	for entry searchIndex {
+		if (and ('spec' == (at entry 2)) (op == (blockOp (at entry 3)))) {
+			return (at entry 3)
+		}
+	}
+	return nil
+}
+
+method recentDescriptorFor MicroBlocksBlockSearchBox aBlock {
+	expr = (expression aBlock)
+	op = (primName expr)
+	if ('v' == op) { return (join 'var ' (first (argList expr))) }
+	if ('=' == op) { return (join 'set ' (first (argList expr))) }
+	if ('+=' == op) { return (join 'chg ' (first (argList expr))) }
+	return (join 'op ' op)
+}
+
+method grabBlock MicroBlocksBlockSearchBox aBlock {
+	recordSearchRecent scripter (recentDescriptorFor this aBlock)
+	dismiss this
+	grabNewBlock this aBlock
+}
+
+method importedLibraryBlock MicroBlocksBlockSearchBox libName spec {
+	// Import the (not yet loaded) library, dismissing the box first, and
+	// answer a fresh block for the given spec (preferring the spec that the
+	// import added to the project).
+
+	recordSearchRecent scripter (join 'op ' (blockOp spec))
+	dismiss this
+	installLibraryNamed scripter libName
+	saveAllChunksAfterLoad (smallRuntime)
+	return (blockForSpec (at (blockSpecs (project scripter)) (blockOp spec) spec))
+}
+
+method grabLibraryBlock MicroBlocksBlockSearchBox libName spec {
+	grabNewBlock this (importedLibraryBlock this libName spec)
+}
+
+method grabNewBlock MicroBlocksBlockSearchBox aBlock {
+	// Attach the block to the pointer. Fresh blocks are at (0,0) and
+	// grab keeps a morph's position, so move it to the hand first.
+
+	scale = (global 'scale')
+	h = (hand (global 'page'))
+	fixLayout aBlock
+	setPosition (morph aBlock) ((x h) - (10 * scale)) ((y h) - (10 * scale))
+	grab h aBlock
+}
+
+method placeMatch MicroBlocksBlockSearchBox m {
+	// Enter key: add the selected match to the scripts pane.
+
+	if ('lib' == (first m)) {
+		placeInScriptsPane this (importedLibraryBlock this (at m 2) (at m 3))
+	} else {
+		b = (at m 2)
+		recordSearchRecent scripter (recentDescriptorFor this b)
+		dismiss this
+		placeInScriptsPane this b
+	}
+}
+
+method placeInScriptsPane MicroBlocksBlockSearchBox aBlock {
+	// Add the block to the scripts pane below the existing scripts and
+	// scroll it into view (same placement as pasted scripts).
+
+	sf = (scriptsFrame scripter)
+	fixLayout aBlock
+	setPosition (morph aBlock) ((left (morph (contents sf))) + (100 * (global 'scale'))) ((scriptsBottom scripter) + (30 * (blockScale)))
+	addPart (morph (contents sf)) (morph aBlock)
+	if (implements (contents sf) 'recordDrop') {
+		// as when dropping a block on the pane, so that undo removes it
+		// (script editors with snapshot-based undo do not need this)
+		recordDrop (contents sf) aBlock
+	}
+	scriptChanged scripter
+	scrollIntoView sf (fullBounds (morph aBlock)) true
+}
+
+// lifecycle
+
+method cancelled MicroBlocksBlockSearchBox anObject {
+	// escape key was pressed while editing the search text
+	dismiss this
+}
+
+method step MicroBlocksBlockSearchBox {
+	// run the debounced search once the user has paused typing
+	if (and (notNil pendingSearch) (((msecsSinceStart) - lastEditMSecs) >= 150)) {
+		runPendingSearch this
+	}
+
+	f = (focus (keyboard (global 'page')))
+	focusedOnMe = (or (f == searchText) (and (isClass f 'Caret') (searchText == (target f))))
+
+	// reopen the results if the menu was closed while the box kept the focus
+	// (clicking in the search text closes it as an "unclicked" menu)
+	if (and focusedOnMe (isNil pendingSearch) (not (menuIsOpen this))) {
+		s = (text searchText)
+		if ('' != s) {
+			matches = (findMatches this s)
+			showMatchesMenu this true
+		} (notEmpty (searchRecents scripter)) {
+			showRecents this
+		}
+	}
+
+	// dismiss when the keyboard focus has moved elsewhere and the menu is gone
+	if (and (not focusedOnMe) (not (menuIsOpen this))) { dismiss this }
+}
+
+method dismiss MicroBlocksBlockSearchBox {
+	destroy morph // destroyedMorph releases the keyboard and the results menu
+}
+
+method destroyedMorph MicroBlocksBlockSearchBox {
+	// release the keyboard and the results menu; this also covers the box
+	// being destroyed by other code, which would otherwise leave the keyboard
+	// focus on a caret targeting the destroyed search text and so disable all
+	// global keyboard shortcuts
+	kb = (keyboard (global 'page'))
+	f = (focus kb)
+	if (or (f == searchText) (and (isClass f 'Caret') (searchText == (target f)))) {
+		stopEditing kb
+	}
+	if (menuIsOpen this) { destroy (morph menu) }
+	menu = nil
+}
+
+// magnifying glass icon
+
+method searchIcon MicroBlocksBlockSearchBox {
+	icon = (newBitmap 30 30)
+	p = (newVectorPen icon)
+	beginPath p 12 3
+	turn p 360 9
+	stroke p (gray 150) 3
+	beginPath p 19 18
+	setHeading p 45
+	forward p 13
+	stroke p (gray 150) 3
+	if (2 != (global 'scale')) {
+		icon = (scaleAndRotate icon ((global 'scale') / 2))
+	}
+	return icon
 }

@@ -72,7 +72,7 @@ method scrollIntoView Caret {
 
 method keyDown Caret evt keyboard {
 	parent = (parentHandler (morph target))
-	if (not (isAnyClass parent 'ScriptFocus' 'BlockSearchBox')) {
+	if (not (isAnyClass parent 'ScriptFocus' 'BlockSearchBox' 'MicroBlocksBlockSearchBox')) {
 		closeUnclickedMenu (page keyboard) this
 	}
 
@@ -91,7 +91,16 @@ method keyDown Caret evt keyboard {
 	editingCode = ((editRule target) == 'code')
 
 	if (8 == code) { deleteLeft this // delete
-	}  (9 == code) { tabToNextEntryField this shiftDown // tab
+	}  (9 == code) { // tab
+		if (implements parent 'selectNextMatch') {
+			if shiftDown {
+				selectPreviousMatch parent
+			} else {
+				selectNextMatch parent
+			}
+		} else {
+			tabToNextEntryField this shiftDown
+		}
 	} (and (13 == code) shiftDown (isClass parent 'InputSlot') (isAuto parent)) {
 		// allow shift + enter to insert a new line in 'auto' slots
 		// effectively, turn it into a 'string' slot
@@ -102,9 +111,19 @@ method keyDown Caret evt keyboard {
 		cancel this
 		raise (morph target) 'cancelled' target
 	} (37 == code) { moveLeft this shiftDown cmdOrControl // left arrow
-	} (38 == code) { moveUp this shiftDown // up arrow
+	} (38 == code) { // up arrow
+		if (implements parent 'selectPreviousMatch') {
+			selectPreviousMatch parent
+		} else {
+			moveUp this shiftDown
+		}
 	} (39 == code) { moveRight this shiftDown cmdOrControl // right arrow
-	} (40 == code) { moveDown this shiftDown // down arrow'
+	} (40 == code) { // down arrow
+		if (implements parent 'selectNextMatch') {
+			selectNextMatch parent
+		} else {
+			moveDown this shiftDown
+		}
 	} (46 == code) { deleteRight this // Window's Delete key
 	} (76 == code) { deleteRight this // incorrect Window's Delete key code before v250
 
