@@ -1917,14 +1917,14 @@ method initialize MicroBlocksBlockSearchBox aScripter {
 	setColor searchText textColor
 	setEditRule searchText 'editable' // 'line' does not work; shift key is inserted as character
 	setGrabRule (morph searchText) 'ignore'
-	setPosition (morph searchText) (40 * scale) (8 * scale)
+	setPosition (morph searchText) (40 * scale) (4 * scale)
 	addPart morph (morph searchText)
 
 	hintText = (newText (localized 'search blocks and variables...'))
 	setFont hintText nil (20 * scale)
 	setColor hintText hintColor
 	setGrabRule (morph hintText) 'ignore'
-	setPosition (morph hintText) (40 * scale) (8 * scale)
+	setPosition (morph hintText) (40 * scale) (6 * scale)
 	addPart morph (morph hintText)
 
 	matches = (list)
