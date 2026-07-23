@@ -1,6 +1,6 @@
 module 'Analog Synthesis' Operators
 author MicroBlocks
-version 2 1 
+version 2 2 
 description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
 
 You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will, or create sound textures by mixing waves.
@@ -231,6 +231,7 @@ to 'asynth tri gate' gate {
 }
 
 to 'asynth trigger gate' key ms gate amp {
+  local 'start' (millisOp)
   '_asynth init'
   local 'base' ('_asynth MIDI to freq' key)
   local 'att' (at gate _asynth_attacks)
@@ -242,6 +243,6 @@ to 'asynth trigger gate' key ms gate amp {
   atPut gate _asynth_trigger_times (millisOp)
   atPut gate _asynth_trigger_active (booleanConstant true)
   atPut gate _asynth_ramp_frequencies ((base * (at gate _asynth_ramp_starts)) / 100)
-  waitMillis ms
+  waitMillis (ms - ((millisOp) - start))
 }
 
