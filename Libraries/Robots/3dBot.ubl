@@ -1,13 +1,13 @@
 module '3dBot'
 author 'Josep Ferràndiz'
-version 1 0 
-depends Imagina 
+version 1 1 
+depends _Imagina 
 tags imagina '3dbot' robot 
 choices lineSensor 'right sensor' 'left sensor' 'both sensors' 
 choices direction stop forward backward 'turn right' 'turn left' 
 description 'Blocks for Imagina 3dBot robot with ESP32 board (from Innova Didàctic)
 https://shop.innovadidactic.com/es/placas-kits-y-robots/1604-kit-3dbot-iot-esp32-steamakers-arduinoblocks-blynk-bachillerato.html'
-variables _3dBotPower _3dBotDirection
+variables _3dBotPower _3dBotDirection _3dBotInitialized 
 
   spec ' ' 'bot3D_move' '3dBot _ : _ steps : at _ % speed' 'menu.direction num num' 'forward' 10 100
   spec ' ' 'bot3D_set_speed' '3dBot set speed at _ %' 'num' 100
@@ -20,46 +20,55 @@ variables _3dBotPower _3dBotDirection
 
 to '_bot3D_move' steps {
   local 'initialState' 0
-  'bot3D_move' _3dBotDirection
+  bot3D_move _3dBotDirection
   repeat steps {
-    initialState = (('imagina_read_A1') > 800)
-    waitUntil (not ((('imagina_read_A1') > 800) == initialState))
+    initialState = ((imagina_read_A1) > 800)
+    waitUntil (not (((imagina_read_A1) > 800) == initialState))
   }
-  'imagina_set_motor_rotation' 'Motor A' 'stop'
-  'imagina_set_motor_rotation' 'Motor B' 'stop'
+  imagina_set_motor_rotation 'Motor A' 'stop'
+  imagina_set_motor_rotation 'Motor B' 'stop'
 }
 
 to '_bot3D_set_direction' direction {
-  for item ('[data:makeList]' 'forward' 'backward' 'stop' 'turn right' 'turn left' ) {
+  for item ('[data:makeList]' 'forward' 'backward' 'stop' 'turn right' 'turn left') {
     if (direction == item) {_3dBotDirection = direction}
   }
+  imagina_set_motor_speed 'Motor A' _3dBotPower
+  imagina_set_motor_speed 'Motor A' _3dBotPower
   if (_3dBotDirection == 'turn right') {
-    'imagina_set_motor_rotation' 'Motor A' 'forward'
-    'imagina_set_motor_rotation' 'Motor B' 'backward'
+    imagina_set_motor_rotation 'Motor A' 'forward'
+    imagina_set_motor_rotation 'Motor B' 'backward'
   } (_3dBotDirection == 'turn left') {
-    'imagina_set_motor_rotation' 'Motor A' 'backward'
-    'imagina_set_motor_rotation' 'Motor B' 'forward'
+    imagina_set_motor_rotation 'Motor A' 'backward'
+    imagina_set_motor_rotation 'Motor B' 'forward'
   } else {
-    'imagina_set_motor_rotation' 'Motor A' _3dBotDirection
-    'imagina_set_motor_rotation' 'Motor B' _3dBotDirection
+    imagina_set_motor_rotation 'Motor A' _3dBotDirection
+    imagina_set_motor_rotation 'Motor B' _3dBotDirection
   }
 }
 
-to bot3D_move direction steps power {  
-  if ((pushArgCount) == 3) {
-    'imagina_set_motor_speed' 'Motor A' power
-    'imagina_set_motor_speed' 'Motor B' power
+to bot3D_move direction steps power {
+  _3dBotDirection = direction
+  if (not _3dBotInitialized) {
+    _3dBotPower = 100
+    _3dBotInitialized = (booleanConstant true)
   }
-  '_bot3D_set_direction' direction
+  if ((pushArgCount) == 3) {
+    _3dBotPower = power
+  }
   if ((pushArgCount) > 1) {
     '_bot3D_move' steps
+    return 0
   }
+  '_bot3D_set_direction' direction
 }
 
 to bot3D_obstacle_detected distance {
   local 'aux_dist' (imagina_distance)
   waitMillis 50
-  if ((imagina_distance) <= distance) {return (booleanConstant true)}
+  if ((imagina_distance) <= distance) {
+    return (booleanConstant true)
+  }
   return (booleanConstant false)
 }
 
@@ -77,7 +86,7 @@ to bot3D_sees_line sensor {
 
 to bot3D_set_speed power {
   _3dBotPower = power
-  'imagina_set_motor_speed' 'Motor A' _3dBotPower
-  'imagina_set_motor_speed' 'Motor B' _3dBotPower
+  imagina_set_motor_speed 'Motor A' _3dBotPower
+  imagina_set_motor_speed 'Motor B' _3dBotPower
 }
 

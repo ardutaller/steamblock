@@ -11,7 +11,7 @@ choices kiot_motor '1' '3' '9'
 choices kiot_analogPins '3' '4' '6' '7' '8' 
 choices kiot_tempUnits '°C' '°F' 
 choices kiot_rotation 'kiot;clockwise' 'kiot;counter-clockwise' 'kiot;stop' 
-choices kiot_dual_motor A B both 'kiot;both opposite'
+choices kiot_dual_motor A B both 'kiot;both, flipped'
 choices kiot_stop_motor A B both
 choices kiot_threePins '1' '9' 
 choices kiot_joystick X Y 'kiot;button pressed?' 
@@ -49,6 +49,9 @@ variables _kiot_buzzer_init _kiot_avg_loudness _kiot_encoder_port1 _kiot_encoder
   spec 'r' 'kiot getTimeDate' '#SVG#square11#00c612 get _' 'menu.rtc_timeOrDate' 'time (H:M:S)'
   spec ' ' 'kiot setTime' '#SVG#square11#00c612 set hours _ minutes _ seconds _' 'num num num' 9 30 0
   spec ' ' 'kiot setDate' '#SVG#square11#00c612 set year _ month _ day _' 'num num num' 2025 1 1
+  space
+  spec 'r' '_kiot_raw_temperature' '_kiot_raw_temperature pin _' 'num'
+  spec 'r' '_kiot_DS18B20_address' '_kiot_DS18B20_address _' 'num'
 
 to '_kiot_DS18B20_address' pin {
   '[1wire:init]' pin
@@ -333,7 +336,7 @@ to kiot_set_dual_motor motor power oposite {
   if ('both' == motor) {
     drv8833_set_motor 'A' power
     drv8833_set_motor 'B' power
-  } ('kiot;both opposite' == motor) {
+  } ('kiot;both, flipped' == motor) {
     drv8833_set_motor 'A' power
     drv8833_set_motor 'B' (-1 * power)
   } else {
