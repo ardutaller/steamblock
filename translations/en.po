@@ -6421,6 +6421,12 @@ msgstr "Y"
 msgid "kiot;rotation"
 msgstr "rotation"
 
+#. KidsIOT library choice. Move both motors at the same rate, but opposite to
+#. each other. If value is 50, motor A will move at speed 50 and motor B will
+#. move at speed -50. Useful for robots with wheels set at opposite sides.
+msgid "kiot;both opposite"
+msgstr "both, flipped"
+
 #. KidsIOT library choice
 msgid "kiot;clockwise"
 msgstr "clockwise"
@@ -7113,6 +7119,10 @@ msgstr "install ESP firmware from microblocks.fun"
 #. Settings menu option
 msgid "show program size on board"
 msgstr "show program size on board"
+
+#. Settings menu option
+msgid "snapshot code on board"
+msgstr "snapshot code on board"
 
 #. Program size information
 msgid "Using %1 out of %2 bytes"
@@ -7824,6 +7834,14 @@ msgstr "user library"
 #. String in file picker and library dialogs
 msgid "Add Library"
 msgstr "Add Library"
+
+#. Placeholder text in the block search box (ctrl-space)
+msgid "search blocks and variables..."
+msgstr "search blocks and variables..."
+
+#. Shown in the block search box when no block matches the search
+msgid "no matches"
+msgstr "no matches"
 
 #. the %1 tag should be kept intact. Seconds remaining for a process to finish.
 msgid "%1 seconds remaining"

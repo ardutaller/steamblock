@@ -1,7 +1,7 @@
 module KidsIOT
 author 'Josep Ferràndiz'
-version 1 9 
-depends Tone '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' '_Real Time Clock' 
+version 2 0 
+depends Tone '_Dual Motor (DRV8833)' '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' '_Real Time Clock' 
 choices kiot_rotarySensor 'kiot;rotation' 'kiot;button pressed?' 
 choices kiot_twoPins '1' '3' '4' '6' '7' '8' '9' 
 choices kiot_digitalActuators 'kiot;active buzzer' 'kiot;LED' 'kiot;laser' 'kiot;relay' 
@@ -11,7 +11,8 @@ choices kiot_motor '1' '3' '9'
 choices kiot_analogPins '3' '4' '6' '7' '8' 
 choices kiot_tempUnits '°C' '°F' 
 choices kiot_rotation 'kiot;clockwise' 'kiot;counter-clockwise' 'kiot;stop' 
-choices kiot_dual_motor A B both 
+choices kiot_dual_motor A B both 'kiot;both opposite'
+choices kiot_stop_motor A B both
 choices kiot_threePins '1' '9' 
 choices kiot_joystick X Y 'kiot;button pressed?' 
 choices kiot_digitalSensors 'kiot;button pressed?' 'kiot;humidity' 'kiot;magnet detected?' 'kiot;movement detected?' 'kiot;obstacle?' 'kiot;photo sensor interrupted?' 'kiot;receive IR code' 'kiot;temperature (Celsius)' 'kiot;tilt?' 'kiot;touching?' 
@@ -37,7 +38,7 @@ variables _kiot_buzzer_init _kiot_avg_loudness _kiot_encoder_port1 _kiot_encoder
   spec 'r' 'kiot rotarySensor' '#SVG#square11#ffffff rotary encoder _ port _' 'menu.kiot_rotarySensor menu.kiot_threePins' 'kiot;rotation' 1
   space
   spec ' ' 'kiot_set_dual_motor' '#SVG#square11#00c612 dual motor _ power _ (-100 to 100)' 'menu.kiot_dual_motor num' 'A' 50
-  spec ' ' 'kiot_stop_dual_motors' '#SVG#square11#00c612 stop dual motors'
+  spec ' ' 'kiot_stop_dual_motors' '#SVG#square11#00c612 dual motor stop _' 'menu.kiot_stop_motor' 'both'
   space
   spec ' ' 'kiot set motor' '#SVG#square11#fff000 set motor _ port _' 'menu.kiot_rotation menu.kiot_motor' 'kiot;clockwise' 1
   spec 'r' 'kiot doubleLineTracker' '#SVG#square11#fff000 line sensor _ port _' 'menu.kiot_side menu.kiot_twoPins' 'kiot;left' 1
@@ -327,36 +328,25 @@ to 'kiot traffic light' red yellow green port {
   }
 }
 
-to kiot_set_dual_motor motor power {
+to kiot_set_dual_motor motor power oposite {
   comment 'I2C 2-channel DC motor driver with DRV8833 controller'
   if ('both' == motor) {
     drv8833_set_motor 'A' power
     drv8833_set_motor 'B' power
-    return 0
-  }
-  local 'i2c_addr' (hexToInt '30')
-  if ('[sensors:i2cExists]' i2c_addr) {
-    local 'clockwise' (booleanConstant true)
-    if (power < 0) {
-      clockwise = (booleanConstant false)
-      power = (0 - power)
-    }
-    power = ('[misc:rescale]' (minimum power 100) 0 100 0 255)
-    local 'reg' (ifExpression ('B' == motor) 3 1)
-    if clockwise {
-      i2cSet i2c_addr reg 0
-      i2cSet i2c_addr (reg + 1) power
-    } else {
-      i2cSet i2c_addr reg power
-      i2cSet i2c_addr (reg + 1) 0
-    }
+  } ('kiot;both opposite' == motor) {
+    drv8833_set_motor 'A' power
+    drv8833_set_motor 'B' (-1 * power)
   } else {
-    sayIt 'I2C Dual Motor controller not found (DRV8833)'
+    drv8833_set_motor motor power
   }
 }
 
-to kiot_stop_dual_motors {
-  kiot_set_dual_motor 'A' 0
-  kiot_set_dual_motor 'B' 0
+to kiot_stop_dual_motors motor {
+  if (motor == 'both') {
+    kiot_set_dual_motor 'A' 0
+    kiot_set_dual_motor 'B' 0
+  } else {
+    kiot_set_dual_motor motor 0
+  }
 }
 
