@@ -91,10 +91,26 @@ static void test4() {
 	}
 }
 
+static void test5() {
+	// test that property lookup requires an exact name match, even when one
+	// property name is a prefix of another (e.g. "current" vs. "current_units")
+
+	char json[] = "{ \"current_units\": { \"rain\": \"mm\" }, \"current\": { \"rain\": 0 }, \"abc\": 2, \"ab\": 1 }";
+
+	printf("\nProperty names sharing a common prefix:\n");
+	printThing(tjr_atPath(json, "current"));
+	printThing(tjr_atPath(json, "current.rain"));
+	printThing(tjr_atPath(json, "current_units.rain"));
+	printThing(tjr_atPath(json, "ab"));
+	printThing(tjr_atPath(json, "abc"));
+	printThing(tjr_atPath(json, "curr"));
+}
+
 int main() {
  	test1();
  	test2();
  	test3();
  	test4();
+ 	test5();
 	return 0;
 }
