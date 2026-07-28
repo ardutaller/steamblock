@@ -90,7 +90,6 @@ to '_bmx280_initAddr' {
   } else {
     _bmxAddr = 0
     sayIt 'No BMP280 or BME280 connected'
-    stopTask
   }
 }
 
