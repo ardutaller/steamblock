@@ -736,7 +736,7 @@ void hardwareInit() {
 	#define TOTAL_PINS 40
 	static const int analogPin[] = {};
 	#define DEFAULT_TONE_PIN 4
-	#define PIN_LED -1
+	#define PIN_LED -1 // no built-in LED
 	#define DEFAULT_BATTERY_PIN 34
 	#define DEFAULT_L1_PIN 9
 	#define DEFAULT_L2_PIN 10
@@ -843,10 +843,9 @@ void hardwareInit() {
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 40
 	static const int analogPin[] = {};
-	// databot does not have a user LED; map it to unused pin 12
-	// Note: Pin 27 is reserved on databot
-	#define PIN_LED 12
+	#define PIN_LED -1 // no built-in LED
 	#define DEFAULT_TONE_PIN 32
+	// Note: Pin 27 is reserved on databot
 	static char reservedPin[TOTAL_PINS] = {
 		0, 1, 0, 1, 0, 0, 1, 1, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -931,7 +930,7 @@ void hardwareInit() {
 	#define DIGITAL_PINS 22
 	#define ANALOG_PINS 4
 	#define TOTAL_PINS 22
-	#define PIN_LED 10 // there is no user LED; use pin 10
+	#define PIN_LED -1 // no built-in LED
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {};
 	static const char digitalPin[DIGITAL_PINS] = {2, 3, 4, 5, 6, 7, 21, 20, 8, 9, 10};
@@ -1025,7 +1024,7 @@ void hardwareInit() {
 	#ifdef LED_BUILTIN
 		#define PIN_LED LED_BUILTIN
 	#elif !defined(PIN_LED)
-		#define PIN_LED -1
+		#define PIN_LED -1 // no built-in LED
 	#endif
 	#if !defined(PIN_BUTTON_A)
 		#if defined(KEY_BUILTIN)
@@ -1056,7 +1055,7 @@ void hardwareInit() {
 	#elif defined(LED_BUILTIN)
 		#define PIN_LED LED_BUILTIN
 	#elif !defined(PIN_LED)
-		#define PIN_LED -1
+		#define PIN_LED -1 // no built-in LED
 	#endif
 	#if !defined(PIN_BUTTON_A)
 		#if defined(KEY_BUILTIN)
@@ -1084,7 +1083,7 @@ void hardwareInit() {
 	static const int analogPin[] = {};
 	#if defined(FAB_SPARKLE)
 		// Note: The Super C3 mini has user LED on the I2C SDA line; do not use it!
-		#define PIN_LED -1
+		#define PIN_LED -1 // no built-in LED
 	#elif defined(LED_BUILTIN)
 		#define PIN_LED LED_BUILTIN
 	#endif
