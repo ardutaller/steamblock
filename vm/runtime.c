@@ -539,7 +539,7 @@ static void softReset(int clearMemoryFlag) {
 	stopPWM();
 	stopServos();
 	stopTone();
-	#if !defined(DATABOT)
+	#if !(defined(DATABOT) || defined(DATABOT_V3))
 		turnOffInternalNeoPixels();
 	#endif
 	turnOffPins();

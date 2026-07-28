@@ -2399,7 +2399,8 @@ static int readDigitalMicrophone() {
 	return result;
 }
 
-#elif defined(DATABOT) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_XIAO_ESP32S3)
+#elif defined(DATABOT) || defined(DATABOT_V3) || \
+	defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_XIAO_ESP32S3)
 
 #define USE_DIGITAL_MICROPHONE 1
 
@@ -2412,6 +2413,10 @@ static int readDigitalMicrophone() {
 	#define I2S_SD 18
 	#define I2S_SCK 5
 	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX)
+#elif defined(DATABOT_V3)
+	#define I2S_SD 4
+	#define I2S_SCK 2
+	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM)
 #elif defined(ARDUINO_M5STACK_Core2)
 	#define I2S_WS 0
 	#define I2S_SD 34
@@ -2450,12 +2455,21 @@ void initI2SMicrophone() {
 	i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
 
 	// configure microphone pins
-	const i2s_pin_config_t pin_config = {
-		.bck_io_num = I2S_SCK,
-		.ws_io_num = I2S_WS,
-		.data_out_num = -1,
-		.data_in_num = I2S_SD
-	};
+	#if defined(DATABOT_V3)
+		i2s_pin_config_t pin_config = {
+			.bck_io_num = -1,
+			.ws_io_num = I2S_SCK,
+			.data_out_num = -1,
+			.data_in_num = I2S_SD
+		};
+	#else
+		const i2s_pin_config_t pin_config = {
+			.bck_io_num = I2S_SCK,
+			.ws_io_num = I2S_WS,
+			.data_out_num = -1,
+			.data_in_num = I2S_SD
+		};
+	#endif
 	i2s_set_pin(I2S_PORT, &pin_config);
 
 	// start I2S driver

@@ -1087,6 +1087,9 @@ static void initNeoPixelPin(int pinNum) { // ESP32
 			pinNum = 16; // internal NeoPixel pin on Coding Box 2.0
 		#elif defined(DATABOT)
 			pinNum = 2; // internal NeoPixel pin
+		#elif defined(DATABOT_V3)
+			primDigitalSet(46, true); // enable NEOPixels
+			pinNum = 13; // internal NeoPixel pin
 		#elif defined(SPRINGBOT)
 			pinNum = 39; // internal NeoPixel pin
 		#elif defined(ESP32_S3)
@@ -1363,7 +1366,7 @@ void turnOffInternalNeoPixels() {
 		// sending neopixel data twice on the Atom Matrix eliminates green pixel at startup
 		for (int i = 0; i < count; i++) sendNeoPixelData(0);
 		delay(1);
-	#elif defined(DATABOT) || defined(CALLIOPE_V3)
+	#elif defined(DATABOT) || defined(DATABOT_V3) || defined(CALLIOPE_V3)
 		count = 3;
 	#elif defined(WUKONG2040)
 		count = 2;

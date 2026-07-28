@@ -182,7 +182,7 @@ void hardwareInit() {
 		tftInit();
 		tftClear();
 	#endif
-	#if defined(DATABOT)
+	#if defined(DATABOT) || defined(DATABOT_V3)
 		int yellow = 14864128;
 		setAllNeoPixels(-1, 3, yellow);
 	#endif
@@ -852,6 +852,28 @@ void hardwareInit() {
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 		1, 1, 1, 0, 1, 0, 0, 1, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 1, 1, 0};
+
+#elif defined(DATABOT_V3)
+	#define BOARD_TYPE "Databot v3"
+	#define DIGITAL_PINS 49
+	#define ANALOG_PINS 20
+	#define TOTAL_PINS 49
+	static const int analogPin[] = {};
+	#define PIN_BUTTON_A 0
+	#define PIN_BUTTON_B 38
+	#define PIN_LED -1 // no built-in LED
+	#define DEFAULT_TONE_PIN 45
+
+	// See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
+	// Reserved FLASH and RAM SPI: 26-32 plus 33-37 on boards with Octal SPI Flash PSRAM
+	// USB pins: 19 (USB D-), 20 (USB D+)
+	// Strapping pins: 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG) (useable with care)
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #elif defined(STEAMaker)
 	#define BOARD_TYPE "micro:STEAMakers"
@@ -1633,6 +1655,8 @@ void turnOffPins() {
 					}
 					digitalWrite(pin, LOW); // set low before switching to input
 				}
+			#elif defined(DATABOT_V3)
+				if (46 == pin) continue; // do not turn off the RGB LED enable pin
 			#endif
 			#if defined(PICO_RP2350)
 				// workaround for RP2350 chip bug; set low before switching to input
