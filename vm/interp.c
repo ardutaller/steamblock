@@ -1392,12 +1392,11 @@ void vmLoop() {
 			#if defined(HAS_LED_MATRIX)
 				updateMicrobitDisplay();
 			#endif
+			handleMicosecondClockWrap();
 			#if defined(COCUBE)
 				cocubeSensorUpdate();
 				processStartupGesture();
-			#endif
-			handleMicosecondClockWrap();
-			#if !defined(DUELink) && !defined(COCUBE)
+			#else
 				if (totalMicrosecs() < (15 * 1000000)) { // first N seconds after startup
 					processStartupGesture();
 				}
