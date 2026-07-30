@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2024-11-05 08:57+0000\n"
-"Last-Translator: Fernando S. Pacheco\n"
+"PO-Revision-Date: 2026-07-30 12:57+0000\n"
+"Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
 "Language: pt-br\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
 #. Block in Input category
 msgid "microseconds"
@@ -100,7 +100,7 @@ msgstr "Desktop"
 
 #. Block input right-click context menu option
 msgid "define"
-msgstr "define"
+msgstr "definir"
 
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
@@ -124,7 +124,7 @@ msgstr "unicode _ de _"
 
 #. Primitive block. Mostly hidden from end users.
 msgid "send NeoPixel rgb _"
-msgstr "envie RGB _ ao NeoPixel"
+msgstr "envie rgb _ ao NeoPixel"
 
 #. Block in Basic Sensors library
 msgid "tilt y"
@@ -421,7 +421,7 @@ msgstr "nomes de arquivos"
 
 #. Button Events library block
 msgid "button _ pressed"
-msgstr "clique no botão  _"
+msgstr "clique no botão _"
 
 #. Block right-click context menu
 msgid "expand"
@@ -1089,7 +1089,7 @@ msgstr "toque a frequência _ por _ ms"
 
 #. Tone library block
 msgid "play midi key _ for _ ms"
-msgstr "toque a tecla MIDI _ por _ ms"
+msgstr "toque a tecla midi _ por _ ms"
 
 #. Turtle Geometry library block
 msgid "trtl;home"
@@ -1263,7 +1263,7 @@ msgstr "método do pedido _"
 
 #. Web Things library block
 msgid "set thing capability to _"
-msgstr "fixe a aptidão da coisa em  _"
+msgstr "fixe a aptidão da coisa em _"
 
 #. Web Things library block
 msgid "set thing name to _"
@@ -1834,3 +1834,440 @@ msgstr "Computador"
 #. String in file picker and library dialogs
 msgid "File Open"
 msgstr "Abrir arquivo"
+
+#. Block in Input category
+msgid "timer"
+msgstr "cronômetro"
+
+#. Block in Input category
+msgid "reset timer"
+msgstr "zerar cronômetro"
+
+#. Block in Input category
+msgid "seconds"
+msgstr "segundos"
+
+#. Block in Input category
+msgid "version"
+msgstr "versão"
+
+#. Block in Input category
+msgid "milliseconds since _"
+msgstr "milisegundos desde _"
+
+#. Block in Input category
+msgid "end time _"
+msgstr "tempo final _"
+
+#. Block in Input category
+msgid "microseconds since _"
+msgstr "microsegundos desde _"
+
+#. Block in Input category
+msgid "BLE id"
+msgstr "id BLE"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "conectado BLE"
+
+#. Block in Input category
+msgid "connected to IDE"
+msgstr "conectado ao IDE"
+
+#. Block in Pins category
+msgid "pullup _"
+msgstr "pullup _"
+
+#. Example message for [ when _ received ] and [ broadcast _ ] blocks
+msgid "go!"
+msgstr "vamos!"
+
+#. Example content for the comment block
+msgid "How this works..."
+msgstr "Como isso funciona..."
+
+#. Block in Control category
+msgid "range _ to _"
+msgstr "variando_até_"
+
+#. Block in Control category
+msgid "by _"
+msgstr "de _"
+
+#. Block in Control category
+msgid "arg _ default _"
+msgstr "parametro_valor padrão _"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "sair do laço"
+
+#. Example default value for the ( arg _ default _ ) block
+msgid "default"
+msgstr "padrão"
+
+#. Block in Control category
+msgid "with _"
+msgstr "com _"
+
+#. Block in Operators category
+msgid "min _ _"
+msgstr "mínimo __"
+
+#. Block in Operators category
+msgid "max _ _"
+msgstr "máximo __"
+
+#. Block in Operators category
+msgid "convert _ to _"
+msgstr "converte_para_"
+
+#. Block in Operators category
+msgid "if _ then _ else _"
+msgstr "se_então_senão_"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "byte array"
+msgstr "array de byte"
+
+#. Block in Operators category
+msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
+msgstr "redimensionar_de(_,_) para ( _ , _ )"
+
+#. Block in Operators category
+msgid "sqrt _"
+msgstr "raíz quadrada _"
+
+#. Example value for the ( list < > ) block
+msgid "cat"
+msgstr "gato"
+
+#. Example value for the ( list < > ) block
+msgid "dog"
+msgstr "cachorro"
+
+#. Example value for the ( list < > ) block
+msgid "bird"
+msgstr "pássaro"
+
+#. Example value for the ( list < > ) block
+msgid "fish"
+msgstr "peixe"
+
+#. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
+#. You could think of a word that still has meaning when you remove its first character in your language.
+msgid "smiles"
+msgstr "sorrisos"
+
+#. Example string. Tells the user this input accepts a list of strings.
+msgid "a list of strings"
+msgstr "uma lista de palavras"
+
+#. Block in Data category
+msgid "as byte array _"
+msgstr "um array de bytes _"
+
+#. Example string. Tells the user this input accepts a byte list or a string.
+msgid "aByteListOrString"
+msgstr "umaListaBytesOuPalavras"
+
+#. Block in Data category
+msgid "with all _"
+msgstr "todos com _"
+
+#. Option in dropdown menu of editable input slots on mobile devices:
+msgid "edit"
+msgstr "editar"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( all v ) of list ( aList ) ]
+msgid "all"
+msgstr "todos"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( last v ) of list ( aList ) ]
+#. ( item ( last v ) of list ( aList ) )
+msgid "last"
+msgstr "último"
+
+#. Option in dropdown menu of blocks:
+#. ( item ( random v ) of list ( aList ) )
+msgid "random"
+msgstr "aleatório"
+
+#. Block in Data category
+msgid "split _ by _"
+msgstr "separar _ por _"
+
+#. "Generic" blocks category label
+msgid "cat;Generic"
+msgstr "Genérico"
+
+#. Block in Comm category
+msgid "i2c device _ exists?"
+msgstr "existe dispositivo I2C _ ?"
+
+#. Block in Comm category
+msgid "spi setup speed _"
+msgstr "ajusta velocidade spi _"
+
+#. Block in Comm category
+msgid "mode _"
+msgstr "modo _"
+
+#. Block in Comm category
+msgid "rpi channel _"
+msgstr "canal rpi _"
+
+#. Block in Comm category
+msgid "spi exchange bytes _"
+msgstr "troca bytes spi _"
+
+#. Example string. Tells the user this input accepts a byte array
+msgid "aByteArray"
+msgstr "umArraydeBytes"
+
+#. Block in Comm category
+msgid "serial open _ baud"
+msgstr "serial iniciar _ velocidade(bauds)"
+
+#. Block in Comm category
+msgid "serial close"
+msgstr "serial encerrar"
+
+#. Block in Comm category
+msgid "serial read"
+msgstr "ler serial"
+
+#. Block in Comm category
+msgid "serial write _"
+msgstr "escrever na serial _"
+
+#. Example string. Tells the user this input accepts an integer, a string list or a byte array
+msgid "anIntegerStringListOrByteArray"
+msgstr "textoNumeroListaOuArrayByte"
+
+#. Block in Comm category
+msgid "serial write _ starting at _"
+msgstr "escrever serial _ iniciando do _"
+
+#. Example string. Tells the user this input accepts a string list or a byte array
+msgid "aStringListOrByteArray"
+msgstr "umaListadeTextoOuArrayByte"
+
+#. Block in Comm category
+msgid "soft serial write byte _ pin _ baud _"
+msgstr "escrever soft serial byte _ pino _ velocidade _ (bauds)"
+
+#. Block in Basic Sensors library
+msgid "magnetic field"
+msgstr "campo magnético"
+
+#. Block in Basic Sensors library
+msgid "set acceleration range _ g = 100"
+msgstr "ajustar faixa aceleração _ g = 100"
+
+#. Block in Function Calls library
+msgid "call _"
+msgstr "chamada _"
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr "nome da função"
+
+#. Example string. Tells the user this input accepts a list of parameters.
+msgid "parameter list"
+msgstr "lista de parametros"
+
+#. Block in Function Calls library
+msgid "function _ exists"
+msgstr "função _ existe"
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"seta NeoPixel #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ "
+"#BR# _ _ _ _ _"
+
+#. NeoPixel library block
+msgid "shift NeoPixel _ color by _"
+msgstr "deslocar NeoPixel _ cor por _"
+
+#. NeoPixel library block
+msgid "shift all NeoPixel colors by _"
+msgstr "deslocar todas cores NeoPixel por _"
+
+#. NeoPanel library label
+msgid "NeoPanel"
+msgstr "NeoPanel"
+
+#. NeoPanel library block
+msgid "attach NeoPixel panel width _ height _ at pin _"
+msgstr "anexar matriz NeoPixel largura _ altura _ no pino _"
+
+#. NeoPanel library block
+msgid "NeoPanel set x _ y _ color _"
+msgstr "seta matriz NeoPixel x _ y _ cor _"
+
+#. NeoPanel library block
+msgid "NeoPanel fill column _ color _"
+msgstr "preencher coluna _ da matriz com cor _"
+
+#. NeoPanel library block
+msgid "NeoPanel fill row _ color _"
+msgstr "preencher linha _ matriz com cor _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "desenhar linha matriz de x _ y_ para x _ y _ cor _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "desenhar circulo no x _ y _ raio _ cor _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "desenhar retângulo no x _ y _ largura _ altura _ cor _"
+
+#. NeoPanel library block
+msgid "NeoPanel scroll text _ color _"
+msgstr "deslocar texto _ cor _"
+
+#. NeoPanel library block
+msgid "pausing _ msecs"
+msgstr "pausando _ milisegundos"
+
+#. NeoPanel library block
+msgid "NeoPanel draw text _ at x _ y _ color _"
+msgstr "desenhar texto _ em x_ y_ na cor _"
+
+#. Example for the draw text block
+msgid "Hello"
+msgstr "Olá"
+
+#. NeoPanel library block
+msgid "separation _"
+msgstr "separador _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw BMP file _ at x _ y _"
+msgstr "desenhar arquivo _ BMP em x _ y _"
+
+#. Microphone library label
+msgid "Microphone"
+msgstr "Microfone"
+
+#. Microphone library block
+msgid "microphone"
+msgstr "microfone"
+
+#. Microphone library block
+msgid "turn on microphone"
+msgstr "ligar microfone"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "desligar microfone"
+
+#. Microphone library block
+msgid "loudness"
+msgstr "volume"
+
+#. Microphone library block
+msgid "clap count"
+msgstr "contador de aplausos"
+
+#. Microphone library block
+msgid "set clap threshold _"
+msgstr "ajusta limite de aplausos _"
+
+#. Microphone library block
+msgid "estimate clap threshold"
+msgstr "estimar o limiar de aplausos"
+
+#. Infrared Remote library block
+msgid "IR code"
+msgstr "código IR"
+
+#. Infrared Remote library block
+msgid "attach IR transmitter to pin _"
+msgstr "anexar transmissor IR no pino _"
+
+#. Infrared Remote library block
+msgid "IR transmit device _ command _"
+msgstr "transmitir IR dispositivo _ comando _"
+
+#. Keyboard and Mouse library label
+msgid "Keyboard and Mouse"
+msgstr "Teclado e Mouse"
+
+#. Keyboard and Mouse library block
+msgid "press key _"
+msgstr "tecla pressionada _"
+
+#. Keyboard and Mouse library block
+msgid "while holding _"
+msgstr "enquando segura _"
+
+#. Keyboard and Mouse library block
+msgid "hold key _"
+msgstr "manter chave _"
+
+#. Keyboard and Mouse library block
+msgid "release key _"
+msgstr "chave liberada _"
+
+#. Keyboard and Mouse library block
+msgid "release all keys"
+msgstr "todas teclas liberadas"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Shift"
+msgstr "Mudança"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Logo / ⌘"
+msgstr "Logotipo / ⌘"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;AltGr"
+msgstr "Alt Gr"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;enter"
+msgstr "enter"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;return"
+msgstr "retorno"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;tab"
+msgstr "tab"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;backspace"
+msgstr "backspace"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;insert"
+msgstr "inserir"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;end"
+msgstr "end"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgUp"
+msgstr "PgUp"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgDown"
+msgstr "PgDown"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;CapsLock"
+msgstr "CapsLock"
