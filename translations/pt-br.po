@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-07-30 12:57+0000\n"
+"PO-Revision-Date: 2026-07-30 20:05+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -760,7 +760,7 @@ msgstr "JSON das definições de eventos"
 
 #. 5x5 LED Display library block
 msgid "display _"
-msgstr "display _"
+msgstr "mostrar _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch _ Line"
@@ -2102,7 +2102,7 @@ msgstr "deslocar todas cores NeoPixel por _"
 
 #. NeoPanel library label
 msgid "NeoPanel"
-msgstr "NeoPanel"
+msgstr "Matriz Neopixel"
 
 #. NeoPanel library block
 msgid "attach NeoPixel panel width _ height _ at pin _"
@@ -2271,3 +2271,1190 @@ msgstr "PgDown"
 #. Key name (as in computer keyboard key)
 msgid "kbd;CapsLock"
 msgstr "CapsLock"
+
+#. Block in Comm category
+msgid "duelink receive"
+msgstr "duelink receber"
+
+#. Block in Comm category
+msgid "duelink send _ starting at _"
+msgstr "duelink enviar _ início até _"
+
+#. NeoPixel library block
+msgid "brighten NeoPixel _ by _"
+msgstr "brilho NeoPixel _ por _"
+
+#. NeoPixel library block
+msgid "brighten all NeoPixels by _"
+msgstr "brilho todos NeoPixels por _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Alt / ⌥"
+msgstr "Alt / ⌥"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;NumLock"
+msgstr "Num Lock"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ScrollLock"
+msgstr "ScrollLock"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PrintScreen"
+msgstr "Print Screen"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ESC"
+msgstr "ESC"
+
+#. Keyboard and Mouse library block
+msgid "_ mouse click"
+msgstr "_ click mouse"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;left"
+msgstr "esquerda"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;right"
+msgstr "direita"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;middle"
+msgstr "meio"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;both"
+msgstr "ambos"
+
+#. Keyboard and Mouse library block
+msgid "move mouse pointer by _ , _"
+msgstr "mover ponteiro mouse por _ , _"
+
+#. Keyboard and Mouse library block
+msgid "scroll mouse by _"
+msgstr "mouse girando por _"
+
+#. Keyboard and Mouse library block
+msgid "hold _ mouse button"
+msgstr "botao _ mouse pressionado"
+
+#. Keyboard and Mouse library block
+msgid "release mouse buttons"
+msgstr "soltar botão mouse"
+
+#. Lists library label
+#. Extra utilities for list manipulation and access
+msgid "Lists"
+msgstr "Listas"
+
+#. Lists library block
+msgid "list _ contains _"
+msgstr "lista _ contém _"
+
+#. Lists library block
+msgid "circular item _ of _"
+msgstr "item circular _ de _"
+
+#. Example string. Tells the user this input accepts a list or a string
+msgid "aListOrString"
+msgstr "umaListaOuTexto"
+
+#. Example string. Tells the user this input accepts a function name
+msgid "aFunction"
+msgstr "umFunção"
+
+#. Lists library block
+msgid "filter _ with _"
+msgstr "filtrar _ com _"
+
+#. Lists library block
+msgid "pick _ from _"
+msgstr "escolher _ de _"
+
+#. Option in ( pick (a few) from (aList) ) block in Lists library
+msgid "a few"
+msgstr "algum"
+
+#. Option in ( pick (some) from (aList) ) block in Lists library
+msgid "some"
+msgstr "alguns"
+
+#. Option in ( pick (most) from (aList) ) block in Lists library
+msgid "most"
+msgstr "maioria"
+
+#. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
+msgid "_ with _ items replaced by _"
+msgstr "_ com _ itens substituídos por _"
+
+#. Lists library block
+msgid "reverse _"
+msgstr "reverter _"
+
+#. Lists library block
+msgid "shuffle _"
+msgstr "embaralhar _"
+
+#. Lists library block
+msgid "sort _"
+msgstr "organizar _"
+
+#. Lists library block
+msgid "unique _"
+msgstr "único _"
+
+#. Lists library block
+msgid "shuffled _"
+msgstr "embaralhado _"
+
+#. Lists library block
+msgid "reversed _"
+msgstr "invertido _"
+
+#. Lists library block
+msgid "sorted _"
+msgstr "ordenado _"
+
+#. Lists library block
+msgid "uniqued _"
+msgstr "único _"
+
+#. Pseudorandomness library label
+#. Creates pseudorandom numbers and lists of numbers given a particular seed
+msgid "Pseudorandomness"
+msgstr "Pseudoraleatoriedade"
+
+#. Pseudorandomness library block
+msgid "pseudorandom _ to _ with seed _"
+msgstr "pseudorandom _ para _ com semente _"
+
+#. Pseudorandomness library block
+msgid "_ pseudorandom numbers _ to _ with seed _"
+msgstr "_ números pseudoaleatórios _ para _ com semente _"
+
+#. BLE Keyboard library label
+msgid "BLE Keyboard"
+msgstr "Teclado BLE"
+
+#. BLE Keyboard library block
+msgid "start BLE Keyboard"
+msgstr "iniciar Teclado BLE"
+
+#. Example string for blocks that send a message via some communication channel.
+msgid "Hello!"
+msgstr "Olá!"
+
+#. Example string for blocks that send a message via some communication channel.
+msgid "light"
+msgstr "luz"
+
+#. Radio library block
+msgid "radio set group _ (0-255)"
+msgstr "ajustar grupo de rádio _ (0-255)"
+
+#. Radio library block
+msgid "radio last sender ID"
+msgstr "último ID rádio enviado"
+
+#. Radio library block
+msgid "radio my ID"
+msgstr "meu rádio ID"
+
+#. Example text for Scrolling library.
+msgid "HELLO ROSA!"
+msgstr "OLA ROSA!"
+
+#. 5x5 LED Display library block
+msgid "display image _"
+msgstr "exibir imagem _"
+
+#. 5x5 LED Display library block
+msgid "set display color _"
+msgstr "ajustar cor exibição _"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "imagem LED #BR# _"
+
+#. Image name for the "display image" block
+msgid "heart"
+msgstr "coração"
+
+#. Image name for the "display image" block
+msgid "small heart"
+msgstr "coração pequeno"
+
+#. Image name for the "display image" block
+msgid "yes"
+msgstr "sim"
+
+#. Image name for the "display image" block
+msgid "no"
+msgstr "não"
+
+#. Image name for the "display image" block
+msgid "happy"
+msgstr "feliz"
+
+#. Image name for the "display image" block
+msgid "sad"
+msgstr "triste"
+
+#. Image name for the "display image" block
+msgid "confused"
+msgstr "confuso"
+
+#. Image name for the "display image" block
+msgid "angry"
+msgstr "nervoso"
+
+#. Image name for the "display image" block
+msgid "asleep"
+msgstr "dormindo"
+
+#. Image name for the "display image" block
+msgid "surprised"
+msgstr "surpreso"
+
+#. Image name for the "display image" block
+msgid "silly"
+msgstr "bobagem"
+
+#. Image name for the "display image" block
+msgid "fabulous"
+msgstr "fabuloso"
+
+#. Image name for the "display image" block
+msgid "meh"
+msgstr "meh"
+
+#. Image name for the "display image" block
+msgid "t-shirt"
+msgstr "camiseta"
+
+#. Image name for the "display image" block
+msgid "roller skate"
+msgstr "patins"
+
+#. Image name for the "display image" block
+msgid "duck"
+msgstr "pato"
+
+#. Image name for the "display image" block
+msgid "house"
+msgstr "casa"
+
+#. Image name for the "display image" block
+msgid "tortoise"
+msgstr "tartaruga"
+
+#. Image name for the "display image" block
+msgid "butterfly"
+msgstr "borboleta"
+
+#. Image name for the "display image" block
+msgid "stick figure"
+msgstr "bonequinho"
+
+#. Image name for the "display image" block
+msgid "ghost"
+msgstr "fantasma"
+
+#. Image name for the "display image" block
+msgid "sword"
+msgstr "espada"
+
+#. Image name for the "display image" block
+msgid "giraffe"
+msgstr "girafa"
+
+#. Image name for the "display image" block
+msgid "skull"
+msgstr "crânio"
+
+#. Image name for the "display image" block
+msgid "umbrella"
+msgstr "guarda-chuva"
+
+#. Image name for the "display image" block
+msgid "snake"
+msgstr "cobra"
+
+#. Image name for the "display image" block
+msgid "rabbit"
+msgstr "coelho"
+
+#. Image name for the "display image" block
+msgid "cow"
+msgstr "vaca"
+
+#. Image name for the "display image" block
+msgid "quarter note"
+msgstr "semínima"
+
+#. Image name for the "display image" block
+msgid "eight note"
+msgstr "oitava nota"
+
+#. Image name for the "display image" block
+msgid "pitchfork"
+msgstr "garfo forcado"
+
+#. Image name for the "display image" block
+msgid "target"
+msgstr "alvo"
+
+#. Lists library block
+msgid "map _ over _"
+msgstr "mapear _ para _"
+
+#. Image name for the "display image" block
+msgid "triangle"
+msgstr "triângulo"
+
+#. Image name for the "display image" block
+msgid "left triangle"
+msgstr "triângulo esquerdo"
+
+#. Image name for the "display image" block
+msgid "chess board"
+msgstr "tabuleiro de xadrez"
+
+#. Image name for the "display image" block
+msgid "diamond"
+msgstr "diamante"
+
+#. Image name for the "display image" block
+msgid "small diamond"
+msgstr "diamante pequeno"
+
+#. Image name for the "display image" block
+msgid "square"
+msgstr "quadrado"
+
+#. Image name for the "display image" block
+msgid "small square"
+msgstr "quadrado pequeno"
+
+#. Image name for the "display image" block
+msgid "scissors"
+msgstr "tesoura"
+
+#. OLED Graphics library block
+msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
+msgstr "inicializa i2c _ endereço(hex) _ pino reset# _ inverter _"
+
+#. OLED Graphics library block
+msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
+msgstr "inicializa spi _ pino d/c# _ pino reset# _ inveter _"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "inicializa i2c(auto) pino reset# _ inverter _"
+
+#. OLED Graphics library block
+msgid "write _ at x _ y _ inverse _"
+msgstr "escrever _ em X _ y_ inveter _"
+
+#. OLED Graphics library block
+msgid "show display buffer"
+msgstr "exibir buffer"
+
+#. OLED Graphics library block
+msgid "clear"
+msgstr "apagar"
+
+#. OLED Graphics library block
+msgid "set contrast (1-4) _"
+msgstr "ajustar constrate (1-4) _"
+
+#. OLED Graphics library block
+msgid "draw circle at x _ y _ radius _ erase _"
+msgstr "desenhar círculo em x _ y _ raio _ apagado _"
+
+#. OLED Graphics library block
+msgid "draw image _ at x _ y _"
+msgstr "desenhar imagem _ em x _ y _"
+
+#. OLED Graphics library block
+msgid "draw line from x _ y _ to x _ y _ erase _"
+msgstr "desenha linha de x _ y_ para x _ y_ apagado _"
+
+#. OLED Graphics library block
+msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
+msgstr "desenhar retângulo x _ y _ w _ h _ apagado _ arredondado(3-15) _"
+
+#. OLED Graphics library block
+msgid "fill rectangle x _ y _ w _ h _ erase _"
+msgstr "preencher retângulo x _ y _ w _ h _ apagado _"
+
+#. OLED Graphics library block
+msgid "_flip display top _"
+msgstr "_ inventer tela topo _"
+
+#. OLED Graphics library block
+msgid "make image _"
+msgstr "criar imagem _"
+
+#. OLED Graphics library block
+msgid "set pixel x _ y _ erase _"
+msgstr "definir pixel x _ y _ apagado_"
+
+#. OLED Graphics library block
+msgid "set video _"
+msgstr "definir vídeo _"
+
+#. OLED Graphics library block
+msgid "cursor location"
+msgstr "localização do cursor"
+
+#. OLED Graphics library block
+msgid "defer display updates"
+msgstr "adiar atualizações de exibição"
+
+#. TFT display library block
+msgid "clear TFT display"
+msgstr "limpar tela TFT"
+
+#. TFT Display library block
+msgid "draw vector x _ y _ angle _ length _ color _"
+msgstr "desenhar vetor x _ y _ ângulo _ comprimento _ cor _"
+
+#. TFT Display library block
+msgid "Hello World!"
+msgstr "Olá Mundo!"
+
+#. TFT Display library block
+msgid "draw text _ on TFT at x _ y _ color _"
+msgstr "desenhar texto _ no TFT em x _ y _ cor _"
+
+#. TFT Display library block
+msgid "scale _"
+msgstr "escala _"
+
+#. TFT Display library block
+msgid "bg color _"
+msgstr "cor de fundo _"
+
+#. TFT Display library block
+msgid "draw bitmap _ palette _ on TFT at x _ y _"
+msgstr "desenhar bitmap _ paleta _ no TFT em x _ y _"
+
+#. TFT Display library example
+msgid "aBitmap"
+msgstr "umBitmap"
+
+#. TFT Display library example
+msgid "a list of colors"
+msgstr "uma lista de cores"
+
+#. TFT Display library block
+msgid "set TFT backlight _ (0-10)"
+msgstr "ajustar da retroiluminação TFT _ (0-10)"
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
+msgstr "desenhar linha _ de pixels x _ y _"
+
+#. TFT Display library block
+msgid "bytes per pixel _"
+msgstr "bytes por pixel _"
+
+#. TFT Display library block
+msgid "palette _"
+msgstr "paleta _"
+
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr "desenhar imagem _ no TFT em x _ y _ cor _"
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr "#BR# escala _"
+
+#. TFT Display library block
+msgid "image _"
+msgstr "imagem _"
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr "inverter tela TFT _"
+
+#. TFT Display library block
+msgid "defer OLED display updates"
+msgstr "adiar atualizações de tela OLED"
+
+#. TFT Display library block
+msgid "resume OLED display updates"
+msgstr "retomar atualizações do display OLED"
+
+#. TFT Display library and Color library block
+msgid "gray _ %"
+msgstr "cinza _ %"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"anexar ST7735 largura _ altura _ rotacionado_ #BR# pino DC _ pino CS _ pino "
+"luz de fundo _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _ BGR colors _"
+msgstr "#BR# pino de reset _ inverter cores _ cores BGR _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# x offset _ y offset _"
+msgstr "#BR# deslocamento x _ deslocamento y _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"anexar ST7789 largura _ altura _ rotacionado _ #BR# pino DC _ pino CS _ pino "
+"luz de fundo _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"anexar ST7796 largura _ altura _ rotacionado _ #BR# pino DC _ pino CS _ pino "
+"luz de fundo _"
+
+#. External Displays Library block
+msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
+msgstr "anexar ILI9341 rotacionado _ pino DC _ pino CS _ pino luz de fundo _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _"
+msgstr "#BR# pino de reset _ inverter cores _"
+
+#. External Displays Library block
+msgid "attach OLED w _ h _"
+msgstr "anexar OLED largura _ altura _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# flip vertical _"
+msgstr "#BR# inverter vertical _"
+
+#. External Displays Library block
+msgid "x offset _"
+msgstr "deslocamento x _"
+
+#. External Displays Library block
+msgid "detach display"
+msgstr "destacar tela"
+
+#. External Displays Library block
+msgid "set display SPI clk pin _ mosi pin _ miso pin _"
+msgstr "definir display SPI pino clk _ pino mosi _ pino miso _"
+
+#. External Displays Library block
+msgid "spi _"
+msgstr "spi _"
+
+#. External Displays Library block
+msgid "reset pin _"
+msgstr "pino reset _"
+
+#. External Displays Library block
+msgid "send OLED commands _"
+msgstr "enviar comendado OLED _"
+
+#. 8 Bit Graphics Library block
+msgid "set scale _"
+msgstr "definir escala _"
+
+#. 8 Bit Graphics Library block
+msgid "draw buffer"
+msgstr "desenhar buffer"
+
+#. 8 Bit Graphics Library block
+msgid "starting at x _ y _ width _ height _"
+msgstr "começando em x _ y _ largura _ altura _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap from BMP file _"
+msgstr "bitmap do arquivo BMP _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from raw indexed file _"
+msgstr "bitmap de largura _ do arquivo bruto indexado _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from string _"
+msgstr "bitmap de largura _ do texto _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ rotated _ º"
+msgstr "bitmap _ rotacionado _ º"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ mirrored across _ axis"
+msgstr "bitmap _ espelhado em relação ao _ eixo"
+
+#. 8 Bit Graphics Library block
+msgid "merge bitmap _ at _ , _"
+msgstr "mesclar bitmap _ em _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ from _ , _ to _ , _"
+msgstr "mesclar bloco _ de _ , _ para _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ at tile position _ , _"
+msgstr "mesclar bloco _ na posição do bloco _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "set palette _"
+msgstr "definir paleta _"
+
+#. 8 Bit Graphics Library block
+msgid "set transparent color index _"
+msgstr "definir índice de cor transparente _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from pal file _"
+msgstr "paleta de arquivos pal _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from BMP file _"
+msgstr "paleta de arquivos BMP _"
+
+#. 8 Bit Graphics Library block
+msgid "4 bit _ palette"
+msgstr "Paleta _ de 4 bits"
+
+#. 8 Bit Graphics Library block
+msgid "8 bit _ palette"
+msgstr "Paleta _ de 8 bits"
+
+#. 8 Bit Graphics Library block
+msgid "color number for r _ g _ b _ (0-255)"
+msgstr "número da cor para r _ g _ b _ (0-255)"
+
+#. 8 Bit Graphics Library block
+msgid "draw palette table _"
+msgstr "desenhar tabela da paleta _"
+
+#. 8 Bit Graphics Library block
+msgid "current palette"
+msgstr "paleta atual"
+
+#. 8 Bit Graphics Library block
+msgid "screen width"
+msgstr "largura da tela"
+
+#. 8 Bit Graphics Library block
+msgid "screen height"
+msgstr "altura da tela"
+
+#. BMP library block
+msgid "display BMP file _ at x _ y _"
+msgstr "exibir arquivo _ BMP em x _ y _"
+
+#. BMP image example filename
+msgid "image.bmp"
+msgstr "imagem.bmp"
+
+#. Color library label
+msgid "Color Operators"
+msgstr "Operadores de cor"
+
+#. Color library block
+msgid "red _"
+msgstr "vermelho _"
+
+#. Color library block
+msgid "green _"
+msgstr "verde _"
+
+#. Color library block
+msgid "blue _"
+msgstr "azul _"
+
+#. Color library block
+msgid "color hue _ (0-360) saturation _ % brightness _ %"
+msgstr "matiz da cor(hue) _ (0-360) saturação _ % brilho _ %"
+
+#. Color library block
+msgid "hue _"
+msgstr "matiz _"
+
+#. Color library block
+msgid "saturation _"
+msgstr "saturação _"
+
+#. Color library block
+msgid "brightness _"
+msgstr "brilho _"
+
+#. Color library block
+msgid "_ with hue _ (0-360)"
+msgstr "_ com matiz _ (0-360)"
+
+#. Color library block
+msgid "_ with saturation _ %"
+msgstr "_ com saturação _ %"
+
+#. Color library block
+msgid "_ with brightness _ %"
+msgstr "_ com brilho _ %"
+
+#. Fractions library label
+msgid "Fractions"
+msgstr "Frações"
+
+#. Fractions library block
+msgid "fract _ / _"
+msgstr "fração _ /_"
+
+#. Fractions library block
+msgid "fract _ + _"
+msgstr "fração _ + _"
+
+#. Fractions library block
+msgid "fract _ − _"
+msgstr "fração _ - _"
+
+#. Fractions library block
+msgid "fract _ × _"
+msgstr "fração _ x _"
+
+#. Fractions library block
+msgid "fract _ = _"
+msgstr "fração _ = _"
+
+#. Fractions library block
+msgid "fract _ < _"
+msgstr "fração _ < _"
+
+#. Fractions library block
+msgid "fract _ > _"
+msgstr "fração _ > _"
+
+#. Fractions library block
+msgid "simplify fraction _"
+msgstr "simplificar fração _"
+
+#. Fractions library block
+msgid "integer part of fraction _"
+msgstr "parte inteira da fração _"
+
+#. Fractions library block
+msgid "numerator of fraction _"
+msgstr "numerador da fração _"
+
+#. Fractions library block
+msgid "denominator of fraction _"
+msgstr "denominador da fração _"
+
+#. Fractions library block
+msgid "gcd _ _"
+msgstr "mdc _ _"
+
+#. Fractions library block
+msgid "lcm _ _"
+msgstr "mmc _ _"
+
+#. Tone library block
+msgid "start tone _ Hz"
+msgstr "emitir som de _ Hz"
+
+#. Tone library block
+msgid "start note _ octave _"
+msgstr "emitir nota _ oitava _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "iniciar tecla midi _"
+
+#. Tone library block
+msgid "stop tone"
+msgstr "parar som"
+
+#. Musical note name
+msgid "nt;c"
+msgstr "dó"
+
+#. Musical note name
+msgid "nt;c#"
+msgstr "dó#"
+
+#. Musical note name
+msgid "nt;d"
+msgstr "ré"
+
+#. Musical note name
+msgid "nt;d#"
+msgstr "ré#"
+
+#. Musical note name
+msgid "nt;e"
+msgstr "mi"
+
+#. Musical note name
+msgid "nt;f"
+msgstr "fá"
+
+#. Musical note name
+msgid "nt;f#"
+msgstr "fá#"
+
+#. Musical note name
+msgid "nt;g"
+msgstr "sol"
+
+#. Musical note name
+msgid "nt;g#"
+msgstr "sol#"
+
+#. Musical note name
+msgid "nt;a"
+msgstr "lá"
+
+#. Musical note name
+msgid "nt;a#"
+msgstr "lá#"
+
+#. Musical note name
+msgid "nt;b"
+msgstr "si"
+
+#. Ringtone library label
+#. Can play Nokring-formatted music. Also known as RTTTL.
+msgid "Ringtone"
+msgstr "Som de chamada"
+
+#. Ringtone library block
+msgid "play ringtone _"
+msgstr "tocar som de chamada _"
+
+#. Ringtone library block
+msgid "current song name"
+msgstr "nome da música atual"
+
+#. Pluck library block
+msgid "pluck note _ octave _ for _ ms"
+msgstr "dedilhar nota _ oitava _ por _ milisegundos"
+
+#. Pluck library label
+#. Generate music with plucked-string resembling sounds
+msgid "Pluck"
+msgstr "Dedilhar"
+
+#. Pluck library block
+msgid "pluck MIDI key _ for _ msecs"
+msgstr "dedilhar tecla MIDI _ por _ milissegundos"
+
+#. Pluck library block
+msgid "set pluck pin _"
+msgstr "definir pino _ dedilhado"
+
+#. WAV library block
+msgid "play WAV file _"
+msgstr "tocar WAV arquivo _"
+
+#. Example file name with no extension
+msgid "filename"
+msgstr "nome do arquivo"
+
+#. Rhythm library label
+#. Useful to create musical patterns
+msgid "Rhythm"
+msgstr "Ritmo"
+
+#. Rhythm library block
+msgid "set tempo to _ bpm at _ / _ signature"
+msgstr "Ajustar andamento para _ bpm no compasso _ / _"
+
+#. Rhythm library block
+msgid "set pattern to _ bars"
+msgstr "Definir padrão para _ compassos"
+
+#. Rhythm library block
+msgid "current beat"
+msgstr "Batida atual"
+
+#. Rhythm library block
+msgid "current bar"
+msgstr "compasso atual"
+
+#. Rhythm library block
+msgid "wait until next _ duration"
+msgstr "esperar próxima duração _"
+
+#. Rhythm library block
+msgid "wait until beat _"
+msgstr "esperar até próxima batida _"
+
+#. Rhythm library block
+msgid "wait until bar _"
+msgstr "esperar até próximo compasso _"
+
+#. Analog Synthesis library label
+#. Generate synthesized sound waves to play on a DAC, over PWM, or any other analog means
+msgid "Analog Synthesis"
+msgstr "Sintetizado analógico"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sine gate _"
+msgstr "#SVG#porta de sinal senoidal _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-square gate _"
+msgstr "#SVG#porta de onda quadrada _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-triangle gate _"
+msgstr "#SVG#porta de onda triangular _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sawtooth gate _"
+msgstr "#SVG#porta de onda dente de serra _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-noise gate _"
+msgstr "#SVG#porta de onda de ruído _"
+
+#. Analog Synthesis library block
+msgid "set attack _ release _ for gate _"
+msgstr "definir disparo _ liberação _ para a porta _"
+
+#. Analog Synthesis library block
+msgid "play MIDI key _ for _ ms on gate _ amplitude _"
+msgstr "reproduzir tecla MIDI _ por _ milisegundos na porta _ amplitude _"
+
+#. Analog Synthesis library block
+msgid "set frequency ramp from _ % to _ % for gate _"
+msgstr "definir a frequência da rampa de _% para _ % para porta _"
+
+#. Analog Synthesis library block
+msgid "amplitude for gate _"
+msgstr "amplitude para porta _"
+
+#. Analog Synthesis library block
+msgid "frequency for gate _"
+msgstr "frequência para porta _"
+
+#. Analog Synthesis library block
+#. example: output [16320]
+msgid "output _"
+msgstr "saída _"
+
+#. Analog Synthesis library block
+#. as in digital resolution (8 bit, 16 bit...)
+msgid "set output pin to _ and resolution _"
+msgstr "definir pino de saída _ e resolução _"
+
+#. Wavetable Synthesis library label
+#. Generate synthesized instrument sounds on a DAC or PWM pin
+msgid "Wavetable Synthesis"
+msgstr "Sintetizador de Ondas"
+
+#. Wavetable Synthesis library block
+msgid "set output pin to _"
+msgstr "definir pino de saída para _"
+
+#. Wavetable Synthesis library block
+msgid "select instrument _ for channel _"
+msgstr "selecionar instrumento _ para o canal _"
+
+#. Wavetable Synthesis library block
+msgid "stop channel _ in _ ms"
+msgstr "parar o canal _ em _ milisegundos"
+
+#. Wavetable Synthesis library block
+msgid "graph envelope for channel _"
+msgstr "exibir envelope do canal _"
+
+#. Wavetable Synthesis library block
+msgid "graph wave table for channel _"
+msgstr "exibir tabela de onda para canal _"
+
+#. Wavetable instrument name
+msgid "saxophone"
+msgstr "saxofone"
+
+#. Wavetable instrument name
+msgid "violin"
+msgstr "violino"
+
+#. Wavetable instrument name
+msgid "sin wave"
+msgstr "onda senoidal"
+
+#. Wavetable instrument name
+msgid "tri wave"
+msgstr "onda tripla"
+
+#. Wavetable instrument name
+msgid "square wave"
+msgstr "onda quadrada"
+
+#. Wavetable instrument name
+msgid "saw wave"
+msgstr "onda dente de serra"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Bass Drum"
+msgstr "Bumbo de Bateria Acústica"
+
+#. General MIDI drum instrument name
+msgid "Bass Drum 1"
+msgstr "Bumbo 1"
+
+#. General MIDI drum instrument name
+msgid "Side Stick"
+msgstr "Baqueta Lateral"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Snare"
+msgstr "Caixa acústica"
+
+#. General MIDI drum instrument name
+msgid "Hand Clap"
+msgstr "Palmas"
+
+#. General MIDI drum instrument name
+msgid "Electric Snare"
+msgstr "Caixa elétrica"
+
+#. General MIDI drum instrument name
+msgid "Low Floor Tom"
+msgstr "Surdo Grave"
+
+#. General MIDI drum instrument name
+msgid "Closed Hi-Hat"
+msgstr "Chimbau Fechado"
+
+#. General MIDI drum instrument name
+msgid "High Floor Tom"
+msgstr "Surdo Agudo"
+
+#. General MIDI drum instrument name
+msgid "Pedal Hi-Hat"
+msgstr "Chimbau com Pedal"
+
+#. General MIDI drum instrument name
+msgid "Low Tom"
+msgstr "Tom Grave"
+
+#. General MIDI drum instrument name
+msgid "Open Hi-Hat"
+msgstr "Chimbau Aberto"
+
+#. General MIDI drum instrument name
+msgid "Low-Mid Tom"
+msgstr "Tom Médio-Grave"
+
+#. General MIDI drum instrument name
+msgid "Hi-Mid Tom"
+msgstr "Tom Médio-Agudo"
+
+#. General MIDI drum instrument name
+msgid "Crash Cymbal 1"
+msgstr "Prato de Ataque 1"
+
+#. General MIDI drum instrument name
+msgid "High Tom"
+msgstr "Tom Agudo"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 1"
+msgstr "Prato de Condução 1"
+
+#. General MIDI drum instrument name
+msgid "Chinese Cymbal"
+msgstr "Prato Chinês"
+
+#. General MIDI drum instrument name
+msgid "Ride Bell"
+msgstr "Cúpula do Condução"
+
+#. General MIDI drum instrument name
+msgid "Tambourine"
+msgstr "Pandeiro"
+
+#. General MIDI drum instrument name
+msgid "Splash Cymbal"
+msgstr "Prato Splash"
+
+#. General MIDI drum instrument name
+msgid "Cowbell"
+msgstr "Campana"
+
+#. General MIDI drum instrument name
+msgid "Crash Cymbal 2"
+msgstr "Prato de Ataque 2"
+
+#. General MIDI drum instrument name
+msgid "Vibraslap"
+msgstr "Queixada"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 2"
+msgstr "Prato de Condução 2"
+
+#. General MIDI drum instrument name
+msgid "Hi Bongo"
+msgstr "Bongô Agudo"
+
+#. General MIDI drum instrument name
+msgid "Low Bongo"
+msgstr "Bongô Grave"
+
+#. General MIDI drum instrument name
+msgid "Mute Hi Conga"
+msgstr "Conga Aguda Abafada"
+
+#. General MIDI drum instrument name
+msgid "Open Hi Conga"
+msgstr "Conga Aguda Aberta"
+
+#. General MIDI drum instrument name
+msgid "Low Conga"
+msgstr "Conga Grave"
+
+#. General MIDI drum instrument name
+msgid "High Timbale"
+msgstr "Timbal Agudo"
+
+#. General MIDI drum instrument name
+msgid "Low Timbale"
+msgstr "Timbal Grave"
+
+#. General MIDI drum instrument name
+msgid "High Agogo"
+msgstr "Agogô Agudo"
+
+#. General MIDI drum instrument name
+msgid "Low Agogo"
+msgstr "Agogô Grave"
+
+#. General MIDI drum instrument name
+msgid "Cabasa"
+msgstr "Afoxé"
+
+#. General MIDI drum instrument name
+msgid "Maracas"
+msgstr "Chocalho"
+
+#. General MIDI drum instrument name
+msgid "Short Whistle"
+msgstr "Apito Curto"
+
+#. General MIDI drum instrument name
+msgid "Long Whistle"
+msgstr "Apito Longo"
