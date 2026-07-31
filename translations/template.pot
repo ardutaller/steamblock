@@ -6733,6 +6733,93 @@ msgstr ""
 msgid "mp3 set volume _ (0-30)"
 msgstr ""
 
+#. Catalab 32 library choice
+msgid "spin"
+msgstr ""
+
+#. Catalab 32 library choice
+msgid "button pressed?"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "humidity"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "clear LED strip"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "button _ pressed?"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "play buzzer frequency _ duration _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "play buzzer note _ octave _ duration _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "set LED strip #BR# _ _ _ _ _ _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "control LED _ block _ on _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "control motor _ power _ (-100 to 100)"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "rotary encoder _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "write OLED screen _ x _ y _ big _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "write TFT screen _ x _ y _ color _ size _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "start TFT screen"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "joystick _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "move servo _ to _ degrees (0-180)"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "stop all motors"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "magnetic flux"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "light intensity"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "distance in cm"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "temperature"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "touch _ detected?"
+msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "New"

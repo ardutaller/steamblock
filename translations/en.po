@@ -6733,6 +6733,93 @@ msgstr "mp3 resume"
 msgid "mp3 set volume _ (0-30)"
 msgstr "mp3 set volume _ (0-30)"
 
+#. Catalab 32 library choice
+msgid "spin"
+msgstr "spin"
+
+#. Catalab 32 library choice
+msgid "button pressed?"
+msgstr "button pressed?"
+
+#. Catalab 32 library block
+msgid "humidity"
+msgstr "humidity"
+
+#. Catalab 32 library block
+msgid "clear LED strip"
+msgstr "clear LED strip"
+
+#. Catalab 32 library block
+msgid "button _ pressed?"
+msgstr "button _ pressed?"
+
+#. Catalab 32 library block
+msgid "play buzzer frequency _ duration _"
+msgstr "play buzzer frequency _ duration _"
+
+#. Catalab 32 library block
+msgid "play buzzer note _ octave _ duration _"
+msgstr "play buzzer note _ octave _ duration _"
+
+#. Catalab 32 library block
+msgid "set LED strip #BR# _ _ _ _ _ _"
+msgstr "set LED strip #BR# _ _ _ _ _ _"
+
+#. Catalab 32 library block
+msgid "control LED _ block _ on _"
+msgstr "control LED _ block _ on _"
+
+#. Catalab 32 library block
+msgid "control motor _ power _ (-100 to 100)"
+msgstr "control motor _ power _ (-100 to 100)"
+
+#. Catalab 32 library block
+msgid "rotary encoder _"
+msgstr "rotary encoder _"
+
+#. Catalab 32 library block
+msgid "write OLED screen _ x _ y _ big _"
+msgstr "write OLED screen _ x _ y _ big _"
+
+#. Catalab 32 library block
+msgid "write TFT screen _ x _ y _ color _ size _"
+msgstr "write TFT screen _ x _ y _ color _ size _"
+
+#. Catalab 32 library block
+msgid "start TFT screen"
+msgstr "start TFT screen"
+
+#. Catalab 32 library block
+msgid "joystick _"
+msgstr "joystick _"
+
+#. Catalab 32 library block
+msgid "move servo _ to _ degrees (0-180)"
+msgstr "move servo _ to _ degrees (0-180)"
+
+#. Catalab 32 library block
+msgid "stop all motors"
+msgstr "stop all motors"
+
+#. Catalab 32 library block
+msgid "magnetic flux"
+msgstr "magnetic flux"
+
+#. Catalab 32 library block
+msgid "light intensity"
+msgstr "light intensity"
+
+#. Catalab 32 library block
+msgid "distance in cm"
+msgstr "distance in cm"
+
+#. Catalab 32 library block
+msgid "temperature"
+msgstr "temperature"
+
+#. Catalab 32 library block
+msgid "touch _ detected?"
+msgstr "touch _ detected?"
 
 #. In MicroBlocks IDE project menu
 msgid "New"
@@ -7113,6 +7200,10 @@ msgstr "install ESP firmware from microblocks.fun"
 #. Settings menu option
 msgid "show program size on board"
 msgstr "show program size on board"
+
+#. Settings menu option
+msgid "snapshot code on board"
+msgstr "snapshot code on board"
 
 #. Program size information
 msgid "Using %1 out of %2 bytes"
@@ -7824,6 +7915,14 @@ msgstr "user library"
 #. String in file picker and library dialogs
 msgid "Add Library"
 msgstr "Add Library"
+
+#. Placeholder text in the block search box (ctrl-space)
+msgid "search blocks and variables..."
+msgstr "search blocks and variables..."
+
+#. Shown in the block search box when no block matches the search
+msgid "no matches"
+msgstr "no matches"
 
 #. the %1 tag should be kept intact. Seconds remaining for a process to finish.
 msgid "%1 seconds remaining"
