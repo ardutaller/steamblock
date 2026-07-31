@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-07-31 02:07+0000\n"
+"PO-Revision-Date: 2026-07-31 14:22+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -8568,3 +8568,103 @@ msgid "Report the number of words of memory available. Stop button frees up memo
 msgstr ""
 "Reportar o número de palavras (words) da memória disponíveis. O botão Parar "
 "libera memória."
+
+#. Catalab 32 library choice
+msgid "spin"
+msgstr "Giro"
+
+#. Catalab 32 library choice
+msgid "button pressed?"
+msgstr "botão pressionado?"
+
+#. Catalab 32 library block
+msgid "humidity"
+msgstr "umidade"
+
+#. Catalab 32 library block
+msgid "clear LED strip"
+msgstr "apagar fita LED"
+
+#. Catalab 32 library block
+msgid "button _ pressed?"
+msgstr "botão _ pressionado?"
+
+#. Catalab 32 library block
+msgid "play buzzer frequency _ duration _"
+msgstr "controlar buzzer frequência _ duração _"
+
+#. Catalab 32 library block
+msgid "play buzzer note _ octave _ duration _"
+msgstr "controlar buzzer nota _ oitava _ duração _"
+
+#. Catalab 32 library block
+msgid "set LED strip #BR# _ _ _ _ _ _"
+msgstr "controlar fita LED _ _ _ _ _ _"
+
+#. Catalab 32 library block
+msgid "control LED _ block _ on _"
+msgstr "controlar LED _ bloco _ ligar _"
+
+#. Catalab 32 library block
+msgid "control motor _ power _ (-100 to 100)"
+msgstr "controlar motor _ potência _ (-100 a 100)"
+
+#. Catalab 32 library block
+msgid "rotary encoder _"
+msgstr "encoder rotativo _"
+
+#. Catalab 32 library block
+msgid "write OLED screen _ x _ y _ big _"
+msgstr "escrever tela OLED _ x _ y _ maior _"
+
+#. Catalab 32 library block
+msgid "write TFT screen _ x _ y _ color _ size _"
+msgstr "escrever tela TFT _ x _ y _ cor _ tamanho _"
+
+#. Catalab 32 library block
+msgid "start TFT screen"
+msgstr "iniciar tela TFT"
+
+#. Catalab 32 library block
+msgid "joystick _"
+msgstr "joystick _"
+
+#. Catalab 32 library block
+msgid "move servo _ to _ degrees (0-180)"
+msgstr "mover servomotor _ para _ graus (0-180)"
+
+#. Catalab 32 library block
+msgid "stop all motors"
+msgstr "parar todos motores"
+
+#. Catalab 32 library block
+msgid "magnetic flux"
+msgstr "fluxo magnético"
+
+#. Catalab 32 library block
+msgid "light intensity"
+msgstr "intensidade de luz"
+
+#. Catalab 32 library block
+msgid "distance in cm"
+msgstr "distância em cm"
+
+#. Catalab 32 library block
+msgid "temperature"
+msgstr "temperatura"
+
+#. Catalab 32 library block
+msgid "touch _ detected?"
+msgstr "toque _ detectado?"
+
+#. Settings menu option
+msgid "snapshot code on board"
+msgstr "captura do código da placa"
+
+#. Placeholder text in the block search box (ctrl-space)
+msgid "search blocks and variables..."
+msgstr "blocos de pesquisa e variáveis..."
+
+#. Shown in the block search box when no block matches the search
+msgid "no matches"
+msgstr "não encotrado"
