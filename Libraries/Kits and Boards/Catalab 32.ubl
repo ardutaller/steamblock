@@ -1,8 +1,8 @@
 module 'Catalab 32'
 author 'Allan Moreira'
-version 1 3 
+version 1 4 
 depends Tone _Servo '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel 'External Display' TFT 'Tiny OLED' 'LED Display' 
-choices catalab_led_cor Vermelho Amarelo Verde 
+choices catalab_led_cor red yellow green 
 choices catalab_joystick X Y 'button pressed?' 
 choices catalab_encoder spin 'button pressed?' 
 choices catalab_chaves SW1 SW2 SW3 SW4 
@@ -18,7 +18,7 @@ tags tags OLED LDR Hall Motor HC-SR04 TFT Dht11 encoder 4 keys tactil  TFT I2C
 https://github.com/aqmoreira/Catalab'
 variables _catalab_encoder 
 
-  spec ' ' 'catalab_controlarLED' 'control LED _ block _ on _' 'menu.catalab_led_cor menu.catalab_led_bloco bool' 'Vermelho' 'A' true
+  spec ' ' 'catalab_controlarLED' 'control LED _ block _ on _' 'menu.catalab_led_cor menu.catalab_led_bloco bool' 'red' 'A' true
   spec ' ' 'catalab_controlarBuzzerNota' 'play buzzer note _ octave _ duration _' 'menu.tone_NoteName num num' 'nt;c' 0 500
   spec ' ' 'catalab_controlarBuzzerFreq' 'play buzzer frequency _ duration _' 'num num' 440 500
   space
@@ -81,17 +81,17 @@ to catalab_controlarFitaLED c1 c2 c3 c4 c5 c6 {
 }
 
 to catalab_controlarLED led bloco ligar {
-  if (led == ('[data:toString]' 'Vermelho')) {if (bloco == ('[data:toString]' 'A')) {
+  if (led == ('[data:toString]' 'red')) {if (bloco == ('[data:toString]' 'A')) {
     digitalWriteOp 15 ligar
   } else {
     digitalWriteOp 32 ligar
   }}
-  if (led == ('[data:toString]' 'Amarelo')) {if (bloco == ('[data:toString]' 'A')) {
+  if (led == ('[data:toString]' 'yellow')) {if (bloco == ('[data:toString]' 'A')) {
     digitalWriteOp 27 ligar
   } else {
     digitalWriteOp 33 ligar
   }}
-  if (led == ('[data:toString]' 'Verde')) {if (bloco == ('[data:toString]' 'A')) {
+  if (led == ('[data:toString]' 'green')) {if (bloco == ('[data:toString]' 'A')) {
     digitalWriteOp 26 ligar
   } else {
     digitalWriteOp 25 ligar
