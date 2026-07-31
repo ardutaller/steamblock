@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-07-31 14:22+0000\n"
+"PO-Revision-Date: 2026-08-01 07:34+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -1897,7 +1897,7 @@ msgstr "de _"
 
 #. Block in Control category
 msgid "arg _ default _"
-msgstr "parametro_valor padrão _"
+msgstr "parametro _ valor padrão _"
 
 #. Block in Control category
 msgid "exit loop"
@@ -1913,11 +1913,11 @@ msgstr "com _"
 
 #. Block in Operators category
 msgid "min _ _"
-msgstr "mínimo __"
+msgstr "mínimo _ _"
 
 #. Block in Operators category
 msgid "max _ _"
-msgstr "máximo __"
+msgstr "máximo _ _"
 
 #. Block in Operators category
 msgid "convert _ to _"
@@ -1925,7 +1925,7 @@ msgstr "converte_para_"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
-msgstr "se_então_senão_"
+msgstr "se _ então _ senão _"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "byte array"
@@ -1933,7 +1933,7 @@ msgstr "array de byte"
 
 #. Block in Operators category
 msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
-msgstr "redimensionar_de(_,_) para ( _ , _ )"
+msgstr "redimensionar _ de( _ , _ ) para ( _ , _ )"
 
 #. Block in Operators category
 msgid "sqrt _"
@@ -3130,7 +3130,7 @@ msgstr "si"
 #. Ringtone library label
 #. Can play Nokring-formatted music. Also known as RTTTL.
 msgid "Ringtone"
-msgstr "Som de chamada"
+msgstr "Toque Telefone Retro"
 
 #. Ringtone library block
 msgid "play ringtone _"
@@ -8668,3 +8668,51 @@ msgstr "blocos de pesquisa e variáveis..."
 #. Shown in the block search box when no block matches the search
 msgid "no matches"
 msgstr "não encotrado"
+
+#. Tiny OLED library block
+msgid "clear tiny OLED display"
+msgstr "apagar tela OLED"
+
+#. Tiny OLED library block
+msgid "draw circle center _ _ radius _ fill _ white _"
+msgstr "desenhar circulo centro x _ y _ raio _ preenchido _ branco_"
+
+#. Tiny OLED library block
+msgid "draw image _ x _ y _"
+msgstr "desenhar imagem _ x_ y_"
+
+#. Tiny OLED library block
+msgid "draw line from _ _ to _ _ white _"
+msgstr "desenhar linha de x _ y_ para x_ y_ branco _"
+
+#. Tiny OLED library block
+msgid "draw pixel x _ y _ white _"
+msgstr "desenhar pixel x _ y _ branco _"
+
+#. Tiny OLED library block
+msgid "draw rect x _ y _ w _ h _ fill _ white _"
+msgstr "desenhar retângulo x _ y_ largura _ altura _ preenchido _ branco _"
+
+#. Tiny OLED library block
+msgid "draw string _ x _ y _ white _"
+msgstr "desenhar texto _ x _ y _ branco _"
+
+#. Tiny OLED library block
+msgid "draw big string _ x _ y _ white _"
+msgstr "escrever texto grande _ x _ y _ branco _"
+
+#. Tiny OLED library block
+msgid "defer tiny OLED display updates"
+msgstr "adiar atualizações da tela OLED"
+
+#. Tiny OLED library block
+msgid "set tiny OLED brightness _"
+msgstr "definir bilho OLED _"
+
+#. Tiny OLED library block
+msgid "reset tiny OLED pin _"
+msgstr "reset pino _ OLED"
+
+#. Tiny OLED library block
+msgid "show tiny OLED display updates"
+msgstr "mostrar atualizações de tela OLED"
