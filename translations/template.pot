@@ -1721,6 +1721,58 @@ msgstr ""
 msgid "defer display updates"
 msgstr ""
 
+#. Tiny OLED library block
+msgid "clear tiny OLED display"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw circle center _ _ radius _ fill _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw image _ x _ y _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw line from _ _ to _ _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw pixel x _ y _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw rect x _ y _ w _ h _ fill _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw string _ x _ y _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw big string _ x _ y _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "defer tiny OLED display updates"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "image _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "set tiny OLED brightness _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "reset tiny OLED pin _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "show tiny OLED display updates"
+msgstr ""
+
 #. TFT display library block
 msgid "clear TFT display"
 msgstr ""
