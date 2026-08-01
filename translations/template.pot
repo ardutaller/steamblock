@@ -1758,10 +1758,6 @@ msgid "defer tiny OLED display updates"
 msgstr ""
 
 #. Tiny OLED library block
-msgid "image _"
-msgstr ""
-
-#. Tiny OLED library block
 msgid "set tiny OLED brightness _"
 msgstr ""
 
