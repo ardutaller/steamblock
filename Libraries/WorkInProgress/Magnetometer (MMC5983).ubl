@@ -1,0 +1,52 @@
+module 'Magnetometer (MMC5983)' Input
+author MicroBlocks
+version 1 0 
+description 'Magnetometer based on the MMC5983  (I2C addr: 0x30).
+
+https://media.digikey.com/pdf/Data%20Sheets/MEMSIC%20PDFs/MMC5983MA_RevA_4-3-19.pdf
+'
+
+  spec 'r' 'mmc5983_mag_x' 'mag x'
+  spec 'r' 'mmc5983_mag_y' 'mag y'
+  spec 'r' 'mmc5983_mag_z' 'mag z'
+  spec 'r' 'mmc5983_mag_total' 'mag total'
+  space
+  spec 'r' '_mmc5983_read' '_mmc5983_read'
+
+to '_mmc5983_read' {
+  i2cSet (hexToInt '30') 9 1
+  waitUntil (((i2cGet (hexToInt '30') 8) & 1) != 0)
+  local 'data' ('[data:newByteArray]' 7)
+  '[sensors:i2cWrite]' (hexToInt '30') 0
+  '[sensors:i2cRead]' (hexToInt '30') data
+  return data
+}
+
+to mmc5983_mag_total {
+  local 'x' (mmc5983_mag_x)
+  local 'y' (mmc5983_mag_y)
+  local 'z' (mmc5983_mag_z)
+  return ('[misc:sqrt]' (((x * x) + (y * y)) + (z * z)))
+}
+
+to mmc5983_mag_x {
+  local 'data' ('_mmc5983_read')
+  local 'result' (((at 1 data) << 8) | (at 2 data))
+  result = ((result << 2) | (((at 7 data) >> 6) & 3))
+  return (result - 131072)
+}
+
+to mmc5983_mag_y {
+  local 'data' ('_mmc5983_read')
+  local 'result' (((at 3 data) << 8) | (at 4 data))
+  result = ((result << 2) | (((at 7 data) >> 4) & 3))
+  return (result - 131072)
+}
+
+to mmc5983_mag_z {
+  local 'data' ('_mmc5983_read')
+  local 'result' (((at 5 data) << 8) | (at 6 data))
+  result = ((result << 2) | (((at 7 data) >> 2) & 3))
+  return (result - 131072)
+}
+
