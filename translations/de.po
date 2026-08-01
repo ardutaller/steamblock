@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-01 07:34+0000\n"
+"PO-Revision-Date: 2026-08-01 11:03+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8871,7 +8871,7 @@ msgstr "zeige Tiny OLED Display-Updates"
 
 #. Catalab 32 library choice
 msgid "spin"
-msgstr "drehen"
+msgstr "Drehung"
 
 #. Catalab 32 library choice
 msgid "button pressed?"
@@ -8887,7 +8887,7 @@ msgstr "lösche LED-Streifen"
 
 #. Catalab 32 library block
 msgid "button _ pressed?"
-msgstr "Taste _ gedrückt?"
+msgstr "Knopf _ gedrückt?"
 
 #. Catalab 32 library block
 msgid "play buzzer frequency _ duration _"
