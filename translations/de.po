@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-07-14 04:01+0000\n"
+"PO-Revision-Date: 2026-08-01 07:34+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -8820,3 +8820,151 @@ msgstr "improvisiere über _ Takte mit Dauer _ und Lautstärke _ auf Kanal _"
 #. Calliope MotionKit library block
 msgid "MotionKit set servo _ to _ degrees (-90~90)"
 msgstr "MotionKit setze Servo _ auf Winkel _ ° (-90~90)"
+
+#. Tiny OLED library block
+msgid "clear tiny OLED display"
+msgstr "lösche Tiny OLED display"
+
+#. Tiny OLED library block
+msgid "draw circle center _ _ radius _ fill _ white _"
+msgstr "zeichne Kreis um _ _ Radius _ fülle _ weiß _"
+
+#. Tiny OLED library block
+msgid "draw image _ x _ y _"
+msgstr "zeichne Bild _ x _ y _"
+
+#. Tiny OLED library block
+msgid "draw line from _ _ to _ _ white _"
+msgstr "zeichne Linie von _ _ nach _ _ weiß _"
+
+#. Tiny OLED library block
+msgid "draw pixel x _ y _ white _"
+msgstr "zeichne Pixel x _ y _ weiß _"
+
+#. Tiny OLED library block
+msgid "draw rect x _ y _ w _ h _ fill _ white _"
+msgstr "zeichne Rechteck x _ y _ b _ h _ fülle _ weiß _"
+
+#. Tiny OLED library block
+msgid "draw string _ x _ y _ white _"
+msgstr "schreibe Text _ x _ y _ weiß _"
+
+#. Tiny OLED library block
+msgid "draw big string _ x _ y _ white _"
+msgstr "schreibe großen Text _ x _ y _ weiß _"
+
+#. Tiny OLED library block
+msgid "defer tiny OLED display updates"
+msgstr "stoppe Tiny OLED Display-Updates"
+
+#. Tiny OLED library block
+msgid "set tiny OLED brightness _"
+msgstr "setze Tiny OLED Helligkeit _"
+
+#. Tiny OLED library block
+msgid "reset tiny OLED pin _"
+msgstr "Tiny OLED Reset-Pin _"
+
+#. Tiny OLED library block
+msgid "show tiny OLED display updates"
+msgstr "zeige Tiny OLED Display-Updates"
+
+#. Catalab 32 library choice
+msgid "spin"
+msgstr "drehen"
+
+#. Catalab 32 library choice
+msgid "button pressed?"
+msgstr "Knopf gedrückt?"
+
+#. Catalab 32 library block
+msgid "humidity"
+msgstr "Feuchtigkeit"
+
+#. Catalab 32 library block
+msgid "clear LED strip"
+msgstr "lösche LED-Streifen"
+
+#. Catalab 32 library block
+msgid "button _ pressed?"
+msgstr "Taste _ gedrückt?"
+
+#. Catalab 32 library block
+msgid "play buzzer frequency _ duration _"
+msgstr "spiele Buzzer Frequenz _ Dauer _"
+
+#. Catalab 32 library block
+msgid "play buzzer note _ octave _ duration _"
+msgstr "spiele Buzzer Note _ Oktave _ Dauer _"
+
+#. Catalab 32 library block
+msgid "set LED strip #BR# _ _ _ _ _ _"
+msgstr "setze LED-Streifen #BR# _ _ _ _ _ _"
+
+#. Catalab 32 library block
+msgid "control LED _ block _ on _"
+msgstr "steuere LED _ Block _ an _"
+
+#. Catalab 32 library block
+msgid "control motor _ power _ (-100 to 100)"
+msgstr "steuere Motor _ Tempo _ (-100 bis 100)"
+
+#. Catalab 32 library block
+msgid "rotary encoder _"
+msgstr "Rotations-Encoder _"
+
+#. Catalab 32 library block
+msgid "write OLED screen _ x _ y _ big _"
+msgstr "schreibe OLED Text _ x _ y _ groß _"
+
+#. Catalab 32 library block
+msgid "write TFT screen _ x _ y _ color _ size _"
+msgstr "schreibe TFT Text _ x _ y _ Farbe _Größe _"
+
+#. Catalab 32 library block
+msgid "start TFT screen"
+msgstr "starte TFT-Display"
+
+#. Catalab 32 library block
+msgid "joystick _"
+msgstr "Joystick _"
+
+#. Catalab 32 library block
+msgid "move servo _ to _ degrees (0-180)"
+msgstr "setze Servo _ auf Winkel _ ° (0-180)"
+
+#. Catalab 32 library block
+msgid "stop all motors"
+msgstr "stoppe alle Motoren"
+
+#. Catalab 32 library block
+msgid "magnetic flux"
+msgstr "magnetische Kraft"
+
+#. Catalab 32 library block
+msgid "light intensity"
+msgstr "Lichtintensität"
+
+#. Catalab 32 library block
+msgid "distance in cm"
+msgstr "Entfernung in cm"
+
+#. Catalab 32 library block
+msgid "temperature"
+msgstr "Temperatur"
+
+#. Catalab 32 library block
+msgid "touch _ detected?"
+msgstr "Berührung _ festgestellt?"
+
+#. Settings menu option
+msgid "snapshot code on board"
+msgstr "sichere Code auf dem Board"
+
+#. Placeholder text in the block search box (ctrl-space)
+msgid "search blocks and variables..."
+msgstr "suche Blöcke und Variablen …"
+
+#. Shown in the block search box when no block matches the search
+msgid "no matches"
+msgstr "keine Treffer"
