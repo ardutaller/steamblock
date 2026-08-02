@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2026-02-11 08:26+0200\n"
-"PO-Revision-Date: 2026-06-06 01:01+0000\n"
+"PO-Revision-Date: 2026-08-03 06:01+0000\n"
 "Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/microblocks/"
 "ide/id/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.6\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -7813,3 +7813,7 @@ msgstr ""
 #. TFT Display library block
 msgid "draw image _ on TFT at x _ y _ color _"
 msgstr "gambar citra _ pada TFT di x _ y _ warna _"
+
+#. Example string. Tells the user this input accepts a list of strings.
+msgid "a list of strings"
+msgstr "daftar string"
