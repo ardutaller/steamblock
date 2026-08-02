@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-01 11:03+0000\n"
+"PO-Revision-Date: 2026-08-03 06:01+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -7655,7 +7655,7 @@ msgstr "rechts"
 
 #. KidsIOT library block
 msgid "#SVG#square11#ff0000 analog _ port _"
-msgstr "#SVG#square11#ff0000 analog _ Port _"
+msgstr "#SVG#square11#ff0000 Analog _ Port _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#ffffff RGB color _ port _"
@@ -7687,7 +7687,7 @@ msgstr "#SVG#square11#0070ff spiele Note _ Octave _ für _ Port _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#ffffff rotary encoder _ port _"
-msgstr "#SVG#square11#ffffff Drehencoder _ Port _"
+msgstr "#SVG#square11#ffffff Dreh-Encoder _ Port _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#0070ff set NeoPixels _ _ _ _ port _"
@@ -8775,11 +8775,11 @@ msgstr "stoppe Kanal _ in _ ms"
 
 #. Wavetable Synthesis library block
 msgid "graph envelope for channel _"
-msgstr "Grafische Hüllkurve für Kanal _"
+msgstr "grafische Hüllkurve für Kanal _"
 
 #. Wavetable Synthesis library block
 msgid "graph wave table for channel _"
-msgstr "Grafisches Wavetable für Kanal _"
+msgstr "grafisches Wavetable für Kanal _"
 
 #. Wavetable instrument name
 msgid "saxophone"
@@ -8911,7 +8911,7 @@ msgstr "steuere Motor _ Tempo _ (-100 bis 100)"
 
 #. Catalab 32 library block
 msgid "rotary encoder _"
-msgstr "Rotations-Encoder _"
+msgstr "Dreh-Encoder _"
 
 #. Catalab 32 library block
 msgid "write OLED screen _ x _ y _ big _"
@@ -8955,7 +8955,7 @@ msgstr "Temperatur"
 
 #. Catalab 32 library block
 msgid "touch _ detected?"
-msgstr "Berührung _ festgestellt?"
+msgstr "Berührung _ erkannt?"
 
 #. Settings menu option
 msgid "snapshot code on board"
