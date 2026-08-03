@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-03 06:01+0000\n"
+"PO-Revision-Date: 2026-08-03 19:09+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.dev0\n"
+"X-Generator: Weblate 2026.8.1.dev0\n"
 
 #. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
 msgid "number"
@@ -4146,7 +4146,7 @@ msgstr "Hintergrundfarbe _"
 
 #. Pseudorandomness library block
 msgid "pseudorandom _ to _ with seed _"
-msgstr "pseudozufällig _ bis _ mit Seed _"
+msgstr "pseudozufällig _ bis _ mit Startwert _"
 
 #. Keyboard and Mouse library block
 msgid "while holding _"
@@ -4578,7 +4578,7 @@ msgstr "nimm _ von _"
 
 #. Pseudorandomness library block
 msgid "_ pseudorandom numbers _ to _ with seed _"
-msgstr "_ pseudozufällige Zahlen _ bis _ mit Seed _"
+msgstr "_ pseudozufällige Zahlen _ bis _ mit Startwert _"
 
 #. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
 msgid "Report a list containing the given range of numbers (with optional increment). Useful in \"for\" loops."
