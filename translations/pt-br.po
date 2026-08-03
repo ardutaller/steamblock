@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-08-01 07:34+0000\n"
+"PO-Revision-Date: 2026-08-04 20:01+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.8.dev0\n"
+"X-Generator: Weblate 2026.8.1.dev0\n"
 
 #. Block in Input category
 msgid "microseconds"
@@ -8716,3 +8716,15 @@ msgstr "reset pino _ OLED"
 #. Tiny OLED library block
 msgid "show tiny OLED display updates"
 msgstr "mostrar atualizações de tela OLED"
+
+#. Wavetable Synthesis library block
+msgid "set envelope attack-decay _ release _ for channel _"
+msgstr "definir envelope ataque-decaimento _ liberação _ para o canal _"
+
+#. KidsIOT library block
+msgid "#SVG#square11#00c612 dual motor _ power _ (-100 to 100)"
+msgstr "#SVG#square11#00c612 motor duplo _ potência _ (-100 to 100)"
+
+#. KidsIOT library block
+msgid "#SVG#square11#00c612 dual motor stop _"
+msgstr "#SVG#square11#00c612 motor duplo parar _"
