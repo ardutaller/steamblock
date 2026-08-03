@@ -2402,6 +2402,10 @@ msgid "stop channel _ in _ ms"
 msgstr "stop channel _ in _ ms"
 
 #. Wavetable Synthesis library block
+msgid "set envelope attack-decay _ release _ for channel _"
+msgstr "set envelope attack-decay _ release _ for channel _"
+
+#. Wavetable Synthesis library block
 msgid "graph envelope for channel _"
 msgstr "graph envelope for channel _"
 
@@ -6524,6 +6528,14 @@ msgstr "#SVG#square11#0070ff play note _ octave _ for _ port _"
 #. KidsIOT library block
 msgid "#SVG#square11#ffffff rotary encoder _ port _"
 msgstr "#SVG#square11#ffffff rotary encoder _ port _"
+
+#. KidsIOT library block
+msgid "#SVG#square11#00c612 dual motor _ power _ (-100 to 100)"
+msgstr "#SVG#square11#00c612 dual motor _ power _ (-100 to 100)"
+
+#. KidsIOT library block
+msgid "#SVG#square11#00c612 dual motor stop _"
+msgstr "#SVG#square11#00c612 dual motor stop _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#0070ff set NeoPixels _ _ _ _ port _"
