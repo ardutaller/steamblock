@@ -1,0 +1,103 @@
+module 'Color & Proximity (APDS9151)' Input
+author MicroBlocks
+version 1 0 
+description 'Color, light (RGB and IR) and proximity sensor library.
+https://docs.broadcom.com/doc/APDS-9151-DS
+'
+variables _apdsAddr 
+
+  spec 'r' 'apds9151_lightLevel' 'apds9151 light level'
+  space
+  spec 'r' 'apds9151_color' 'apds9151 color'
+  spec 'r' 'apds9151_hue' 'apds9151 hue'
+  spec 'r' 'apds9151_seesColor' 'apds9151 sees color _ : threshold _' 'color num' nil 30
+  space
+  spec 'r' 'apds9151_isClose' 'apds9151 object close?'
+  spec 'r' 'apds9151_proximity' 'apds9151 proximity'
+  advanced
+  spec 'r' 'apds9151_IR' 'apds9151 IR'
+  space
+  spec ' ' '_apds9151_init' '_apds9151_init'
+  spec 'r' '_apds9151_readData' '_apds9151_readData'
+  spec 'r' '_apds9151_twentyBits' '_apds9151_twentyBits _ _ _' 'auto auto auto' 0 0 0
+
+to '_apds9151_init' {
+  if (_apdsAddr != 0) {
+    comment 'Already initialized'
+    return 0
+  }
+  _apdsAddr = (hexToInt '52')
+  comment 'Set 11-bit proximity resolution, 100 ms measurement rate'
+  i2cSet _apdsAddr 3 (hexToInt '1D')
+  comment 'Enable RGB and proximity sensing'
+  i2cSet _apdsAddr 0 7
+  comment 'Wait at least 500 usecs for startup'
+  waitMillis 1
+}
+
+to '_apds9151_readData' {
+  if (_apdsAddr == 0) {'_apds9151_init'}
+  local 'data' ('[data:newByteArray]' 14)
+  comment 'Read all data:
+  Proximity: 2 bytes, 11 bits
+  IR, R, G, B: 3 bytes 24 bits each
+Note: These values are updated
+every 100 msecs. This method does
+not wait for an update; it just returns
+the last values read.'
+  '[sensors:i2cWrite]' _apdsAddr 8
+  '[sensors:i2cRead]' _apdsAddr data
+  return data
+}
+
+to '_apds9151_twentyBits' byte1 byte2 byte3 {
+  return ((((byte3 & 15) << 16) | (byte2 << 8)) | byte1)
+}
+
+to apds9151_IR {
+  local 'data' ('_apds9151_readData')
+  return ('_apds9151_twentyBits' (at 3 data) (at 4 data) (at 5 data))
+}
+
+to apds9151_color {
+  local 'data' ('_apds9151_readData')
+  local 'r' ('_apds9151_twentyBits' (at 12 data) (at 13 data) (at 14 data))
+  local 'g' ('_apds9151_twentyBits' (at 6 data) (at 7 data) (at 8 data))
+  local 'b' ('_apds9151_twentyBits' (at 9 data) (at 10 data) (at 11 data))
+  local 'max' (maximum r g b)
+  r = ((255 * r) / max)
+  g = ((255 * g) / max)
+  b = ((255 * b) / max)
+  return (((r << 16) | (g << 8)) | b)
+}
+
+to apds9151_hue {
+  return ('[misc:hue]' (apds9151_color))
+}
+
+to apds9151_isClose {
+  return ((apds9151_proximity) > 15)
+}
+
+to apds9151_lightLevel {
+  comment 'Green level is close the human perceived brightness.
+Level is a 20-bit value (0-1048575) to provide a wide dynamic range.'
+  local 'data' ('_apds9151_readData')
+  return ('_apds9151_twentyBits' (at 6 data) (at 7 data) (at 8 data))
+}
+
+to apds9151_proximity {
+  local 'data' ('_apds9151_readData')
+  return ((((at 2 data) & 7) << 8) | (at 1 data))
+}
+
+to apds9151_seesColor c optionalThreshold {
+  local 'threshold' (argOrDefault 2 15)
+  local 'diff' (absoluteValue ((apds9151_hue) - ('[misc:hue]' c)))
+  return (diff <= threshold)
+}
+
+script 749 305 {
+to veml6040_seesColor c optionalThreshold {}
+}
+
