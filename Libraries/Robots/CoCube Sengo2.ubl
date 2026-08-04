@@ -1,7 +1,7 @@
 module 'CoCube Sengo2' Input
 author 'You Zhongrui, Liang Shuai'
 version 1 1 
-depends 'Robots/CoCube' _Servo 
+depends 'Robots/CoCube' _Servo '_Distance (VL53L0X)' 
 tags 'cocube robot' 
 choices sg2_result_Menu x y w h 
 choices sg2_rgb_Menu R G B 
