@@ -167,6 +167,9 @@ void hardwareInit() {
 	#if defined(ESP32)
 		if (hasPSRAM()) reservePinsForPSRAM();
 	#endif
+	#if defined(DATABOT_V3)
+		databotV3Init();
+	#endif
 	initPins();
 	initRandomSeed();
 	turnOffInternalNeoPixels();

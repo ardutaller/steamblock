@@ -408,6 +408,11 @@ void tftSetHugePixelBits(int bits);
 void cocubeSensorInit();
 void cocubeSensorUpdate();
 
+// Databat V3 Support
+
+void databotV3Init();
+void databotV3PowerdownCheck();
+
 // BLE Support
 
 extern int BLE_allowShutdown;

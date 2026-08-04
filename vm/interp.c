@@ -1409,6 +1409,9 @@ void vmLoop() {
 					BLE_allowShutdown = false; // don't check again
 				}
 			#endif
+			#if defined(DATABOT_V3)
+				databotV3PowerdownCheck();
+			#endif
 			#ifdef CAN_NAP
 				if (!napIfPossible()) count = 95;
 			#else

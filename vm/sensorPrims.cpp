@@ -2049,6 +2049,120 @@ OBJ primMBTiltX(int argCount, OBJ *args) { return int2obj(readAcceleration(1)); 
 OBJ primMBTiltY(int argCount, OBJ *args) { return int2obj(readAcceleration(3)); }
 OBJ primMBTiltZ(int argCount, OBJ *args) { return int2obj(readAcceleration(5)); }
 
+// Dabatbot v3 Support
+
+#if defined(DATABOT_V3)
+
+typedef enum {
+	OP_DCDC1 = 0, // 0
+	OP_LDO4,      // 1
+	OP_LDO2,      // 2
+	OP_LDO3,      // 3
+	OP_DCDC2,     // 4
+} PMU_OUTPUT;
+
+#define PMU_ADDR 0x34
+
+static int readPMUReg(int reg) {
+	Wire1.beginTransmission(PMU_ADDR);
+	Wire1.write(reg);
+	int error = Wire1.endTransmission();
+	if (error) return 0; // error; return 0
+	Wire1.requestFrom(PMU_ADDR, 1);
+	return Wire1.available() ? Wire1.read() : 0;
+}
+
+static void writePMUReg(int reg, int value) {
+	Wire1.beginTransmission(PMU_ADDR);
+	Wire1.write(reg);
+	Wire1.write(value);
+	Wire1.endTransmission();
+}
+
+static int withinRange(int n, int low, int high) {
+	if (n < low) n = low;
+	if (n > high) n = high;
+	return n;
+}
+
+static void pmuEnableOutput(int which, int enableFlag) {
+  uint8_t buff = readPMUReg(0x12);
+  buff = enableFlag ? (buff | (1 << which)) : (buff & ~(1 << which));
+  writePMUReg(0x12, buff);
+}
+
+static void pmuSetVoltage(int which, int millivolts) {
+	uint8_t buff = 0;
+	switch (which) {
+	case OP_DCDC1:
+		millivolts = (withinRange(millivolts, 700, 3500) - 700) / 25;
+		buff = readPMUReg(0x26);
+		buff = (buff & 0B10000000) | (millivolts & 0B01111111);
+		writePMUReg(0x26, buff);
+		break;
+	case OP_DCDC2:
+		millivolts = (withinRange(millivolts, 700, 2275) - 700) / 25;
+		buff = readPMUReg(0x23);
+		buff = (buff & 0B11000000) | (millivolts & 0B00111111);
+		writePMUReg(0x23, buff);
+		break;
+	case OP_LDO2:
+		millivolts = (withinRange(millivolts, 1800, 3300) - 1800) / 100;
+		buff = readPMUReg(0x28);
+		buff = (buff & 0B00001111) | (millivolts << 4);
+		writePMUReg(0x28, buff);
+		break;
+	case OP_LDO3:
+		millivolts = (withinRange(millivolts, 1800, 3300) - 1800) / 100;
+		buff = readPMUReg(0x28);
+		buff = (buff & 0B11110000) | (millivolts);
+		writePMUReg(0x28, buff);
+		break;
+	case OP_LDO4:
+		millivolts = (withinRange(millivolts, 700, 3500) - 700) / 25;
+		buff = readPMUReg(0x27);
+		buff = (buff & 0B10000000) | (millivolts & 0B01111111);
+		writePMUReg(0x27, buff);
+		break;
+	}
+}
+
+static int databotInitialized = false;
+
+void databotV3Init() {
+	if (databotInitialized) return;
+	databotInitialized = true;
+
+	Wire1.begin(48, 47);
+
+	pmuEnableOutput(OP_LDO2, true);
+	pmuEnableOutput(OP_LDO3, true);
+	pmuEnableOutput(OP_LDO4, true);
+	pmuEnableOutput(OP_DCDC1, true);
+	pmuEnableOutput(OP_DCDC2, false);
+
+	pmuSetVoltage(OP_DCDC1, 3300);
+	pmuSetVoltage(OP_LDO2, 3300);
+    pmuSetVoltage(OP_LDO3, 2800);
+    pmuSetVoltage(OP_LDO4, 1800);
+}
+
+static int pmuShortPressed() {
+	return (readPMUReg(0x46) & 2) ? true : false;
+}
+
+static void pmuPowerDown() {
+	// set high bit of register 0x32 to turn off all PMU outputs
+	writePMUReg(0x32, (readPMUReg(0x32) | 128));
+}
+
+void databotV3PowerdownCheck() {
+	databotV3Init(); // ensure initialized
+	if (pmuShortPressed()) pmuPowerDown();
+}
+
+#endif // end dabatbot v3 support
+
 // Magnetometer
 
 #ifdef ARDUINO_ARCH_ESP32
