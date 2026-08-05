@@ -2054,11 +2054,11 @@ OBJ primMBTiltZ(int argCount, OBJ *args) { return int2obj(readAcceleration(5)); 
 #if defined(DATABOT_V3)
 
 typedef enum {
-	OP_DCDC1 = 0, // 0
-	OP_LDO4,      // 1
-	OP_LDO2,      // 2
-	OP_LDO3,      // 3
-	OP_DCDC2,     // 4
+	OP_DCDC1 = 0,
+	OP_LDO4,	// 1
+	OP_LDO2,	// 2
+	OP_LDO3,	// 3
+	OP_DCDC2,	// 4
 } PMU_OUTPUT;
 
 #define PMU_ADDR 0x34
@@ -2086,9 +2086,9 @@ static int withinRange(int n, int low, int high) {
 }
 
 static void pmuEnableOutput(int which, int enableFlag) {
-  uint8_t buff = readPMUReg(0x12);
-  buff = enableFlag ? (buff | (1 << which)) : (buff & ~(1 << which));
-  writePMUReg(0x12, buff);
+	uint8_t buff = readPMUReg(0x12);
+	buff = enableFlag ? (buff | (1 << which)) : (buff & ~(1 << which));
+	writePMUReg(0x12, buff);
 }
 
 static void pmuSetVoltage(int which, int millivolts) {
@@ -2143,8 +2143,8 @@ void databotV3Init() {
 
 	pmuSetVoltage(OP_DCDC1, 3300);
 	pmuSetVoltage(OP_LDO2, 3300);
-    pmuSetVoltage(OP_LDO3, 2800);
-    pmuSetVoltage(OP_LDO4, 1800);
+	pmuSetVoltage(OP_LDO3, 2800);
+	pmuSetVoltage(OP_LDO4, 1800);
 }
 
 static int pmuShortPressed() {
