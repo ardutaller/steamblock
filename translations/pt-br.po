@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-08-04 20:01+0000\n"
+"PO-Revision-Date: 2026-08-05 11:03+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -1921,7 +1921,7 @@ msgstr "máximo _ _"
 
 #. Block in Operators category
 msgid "convert _ to _"
-msgstr "converte_para_"
+msgstr "converte _ para _"
 
 #. Block in Operators category
 msgid "if _ then _ else _"
