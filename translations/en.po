@@ -5829,6 +5829,10 @@ msgstr "Sengo2 set color recog area x _ y _ width _ height _ (0-100)"
 msgid "set NeoPixels color _"
 msgstr "set NeoPixels color _"
 
+#. Calliope NeoPixel library label
+msgid "Calliope NeoPixel"
+msgstr "Calliope NeoPixel"
+
 #. Calliope NeoPixel library block
 msgid "Calliope set all NeoPixels to _"
 msgstr "Calliope set all NeoPixels to _"
@@ -5852,6 +5856,10 @@ msgstr "Calliope set NeoPixel _ to _"
 #. Calliope NeoPixel library block
 msgid "Calliope set brightness to _ %"
 msgstr "Calliope set brightness to _ %"
+
+#. Calliope Servoboard library label
+msgid "Calliope Servoboard"
+msgstr "Calliope Servoboard"
 
 #. Calliope Servoboard library block
 msgid "Calliope stop motor _"
@@ -5877,31 +5885,35 @@ msgstr "Calliope set continous servo _ to speed _ (-100~100)"
 msgid "Calliope stop servo _"
 msgstr "Calliope stop servo _"
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library label
+msgid "Calliope MotionKit"
+msgstr "Calliope MotionKit"
+
+#. Calliope MotionKit library choice
 msgid "mk2;bright"
 msgstr "bright"
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;dark"
 msgstr "dark"
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;ok"
 msgstr "ok"
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;up"
 msgstr "up"
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;down"
 msgstr "down"
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;S1"
 msgstr "S1"
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;S2"
 msgstr "S2"
 
@@ -6056,6 +6068,50 @@ msgstr "Callibot stop all"
 #. Calliope Callibot library block
 msgid "Callibot stop motor _"
 msgstr "Callibot stop motor _"
+
+#. Maqueen Car Kit library label
+msgid "Maqueen"
+msgstr "Maqueen"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen motor _ dir _ speed(0-255) _"
+msgstr "Maqueen motor _ dir _ speed(0-255) _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen stop motors _"
+msgstr "Maqueen stop motors _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen LED _ _"
+msgstr "Maqueen LED _ _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen beep _ ms"
+msgstr "Maqueen beep _ ms"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen line sensor _"
+msgstr "Maqueen line sensor _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen sees line on left _ right _"
+msgstr "Maqueen sees line on left _ right _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen distance (cm)"
+msgstr "Maqueen distance (cm)"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen IR keycode"
+msgstr "Maqueen IR keycode"
+
+#. Maqueen Car Kit library choice
+msgid "fwd"
+msgstr "fwd"
+
+#. Maqueen Car Kit library choice
+msgid "bwd"
+msgstr "bwd"
 
 #. Nezha Pro library label
 msgid "Nezha Pro"
@@ -6612,6 +6668,14 @@ msgstr "for _ seconds"
 #. KidsIOT Engineering library block
 msgid "#SVG#square11#FFA500 stop servo _"
 msgstr "#SVG#square11#FFA500 stop servo _"
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 motor _ power _ (-100 to 100)"
+msgstr "#SVG#square11#00c612 motor _ power _ (-100 to 100)"
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 stop all motors"
+msgstr "#SVG#square11#00c612 stop all motors"
 
 #. LogicLinks library block
 msgid "LogicLinks receive IR code"
