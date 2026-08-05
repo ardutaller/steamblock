@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-04 20:01+0000\n"
+"PO-Revision-Date: 2026-08-05 11:03+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -1606,7 +1606,7 @@ msgstr "DHT22 Luftfeuchtigkeit Pin _"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "move motor _ _ complete turns"
-msgstr "bewege Motor _ _ komplette Runden"
+msgstr "bewege Motor _ _ ganze Runden"
 
 #. Lists library block
 msgid "unique _"
@@ -4520,7 +4520,7 @@ msgstr "Cutebot Entfernung (cm)"
 
 #. Examples folder
 msgid "folder;CPX"
-msgstr "CPX"
+msgstr "Circuit Playground"
 
 #. Library folder
 msgid "folder;WorkInProgress"
@@ -5204,7 +5204,7 @@ msgstr "ms starte Audio"
 
 #. InnovaDidàctic 3DBot library block
 msgid "3dBot obstacle < _ cm?"
-msgstr "3dBot Hindernis < _ cm?"
+msgstr "3dBot Entfernung kleiner _ cm?"
 
 #. Keyestudio Smart Farm library block
 msgid "Farm water pump _"
@@ -6504,7 +6504,7 @@ msgstr "Calliope stoppe Servo _"
 
 #. Calliope Servoboard library block
 msgid "Calliope stop all motors and servos"
-msgstr "Calliope stoppe alle Motoren und Servos"
+msgstr "Calliope stoppe Motoren und Servos"
 
 #. Calliope NeoPixel library block
 msgid "Calliope set NeoPixels _ _ _"
@@ -7623,11 +7623,11 @@ msgstr "Berührung?"
 
 #. KidsIOT library choice
 msgid "X"
-msgstr "X"
+msgstr "x"
 
 #. KidsIOT library choice
 msgid "Y"
-msgstr "Y"
+msgstr "y"
 
 #. KidsIOT library choice
 msgid "kiot;rotation"
@@ -8638,11 +8638,11 @@ msgstr "Liste von Zeichenketten"
 
 #. Block in Comm category
 msgid "duelink receive"
-msgstr "duelink empfangen"
+msgstr "duelink empfange"
 
 #. Block in Comm category
 msgid "duelink send _ starting at _"
-msgstr "duelink senden _ Start bei _"
+msgstr "duelink sende _ starte bei _"
 
 #. NeoPanel library block
 msgid "NeoPanel scroll text _ color _"
@@ -8891,11 +8891,11 @@ msgstr "Knopf _ gedrückt?"
 
 #. Catalab 32 library block
 msgid "play buzzer frequency _ duration _"
-msgstr "spiele Buzzer Frequenz _ Dauer _"
+msgstr "spiele Summer Frequenz _ Dauer _"
 
 #. Catalab 32 library block
 msgid "play buzzer note _ octave _ duration _"
-msgstr "spiele Buzzer Note _ Oktave _ Dauer _"
+msgstr "spiele Summer Note _ Oktave _ Dauer _"
 
 #. Catalab 32 library block
 msgid "set LED strip #BR# _ _ _ _ _ _"
@@ -8975,8 +8975,8 @@ msgstr "setze Hüllkurve Attack-Decay _ Release _ für Kanal _"
 
 #. KidsIOT library block
 msgid "#SVG#square11#00c612 dual motor _ power _ (-100 to 100)"
-msgstr "#SVG#square11#00c612 Doppelmotor _ Tempo _ (-100 bis 100)"
+msgstr "#SVG#square11#00c612 Dual Motor _ Tempo _ (-100 bis 100)"
 
 #. KidsIOT library block
 msgid "#SVG#square11#00c612 dual motor stop _"
-msgstr "#SVG#square11#00c612 stoppe Doppelmotor _"
+msgstr "#SVG#square11#00c612 Dual stoppe Motor _"
