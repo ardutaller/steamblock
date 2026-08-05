@@ -6154,10 +6154,6 @@ msgid "LCD write text _ to line _"
 msgstr "LCD write text _ to line _"
 
 #. LCD 16x2 (Seeed) library example
-msgid "Hello World!"
-msgstr "Hello World!"
-
-#. LCD 16x2 (Seeed) library example
 msgid "Hi!"
 msgstr "Hi!"
 
