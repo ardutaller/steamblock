@@ -7844,7 +7844,7 @@ msgstr "Web of Things"
 
 #. Examples folder
 msgid "folder;Widgets"
-msgstr "folder;Widgets"
+msgstr "Widgets"
 
 #. Examples folder
 msgid "folder;CPX"
