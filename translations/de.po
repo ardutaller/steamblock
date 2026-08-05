@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-05 11:39+0000\n"
+"PO-Revision-Date: 2026-08-05 14:45+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -231,7 +231,7 @@ msgstr "Diagramm"
 
 #. Library folder
 msgid "folder;Libraries"
-msgstr "Module"
+msgstr "Bibliotheken"
 
 #. Firmware installation process information
 msgid "Installing firmware..."
@@ -4475,7 +4475,7 @@ msgstr " nach Board"
 
 #. Examples folder
 msgid "folder;Web of Things"
-msgstr "Internet of Things"
+msgstr "Web of Things"
 
 #. Examples folder
 msgid "folder;Music"
@@ -4550,7 +4550,7 @@ msgstr "Spiele"
 
 #. Examples folder
 msgid "folder;Citilab ED1 and M5Stack"
-msgstr "Citilab ED1 und M5Stack"
+msgstr "Citilab ED1 & M5Stack"
 
 #. Color library block
 msgid "red _"
