@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-05 14:45+0000\n"
+"PO-Revision-Date: 2026-08-05 20:44+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9036,3 +9036,67 @@ msgstr "Widgets"
 #. KidsIOT Engineering library block
 msgid "#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270)"
 msgstr "#SVG#square11#C0C0C0 setze Servo _ auf Winkel _ ° (0 to 270)"
+
+#. Calliope NeoPixel library label
+msgid "Calliope NeoPixel"
+msgstr "Calliope NeoPixel"
+
+#. Calliope Servoboard library label
+msgid "Calliope Servoboard"
+msgstr "Calliope Servoboard"
+
+#. Calliope MotionKit library label
+msgid "Calliope MotionKit"
+msgstr "Calliope MotionKit"
+
+#. Maqueen Car Kit library label
+msgid "Maqueen"
+msgstr "Maqueen"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen motor _ dir _ speed(0-255) _"
+msgstr "Maqueen Motor _ Richtung _ Tempo (0-255) _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen stop motors _"
+msgstr "Maqueen stoppe Motor _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen LED _ _"
+msgstr "Maqueen LED _ _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen beep _ ms"
+msgstr "Maqueen pieps _ ms"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen line sensor _"
+msgstr "Maqueen Liniensensor _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen sees line on left _ right _"
+msgstr "Maqueen sieht Linie links _ rechts _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen distance (cm)"
+msgstr "Maqueen Entfernung (cm)"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen IR keycode"
+msgstr "Maqueen IR-Code"
+
+#. Maqueen Car Kit library choice
+msgid "fwd"
+msgstr "vorwärts"
+
+#. Maqueen Car Kit library choice
+msgid "bwd"
+msgstr "rückwärts"
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 motor _ power _ (-100 to 100)"
+msgstr "#SVG#square11#00c612 Motor _ Tempo _ (-100 bis 100)"
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 stop all motors"
+msgstr "#SVG#square11#00c612 stoppe Motoren"
