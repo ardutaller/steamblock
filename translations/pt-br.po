@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-08-05 11:03+0000\n"
+"PO-Revision-Date: 2026-08-05 20:44+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -1889,7 +1889,7 @@ msgstr "Como isso funciona..."
 
 #. Block in Control category
 msgid "range _ to _"
-msgstr "variando_até_"
+msgstr "variando _ até _"
 
 #. Block in Control category
 msgid "by _"
