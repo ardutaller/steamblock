@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-05 11:03+0000\n"
+"PO-Revision-Date: 2026-08-05 11:39+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2359,11 +2359,11 @@ msgstr "drehe nach links"
 
 #. Generic robot "both sensors" input for a ( read ( right sensor ) ) block
 msgid "right sensor"
-msgstr "rechter Sensor"
+msgstr "Sensor rechts"
 
 #. Generic robot "both sensors" input for a ( read ( left sensor ) ) block
 msgid "left sensor"
-msgstr "linker Sensor"
+msgstr "Sensor lnks"
 
 #. In MicroBlocks IDE project menu
 msgid "Open from board"
@@ -8980,3 +8980,59 @@ msgstr "#SVG#square11#00c612 Dual Motor _ Tempo _ (-100 bis 100)"
 #. KidsIOT library block
 msgid "#SVG#square11#00c612 dual motor stop _"
 msgstr "#SVG#square11#00c612 Dual stoppe Motor _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "set motor pin _ for motor _ to _"
+msgstr "setze Motor Pin _ für Motor _ auf _"
+
+#. Ultrasound distance library block
+msgid "distance (cm) pin _"
+msgstr "Entfernung (cm) Pin _"
+
+#. LCD 16x2 (Seeed) library example
+msgid "Hi!"
+msgstr "Hey!"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff button pressed? _"
+msgstr "#SVG#square11#0070ff Knopf gedrückt? _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff touching? _"
+msgstr "#SVG#square11#0070ff berührt? _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff receive IR code _"
+msgstr "#SVG#square11#0070ff empfange IR-Code _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 potentiometer _"
+msgstr "#SVG#square11#ff0000 Potentiometer _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 steam _"
+msgstr "#SVG#square11#ff0000 Dampf _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _"
+msgstr "#SVG#square11#FFA500 setze Servo _ auf Tempo _ (0 bis 100) _"
+
+#. KidsIOT Engineering library block
+msgid "for _ seconds"
+msgstr "für _ Sekunden"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 stop servo _"
+msgstr "#SVG#square11#FFA500 stoppe Servo _"
+
+#. LCD Display library example
+msgid "Moon!"
+msgstr "Mond!"
+
+#. Examples folder
+msgid "folder;Widgets"
+msgstr "Widgets"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270)"
+msgstr "#SVG#square11#C0C0C0 setze Servo _ auf Winkel _ ° (0 to 270)"
