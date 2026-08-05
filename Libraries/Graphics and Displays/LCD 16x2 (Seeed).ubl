@@ -214,8 +214,8 @@ to '_LCD_init_german_chars' {
 }
 
 to '_LCD_init_some_icons' {
-  comment 'examples for custom chars
-  comment ' smile'
+  comment 'examples for custom chars'
+  comment 'smile'
   LCD_generate_custom_char 0 ('[data:makeList]' 0 0 10 0 0 17 14 0)
   comment 'heart'
   LCD_generate_custom_char 1 ('[data:makeList]' 0 10 31 31 14 4 0 0)
