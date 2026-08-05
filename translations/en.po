@@ -883,6 +883,10 @@ msgid "stop steppers"
 msgstr "stop steppers"
 
 #. Citilab ED1 Stepper Motor library block
+msgid "set motor pin _ for motor _ to _"
+msgstr "set motor pin _ for motor _ to _"
+
+#. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
 msgstr "clockwise"
 
@@ -1061,6 +1065,10 @@ msgstr "strength"
 #. Ultrasound distance library block
 msgid "distance (cm) trigger _ echo _"
 msgstr "distance (cm) trigger _ echo _"
+
+#. Ultrasound distance library block
+msgid "distance (cm) pin _"
+msgstr "distance (cm) pin _"
 
 #. Infrared remote library label
 msgid "IR Remote"
@@ -6145,6 +6153,14 @@ msgstr "LCD is connected?"
 msgid "LCD write text _ to line _"
 msgstr "LCD write text _ to line _"
 
+#. LCD 16x2 (Seeed) library example
+msgid "Hello World!"
+msgstr "Hello World!"
+
+#. LCD 16x2 (Seeed) library example
+msgid "Hi!"
+msgstr "Hi!"
+
 #. LCD 16x2 (Seeed) library block
 msgid "LCD generate custom char _ _"
 msgstr "LCD generate custom char _ _"
@@ -6565,6 +6581,42 @@ msgstr "#SVG#square11#0070ff temperature (DS18B20) _ port _"
 msgid "#SVG#square11#ffffff traffic light red _ yellow _ green _ port _"
 msgstr "#SVG#square11#ffffff traffic light red _ yellow _ green _ port _"
 
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff button pressed? _"
+msgstr "#SVG#square11#0070ff button pressed? _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff touching? _"
+msgstr "#SVG#square11#0070ff touching? _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff receive IR code _"
+msgstr "#SVG#square11#0070ff receive IR code _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 potentiometer _"
+msgstr "#SVG#square11#ff0000 potentiometer _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 steam _"
+msgstr "#SVG#square11#ff0000 steam _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270)"
+msgstr "#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270)"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _"
+msgstr "#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _"
+
+#. KidsIOT Engineering library block
+msgid "for _ seconds"
+msgstr "for _ seconds"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 stop servo _"
+msgstr "#SVG#square11#FFA500 stop servo _"
+
 #. LogicLinks library block
 msgid "LogicLinks receive IR code"
 msgstr "LogicLinks receive IR code"
@@ -6744,6 +6796,10 @@ msgstr "write _ on LCD line _"
 #. LCD Display library block
 msgid "write field _ on LCD line _ from _ to _"
 msgstr "write field _ on LCD line _ from _ to _"
+
+#. LCD Display library example
+msgid "Moon!"
+msgstr "Moon!"
 
 #. MP3 Player library choice
 msgid "MakerPort"
@@ -7725,6 +7781,10 @@ msgstr "Music"
 #. Examples folder
 msgid "folder;Web of Things"
 msgstr "Web of Things"
+
+#. Examples folder
+msgid "folder;Widgets"
+msgstr "folder;Widgets"
 
 #. Examples folder
 msgid "folder;CPX"

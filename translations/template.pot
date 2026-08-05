@@ -883,6 +883,10 @@ msgid "stop steppers"
 msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
+msgid "set motor pin _ for motor _ to _"
+msgstr ""
+
+#. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
 msgstr ""
 
@@ -1060,6 +1064,10 @@ msgstr ""
 
 #. Ultrasound distance library block
 msgid "distance (cm) trigger _ echo _"
+msgstr ""
+
+#. Ultrasound distance library block
+msgid "distance (cm) pin _"
 msgstr ""
 
 #. Infrared remote library label
@@ -6145,6 +6153,14 @@ msgstr ""
 msgid "LCD write text _ to line _"
 msgstr ""
 
+#. LCD 16x2 (Seeed) library example
+msgid "Hello World!"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library example
+msgid "Hi!"
+msgstr ""
+
 #. LCD 16x2 (Seeed) library block
 msgid "LCD generate custom char _ _"
 msgstr ""
@@ -6565,6 +6581,42 @@ msgstr ""
 msgid "#SVG#square11#ffffff traffic light red _ yellow _ green _ port _"
 msgstr ""
 
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff button pressed? _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff touching? _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff receive IR code _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 potentiometer _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 steam _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270)"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "for _ seconds"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 stop servo _"
+msgstr ""
+
 #. LogicLinks library block
 msgid "LogicLinks receive IR code"
 msgstr ""
@@ -6743,6 +6795,10 @@ msgstr ""
 
 #. LCD Display library block
 msgid "write field _ on LCD line _ from _ to _"
+msgstr ""
+
+#. LCD Display library example
+msgid "Moon!"
 msgstr ""
 
 #. MP3 Player library choice
@@ -7724,6 +7780,10 @@ msgstr ""
 
 #. Examples folder
 msgid "folder;Web of Things"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Widgets"
 msgstr ""
 
 #. Examples folder
