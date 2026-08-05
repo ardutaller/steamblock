@@ -1890,6 +1890,103 @@ static int readTemperature() {
 }
 // Support Springbot END
 
+#elif defined(DATABOT_V3)
+
+#include "bmi270config.h" // 8k proprietary configuration file
+
+#define BMI270_ADDR				0x68
+
+#define BMI270_DATA				0x0C	// sensor data start: acc xyz (6B) + gyro xyz (6B)
+#define BMI270_INTERNAL_STATUS	0x21	// bits3:0 message (0x01 = init_ok)
+#define BMI270_RANGE			0x41	// accelerator range
+#define BMI270_CONFIG_CTRL		0x59
+#define BMI270_CONFIG_ADDR_0	0x5B	// bits3:0 = word-address bits 3:0
+#define BMI270_CONFIG_ADDR_1	0x5C	// bits7:0 = word-address bits 11:4
+#define BMI270_CONFIG_DATA		0x5E
+#define BMI270_PWR_CONF			0x7C	// bit0 adv_power_save
+#define BMI270_PWR_CTRL			0x7D	// bit0 aux_en, bit1 gyr_en, bit2 acc_en, bit3 temp_en
+#define BMI270_CMD				0x7E
+
+static uint8_t bmi270data[12];
+
+static void bmi270Init() {
+	if (accelStarted) return;
+
+	if (!wireStarted) startWire();
+	if (!wireStarted) return;
+
+	writeI2CReg(BMI270_ADDR, BMI270_CMD, 0xB6); // soft reset
+	delay(5); // leave time for reset to complete (must be > 2 msecs)
+	writeI2CReg(BMI270_ADDR, BMI270_PWR_CONF, 0); // disable advanced power save
+	delay(1);
+
+	// load 8k proprietary configuration file
+	writeI2CReg(BMI270_ADDR, BMI270_CONFIG_CTRL, 0); // start config load
+	for (int offset = 0; offset < sizeof(bmi270_config_file); offset += 32) {
+		int byteCount = sizeof(bmi270_config_file) - offset;
+		if (byteCount > 32) byteCount = 32; // write at most 32 bytes at a time
+
+		// write the starting word address for this chunk
+		int wordAddress = offset / 2;
+		writeI2CReg(BMI270_ADDR, BMI270_CONFIG_ADDR_0, wordAddress & 0x0F);
+		writeI2CReg(BMI270_ADDR, BMI270_CONFIG_ADDR_1, (wordAddress >> 4) & 0xFF);
+
+		Wire.beginTransmission(BMI270_ADDR);
+		Wire.write(BMI270_CONFIG_DATA);
+		Wire.write(&bmi270_config_file[offset], byteCount);
+		Wire.endTransmission();
+	}
+	writeI2CReg(BMI270_ADDR, BMI270_CONFIG_CTRL, 1); // end config load
+	delay(20);
+	int status = readI2CReg(BMI270_ADDR, BMI270_INTERNAL_STATUS) & 0x0F;
+	if (status != 1) {
+		reportNum("bad status when writing BMI270 config", status);
+		return;
+	}
+	writeI2CReg(BMI270_ADDR, BMI270_RANGE, 0); // set range to +/- 2G
+	writeI2CReg(BMI270_ADDR, BMI270_PWR_CTRL, 0x0E); // acc_en=1, gyr_en=1, temp_en=1
+	accelStarted = true;
+}
+
+static void bmi270ReadData() {
+	memset(bmi270data, 0, sizeof(bmi270data)); // clear the buffer
+	if (!accelStarted) bmi270Init();
+	if (!accelStarted) return;
+
+	Wire.beginTransmission(BMI270_ADDR);
+	Wire.write(BMI270_DATA);
+	Wire.endTransmission(false);
+
+	Wire.requestFrom(BMI270_ADDR, 12);
+	for (int i = 0; i < 12; i++) bmi270data[i] = Wire.read();
+}
+
+static int readAcceleration(int registerID) {
+	int val = 0;
+
+	bmi270ReadData();
+	if (1 == registerID) val = (int16_t)((bmi270data[1] << 8) | bmi270data[0]); // x-axis
+	if (3 == registerID) val = (int16_t)((bmi270data[3] << 8) | bmi270data[2]); // y-axis
+	if (5 == registerID) val = (int16_t)((bmi270data[5] << 8) | bmi270data[4]); // z-axis
+
+	return (100 * val) >> 14;
+}
+
+static void setAccelRange(int range) {
+	// Range is 0, 1, 2, or 3 for +/- 2, 4, 8, or 16 g.
+
+	if (!accelStarted) bmi270Init();
+	if (!accelStarted) return;
+	if ((range < 0) || (range > 3)) return; // out of range
+
+	writeI2CReg(BMI270_ADDR, BMI270_RANGE, range);
+}
+
+static int readTemperature() {
+	// xxx to do read SHT40 temperature
+	return 0;
+}
+
 #elif defined(RP2040_PHILHOWER)
 
 static int readTemperature() { return analogReadTemp(); }
@@ -2557,7 +2654,7 @@ void initI2SMicrophone() {
 
 	// configure I2S driver
 	const i2s_config_t i2s_config = {
-		.mode = i2s_mode_t(I2S_MODE), // xxx I2S_MODE_MASTER | I2S_MODE_RX),
+		.mode = i2s_mode_t(I2S_MODE),
 		.sample_rate = 22050,
 		.bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
 		.channel_format = I2S_CHANNEL_FMT_ONLY_RIGHT,
