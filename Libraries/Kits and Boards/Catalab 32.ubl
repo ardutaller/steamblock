@@ -1,7 +1,8 @@
 module 'Catalab 32'
 author 'Allan Moreira'
-version 1 4 
+version 1 5 
 depends Tone _Servo '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel 'External Display' TFT 'Tiny OLED' 'LED Display' 
+tags tags oled ldr hall motor 'hc-sr04' tft dht11 encoder '4' keys tactil tft i2c 
 choices catalab_led_cor red yellow green 
 choices catalab_joystick X Y 'button pressed?' 
 choices catalab_encoder spin 'button pressed?' 
@@ -10,11 +11,10 @@ choices catalab_led_bloco A B
 choices catalab_motor A B 'A+B' 
 choices catalab_servo '13' '14' 
 choices catalab_touch '13' '14' 
-description '
+description 'Biblioteca para CATALAB 32, uma laboratório para praticar programação, IOT, computação física com ESP32
+
 Library for CATALAB 32, a laboratory for practicing programming, IoT, and physical computing with the ESP32.
 
-Biblioteca para CATALAB 32, uma laboratório para praticar programação, IOT, computação física com ESP32
-tags tags OLED LDR Hall Motor HC-SR04 TFT Dht11 encoder 4 keys tactil  TFT I2C
 https://github.com/aqmoreira/Catalab'
 variables _catalab_encoder 
 
@@ -33,9 +33,9 @@ variables _catalab_encoder
   spec 'r' 'catalab_sensorHall' 'magnetic flux'
   spec 'r' 'catalab_sensorUltrasonico' 'distance in cm'
   space
-  spec ' ' 'catalab_escreverTELAOLED' 'write OLED screen _ x _ y _ big _' 'auto num num bool' 'ABC' 10 10 false
+  spec ' ' 'catalab_escreverTELAOLED' 'write OLED screen _ x _ y _ big _' 'str num num bool' 'ABC' 10 10 false
   spec ' ' 'catalab_iniciarTFT' 'start TFT screen'
-  spec ' ' 'catalab_escreverTELATFT' 'write TFT screen _ x _ y _ color _ size _' 'auto num num color num' 'ABC' 5 5 nil 1
+  spec ' ' 'catalab_escreverTELATFT' 'write TFT screen _ x _ y _ color _ size _' 'str num num color num' 'ABC' 5 5 nil 1
   space
   spec ' ' 'catalab_controlarFitaLED' 'set LED strip #BR# _ _ _ _ _ _' 'color color color color color color'
   spec ' ' 'catalab_apagarFitaLED' 'clear LED strip'
@@ -100,7 +100,7 @@ to catalab_controlarLED led bloco ligar {
 
 to catalab_controlarMotor motor velocidade {
   comment 'Como podemos estar utlizando o drive DRV8833 ou TB6612
- vamos utlizar o acionament através do sentido
+vamos utlizar o acionament através do sentido:
 #define PINO_MOTOR_ENA 32
 #define PINO_MOTOR_IN1A 33
 #define PINO_MOTOR_IN2A 25
@@ -164,14 +164,14 @@ to catalab_iniciarTFT {
 }
 
 to catalab_joystick eixo {
-  if (eixo == ('[data:toString]' 'Botão pressionado?')) {
+  if (eixo == ('[data:toString]' 'button pressed?')) {
     return (not (digitalReadOp 18))
   } (eixo == ('[data:toString]' 'X')) {
     return ('[misc:rescale]' (analogReadOp 35) 1023 0 -100 100)
   } (eixo == ('[data:toString]' 'Y')) {
     return ('[misc:rescale]' (analogReadOp 34) 1023 0 -100 100)
   } else {
-    return 'Eixo inválido'
+    return 'invalid axis'
   }
 }
 
