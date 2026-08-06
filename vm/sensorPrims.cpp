@@ -1984,7 +1984,24 @@ static void setAccelRange(int range) {
 
 static int readTemperature() {
 	// xxx to do read SHT40 temperature
-	return 0;
+	uint8_t data[6];
+	memset(data, 0, sizeof(data)); // clear the buffer
+
+	if (!wireStarted) startWire();
+	if (!wireStarted) return 0;
+
+	const int SHT40_ADDR = 0x44;
+	Wire.beginTransmission(SHT40_ADDR);
+	Wire.write(0xE0); // low precision but quick measurement
+	if (Wire.endTransmission() != 0) return 0;
+
+	delay(2); // low precision: 1.6 msecs max
+
+	Wire.requestFrom(SHT40_ADDR, sizeof(data));
+	for (int i = 0; i < sizeof(data); i++) data[i] = Wire.read();
+
+	uint16_t rawTemp  = (data[0] << 8) | data[1];
+	return ((175 * rawTemp) >> 16) - 45;
 }
 
 #elif defined(RP2040_PHILHOWER)
