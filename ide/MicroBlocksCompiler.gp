@@ -659,7 +659,11 @@ method instructionsFor SmallCompiler aBlockOrFunction {
 				add result (array 'pushLiteral' (functionName func))
 				add result (array 'placeholder' 0)
 				add result (array 'recvBroadcast' 1)
-				if ('noop' != (primName cmdOrReporter)) {
+				// Skip only the placeholder added above for a function hat with
+				// no blocks, which is a lone 'noop' with nothing after it.
+				// Testing the first block alone skipped the WHOLE body of any
+				// argument-less function whose first block was a real 'no op'.
+				if (not (and ('noop' == (primName cmdOrReporter)) (isNil (nextBlock cmdOrReporter)))) {
 					addAll result (instructionsForCmdList this cmdOrReporter)
 				}
 			} else {
