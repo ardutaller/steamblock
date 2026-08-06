@@ -1059,7 +1059,7 @@ method collectVars SmallCompiler cmdOrReporter {
 	localVars = (dictionary)
 	todo = (list cmdOrReporter)
 	while ((count todo) > 0) {
-		cmd = (removeFirst todo)
+		cmd = (removeLast todo)
 		if (isOneOf (primName cmd) 'local' 'for') {
 			// explicit local variables and 'for' loop indexes are always local
 			varName = (first (argList cmd))
