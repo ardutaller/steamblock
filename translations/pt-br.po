@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-08-05 20:44+0000\n"
+"PO-Revision-Date: 2026-08-06 19:50+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -8728,3 +8728,123 @@ msgstr "#SVG#square11#00c612 motor duplo _ potência _ (-100 to 100)"
 #. KidsIOT library block
 msgid "#SVG#square11#00c612 dual motor stop _"
 msgstr "#SVG#square11#00c612 motor duplo parar _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "set motor pin _ for motor _ to _"
+msgstr "Defina o pino do motor _ para o motor _ para _"
+
+#. Ultrasound distance library block
+msgid "distance (cm) pin _"
+msgstr "distância (cm) pino _"
+
+#. Calliope NeoPixel library label
+msgid "Calliope NeoPixel"
+msgstr "Calíope NeoPixel"
+
+#. Calliope Servoboard library label
+msgid "Calliope Servoboard"
+msgstr "Calliope Servoboard"
+
+#. Calliope MotionKit library label
+msgid "Calliope MotionKit"
+msgstr "Calliope MotionKit"
+
+#. Maqueen Car Kit library label
+msgid "Maqueen"
+msgstr "Maqueen"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen motor _ dir _ speed(0-255) _"
+msgstr "Maqueen motor _ sentido _ velocidade(0-255) _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen stop motors _"
+msgstr "Maqueen parar motores _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen LED _ _"
+msgstr "Maqueen LED _ _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen beep _ ms"
+msgstr "Maqueen beep _ ms"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen line sensor _"
+msgstr "Maqueen sensor de linha _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen sees line on left _ right _"
+msgstr "Maqueen vê a linha à esquerda _ direita _"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen distance (cm)"
+msgstr "Maqueen distância (cm)"
+
+#. Maqueen Car Kit library block
+msgid "Maqueen IR keycode"
+msgstr "Maqueen código infravermelho(IR)"
+
+#. Maqueen Car Kit library choice
+msgid "fwd"
+msgstr "para frente"
+
+#. Maqueen Car Kit library choice
+msgid "bwd"
+msgstr "voltar"
+
+#. LCD 16x2 (Seeed) library example
+msgid "Hi!"
+msgstr "Oi!"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff button pressed? _"
+msgstr "#SVG#square11#0070ff botão pressionado? _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff touching? _"
+msgstr "SVG#square11#0070ff tocando? _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff receive IR code _"
+msgstr "#SVG#square11#0070ff recebe código IR _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 potentiometer _"
+msgstr "#SVG#square11#ff0000 potenciômetro _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 steam _"
+msgstr "#SVG#square11#ff0000 vapor _"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270)"
+msgstr "#SVG#square11#C0C0C0 define servo _ para _ graus (0 to 270)"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _"
+msgstr "#SVG#square11#FFA500 define servo _ para velocidade _ (0 to 100) _"
+
+#. KidsIOT Engineering library block
+msgid "for _ seconds"
+msgstr "por _ segundos"
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 stop servo _"
+msgstr "#SVG#square11#FFA500 para servo _"
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 motor _ power _ (-100 to 100)"
+msgstr "#SVG#square11#00c612 motor _ potência _ (-100 to 100)"
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 stop all motors"
+msgstr "#SVG#square11#00c612 parar todos motores"
+
+#. LCD Display library example
+msgid "Moon!"
+msgstr "Lua!"
+
+#. Examples folder
+msgid "folder;Widgets"
+msgstr "Widgets"
