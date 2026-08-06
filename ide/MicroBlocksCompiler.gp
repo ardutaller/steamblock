@@ -1079,12 +1079,12 @@ method collectVars SmallCompiler cmdOrReporter {
 					atPut localVars varName (count localVars)
 			}
 		}
-		for arg (argList cmd) {
+		if (notNil (nextBlock cmd)) { add todo (nextBlock cmd) }
+		for arg (reversed (argList cmd)) {
 			if (isAnyClass arg 'Command' 'Reporter') {
 				add todo arg
 			}
 		}
-		if (notNil (nextBlock cmd)) { add todo (nextBlock cmd) }
 	}
 }
 
