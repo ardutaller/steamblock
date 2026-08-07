@@ -3487,6 +3487,7 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 	#include "user_interface.h"
 
 	extern "C" void lightSleep(int msecs) {
+		// WARNING: Using lightSleep() on the ESP8266 breaks NeoPixels!
 		system_update_cpu_freq(80);
 		delay(msecs);
 		system_update_cpu_freq(160);
