@@ -49,8 +49,8 @@ forever {
 
 module 'LED Matrix (MAX7219)' Output
 author 'Sam McHardy'
-version 2 1 
-tags display led matrix max7219 spi scrolling text graphics rotation '2' d grid 
+version 2 2 
+tags display led matrix max7219 spi scrolling text graphics rotation '2d' grid 
 choices m7align left right center 
 choices m7effect static blink 'scroll left' 'scroll right' 'scroll up' 'scroll down' 
 choices m7rotation '0' '90' '180' '270' 
