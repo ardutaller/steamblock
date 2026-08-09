@@ -239,7 +239,7 @@ to setAccelRange n {
 
 module Touch Input
 author MicroBlocks
-version 1 13 
+version 1 14 
 description 'Support for one or two MPR121 12-channel i2c touch sensors.
 Detects MPR121 chips at I2C addresses 90 and, optionally, 92 to handle up to 24 touch pins.
 '
@@ -265,6 +265,9 @@ to '_touch_init' {
     comment 'Already initialized.'
     return 0
   }
+  comment 'Set _touch_isTouched to a list to prevent
+multiple calls to _touch_init at startup'
+  _touch_isTouched = (newList 24 (booleanConstant false))
   _touch_pinCount = 0
   if ((i2cGet 90 0) >= 0) {
     _touch_pinCount = 12
@@ -276,9 +279,10 @@ to '_touch_init' {
   _touch_eventPending = (newList _touch_pinCount (booleanConstant false))
   _touch_last_touched_pin = -1
   _touch_last_released_pin = -1
-  waitMillis 30
-  comment 'Soft reset -- sets all registers to defaults'
+  comment 'Soft reset -- sets all registers to defaults
+and turns off pin sensing'
   '_touch_setRegister' '0x80' '0x63'
+  waitMillis 5
   comment 'Set filter parameters'
   '_touch_setRegister' '0x2B' '0x01'
   '_touch_setRegister' '0x2C' '0x01'
