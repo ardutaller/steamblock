@@ -1,9 +1,9 @@
 module 'Color & Proximity (APDS9151)' Input
 author MicroBlocks
 version 1 0 
-description 'Color, light (RGB and IR) and proximity sensor library.
-https://docs.broadcom.com/doc/APDS-9151-DS
-'
+description 'Color, light (RGB and IR) and proximity sensor library (I2C addr: 0x52).
+
+https://docs.broadcom.com/doc/APDS-9151-DS'
 variables _apdsAddr 
 
   spec 'r' 'apds9151_lightLevel' 'apds9151 light level'

@@ -1,7 +1,9 @@
 module 'Air Pressure (BMP581)' Input
 author MicroBlocks
 version 1 0 
-description ''
+description 'Air pressure and altimeter library based on BMP581 sensor (I2C addr: 0x46).
+
+https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp581-ds004.pdf'
 variables _bmp581_basePressure _bmp581_baseMeters 
 
   spec 'r' 'bmp581_pressure' 'bmp581 air pressure (mBar)'
