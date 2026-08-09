@@ -1985,7 +1985,7 @@ static void setAccelRange(int range) {
 static int readTemperature() {
 	if (!accelStarted) bmi270Init();
 	int16_t rawTemp = (readI2CReg(BMI270_ADDR, 0x23) << 8) | readI2CReg(BMI270_ADDR, 0x22);
-	return (rawTemp >> 9) + 17;
+	return (rawTemp >> 9) + 23 - 12; // -12 adjusts for self-heating in databot case
 }
 
 #elif defined(RP2040_PHILHOWER)
