@@ -1,7 +1,7 @@
 module DatabotV3
 author MicroBlocks
 version 1 1 
-depends 'Air Pressure (BMP581)' 'Color & Proximity (APDS9151)' '_Gas (ENS160)' '_Magnetometer (MMC5983)' '_Temperature Humidity (SHT40)' '_Gesture (PAJ7620)' '_Distance (VL53L1x)' 
+depends 'Air Pressure (BMP581)' 'Color & Proximity (APDS9151)' 'DatabotV3 Motion' '_Gas (ENS160)' '_Temperature Humidity (SHT40)' '_Gesture (PAJ7620)' '_Distance (VL53L1x)' 
 choices databotV3_tempUnits '°C' '°F' 
 description 'Library for the databot v3.
 If your databot has A and B buttons,  use this library.
@@ -18,13 +18,6 @@ variables _databotV3_pixels
   spec 'r' 'databotV3_light' 'databotV3 light level'
   spec 'r' 'databotV3_distance' 'databotV3 distance (mm)'
   spec 'r' 'databotV3_gesture' 'databotV3 gesture'
-  space
-  spec 'r' 'databotV3_tilt_x' 'databotV3 tilt x'
-  spec 'r' 'databotV3_tilt_y' 'databotV3 tilt y'
-  spec 'r' 'databotV3_tilt_z' 'databotV3 tilt z'
-  spec 'r' 'databotV3_acceleration' 'databotV3 acceleration'
-  space
-  spec 'r' 'databotV3_magnetic_field' 'databotV3 magnetic field'
   space
   spec 'r' 'databotV3_temperature' 'databotV3 temperature _' 'menu.databotV3_tempUnits' '°C'
   spec 'r' 'databotV3_relative_humidity' 'databotV3 relative humidity (%)'
@@ -116,10 +109,6 @@ to databotV3_TVOC {
   return (ens160_tovc)
 }
 
-to databotV3_acceleration {
-  return ('[sensors:acceleration]')
-}
-
 to databotV3_analog which {
   local 'analogPin' 5
   if (2 == which) {
@@ -146,10 +135,6 @@ to databotV3_gesture {
 
 to databotV3_light {
   return (apds9151_lightLevel)
-}
-
-to databotV3_magnetic_field {
-  return (mmc5983_mag_total)
 }
 
 to databotV3_relative_humidity {
@@ -198,18 +183,6 @@ to databotV3_temperature units {
   } else {
     return (32 + (9 * ((sht40_temperature) / 5)))
   }
-}
-
-to databotV3_tilt_x {
-  return ('[sensors:tiltX]')
-}
-
-to databotV3_tilt_y {
-  return ('[sensors:tiltY]')
-}
-
-to databotV3_tilt_z {
-  return ('[sensors:tiltZ]')
 }
 
 to databotV3_uvIndex {

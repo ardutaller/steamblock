@@ -10,16 +10,16 @@ description 'Library for the databot v3 accelerometer, magnetometer, and gyro se
   spec 'r' 'databotV3_tilt_z' 'databotV3 tilt z'
   spec 'r' 'databotV3_acceleration' 'databotV3 acceleration'
   space
-  spec 'r' 'databotV3_mag_x' 'mag x'
-  spec 'r' 'databotV3_mag_y' 'mag y'
-  spec 'r' 'databotV3_mag_z' 'mag z'
+  spec 'r' 'databotV3_mag_x' 'databotV3 mag x'
+  spec 'r' 'databotV3_mag_y' 'databotV3 mag y'
+  spec 'r' 'databotV3_mag_z' 'databotV3 mag z'
   spec 'r' 'databotV3_magnetic_field' 'databotV3 magnetic field'
   space
-  spec 'r' 'databotV3_gyro_x' 'gyro x'
-  spec 'r' 'databotV3_gyro_y' 'gyro y'
-  spec 'r' 'databotV3_gyro_z' 'gyro z'
+  spec 'r' 'databotV3_gyro_x' 'databotV3 gyro x'
+  spec 'r' 'databotV3_gyro_y' 'databotV3 gyro y'
+  spec 'r' 'databotV3_gyro_z' 'databotV3 gyro z'
   advanced
-  spec ' ' 'databotV3_setAccelRange' 'set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
+  spec ' ' 'databotV3_setAccelRange' 'databotV3 set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
   space
   spec ' ' '_databotV3_initBMI270' '_databotV3_initBMI270'
   spec 'r' '_databotV3_readBMI270Data' '_databotV3_readBMI270Data'
