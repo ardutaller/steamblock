@@ -1,6 +1,6 @@
 module 'Air Pressure (BMP581)' Input
 author MicroBlocks
-version 1 0 
+version 1 1 
 description 'Air pressure and altimeter library based on BMP581 sensor (I2C addr: 0x46).
 
 https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp581-ds004.pdf'
@@ -9,16 +9,16 @@ variables _bmp581_basePressure _bmp581_baseMeters
   spec 'r' 'bmp581_pressure' 'bmp581 air pressure (mBar)'
   spec 'r' 'bmp581_temperature' 'bmp581 temperature (°C)'
   space
-  spec 'r' 'bmp581_altitudeCentimeters' 'altitude (cm)'
-  spec 'r' 'bmp581_altitudeFeet' 'altitude (feet)'
-  spec ' ' 'bmp581_resetAltitude' 'reset altitude to zero'
+  spec 'r' 'bmp581_altitudeCentimeters' 'bmp581 altitude (cm)'
+  spec 'r' 'bmp581_altitudeFeet' 'bmp581 altitude (feet)'
+  spec ' ' 'bmp581_resetAltitude' 'bmp581 reset altitude to zero'
   advanced
-  spec ' ' 'bmp581_setBasePressure' 'set base pressure (mBar) _ at _ meters' 'num num' 1013 0
+  spec ' ' 'bmp581_setBasePressure' 'bmp581 set base pressure (mBar) _ at _ meters' 'num num' 1013 0
   space
   spec ' ' '_bmp581_init' '_bmp581_init'
   spec 'r' '_bmp581_altitudeMillimeters' '_bmp581_altitudeMillimeters'
-  spec 'r' '_bmp581_readData' '_bmp581_readData'
   spec 'r' '_bmp581_rawPressure' '_bmp581_rawPressure'
+  spec 'r' '_bmp581_readData' '_bmp581_readData'
 
 to '_bmp581_altitudeMillimeters' {
   if (_bmp581_basePressure == 0) {

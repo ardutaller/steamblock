@@ -1,13 +1,13 @@
 module 'Temperature Humidity (SHT40)' Input
 author MicroBlocks
-version 1 0 
+version 1 1 
 description 'Library for SHT40 temperature and humidity sensor (I2C addr: 0x44).
 
 https://sensirion.com/media/documents/33FD6951/6555C40E/Sensirion_Datasheet_SHT4x.pdf
 '
 
-  spec 'r' 'sht40_temperature' 'sht40_temperature'
-  spec 'r' 'sht40_humidity' 'sht40_humidity'
+  spec 'r' 'sht40_temperature' 'sht40 temperature (°C)'
+  spec 'r' 'sht40_humidity' 'sht40 humidity (%)'
   space
   spec 'r' '_sht40_read' '_sht40_read'
   spec 'r' '_sht40_crc' '_sht40_crc _ _' 'num num' 0 0
