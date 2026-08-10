@@ -1,7 +1,7 @@
-module databotV3
+module DatabotV3
 author MicroBlocks
-version 1 0 
-depends '_Air Pressure (BMP581)' 'Color & Proximity (APDS9151)' '_Gas (ENS160)' '_Magnetometer (MMC5983)' '_Temperature Humidity (SHT40)' '_Gesture (PAJ7620)' '_Distance (VL53L1x)' 
+version 1 1 
+depends 'Air Pressure (BMP581)' 'Color & Proximity (APDS9151)' '_Gas (ENS160)' '_Magnetometer (MMC5983)' '_Temperature Humidity (SHT40)' '_Gesture (PAJ7620)' '_Distance (VL53L1x)' 
 choices databotV3_tempUnits '°C' '°F' 
 description 'Library for the databot v3.
 If your databot has A and B buttons,  use this library.
