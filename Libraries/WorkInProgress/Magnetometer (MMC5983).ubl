@@ -1,7 +1,7 @@
 module 'Magnetometer (MMC5983)' Input
 author MicroBlocks
 version 1 0 
-description 'Magnetometer based on the MMC5983  (I2C addr: 0x30).
+description 'Magnetometer based on the MMC5983 (I2C addr: 0x30).
 
 https://media.digikey.com/pdf/Data%20Sheets/MEMSIC%20PDFs/MMC5983MA_RevA_4-3-19.pdf
 '
@@ -14,11 +14,12 @@ https://media.digikey.com/pdf/Data%20Sheets/MEMSIC%20PDFs/MMC5983MA_RevA_4-3-19.
   spec 'r' '_mmc5983_read' '_mmc5983_read'
 
 to '_mmc5983_read' {
-  i2cSet (hexToInt '30') 9 1
-  waitUntil (((i2cGet (hexToInt '30') 8) & 1) != 0)
+  local 'mmc5983_addr' (hexToInt '30')
+  i2cSet mmc5983_addr 9 1
+  waitUntil (((i2cGet mmc5983_addr 8) & 1) != 0)
   local 'data' ('[data:newByteArray]' 7)
-  '[sensors:i2cWrite]' (hexToInt '30') 0
-  '[sensors:i2cRead]' (hexToInt '30') data
+  '[sensors:i2cWrite]' mmc5983_addr 0
+  '[sensors:i2cRead]' mmc5983_addr data
   return data
 }
 

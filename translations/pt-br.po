@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-08-06 19:50+0000\n"
+"PO-Revision-Date: 2026-08-07 22:51+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.8.1.dev0\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #. Block in Input category
 msgid "microseconds"
@@ -2122,7 +2122,7 @@ msgstr "preencher linha _ matriz com cor _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
-msgstr "desenhar linha matriz de x _ y_ para x _ y _ cor _"
+msgstr "desenhar linha matriz de x _ y _ para x _ y _ cor _"
 
 #. NeoPanel library block
 msgid "NeoPanel draw circle at x _ y _ radius _ color _"
@@ -2142,7 +2142,7 @@ msgstr "pausando _ milisegundos"
 
 #. NeoPanel library block
 msgid "NeoPanel draw text _ at x _ y _ color _"
-msgstr "desenhar texto _ em x_ y_ na cor _"
+msgstr "desenhar texto _ em x _ y _ na cor _"
 
 #. Example for the draw text block
 msgid "Hello"
@@ -8675,15 +8675,15 @@ msgstr "apagar tela OLED"
 
 #. Tiny OLED library block
 msgid "draw circle center _ _ radius _ fill _ white _"
-msgstr "desenhar circulo centro x _ y _ raio _ preenchido _ branco_"
+msgstr "desenhar circulo centro x _ y _ raio _ preenchido _ branco _"
 
 #. Tiny OLED library block
 msgid "draw image _ x _ y _"
-msgstr "desenhar imagem _ x_ y_"
+msgstr "desenhar imagem _ x _ y _"
 
 #. Tiny OLED library block
 msgid "draw line from _ _ to _ _ white _"
-msgstr "desenhar linha de x _ y_ para x_ y_ branco _"
+msgstr "desenhar linha de x _ y _ para x _ y _ branco _"
 
 #. Tiny OLED library block
 msgid "draw pixel x _ y _ white _"
@@ -8691,7 +8691,7 @@ msgstr "desenhar pixel x _ y _ branco _"
 
 #. Tiny OLED library block
 msgid "draw rect x _ y _ w _ h _ fill _ white _"
-msgstr "desenhar retângulo x _ y_ largura _ altura _ preenchido _ branco _"
+msgstr "desenhar retângulo x _ y _ largura _ altura _ preenchido _ branco _"
 
 #. Tiny OLED library block
 msgid "draw string _ x _ y _ white _"

@@ -1,6 +1,6 @@
 module 'OLED Turtle' Output
 author 'Turgut Guneysu'
-version 1 13 
+version 1 14 
 depends '_OLED Graphics' _dec2anyBase 
 choices DegMenu '45' '90' '135' '180' '225' '270' '315' 
 choices SizeMenu small large 
@@ -27,7 +27,6 @@ variables Tpen Tdir Tx Ty TShapes _TDirs _TSaveGDBuffInfo TpenPrev _GDIndex _dX 
   spec ' ' 'TPenDOWN' 'pen down'
   spec ' ' 'TPenUP' 'pen  up'
   spec ' ' 'TPoint in direction' 'point in direction (0-360) _' 'num' 0
-  spec ' ' 'TText' 'write text _ x _ y _ fast _' 'auto num num bool' 'hello' 0 0 true
   spec ' ' 'TTurn Deg' 'turn _ degrees' 'auto' 45
   spec 'r' 'WRU' 'wru'
   spec ' ' '_TDraw' '_TDraw X _ Y _' 'num auto' 0 0
@@ -59,7 +58,7 @@ to TClear {
 to 'TGo to x' x y {
   comment 'Places the turtle at x, y.
 Image of turtle is based on penDirection.
-If PEN is down, a line will be drawn from 
+If PEN is down, a line will be drawn from
 current location to the destination.
 If PEN is up, line will be erased.'
   '_TRestoreGDBuff'
@@ -95,7 +94,7 @@ small: 0-7
 /1:072  /2:467  /3:262  /4:764  /5:270  /6:731  /7:232  /8:137
 
 large: 0-31
-/1:0 0 31 14 4  /2:16 24 28 30 31  /3;4 12 28 12 4  /4:31 30 28 24 16 
+/1:0 0 31 14 4  /2:16 24 28 30 31  /3;4 12 28 12 4  /4:31 30 28 24 16
 /5:4 14 31 0 0  /6:31 15 7 3 1        /7:4 6 7 6 4        /8:1 3 7 15 31'
   _TSaveGDBuffInfo = ('[data:makeList]')
   if (size == 'small') {
@@ -112,7 +111,7 @@ large: 0-31
 }
 
 to TMove steps {
-  comment 'Moves the turtle steps at a time. 
+  comment 'Moves the turtle steps at a time.
 If PEN is down, line will be drawn, if  up line will be erased.
 
 Representation:
@@ -169,54 +168,6 @@ Corresponding turtle image will be to nearest 45 deg.'
   '_TDraw' Tx Ty
 }
 
-to TText string x y fast {
-  comment 'Writes text at any x,y location with wrap to next line at x.
-If 56 < y < 63, character bitmap will be truncated.
-You can use LF (unicode = 10) to skip to next line in text.'
-  _dX = 0
-  for char string {
-    _dY = 0
-    if fast {
-      '_TRestoreGDBuff'
-    }
-    if (10 == ('[data:unicodeAt]' 1 char)) {
-      _dX = 0
-      y += 8
-    } (13 == ('[data:unicodeAt]' 1 char)) {
-      noop
-    } else {
-      _charBMPList = ('_cBMP' char false)
-      for byte _charBMPList {
-        _dY = 0
-        for bit ('dec2any Base' '2' byte 8 true) {
-          if (not fast) {'_TRestoreGDBuff'}
-          if (and ((x + _dX) <= 127) ((y + _dY) <= 63)) {OLEDpixel (x + _dX) (y + _dY) ('_num2TF' bit)}
-          comment 'if not fast'
-          if (not fast) {
-            '_TDraw' (x + _dX) (y + _dY)
-          }
-          _dY += 1
-        }
-        _dX += 1
-        if ((x + _dX) > 127) {
-          _dX = 0
-          y += 8
-          if (y > 63) {
-            y = 0
-            _dY = 0
-          }
-        }
-      }
-    }
-    comment 'if fast'
-    if fast {
-      '_TDraw' (x + _dX) (y + _dY)
-    }
-    _textX = (x + _dX)
-    _textY = y
-  }
-}
-
 to 'TTurn Deg' deg {
   comment 'Accepts +/- deg changes and sets penDirection variable.
 Corresponding Turtle image will be to nearest 45 deg.'
@@ -241,7 +192,7 @@ to WRU {
 }
 
 to '_TDraw' x y {
-  comment 'Turtle is a large (5x5) or small (3x3) bitmap shape. 
+  comment 'Turtle is a large (5x5) or small (3x3) bitmap shape.
 Turtle location x,y is always located at the center of this matrix and is marked by pixel "o".
 There are 8 turtle shapes, each rotated clockwise by 45 degrees.
 eg: #1 shape is:
@@ -340,7 +291,7 @@ _imgWidth and _imgHeight is the adj turtle size.'
 }
 
 to '_num2TF' num {
-  comment 'Converts bitmap 0 and 1 binary info to 
+  comment 'Converts bitmap 0 and 1 binary info to
 true/false flag info that is used to erase pixels.'
   return (num == ('[data:toString]' '0'))
 }

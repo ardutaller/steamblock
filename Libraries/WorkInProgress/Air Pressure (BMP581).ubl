@@ -1,13 +1,33 @@
 module 'Air Pressure (BMP581)' Input
 author MicroBlocks
 version 1 0 
-description ''
+description 'Air pressure and altimeter library based on BMP581 sensor (I2C addr: 0x46).
 
-  spec 'r' 'bmp581_pressure' 'bmp581_pressure'
-  spec 'r' 'bmp581_temperature' 'bmp581_temperature (x10)'
+https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp581-ds004.pdf'
+variables _bmp581_basePressure _bmp581_baseMeters 
+
+  spec 'r' 'bmp581_pressure' 'bmp581 air pressure (mBar)'
+  spec 'r' 'bmp581_temperature' 'bmp581 temperature (°C)'
+  space
+  spec 'r' 'bmp581_altitudeCentimeters' 'altitude (cm)'
+  spec 'r' 'bmp581_altitudeFeet' 'altitude (feet)'
+  spec ' ' 'bmp581_resetAltitude' 'reset altitude to zero'
+  advanced
+  spec ' ' 'bmp581_setBasePressure' 'set base pressure (mBar) _ at _ meters' 'num num' 1013 0
   space
   spec ' ' '_bmp581_init' '_bmp581_init'
+  spec 'r' '_bmp581_altitudeMillimeters' '_bmp581_altitudeMillimeters'
   spec 'r' '_bmp581_readData' '_bmp581_readData'
+  spec 'r' '_bmp581_rawPressure' '_bmp581_rawPressure'
+
+to '_bmp581_altitudeMillimeters' {
+  if (_bmp581_basePressure == 0) {
+    comment 'if base altitude not set, use zero (useful for relative measurments)'
+    bmp581_resetAltitude
+  }
+  mmChange = ('[misc:pressureToAltitude]' _bmp581_basePressure ('_bmp581_rawPressure'))
+  return ((1000 * _bmp581_baseMeters) + mmChange)
+}
 
 to '_bmp581_init' {
   local 'bmp581_addr' (hexToInt '46')
@@ -18,10 +38,20 @@ to '_bmp581_init' {
   comment 'enable pressure readings'
   i2cSet bmp581_addr (hexToInt '36') (hexToInt '40')
   comment 'Set up IIR filtering'
-  i2cSet bmp581_addr (hexToInt '31') ((2 << 3) | 2)
+  i2cSet bmp581_addr (hexToInt '31') ((4 << 3) | 4)
   i2cSet bmp581_addr (hexToInt '30') ((1 << 5) | ((1 << 3) | 3))
   comment 'Continuous filtering, 240 Hz'
   i2cSet bmp581_addr (hexToInt '37') 1
+  comment 'Wait a bit for sensor to stabilize'
+  waitMillis 5
+}
+
+to '_bmp581_rawPressure' {
+  local 'data' ('_bmp581_readData')
+  comment '24-big signed value, 6-bits of fraction'
+  local 'result' ((((at 6 data) << 16) | ((at 5 data) << 8)) | (at 4 data))
+  comment 'result is pressure in Pascals * 64'
+  return result
 }
 
 to '_bmp581_readData' {
@@ -39,13 +69,37 @@ to '_bmp581_readData' {
   return data
 }
 
+to bmp581_altitudeCentimeters {
+  return (('_bmp581_altitudeMillimeters') / 10)
+}
+
+to bmp581_altitudeFeet {
+  return (('_bmp581_altitudeMillimeters') / 305)
+}
+
 to bmp581_pressure {
-  local 'data' ('_bmp581_readData')
-  comment '24-big signed value, 16-bits of fraction'
-  local 'result' ((((at 6 data) << 16) | ((at 5 data) << 8)) | (at 4 data))
-  comment 'result is pressure in Pascals
-(millibars x 100)'
-  return (result >> 6)
+  return (('_bmp581_rawPressure') / 6400)
+}
+
+to bmp581_resetAltitude {
+  comment 'Use this block to reset the altitude to zero.
+Altitudes are then relative to the elevation at the time of reset.
+This can be used to show altitude changes when climbing stairs or
+riding in an elevator.'
+  local 'total' 0
+  repeat 20 {
+    total += ('_bmp581_rawPressure')
+    waitMillis 1
+  }
+  _bmp581_basePressure = (total / 20)
+  _bmp581_baseMeters = 0
+}
+
+to bmp581_setBasePressure basePressurePascals baseMeters {
+  comment 'This allows one to measure absolute altitude given
+the current air pressure at a known elevation nearby.'
+  _bmp581_basePressure = (6400 * basePressurePascals)
+  _bmp581_baseMeters = baseMeters
 }
 
 to bmp581_temperature {
@@ -54,7 +108,8 @@ to bmp581_temperature {
   local 'result' ((((at 3 data) << 16) | ((at 2 data) << 8)) | (at 1 data))
   comment 'sign extend 24 bit value'
   result = ((result << 7) >> 7)
-  comment 'result is degrees C x 10'
-  return ((10 * result) >> 16)
+  comment 'result is degrees C x 65536 (16 bits of fraction)'
+  comment 'round to nearest degree C'
+  return ((result + 32768) >> 16)
 }
 
