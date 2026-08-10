@@ -1,0 +1,104 @@
+module 'DatabotV3 Motion'
+author MicroBlocks
+version 1 0 
+depends '_Magnetometer (MMC5983)' 
+choices accelerometerRange '1' '2' '4' '8' 
+description 'Library for the databot v3 accelerometer, magnetometer, and gyro sensors.'
+
+  spec 'r' 'databotV3_tilt_x' 'databotV3 tilt x'
+  spec 'r' 'databotV3_tilt_y' 'databotV3 tilt y'
+  spec 'r' 'databotV3_tilt_z' 'databotV3 tilt z'
+  spec 'r' 'databotV3_acceleration' 'databotV3 acceleration'
+  space
+  spec 'r' 'databotV3_mag_x' 'mag x'
+  spec 'r' 'databotV3_mag_y' 'mag y'
+  spec 'r' 'databotV3_mag_z' 'mag z'
+  spec 'r' 'databotV3_magnetic_field' 'databotV3 magnetic field'
+  space
+  spec 'r' 'databotV3_gyro_x' 'gyro x'
+  spec 'r' 'databotV3_gyro_y' 'gyro y'
+  spec 'r' 'databotV3_gyro_z' 'gyro z'
+  advanced
+  spec ' ' 'databotV3_setAccelRange' 'set acceleration range _ g = 100' 'menu.accelerometerRange' '1'
+  space
+  spec ' ' '_databotV3_initBMI270' '_databotV3_initBMI270'
+  spec 'r' '_databotV3_readBMI270Data' '_databotV3_readBMI270Data'
+
+to '_databotV3_initBMI270' {
+  comment 'Get tilt-x to ensure BMI270 IMU is initialized'
+  local 'ignore' ('[sensors:tiltX]')
+}
+
+to '_databotV3_readBMI270Data' {
+  local 'data' ('[data:newByteArray]' 12)
+  '[sensors:i2cWrite]' (hexToInt '68') (hexToInt '0C') false
+  '[sensors:i2cRead]' (hexToInt '68') data
+  return data
+}
+
+to databotV3_acceleration {
+  return ('[sensors:acceleration]')
+}
+
+to databotV3_gyro_x {
+  '_databotV3_initBMI270'
+  local 'data' ('_databotV3_readBMI270Data')
+  local 'rawX' (((at 8 data) << 8) | (at 7 data))
+  comment 'Sign-extend the 16-bit signed value'
+  rawX = ((rawX << 15) >> 15)
+  comment 'Get adjustment factor for gyro z/x adjustment
+(See datasheet 4.6.10 Gyroscope Post Processing)'
+  local 'GYR_CAS' (((i2cGet (hexToInt '68') (hexToInt '3C')) << 24) >> 24)
+  return (rawX - ((GYR_CAS * (databotV3_gyro_z)) >> 9))
+}
+
+to databotV3_gyro_y {
+  '_databotV3_initBMI270'
+  local 'data' ('_databotV3_readBMI270Data')
+  local 'rawY' (((at 10 data) << 8) | (at 9 data))
+  comment 'Sign-extend the 16-bit signed value'
+  rawY = ((rawY << 15) >> 15)
+  return rawY
+}
+
+to databotV3_gyro_z {
+  '_databotV3_initBMI270'
+  local 'data' ('_databotV3_readBMI270Data')
+  local 'rawZ' (((at 12 data) << 8) | (at 11 data))
+  comment 'Sign-extend the 16-bit signed value'
+  rawZ = ((rawZ << 15) >> 15)
+  return rawZ
+}
+
+to databotV3_mag_x {
+  return (mmc5983_mag_x)
+}
+
+to databotV3_mag_y {
+  return (mmc5983_mag_y)
+}
+
+to databotV3_mag_z {
+  return (mmc5983_mag_z)
+}
+
+to databotV3_magnetic_field {
+  return (mmc5983_mag_total)
+}
+
+to databotV3_setAccelRange {
+  '[sensors:setAccelerometerRange]' (0 + n)
+}
+
+to databotV3_tilt_x {
+  return ('[sensors:tiltX]')
+}
+
+to databotV3_tilt_y {
+  return ('[sensors:tiltY]')
+}
+
+to databotV3_tilt_z {
+  return ('[sensors:tiltZ]')
+}
+
