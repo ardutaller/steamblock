@@ -1346,7 +1346,7 @@ static void runTask(Task *task) {
 
 #if !defined(EMSCRIPTEN)
 
-#if defined(ESP32) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD) || \
+#if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD) || \
 	defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
 
 	#if !defined(ESP32_ORIGINAL) && !defined(ESP32_S3_MATRIX_PORTAL)
