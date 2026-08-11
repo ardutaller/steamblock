@@ -1010,16 +1010,17 @@ static void IRAM_ATTR sendNeoPixelData(int val) { // ESP8266
 
 	noInterrupts();
 	for (uint32 mask = (1 << (neoPixelBits - 1)); mask > 0; mask >>= 1) {
-		if (val & mask) { // one bit; timing goal: high 900 nsecs, low 350 nsecs
+		// Note: Delays assume a CPU clock rate of 160 MHz
+		if (val & mask) { // one bit; timing goal: high 800 nsecs, low 400 nsecs
 			GPOS = neoPixelPinMask;
-			DELAY_CYCLES(52);
+			DELAY_CYCLES(122);
 			GPOC = neoPixelPinMask;
-			DELAY_CYCLES(14);
-		} else { // zero bit; timing goal: high 350 nsecs, low 800 nsecs
+			DELAY_CYCLES(56);
+		} else { // zero bit; timing goal: high 300 nsecs, low 900 nsecs
 			GPOS = neoPixelPinMask;
-			DELAY_CYCLES(17);
+			DELAY_CYCLES(41);
 			GPOC = neoPixelPinMask;
-			DELAY_CYCLES(50);
+			DELAY_CYCLES(137);
 		}
 	}
 	GPOC = neoPixelPinMask; // this greatly improves reliability; no idea why!

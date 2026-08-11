@@ -1966,7 +1966,7 @@ static int readAcceleration(int registerID) {
 
 	bmi270ReadData();
 	if (1 == registerID) val = (int16_t)((bmi270data[1] << 8) | bmi270data[0]); // x-axis
-	if (3 == registerID) val = (int16_t)((bmi270data[3] << 8) | bmi270data[2]); // y-axis
+	if (3 == registerID) val = -(int16_t)((bmi270data[3] << 8) | bmi270data[2]); // y-axis
 	if (5 == registerID) val = (int16_t)((bmi270data[5] << 8) | bmi270data[4]); // z-axis
 
 	return (100 * val) >> 14;
@@ -2170,6 +2170,17 @@ static int readPMUReg(int reg) {
 	return Wire1.available() ? Wire1.read() : 0;
 }
 
+static int readPMU12BitReg(int reg) {
+	Wire1.beginTransmission(PMU_ADDR);
+	Wire1.write(reg);
+	int error = Wire1.endTransmission();
+	if (error) return 0; // error; return 0
+	Wire1.requestFrom(PMU_ADDR, 2);
+	int result = Wire1.read() << 4; // high 8 bits
+	result += Wire1.read(); // low 4 bits
+	return result;
+}
+
 static void writePMUReg(int reg, int value) {
 	Wire1.beginTransmission(PMU_ADDR);
 	Wire1.write(reg);
@@ -2258,6 +2269,16 @@ void databotV3PowerdownCheck() {
 	databotV3Init(); // ensure initialized
 	if (pmuShortPressed()) pmuPowerDown();
 }
+
+static OBJ primBatteryMillivolts(int argCount, OBJ *args) {
+	int voltage = (readPMU12BitReg(0x78) * 11) / 10;
+	return int2obj(voltage);
+}
+// xxx
+// float AXP173::getBatVoltage() {
+//   float ADCLSB = 1.1 / 1000.0;
+//   return _I2C_read12Bit(0x78) * ADCLSB;
+// }
 
 #endif // end dabatbot v3 support
 
@@ -2967,6 +2988,10 @@ static PrimEntry entries[] = {
 	{"cube_status", primCubeStatus},
 	{"speed_left", primPositionSpeedLeft},
 	{"speed_right", primPositionSpeedRight},
+	#endif
+
+	#if defined(DATABOT_V3)
+	{"batteryMillivolts", primBatteryMillivolts},
 	#endif
 };
 

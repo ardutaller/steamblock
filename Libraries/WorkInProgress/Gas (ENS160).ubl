@@ -1,20 +1,20 @@
 module 'Gas (ENS160)' Input
 author MicroBlocks
-version 1 0 
+version 1 2 
 description 'Air quality (CO2 and VOC) library for Sciosense ENS160 (I2C addr: 0x53).
 
 https://www.mouser.com/datasheet/2/1081/SC_001224_DS_1_ENS160_Datasheet_Rev_0_95-2258311.pdf'
 variables _ens160_addr 
 
-  spec 'r' 'ens160_CO2' 'ens160 CO2'
-  spec 'r' 'ens160_tovc' 'ens160 total volatile organic compounds'
+  spec 'r' 'ens160_CO2' 'ens160 eCO2'
+  spec 'r' 'ens160_tovc' 'ens160 TVOC'
   spec 'r' 'ens160_aqi' 'ens160 air quality index'
   advanced
-  spec ' ' '_ens160_setTempHumidity' '_ens160_setTempHumidity _ _' 'num num' 25 50
+  spec ' ' 'ens160_setTempHumidity' 'ens160 set temperature _ relative humidity _ %' 'num num' 25 50
   space
   spec ' ' '_ens160_init' '_ens160_init'
-  spec 'r' '_ens160_readData' '_ens160_readData _' 'num' 0
   spec ' ' '_ens160_writeReg16' '_ens160_writeReg16 _ _' 'num num' 0 0
+  spec 'r' '_ens160_readData' '_ens160_readData _' 'num' 0
 
 to '_ens160_init' {
   _ens160_addr = (hexToInt '53')
@@ -25,17 +25,12 @@ to '_ens160_init' {
 For more accurate results, use the
 actual temperature and humidity from,
 for example, an SHT40 sensor.'
-  '_ens160_setTempHumidity' 40 33
+  ens160_setTempHumidity 40 33
 }
 
 to '_ens160_readData' reg {
   if (_ens160_addr == 0) {'_ens160_init'}
   return (((i2cGet _ens160_addr (reg + 1)) << 8) | (i2cGet _ens160_addr reg))
-}
-
-to '_ens160_setTempHumidity' degreesC humidity {
-  '_ens160_writeReg16' (hexToInt '13') ((degreesC + 273) << 6)
-  '_ens160_writeReg16' (hexToInt '15') (humidity << 9)
 }
 
 to '_ens160_writeReg16' reg value {
@@ -53,6 +48,11 @@ to ens160_CO2 {
 
 to ens160_aqi {
   return (i2cGet _ens160_addr (hexToInt '21'))
+}
+
+to ens160_setTempHumidity degreesC humidity {
+  '_ens160_writeReg16' (hexToInt '13') ((degreesC + 273) << 6)
+  '_ens160_writeReg16' (hexToInt '15') (humidity << 9)
 }
 
 to ens160_tovc {
