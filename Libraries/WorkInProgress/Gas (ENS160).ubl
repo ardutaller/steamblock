@@ -1,13 +1,13 @@
 module 'Gas (ENS160)' Input
 author MicroBlocks
-version 1 1 
+version 1 2 
 description 'Air quality (CO2 and VOC) library for Sciosense ENS160 (I2C addr: 0x53).
 
 https://www.mouser.com/datasheet/2/1081/SC_001224_DS_1_ENS160_Datasheet_Rev_0_95-2258311.pdf'
 variables _ens160_addr 
 
-  spec 'r' 'ens160_CO2' 'ens160 CO2'
-  spec 'r' 'ens160_tovc' 'ens160 total volatile organic compounds'
+  spec 'r' 'ens160_CO2' 'ens160 eCO2'
+  spec 'r' 'ens160_tovc' 'ens160 TVOC'
   spec 'r' 'ens160_aqi' 'ens160 air quality index'
   advanced
   spec ' ' 'ens160_setTempHumidity' 'ens160 set temperature _ relative humidity _ %' 'num num' 25 50
