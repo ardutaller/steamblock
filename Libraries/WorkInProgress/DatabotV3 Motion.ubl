@@ -1,6 +1,6 @@
 module 'DatabotV3 Motion'
 author MicroBlocks
-version 1 1 
+version 1 0 
 depends '_Magnetometer (MMC5983)' 
 choices accelerometerRange '1' '2' '4' '8' 
 description 'Library for the databot v3 accelerometer, magnetometer, and gyro sensors.'
@@ -41,24 +41,29 @@ to databotV3_acceleration {
 }
 
 to databotV3_gyro_x {
-  '_databotV3_initBMI270'
-  local 'data' ('_databotV3_readBMI270Data')
-  local 'rawX' (((at 8 data) << 8) | (at 7 data))
-  comment 'Sign-extend the 16-bit signed value'
-  rawX = ((rawX << 15) >> 15)
-  comment 'Get adjustment factor for gyro z/x adjustment
-(See datasheet 4.6.10 Gyroscope Post Processing)'
-  local 'GYR_CAS' (((i2cGet (hexToInt '68') (hexToInt '3C')) << 24) >> 24)
-  return (rawX - ((GYR_CAS * (databotV3_gyro_z)) >> 9))
-}
-
-to databotV3_gyro_y {
+  comment 'Note: We swapped gyro x and y on the Databot V3
+so this is is actually for the gyro''s y axis.'
   '_databotV3_initBMI270'
   local 'data' ('_databotV3_readBMI270Data')
   local 'rawY' (((at 10 data) << 8) | (at 9 data))
   comment 'Sign-extend the 16-bit signed value'
   rawY = ((rawY << 15) >> 15)
   return rawY
+}
+
+to databotV3_gyro_y {
+  comment 'Note: We swapped gyro x and y on the Databot V3
+so this is is actually for the gyro''s x axis.'
+  '_databotV3_initBMI270'
+  local 'data' ('_databotV3_readBMI270Data')
+  local 'rawX' (((at 8 data) << 8) | (at 7 data))
+  comment 'Sign-extend the 16-bit signed value'
+  rawX = ((rawX << 15) >> 15)
+  comment 'Get adjustment factor for gyro z/x adjustment
+(See datasheet 4.6.10 Gyroscope Post Processing)
+Note: We swapped gyro x and y on the Databot V3.'
+  local 'GYR_CAS' (((i2cGet (hexToInt '68') (hexToInt '3C')) << 24) >> 24)
+  return (rawX - ((GYR_CAS * (databotV3_gyro_z)) >> 9))
 }
 
 to databotV3_gyro_z {
@@ -86,7 +91,7 @@ to databotV3_magnetic_field {
   return (mmc5983_mag_total)
 }
 
-to databotV3_setAccelRange n {
+to databotV3_setAccelRange {
   '[sensors:setAccelerometerRange]' (0 + n)
 }
 
