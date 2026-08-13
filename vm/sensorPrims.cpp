@@ -1909,6 +1909,8 @@ static int readTemperature() {
 
 static uint8_t bmi270data[12];
 
+static void bmi270EnableGyroAutoOffsetComp(); // forward reference
+
 static void bmi270Init() {
 	if (accelStarted) return;
 
@@ -1945,6 +1947,7 @@ static void bmi270Init() {
 	}
 	writeI2CReg(BMI270_ADDR, BMI270_RANGE, 0); // set range to +/- 2G
 	writeI2CReg(BMI270_ADDR, BMI270_PWR_CTRL, 0x0E); // acc_en=1, gyr_en=1, temp_en=1
+	bmi270EnableGyroAutoOffsetComp(); // turn on gyro offset self-compensation
 	accelStarted = true;
 }
 
@@ -1986,6 +1989,54 @@ static int readTemperature() {
 	if (!accelStarted) bmi270Init();
 	int16_t rawTemp = (readI2CReg(BMI270_ADDR, 0x23) << 8) | readI2CReg(BMI270_ADDR, 0x22);
 	return (rawTemp >> 9) + 23 - 13; // -13 adjusts for self-heating in databot case
+}
+
+// Databot V3 Gyro Setup
+
+#define REG_FEAT_PAGE			0x2F	// bits2:0 page: selects which page FEATURES[0x30..0x3F] maps to
+#define FEAT_PAGE_GEN_SET_1		1		// GEN_SET_1 lives on feature page 1
+#define FEAT_ADDR_GEN_SET_1		0x34	// word register (LSB @0x34, MSB @0x35)
+
+#define REG_OFFSET_6			0x77	// bit6 gyr_off_en, bit7 gyr_gain_en (NVM backed)
+#define OFFSET_6_GYR_OFF_EN		(1 << 6)
+#define GEN_SET_1_GYR_SELF_OFF	(1 << 9)
+
+// Feature registers (0x30-0x3F) are a 16-byte window onto 8 banked pages,
+// selected by REG_FEAT_PAGE, and must be accessed as 16-bit words (datasheet 4.8.1).
+static uint16_t bmi270ReadFeatWord(uint8_t page, uint8_t addr) {
+	writeI2CReg(BMI270_ADDR, REG_FEAT_PAGE, page & 0x07);
+	Wire.beginTransmission(BMI270_ADDR);
+	Wire.write(addr);
+	Wire.endTransmission(false);
+	Wire.requestFrom(BMI270_ADDR, (uint8_t)2);
+	uint8_t lo = Wire.read();
+	uint8_t hi = Wire.read();
+	return ((uint16_t) hi << 8) | lo;
+}
+
+static void bmi270WriteFeatWord(uint8_t page, uint8_t addr, uint16_t val) {
+	writeI2CReg(BMI270_ADDR, REG_FEAT_PAGE, page & 0x07);
+	Wire.beginTransmission(BMI270_ADDR);
+	Wire.write(addr);
+	Wire.write((uint8_t) (val & 0xFF));
+	Wire.write((uint8_t) (val >> 8));
+	Wire.endTransmission();
+}
+
+// Enables the gyroscope's automatic In-use Offset Compensation (IOC)
+// (datasheet 4.13.2). When enabled, it continuously re-estimates the
+// gyro offsets and rewrites OFFSET_3..OFFSET_6 with no host interaction.
+// host must not write those registers itself while this is active.
+static void bmi270EnableGyroAutoOffsetComp() {
+	uint8_t off6 = readI2CReg(BMI270_ADDR, REG_OFFSET_6);
+	off6 |= OFFSET_6_GYR_OFF_EN; // apply OFFSET_3..OFFSET_6 to gyro data
+	writeI2CReg(BMI270_ADDR, REG_OFFSET_6, off6);
+
+	uint16_t genSet1 = bmi270ReadFeatWord(FEAT_PAGE_GEN_SET_1, FEAT_ADDR_GEN_SET_1);
+	genSet1 |= GEN_SET_1_GYR_SELF_OFF; // let the device auto-update the offset, not the host
+	bmi270WriteFeatWord(FEAT_PAGE_GEN_SET_1, FEAT_ADDR_GEN_SET_1, genSet1);
+
+	writeI2CReg(BMI270_ADDR, REG_FEAT_PAGE, 0); // restore default feature page
 }
 
 #elif defined(RP2040_PHILHOWER)
