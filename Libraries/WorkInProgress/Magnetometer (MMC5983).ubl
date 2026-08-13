@@ -1,10 +1,11 @@
 module 'Magnetometer (MMC5983)' Input
 author MicroBlocks
-version 1 0 
+version 1 1 
 description 'Magnetometer based on the MMC5983 (I2C addr: 0x30).
 
 https://media.digikey.com/pdf/Data%20Sheets/MEMSIC%20PDFs/MMC5983MA_RevA_4-3-19.pdf
 '
+variables _mmc5983_data 
 
   spec 'r' 'mmc5983_mag_x' 'mag x'
   spec 'r' 'mmc5983_mag_y' 'mag y'
@@ -12,15 +13,35 @@ https://media.digikey.com/pdf/Data%20Sheets/MEMSIC%20PDFs/MMC5983MA_RevA_4-3-19.
   spec 'r' 'mmc5983_mag_total' 'mag total'
   space
   spec 'r' '_mmc5983_read' '_mmc5983_read'
+  spec ' ' '_mmc5982_init' '_mmc5982_init'
+
+to '_mmc5982_init' {
+  local 'mmc5983_addr' (hexToInt '30')
+  comment 'Soft reset the device an wait until it is ready.
+Measurement time 4 msecs'
+  i2cSet mmc5983_addr 10 ('[misc:binToInt]' '10000001')
+  waitMillis 10
+  comment 'Interal Control Reg 0
+Enable automatic sensor reset pulses '
+  i2cSet mmc5983_addr 9 ('[misc:binToInt]' '00100000')
+  comment 'Interal Control Reg 2
+Continuous mode, 200 Hz
+Do a sensor reset pulse every 75 readings  '
+  i2cSet mmc5983_addr 11 ('[misc:binToInt]' '10101110')
+}
 
 to '_mmc5983_read' {
+  if (not (isType _mmc5983_data 'byte array')) {_mmc5983_data = ('[data:newByteArray]' 7)}
+  if (((i2cGet (hexToInt '30') 8) & 3) != 1) {
+    comment 'Data not yet ready; return the previous data'
+    return _mmc5983_data
+  }
   local 'mmc5983_addr' (hexToInt '30')
   i2cSet mmc5983_addr 9 1
   waitUntil (((i2cGet mmc5983_addr 8) & 1) != 0)
-  local 'data' ('[data:newByteArray]' 7)
   '[sensors:i2cWrite]' mmc5983_addr 0
-  '[sensors:i2cRead]' mmc5983_addr data
-  return data
+  '[sensors:i2cRead]' mmc5983_addr _mmc5983_data
+  return _mmc5983_data
 }
 
 to mmc5983_mag_total {
