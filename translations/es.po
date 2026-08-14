@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-08-12 05:40+0000\n"
+"PO-Revision-Date: 2026-08-15 13:51+0000\n"
 "Last-Translator: Josep Ferràndiz "
 "<josep.ferrandiz@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
@@ -9024,3 +9024,15 @@ msgstr "busca bloques y variables..."
 #. Shown in the block search box when no block matches the search
 msgid "no matches"
 msgstr "ninguna coincidencia"
+
+#. CoCube library block
+msgid "track target X _ Y _ at _ speed (0-50)"
+msgstr "sigue el objetivo X _ Y _ a velocidad _ (0-50)"
+
+#. CoCube Module library block
+msgid "ADC connected"
+msgstr "ADC conectado"
+
+#. CoCube Module library block
+msgid "ADC _ voltage (mV)"
+msgstr "ADC _ tensión (mV)"
