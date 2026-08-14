@@ -1,6 +1,6 @@
 module DatabotV3
 author MicroBlocks
-version 1 3 
+version 1 4 
 depends 'Air Pressure (BMP581)' 'Color & Proximity (APDS9151)' 'DatabotV3 Motion' '_Gas (ENS160)' '_Temperature Humidity (SHT40)' '_Gesture (PAJ7620)' '_Distance (VL53L1x)' 
 choices databotV3_tempUnits '°C' '°F' 
 description 'Library for the databot v3.
@@ -27,7 +27,9 @@ variables _databotV3_pixels
   spec 'r' 'databotV3_CO2' 'databotV3 eCO2'
   spec 'r' 'databotV3_TVOC' 'databotV3 TVOC'
   spec 'r' 'databotV3_AQI' 'databotV3 air quality index'
+  space
   spec 'r' 'databotV3_uvIndex' 'databotV3 UV Index'
+  spec 'r' 'databotV3_UVA' 'databotV3 UVA power (uW / cm^2)'
   space
   spec 'r' 'databotV3_analog' 'databotV3 analog input _' 'menu.range:1-3' 1
   space
@@ -108,6 +110,13 @@ to databotV3_RGB r g b {
 
 to databotV3_TVOC {
   return (ens160_tovc)
+}
+
+to databotV3_UVA {
+  comment 'Returns the UV-A power in uW per square centimeter.'
+  local 'millivoltsX10' ((33000 * (analogReadOp 3)) / 1023)
+  local 'divisor' (43 * 113)
+  return (((1000 * millivoltsX10) + (divisor / 2)) / (43 * 113))
 }
 
 to databotV3_analog which {
@@ -195,10 +204,10 @@ to databotV3_temperature units {
 }
 
 to databotV3_uvIndex {
-  local 'millivolts' ((3300 * (analogReadOp 3)) / 1023)
-  if (millivolts < 200) {
+  local 'millivoltsX10' ((33000 * (analogReadOp 3)) / 1023)
+  if (millivoltsX10 < 2000) {
     return 0
   }
-  return ((millivolts - 132) / 94)
+  return ((millivoltsX10 - 1320) / 94)
 }
 
