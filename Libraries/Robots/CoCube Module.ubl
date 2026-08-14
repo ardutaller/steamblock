@@ -1,8 +1,9 @@
 module 'CoCube Module'
 author 'Liang Shuai'
-version 1 14 
+version 1 15
 depends _Servo NeoPixel 
 choices trackerMenu '1' '2' '3' '4' '5' ALL
+choices adc_channel A0 A1 A2
 description 'External modules of CoCube.
 
 CoCube is a tabletop modular multi-robot platform for education and research.
@@ -34,9 +35,37 @@ variables _cc_cam_init_flag _cc_asr_snc _cc_PCF8574_address
   spec 'r' 'ccmodule_tracker on black' 'Tracker _ on black' 'menu.trackerMenu' 1
   spec 'r' 'ccmodule_tracker on white' 'Tracker _ on white' 'menu.trackerMenu' 1
   space
+  spec 'r' 'ccmodule_adc_connected' 'ADC connected'
+  spec 'r' 'ccmodule_adc_voltage' 'ADC _ voltage (mV)' 'menu.adc_channel' 'A0'
+  space
   spec ' ' 'ccmodule_power on module' 'power on module'
   space
   spec ' ' '_ccmodule_check_camera' 'check_camera'
+
+to 'ccmodule_adc_connected' {
+  digitalWriteOp 13 true
+  return ('[sensors:i2cExists]' (hexToInt '48'))
+}
+
+to 'ccmodule_adc_voltage' channel {
+  if (not ('ccmodule_adc_connected')) {return 0}
+  local 'config_high' (hexToInt 'C1')
+  if (channel == 'A1') {
+    config_high = (hexToInt 'D1')
+  } (channel == 'A2') {
+    config_high = (hexToInt 'E1')
+  }
+  '[sensors:i2cWrite]' (hexToInt '48') ('[data:makeList]' 1 config_high (hexToInt '83'))
+  waitMillis 9
+  '[sensors:i2cWrite]' (hexToInt '48') ('[data:makeList]' 0)
+  local 'buffer' ('[data:newByteArray]' 2)
+  '[sensors:i2cRead]' (hexToInt '48') buffer
+  local 'raw' (((at 1 buffer) << 8) | (at 2 buffer))
+  if (raw >= 32768) {
+    raw = (raw - 65536)
+  }
+  return (((maximum 0 raw) * 3) / 16)
+}
 
 to '_ccmodule_check_camera' {
   if (_cc_cam_init_flag == 1) {

@@ -5388,6 +5388,10 @@ msgstr ""
 msgid "battery percentage"
 msgstr ""
 
+#. CoCube library block
+msgid "track target X _ Y _ at _ speed (0-50)"
+msgstr ""
+
 #. CoCube Emoji library label
 #. Show emojis on the TFT Screen.
 msgid "CoCube Emoji"
@@ -5531,6 +5535,14 @@ msgstr ""
 
 #. CoCube Module library block
 msgid "Tracker _ on white"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ADC connected"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ADC _ voltage (mV)"
 msgstr ""
 
 #. CoCube Sengo1 library choice
