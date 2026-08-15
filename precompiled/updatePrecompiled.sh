@@ -49,6 +49,8 @@ pio run -e pico-w
 cp .pio/build/pico-w/firmware.uf2 precompiled/vm_pico_w.uf2
 pio run -e databot
 cp .pio/build/databot/firmware.bin precompiled/vm_databot.bin
+pio run -e databot-v3
+cp .pio/build/databot-v3/firmware.bin precompiled/vm_databot_v3.bin
 pio run -e steam-maker
 cp .pio/build/steam-maker/firmware.bin precompiled/vm_micro_steamakers.bin
 pio run -e kids-bits
