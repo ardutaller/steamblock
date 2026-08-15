@@ -659,7 +659,11 @@ method instructionsFor SmallCompiler aBlockOrFunction {
 				add result (array 'pushLiteral' (functionName func))
 				add result (array 'placeholder' 0)
 				add result (array 'recvBroadcast' 1)
-				if ('noop' != (primName cmdOrReporter)) {
+				// Skip only the placeholder added above for a function hat with
+				// no blocks, which is a lone 'noop' with nothing after it.
+				// Testing the first block alone skipped the WHOLE body of any
+				// argument-less function whose first block was a real 'no op'.
+				if (not (and ('noop' == (primName cmdOrReporter)) (isNil (nextBlock cmdOrReporter)))) {
 					addAll result (instructionsForCmdList this cmdOrReporter)
 				}
 			} else {
@@ -1059,7 +1063,7 @@ method collectVars SmallCompiler cmdOrReporter {
 	localVars = (dictionary)
 	todo = (list cmdOrReporter)
 	while ((count todo) > 0) {
-		cmd = (removeFirst todo)
+		cmd = (removeLast todo)
 		if (isOneOf (primName cmd) 'local' 'for') {
 			// explicit local variables and 'for' loop indexes are always local
 			varName = (first (argList cmd))
@@ -1079,12 +1083,12 @@ method collectVars SmallCompiler cmdOrReporter {
 					atPut localVars varName (count localVars)
 			}
 		}
-		for arg (argList cmd) {
+		if (notNil (nextBlock cmd)) { add todo (nextBlock cmd) }
+		for arg (reversed (argList cmd)) {
 			if (isAnyClass arg 'Command' 'Reporter') {
 				add todo arg
 			}
 		}
-		if (notNil (nextBlock cmd)) { add todo (nextBlock cmd) }
 	}
 }
 

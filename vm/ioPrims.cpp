@@ -167,6 +167,9 @@ void hardwareInit() {
 	#if defined(ESP32)
 		if (hasPSRAM()) reservePinsForPSRAM();
 	#endif
+	#if defined(DATABOT_V3)
+		databotV3Init();
+	#endif
 	initPins();
 	initRandomSeed();
 	turnOffInternalNeoPixels();
@@ -182,7 +185,7 @@ void hardwareInit() {
 		tftInit();
 		tftClear();
 	#endif
-	#if defined(DATABOT)
+	#if defined(DATABOT) || defined(DATABOT_V3)
 		int yellow = 14864128;
 		setAllNeoPixels(-1, 3, yellow);
 	#endif
@@ -736,7 +739,7 @@ void hardwareInit() {
 	#define TOTAL_PINS 40
 	static const int analogPin[] = {};
 	#define DEFAULT_TONE_PIN 4
-	#define PIN_LED -1
+	#define PIN_LED -1 // no built-in LED
 	#define DEFAULT_BATTERY_PIN 34
 	#define DEFAULT_L1_PIN 9
 	#define DEFAULT_L2_PIN 10
@@ -843,15 +846,36 @@ void hardwareInit() {
 	#define ANALOG_PINS 16
 	#define TOTAL_PINS 40
 	static const int analogPin[] = {};
-	// databot does not have a user LED; map it to unused pin 12
-	// Note: Pin 27 is reserved on databot
-	#define PIN_LED 12
+	#define PIN_LED -1 // no built-in LED
 	#define DEFAULT_TONE_PIN 32
+	// Note: Pin 27 is reserved on databot
 	static char reservedPin[TOTAL_PINS] = {
 		0, 1, 0, 1, 0, 0, 1, 1, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 		1, 1, 1, 0, 1, 0, 0, 1, 1, 1,
 		1, 1, 0, 0, 0, 0, 0, 1, 1, 0};
+
+#elif defined(DATABOT_V3)
+	#define BOARD_TYPE "Databot v3"
+	#define DIGITAL_PINS 49
+	#define ANALOG_PINS 20
+	#define TOTAL_PINS 49
+	static const int analogPin[] = {};
+	#define PIN_BUTTON_A 38
+	#define PIN_BUTTON_B 0
+	#define PIN_LED -1 // no built-in LED
+	#define DEFAULT_TONE_PIN 45
+
+	// See https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html
+	// Reserved FLASH and RAM SPI: 26-32 plus 33-37 on boards with Octal SPI Flash PSRAM
+	// USB pins: 19 (USB D-), 20 (USB D+)
+	// Strapping pins: 0 (Boot), 3 (JTAG), 45 (VSPI), 46 (LOG) (useable with care)
+	static const char reservedPin[TOTAL_PINS] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #elif defined(STEAMaker)
 	#define BOARD_TYPE "micro:STEAMakers"
@@ -906,10 +930,10 @@ void hardwareInit() {
 #elif defined(ARDUINO_XIAO_ESP32C3)
 	#define BOARD_TYPE "Xiao ESP32C3"
 	#define IS_XIAO 1
-	#define DIGITAL_PINS 22
-	#define ANALOG_PINS 4
+	#define DIGITAL_PINS 11
+	#define ANALOG_PINS 3
 	#define TOTAL_PINS 22
-	#define PIN_LED 10 // there is no user LED; use pin 10
+	#define PIN_LED -1 // no built-in LED
 	#define USE_DIGITAL_PIN_MAP true
 	static const int analogPin[] = {};
 	static const char digitalPin[DIGITAL_PINS] = {2, 3, 4, 5, 6, 7, 21, 20, 8, 9, 10};
@@ -1003,7 +1027,7 @@ void hardwareInit() {
 	#ifdef LED_BUILTIN
 		#define PIN_LED LED_BUILTIN
 	#elif !defined(PIN_LED)
-		#define PIN_LED -1
+		#define PIN_LED -1 // no built-in LED
 	#endif
 	#if !defined(PIN_BUTTON_A)
 		#if defined(KEY_BUILTIN)
@@ -1034,7 +1058,7 @@ void hardwareInit() {
 	#elif defined(LED_BUILTIN)
 		#define PIN_LED LED_BUILTIN
 	#elif !defined(PIN_LED)
-		#define PIN_LED -1
+		#define PIN_LED -1 // no built-in LED
 	#endif
 	#if !defined(PIN_BUTTON_A)
 		#if defined(KEY_BUILTIN)
@@ -1062,7 +1086,7 @@ void hardwareInit() {
 	static const int analogPin[] = {};
 	#if defined(FAB_SPARKLE)
 		// Note: The Super C3 mini has user LED on the I2C SDA line; do not use it!
-		#define PIN_LED -1
+		#define PIN_LED -1 // no built-in LED
 	#elif defined(LED_BUILTIN)
 		#define PIN_LED LED_BUILTIN
 	#endif
@@ -1633,6 +1657,8 @@ void turnOffPins() {
 					}
 					digitalWrite(pin, LOW); // set low before switching to input
 				}
+			#elif defined(DATABOT_V3)
+				if (46 == pin) continue; // do not turn off the RGB LED enable pin
 			#endif
 			#if defined(PICO_RP2350)
 				// workaround for RP2350 chip bug; set low before switching to input
@@ -1759,7 +1785,7 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		}
 	#endif
 	#ifdef ARDUINO_ARCH_ESP32
-		#if defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT) || defined(SPRINGBOT)
+		#if defined(USE_DIGITAL_PIN_MAP)
 			pinNum = mapDigitalPinNum(pinNum); // map edge connector pin number to ESP32 pin number
 			if (pinNum < 0) return zeroObj;
 		#endif
@@ -1768,7 +1794,7 @@ OBJ primAnalogRead(int argCount, OBJ *args) {
 		#if defined(ESP32_S2) || defined(ESP32_S3)
 			if ((pinNum < 1) || (pinNum > 20)) return zeroObj;
 		#elif defined(ESP32_C3)
-			if (pinNum > 5) return zeroObj;
+			if (pinNum > 4) return zeroObj;
 		#elif defined(ESP32_C6)
 			if (pinNum > 6) return zeroObj;
 		#endif
@@ -3461,6 +3487,8 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 	#include "user_interface.h"
 
 	extern "C" void lightSleep(int msecs) {
+		// WARNING: NeoPixel code is dependent on CPU clock.
+		// The current NeoPixel code works with the non-idle CPU clock of 160 Mhz.
 		system_update_cpu_freq(80);
 		delay(msecs);
 		system_update_cpu_freq(160);

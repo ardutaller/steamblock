@@ -1578,7 +1578,11 @@ method showSearchBox MicroBlocksScripter {
 	}
 	box = (newMicroBlocksBlockSearchBox this)
 	pageM = (morph (global 'page'))
-	setCenter (morph box) (hCenter (bounds pageM)) ((top pageM) + ((height pageM) / 3))
+	// Sit just below the top bar rather than a third of the way down the page,
+	// so the results menu has the whole window height below it to grow into.
+	gap = (8 * (global 'scale'))
+	setCenter (morph box) (hCenter (bounds pageM)) 0
+	setTop (morph box) (((top pageM) + (topBarHeight (findProjectEditor))) + gap)
 	addPart pageM (morph box)
 	startEditing box
 	showRecents box
@@ -1854,6 +1858,15 @@ method buildIndex MicroBlocksBlockSearchBox {
 	}
 }
 
+to blockSearchMaxRowHeight {
+	// Tallest a single result row may be. Most blocks are one row, but a block
+	// with a grid slot ('LED image') or a multi-line string default ('image')
+	// can be three or more, and a handful of those fill the whole list. A plain
+	// command block is about 31 * blockScale tall.
+
+	return (62 * (blockScale)) // two rows
+}
+
 to blockSearchIncludesTags {
 	// When true, a library's curated tags (e.g. 'tags servo motor rotation')
 	// are included as search match words for that library's blocks. Set to
@@ -2115,18 +2128,20 @@ method showMatchesMenu MicroBlocksBlockSearchBox showNoMatch {
 	}
 	menu = (menu nil this)
 	setField menu 'returnFocus' searchText
-	itemW = ((width morph) - (12 * (global 'scale'))) // menu items span the box width
-	lastKind = nil
+	scale = (global 'scale')
+	itemW = ((width morph) - (12 * scale)) // menu items span the box width
+
+	// Render every row before adding any of them, so they can share a single
+	// width. A row sized to its own block would put its library name at its own
+	// right edge, and a block wider than the search box would then push its name
+	// out past the names above it.
+	rows = (list)
 	for m matches {
 		kind = (first m)
-		if (and ('lib' == kind) ('block' == lastKind)) {
-			addLine menu // divider between project blocks and library blocks
-		}
-		lastKind = kind
 		if ('block' == kind) {
 			b = (at m 2)
 			fixLayout b
-			addItem menu (paddedCostume this b itemW) (action 'grabBlock' this b)
+			add rows (array kind (resultCostume this b) nil (action 'grabBlock' this b))
 		} ('lib' == kind) {
 			libName = (at m 2)
 			spec = (at m 3)
@@ -2135,37 +2150,97 @@ method showMatchesMenu MicroBlocksBlockSearchBox showNoMatch {
 			setField b 'color' (blockColorForCategory (authoringSpecs) (at m 4))
 			setField b 'pathCache' nil
 			fixLayout b
-			addItem menu (libraryCostume this b libName itemW) (action 'grabLibraryBlock' this libName spec)
+			add rows (array kind (resultCostume this b) (libraryLabel this libName)
+				(action 'grabLibraryBlock' this libName spec))
 		}
 	}
+
+	rowW = itemW
+	for row rows {
+		w = (width (at row 2))
+		if (notNil (at row 3)) { w = ((w + (width (at row 3))) + (16 * scale)) }
+		rowW = (max rowW w)
+	}
+
+	lastKind = nil
+	for row rows {
+		kind = (at row 1)
+		if (and ('lib' == kind) ('block' == lastKind)) {
+			addLine menu // divider between project blocks and library blocks
+		}
+		lastKind = kind
+		addItem menu (rowCostume this (at row 2) (at row 3) rowW) (at row 4)
+	}
+	limitMenuToSpaceBelow this
 	popUp menu (page morph) (left morph) (bottom morph) true // suppress focus
 	selectFirstItem menu // highlight the first match; enter grabs it, arrows move
 }
 
-method paddedCostume MicroBlocksBlockSearchBox aBlock itemW {
-	// Pad the block costume to itemW so all menu items (and their selection
-	// highlight) span the full width of the search box.
-
-	bm = (fullCostume (morph aBlock))
-	if ((width bm) >= itemW) { return bm }
-	wide = (newBitmap itemW (height bm))
-	drawBitmap wide bm 0 0
-	return wide
-}
-
-method libraryCostume MicroBlocksBlockSearchBox aBlock libName itemW {
-	// Like paddedCostume, but with the library name right-aligned in gray to
-	// show which (not yet loaded) library the block comes from.
+method limitMenuToSpaceBelow MicroBlocksBlockSearchBox {
+	// The results menu pops up below the search box, but Menu sizes itself
+	// against the whole page, so a tall result list is slid back up by
+	// keepWithin until it covers the box. Cap it to the space that is actually
+	// below the box; Menu then scrolls the overflow as it already does when a
+	// menu is taller than the page.
 
 	scale = (global 'scale')
+	pageM = (morph (global 'page'))
+	// 10 for the inset Page.showMenu keeps menus within, 2 for the menu border
+	setMaxHeight menu ((floor ((bottom pageM) - (bottom morph))) - (12 * scale))
+}
+
+method resultCostume MicroBlocksBlockSearchBox aBlock {
+	// Answer the bitmap for one result row, shrinking blocks that are taller
+	// than blockSearchMaxRowHeight so that a few tall results cannot crowd out
+	// the rest of the list.
+
 	bm = (fullCostume (morph aBlock))
+	maxH = (blockSearchMaxRowHeight)
+	if ((height bm) <= maxH) { return bm }
+
+	// Rebuild the block at a smaller blockScale, the same way a block picture is
+	// exported (see exportAsImageScaled in Block.gp); scaling the finished bitmap
+	// instead leaves the text and grid slots blurry. Rebuild from the block's own
+	// spec, not from its expression: an expression is resolved back through the
+	// authoring specs, and a block from a library that is not loaded yet has no
+	// spec there, so it would come back as its bare op name in the wrong color.
+	spec = (blockSpec aBlock)
+	if (isNil spec) { return bm }
+	oldBlockScale = (global 'blockScale')
+	setGlobal 'blockScale' (oldBlockScale * (maxH / (height bm)))
+	smaller = (blockForSpec spec)
+	setField smaller 'color' (color aBlock)
+	setField smaller 'pathCache' nil
+	fixLayout smaller
+	smallBM = (fullCostume (morph smaller))
+	setGlobal 'blockScale' oldBlockScale
+	if ((height smallBM) <= maxH) { return smallBM }
+
+	// block layout does not scale quite linearly, so trim any remainder
+	return (thumbnail smallBM (((width smallBM) * maxH) / (height smallBM)) maxH)
+}
+
+method libraryLabel MicroBlocksBlockSearchBox libName {
+	// The gray library name shown on a result from a not-yet-loaded library.
+
+	scale = (global 'scale')
 	label = (newText libName 'Arial' (11 * scale) (gray 120))
 	fixLayout label
-	labelBM = (fullCostume (morph label))
-	w = (max itemW (((width bm) + (width labelBM)) + (16 * scale)))
-	wide = (newBitmap w (height bm))
-	drawBitmap wide bm 0 0
-	drawBitmap wide labelBM (w - ((width labelBM) + (4 * scale))) (half (max 0 ((height bm) - (height labelBM))))
+	return (fullCostume (morph label))
+}
+
+method rowCostume MicroBlocksBlockSearchBox blockBM labelBM rowW {
+	// Pad the block costume to rowW so all menu items (and their selection
+	// highlight) span the same width, with the library name, if any, against
+	// the right edge. Every row shares rowW, so the names line up in a column.
+
+	scale = (global 'scale')
+	if (and (isNil labelBM) ((width blockBM) >= rowW)) { return blockBM }
+	wide = (newBitmap rowW (height blockBM))
+	drawBitmap wide blockBM 0 0
+	if (notNil labelBM) {
+		drawBitmap wide labelBM (rowW - ((width labelBM) + (4 * scale))) (half (max 0 ((height blockBM) - (height labelBM))))
+	}
 	return wide
 }
 

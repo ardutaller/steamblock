@@ -1,10 +1,18 @@
 // Morphic Menu handler
 
-defineClass Menu morph label target items reverseCall selection returnFocus isTopMenu
+defineClass Menu morph label target items reverseCall selection returnFocus isTopMenu maxMenuHeight
 
 to menu label target reverseCall returnFocus {
 	if (isNil reverseCall) {reverseCall = false}
 	return (new 'Menu' nil (localized label) target (list) reverseCall)
+}
+
+method setMaxHeight Menu h {
+	// Limit how tall this menu may grow. When it would exceed the limit it
+	// scrolls instead, like it already does when it exceeds the page height.
+	// Nil (the default) leaves the page-height limit as the only constraint.
+
+	maxMenuHeight = h
 }
 
 method addItemNonlocalized Menu itemLabel itemAction itemHint itemThumb {
@@ -156,6 +164,7 @@ method buildMorph Menu page yPos {
 
 	minHeight = (min (scale * 100) (height (morph page)))
 	maxHeight = ((height (morph page)) - 100)
+	if (notNil maxMenuHeight) { maxHeight = (min maxHeight (max (scale * 40) maxMenuHeight)) }
 
 	menuWidth = 50
 	menuHeight = 0

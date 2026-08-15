@@ -1,19 +1,20 @@
 module 'LED Dot Matrix (d1 mini)' Output
 author MicroBlocks
-version 1 1 
+version 1 2 
 tags display d1mini 
 description 'Support for the WEMOS 8x8 LED Dot Matrix D1 Mini shield.'
 variables '_MLED data pin' '_MLED clock pin' '_MLED buffer' '_MLED intensity' 
 
-  spec ' ' '_MLED display' '_MLED display'
+  spec ' ' 'clear LED matrix' 'clear LED matrix'
+  spec ' ' 'set LED matrix intensity to' 'set LED matrix intensity to _ (1-8)' 'num' 5
+  spec ' ' 'set dot' 'set dot x _ y _ to _' 'num num bool' 3 4 true
+  space
   spec ' ' '_MLED init' '_MLED init'
+  spec ' ' '_MLED display' '_MLED display'
   spec ' ' '_MLED send' '_MLED send byte _' 'auto' '10'
   spec ' ' '_MLED send command' '_MLED send command _' 'auto' '10'
   spec ' ' '_MLED send data' '_MLED send data _ to address _' 'auto auto' '10' '10'
-  spec ' ' 'set dot' 'set dot x _ y _ to _' 'auto auto bool' 3 4 true
   spec ' ' '_MLED stealth set dot x' '_MLED stealth set dot x _ y _ to _' 'auto auto bool' '10' '10' true
-  spec ' ' 'clear LED matrix' 'clear LED matrix'
-  spec ' ' 'set LED matrix intensity to' 'set LED matrix intensity to _ (1-8)' 'auto' 5
 
 to '_MLED display' {
   for byte 8 {

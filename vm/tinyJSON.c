@@ -108,7 +108,9 @@ static char * tjr_atPropName(char *p, char *propName, int propNameLen) {
 	while (1) {
 		p = tjr_nextProperty(p, s, sizeof(s));
 		if (!p) return NULL; // no more properties
-		if (0 == strncmp(s, propName, propNameLen)) return p;
+		// require an exact name match; a prefix-only comparison would make "current"
+		// match "current_units" if that property comes first
+		if (((int) strlen(s) == propNameLen) && (0 == strncmp(s, propName, propNameLen))) return p;
 		p = tjr_skip(p); // skip value
 	}
 }

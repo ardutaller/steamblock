@@ -1,6 +1,6 @@
 module 'LCD 16x2 (Seeed)' Output
 author 'Ralf Krause'
-version 1 3 
+version 1 4 
 description 'LCD 16x2 (Seeed)
 
 Seeed Studio supplies four 16x2 LCD displays with Grove i2c connectors. The LCD RGB display has a multicolor backlight. The LCD displays (monochrome v2.0, RGB v5.0) are compatible with 3.3 and 5 volts so they work fine with Micro:bit and Calliope mini.
@@ -15,7 +15,7 @@ variables _LCD_ADDR _LCD_LOCK_MSECS
   spec 'r' 'LCD_is_connected' 'LCD is connected?'
   spec ' ' 'LCD_init_display' 'LCD init display'
   space
-  spec ' ' 'LCD_write_text' 'LCD write text _ to line _' 'auto num' 'Hello world!' 1
+  spec ' ' 'LCD_write_text' 'LCD write text _ to line _' 'auto num' 'Hello World!' 1
   spec ' ' 'LCD_write_field' 'LCD write field _ to line _ from _ to _' 'auto num num num' 'Hi!' 1 1 16
   spec ' ' 'LCD_clear_display' 'LCD clear display'
   spec ' ' 'LCD_set_display_on' 'LCD set display on _' 'bool' true
@@ -214,8 +214,8 @@ to '_LCD_init_german_chars' {
 }
 
 to '_LCD_init_some_icons' {
-  comment 'examples for custom chars
-  comment ' smile'
+  comment 'examples for custom chars'
+  comment 'smile'
   LCD_generate_custom_char 0 ('[data:makeList]' 0 0 10 0 0 17 14 0)
   comment 'heart'
   LCD_generate_custom_char 1 ('[data:makeList]' 0 10 31 31 14 4 0 0)

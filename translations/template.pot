@@ -883,6 +883,10 @@ msgid "stop steppers"
 msgstr ""
 
 #. Citilab ED1 Stepper Motor library block
+msgid "set motor pin _ for motor _ to _"
+msgstr ""
+
+#. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
 msgstr ""
 
@@ -1060,6 +1064,10 @@ msgstr ""
 
 #. Ultrasound distance library block
 msgid "distance (cm) trigger _ echo _"
+msgstr ""
+
+#. Ultrasound distance library block
+msgid "distance (cm) pin _"
 msgstr ""
 
 #. Infrared remote library label
@@ -1721,6 +1729,54 @@ msgstr ""
 msgid "defer display updates"
 msgstr ""
 
+#. Tiny OLED library block
+msgid "clear tiny OLED display"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw circle center _ _ radius _ fill _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw image _ x _ y _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw line from _ _ to _ _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw pixel x _ y _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw rect x _ y _ w _ h _ fill _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw string _ x _ y _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "draw big string _ x _ y _ white _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "defer tiny OLED display updates"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "set tiny OLED brightness _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "reset tiny OLED pin _"
+msgstr ""
+
+#. Tiny OLED library block
+msgid "show tiny OLED display updates"
+msgstr ""
+
 #. TFT display library block
 msgid "clear TFT display"
 msgstr ""
@@ -2351,6 +2407,10 @@ msgstr ""
 
 #. Wavetable Synthesis library block
 msgid "stop channel _ in _ ms"
+msgstr ""
+
+#. Wavetable Synthesis library block
+msgid "set envelope attack-decay _ release _ for channel _"
 msgstr ""
 
 #. Wavetable Synthesis library block
@@ -5328,6 +5388,10 @@ msgstr ""
 msgid "battery percentage"
 msgstr ""
 
+#. CoCube library block
+msgid "track target X _ Y _ at _ speed (0-50)"
+msgstr ""
+
 #. CoCube Emoji library label
 #. Show emojis on the TFT Screen.
 msgid "CoCube Emoji"
@@ -5471,6 +5535,14 @@ msgstr ""
 
 #. CoCube Module library block
 msgid "Tracker _ on white"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ADC connected"
+msgstr ""
+
+#. CoCube Module library block
+msgid "ADC _ voltage (mV)"
 msgstr ""
 
 #. CoCube Sengo1 library choice
@@ -5769,6 +5841,10 @@ msgstr ""
 msgid "set NeoPixels color _"
 msgstr ""
 
+#. Calliope NeoPixel library label
+msgid "Calliope NeoPixel"
+msgstr ""
+
 #. Calliope NeoPixel library block
 msgid "Calliope set all NeoPixels to _"
 msgstr ""
@@ -5791,6 +5867,10 @@ msgstr ""
 
 #. Calliope NeoPixel library block
 msgid "Calliope set brightness to _ %"
+msgstr ""
+
+#. Calliope Servoboard library label
+msgid "Calliope Servoboard"
 msgstr ""
 
 #. Calliope Servoboard library block
@@ -5817,31 +5897,35 @@ msgstr ""
 msgid "Calliope stop servo _"
 msgstr ""
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library label
+msgid "Calliope MotionKit"
+msgstr ""
+
+#. Calliope MotionKit library choice
 msgid "mk2;bright"
 msgstr ""
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;dark"
 msgstr ""
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;ok"
 msgstr ""
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;up"
 msgstr ""
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;down"
 msgstr ""
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;S1"
 msgstr ""
 
-#. Calliope MotionKit library block
+#. Calliope MotionKit library choice
 msgid "mk2;S2"
 msgstr ""
 
@@ -5997,6 +6081,50 @@ msgstr ""
 msgid "Callibot stop motor _"
 msgstr ""
 
+#. Maqueen Car Kit library label
+msgid "Maqueen"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen motor _ dir _ speed(0-255) _"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen stop motors _"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen LED _ _"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen beep _ ms"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen line sensor _"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen sees line on left _ right _"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen distance (cm)"
+msgstr ""
+
+#. Maqueen Car Kit library block
+msgid "Maqueen IR keycode"
+msgstr ""
+
+#. Maqueen Car Kit library choice
+msgid "fwd"
+msgstr ""
+
+#. Maqueen Car Kit library choice
+msgid "bwd"
+msgstr ""
+
 #. Nezha Pro library label
 msgid "Nezha Pro"
 msgstr ""
@@ -6091,6 +6219,10 @@ msgstr ""
 
 #. LCD 16x2 (Seeed) library block
 msgid "LCD write text _ to line _"
+msgstr ""
+
+#. LCD 16x2 (Seeed) library example
+msgid "Hi!"
 msgstr ""
 
 #. LCD 16x2 (Seeed) library block
@@ -6484,6 +6616,14 @@ msgid "#SVG#square11#ffffff rotary encoder _ port _"
 msgstr ""
 
 #. KidsIOT library block
+msgid "#SVG#square11#00c612 dual motor _ power _ (-100 to 100)"
+msgstr ""
+
+#. KidsIOT library block
+msgid "#SVG#square11#00c612 dual motor stop _"
+msgstr ""
+
+#. KidsIOT library block
 msgid "#SVG#square11#0070ff set NeoPixels _ _ _ _ port _"
 msgstr ""
 
@@ -6509,6 +6649,50 @@ msgstr ""
 
 #. KidsIOT library block
 msgid "#SVG#square11#ffffff traffic light red _ yellow _ green _ port _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff button pressed? _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff touching? _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#0070ff receive IR code _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 potentiometer _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#ff0000 steam _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#C0C0C0 set servo _ to _ degrees (0 to 270)"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "for _ seconds"
+msgstr ""
+
+#. KidsIOT Engineering library block
+msgid "#SVG#square11#FFA500 stop servo _"
+msgstr ""
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 motor _ power _ (-100 to 100)"
+msgstr ""
+
+#. KidsIOT Dual Motor library block
+msgid "#SVG#square11#00c612 stop all motors"
 msgstr ""
 
 #. LogicLinks library block
@@ -6691,6 +6875,10 @@ msgstr ""
 msgid "write field _ on LCD line _ from _ to _"
 msgstr ""
 
+#. LCD Display library example
+msgid "Moon!"
+msgstr ""
+
 #. MP3 Player library choice
 msgid "MakerPort"
 msgstr ""
@@ -6739,6 +6927,93 @@ msgstr ""
 msgid "mp3 set volume _ (0-30)"
 msgstr ""
 
+#. Catalab 32 library choice
+msgid "spin"
+msgstr ""
+
+#. Catalab 32 library choice
+msgid "button pressed?"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "humidity"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "clear LED strip"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "button _ pressed?"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "play buzzer frequency _ duration _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "play buzzer note _ octave _ duration _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "set LED strip #BR# _ _ _ _ _ _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "control LED _ block _ on _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "control motor _ power _ (-100 to 100)"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "rotary encoder _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "write OLED screen _ x _ y _ big _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "write TFT screen _ x _ y _ color _ size _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "start TFT screen"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "joystick _"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "move servo _ to _ degrees (0-180)"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "stop all motors"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "magnetic flux"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "light intensity"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "distance in cm"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "temperature"
+msgstr ""
+
+#. Catalab 32 library block
+msgid "touch _ detected?"
+msgstr ""
 
 #. In MicroBlocks IDE project menu
 msgid "New"
@@ -7583,6 +7858,10 @@ msgstr ""
 
 #. Examples folder
 msgid "folder;Web of Things"
+msgstr ""
+
+#. Examples folder
+msgid "folder;Widgets"
 msgstr ""
 
 #. Examples folder

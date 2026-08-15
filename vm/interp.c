@@ -1392,12 +1392,11 @@ void vmLoop() {
 			#if defined(HAS_LED_MATRIX)
 				updateMicrobitDisplay();
 			#endif
+			handleMicosecondClockWrap();
 			#if defined(COCUBE)
 				cocubeSensorUpdate();
 				processStartupGesture();
-			#endif
-			handleMicosecondClockWrap();
-			#if !defined(DUELink) && !defined(COCUBE)
+			#else
 				if (totalMicrosecs() < (15 * 1000000)) { // first N seconds after startup
 					processStartupGesture();
 				}
@@ -1409,6 +1408,9 @@ void vmLoop() {
 					BLE_stop();
 					BLE_allowShutdown = false; // don't check again
 				}
+			#endif
+			#if defined(DATABOT_V3)
+				databotV3PowerdownCheck();
 			#endif
 			#ifdef CAN_NAP
 				if (!napIfPossible()) count = 95;

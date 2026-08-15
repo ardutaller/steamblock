@@ -135,7 +135,8 @@ static void startWire() {
 
 	// Ping the DUELink address so any connected DUELink modules will use I2C mode.
 	// This must be the first I2C transaction after power up.
-	readI2CReg(82, 0);
+	Wire.beginTransmission(82);
+	Wire.endTransmission();
 }
 
 int readI2CReg(int deviceID, int reg) {
@@ -1889,6 +1890,155 @@ static int readTemperature() {
 }
 // Support Springbot END
 
+#elif defined(DATABOT_V3)
+
+#include "bmi270config.h" // 8k proprietary configuration file
+
+#define BMI270_ADDR				0x68
+
+#define BMI270_DATA				0x0C	// sensor data start: acc xyz (6B) + gyro xyz (6B)
+#define BMI270_INTERNAL_STATUS	0x21	// bits3:0 message (0x01 = init_ok)
+#define BMI270_RANGE			0x41	// accelerator range
+#define BMI270_CONFIG_CTRL		0x59
+#define BMI270_CONFIG_ADDR_0	0x5B	// bits3:0 = word-address bits 3:0
+#define BMI270_CONFIG_ADDR_1	0x5C	// bits7:0 = word-address bits 11:4
+#define BMI270_CONFIG_DATA		0x5E
+#define BMI270_PWR_CONF			0x7C	// bit0 adv_power_save
+#define BMI270_PWR_CTRL			0x7D	// bit0 aux_en, bit1 gyr_en, bit2 acc_en, bit3 temp_en
+#define BMI270_CMD				0x7E
+
+static uint8_t bmi270data[12];
+
+static void bmi270EnableGyroAutoOffsetComp(); // forward reference
+
+static void bmi270Init() {
+	if (accelStarted) return;
+
+	if (!wireStarted) startWire();
+	if (!wireStarted) return;
+
+	writeI2CReg(BMI270_ADDR, BMI270_CMD, 0xB6); // soft reset
+	delay(5); // leave time for reset to complete (must be > 2 msecs)
+	writeI2CReg(BMI270_ADDR, BMI270_PWR_CONF, 0); // disable advanced power save
+	delay(1);
+
+	// load 8k proprietary configuration file
+	writeI2CReg(BMI270_ADDR, BMI270_CONFIG_CTRL, 0); // start config load
+	for (int offset = 0; offset < sizeof(bmi270_config_file); offset += 32) {
+		int byteCount = sizeof(bmi270_config_file) - offset;
+		if (byteCount > 32) byteCount = 32; // write at most 32 bytes at a time
+
+		// write the starting word address for this chunk
+		int wordAddress = offset / 2;
+		writeI2CReg(BMI270_ADDR, BMI270_CONFIG_ADDR_0, wordAddress & 0x0F);
+		writeI2CReg(BMI270_ADDR, BMI270_CONFIG_ADDR_1, (wordAddress >> 4) & 0xFF);
+
+		Wire.beginTransmission(BMI270_ADDR);
+		Wire.write(BMI270_CONFIG_DATA);
+		Wire.write(&bmi270_config_file[offset], byteCount);
+		Wire.endTransmission();
+	}
+	writeI2CReg(BMI270_ADDR, BMI270_CONFIG_CTRL, 1); // end config load
+	delay(20);
+	int status = readI2CReg(BMI270_ADDR, BMI270_INTERNAL_STATUS) & 0x0F;
+	if (status != 1) {
+		reportNum("bad status when writing BMI270 config", status);
+		return;
+	}
+	writeI2CReg(BMI270_ADDR, BMI270_RANGE, 0); // set range to +/- 2G
+	writeI2CReg(BMI270_ADDR, BMI270_PWR_CTRL, 0x0E); // acc_en=1, gyr_en=1, temp_en=1
+	bmi270EnableGyroAutoOffsetComp(); // turn on gyro offset self-compensation
+	accelStarted = true;
+}
+
+static void bmi270ReadData() {
+	memset(bmi270data, 0, sizeof(bmi270data)); // clear the buffer
+	if (!accelStarted) bmi270Init();
+	if (!accelStarted) return;
+
+	Wire.beginTransmission(BMI270_ADDR);
+	Wire.write(BMI270_DATA);
+	Wire.endTransmission(false);
+
+	Wire.requestFrom(BMI270_ADDR, 12);
+	for (int i = 0; i < 12; i++) bmi270data[i] = Wire.read();
+}
+
+static int readAcceleration(int registerID) {
+	int val = 0;
+
+	bmi270ReadData();
+	if (1 == registerID) val = (int16_t)((bmi270data[1] << 8) | bmi270data[0]); // x-axis
+	if (3 == registerID) val = -(int16_t)((bmi270data[3] << 8) | bmi270data[2]); // y-axis
+	if (5 == registerID) val = (int16_t)((bmi270data[5] << 8) | bmi270data[4]); // z-axis
+
+	return (100 * val) >> 14;
+}
+
+static void setAccelRange(int range) {
+	// Range is 0, 1, 2, or 3 for +/- 2, 4, 8, or 16 g.
+
+	if (!accelStarted) bmi270Init();
+	if (!accelStarted) return;
+	if ((range < 0) || (range > 3)) return; // out of range
+
+	writeI2CReg(BMI270_ADDR, BMI270_RANGE, range);
+}
+
+static int readTemperature() {
+	if (!accelStarted) bmi270Init();
+	int16_t rawTemp = (readI2CReg(BMI270_ADDR, 0x23) << 8) | readI2CReg(BMI270_ADDR, 0x22);
+	return (rawTemp >> 9) + 23 - 13; // -13 adjusts for self-heating in databot case
+}
+
+// Databot V3 Gyro Setup
+
+#define REG_FEAT_PAGE			0x2F	// bits2:0 page: selects which page FEATURES[0x30..0x3F] maps to
+#define FEAT_PAGE_GEN_SET_1		1		// GEN_SET_1 lives on feature page 1
+#define FEAT_ADDR_GEN_SET_1		0x34	// word register (LSB @0x34, MSB @0x35)
+
+#define REG_OFFSET_6			0x77	// bit6 gyr_off_en, bit7 gyr_gain_en (NVM backed)
+#define OFFSET_6_GYR_OFF_EN		(1 << 6)
+#define GEN_SET_1_GYR_SELF_OFF	(1 << 9)
+
+// Feature registers (0x30-0x3F) are a 16-byte window onto 8 banked pages,
+// selected by REG_FEAT_PAGE, and must be accessed as 16-bit words (datasheet 4.8.1).
+static uint16_t bmi270ReadFeatWord(uint8_t page, uint8_t addr) {
+	writeI2CReg(BMI270_ADDR, REG_FEAT_PAGE, page & 0x07);
+	Wire.beginTransmission(BMI270_ADDR);
+	Wire.write(addr);
+	Wire.endTransmission(false);
+	Wire.requestFrom(BMI270_ADDR, (uint8_t)2);
+	uint8_t lo = Wire.read();
+	uint8_t hi = Wire.read();
+	return ((uint16_t) hi << 8) | lo;
+}
+
+static void bmi270WriteFeatWord(uint8_t page, uint8_t addr, uint16_t val) {
+	writeI2CReg(BMI270_ADDR, REG_FEAT_PAGE, page & 0x07);
+	Wire.beginTransmission(BMI270_ADDR);
+	Wire.write(addr);
+	Wire.write((uint8_t) (val & 0xFF));
+	Wire.write((uint8_t) (val >> 8));
+	Wire.endTransmission();
+}
+
+// Enables the gyroscope's automatic In-use Offset Compensation (IOC)
+// (datasheet 4.13.2). When enabled, it continuously re-estimates the
+// gyro offsets and rewrites OFFSET_3..OFFSET_6 with no host interaction.
+// host must not write those registers itself while this is active.
+static void bmi270EnableGyroAutoOffsetComp() {
+	uint8_t off6 = readI2CReg(BMI270_ADDR, REG_OFFSET_6);
+	off6 |= OFFSET_6_GYR_OFF_EN; // apply OFFSET_3..OFFSET_6 to gyro data
+	writeI2CReg(BMI270_ADDR, REG_OFFSET_6, off6);
+
+	uint16_t genSet1 = bmi270ReadFeatWord(FEAT_PAGE_GEN_SET_1, FEAT_ADDR_GEN_SET_1);
+	genSet1 |= GEN_SET_1_GYR_SELF_OFF; // let the device auto-update the offset, not the host
+	bmi270WriteFeatWord(FEAT_PAGE_GEN_SET_1, FEAT_ADDR_GEN_SET_1, genSet1);
+
+	writeI2CReg(BMI270_ADDR, REG_FEAT_PAGE, 0); // restore default feature page
+}
+
 #elif defined(RP2040_PHILHOWER)
 
 static int readTemperature() { return analogReadTemp(); }
@@ -2047,6 +2197,141 @@ OBJ primMBTemp(int argCount, OBJ *args) { return int2obj(readTemperature()); }
 OBJ primMBTiltX(int argCount, OBJ *args) { return int2obj(readAcceleration(1)); }
 OBJ primMBTiltY(int argCount, OBJ *args) { return int2obj(readAcceleration(3)); }
 OBJ primMBTiltZ(int argCount, OBJ *args) { return int2obj(readAcceleration(5)); }
+
+// Dabatbot v3 Support
+
+#if defined(DATABOT_V3)
+
+typedef enum {
+	OP_DCDC1 = 0,
+	OP_LDO4,	// 1
+	OP_LDO2,	// 2
+	OP_LDO3,	// 3
+	OP_DCDC2,	// 4
+} PMU_OUTPUT;
+
+#define PMU_ADDR 0x34
+
+static int readPMUReg(int reg) {
+	Wire1.beginTransmission(PMU_ADDR);
+	Wire1.write(reg);
+	int error = Wire1.endTransmission();
+	if (error) return 0; // error; return 0
+	Wire1.requestFrom(PMU_ADDR, 1);
+	return Wire1.available() ? Wire1.read() : 0;
+}
+
+static int readPMU12BitReg(int reg) {
+	Wire1.beginTransmission(PMU_ADDR);
+	Wire1.write(reg);
+	int error = Wire1.endTransmission();
+	if (error) return 0; // error; return 0
+	Wire1.requestFrom(PMU_ADDR, 2);
+	int result = Wire1.read() << 4; // high 8 bits
+	result += Wire1.read(); // low 4 bits
+	return result;
+}
+
+static void writePMUReg(int reg, int value) {
+	Wire1.beginTransmission(PMU_ADDR);
+	Wire1.write(reg);
+	Wire1.write(value);
+	Wire1.endTransmission();
+}
+
+static int withinRange(int n, int low, int high) {
+	if (n < low) n = low;
+	if (n > high) n = high;
+	return n;
+}
+
+static void pmuEnableOutput(int which, int enableFlag) {
+	uint8_t buff = readPMUReg(0x12);
+	buff = enableFlag ? (buff | (1 << which)) : (buff & ~(1 << which));
+	writePMUReg(0x12, buff);
+}
+
+static void pmuSetVoltage(int which, int millivolts) {
+	uint8_t buff = 0;
+	switch (which) {
+	case OP_DCDC1:
+		millivolts = (withinRange(millivolts, 700, 3500) - 700) / 25;
+		buff = readPMUReg(0x26);
+		buff = (buff & 0B10000000) | (millivolts & 0B01111111);
+		writePMUReg(0x26, buff);
+		break;
+	case OP_DCDC2:
+		millivolts = (withinRange(millivolts, 700, 2275) - 700) / 25;
+		buff = readPMUReg(0x23);
+		buff = (buff & 0B11000000) | (millivolts & 0B00111111);
+		writePMUReg(0x23, buff);
+		break;
+	case OP_LDO2:
+		millivolts = (withinRange(millivolts, 1800, 3300) - 1800) / 100;
+		buff = readPMUReg(0x28);
+		buff = (buff & 0B00001111) | (millivolts << 4);
+		writePMUReg(0x28, buff);
+		break;
+	case OP_LDO3:
+		millivolts = (withinRange(millivolts, 1800, 3300) - 1800) / 100;
+		buff = readPMUReg(0x28);
+		buff = (buff & 0B11110000) | (millivolts);
+		writePMUReg(0x28, buff);
+		break;
+	case OP_LDO4:
+		millivolts = (withinRange(millivolts, 700, 3500) - 700) / 25;
+		buff = readPMUReg(0x27);
+		buff = (buff & 0B10000000) | (millivolts & 0B01111111);
+		writePMUReg(0x27, buff);
+		break;
+	}
+}
+
+static int databotInitialized = false;
+
+void databotV3Init() {
+	if (databotInitialized) return;
+	databotInitialized = true;
+
+	Wire1.begin(48, 47);
+
+	pmuEnableOutput(OP_LDO2, true);
+	pmuEnableOutput(OP_LDO3, true);
+	pmuEnableOutput(OP_LDO4, true);
+	pmuEnableOutput(OP_DCDC1, true);
+	pmuEnableOutput(OP_DCDC2, false);
+
+	pmuSetVoltage(OP_DCDC1, 3300);
+	pmuSetVoltage(OP_LDO2, 3300);
+	pmuSetVoltage(OP_LDO3, 2800);
+	pmuSetVoltage(OP_LDO4, 1800);
+}
+
+static int pmuShortPressed() {
+	return (readPMUReg(0x46) & 2) ? true : false;
+}
+
+static void pmuPowerDown() {
+	// set high bit of register 0x32 to turn off all PMU outputs
+	writePMUReg(0x32, (readPMUReg(0x32) | 128));
+}
+
+void databotV3PowerdownCheck() {
+	databotV3Init(); // ensure initialized
+	if (pmuShortPressed()) pmuPowerDown();
+}
+
+static OBJ primBatteryMillivolts(int argCount, OBJ *args) {
+	int voltage = (readPMU12BitReg(0x78) * 11) / 10;
+	return int2obj(voltage);
+}
+// xxx
+// float AXP173::getBatVoltage() {
+//   float ADCLSB = 1.1 / 1000.0;
+//   return _I2C_read12Bit(0x78) * ADCLSB;
+// }
+
+#endif // end dabatbot v3 support
 
 // Magnetometer
 
@@ -2399,7 +2684,8 @@ static int readDigitalMicrophone() {
 	return result;
 }
 
-#elif defined(DATABOT) || defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_XIAO_ESP32S3)
+#elif defined(DATABOT) || defined(DATABOT_V3) || \
+	defined(ARDUINO_M5STACK_Core2) || defined(ARDUINO_XIAO_ESP32S3)
 
 #define USE_DIGITAL_MICROPHONE 1
 
@@ -2412,6 +2698,10 @@ static int readDigitalMicrophone() {
 	#define I2S_SD 18
 	#define I2S_SCK 5
 	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX)
+#elif defined(DATABOT_V3)
+	#define I2S_SD 4
+	#define I2S_SCK 2
+	#define I2S_MODE (I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM)
 #elif defined(ARDUINO_M5STACK_Core2)
 	#define I2S_WS 0
 	#define I2S_SD 34
@@ -2437,7 +2727,7 @@ void initI2SMicrophone() {
 
 	// configure I2S driver
 	const i2s_config_t i2s_config = {
-		.mode = i2s_mode_t(I2S_MODE), // xxx I2S_MODE_MASTER | I2S_MODE_RX),
+		.mode = i2s_mode_t(I2S_MODE),
 		.sample_rate = 22050,
 		.bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
 		.channel_format = I2S_CHANNEL_FMT_ONLY_RIGHT,
@@ -2450,12 +2740,21 @@ void initI2SMicrophone() {
 	i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
 
 	// configure microphone pins
-	const i2s_pin_config_t pin_config = {
-		.bck_io_num = I2S_SCK,
-		.ws_io_num = I2S_WS,
-		.data_out_num = -1,
-		.data_in_num = I2S_SD
-	};
+	#if defined(DATABOT_V3)
+		i2s_pin_config_t pin_config = {
+			.bck_io_num = -1,
+			.ws_io_num = I2S_SCK,
+			.data_out_num = -1,
+			.data_in_num = I2S_SD
+		};
+	#else
+		const i2s_pin_config_t pin_config = {
+			.bck_io_num = I2S_SCK,
+			.ws_io_num = I2S_WS,
+			.data_out_num = -1,
+			.data_in_num = I2S_SD
+		};
+	#endif
 	i2s_set_pin(I2S_PORT, &pin_config);
 
 	// start I2S driver
@@ -2740,6 +3039,10 @@ static PrimEntry entries[] = {
 	{"cube_status", primCubeStatus},
 	{"speed_left", primPositionSpeedLeft},
 	{"speed_right", primPositionSpeedRight},
+	#endif
+
+	#if defined(DATABOT_V3)
+	{"batteryMillivolts", primBatteryMillivolts},
 	#endif
 };
 

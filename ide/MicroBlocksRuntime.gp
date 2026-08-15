@@ -1249,6 +1249,8 @@ method installBoardSpecificBlocks SmallRuntime {
 		importEmbeddedLibrary scripter 'WuKong2040'
 	} ('Databot' == boardType) {
 		importEmbeddedLibrary scripter 'databot'
+	} ('Databot v3' == boardType) {
+		importEmbeddedLibrary scripter 'DatabotV3'
 	} ('RP2040 Gizmo' == boardType) {
 		importEmbeddedLibrary scripter 'Gizmo'
 	} (beginsWith boardType 'MakerPort') {
@@ -1312,7 +1314,7 @@ method boardIsBLECapable SmallRuntime {
 	if (isNil boardType) { getVersion this }
 	if (isNil boardType) { return false } // could not get version info
 	if (isOneOf boardType
-		'Citilab ED1' 'CoCube' 'Databot' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers' 'CodingBox' 'Foxbit' 'KidsIOT' 'IOT-BUS') {
+		'Citilab ED1' 'CoCube' 'Databot' 'Databot v3' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers' 'CodingBox' 'Foxbit' 'KidsIOT' 'IOT-BUS') {
 		return true
 	}
 	if (notNil (findSubstring 'ESP' boardType)) {
@@ -2432,7 +2434,7 @@ method boardHasFileSystem SmallRuntime {
 	return (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix'
 		'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040'
-		'Boardie' 'Databot' 'Mbits' 'micro:STEAMakers' 'RP2040 XRP'
+		'Boardie' 'Databot' 'Databot v3' 'Mbits' 'micro:STEAMakers' 'RP2040 XRP'
 		'CodingBox' 'Foxbit' 'KidsIOT' 'IOT-BUS'
 		'M5AtomS3-Lite' 'M5Atom-Lite')
 }
