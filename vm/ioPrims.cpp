@@ -861,8 +861,8 @@ void hardwareInit() {
 	#define ANALOG_PINS 20
 	#define TOTAL_PINS 49
 	static const int analogPin[] = {};
-	#define PIN_BUTTON_A 0
-	#define PIN_BUTTON_B 38
+	#define PIN_BUTTON_A 38
+	#define PIN_BUTTON_B 0
 	#define PIN_LED -1 // no built-in LED
 	#define DEFAULT_TONE_PIN 45
 

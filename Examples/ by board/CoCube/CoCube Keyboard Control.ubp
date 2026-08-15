@@ -588,7 +588,7 @@ to rgb_to_color r g b {
 
 module CoCube
 author 'Liang Shuai'
-version 2 20 
+version 2 21
 depends Tone Display TFT '_Motors/PID' 'Robots/CoCube Module' '_Graphics and Displays/8 Bit Graphics' 
 tags 'cocube robot' 
 choices cocube_rotate_Menu 'cocube;left' 'cocube;right' 
@@ -597,9 +597,9 @@ choices cocube_move_Menu 'cocube;forward' 'cocube;backward'
 description 'CoCube Robot library
 
 CoCube is a tabletop modular multi-robot platform for education and research.
-https://www.cocubefun.com/
+https://www.cocuberobot.com/
 https://wiki.cocube.fun/
-sliang23@m.fudan.edu.cn
+contact@cocuberobot.com
 
 v1.0 Basic functions
 v2.0 Comprehensively add encoder control motor function
@@ -617,8 +617,9 @@ v2.15 Remove "set TFT backlight" function
 v2.16 Change PID global variables into local
 v2.17 Modify the movement function on the map
 v2.18 Fix "_cocube_move_flag" variable missing
+v2.21 Add "CoCube track target" function
 '
-variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _cocube_pid_flag _cocube_error_distance _cocube_error_y _cocube_error_x _cocube_target_angle _cocube_move_flag 
+variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _cocube_pid_flag _cocube_error_distance _cocube_error_y _cocube_error_x _cocube_target_angle _cocube_move_flag _cocube_target_x _cocube_target_y _cocube_target_speed
 
   spec ' ' 'CoCube move for msecs' 'move _ at _ speed (0-50) for _ msecs' 'menu.cocube_move_Menu num num' 'cocube;forward' 40 1000
   spec ' ' 'CoCube rotate for msecs' 'rotate _ at _ speed (0-50) for _ msecs' 'menu.cocube_rotate_Menu num num' 'cocube;left' 30 1000
@@ -650,6 +651,9 @@ variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _co
   spec ' ' 'CoCube draw AprilTag on TFT' 'draw AprilTag on TFT _' 'num' 0
   space
   spec 'r' 'CoCube battery percentage' 'battery percentage'
+  advanced
+  spec ' ' 'CoCube track target' 'track target X _ Y _ at _ speed (0-50)' 'num num num' '0' '0' '40'
+  spec ' ' '_cocube_track_target' '_cocube_track_target'
   space
   spec ' ' '_cocube_motors_speed' '_cocube_motors_speed left _ right _' 'num num' 10 10
   spec ' ' '_cocube_pid_control' '_cocube_pid_control'
@@ -970,12 +974,41 @@ to '_cocube_pid_control' {
   }
 }
 
+to 'CoCube track target' target_x target_y speed {
+  _cocube_target_x = target_x
+  _cocube_target_y = target_y
+  _cocube_target_speed = speed
+  sendBroadcast '_cocube_track_target'
+}
+
+to '_cocube_track_target' {
+  _cocube_move_flag = (booleanConstant true)
+  '_cocube_calculate_distance_error target_x _ target_y _' _cocube_target_x _cocube_target_y
+  if (_cocube_error_distance > 3) {
+    'CoCube point towards' _cocube_target_x _cocube_target_y _cocube_target_speed
+    repeatUntil (_cocube_error_distance < 3) {
+      if _cocube_move_flag {
+        '_cocube_calculate_distance_error target_x _ target_y _' _cocube_target_x _cocube_target_y
+        _cocube_target_angle = (('[misc:atan2]' _cocube_error_y _cocube_error_x) / 100)
+        '_cocube_calculate_angle_error_' _cocube_target_angle
+        'CoCube set wheel' (_cocube_target_speed - ((_cocube_target_speed * _cocube_error_angle) / 20)) (_cocube_target_speed + ((_cocube_target_speed * _cocube_error_angle) / 20))
+        waitMillis 10
+      } else {
+        exitLoop
+      }
+    }
+    'CoCube wheels break'
+  }
+  _cocube_move_flag = (booleanConstant false)
+}
+
 
 module 'CoCube Module'
 author 'Liang Shuai'
-version 1 14 
+version 1 15
 depends _Servo NeoPixel 
 choices trackerMenu '1' '2' '3' '4' '5' ALL 
+choices adc_channel A0 A1 A2
 description 'External modules of CoCube.
 
 CoCube is a tabletop modular multi-robot platform for education and research.
@@ -1007,9 +1040,37 @@ variables _cc_cam_init_flag _cc_asr_snc _cc_PCF8574_address
   spec 'r' 'ccmodule_tracker on black' 'Tracker _ on black' 'menu.trackerMenu' 1
   spec 'r' 'ccmodule_tracker on white' 'Tracker _ on white' 'menu.trackerMenu' 1
   space
+  spec 'r' 'ccmodule_adc_connected' 'ADC connected'
+  spec 'r' 'ccmodule_adc_voltage' 'ADC _ voltage (mV)' 'menu.adc_channel' 'A0'
+  space
   spec ' ' 'ccmodule_power on module' 'power on module'
   space
   spec ' ' '_ccmodule_check_camera' 'check_camera'
+
+to 'ccmodule_adc_connected' {
+  digitalWriteOp 13 true
+  return ('[sensors:i2cExists]' (hexToInt '48'))
+}
+
+to 'ccmodule_adc_voltage' channel {
+  if (not ('ccmodule_adc_connected')) {return 0}
+  local 'config_high' (hexToInt 'C1')
+  if (channel == 'A1') {
+    config_high = (hexToInt 'D1')
+  } (channel == 'A2') {
+    config_high = (hexToInt 'E1')
+  }
+  '[sensors:i2cWrite]' (hexToInt '48') ('[data:makeList]' 1 config_high (hexToInt '83'))
+  waitMillis 9
+  '[sensors:i2cWrite]' (hexToInt '48') ('[data:makeList]' 0)
+  local 'buffer' ('[data:newByteArray]' 2)
+  '[sensors:i2cRead]' (hexToInt '48') buffer
+  local 'raw' (((at 1 buffer) << 8) | (at 2 buffer))
+  if (raw >= 32768) {
+    raw = (raw - 65536)
+  }
+  return (((maximum 0 raw) * 3) / 16)
+}
 
 to '_ccmodule_check_camera' {
   if (_cc_cam_init_flag == 1) {
@@ -2550,4 +2611,3 @@ to tone_startNote note octave {
   }
   startTone ((freq + 500) / 1000)
 }
-

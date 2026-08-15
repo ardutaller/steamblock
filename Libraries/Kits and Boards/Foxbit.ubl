@@ -1,6 +1,6 @@
 module Foxbit
 author MicroBlocks
-version 1 4 
+version 1 5 
 depends '_Temperature Humidity (AHT20)' NeoPixel Tone 
 choices foxbit_touchPin '0' '1' '2' '4' '6' '12' logo 
 description 'Library for the KidsBits Foxbit.
@@ -44,12 +44,12 @@ to '_foxbit_shiftLeft' {
 }
 
 to foxbit_beep msecs {
-  'attach buzzer to pin' 32
+  'attach buzzer to pin' 21
   'play tone' 'nt;c' 0 msecs
 }
 
 to foxbit_clearNeoPixels color {
-  neoPixelAttach 35 ''
+  neoPixelAttach 35 3
   neoPixelSetAllToColor 0
 }
 
@@ -70,17 +70,17 @@ to foxbit_isTouched edgePinOrLogo {
 }
 
 to foxbit_light {
-  return (analogReadOp 39)
+  return (analogReadOp 24)
 }
 
 to foxbit_loudness {
   comment 'Simple low-pass filter to smooth some of the noise.'
-  _fb_avg_loudness = (((4 * _fb_avg_loudness) + (analogReadOp 35)) / 5)
+  _fb_avg_loudness = (((4 * _fb_avg_loudness) + (analogReadOp 22)) / 5)
   return _fb_avg_loudness
 }
 
 to 'foxbit_scroll text _' text color {
-  neoPixelAttach 35 ''
+  neoPixelAttach 35 3
   local 'delay' 100
   for i (size text) {
     local 'letterBmp' ('[display:mbShapeForLetter]' ('[data:unicodeAt]' i text))
@@ -105,12 +105,12 @@ to 'foxbit_scroll text _' text color {
 }
 
 to foxbit_setAllNeoPixels color {
-  neoPixelAttach 35 ''
+  neoPixelAttach 35 3
   neoPixelSetAllToColor color
 }
 
 to foxbit_setNeoPixelColors c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 c16 c17 c18 c19 c20 c21 c22 c23 c24 c25 c26 c27 c28 c29 c30 c31 c32 c33 c34 c35 {
-  neoPixelAttach 35 ''
+  neoPixelAttach 35 3
   for i 35 {
     atPut i _np_pixels (argOrDefault i (neoPixel_colorSwatch (colorSwatch 35 190 30 255)))
   }

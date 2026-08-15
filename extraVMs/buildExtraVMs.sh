@@ -13,9 +13,6 @@ python precompiled/uf2conv.py -c .pio/build/cplay52/firmware.hex -f 0xADA52840 -
 pio run -e clue
 python precompiled/uf2conv.py -c -f 0xada52840 .pio/build/clue/firmware.hex -o extraVMs/vm_clue.uf2
 
-pio run -e databot-v3
-cp .pio/build/databot-v3/firmware.bin extraVMs/vm_databot_v3.bin
-
 pio run -e foxbit
 cp .pio/build/foxbit/firmware.bin extraVMs/vm_foxbit.bin
 
