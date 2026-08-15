@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-08-04 20:01+0000\n"
+"PO-Revision-Date: 2026-08-15 13:51+0000\n"
 "Last-Translator: Shuai Liang <sliang23@m.fudan.edu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1.dev0\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #. Block in Control category
 msgid "by _"
@@ -6343,3 +6343,227 @@ msgstr "发出 midi 键 _"
 #. Library label right click context menu option
 msgid "reload library"
 msgstr "重新加载库"
+
+#. NeoPanel library block
+msgid "NeoPanel scroll text _ color _"
+msgstr "像素屏 滚动文本_ 颜色 _"
+
+#. CoCube library block
+msgid "track target X _ Y _ at _ speed (0-50)"
+msgstr "跟随目标 X _ Y _ 速度 _ (0-50)"
+
+#. CoCube Module library block
+msgid "ADC connected"
+msgstr "ADC 已连接"
+
+#. CoCube Module library block
+msgid "ADC _ voltage (mV)"
+msgstr "ADC _ 电压 (mV)"
+
+#. NeoPanel library block
+msgid "pausing _ msecs"
+msgstr "暂停 _ 毫秒"
+
+#. Example for the draw text block
+msgid "Hello"
+msgstr "Hello"
+
+#. Ultrasound distance library block
+msgid "distance (cm) pin _"
+msgstr "距离 (cm) 引脚 _"
+
+#. Infrared Remote library block
+msgid "IR code"
+msgstr "红外编码"
+
+#. Infrared Remote library block
+msgid "attach IR transmitter to pin _"
+msgstr "连接红外发射器至引脚 _"
+
+#. TFT Display library example
+msgid "aBitmap"
+msgstr "aBitmap"
+
+#. TFT Display library example
+msgid "a list of colors"
+msgstr "a list of colors"
+
+#. TFT Display library block
+msgid "bytes per pixel _"
+msgstr "每像素字节数 _"
+
+#. TFT Display library block
+msgid "palette _"
+msgstr "调色板 _"
+
+#. Example string. Tells the user this input accepts a list of strings.
+msgid "a list of strings"
+msgstr "字符串列表"
+
+#. NeoPanel library block
+msgid "separation _"
+msgstr "分离 _"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "初始化 i2c (自动) 复位引脚# _ 翻转 _"
+
+#. Tiny OLED library block
+msgid "clear tiny OLED display"
+msgstr "清除 tiny OLED 显示"
+
+#. Tiny OLED library block
+msgid "draw circle center _ _ radius _ fill _ white _"
+msgstr "绘制圆 圆心 _ _ 半径 _ 填充 _ 白色 _"
+
+#. Tiny OLED library block
+msgid "draw image _ x _ y _"
+msgstr "绘制图像 _ x _ y _"
+
+#. Tiny OLED library block
+msgid "draw line from _ _ to _ _ white _"
+msgstr "绘制线 从 _ _ 到 _ _ 白色 _"
+
+#. Tiny OLED library block
+msgid "draw pixel x _ y _ white _"
+msgstr "绘制像素 x _ y _ 白色 _"
+
+#. Tiny OLED library block
+msgid "draw rect x _ y _ w _ h _ fill _ white _"
+msgstr "绘制矩形 x _ y _ w _ h _ 填充 _ 白色 _"
+
+#. Tiny OLED library block
+msgid "draw string _ x _ y _ white _"
+msgstr "绘制字符串 x _ y _ 白色 _"
+
+#. Tiny OLED library block
+msgid "draw big string _ x _ y _ white _"
+msgstr "绘制大字符串 x _ y _ 白色 _"
+
+#. Tiny OLED library block
+msgid "defer tiny OLED display updates"
+msgstr "推迟 tiny OLED 更新"
+
+#. Tiny OLED library block
+msgid "set tiny OLED brightness _"
+msgstr "设置 tiny OLED 亮度 _"
+
+#. Tiny OLED library block
+msgid "reset tiny OLED pin _"
+msgstr "重置 tiny OLED 引脚 _"
+
+#. Tiny OLED library block
+msgid "show tiny OLED display updates"
+msgstr "显示 tiny OLED 更新"
+
+#. TFT Display library block
+msgid "defer OLED display updates"
+msgstr "推迟 OLED 显示更新"
+
+#. TFT Display library block
+msgid "resume OLED display updates"
+msgstr "恢复 OLED 更新"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr "连接 ST7735 宽度 _ 高度 _ 旋转 _ #BR# dc 引脚 _ cs 引脚 _ 背光引脚 _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _ BGR colors _"
+msgstr "#BR# 复位引脚 _ 反转颜色 _ BGR 颜色 _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# x offset _ y offset _"
+msgstr "#BR# x 偏移 _ y 偏移 _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr "连接 ST7789 宽度 _ 高度 _ 旋转 _ #BR# dc 引脚 _ cs 引脚 _ 背光引脚 _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr "连接 ST7796 宽度 _ 高度 _ 旋转 _ #BR# dc 引脚 _ cs 引脚 _ 背光引脚 _"
+
+#. External Displays Library block
+msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
+msgstr "连接 ILI9341 旋转 _ dc 引脚 _ cs 引脚 _ 背光引脚 _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _"
+msgstr "#BR# 复位引脚 _ 反转颜色 _"
+
+#. External Displays Library block
+msgid "attach OLED w _ h _"
+msgstr "连接 OLED 宽度 _ 高度 _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# flip vertical _"
+msgstr "#BR# 垂直翻转 _"
+
+#. External Displays Library block
+msgid "x offset _"
+msgstr "x 偏移 _"
+
+#. External Displays Library block
+msgid "detach display"
+msgstr "移除显示屏"
+
+#. External Displays Library block
+msgid "set display SPI clk pin _ mosi pin _ miso pin _"
+msgstr "设置显示屏 SPI 时钟引脚 _ mosi 引脚 _ miso 引脚 _"
+
+#. External Displays Library block
+msgid "spi _"
+msgstr "spi _"
+
+#. External Displays Library block
+msgid "reset pin _"
+msgstr "复位引脚 _"
+
+#. External Displays Library block
+msgid "send OLED commands _"
+msgstr "发送 OLED 指令 _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sine gate _"
+msgstr "#SVG#wave-sine 门控 _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-square gate _"
+msgstr "#SVG#wave-square 门控 _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-triangle gate _"
+msgstr "#SVG#wave-triangle 门控 _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-sawtooth gate _"
+msgstr "#SVG#wave-sawtooth 门控 _"
+
+#. Analog Synthesis library block
+#. only translate "gate _" as in a synthesizer sound gate that can be triggered
+msgid "#SVG#wave-noise gate _"
+msgstr "#SVG#wave-noise 门控 _"
+
+#. Shown in the block search box when no block matches the search
+msgid "no matches"
+msgstr "没有匹配项"
+
+#. Placeholder text in the block search box (ctrl-space)
+msgid "search blocks and variables..."
+msgstr "搜索块和变量..."
+
+#. Examples folder
+msgid "folder;Widgets"
+msgstr "组件"
