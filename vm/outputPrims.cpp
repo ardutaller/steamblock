@@ -918,9 +918,9 @@ static void sendNeoPixelData(int val) { // micro:bit (v1 & v2)/Calliope
 		if (val & mask) { // one bit; timing goal: high 780 nsecs, low 420 nsecs
 			#if defined(NRF52)
 				*neoPixelPinSet = neoPixelPinMask;
-				DELAY_CYCLES(13);
+				DELAY_CYCLES(7);
 				*neoPixelPinClr = neoPixelPinMask;
-				DELAY_CYCLES(6);
+				DELAY_CYCLES(2);
 			#else
 				// Note: Use NRF_P0->OUTSET/OUTCLR form to achieve better timing on nRF51
 				NRF_P0->OUTSET = neoPixelPinMask;
@@ -933,7 +933,7 @@ static void sendNeoPixelData(int val) { // micro:bit (v1 & v2)/Calliope
 				*neoPixelPinSet = neoPixelPinMask;
 				DELAY_CYCLES(2);
 				*neoPixelPinClr = neoPixelPinMask;
-				DELAY_CYCLES(14);
+				DELAY_CYCLES(5);
 			#else
 				// Note: Use NRF_P0->OUTSET/OUTCLR form to achieve a short enough zero pulse on nRF51
 				NRF_P0->OUTSET = neoPixelPinMask;
@@ -1175,16 +1175,16 @@ static void __not_in_flash_func(sendNeoPixelData)(int val) { // RP2040 Philhower
 	noInterrupts();
 	gpio_put(neoPixelPin, LOW);
 	for (unsigned int mask = (1 << 23); mask > 0; mask >>= 1) {
-		if (val & mask) { // one bit; timing goal: high 900 nsecs, low 500 nsecs
+		if (val & mask) { // one bit; timing goal: high 800 nsecs, low 400 nsecs
 			gpio_put(neoPixelPin, HIGH);
 			PICO_DELAY_CYCLES(40);
 			gpio_put(neoPixelPin, LOW);
-			PICO_DELAY_CYCLES(21);
-		} else { // zero bit; timing goal: high 250 nsecs, low 1150 nsecs
+			PICO_DELAY_CYCLES(12);
+		} else { // zero bit; timing goal: high 300 nsecs, low 900 nsecs
 			gpio_put(neoPixelPin, HIGH);
 			PICO_DELAY_CYCLES(11);
 			gpio_put(neoPixelPin, LOW);
-			PICO_DELAY_CYCLES(50);
+			PICO_DELAY_CYCLES(36);
 		}
 	}
 	interrupts();
