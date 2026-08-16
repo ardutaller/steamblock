@@ -1,8 +1,8 @@
 module 'CoCube Module'
 author 'Liang Shuai'
 version 1 15
-depends _Servo NeoPixel 
-choices trackerMenu '1' '2' '3' '4' '5' ALL
+depends _Servo NeoPixel
+choices trackerMenu '1' '2' '3' '4' '5' all
 choices adc_channel A0 A1 A2
 description 'External modules of CoCube.
 
@@ -216,7 +216,7 @@ to 'ccmodule_tracker on black' which {
   }
   local 'var' (newList 1)
   '[sensors:i2cRead]' _cc_PCF8574_address var
-  if ('ALL' == which) {
+  if ('all' == which) {
     if ((at 1 var) == 7) {return (booleanConstant true)}
   } else {
     return (not ('[data:convertType]' (1 & ((at 1 var) >> (8 - which))) 'boolean'))
@@ -237,7 +237,7 @@ to 'ccmodule_tracker on white' which {
   }
   local 'var' (newList 1)
   '[sensors:i2cRead]' _cc_PCF8574_address var
-  if ('ALL' == which) {
+  if ('all' == which) {
     if ((at 1 var) == 255) {return (booleanConstant true)}
   } else {
     return ('[data:convertType]' (1 & ((at 1 var) >> (8 - which))) 'boolean')

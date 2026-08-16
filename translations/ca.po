@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-08-11 18:51+0000\n"
+"PO-Revision-Date: 2026-08-15 13:51+0000\n"
 "Last-Translator: Josep Ferràndiz "
 "<josep.ferrandiz@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
@@ -8811,7 +8811,7 @@ msgstr "Hola!"
 
 #. KidsIOT library block
 msgid "#SVG#square11#00c612 dual motor _ power _ (-100 to 100)"
-msgstr "#SVG#square11#00c612 motor dual _ potència _ (-100 to 100)"
+msgstr "#SVG#square11#00c612 motor dual _ potència _ (-100 a 100)"
 
 #. KidsIOT library block
 msgid "#SVG#square11#00c612 dual motor stop _"
@@ -8843,7 +8843,7 @@ msgstr "#SVG#square11#C0C0C0 posa el servo _ a _ graus (0 a 270)"
 
 #. KidsIOT Engineering library block
 msgid "#SVG#square11#FFA500 set servo _ to speed _ (0 to 100) _"
-msgstr "#SVG#square11#FFA500 posa el servo _ a la velocitat _ (0 a 100)"
+msgstr "#SVG#square11#FFA500 posa el servo _ a la velocitat _ (0 a 100) _"
 
 #. KidsIOT Engineering library block
 msgid "for _ seconds"
@@ -8863,7 +8863,7 @@ msgstr "La Lluna!"
 
 #. Catalab 32 library choice
 msgid "spin"
-msgstr "gir"
+msgstr "rotació"
 
 #. Catalab 32 library choice
 msgid "button pressed?"
@@ -8915,7 +8915,7 @@ msgstr "escriu a la pantalla TFT _ x _ y _ color _ mida _"
 
 #. Catalab 32 library block
 msgid "start TFT screen"
-msgstr "inicialitza la pantalla TFT"
+msgstr "inicia la pantalla TFT"
 
 #. Catalab 32 library block
 msgid "joystick _"
@@ -8951,7 +8951,7 @@ msgstr "contacte amb sensor _ detectat?"
 
 #. Settings menu option
 msgid "snapshot code on board"
-msgstr "captura el codi de la placa"
+msgstr "captura del codi de la placa"
 
 #. Examples folder
 msgid "folder;Widgets"
@@ -8964,3 +8964,15 @@ msgstr "busca blocs i variables..."
 #. Shown in the block search box when no block matches the search
 msgid "no matches"
 msgstr "cap coincidència"
+
+#. CoCube library block
+msgid "track target X _ Y _ at _ speed (0-50)"
+msgstr "segueix l'objectiu X _ Y _ a velocitat _ (0-50)"
+
+#. CoCube Module library block
+msgid "ADC connected"
+msgstr "ADC connectat"
+
+#. CoCube Module library block
+msgid "ADC _ voltage (mV)"
+msgstr "ADC _ tensió (mV)"

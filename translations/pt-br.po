@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-08-07 22:51+0000\n"
+"PO-Revision-Date: 2026-08-15 13:51+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -8848,3 +8848,15 @@ msgstr "Lua!"
 #. Examples folder
 msgid "folder;Widgets"
 msgstr "Widgets"
+
+#. CoCube library block
+msgid "track target X _ Y _ at _ speed (0-50)"
+msgstr "rastrear alvo X _ Y _ a _ velocidade (0-50)"
+
+#. CoCube Module library block
+msgid "ADC connected"
+msgstr "ADC conectado"
+
+#. CoCube Module library block
+msgid "ADC _ voltage (mV)"
+msgstr "Tensão ADC _ (mV)"

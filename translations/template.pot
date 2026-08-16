@@ -3688,6 +3688,10 @@ msgstr ""
 msgid "HTTP client"
 msgstr ""
 
+#. HTTP Client library block
+msgid "fetch URL _"
+msgstr ""
+
 #. HTTP Client library block.
 #. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
 msgid "_ data _ to http #SVG#colon-double-slash _"
@@ -5188,12 +5192,20 @@ msgstr ""
 msgid "Octopus OLED fill circle x _ y _ radius _"
 msgstr ""
 
+#. Octostudio communication library label
+msgid "OctoStudio"
+msgstr ""
+
 #. Octostudio communication library block
 msgid "Octo beam to phones _"
 msgstr ""
 
 #. Octostudio communication library block
 msgid "duration _ ms"
+msgstr ""
+
+#. Octostudio communication library block
+msgid "group _"
 msgstr ""
 
 #. Octostudio communication library block
