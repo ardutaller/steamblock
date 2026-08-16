@@ -1,7 +1,7 @@
 module 'LED Matrix (MAX7219)' Output
 author 'Sam McHardy'
-version 2 1
-tags display led matrix max7219 spi scrolling text graphics rotation 2d grid
+version 2 2
+tags display led matrix max7219 spi scrolling text graphics rotation '2d' grid
 description 'Drive a MAX7219 LED matrix (one or several 8x8 modules daisy-chained, e.g. the common "4-in-1" 32x8) from MicroBlocks, in pure blocks over a bit-banged SPI connection. No extra hardware library needed.
 
 Wiring: connect the panel DIN, CLK (sometimes labelled SCK) and CS (sometimes LOAD) to any three digital-output pins, plus VCC -> 5V and GND -> GND. Call "MAX7219 begin DIN CLK CS modules" with YOUR pin numbers, or just use any block and it auto-starts with sensible per-board defaults for 4 modules.
