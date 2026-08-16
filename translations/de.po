@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-07 22:51+0000\n"
+"PO-Revision-Date: 2026-08-16 19:25+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -915,11 +915,11 @@ msgstr "Dreieck"
 
 #. WebSocket Server library block
 msgid "last WebSocket event"
-msgstr "letztes WebSocket-Ereignis"
+msgstr "letztes WebSocket-Event"
 
 #. WebSocket Server library block
 msgid "send _ to WebSocket client _"
-msgstr "sende _ zum WebSocket-Client _"
+msgstr "sende _ an WebSocket-Client _"
 
 #. Motion library block
 msgid "motion"
@@ -1534,7 +1534,7 @@ msgstr "IP _ Gateway _ Netzmaske _"
 
 #. WebSocket Server library block
 msgid "type of WebSocket event _"
-msgstr "Typ von WebSocket-Ereignis _"
+msgstr "Typ von WebSocket-Event _"
 
 #. BME280 environmental sensor library block
 msgid "bmx280 altitude (cm)"
@@ -1578,7 +1578,7 @@ msgstr "Feststelltaste"
 
 #. HTTP Server library block
 msgid "content length of request _"
-msgstr "Länge des Anfrage-Inhalts _"
+msgstr "Inhaltslänge der Anfrage _"
 
 #. BirdBrain Technologies Finch Robot library block
 msgid "Finch Accelerometer _"
@@ -1691,7 +1691,7 @@ msgstr "glücklich"
 
 #. WebSocket Server library block
 msgid "client ID for WebSocket event _"
-msgstr "Client-ID für WebSocket-Ereignis _"
+msgstr "Client-ID für WebSocket-Event _"
 
 #. WiFi Radio library block
 msgid "wifi send number _"
@@ -3498,7 +3498,7 @@ msgstr "_ ist in Großbuchstaben"
 #. HTTP Client library block.
 #. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
 msgid "_ data _ to http #SVG#colon-double-slash _"
-msgstr "_ Daten _ auf http #SVG#colon-double-slash _"
+msgstr "sende _ Daten _ auf http #SVG#colon-double-slash _"
 
 #. Web Things library block
 msgid "register event _ type _"
@@ -4134,7 +4134,7 @@ msgstr "Helligkeit _"
 
 #. MQTT library block
 msgid "MQTT connect to broker _"
-msgstr "MQTT verbinde zu Broker _"
+msgstr "MQTT verbinde mit Broker _"
 
 #. Color library block
 msgid "hue _"
@@ -4255,7 +4255,7 @@ msgstr "fülle Rechteck x _ y _ b _ h _ löschen _"
 
 #. MQTT library block
 msgid "MQTT disconnect"
-msgstr "MQTT getrennt"
+msgstr "MQTT trennen"
 
 #. Color library block
 msgid "color hue _ (0-360) saturation _ % brightness _ %"
@@ -4345,7 +4345,7 @@ msgstr "_ mit Helligkeit _ %"
 
 #. WebSocket Server library block
 msgid "payload for WebSocket event _"
-msgstr "Payload für WebSocket-Ereignis _"
+msgstr "Payload für WebSocket-Event _"
 
 #. Cutebot library block
 msgid "Cutebot set headlight _ to _"
@@ -4407,7 +4407,7 @@ msgstr "Puffergrößen _ Client-ID _"
 
 #. MQTT library block
 msgid "topic for MQTT event _"
-msgstr "MQTT Thema für Ereignis _"
+msgstr "MQTT Event-Topic _"
 
 #. MQTT library block
 msgid "binary _"
@@ -4500,11 +4500,11 @@ msgstr "ein"
 
 #. MQTT library block
 msgid "payload for MQTT event _"
-msgstr "MQTT Payload für Ereignis _"
+msgstr "MQTT Event-Payload _"
 
 #. MQTT library block
 msgid "MQTT event"
-msgstr "MQTT-Ereignis"
+msgstr "MQTT Event"
 
 #. Cutebot library block
 msgid "Cutebot stop wheels"
@@ -4836,7 +4836,7 @@ msgstr "bilde _ ab in _"
 
 #. MQTT library block
 msgid "testTopic"
-msgstr "testThema"
+msgstr "testTopic"
 
 #. Elecfreaks Octopus sensor library block
 msgid "Octopus 180° servo pin _ angle to _ ° (0~180)"
@@ -4844,7 +4844,7 @@ msgstr "Octopus 180° Servo Pin _ auf Winkel _ ° (0~180)"
 
 #. Octostudio communication library block
 msgid "Octo receive beam"
-msgstr "Octo empfange Übertragung"
+msgstr "Octo empfange Beam"
 
 #. NeZha robot library label
 msgid "NeZha"
@@ -4880,7 +4880,7 @@ msgstr "Wukong stoppe Motor _"
 
 #. MQTT library block
 msgid "MQTT sub _"
-msgstr "MQTT abonnieren _"
+msgstr "MQTT subscribe _"
 
 #. Sphero-RVR robot library block
 msgid "stop with heading _"
@@ -4896,7 +4896,7 @@ msgstr "Wukong"
 
 #. Octostudio communication library block
 msgid "Octo beam received?"
-msgstr "Octo Übertragung empfangen?"
+msgstr "Octo Beam empfangen?"
 
 #. Joystick:bit library block
 msgid "motor vibrate for _ ms"
@@ -4956,7 +4956,7 @@ msgstr "Octopus DHT11 Temperatur (°C) an Pin _"
 
 #. MQTT library block
 msgid "MQTT pub topic _ payload _"
-msgstr "MQTT publiziere Thema _ payload _"
+msgstr "MQTT publiziere Topic _ Payload _"
 
 #. MQTT library block
 msgid "retain _ QoS _"
@@ -5008,7 +5008,7 @@ msgstr "Octopus OLED zeichne Rechteck x _ y _ w _ h _ Radius _ (3~15)"
 
 #. Octostudio communication library block
 msgid "Octo last beam"
-msgstr "Octo letzte Übertragung"
+msgstr "Octo letzter Beam"
 
 #. Octostudio communication library block
 msgid "Octo set group _ (0-99)"
@@ -5028,11 +5028,11 @@ msgstr "Octopus"
 
 #. Octostudio communication library block
 msgid "Octo beam to phones _"
-msgstr "Octo Übertragung auf Smartphones _"
+msgstr "Octo Beam auf Smartphones _"
 
 #. MQTT library block
 msgid "MQTT unsub _"
-msgstr "MQTT abbestellen _"
+msgstr "MQTT unsubscribe _"
 
 #. Musical note name
 msgid "nt;d#"
@@ -5484,7 +5484,7 @@ msgstr "testWill"
 
 #. MQTT library block
 msgid "Last will!"
-msgstr "Last will!"
+msgstr "LastWill!"
 
 #. MiKe Robot library block
 msgid "MiKe front obstacle (cm)"
@@ -5757,7 +5757,7 @@ msgstr "chromatic Percussion"
 
 #. MQTT library block
 msgid "MQTT set will topic _ payload _"
-msgstr "MQTT setze Will Abschnitt _ Payload _"
+msgstr "MQTT setze Will-Topic _ Payload _"
 
 #. Sound destination for arpeggiate block in Scales & Chords library
 msgid "MIDI channel"
@@ -8261,7 +8261,7 @@ msgstr "stoppe WiFi"
 
 #. Octostudio communication library block
 msgid "Octo last beam group"
-msgstr "Octo letzte Funkgruppe"
+msgstr "Octo letzte Beam-Gruppe"
 
 #. Library name
 msgid "8 Bit Graphics"
@@ -9100,3 +9100,15 @@ msgstr "#SVG#square11#00c612 Motor _ Tempo _ (-100 bis 100)"
 #. KidsIOT Dual Motor library block
 msgid "#SVG#square11#00c612 stop all motors"
 msgstr "#SVG#square11#00c612 stoppe Motoren"
+
+#. CoCube library block
+msgid "track target X _ Y _ at _ speed (0-50)"
+msgstr "verfolge Ziel x _ y _ mit Tempo _ (0-50)"
+
+#. CoCube Module library block
+msgid "ADC connected"
+msgstr "ADC verbunden"
+
+#. CoCube Module library block
+msgid "ADC _ voltage (mV)"
+msgstr "ADC _ Spannung (mV)"
