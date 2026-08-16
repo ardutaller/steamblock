@@ -3688,6 +3688,10 @@ msgstr "espNow channel"
 msgid "HTTP client"
 msgstr "HTTP client"
 
+#. HTTP Client library block
+msgid "fetch URL _"
+msgstr "fetch URL _"
+
 #. HTTP Client library block.
 #. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
 msgid "_ data _ to http #SVG#colon-double-slash _"
@@ -5188,6 +5192,10 @@ msgstr "Octopus OLED draw circle x _ y _ radius _"
 msgid "Octopus OLED fill circle x _ y _ radius _"
 msgstr "Octopus OLED fill circle x _ y _ radius _"
 
+#. Octostudio communication library label
+msgid "OctoStudio"
+msgstr "OctoStudio"
+
 #. Octostudio communication library block
 msgid "Octo beam to phones _"
 msgstr "Octo beam to phones _"
@@ -5195,6 +5203,10 @@ msgstr "Octo beam to phones _"
 #. Octostudio communication library block
 msgid "duration _ ms"
 msgstr "duration _ ms"
+
+#. Octostudio communication library block
+msgid "group _"
+msgstr "group _"
 
 #. Octostudio communication library block
 msgid "Octo beam received?"

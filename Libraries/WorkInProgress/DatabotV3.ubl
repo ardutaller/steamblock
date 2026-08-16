@@ -1,6 +1,6 @@
 module DatabotV3
 author MicroBlocks
-version 1 4 
+version 1 5 
 depends 'Air Pressure (BMP581)' 'Color & Proximity (APDS9151)' 'DatabotV3 Motion' '_Gas (ENS160)' '_Temperature Humidity (SHT40)' '_Gesture (PAJ7620)' '_Distance (VL53L1x)' 
 choices databotV3_tempUnits '°C' '°F' 
 description 'Library for the databot v3.
@@ -18,7 +18,6 @@ variables _databotV3_pixels
   space
   spec 'r' 'databotV3_light' 'databotV3 light level'
   spec 'r' 'databotV3_distance' 'databotV3 distance (mm)'
-  spec 'r' 'databotV3_gesture' 'databotV3 gesture'
   space
   spec 'r' 'databotV3_temperature' 'databotV3 temperature _' 'menu.databotV3_tempUnits' '°C'
   spec 'r' 'databotV3_relative_humidity' 'databotV3 relative humidity (%)'
@@ -27,6 +26,8 @@ variables _databotV3_pixels
   spec 'r' 'databotV3_CO2' 'databotV3 eCO2'
   spec 'r' 'databotV3_TVOC' 'databotV3 TVOC'
   spec 'r' 'databotV3_AQI' 'databotV3 air quality index'
+  space
+  spec 'r' 'databotV3_gesture' 'databotV3 gesture'
   space
   spec 'r' 'databotV3_uvIndex' 'databotV3 UV Index'
   spec 'r' 'databotV3_UVA' 'databotV3 UVA power (uW / cm^2)'
