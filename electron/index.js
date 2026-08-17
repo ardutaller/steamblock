@@ -158,6 +158,24 @@ const createWindow = () => {
 			path.join(process.resourcesPath, '/webapp/microblocks.html') :
 			path.join(__dirname, '../chromeApp/webapp/microblocks.html')
 	);
+
+	app.setName('MicroBlocks');
+	app.setAppUserModelId(app.name);
+	app.setAboutPanelOptions({
+		applicationName: 'MicroBlocks',
+		applicationVersion: 'Version',
+		version: app.getVersion()
+	});
+
+	if (process.platform === 'darwin') {
+
+		const menuTemplate = [
+			{ role: 'appMenu' },
+			{ role: 'windowMenu' }
+		];
+		const menu = Menu.buildFromTemplate(menuTemplate);
+		Menu.setApplicationMenu(menu);
+	}
 };
 
 app.whenReady().then(() => {
