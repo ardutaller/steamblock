@@ -31,7 +31,7 @@ cd out
 
 echo "Creating standalone zip releases..."
 
-if [[ -z "$system" || "$system" == 'linux' ]]; then
+if [[ "$system" == 'all' || "$system" == 'linux' ]]; then
 echo "Zipping Linux release..."
 rm -rf microblocks-linux
 mv ../prepack/linux microblocks-linux
@@ -44,7 +44,7 @@ cd ../../../out
 rm -rf microblocks-linux
 fi
 
-if [[ -z "$system" || "$system" == 'macos' ]]; then
+if [[ "$system" == 'all' || "$system" == 'macos' ]]; then
 echo "Zipping MacOS release..."
 rm -R MicroBlocks.app
 mv ../prepack/macos/MicroBlocks.app .
@@ -53,7 +53,7 @@ zip -ryq microblocks-macos.zip MicroBlocks.app
 rm -rf MicroBlocks.app
 fi
 
-if [[ -z "$system" || "$system" == 'windows' ]]; then
+if [[ "$system" == 'all' || "$system" == 'windows' ]]; then
 echo "Zipping Windows release..."
 rm -R microblocks-windows
 mv ../prepack/windows microblocks-windows
