@@ -1582,7 +1582,7 @@ method showSearchBox MicroBlocksScripter {
 	// so the results menu has the whole window height below it to grow into.
 	gap = (8 * (global 'scale'))
 	setCenter (morph box) (hCenter (bounds pageM)) 0
-	setTop (morph box) (((top pageM) + (topBarHeight (findProjectEditor))) + gap)
+	setTop (morph box) ((top pageM) + gap)
 	addPart pageM (morph box)
 	startEditing box
 	showRecents box
