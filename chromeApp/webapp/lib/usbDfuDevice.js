@@ -313,20 +313,27 @@ let usbDfuDevice = class {
 
 		// Catch errors
 		catch (error) {
+			IDE.spinner.hide();
+			FloatingWindow.inform(
+				'Could not find board',
+				'Please make sure your board is in DFU mode. ' +
+				'This is usually achieved by holding one of the user buttons down ' +
+				'while powering up the device.'
+			);
 
-			// Return the error
-			return Promise.reject(error);
-		}
-	}
+// Return the error
+return Promise.reject(error);
+}
+}
 
-	// Function which erases the device
-	async erase() {
+// Function which erases the device
+async erase() {
 
-		// Clear the progress bar
-		dfuProgressHandler(0);
+	// Clear the progress bar
+	dfuProgressHandler(0);
 
-		// Attempt to erase
-		try {
+	// Attempt to erase
+	try {
 
 			// For the entire flash, erase 1 page at a time from 0x08000000
 			for (let address = 0x8000000; address < this.flashEnd; address += this.pageSize) {
