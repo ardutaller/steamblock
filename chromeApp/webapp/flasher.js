@@ -25,7 +25,8 @@ const DFUpload = {
 			filter: { vendorId: 1155 }
 		}
 	},
-	duelinkBoards: ['CincoBit', 'PixoBit', 'Clipit', 'DueSTEM', 'Ghizzy', 'Holiday Tree']
+	duelinkBoards: [
+		'CincoBit', 'PixoBit', 'Clipit', 'DueSTEM', 'Ghizzy', 'Holiday Tree']
 };
 
 DFUpload.flashBoard = function (boardName) {
@@ -37,7 +38,7 @@ DFUpload.flashBoard = function (boardName) {
 		() => { dfu.disconnect(); }, // onCancel
 	);
 
-	if (this.duelinkBoards.includes(boardName)) boardName = 'DUELink';
+	if (this.duelinkBoards.includes(boardName)) { boardName = 'DUELink'; }
 	let board = this.boards[boardName];
 	window.dfu = new usbDfuDevice();
 
@@ -59,7 +60,12 @@ DFUpload.flashBoard = function (boardName) {
 					.then(()=>dfu.sleep(250, 'Booting...'))
 					.then(()=>dfu.detach())
 					.then(()=>dfu.sleep(250, 'Disconnecting...'))
-					.then(()=>dfu.disconnect());
+					.then(()=>dfu.disconnect())
+					.then(()=>
+						FloatingWindow.inform(
+							'Firmware Installed',
+							'Please reset the board before trying to connect to it.'
+						));
 			}
 		});
 };
