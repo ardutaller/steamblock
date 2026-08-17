@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:36+0200\n"
-"PO-Revision-Date: 2026-08-15 13:51+0000\n"
+"PO-Revision-Date: 2026-08-18 02:45+0000\n"
 "Last-Translator: Allan Moreira <allan.moreira@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "microblocks/ide/pt_BR/>\n"
@@ -8860,3 +8860,15 @@ msgstr "ADC conectado"
 #. CoCube Module library block
 msgid "ADC _ voltage (mV)"
 msgstr "Tensão ADC _ (mV)"
+
+#. HTTP Client library block
+msgid "fetch URL _"
+msgstr "obter URL _"
+
+#. Octostudio communication library label
+msgid "OctoStudio"
+msgstr "OctoStudio"
+
+#. Octostudio communication library block
+msgid "group _"
+msgstr "grupo _"
