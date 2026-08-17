@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-16 19:25+0000\n"
+"PO-Revision-Date: 2026-08-17 04:19+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9112,3 +9112,15 @@ msgstr "ADC verbunden"
 #. CoCube Module library block
 msgid "ADC _ voltage (mV)"
 msgstr "ADC _ Spannung (mV)"
+
+#. HTTP Client library block
+msgid "fetch URL _"
+msgstr "rufe URL _ ab"
+
+#. Octostudio communication library label
+msgid "OctoStudio"
+msgstr "OctoStudio"
+
+#. Octostudio communication library block
+msgid "group _"
+msgstr "Gruppe _"
