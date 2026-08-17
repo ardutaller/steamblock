@@ -185,6 +185,7 @@ method contextMenu MicroBlocksSelection isBlockDefinition {
 		add items (array 'stop selected' (action 'stopProcesses' this))
 		add items (array 'toggle selected' (action 'toggleProcesses' this))
 		add items '-'
+		add items (array 'copy selection' (action 'copyBlocks' this))
 		add items (array 'duplicate selection' (action 'duplicateBlocks' this))
 		add items (array 'drag selection' (action 'dragBlocks' this))
 		add items '-'
@@ -192,6 +193,22 @@ method contextMenu MicroBlocksSelection isBlockDefinition {
 	}
 	menuFor (api (smallRuntime)) items
 	return nil
+}
+
+method copyBlocks MicroBlocksSelection {
+	morphs = (list)
+	for block blocks { add morphs (morph block) }
+	setClipboard (join
+		'GP Scripts' (newline)
+		(exportScripts
+			(newMicroBlocksExchange)
+			scripter
+			morphs
+			(left rectangle)
+			(top rectangle)
+		)
+	)
+	cancelSelection
 }
 
 method deleteBlocks MicroBlocksSelection {
