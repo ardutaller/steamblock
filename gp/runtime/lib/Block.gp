@@ -536,6 +536,7 @@ method openCSlot Block {
 // events
 
 method justDropped Block hand {
+	notify (api (smallRuntime)) 'dragend'
 	cancelSelection
 	snap this
 }
@@ -546,10 +547,8 @@ method snap Block {
 	if (isClass parent 'ScriptEditor') {
 		b = (targetFor parent this)
 		if (and (isClass b 'Block') ((type b) != 'reporter')) { // command or hat type targets
-			recordDrop parent this b (next b)
 			setNext b this
 		} (isClass b 'Array') {
-			recordDrop parent this b
 			rec = b
 			b = (at rec 1)
 			dropType = (at rec 2)
@@ -563,16 +562,13 @@ method snap Block {
 				setNested cSlot b
 			}
 		} (isClass b 'CommandSlot') {
-			recordDrop parent this b (nested b)
 			setNested b this
 		} (notNil b) { // dropped reporter
 			tb = (handler (owner (morph b)))
 			if (isClass tb 'Block') {
-				recordDrop parent this tb nil b
 				replaceInput tb b this
 			}
 		} else { // no snap target, record drop on scripting area
-			recordDrop parent this
 			if ('reporter' == type) { fixBlockColor this }
 		}
 		tb = (topBlock this)
@@ -586,6 +582,8 @@ method aboutToBeGrabbed Block {
 	page = (global 'page')
 	hand = (hand page)
 	inset = (10 * (blockScale))
+
+	notify (api (smallRuntime)) 'dragstart'
 
 	// adjust drag offset
 	if ('reporter' == type) {
@@ -820,7 +818,7 @@ method rightClicked Block aHand {
 	} (isPrototypeHat this) {
 		return (rightClicked (editedPrototype this) aHand)
 	}
-	popUpAtHand (contextMenu this) (page aHand)
+	contextMenu this
 	return true
 }
 
@@ -993,7 +991,7 @@ method contextMenu Block {
 	if (not (isMicroBlocks)) { return (gpContextMenu this) }
 
 	if (isPrototype this) {return nil}
-	menu = (menu nil this)
+	items = (list)
 
 	pe = (findProjectEditor)
 	scripter = (scripter pe)
@@ -1004,71 +1002,71 @@ method contextMenu Block {
 
 	isInPalette = ('template' == (grabRule morph))
 	if (and isInPalette (isRenamableVar this)) {
-		addItem menu 'rename...' 'userRenameVariable'
-		addLine menu
+		add items (array 'rename...' (action 'userRenameVariable' this))
+		add items '-'
 	}
 
-	addItem menu 'duplicate' 'grabDuplicate' 'duplicate this block'
+	add items (array 'duplicate' (action 'grabDuplicate' this) 'duplicate this block')
 	if (and ('reporter' != type) (notNil (next this))) {
-		addItem menu 'duplicate all' 'grabDuplicateAll' 'duplicate this block and all blocks below it'
+		add items (array 'duplicate all' (action 'grabDuplicateAll' this) 'duplicate this block and all blocks below it')
 	}
-	addLine menu
+	add items '-'
 	if (and (not isInPalette) ('reporter' != type)) {
-		addItem menu 'extract block' 'extractBlock' 'pull out this block'
+		add items (array 'extract block' (action 'extractBlock' this) 'pull out this block')
 	}
-	addLine menu
+	add items '-'
 	if (isVariadic this) {
-		if (canExpand this) {addItem menu 'expand' 'expand'}
-		if (canCollapse this) {addItem menu 'collapse' 'collapse'}
-		addLine menu
+		if (canExpand this) {add items (array 'expand' (action 'expand' this))}
+		if (canCollapse this) {add items (array 'collapse' (action 'collapse' this))}
+		add items '-'
 	}
 	if (hasHelpEntryFor pe this) {
-		addItem menu 'help' (action 'openHelp' pe this) 'show help for this block in a browser'
-		addLine menu
+		add items (array 'help' (action 'openHelp' pe this) 'show help for this block in a browser')
+		add items '-'
 	}
-	addItem menu 'copy to clipboard' (action 'copyToClipboard' (topBlock this)) 'copy these blocks to the clipboard'
-	addItem menu 'copy to clipboard as URL' (action 'copyToClipboardAsURL' (topBlock this)) 'copy these blocks to the clipboard as a URL'
-	addLine menu
-	addItem menu 'save picture of script' 'exportAsImage' 'save a picture of these blocks as a PNG file'
+	add items (array 'copy to clipboard' (action 'copyToClipboard' (topBlock this)) 'copy these blocks to the clipboard')
+	add items (array 'copy to clipboard as URL' (action 'copyToClipboardAsURL' (topBlock this)) 'copy these blocks to the clipboard as a URL')
+	add items '-'
+	add items (array 'save picture of script' (action 'exportAsImage' this) 'save a picture of these blocks as a PNG file')
 	if (not (isPrototypeHat (topBlock this))) {
 		if (or ('reporter' == (type (topBlock this))) (devMode)) {
-			addItem menu 'save picture of script with result' 'exportAsImageWithResult' 'save a picture of these blocks and their result as a PNG file'
+			add items (array 'save picture of script with result' (action 'exportAsImageWithResult' this) 'save a picture of these blocks and their result as a PNG file')
 		}
 	}
 	if (devMode) {
-		addLine menu
+		add items '-'
 		if (isCallable this) {
-			addItem menu 'copy callable name' 'copyCallableName' 'copy this block''s name for use in a "call" block'
-			addLine menu
+			add items (array 'copy callable name' (action 'copyCallableName' this) 'copy this block''s name for use in a "call" block')
+			add items '-'
 		}
-		addItem menu 'show instructions' (action 'showInstructions' (smallRuntime) this)
-		addItem menu 'show compiled bytes' (action 'showCompiledBytes' (smallRuntime) this)
+		add items (array 'show instructions' (action 'showInstructions' (smallRuntime) this))
+		add items (array 'show compiled bytes' (action 'showCompiledBytes' (smallRuntime) this))
 		if (and isInPalette (notNil (functionNamed (project pe) (primName expression)))) {
-			addItem menu 'show call tree' (action 'showCallTree' (smallRuntime) this)
+			add items (array 'show call tree' (action 'showCallTree' (smallRuntime) this))
 		}
 
 		// xxx internal testing only; remove later!:
 		if (contains (commandLine) '--allowMorphMenu') {
-			addItem menu 'test decompiler' (action 'testDecompiler' (smallRuntime) this) // xxx
+			add items (array 'test decompiler' (action 'testDecompiler' (smallRuntime) this)) // xxx)
 		}
 	}
-	addLine menu
+	add items '-'
 
 	if (contains (array 'v' '=' '+=') (primName expression)) {
-			addItem menu 'find variable accessors' 'findVarAccessors' 'find scripts or block definitions where this variable is being read'
-			addItem menu 'find variable modifiers' 'findVarModifiers' 'find scripts or block definitions where this variable is being set or changed'
+			add items (array 'find variable accessors' (action 'findVarAccessors' this) 'find scripts or block definitions where this variable is being read')
+			add items (array 'find variable modifiers' (action 'findVarModifiers' this) 'find scripts or block definitions where this variable is being set or changed')
 	} else {
-			addItem menu 'find uses of this block' 'findBlockUsers' 'find scripts or block definitions using this block'
+			add items (array 'find uses of this block' (action 'findBlockUsers' this) 'find scripts or block definitions using this block')
 	}
 	if (notNil (functionNamed (project pe) (primName expression))) {
-		addItem menu 'show block definition...' 'showDefinition' 'show the definition of this block'
+		add items (array 'show block definition...' (action 'showDefinition' this) 'show the definition of this block')
 		if isInPalette {
-			addLine menu
-			addItem menu 'delete block definition...' 'deleteBlockDefinition' 'delete the definition of this block'
+			add items '-'
+			add items (array 'delete block definition...' (action 'deleteBlockDefinition' this) 'delete the definition of this block')
 		}
 	} (and (notNil blockSpec) (beginsWith (at (specs blockSpec) 1) 'obsolete')) {
-			addLine menu
-			addItem menu 'delete obsolete block...' 'deleteObsolete' 'delete this obsolete block from the project'
+			add items '-'
+			add items (array 'delete obsolete block...' (action 'deleteObsolete' this) 'delete this obsolete block from the project')
 	}
 	if ((primName expression) == 'v') {
 		varNames = (allVariableNames (project scripter))
@@ -1077,14 +1075,15 @@ method contextMenu Block {
 				if (or ((at varName 1) != '_') (showHiddenBlocksEnabled pe)) {
 					b = (toBlock (newReporter 'v' varName))
 					fixLayout b
-					addItem menu (fullCostume (morph b)) (action 'changeVar' this varName)
+					// 'label' 'callback' 'tip' 'image' 'class'
+					add items (array varName (action 'changeVar' this varName) nil (fullCostume (morph b)) '--block')
 				}
 			}
 		}
 	} else {
 		alternativeOps = (alternateOperators this)
 		if (and (not isInPalette) (notNil alternativeOps)) {
-			addLine menu
+			add items '-'
 			myOp = (primName expression)
 			for op alternativeOps {
 				// create and display block morph (with translated spec)
@@ -1092,16 +1091,18 @@ method contextMenu Block {
 				if (and (notNil spec) (op != myOp)) {
 					b = (blockForSpec spec)
 					fixLayout b
-					addItem menu (fullCostume (morph b)) (action 'changeOperator' this op)
+					// 'label' 'callback' 'tip' 'image' 'class'
+					add items (array (join 'alternative-' op) (action 'changeOperator' this op) 'replace with this block' (fullCostume (morph b)) '--block')
 				}
 			}
 		}
 	}
 	if (not isInPalette) {
-		addLine menu
-		addItem menu 'delete block' 'delete' 'delete this block'
+		add items '-'
+		add items (array 'delete block' (action 'delete' this) 'delete this block')
 	}
-	return menu
+	menuFor (api (smallRuntime)) items
+	return nil
 }
 
 method gpContextMenu Block {
@@ -1112,6 +1113,7 @@ method gpContextMenu Block {
 	if (canShowMonitor this) {
 		addItem menu 'monitor' 'addMonitor'
 	}
+
 	addLine menu
 	if (isVariadic this) {
 		if (canExpand this) {addItem menu 'expand' 'expand'}
@@ -1362,19 +1364,11 @@ method exportAsImageScaled Block result isError fName {
 
 	// save result as a PNG file
 	pngData = (encodePNG bm nil (scriptText this))
-	if ('Browser' == (platform)) {
-		if ((msecs timer) > 4500) {
-			// if it has been more than ~4.5 seconds the user must click to allow file save
-			inform (global 'page') (localized 'PNG preparation complete.')
-		}
-		browserWriteFile pngData (join 'scriptImage' (msecsSinceStart) '.png') 'scriptImage'
-	} else {
-		if (isNil fName) {
-			fName = (fileToWrite (join 'scriptImage' (msecsSinceStart) '.png'))
-		}
-		if ('' == fName) { return }
-		writeFile fName pngData
+	if ((msecs timer) > 4500) {
+		// if it has been more than ~4.5 seconds the user must click to allow file save
+		inform (global 'page') (localized 'PNG preparation complete.')
 	}
+	browserWriteFile pngData (join 'scriptImage' (msecsSinceStart) '.png') 'scriptImage'
 }
 
 method delete Block {
@@ -1685,10 +1679,6 @@ method labelText Block aString {
 			colorIndex = ((count aString) + 1)
 		}
 		return (newSVGImage (substring aString 6 (colorIndex - 1)) labelColor color scale)
-	}
-	if ('Linux' == (platform)) {
-		fontName = 'Noto Sans Bold'
-		fontSize = (11 * scale)
 	}
 	return (newText aString fontName fontSize labelColor)
 }

@@ -1,6 +1,6 @@
 // ScriptEditor -- Supports constructing and editing block scripts by drag-n-drop.
 
-defineClass ScriptEditor morph feedback scale focus lastDrop
+defineClass ScriptEditor morph feedback scale focus
 
 to newScriptEditor width height {
 	return (initialize (new 'ScriptEditor') width height)
@@ -64,7 +64,7 @@ method justReceivedDrop ScriptEditor aHandler {
 }
 
 method rightClicked ScriptEditor aHand {
-	popUpAtHand (contextMenu this) (page aHand)
+	contextMenu (api (smallRuntime)) 'scriptingArea' aHand
 	return true
 }
 
@@ -320,40 +320,11 @@ method showReporterDropFeedback ScriptEditor target {
 
 // context menu
 
-method contextMenu ScriptEditor {
-	menu = (menu nil this)
-	addItem menu 'set block size...' 'setBlockSize' 'make blocks bigger or smaller'
-	addLine menu
-	if (notNil lastDrop) {
-		addItem menu 'undrop (ctrl-Z)' 'undrop' 'undo the last block drop'
-	}
-	addItem menu 'clean up' 'cleanUp' 'arrange scripts'
-	addLine menu
-	addItem menu 'copy all scripts to clipboard' 'copyScriptsToClipboard'
-	addItem menu 'copy all scripts to clipboard as URL' 'copyScriptsToClipboardAsURL'
-	addLine menu
-	clip = (readClipboard)
-	if (beginsWith clip 'GP Scripts') {
-		addItem menu 'paste all scripts from clipboard' 'pasteScripts'
-	} (beginsWith clip 'GP Script') {
-		addItem menu 'paste script from clipboard' 'pasteScripts'
-	}
-	addLine menu
-	addItem menu 'save a picture of all visible scripts' 'saveScriptsImage'
-	if (devMode) {
-		addItem menu 'set exported script scale' 'setExportedScriptScale'
-	}
-	return menu
-}
-
 method contextMenuForGP ScriptEditor {
 	menu = (menu nil this)
 	addItem menu 'set block size...' 'setBlockSize' 'make blocks smaller'
 	addLine menu
 	addItem menu 'clean up' 'cleanUp' 'arrange scripts'
-	if (notNil lastDrop) {
-		addItem menu 'undrop' 'undrop' 'undo last drop'
-	}
 	addLine menu
 	addItem menu 'set exported script scale' 'setExportedScriptScale'
 	addItem menu 'save picture of all scripts' 'saveScriptsImage'
@@ -558,20 +529,6 @@ method cancelled ScriptEditor aText {
 	}
 }
 
-// undrop
-
-method clearDropHistory ScriptEditor {lastDrop = nil}
-
-method recordDrop ScriptEditor block target input next {
-	lastDrop = (new 'DropRecord' block target input next)
-}
-
-method undrop ScriptEditor {
-	if (notNil lastDrop) {restore lastDrop this}
-	lastDrop = nil
-	scriptChanged this
-}
-
 method grab ScriptEditor aBlock {
 	h = (hand (handler (root morph)))
 	setPosition (morph aBlock) (x h) (y h)
@@ -588,17 +545,6 @@ method scriptChanged ScriptEditor {
 }
 
 // saving script image
-
-method setExportedScriptScale ScriptEditor {
-	// Set the scale used for exported scripts.
-
-	menu = (menu nil (action 'setExportScale' this) true)
-	addItem menu 'small (50%)' 50
-	addItem menu 'normal (65%)' 65
-	addItem menu 'large (100%)' 100
-	addItem menu 'printable (200%)' 200
-	popUpAtHand menu (global 'page')
-}
 
 method setExportScale ScriptEditor percent {
 	setGlobal 'blockExportScale' (percent / 100)
@@ -621,20 +567,11 @@ method saveScriptsImage ScriptEditor fName doNotCrop {
 	pngData = (encodePNG bm nil scriptsString)
 
 	defaultFileName = (join 'allScripts' (msecsSinceStart) '.png')
-	if ('Browser' == (platform)) {
-		if ((msecs timer) > 4000) {
-			// if it has been more than a few seconds the user must click again to allow file save
-			inform (global 'page') (localized 'PNG preparation complete.')
-		}
-		browserWriteFile pngData defaultFileName 'scriptImage'
-	} else {
-		if (isNil fName) {
-			fName = (fileToWrite defaultFileName '.png')
-			if ('' == fName) { return }
-		}
-		if (not (endsWith fName '.png')) { fName = (join fName '.png') }
-		writeFile fName pngData
+	if ((msecs timer) > 4000) {
+		// if it has been more than a few seconds the user must click again to allow file save
+		inform (global 'page') (localized 'PNG preparation complete.')
 	}
+	browserWriteFile pngData defaultFileName 'scriptImage'
 }
 
 method croppedScriptsCostume ScriptEditor doNotCrop {
@@ -652,17 +589,11 @@ method croppedScriptsCostume ScriptEditor doNotCrop {
 			h = (min h (height bnds))
 		}
 	}
-	if ('Browser' == (platform)) { // in browser, draw on Texture for speed
-		result = (newTexture w h (gray 255 0))
-	} else {
-		result = (newBitmap w h (gray 255 0))
-	}
+	result = (newTexture w h (gray 255 0))
 	ctx = (newGraphicContextOn result)
 	setOffset ctx (0 - (left r)) (0 - (top r))
 	fullDrawOn morph ctx
-	if ('Browser' == (platform)) {
-		result = (toBitmap result)
-	}
+	result = (toBitmap result)
 	return result
 }
 

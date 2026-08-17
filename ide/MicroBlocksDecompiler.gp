@@ -159,21 +159,12 @@ method addEmbeddedLibrary MicroBlocksDecompiler libName project {
 		isImplementation = true
 	}
 	libFileName = (join '/' libName '.ubl')
-	if ('Browser' == (platform)) {
 		for filePath (allFilesInDir (scripter (smallRuntime)) 'Libraries') {
 			if (endsWith filePath libFileName) {
 				data = (readEmbeddedFile filePath)
 				addLibraryFromString project (toString data) libName filePath
 			}
 		}
-	} else {
-		for filePath (listEmbeddedFiles) {
-			if (endsWith filePath libFileName) {
-				data = (readEmbeddedFile filePath)
-				addLibraryFromString project (toString data) libName filePath
-			}
-		}
-	}
 	lib = (libraryNamed project libName)
 	if (notNil lib) { // add dependencies
 		if isImplementation { beImplementation lib }

@@ -17,6 +17,7 @@ to startSelecting aScripter aHand {
 }
 
 to cancelSelection {
+	notify (api (smallRuntime)) 'dragend'
 	editor = (findMicroBlocksEditor)
 	if (isNil editor) { return }
 	scripter = (scripter editor)
@@ -42,11 +43,14 @@ method initialize MicroBlocksSelection aHand {
 
 	focusOn aHand this
 
+	notify (api (smallRuntime)) 'dragstart'
+
 	return this
 }
 
 method destroy MicroBlocksSelection {
 	selecting = false
+	notify (api (smallRuntime)) 'dragend'
 	destroy morph
 }
 
@@ -171,22 +175,40 @@ method containsBlocks MicroBlocksSelection {
 // actions
 
 method contextMenu MicroBlocksSelection isBlockDefinition {
-	menu = (menu nil this)
+	items = (list)
 	if (isNil isBlockDefinition) { isBlockDefinition = false }
 	if isBlockDefinition {
-		addItem menu 'drag selection' 'dragBlocks'
-		addItem menu 'hide block definition' 'hideBlockDefinitions'
+		add items (array 'drag selection' (action 'dragBlocks' this))
+		add items (array 'hide block definition' (action 'hideBlockDefinitions' this))
 	} else {
-		addItem menu 'run selected' 'startProcesses'
-		addItem menu 'stop selected' 'stopProcesses'
-		addItem menu 'toggle selected' 'toggleProcesses'
-		addLine menu
-		addItem menu 'duplicate selection' 'duplicateBlocks'
-		addItem menu 'drag selection' 'dragBlocks'
-		addLine menu
-		addItem menu 'delete selection' 'deleteBlocks'
+		add items (array 'run selected' (action 'startProcesses' this))
+		add items (array 'stop selected' (action 'stopProcesses' this))
+		add items (array 'toggle selected' (action 'toggleProcesses' this))
+		add items '-'
+		add items (array 'copy selection' (action 'copyBlocks' this))
+		add items (array 'duplicate selection' (action 'duplicateBlocks' this))
+		add items (array 'drag selection' (action 'dragBlocks' this))
+		add items '-'
+		add items (array 'delete selection' (action 'deleteBlocks' this))
 	}
-	return menu
+	menuFor (api (smallRuntime)) items
+	return nil
+}
+
+method copyBlocks MicroBlocksSelection {
+	morphs = (list)
+	for block blocks { add morphs (morph block) }
+	setClipboard (join
+		'GP Scripts' (newline)
+		(exportScripts
+			(newMicroBlocksExchange)
+			scripter
+			morphs
+			(left rectangle)
+			(top rectangle)
+		)
+	)
+	cancelSelection
 }
 
 method deleteBlocks MicroBlocksSelection {

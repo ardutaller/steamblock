@@ -1,0 +1,13 @@
+#!/bin/sh
+if test -x /usr/bin/update-menus; then update-menus; fi
+# add user to needed groups
+echo "Making sure plugdev and dialout groups exist"
+groupadd plugdev
+groupadd dialout
+xuser=`who | cut -f1 -d" " | tail -n1`
+echo "Adding $xuser to groups dialout, tty, uucp and plugdev groups"
+usermod -a -G dialout $xuser
+usermod -a -G tty $xuser
+usermod -a -G uucp $xuser
+usermod -a -G plugdev $xuser
+exit 0

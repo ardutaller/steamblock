@@ -1,0 +1,24 @@
+{
+	"name": "microblocks",
+	"productName": "MicroBlocks",
+	"version": "2.0.126",
+	"description": "MicroBlocks is a free, live blocks programming language for learning physical computing with educational microcontroller boards",
+	"main": "index.js",
+	"scripts": {
+		"start": "electron .",
+		"lint": "echo \"No linting configured\""
+	},
+	"keywords": [],
+	"author": {
+		"name": "John Maloney, Bernat Romagosa",
+		"email": "interest@microblocks.fun"
+	},
+	"license": "MPL-2.0",
+	"dependencies": {
+		"@electron/asar": "^4.2.0"
+	},
+	"devDependencies": {
+		"@electron/fuses": "^1.8.0",
+		"electron": "36.4.0"
+	}
+}

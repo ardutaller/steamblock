@@ -20,8 +20,8 @@ to espTest {
 //	openPort espTool '/dev/cu.usbserial-110' 'ESP32-S3'
 //	vmData = (readFile '../blink_s3.bin' true)
 
-openPort espTool '/dev/cu.usbserial-110' 'ESP32-C3'
-vmData = (readFile '../blink_c3.bin' true)
+	openPort espTool '/dev/cu.usbserial-110' 'ESP32-C3'
+	vmData = (readFile '../blink_c3.bin' true)
 
 	uploadESP32VM espTool vmData false ''
 	closeSerialPort port
@@ -62,7 +62,7 @@ method openPort ESPTool portName boardName {
 	closePort this
 	port = (safelyRun (action 'openSerialPort' portName baudRate))
 	if (not (isClass port 'Integer')) { port = nil } // failed
-	if ('Browser' == (platform)) { waitMSecs 100 } // let browser callback complete
+	waitMSecs 100 // let browser callback complete
 	return (notNil port)
 }
 
@@ -127,6 +127,9 @@ method connect ESPTool {
 	// Enter boot mode and connect to the ROM boot loader.
 
 	status = 'Connecting...'
+
+	notify (api (smallRuntime)) 'spinner.setLabel' status
+
 	for i 30 {
 		if (0 == (i & 1)) {
 			enterBootMode this
@@ -449,9 +452,11 @@ method installFirmware ESPTool boardName eraseFlag downloadFlag vmData {
 
 	if ok {
 		status = (localized 'Done')
+		notify (api (smallRuntime)) 'spinner.hide'
 		success = true
 	} else {
 		status = (localized 'Failed')
+		notify (api (smallRuntime)) 'spinner.hide'
 		if closeWhenDone { closePort this }
 		enableAutoConnect (smallRuntime) false
 		return
@@ -627,6 +632,7 @@ method uploadCompressed ESPTool startAddr data {
 		sent += bytesToSend
 		percentDone = (round ((100 * sent) / compressedBytecount))
 		status = (join '' percentDone '%')
+		notify (api (smallRuntime)) 'spinner.setPercent' percentDone
 		seqNum += 1
 	}
 //	print ((msecsSinceStart) - start) 'msecs'
@@ -669,6 +675,7 @@ method uploadUncompressed ESPTool startAddr flashData {
 		if (errorResponse this) { return }
 		sent += bytesToSend
 		percentDone = (round ((100 * sent) / totalBytes))
+		notify (api (smallRuntime)) 'spinner.setPercent' percentDone
 		status = (join '' percentDone '%')
 		seqNum += 1
 	}

@@ -744,8 +744,8 @@ msgid "Computer"
 msgstr "Kompyuter"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Qo'shimcha ma'lumot: http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Qo'shimcha ma'lumot: %1"
 
 #. In MicroBlocks IDE project menu
 msgid "New"

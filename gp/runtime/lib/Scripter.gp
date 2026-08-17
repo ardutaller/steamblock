@@ -1000,7 +1000,6 @@ method restoreScripts Scripter {
 	updateClassName this
 	scriptsPane = (contents scriptsFrame)
 	removeAllParts (morph scriptsPane)
-	clearDropHistory scriptsPane
 	updateSliders scriptsFrame
 	if (isNil targetObj) { return }
 	targetClass = (classOf targetObj)
@@ -1042,7 +1041,6 @@ method pasteScripts Scripter scriptString {
 	scale = (global 'scale')
 	updateClassName this
 	scriptsPane = (contents scriptsFrame)
-	clearDropHistory scriptsPane
 	scripts = (parse scriptString)
 	if (notNil scripts) {
 		hand = (hand (global 'page'))

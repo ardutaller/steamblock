@@ -26,24 +26,18 @@ to uload fileName {
 	return (load fileName (topLevelModule))
 }
 
-defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar zoomButtons scriptingActionsContainer connectionWidget progressIndicator httpServer lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode versionCheckOnStartup
+defineClass MicroBlocksEditor morph fileName scripter leftItems title rightItems tipBar lastProjectFolder lastScriptPicFolder boardLibAutoLoadDisabled autoDecompile showHiddenBlocks frameRate frameCount lastFrameTime newerVersion putNextDroppedFileOnBoard isDownloading isPilot darkMode versionCheckOnStartup
 
-method scriptingActionsContainer MicroBlocksEditor { return scriptingActionsContainer }
 method fileName MicroBlocksEditor { return fileName }
 method project MicroBlocksEditor { return (project scripter) }
 method scripter MicroBlocksEditor { return scripter }
-method httpServer MicroBlocksEditor { return httpServer }
 method lastScriptPicFolder MicroBlocksEditor { return lastScriptPicFolder }
 method setLastScriptPicFolder MicroBlocksEditor dir { lastScriptPicFolder = dir }
 
 to openMicroBlocksEditor devMode {
 	if (isNil devMode) { devMode = false }
-	if ('Browser' == (platform)) {
-		browserSize = (browserSize)
-		page = (newPage (first browserSize) (last browserSize))
-	} else {
-		page = (newPage 1000 600)
-	}
+	browserSize = (browserSize)
+	page = (newPage (first browserSize) (last browserSize))
 	setDevMode page devMode
 	toggleMorphicMenu (hand page) (contains (commandLine) '--allowMorphMenu')
 	setGlobal 'page' page
@@ -55,13 +49,12 @@ to openMicroBlocksEditor devMode {
 	readVersionFile (smallRuntime)
 	applyUserPreferences editor
 	developerModeChanged editor
-	if ('Browser' == (platform)) {
-		url = (browserURL)
-		langCode = (urlParameter url 'lang')
-		if (notNil langCode) { setLanguage editor langCode }
-		// attempt to open a project or scripts from URL; does nothing if absent
-		importFromURL editor url
-	}
+	url = (browserURL)
+	langCode = (urlParameter url 'lang')
+	if (notNil langCode) { setLanguage editor langCode }
+	// attempt to open a project or scripts from URL; does nothing if absent
+	importFromURL editor url
+	notify (api (smallRuntime)) 'ready'
 	startSteppingSafely page
 }
 
@@ -78,15 +71,11 @@ to findMicroBlocksEditor {
 method initialize MicroBlocksEditor {
 	scale = (global 'scale')
 	morph = (newMorph this)
-	httpServer = (newMicroBlocksHTTPServer)
-	addTopBarParts this
 	scripter = (initialize (new 'MicroBlocksScripter') this)
 	lastProjectFolder = 'Examples'
 	addPart morph (morph scripter)
-	addLogo this
 	addTipBar this
-	addZoomButtons this
-	clearProject this
+	clearProject this true
 	fixLayout this
 	setFPS morph 200
 	newerVersion = 'unknown'
@@ -102,7 +91,7 @@ method scaleChanged MicroBlocksEditor {
 
 	// save the state of the current scripter
 	if (2 == (global 'scale')) { oldScale = 1 } else { oldScale = 2 }
-	saveScripts scripter (oldScale * (global 'blockScale'))
+	saveScripts scripter (oldScale * (global 'blockScale')) true
 	oldProject = (project scripter)
 	oldCategory = (currentCategory scripter)
 	oldLibrary = (currentLibrary scripter)
@@ -118,104 +107,16 @@ method scaleChanged MicroBlocksEditor {
 	initialize (smallRuntime) scripter
 
 	// rebuild the editor
-	addTopBarParts this
-	addPart morph (morph title)
 	addPart morph (morph scripter)
-	addLogo this
 	addTipBar this
-	addZoomButtons this
 
 	fixLayout scripter
 	fixLayout this
 }
 
-// top bar parts
-
-method addTopBarParts MicroBlocksEditor {
-	scale = (global 'scale')
-
-	leftItems = (list)
-	add leftItems (175 * scale)
-	add leftItems (addSVGIconButtonOldStyle this 'icon-globe' 'languageMenu' 'Language')
-	add leftItems (8 * scale)
-	add leftItems (addSVGIconButtonOldStyle this 'icon-gear' 'settingsMenu' 'MicroBlocks')
-	add leftItems (8 * scale)
-	add leftItems (addSVGIconButtonOldStyle this 'icon-file' 'projectMenu' 'File')
-
-	if (isNil title) {
-		// only add title the first time
-		title = (newText '' 'Arial' (17 * scale) (microBlocksColor 'blueGray' 50))
-		addPart morph (morph title)
-	}
-
-	rightItems = (list)
-
-	progressW = (36 * scale)
-	progressIndicator = (newImageBox (newBitmap progressW progressW))
-	addPart morph (morph progressIndicator)
-	add rightItems progressIndicator
-	add rightItems (24 * scale)
-
-	addFrameRate = (contains (commandLine) '--allowMorphMenu')
-	if addFrameRate {
-		frameRate = (newText '00 fps' 'Arial' (14 * scale) (microBlocksColor 'blueGray' 200))
-		addPart morph (morph frameRate)
-		add rightItems frameRate
-		add rightItems (12 * scale)
-	}
-
-	connectionWidget = (newMicroBlocksConnectWidget this)
-	addPart morph (morph connectionWidget)
-
-	add rightItems (addTwoStateSVGIconButton this 'icon-graph' 'showGraph' 'Graph')
-	add rightItems (24 * scale)
-	add rightItems (vSeparator this)
-	add rightItems (24 * scale)
-	add rightItems connectionWidget
-	add rightItems (24 * scale)
-	add rightItems (vSeparator this)
-	add rightItems (24 * scale)
-	add rightItems (addSVGIconButton this 'icon-start' 'startAll' 'Start')
-	add rightItems (8 * scale)
-	add rightItems (addSVGIconButton this 'icon-stop' 'stopAndSyncScripts' 'Stop')
-	add rightItems (24 * scale)
-}
-
-method vSeparator MicroBlocksEditor {
-	scale = (global 'scale')
-	separator = (newBox (newMorph) (microBlocksColor 'blueGray' 700) 0 0 false false)
-	setExtent (morph separator) scale (topBarHeight this)
-	addPart morph (morph separator)
-	return separator
-}
-
-method addLogo MicroBlocksEditor {
-	logoM = (newMorph)
-	setCostume logoM (readSVGIcon 'logo')
-	setPosition logoM 8 4
-	addPart morph logoM
-}
-
 // zoom buttons
 
-method addZoomButtons MicroBlocksEditor {
-	scale = (global 'scale')
-	scriptingActionsContainer = (newBox (newMorph) (copy (microBlocksColor 'white')) (4 * scale) scale false false true (microBlocksColor 'blueGray' 75))
-	setAlpha (color scriptingActionsContainer) 220
-	setExtent (morph scriptingActionsContainer) (120 * scale) (30 * scale)
-
-	zoomButtons = (array
-		(newZoomButton this 'zoomIn')
-		(newZoomButton this 'restoreZoom')
-		(newZoomButton this 'zoomOut'))
-	for button zoomButtons {
-		addPart (morph scriptingActionsContainer) (morph button)
-	}
-	addPart morph (morph scriptingActionsContainer)
-	addZoomButtonHints this
-	fixZoomButtonsLayout this
-}
-
+// we need to keep these for the Graph window, until it's rewritten in HTML
 method newZoomButton MicroBlocksEditor iconName action {
 	if (isNil action) { // use the selector name as the action
 		action = (action iconName this)
@@ -228,13 +129,6 @@ method newZoomButton MicroBlocksEditor iconName action {
 	bm2 = (readSVGIcon iconName highlightColor nil iconScale)
 	setCostumes button bm1 bm2
 	return button
-}
-
-method addZoomButtonHints MicroBlocksEditor {
-	// add zoom button hints in current language
-	setHint (at zoomButtons 1) (localized 'Increase block size')
-	setHint (at zoomButtons 2) (localized 'Restore block size to 100%')
-	setHint (at zoomButtons 3) (localized 'Decrease block size')
 }
 
 method restoreZoom MicroBlocksEditor {
@@ -274,29 +168,11 @@ method setBlockScalePercent MicroBlocksEditor newPercent {
 	setCursor 'default'
 }
 
-method fixZoomButtonsLayout MicroBlocksEditor {
-	scale = (global 'scale')
-	right = ((right morph) - (24 * scale))
-	bottom = (((bottom morph) - (height (morph tipBar))) - (24 * scale))
-	firstButtonMorph = (morph (at zoomButtons 1))
-	containerMorph = (morph scriptingActionsContainer)
-	setExtent containerMorph ((((width firstButtonMorph) + (8 * scale)) * (count (parts containerMorph))) + (8 * scale)) ((height firstButtonMorph) + (16 * scale))
-	setRight containerMorph right
-	setBottom containerMorph bottom
-	for button zoomButtons {
-		right = (right - ((width (morph button)) + (8 * scale)))
-		setLeft (morph button) right
-		setTop (morph button) ((bottom - (height (morph button))) - (8 * scale))
-	}
-}
-
 // tip bar
 
 method addTipBar MicroBlocksEditor {
 	tipBar = (initialize (new 'MicroBlocksTipBar'))
 	setGlobal 'tipBar' tipBar
-	setTitle tipBar 'an element'
-	setTip tipBar 'some tip about it'
 	addPart morph (morph tipBar)
 }
 
@@ -328,17 +204,15 @@ method newProject MicroBlocksEditor {
 	selectCategory scripter 'cat;Output'
 }
 
-method clearProject MicroBlocksEditor {
+method clearProject MicroBlocksEditor fromInitialize {
 	// Remove old project morphs and classes and reset global state.
 
 	closeAllDialogs this
-	setText title ''
 	fileName = ''
-	createEmptyProject scripter
-	if (isRunning httpServer) {
-		clearVars httpServer
-	}
+	updateTitle this
+	createEmptyProject scripter fromInitialize
 	clearLoggedData (smallRuntime)
+	setProperty (api (smallRuntime)) 'project.hasCustomBlocks' false
 
 	// close graph window
 	graph = (findMorph 'MicroBlocksDataGraph')
@@ -399,6 +273,8 @@ method openProject MicroBlocksEditor projectData projectName updateLibraries {
 	} else {
 		loadNewProjectFromData scripter (toString projectData) updateLibraries
 	}
+	// store whether the project has any custom blocks. For project menu purposes.
+	setProperty (api (smallRuntime)) 'project.hasCustomBlocks' ((count (functions (main (project scripter)))) > 0)
 	updateLibraryList scripter
 	developerModeChanged scripter
 	saveAllChunksAfterLoad (smallRuntime)
@@ -420,36 +296,26 @@ method saveProjectToFile MicroBlocksEditor {
 }
 
 method urlPrefix MicroBlocksEditor {
-	if ('Browser' == (platform)) {
-		url = (browserURL)
-		i = (findSubstring '.html' url)
-		if (notNil i) {
-			return (substring url 1 (i + 4))
-		}
+	url = (browserURL)
+	i = (findSubstring '.html' url)
+	if (notNil i) {
+		return (substring url 1 (i + 4))
 	}
-
-	// stand-alone app
-	urlPrefix = 'https://microblocks.fun/run/microblocks.html'
-	if (isPilot this) {
-		urlPrefix = 'https://microblocks.fun/run-pilot/microblocks.html'
-	}
-	return urlPrefix
 }
 
 method copyProjectURLToClipboard MicroBlocksEditor {
 	// Copy a URL encoding of this project to the clipboard.
 
-	saveScripts scripter
+	saveScripts scripter nil true
 	codeString = (codeString (project scripter))
 	if (notNil title) {
-		projName = (text title)
-		codeString = (join 'projectName ''' projName '''' (newline) (newline) codeString)
+		codeString = (join 'projectName ''' title '''' (newline) (newline) codeString)
 	}
 	setClipboard (join (urlPrefix this) '?project='(urlEncode codeString true))
 }
 
 method saveProject MicroBlocksEditor fName {
-	saveScripts scripter
+	saveScripts scripter nil true
 
 	if (and (isNil fName) (notNil fileName)) {
 		fName = fileName
@@ -459,34 +325,12 @@ method saveProject MicroBlocksEditor fName {
 		}
 	}
 
-	if ('Browser' == (platform)) {
-		if (or (isNil fName) ('' == fName)) { fName = 'Untitled' }
-		i = (findLast fName '/')
-		if (notNil i) { fName = (substring fName (i + 1)) }
-		if (not (endsWith fName '.ubp')) { fName = (join fName '.ubp') }
-		browserWriteFile (codeString (project scripter)) fName 'project'
-		return
-	}
-
-	fName = (fileToWrite (withoutExtension fName) (array '.ubp'))
-	if ('' == (filePart fName)) { return false }
-
-	if (and
-		(not (isAbsolutePath this fName))
-		(not (beginsWith fName (gpFolder)))
-	) {
-		fName = (join (gpFolder) '/' fName)
-	}
+	if (or (isNil fName) ('' == fName)) { fName = 'Untitled' }
+	i = (findLast fName '/')
+	if (notNil i) { fName = (substring fName (i + 1)) }
 	if (not (endsWith fName '.ubp')) { fName = (join fName '.ubp') }
-
-	fileName = fName
-
-	lastProjectFolder = (directoryPart fileName)
-
-	updateTitle this
-	if (canWriteProject this fileName) {
-		writeFile fileName (codeString (project scripter))
-	}
+	browserWriteFile (codeString (project scripter)) fName 'project'
+	return
 }
 
 method canWriteProject MicroBlocksEditor fName {
@@ -498,12 +342,7 @@ method canWriteProject MicroBlocksEditor fName {
 
 method isAbsolutePath MicroBlocksEditor fName {
 	// Return true if this string is an absolute file path.
-	letters = (letters fName)
-	count = (count letters)
-	if (and (count >= 1) ('/' == (first letters))) { return true } // Mac, Linux
-	if (and (count >= 3) (':' == (at letters 2)) (isOneOf (at letters 3) '/' '\')) {
-		return true // Win
-	}
+	// Probably not needed anymore in the browser
 	return false
 }
 
@@ -516,42 +355,22 @@ method startAll MicroBlocksEditor { startAll (smallRuntime) }
 // project title
 
 method updateTitle MicroBlocksEditor {
-	projName = (withoutExtension (filePart fileName))
-	setText title projName
-	redraw title
-	placeTitle this
+	title = (withoutExtension (filePart fileName))
+	setProperty (api (smallRuntime)) 'project.title' title
 }
 
-method placeTitle MicroBlocksEditor {
-	scale = (global 'scale')
-	left = (right (morph (last leftItems)))
-	right = (left (morph (first rightItems)))
-	titleM = (morph title)
-	setLeft titleM (left + (18 * scale))
-	setTop titleM (12 * scale)
-
-	// hide title if insufficient space
-	if (((width titleM) + (8 * scale)) > (right - left)) {
-		hide titleM
-	} else {
-		show titleM
-	}
+method updateIndicator MicroBlocksEditor {
+	setProperty (api (smallRuntime)) 'board.connected' ((updateConnection (smallRuntime)) == 'connected')
 }
 
 // stepping
 
 method step MicroBlocksEditor {
-	if ('Browser' == (platform)) {
-		checkForBrowserResize this
-		processBrowserDroppedFile this
-		processBrowserFileSave this
-	}
+	processBrowserDroppedFile this
+	processBrowserFileSave this
 	processDroppedFiles this
 
 	if (not (busy (smallRuntime))) { processMessages (smallRuntime) }
-	if (isRunning httpServer) {
-		step httpServer
-	}
 	if ('unknown' == newerVersion) {
 		launch (global 'page') (newCommand 'checkLatestVersion' this) // start version check
 		newerVersion = nil
@@ -581,86 +400,16 @@ method updateFPS MicroBlocksEditor {
 	}
 }
 
-// Progress indicator
-
-method showDownloadProgress MicroBlocksEditor phase downloadProgress {
-	isDownloading = (downloadProgress < 1)
-	bm = (costumeData (morph progressIndicator))
-	drawProgressIndicator this bm phase downloadProgress
-	costumeChanged (morph progressIndicator)
-	updateDisplay (global 'page') // update the display
-}
-
-method drawProgressIndicator MicroBlocksEditor bm phase downloadProgress {
-	scale = (global 'scale')
-	radius = (13 * scale)
-	cx = (half (width bm))
-	cy = ((half (height bm)) + scale)
-	bgColor = (topBarBlue this)
-	if (1 == phase) {
-		lightGray = (microBlocksColor 'blueGray' 50)
-		darkGray = (microBlocksColor 'blueGray' 100)
-	} (2 == phase) {
-		lightGray = (microBlocksColor 'blueGray' 100)
-		darkGray = (microBlocksColor 'blueGray' 300)
-	} (3 == phase) {
-		lightGray = (microBlocksColor 'blueGray' 300)
-		darkGray = (microBlocksColor 'blueGray' 500)
-	}
-
-	fill bm bgColor
-	if (and (3 == phase) (downloadProgress >= 1)) { return }
-
-	// background circle
-	drawCircle (newShapeMaker bm) cx cy radius lightGray
-
-	// draw progress pie chart
-	degrees = (round (360 * downloadProgress))
-	oneDegreeDistance = ((* 2 (pi) radius) / 360.0)
-	pen = (pen (newShapeMaker bm))
-	beginPath pen cx cy
-	setHeading pen 270
-	forward pen radius
-	turn pen 90
-	repeat degrees {
-		forward pen oneDegreeDistance
-		turn pen 1
-	}
-	goto pen cx cy
-	fill pen darkGray
-}
-
-// Connection indicator
-
-method updateIndicator MicroBlocksEditor forcefully {
-	updateIndicator connectionWidget forcefully
-}
-
-method updateConnectionName MicroBlocksEditor aString {
-	updateConnectionName connectionWidget aString
-}
-
 // browser support
 
-method checkForBrowserResize MicroBlocksEditor {
-	winSize = (windowSize)
-	browserSize = (browserSize)
-	browserW = (at browserSize 1)
-	browserH = (at browserSize 2)
-	dx = (abs ((at winSize 1) - browserW))
-	dy = (abs ((at winSize 2) - browserH))
-	if (and (dx <= 1) (dy <= 1)) {
-		// At the smallest browser zoom levels, sizes can differ by one pixel
-		return // no change
-	}
-
-	openWindow browserW browserH true
+method browserResize MicroBlocksEditor newWidth newHeight {
+//	openWindow newWidth newHeight true
 	oldScale = (global 'scale')
 	page = (global 'page')
 	updateScale page
+	scale = (global 'scale')
 	pageM = (morph page)
-	winSize = (windowSize)
-	setExtent pageM (at winSize 3) (at winSize 4)
+	setExtent pageM (* newWidth scale) (* newHeight scale)
 
 	for each (parts pageM) { pageResized (handler each) }
 	if ((global 'scale') != oldScale) {
@@ -741,11 +490,7 @@ method processDroppedFile MicroBlocksEditor fName data {
 		eval (toString data) nil (topLevelModule)
 	} else {
 		// load file into board, if possible
-		if ('Browser' == (platform)) {
-			sendFileData (smallRuntime) fName data
-		} else {
-			writeFileToBoard (smallRuntime) fName
-		}
+		sendFileData (smallRuntime) fName data
 	}
 }
 
@@ -771,7 +516,7 @@ method processDroppedText MicroBlocksEditor text {
 		} (endsWith url '.ubl') {
 			importLibraryFromString scripter (httpBody (httpGet host path)) fileName fileName
 			saveAllChunksAfterLoad (smallRuntime)
-		} (and (or (notNil json) (endsWith url '.png')) ('Browser' == (platform))) {
+		} (or (notNil json) (endsWith url '.png')) {
 			data = (httpBody (basicHTTPGetBinary host path))
 			if ('' == data) { return }
 			importFromPNG this data
@@ -845,8 +590,10 @@ method justReceivedDrop MicroBlocksEditor aHandler {
 method isPilot MicroBlocksEditor { return (true == isPilot) }
 
 method checkLatestVersion MicroBlocksEditor {
+	os = (electronOS (api (smallRuntime)))
 	latestVersion = (fetchLatestVersionNumber this) // fetch version, even in browser, to log usage
-	if ('Browser' == (platform)) {
+
+	if ('web' == os) {
 		// skip version check in browser/Chromebook but set isPilot based on URL
 		isPilot = (or
 			(notNil (findSubstring 'run-pilot' (browserURL)))
@@ -883,18 +630,18 @@ method checkLatestVersion MicroBlocksEditor {
 }
 
 method fetchLatestVersionNumber MicroBlocksEditor {
-	platform = (platform)
-	if ('Browser' == platform) {
+	os = (electronOS (api (smallRuntime)))
+	if ('web' == os) {
 		if (browserIsChromeOS) {
 			suffix = '?C='
 		} else {
 			suffix = '?B='
 		}
-	} ('Mac' == (platform)) {
+	} ('mac' == os) {
 		suffix = '?M='
-	} ('Linux' == (platform)) {
+	} ('linux' == os) {
 		suffix = '?L='
-	} ('Win' == (platform)) {
+	} ('windows' == os) {
 		suffix = '?W='
 	} else {
 		suffix = '?R='
@@ -928,14 +675,9 @@ method reportNewerVersion MicroBlocksEditor {
 
 method readUserPreferences MicroBlocksEditor {
 	result = (dictionary)
-	if ('Browser' == (platform)) {
-		jsonString = (browserReadPrefs)
-		waitMSecs 20 // timer for callback in ChromeOS
-		jsonString = (browserReadPrefs) // will have result the second time
-	} else {
-		path = (join (gpFolder) '/preferences.json')
-		jsonString = (readFile path)
-	}
+	jsonString = (browserReadPrefs)
+	waitMSecs 20 // timer for callback in ChromeOS
+	jsonString = (browserReadPrefs) // will have result the second time
 	if (notNil jsonString) {
 		result = (jsonParse jsonString)
 		if (not (isClass result 'Dictionary')) { result = (dictionary) }
@@ -944,7 +686,6 @@ method readUserPreferences MicroBlocksEditor {
 }
 
 method isChineseWebapp MicroBlocksEditor {
-	if ('Browser' != (platform)) { return false }
 	url = (browserURL)
 	return (or
 		((containsSubString url 'microblocksfun.cn') > 0)
@@ -987,7 +728,7 @@ method applyUserPreferences MicroBlocksEditor {
 	if (notNil (at prefs 'darkMode')) {
 		darkMode = (at prefs 'darkMode')
 	}
-	darkModeChanged scripter // applies proper colors to it all
+	darkModeChanged scripter fromInitialize // applies proper colors to it all
 }
 
 method saveToUserPreferences MicroBlocksEditor key value {
@@ -997,12 +738,7 @@ method saveToUserPreferences MicroBlocksEditor key value {
 	} else {
 		atPut prefs key value
 	}
-	if ('Browser' == (platform)) {
-		browserWritePrefs (jsonStringify prefs)
-	} else {
-		path = (join (gpFolder) '/preferences.json')
-		writeFile path (jsonStringify prefs)
-	}
+	browserWritePrefs (jsonStringify prefs)
 }
 
 method toggleBoardLibAutoLoad MicroBlocksEditor {
@@ -1071,86 +807,26 @@ method pageResized MicroBlocksEditor {
 	scale = (global 'scale')
 	page = (global 'page')
 	fixLayout this
-	if ('Win' == (platform)) {
-		// workaround for a Windows graphics issue: when resizing a window it seems to clear
-		// some or all textures. this forces them to be updated from the underlying bitmap.
-		for m (allMorphs (morph page)) { costumeChanged m }
-	}
 }
 
-// top bar drawing
+// top bar properties
 
 method topBarBlue MicroBlocksEditor { return (microBlocksColor 'blueGray' 900) }
-method topBarHeight MicroBlocksEditor { return (48 * (global 'scale')) }
-
-method drawOn MicroBlocksEditor aContext {
-	scale = (global 'scale')
-	x = (left morph)
-	y = (top morph)
-	w = (width morph)
-	topBarH = (topBarHeight this)
-	fillRect aContext (topBarBlue this) x y w topBarH
-
-	// bottom border
-	fillRect aContext (microBlocksColor 'blueGray' 700) x ((y + topBarH) - scale) w scale
-}
 
 // layout
 
 method fixLayout MicroBlocksEditor fromScripter {
 	setExtent morph (width (morph (global 'page'))) (height (morph (global 'page')))
-	fixTopBarLayout this
-	fixTipBarLayout this
-	fixZoomButtonsLayout this
 	if (true != fromScripter) { fixScripterLayout this }
-}
-
-method fixTopBarLayout MicroBlocksEditor {
-	scale = (global 'scale')
-	space = 0
-
-	// Optimization: report one damage rectangle for the entire top bar
-	reportDamage morph (rect (left morph) (top morph) (width morph) (topBarHeight this))
-
-	centerY = (24 * scale)
-	x = 0
-	for item leftItems {
-		if (isNumber item) {
-			x += item
-		} else {
-			m = (morph item)
-			y = (centerY - ((height m) / 2))
-			setPosition m x y
-			x += ((width m) + space)
-		}
-	}
-	x = (width morph)
-	for item (reversed rightItems) {
-		if (isNumber item) {
-			x += (0 - item)
-		} else {
-			m = (morph item)
-			y = (centerY - ((height m) / 2))
-			setPosition m (x - (width m)) y
-			x = ((x - (width m)) - space)
-		}
-	}
-	placeTitle this
-}
-
-method fixTipBarLayout MicroBlocksEditor {
-	fixLayout tipBar
-	setLeft (morph tipBar) 0
-	setBottom (morph tipBar) (bottom morph)
 }
 
 method fixScripterLayout MicroBlocksEditor {
 	scale = (global 'scale')
 	if (isNil scripter) { return } // happens during initialization
 	m = (morph scripter)
-	setPosition m 0 (topBarHeight this)
+	setPosition m 0 0
 	w = (width (morph (global 'page')))
-	h = (max 1 (((height (morph (global 'page'))) - (top m)) - (height (morph tipBar))))
+	h = (max 1 ((height (morph (global 'page'))) - (top m)))
 	setExtent m w h
 	fixLayout scripter
 }
@@ -1312,45 +988,16 @@ method setAdvancedMode MicroBlocksEditor aBoolean {
 	developerModeChanged this
 }
 
-method startHTTPServer MicroBlocksEditor {
-	if (start httpServer) {
-		(inform (join 'MicroBlocks HTTP Server listening on port ' (port httpServer)) 'HTTP Server')
-	} ('' == (port httpServer)) {
-		return // user did not supply a port number
-	} else {
-		(inform (join
-			'Failed to start HTTP server.' (newline)
-			'Please make sure that no other service is running at port 6473.')
-			'HTTP Server'
-		)
-	}
-}
-
-method stopHTTPServer MicroBlocksEditor {
-	stop httpServer
-}
-
 // Language Button
 
 method languageMenu MicroBlocksEditor {
 	menu = (menu 'Language' this)
 	setIsTopMenu menu true
-	if ('Browser' == (platform)) {
-		for fn (sorted (listFiles 'translations')) {
-			fn = (withoutExtension fn)
-			if (isNil (findSubstring 'template' fn)) {
-				langCode = (withoutExtension fn)
-				addLanguangeMenuEntry this langCode menu
-			}
-		}
-	} else {
-		for fn (sorted (listEmbeddedFiles)) {
-			fn = (withoutExtension fn)
-			if (and (beginsWith fn 'translations/')
-					(isNil (findSubstring 'template' fn))) {
-				langCode = (withoutExtension (substring fn 14))
-				addLanguangeMenuEntry this langCode menu
-			}
+	for fn (sorted (listFiles 'translations')) {
+		fn = (withoutExtension fn)
+		if (isNil (findSubstring 'template' fn)) {
+			langCode = (withoutExtension fn)
+			addLanguangeMenuEntry this langCode menu
 		}
 	}
 
@@ -1402,7 +1049,6 @@ method languageChanged MicroBlocksEditor {
 	setCursor 'wait'
 	languageChanged scripter
 	updateIndicator this true
-	addZoomButtonHints this
 	setCursor 'default'
 }
 

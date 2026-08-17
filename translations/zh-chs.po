@@ -3804,8 +3804,8 @@ msgid "Created with GP"
 msgstr "使用 GP 开发"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "访问 http://microblocks.fun 获取更多信息"
+msgid "More info at %1"
+msgstr "访问 %1 获取更多信息"
 
 #. Firmware file read error.
 #. %1 holds the firmware file name

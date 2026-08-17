@@ -7,76 +7,17 @@
 // MicroBlocksTipBar.gp - A bar that displays useful information about the item under the mouse
 // Bernat Romagosa, November 2021
 
-defineClass MicroBlocksTipBar morph title tipMorph tip contentDict iconsDict help tipColor titleColor bgColor lastContents
+defineClass MicroBlocksTipBar morph contentDict help lastContents
 
 method initialize MicroBlocksTipBar {
-	titleColor = (microBlocksColor 'blueGray' 50)
-	tipColor = (microBlocksColor 'blueGray' 300)
-	bgColor = (microBlocksColor 'blueGray' 850)
 	morph = (newMorph this)
-	setClipping morph true
 	setFPS morph 5
-
 	initContents this
-	initIcons this
 	help = (initialize (new 'MicroBlocksHelp'))
-
-	titleFontName = 'Arial Bold'
-	titleFontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { titleFontSize = (12 * (global 'scale')) }
-	title = (newText '' titleFontName titleFontSize titleColor 'left' nil 0 0 5 3)
-	addPart morph (morph title)
-
-	tip = (newAlignment 'centered-line' 0 'bounds')
-	tipMorph = (newMorph tip)
-	setMorph tip tipMorph
-	addPart morph tipMorph
 	return this
 }
 
 method helpEntry MicroBlocksTipBar primName { return (entryForOp help primName) }
-method title MicroBlocksTipBar { return title }
-method setTitle MicroBlocksTipBar aTitle { setText title (localized aTitle) }
-method tip MicroBlocksTipBar { return tip }
-
-method setTip MicroBlocksTipBar aTip {
-	// Tips can contain icon placeholders, like so:
-	// [l] run this block [r] open context menu
-
-	fontName = 'Arial'
-	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
-
-	removeAllParts tipMorph
-	text = ' '
-	if (isNil aTip) {
-		return
-	}
-	for word (words (localized aTip)) {
-		if (contains (keys iconsDict) word) {
-			if ((count text) > 0) {
-				addPart tipMorph (morph (newText text fontName fontSize tipColor 'left' nil 0 0 5 3))
-				text = ' '
-			}
-			icon = (newMorph)
-			setCostume icon (at iconsDict word)
-			setPosition icon 0 0
-			addPart tipMorph icon
-		} else {
-			text = (join text word ' ')
-		}
-	}
-	if ((count text) > 0) {
-		addPart tipMorph (morph (newText text fontName fontSize tipColor 'left' nil 0 0 5 3))
-	}
-	fixLayout tip
-}
-
-// drawing
-
-method drawOn MicroBlocksTipBar ctx {
-	fillRectangle (getShapeMaker ctx) (bounds morph) bgColor
-}
 
 // stepping
 
@@ -85,8 +26,7 @@ method step MicroBlocksTipBar {
 	if (and (isClass (grabbedObject hand) 'Block') (isClass (objectAt hand) 'BlocksPalette')) {
 		updateTip this (objectAt hand)
 	} (isBusy hand) {
-		setTitle this ''
-		setTip this ''
+		setProperty (api (smallRuntime)) 'ide.tip' (array '' '')
 	} else {
 		updateTip this (objectAt hand)
 	}
@@ -97,23 +37,7 @@ method updateTip MicroBlocksTipBar anElement {
 	if (lastContents == contents) { return }
 	lastContents = contents
 
-	setTitle this (at contents 1)
-	setTip this (at contents 2)
-	fixLayout this
-}
-
-method fixLayout MicroBlocksTipBar {
-	scale = (global 'scale')
-	page = (global 'page')
-	setExtent morph (width page) (22 * scale)
-
-	setLeft (morph title) ((left morph) + (4 * scale))
-	setLeft tipMorph ((right (morph title)) + (2 * scale))
-
-	top = (top morph)
-	if ('Linux' != (platform)) { top += (2 * scale) }
-	setTop (morph title) top
-	setTop tipMorph top
+	setProperty (api (smallRuntime)) 'ide.tip' contents
 }
 
 // tip Contents
@@ -206,14 +130,4 @@ method contentsFor MicroBlocksTipBar anElement {
 		}
 	}
 	return content
-}
-
-// icons
-
-method initIcons MicroBlocksTipBar {
-	iconsDict = (dictionary)
-	atPut iconsDict '[l]' (readSVGIcon 'mouse-left-button')
-	atPut iconsDict '[r]' (readSVGIcon 'mouse-right-button')
-	atPut iconsDict '(-o)' (readSVGIcon 'bool_true')
-	atPut iconsDict '(o-)' (readSVGIcon 'bool_false')
 }

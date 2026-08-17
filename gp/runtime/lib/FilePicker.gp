@@ -157,9 +157,7 @@ method initialize FilePicker anAction defaultPath extensionList saveFlag {
 	setExtent morph (460 * scale) (415 * scale)
 
 	if forSaving {
-		defaultPath = (directoryPart defaultPath)
-		if (isEmpty defaultPath) { defaultPath = (gpFolder) }
-		if ('Browser' == (platform)) { defaultPath = 'Downloads' }
+		defaultPath = 'Downloads'
 	}
 	if (and ((count defaultPath) > 1) (endsWith defaultPath '/')) {
 		defaultPath = (substring defaultPath 1 ((count defaultPath) - 1))
@@ -214,19 +212,15 @@ method addShortcutButtons FilePicker {
 	hidden = (global 'hideFolderShortcuts')
 	if (isNil hidden) { hidden = (array) }
 
-	showGP = (and
-		(not (contains hidden 'GP'))
-		('Browser' != (platform)))
+	showGP = false
 	showExamples = (and
 		(not (contains hidden 'Examples'))
 		(not forSaving)
 		(isClass extensions 'Array')
 		(contains extensions '.gpp'))
 	showDesktop = (not (contains hidden 'Desktop'))
-	showDownloads = (and
-		(not (contains hidden 'Downloads'))
-		('Linux' != (platform)))
-	showcComputer = (not (contains hidden 'Computer'))
+	showDownloads = (not (contains hidden 'Downloads'))
+	showComputer = (not (contains hidden 'Computer'))
 
 	buttonX = ((left morph) + (22 * scale))
 	buttonY = ((top morph) + (55 * scale))
@@ -248,7 +242,7 @@ method addShortcutButtons FilePicker {
 			addIconButton this buttonX buttonY 'downloadsIcon' (action 'setDownloads' this)
 			buttonY += dy
 		}
-		if showcComputer {
+		if showComputer {
 			addIconButton this buttonX buttonY 'computerIcon' (action 'setComputer' this)
 			buttonY += dy
 		}
@@ -407,17 +401,7 @@ method updateParentAndNewFolderButtons FilePicker {
 	}
 
 	// new folder button
-	if (notNil newFolderButton) {
-		if (and forSaving
-				('Browser' != (platform))
-				(not (contains (splitWith currentDir '/') 'runtime'))
-				(currentDir != '/')
-		) {
-			show (morph newFolderButton)
-		} else {
-			hide (morph newFolderButton)
-		}
-	}
+	if (notNil newFolderButton) { hide (morph newFolderButton) }
 }
 
 // Layout

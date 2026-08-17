@@ -1,31 +1,13 @@
 // Handlers are ignored in gp.html when running as a Chrome App so must be added here:
 
 function addGPHandlers() {
-	var kbdButton = document.getElementById('KeyboardButton');
-	var backspaceButton = document.getElementById('BackspaceButton');
-	var fullscreenButton = document.getElementById('FullscreenButton');
-	var enableMicrophoneButton = document.getElementById('EnableMicrophoneButton');
-	var uploadButton = document.getElementById('UploadButton');
-	var seeInsideButton = document.getElementById('SeeInsideButton');
-	var presentButton = document.getElementById('PresentButton');
-	var goButton = document.getElementById('GoButton');
-	var stopButton = document.getElementById('StopButton');
 	var fileUploader = document.getElementById('FileUploader');
-	var canvas = document.getElementById('canvas');
-
-	kbdButton.onclick = function(evt) { GP.clipboard.focus(); };
-	backspaceButton.onclick = function(evt) { GP_backspace(); };
-	fullscreenButton.onclick = function(evt) { GP_toggleFullscreen(); };
-	uploadButton.onclick = function(evt) { GP_UploadFiles(); };
-	enableMicrophoneButton.onclick = function(evt) { GP_startAudioInput(1024, 22050); };
-	seeInsideButton.onclick = function(evt) { queueGPMessage('seeInside'); };
-	presentButton.onclick = function(evt) { queueGPMessage('present'); };
-	goButton.onclick = function(evt) { queueGPMessage('go'); };
-	stopButton.onclick = function(evt) { queueGPMessage('stop'); };
 	fileUploader.onchange = function(evt) { uploadFiles(fileUploader.files); };
+	var canvas = document.getElementById('canvas');
 	canvas.oncontextmenu = function(evt) { evt.preventDefault(); }
 }
 addGPHandlers();
+
 
 // GP variables
 
@@ -44,15 +26,35 @@ var GP = {
 	lastSavedFileName: null,
 	messages: [],
 
-	audioOutBuffer: null,
-	audioOutIsStereo: false,
-	audioOutReady: false,
+	lastCallId: 0,
+	callQueue: [],
+	apiResponses: {},
 
-	audioInBuffer: null,
-	audioInDownsampling: false,
-	audioInReady: false,
-	audioInSource: null,
-	audioInCapture: null,
+	delegateKeyboardEvents: false
+};
+
+
+// Mechanism for the HTML/JS world to be able to call GP functions.
+// This is meant to make it possible to hybridize the IDE so we can start
+// porting parts of it from GP to HTML/JS.
+// API dispatcher: ide/MicroBlocksRuntime.gp → dispatchCall MicroBlocksAPI
+// API docs: misc/API.md
+
+GP.apiCall = function (endPoint, params, callback) {
+	// example, get a random number from 10 to 20:
+	// GP.apiCall('random', [10, 20], function (value) { console.log(value) });
+
+	this.lastCallId = (this.lastCallId + 1) % 100000;
+
+	if (typeof params == 'undefined') { params = ""; }
+	if (typeof callback == 'undefined') { callback = ()=>{}; }
+
+	this.callQueue.push([
+		this.lastCallId,				// sequential ID
+		endPoint,								// API endpoint selector
+		callback,								// takes a param with the return value
+		JSON.stringify(params)	// call params, JSON encoded
+	]);
 };
 
 // Add the following to the meta tags in the header to suppress scaling of the GP canvas
@@ -104,12 +106,8 @@ function GP_setInputPosition(x, y) {
 	GP.clipboard.style.top = (rect.top + y) + 'px';
 }
 
-function isChromeOS() {
-	return (
-		(typeof chrome !== 'undefined') &&
-		(typeof chrome.app !== 'undefined') &&
-		(typeof chrome.app.runtime !== 'undefined') &&
-		(typeof chrome.app.window !== 'undefined'));
+function isElectron() {
+	return window.electronAPI !== undefined;
 }
 
 function setGPClipboard(s) {
@@ -173,6 +171,10 @@ function toUTF8Array(str) {
 		}
 	}
 	return utf8;
+}
+
+function clipboardText() {
+	return UTF8ArrayToString(GP.clipboardBytes);
 }
 
 // events
@@ -263,6 +265,7 @@ function initGPEventHandlers() {
 		GP.events.push([MOUSE_MOVE, p[0], p[1]]);
 	}
 	document.onkeydown = function(evt) {
+		if (GP.delegateKeyboardEvents) { return; }
 		var key = evt.which;
 		if (GP.isComposing || evt.isComposing || (229 == key)) return;
 		if ((13 == key) && (/Android/i.test(navigator.userAgent))) {
@@ -494,61 +497,6 @@ function uploadFiles(files) {
 	}
 }
 
-function adjustButtonVisibility() {
-	// Show the appropriate buttons in a mobile or non-mobile browser.
-	var kbdButton = document.getElementById('KeyboardButton');
-	var bsButton = document.getElementById('BackspaceButton');
-	var fsButton = document.getElementById('FullscreenButton');
-	var userAgent = navigator.userAgent;
-	var isKindle = /Kindle|Silk|KFAPW|KFARWI|KFASWI|KFFOWI|KFJW|KFMEWI|KFOT|KFS‌​AW|KFSOWI|KFTBW|KFTH‌​W|KFTT|WFFOWI/i.test(userAgent);
-	var isOtherMobile = /Android|webOS|iPhone|iPad|iPod|CriOS|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-	if (isKindle || isOtherMobile) {
-		kbdButton.style.display = 'inline';
-	} else {
-		kbdButton.style.display = 'none';
-	}
-	if (isKindle || /Android/i.test(navigator.userAgent)) {
-		bsButton.style.display = 'inline';
-	} else {
-		bsButton.style.display = 'none';
-	}
-	if (/iPhone|iPad|iPod|CriOS/i.test(userAgent)) {
-		fsButton.style.display = 'none';
-	} else {
-		fsButton.style.display = 'inline';
-	}
-
-	if (window.parent === window) {
-		document.getElementById('EnableMicrophoneButton').style.display = 'none';
-	}
-
-	// adjust buttons when opened with 'go.html' URL
-	if ((typeof window !== 'undefined') && (window.location.href.includes('go.html'))) {
-		document.getElementById('SeeInsideButton').style.display = 'inline';
-		document.getElementById('PresentButton').style.display = 'none';
-	} else if ((typeof window !== 'undefined') && (window.location.href.includes('microblocks'))) {
-		document.getElementById('controls').style.display = 'none';
-		if (isKindle || isOtherMobile) {
-			// show the keyboard button on mobile devices, but hide others
-			document.getElementById('controls').style.display = 'inline';
-			document.getElementById('KeyboardButton').style.display = 'inline';
-			document.getElementById('BackspaceButton').style.display = 'none';
-			document.getElementById('FullscreenButton').style.display = 'none';
-			document.getElementById('UploadButton').style.display = 'none';
-			document.getElementById('EnableMicrophoneButton').style.display = 'none';
-			document.getElementById('SeeInsideButton').style.display = 'none';
-			document.getElementById('PresentButton').style.display = 'none';
-			document.getElementById('GoButton').style.display = 'none';
-			document.getElementById('StopButton').style.display = 'none';
-		}
-	} else {
-		document.getElementById('SeeInsideButton').style.display = 'none';
-		document.getElementById('PresentButton').style.display = 'inline';
-	}
-}
-// don't show keyboard button
-//adjustButtonVisibility();
-
 // Canvas shadow effects
 
 function setContextShadow(ctx) {
@@ -573,168 +521,14 @@ function clearShadow() {
 	GP.shadowBlur = 0;
 }
 
-// audio input and output support
+// stubs for unused GP primitives
 
-function GP_audioContext() {
-	// Note: Cache the audio context because browsers only allow you to create a few of them.
-	if (GP.cachedAudioContext) return GP.cachedAudioContext;
-
-	function unsuspendAudioContext () {
-		// On iOS, the audio context is suspended until resumed by a touch event.
-		if (GP.cachedAudioContext &&  ('suspended' === GP.cachedAudioContext.state)) {
-			GP.cachedAudioContext.resume();
-		}
-	}
-	var AudioContextClass = (window.AudioContext || window.webkitAudioContext ||
-		window.mozAudioContext || window.msAudioContext || window.oAudioContext);
-	if (!AudioContextClass) {
-		console.warn('This browser does not support audio');
-		return null;
-	}
-	GP.cachedAudioContext = new AudioContextClass();
-	document.body.addEventListener('touchend', unsuspendAudioContext, false);
-	return GP.cachedAudioContext;
-}
-
-// iOS hack -- create the audio context at startup so a touch event
-// can unsuspend the audio context before we actually need it:
-// Still needed? Commented out for now... (April, 2020)
-//GP_audioContext();
-
-function GP_startAudioInput(inputSampleCount, sampleRate) {
-	if (GP.audioInCapture && GP.audioInSource) return; // already open
-
-	function doSoundInput(evt) {
-		var buf = evt.inputBuffer.getChannelData(0);
-		if (GP.audioInDownsampling) {
-			for (i = 0; i < buf.length; i += 2) {
-				var n = ((buf[i] + buf[i + 1]) * 16383) | 0; // average two samples and convert to signed int (16383 is 32767 / 2)
-				GP.audioInBuffer[i / 2] = n;
-			}
-		} else {
-			for (i = 0; i < buf.length; i++) {
-				GP.audioInBuffer[i] = (buf[i] * 32767) | 0; // convert to signed int
-			}
-		}
-		GP.audioInReady = true;
-	}
-	function openAudioInput(stream) {
-		var rawSampleCount = GP.audioInDownsampling ? (2 * inputSampleCount) : inputSampleCount;
-		GP.audioInSource = audioContext.createMediaStreamSource(stream);
-		GP.audioInCapture = audioContext.createScriptProcessor(rawSampleCount, 1); // will down-sample to 22050
-		GP.audioInCapture.onaudioprocess = doSoundInput;
-		GP.audioInSource.connect(GP.audioInCapture);
-		GP.audioInCapture.connect(audioContext.destination);
-	}
-	function openAudioInputFailed(e) {
-		console.warn('Could not open audio input: ' + e);
-	}
-
-	audioContext = GP_audioContext();
-	if (!audioContext) return;
-
-	var data = new ArrayBuffer(2 * inputSampleCount); // two-bytes per sample
-	GP.audioInBuffer = new Int16Array(data);
-	GP.audioInDownsampling = (sampleRate < audioContext.sampleRate);
-	GP.audioInReady = false;
-
-	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-		navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-	if (navigator.getUserMedia) {
-		navigator.getUserMedia({audio: true}, openAudioInput, openAudioInputFailed);
-	} else {
-		console.warn('Audio input is not supported by this browser');
-	}
-}
-
-function GP_stopAudioInput() {
-	if (GP.audioInSource) GP.audioInSource.disconnect();
-	if (GP.audioInCapture) GP.audioInCapture.disconnect();
-	GP.audioInSource = null;
-	GP.audioInCapture = null;
-	GP.audioInReady = false;
-}
-
-function GP_startAudioOutput(frameCount, isStereo) {
-	if (GP.callbackID) return; // already open
-
-	audioContext = GP_audioContext();
-	if (!audioContext) return;
-
-	function soundProcess() {
-		if (!GP.callbackID) return; // audio output closed
-		if (audioContext.currentTime <= GP.audioOutFlipTime) {
-			GP.callbackID = requestAnimationFrame(soundProcess);
-			return;
-		}
-
-		// select the buffer to fill and swap buffers
-		var buf = GP.audioOutBuffers[GP.audioOutBufferIndex];
-		GP.audioOutBufferIndex = (GP.audioOutBufferIndex + 1) % 2;
-
-		if (GP.audioOutReady) {
-			if (GP.audioOutIsStereo) { // stereo
-				var left = buf.getChannelData(0);
-				var right = buf.getChannelData(1);
-				for (var i = 0; i < left.length; i++) {
-					left[i] = GP.audioOutBuffer[2 * i];
-					right[i] = GP.audioOutBuffer[(2 * i) + 1];
-				}
-			} else { // mono
-				var samples = buf.getChannelData(0);
-				for (var i = 0; i < samples.length; i++) samples[i] = GP.audioOutBuffer[i];
-			}
-		} else { // no GP audio data available; fill all channels with silence
-			for (var chan = 0; chan < buf.numberOfChannels; chan++) {
-				var samples = buf.getChannelData(chan);
-				for (var i = 0; i < samples.length; i++) samples[i] = 0;
-			}
-		}
-		GP.audioOutReady = false;
-
-		var startTime = GP.audioOutFlipTime + buf.duration;
-		if (audioContext.currentTime > startTime) startTime = audioContext.currentTime;
-		var source = audioContext.createBufferSource();
-		source.buffer = buf;
-		source.start(startTime);
-		source.connect(audioContext.destination);
-		GP.audioOutFlipTime = startTime; // when this buffer starts playing, GP can fill the other one
-		GP.callbackID = requestAnimationFrame(soundProcess);
-	}
-
-	var channelCount = isStereo ? 2 : 1;
-	var data = new ArrayBuffer(4 * frameCount * channelCount); // four-bytes per sample (Float32's)
-	GP.audioOutBuffer = new Float32Array(data);
-	GP.audioOutIsStereo = isStereo;
-	GP.audioOutReady = false;
-
-	GP.audioOutBuffers = [];
-	GP.audioOutBuffers.push(audioContext.createBuffer(channelCount, frameCount, 22050));
-	GP.audioOutBuffers.push(audioContext.createBuffer(channelCount, frameCount, 22050));
-	GP.audioOutBufferIndex = 0;
-	GP.audioOutFlipTime = -1;
-
-	GP.callbackID = requestAnimationFrame(soundProcess);
-}
-
-function GP_stopAudioOutput() {
-	if (!GP.callbackID) cancelAnimationFrame(GP.callbackID);
-	GP.callbackID = null;
-}
-
-function GP_toggleFullscreen() {
-	var doc = window.document;
-	var docEl = doc.documentElement;
-
-	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-	if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-		requestFullScreen.call(docEl);
-	} else {
-		cancelFullScreen.call(doc);
-	}
-}
+function GP_audioContext() {}
+function GP_startAudioInput(inputSampleCount, sampleRate) {}
+function GP_stopAudioInput() {}
+function GP_startAudioOutput(frameCount, isStereo) {}
+function GP_stopAudioOutput() {}
+function GP_toggleFullscreen() {}
 
 // Boardie Support
 
@@ -799,6 +593,7 @@ function GP_openBoardie() {
 	req.onreadystatechange = function () {
 		if (req.readyState == 4 && req.status == 200) {
 			boardie.element = document.createElement('div');
+			boardie.element.classList.add('--can-drag-through');
 			boardie.element.innerHTML = req.responseText;
 			boardie.element.style.position = 'absolute';
 			boardie.element.style.width = '272px';
@@ -853,6 +648,7 @@ function GP_openBoardie() {
 			});
 
 			boardie.isOpen = true;
+			GP.apiCall('ide.updateConnection');
 		}
 	};
 
@@ -862,6 +658,13 @@ function GP_openBoardie() {
 function makeDraggable (element) {
 	// taken from w3schools (https://www.w3schools.com/howto/howto_js_draggable.asp)
 	var lastX = 0, lastY = 0;
+
+	if (!window.maxZIndex) {
+		window.maxZIndex = 999;
+	};
+
+	maxZIndex++;
+	element.style.zIndex = maxZIndex;
 
 	element.onpointerdown = dragMouseDown;
 
@@ -883,17 +686,22 @@ function makeDraggable (element) {
 		e = e || window.event;
 		e.preventDefault();
 
-		// compute max position
-		var maxX = document.getElementById('canvas').clientWidth - element.clientWidth;
-		var maxY = document.getElementById('canvas').clientHeight - element.clientHeight;
+		maxZIndex++;
+		element.style.zIndex = maxZIndex;
+
+		// edge positions, offset by 50 to make sure we don't lose the window
+		var maxX = document.querySelector('.ide').clientWidth - 50,
+			maxY = document.querySelector('.ide').clientHeight - 50,
+			minX = (element.clientWidth - 50) * -1,
+			minY = (element.clientHeight - 50) * -1;
 
 		// calculate the new cursor position:
-		var newX = Math.round(element.offsetLeft + (e.clientX - lastX));
-		var newY = Math.round(element.offsetTop + (e.clientY - lastY));
+		var newX = Math.round(element.offsetLeft + (e.clientX - lastX)),
+			newY = Math.round(element.offsetTop + (e.clientY - lastY));
 
 		// constrain top left corner to be at least partially on screen
-		newX = (newX < 0) ? 0 : ((newX < maxX) ? newX : maxX);
-		newY = (newY < 0) ? 0 : ((newY < maxY) ? newY : maxY);
+		newX = (newX < minX) ? minX : ((newX < maxX) ? newX : maxX);
+		newY = (newY < minY) ? minY : ((newY < maxY) ? newY : maxY);
 		lastX = e.clientX;
 		lastY = e.clientY;
 		// set the element's new position:
@@ -937,6 +745,8 @@ function GP_closeBoardie() {
 		GP.boardie.element = null;
 		GP.boardie.iframe = null;
 		GP.boardie.isOpen = false;
+		IDE.board.connected = false;
+		GP.apiCall('ide.updateConnection');
 	}
 }
 
@@ -985,7 +795,7 @@ async function webSerialConnect() {
 		{ usbVendorId: 0x2E8A},		// Raspberry Pi Pico RP2040
 		{ usbVendorId: 0x303a},		// Espressif USB JTAG/serial debug unit
 		{ usbVendorId: 0x0483},		// STMicroelectronics
-		{ usbVendorId: 0x1B9F, usbProductId: 0xF301},	// GHI/DUELink, MicroBlock PID
+		{ usbVendorId: 0x1B9F, usbProductId: 0xF301},	// GHI/DUELink, MicroBlocks PID
 		{ usbVendorId: 0x1B4F},		// XRP
 		{ usbVendorId: 0x2886},		// Seeed
 		{ usbVendorId: 0x0005},		// HC-05
@@ -995,6 +805,7 @@ async function webSerialConnect() {
 	if (!GP_webSerialPort) return; // no serial port selected
 	await GP_webSerialPort.open({ baudRate: 115200 }).catch((e) => { window.alert(e); return; });
 	GP_webSerialReader = await GP_webSerialPort.readable.getReader();
+	GP.apiCall('ide.updateConnection');
 	webSerialReadLoop();
 }
 
@@ -1003,6 +814,7 @@ async function webSerialDisconnect() {
 	if (GP_webSerialPort) await GP_webSerialPort.close().catch(() => {});
 	GP_webSerialReader = null;
 	GP_webSerialPort = null;
+	GP.apiCall('ide.updateConnection');
 }
 
 async function webSerialReadLoop() {
@@ -1023,6 +835,7 @@ async function webSerialReadLoop() {
 		GP_webSerialPort = null;
 		GP_webSerialReader = null;
 		console.log('Connection closed.');
+		GP.apiCall('ide.updateConnection');
 	}
 }
 
@@ -1232,7 +1045,7 @@ class NimBLESerial {
 	}
 
 	async connect() {
-		// Connect to a microBit
+		// Connect to a microcontroller
 		this.device = await navigator.bluetooth.requestDevice({
 			filters: [{ services: [MICROBLOCKS_SERVICE_UUID] }]
 		})
@@ -1244,15 +1057,17 @@ class NimBLESerial {
 		await tx_char.startNotifications();
 		// bind overrides the default this=tx_char to this=the NimBLESerial
 		tx_char.addEventListener("characteristicvaluechanged", this.handle_read.bind(this));
- 		this.connected = true;
+		this.connected = true;
 		this.sendInProgress = false;
 		console.log("BLE connected");
+		GP.apiCall('ide.updateConnection');
 	}
 
 	disconnect() {
 		if (this.device != undefined) {
 			this.device.gatt.disconnect();
 		}
+		GP.apiCall('ide.updateConnection');
 	}
 
 	isConnected() {
@@ -1292,34 +1107,14 @@ const bleSerial = new NimBLESerial();
 
 // File read/write
 
-function hasChromeFilesystem() {
-	return ((typeof chrome != 'undefined') && (typeof chrome.fileSystem != 'undefined'))
-}
-
 async function GP_ReadFile(ext) {
 	// Upload using Native File API.
 
-	function onFileSelected(entry) {
-		void chrome.runtime.lastError; // suppress error message
-		if (!entry) return; // no file selected
-		entry.file(function(file) {
-			var reader = new FileReader();
-			reader.onload = function(evt) {
-				GP.droppedFiles.push({ name: toUTF8Array(file.name), contents: evt.target.result });
-			};
-			reader.readAsArrayBuffer(file);
-		});
-	}
-
-	if (hasChromeFilesystem()) {
-		if ('' == ext) ext = 'txt';
-		const options = {
-			type: 'openFile',
-			accepts: [{ description: 'MicroBlocks', extensions: [ext] }]
-		};
-		chrome.fileSystem.chooseEntry(options, onFileSelected);
-	} else if (GP_isMobile()) {
+	if (GP_isMobile()) {
 		GP_UploadFiles();
+	} else if (isElectron()) {
+		const result = await window.electronAPI.openFile();
+		GP.droppedFiles.push({ name: toUTF8Array(result.filePath), contents: result.content });
 	} else if (typeof window.showOpenFilePicker != 'undefined') { // Native Filesystem API
 		var options = {};
 		if ('' != ext) {
@@ -1357,30 +1152,21 @@ async function GP_writeFile(data, fName, id) {
 	// id is hint for the operation type (e.g. 'project' for saving a project file).
 	// The browser remembers the folder for the last save with that id.
 
-	function onFileSelected(entry) {
-		void chrome.runtime.lastError; // suppress error message
-		if (entry) entry.createWriter(function(writer) {
-			GP.lastSavedFileName = entry.name;
-			writer.write(new Blob([data], {type: 'text/plain'})); });
-	}
+	if (fName.length == 0) fName = 'Untitled';
 
-	i = fName.lastIndexOf('.');
-	ext = (i >= 0) ? fName.substr(i + 1) : '';
-
-	i = fName.lastIndexOf('.');
-	if (i > 0) fName = fName.substr(0, i);
-	if (i == 0) fName = 'Untitled';
-
-
-	if (hasChromeFilesystem()) {
-		// extract the extension from fName
-		const options = {
-			type: 'saveFile',
-			suggestedName: fName + '.' + ext,
-			accepts: [{ description: 'MicroBlocks', extensions: [ext] }]
-		};
-		chrome.fileSystem.chooseEntry(options, onFileSelected);
+	if (isElectron()) {
+		const isBinary = fName.endsWith('.hex') || fName.endsWith('.uf2');
+		const savedFilePath = await window.electronAPI.saveFile(fName, isBinary, data);
+		const i = savedFilePath.lastIndexOf('/');
+		GP.lastSavedFileName = (i >= 0) ? savedFilePath.substr(i + 1) : savedFilePath;
 	} else if (typeof window.showSaveFilePicker != 'undefined') { // Native Filesystem API
+		let ext = '';
+		const i = fName.lastIndexOf('.');
+		if (i >= 0) {
+			ext = fName.substr(i + 1);
+			fName = fName.substr(0, i);
+		}
+
 		options = { suggestedName: fName + '.' + ext, id: id };
 		if ('' != ext) {
 			if ('.' != ext[0]) ext = '.' + ext;
@@ -1401,29 +1187,9 @@ async function GP_writeFile(data, fName, id) {
 		await writable.close().catch(() => {});
 		GP.lastSavedFileName = fileHandle.name;
 	} else {
-		saveAs(new Blob([data]), fName + '.' + ext);
+		saveAs(new Blob([data]), fName);
+		GP.lastSavedFileName = fName;
 	}
-}
-
-// On ChromeOS, read the file opened to launch the application, if any
-
-function GP_ChromebookLaunch(bgPage) {
-	if (bgPage.launchFileEntry) {
-		var fName = bgPage.launchFileEntry.fullPath;
-		bgPage.launchFileEntry.file(function(file) {
-			var reader = new FileReader();
-			reader.onload = function(evt) {
-				GP.droppedFiles.push({ name: toUTF8Array(fName), contents: evt.target.result });
-			};
-			reader.readAsArrayBuffer(file);
-		});
-	}
-}
-
-if ((typeof chrome != 'undefined') &&
-	(typeof chrome.runtime != 'undefined') &&
-	(typeof chrome.runtime.getBackgroundPage != 'undefined')) {
-		chrome.runtime.getBackgroundPage(GP_ChromebookLaunch);
 }
 
 // Floating Keyboard Input dialog for mobile browsers
@@ -1719,7 +1485,7 @@ window.onbeforeunload = function() {
 // progressive web app service worker
 
 window.onload = function() {
-	if (('serviceWorker' in navigator) && !hasChromeFilesystem()) {
+	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('sw.js');
 	}
 }

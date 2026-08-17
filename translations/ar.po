@@ -392,8 +392,8 @@ msgid "Select board:"
 msgstr "اختر الوحة:"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "More info at http://microblocks.fun"
+msgid "More info at %1"
+msgstr ""
 
 #. Block in Control category
 msgid "broadcast _"

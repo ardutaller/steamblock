@@ -26,9 +26,8 @@ method initialize MicroBlocksFirmwareInstaller {
 		'RP2040 (Pico or Pico W)'
 		'MakerPort'
 		'-'
-// Uncomment the following in Electron:
-// 		'WeAct STM32H743'
-// 		'DUELink'
+		'WeAct STM32H743'
+		'DUELink'
 		'-'
 		'ESP32')
 	espBoards = (array
@@ -55,15 +54,13 @@ method isUpdatableBoard MicroBlocksFirmwareInstaller boardName {
 }
 
 method presentBoardTypeMenu MicroBlocksFirmwareInstaller eraseFlashFlag {
-	menu = (menu 'Select board type:' (action 'installBoardFromMenu' this eraseFlashFlag) true)
+	items = (list)
 	for item boardMenu {
-		if ('-' == item) {
-			addLine menu
-		} (or (not eraseFlashFlag) (contains espBoards item)) {
-			addItem menu item
+		if (or (not eraseFlashFlag) (contains espBoards item)) {
+			add items (array item)
 		}
 	}
-	popUpAtHand menu (global 'page')
+	menuFor (api (smallRuntime)) items (action 'installBoardFromMenu' this eraseFlashFlag)
 }
 
 // Browser Virtual Machine Intaller
@@ -92,14 +89,6 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 
 method installDFUFirmware MicroBlocksFirmwareInstaller boardName {
 		closePort this
-
-		// temporary for non-Electron version only
-		if (and
-			('Browser' != (platform))
-			('WeAct STM32H743' != boardName)) {
-				openURL 'https://loader.duelink.com/microblocks'
-				return
-		}
 		browserDfuUpload boardName
 }
 
@@ -170,11 +159,7 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 		}
 	}
 
-	if ('Browser' == (platform)) {
-		vmData = (readFile (join 'precompiled/' vmFileName) true)
-	} else {
-		vmData = (readEmbeddedFile (join 'precompiled/' vmFileName) true)
-	}
+	vmData = (readFile (join 'precompiled/' vmFileName) true)
 	if (isNil vmData) { return } // could not read file
 
 	// disconnect before updating VM; avoids micro:bit autoconnect issue on Chromebooks
@@ -191,13 +176,7 @@ method installHexOrUF2File MicroBlocksFirmwareInstaller boardName fromMenu {
 	response = (inform msg (localized 'Firmware Install'))
 	if (isNil response) { return } // user aborted
 
-	if ('Browser' == (platform)) {
-		browserWriteFile vmData vmFileName 'vmInstall'
-	} else {
-		vmFileName = (fileToWrite (join (userHomePath) '/Downloads/' vmFileName))
-		if ('' == (filePart vmFileName)) { return } // user aborted
-		writeFile vmFileName vmData
-	}
+	browserWriteFile vmData vmFileName 'vmInstall'
 	waitMSecs 1000 // leave time for file to get written before showing next prompt
 
 	inform (localized 'Drag the firmware file you just saved to the %1 drive.' driveName)
@@ -230,7 +209,7 @@ method reconnectMessage MicroBlocksFirmwareInstaller {
 // Espressif board flashing
 
 method flashVM MicroBlocksFirmwareInstaller boardName eraseFlashFlag {
-	portName = (getField (smallRuntime) 'portName')
+	portName = 'webserial'
 	closePort this // close serial port to avoid interaction with install process
 	flasher = (newFlasher boardName portName eraseFlashFlag false)
 	installBuiltinFirmware flasher boardName
@@ -273,18 +252,18 @@ method installESPFirmwareFromRepo MicroBlocksFirmwareInstaller {
 	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
 	setCursor 'normal'
 
-	menu = (menu 'Select firmware:' this)
+	items = (list)
 	for line (lines html) {
 		if (beginsWith line '<a href="vm_') {
 			binIndex = (findSubstring '.bin' line)
 			if (binIndex > 0) { // it is an ESP firmware
 				boardName = (substring line 13 (binIndex - 1))
 				url = (join 'http://microblocks.fun/downloads/' version '/vm/vm_' boardName '.bin')
-				addItem menu boardName (action 'flashESPFirmwareFromURL' this boardName url)
+				add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
 			}
 		}
 	}
-	popUpAtHand menu (global 'page')
+	menuFor (api (smallRuntime)) items
 }
 
 method flashESPFirmwareFromURL MicroBlocksFirmwareInstaller boardName url {

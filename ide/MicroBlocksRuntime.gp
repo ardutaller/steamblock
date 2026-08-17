@@ -14,17 +14,21 @@ to smallRuntime aScripter {
 	return (global 'smallRuntime')
 }
 
-defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler codeStoreFull
+
+defineClass SmallRuntime ideVersion latestVmVersion scripter chunkIDs chunkRunning chunkStopping msgDict portName port connectionStartTime lastScanMSecs pingSentMSecs lastPingRecvMSecs recvBuf oldVarNames vmVersion boardType lastBoardDrives loggedData loggedDataNext loggedDataCount vmInstallMSecs disconnected crcDict lastCRC lastRcvMSecs readFromBoard decompiler decompilerStatus blockForResultImage fileTransferMsgs fileTransferProgress fileTransfer firmwareInstallTimer recompileAll compiler api codeStoreFull
 
 method scripter SmallRuntime { return scripter }
 method serialPortOpen SmallRuntime { return (notNil port) }
 method recompileNeeded SmallRuntime { recompileAll = true }
+method api SmallRuntime { return api }
+method vmVersion SmallRuntime { return vmVersion }
 
 method initialize SmallRuntime aScripter {
 	scripter = aScripter
 	chunkIDs = (dictionary)
 	readFromBoard = false
 	clearLoggedData this
+	api = (new 'MicroBlocksAPI')
 	return this
 }
 
@@ -520,14 +524,8 @@ method metadataBytesFor SmallRuntime aBlockOrFunction {
 method readCodeFromNextBoardConnected SmallRuntime {
 	readFromBoard = true
 	disconnected = false
-	if ('Browser' == (platform)) {
-		// in browser, cannot add the spinner before user has clicked connect icon
-		inform (localized 'Connect board to proceed.')
-		return
-	}
-	decompilerStatus = (localized 'Plug in the board.')
-	spinner = (newSpinner (action 'decompilerStatus' (smallRuntime)) (action 'decompilerDone' (smallRuntime)))
-	addPart (global 'page') spinner
+	// in browser, cannot add the spinner before user has clicked connect icon
+	inform 'Connect board to proceed.'
 }
 
 method readCodeFromBoard SmallRuntime {
@@ -535,18 +533,16 @@ method readCodeFromBoard SmallRuntime {
 	waitForPing this
 	decompilerStatus = (localized 'Reading project from board...')
 
-	if ('Browser' == (platform)) {
-		prompter = (findMorph 'Prompter')
-		if (notNil prompter) { destroy prompter } // remove the prompt to connect board
+	prompter = (findMorph 'Prompter')
+	if (notNil prompter) { destroy prompter } // remove the prompt to connect board
 
-		if (not (canReplaceCurrentProject (findMicroBlocksEditor))) {
-			return // uncommon: user started writing code before connecting the board
-		}
-
-		// in browser, spinner was not added earlier
-		spinner = (newSpinner (action 'decompilerStatus' (smallRuntime)) (action 'decompilerDone' (smallRuntime)))
-		addPart (global 'page') spinner
+	if (not (canReplaceCurrentProject (findMicroBlocksEditor))) {
+		return // uncommon: user started writing code before connecting the board
 	}
+
+	// in browser, spinner was not added earlier
+	spinner = (newSpinner (action 'decompilerStatus' (smallRuntime)) (action 'decompilerDone' (smallRuntime)))
+	addPart (global 'page') spinner
 
 	sendMsg this 'getVarNamesMsg'
 	lastRcvMSecs = (msecsSinceStart)
@@ -613,6 +609,8 @@ method waitForPing SmallRuntime {
 method installDecompiledProject SmallRuntime proj {
 	clearBoardIfConnected this true
 	setProject scripter proj
+	// store whether the project has any custom blocks. For project menu purposes.
+	setProperty api 'project.hasCustomBlocks' ((count (functions (main proj))) > 0)
 	updateLibraryList scripter
 	checkForNewerLibraryVersions (project scripter) true
 	restoreScripts scripter // fix block colors
@@ -796,7 +794,8 @@ method stopAndSyncScripts SmallRuntime alreadyStopped {
 	suspendCodeFileUpdates this
 	saveAllChunks this true
 	resumeCodeFileUpdates this
-	showDownloadProgress (findMicroBlocksEditor) 3 1
+
+	setProperty api 'ide.downloadProgress' (array 3 1)
 }
 
 method softReset SmallRuntime {
@@ -806,7 +805,7 @@ method softReset SmallRuntime {
 }
 
 method isWebSerial SmallRuntime {
-	return (and ('Browser' == (platform)) (browserHasWebSerial))
+	return (browserHasWebSerial)
 }
 
 method webSerialConnect SmallRuntime action {
@@ -820,7 +819,7 @@ method webSerialConnect SmallRuntime action {
 		closeSerialPort 1
 		portName = nil
 		port = nil
-	} ('open Boardie' == action) {
+	} ('Boardie' == action) {
 		browserOpenBoardie
 		waitMSecs 100 // make sure Boardie is ready to receive messages
 		disconnected = false
@@ -830,11 +829,11 @@ method webSerialConnect SmallRuntime action {
 		lastPingRecvMSecs = 0
 		sendMsg this 'pingMsg'
 	} else {
-		if (and ('Browser' == (platform)) (not (or (browserIsChromeOS) (browserHasWebSerial)))) { // running in a browser w/o WebSerial (or it is not enabled)
+		if (not (or (browserIsChromeOS) (browserHasWebSerial))) { // running in a browser w/o WebSerial (or it is not enabled)
 			inform (localized 'Only recent Chrome and Edge browsers support WebSerial.')
 			return
 		}
-		if (beginsWith action 'connect (BLE)') {
+		if (beginsWith action 'BLE') {
 			openSerialPort 'webBLE' 115200
 			portName = 'webBLE'
 		} else {
@@ -849,96 +848,14 @@ method webSerialConnect SmallRuntime action {
 	}
 }
 
-method selectPort SmallRuntime {
-	if (isNil disconnected) { disconnected = false }
-
-	if ('Browser' == (platform)) {
-		menu = (menu 'Connect' (action 'webSerialConnect' this) true)
-		if (and (isNil port) ('boardie' != portName)) {
-			if (not (isMobile)) {
-				addItem menu 'connect (USB)'
-			}
-			addItem menu 'connect (BLE)'
-			addLine menu
-			addItem menu 'open Boardie'
-		} else {
-			addItem menu 'disconnect'
-		}
-		popUpAtHand menu (global 'page')
-		return
-	}
-
-	portList = (portList this)
-	menu = (menu 'Connect' (action 'setPort' this) true)
-	if (or disconnected (devMode)) {
-		for s portList {
-			if (or (isNil port) (portName != s)) { addItem menu s }
-		}
-		if (isEmpty portList) {
-			addItem menu 'Connect board and try again'
-		}
-	}
-	if (and (devMode) ('Browser' != (platform))) {
-		addLine menu
-		addItem menu 'other...'
-	}
-	if (notNil port) {
-		addLine menu
-		if (notNil portName) {
-			addItem menu (join 'disconnect (' portName ')')
-		} else {
-			addItem menu 'disconnect'
-		}
-	}
-	popUpAtHand menu (global 'page')
-}
-
 method portList SmallRuntime {
 	portList = (list)
-	if ('Win' == (platform)) {
-		portList = (list)
-		for pname (listSerialPorts) {
-			blackListed = (or
-				((containsSubString pname 'Bluetooth') > 0)
-				((containsSubString pname '(COM1)') > 0)
-				((containsSubString pname 'Intel(R) Active Management') > 0))
-			if (not blackListed) {
-				add portList pname
-			}
-		}
-	} ('Browser' == (platform)) {
-		listSerialPorts // first call triggers callback
-		waitMSecs 5
-		portList = (list)
-		for portName (listSerialPorts) {
-			if (not (beginsWith portName '/dev/tty.')) {
-				add portList portName
-			}
-		}
-	} else {
-		for fn (listFiles '/dev') {
-			if (or	(notNil (nextMatchIn 'usb' (toLowerCase fn) )) // MacOS
-					(notNil (nextMatchIn 'acm' (toLowerCase fn) ))
-			) { // Linux
-				if (isNil (nextMatchIn 'usbmon' (toLowerCase fn))) { // ignore 'usbmonX' devices
-					add portList (join '/dev/' fn)
-				}
-			}
-		}
-		if ('Linux' == (platform)) {
-			// add pseudoterminal
-			ptyName = (readFile '/tmp/ublocksptyname')
-			if (notNil ptyName) {
-				add portList ptyName
-			}
-		}
-		// Mac OS lists a port as both cu.<name> and tty.<name>
-		for s (copy portList) {
-			if (beginsWith s '/dev/tty.') {
-				if (contains portList (join '/dev/cu.' (substring s 10))) {
-					remove portList s
-				}
-			}
+	listSerialPorts // first call triggers callback
+	waitMSecs 5
+	portList = (list)
+	for portName (listSerialPorts) {
+		if (not (beginsWith portName '/dev/tty.')) {
+			add portList portName
 		}
 	}
 	return portList
@@ -966,6 +883,7 @@ method setPort SmallRuntime newPortName {
 	// the prompt answer 'none' is entered by the user in the current language
 	if (or (isNil newPortName) (newPortName == (localized 'none'))) {
 		portName = nil
+		print 'setting portname to nil'
 	} else {
 		portName = newPortName
 		openPortAndSendPing this
@@ -975,9 +893,13 @@ method setPort SmallRuntime newPortName {
 
 method closePort SmallRuntime {
 	// Close the serial port and clear info about the currently connected board.
-
+	setProperty api 'board.connected' false
+	setProperty api 'board.canDoBLE' false
+	setProperty api 'board.hasFS' false
+	setProperty api 'board.type' 'Connect'
 	if (notNil port) { closeSerialPort port }
 	port = nil
+	portName = nil
 	vmVersion = nil
 	boardType = nil
 
@@ -991,42 +913,19 @@ method enableAutoConnect SmallRuntime success {
 	// Called by Flasher and ESPTool after installing firmware.
 
 	closeAllDialogs (findMicroBlocksEditor)
-	if ('Browser' == (platform)) {
-		// In the browser, the serial port must be closed and re-opened after installing
-		// firmware on an ESP board. Not sure why. Adding a delay did not help.
-		closePort this
-		closeSerialPort 1 // make sure port is really disconnected
-		disconnected = true
-		if success {
-			reconnectMessage (new 'MicroBlocksFirmwareInstaller')
-		}
-		return
+	// In the browser, the serial port must be closed and re-opened after installing
+	// firmware on an ESP board. Not sure why. Adding a delay did not help.
+	closePort this
+	closeSerialPort 1 // make sure port is really disconnected
+	disconnected = true
+	if success {
+		reconnectMessage (new 'MicroBlocksFirmwareInstaller')
 	}
-	disconnected = false
-	stopAndSyncScripts this
-}
-
-method flasher SmallRuntime {
-	// Called by Keyboard in morphicFramework to handle escape key.
-
-	return (partThatIs (morph (global 'page')) 'MicroBlocksSpinner')
-}
-
-method confirmRemoveFlasher SmallRuntime {
-	// Called by Keyboard in morphicFramework to handle escape key.
-
-	flasher = (partThatIs (morph (global 'page')) 'MicroBlocksSpinner')
-	if (isNil flasher) { return }
-	ok = (confirm
-		(global 'page')
-		nil
-		(localized 'Are you sure you want to cancel the upload process?'))
-	if ok {
-		destroy flasher
-	}
+	return
 }
 
 method connectedToBoard SmallRuntime {
+	connected = false
 	pingTimeout = 8000
 	if (or (isNil port) (not (isOpenSerialPort port))) { return false }
 	if (or (isNil lastPingRecvMSecs) (lastPingRecvMSecs == 0)) { return false }
@@ -1044,7 +943,10 @@ method updateConnection SmallRuntime {
 	if (isNil lastPingRecvMSecs) { lastPingRecvMSecs = 0 }
 	if (isNil disconnected) { disconnected = false }
 
-	if (notNil decompiler) { return 'connected' }
+	if (notNil decompiler) {
+		setProperty api 'board.connected' true
+		return 'connected'
+	}
 	if disconnected { return 'not connected' }
 
 	// handle connection attempt in progress
@@ -1054,11 +956,8 @@ method updateConnection SmallRuntime {
 	if (or (isNil port) (not (isOpenSerialPort port))) {
 		clearRunningHighlights this
 		closePort this
-		if ('Browser' == (platform)) {
-			portName = nil // clear 'boardie' when boardie is closed with power button
-			return 'not connected' // user must initiate connection attempt
-		}
-		return (tryToConnect this)
+		portName = nil // clear 'boardie' when boardie is closed with power button
+		return 'not connected' // user must initiate connection attempt
 	}
 
 	// if the port is open and it is time, send a ping
@@ -1091,6 +990,7 @@ method justConnected SmallRuntime {
 	// Called when a board has just connected (browser or stand-alone).
 
 	print 'Connected to' portName
+	setProperty api 'board.connected' true
 	connectionStartTime = nil
 	vmVersion = nil
 	sendMsgSync this 'getVersionMsg'
@@ -1110,7 +1010,7 @@ method justConnected SmallRuntime {
 		} else {
 			print 'Incremental download' vmVersion boardType
 		}
-		showDownloadProgress (findMicroBlocksEditor) 2 0
+		setProperty api 'ide.downloadProgress' (array 2 0)
 		stopAndSyncScripts this true
 		softReset this
 	}
@@ -1163,22 +1063,8 @@ method tryToConnect SmallRuntime {
 	closePort this
 	connectionStartTime = nil
 
-	if ('Browser' == (platform)) {  // disable autoconnect on ChromeOS
-		disconnected = true
-		return 'not connected'
-	}
-
-	portNames = (portList this)
-	if (isEmpty portNames) { return 'not connected' } // no ports available
-
-	i = 1
-	if (notNil portName) {
-		i = (indexOf portNames portName)
-		if (isNil i) { i = 0 }
-		i = ((i % (count portNames)) + 1)
-	}
-	portName = (at portNames i)
-	openPortAndSendPing this
+	disconnected = true
+	return 'not connected'
 }
 
 method openPortAndSendPing SmallRuntime {
@@ -1222,18 +1108,6 @@ method readVersionFile SmallRuntime {
 			if (beginsWith s 'VM ') { latestVmVersion = (toNumber (substring s 4)) }
 		}
 	}
-}
-
-method showAboutBox SmallRuntime {
-	vmVersionReport = (newline)
-	if (notNil vmVersion) {
-		vmVersionReport = (join ' (Firmware v' vmVersion ')' (newline))
-	}
-	(inform (global 'page') (join
-		'MicroBlocks v' (ideVersion this) vmVersionReport (newline)
-		(localized 'about;by %1, %2 & %3.' (array 'John Maloney' 'Bernat Romagosa' 'Jens Mönig')) (newline)
-		(localized 'Created with GP') ' (gpblocks.org)' (newline) (newline)
-		(localized 'More info at http://microblocks.fun')) 'About MicroBlocks')
 }
 
 method checkBoardType SmallRuntime {
@@ -1284,10 +1158,12 @@ method versionReceived SmallRuntime versionString {
 	if justConnected { // check the version number and load board libraries
 		checkVmVersion this
 		installBoardSpecificBlocks this
+		setProperty api 'board.canDoBLE' (boardIsBLECapable this)
+		setProperty api 'board.hasFS' (boardHasFileSystem this)
 	} else { // not first time: show the version number
 		inform (global 'page') (join 'MicroBlocks Virtual Machine ' versionString) 'Firmware version'
 	}
-	updateConnectionName (findProjectEditor) boardType
+	setProperty api 'board.type' boardType
 }
 
 method checkVmVersion SmallRuntime {
@@ -1437,10 +1313,11 @@ method boardIsBLECapable SmallRuntime {
 	if ('connected' != status) { return false }
 	if (isNil boardType) { getVersion this }
 	if (isNil boardType) { return false } // could not get version info
-	if (notNil (findSubstring 'ESP' boardType)) { return true }
-	if (notNil (findSubstring 'Springbot' boardType)) { return true }
 	if (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'Databot' 'Databot v3' 'M5Stack-Core' 'ESP32' 'Mbits' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix' 'micro:STEAMakers' 'CodingBox' 'Foxbit' 'KidsIOT' 'IOT-BUS') {
+		return true
+	}
+	if (notNil (findSubstring 'ESP' boardType)) {
 		return true
 	}
 	return false
@@ -1543,7 +1420,7 @@ method saveAllChunksAfterLoad SmallRuntime {
 	suspendCodeFileUpdates this
 	saveAllChunks this true
 	resumeCodeFileUpdates this
-	showDownloadProgress (findMicroBlocksEditor) 3 1
+	setProperty api 'ide.downloadProgress' (array 3 1)
 }
 
 method saveAllChunks SmallRuntime checkCRCs paletteBlock {
@@ -1585,7 +1462,7 @@ method saveAllChunks SmallRuntime checkCRCs paletteBlock {
 			if (saveChunk this aFunction skipHiddenFunctions) {
 				functionsSaved += 1
 				if (0 == (functionsSaved % progressInterval)) {
-					showDownloadProgress editor 3 (processedScripts / totalScripts)
+					setProperty api 'ide.downloadProgress' (array 3 (processedScripts / totalScripts))
 				}
 			}
 		}
@@ -1613,7 +1490,7 @@ method saveAllChunks SmallRuntime checkCRCs paletteBlock {
 			if (saveChunk this aBlock skipHiddenFunctions) {
 				scriptsSaved += 1
 				if (0 == (scriptsSaved % progressInterval)) {
-					showDownloadProgress editor 3 (processedScripts / totalScripts)
+					setProperty api 'ide.downloadProgress' (array 3 (processedScripts / totalScripts))
 				}
 			}
 			if codeStoreFull {
@@ -1640,7 +1517,7 @@ method saveAllChunks SmallRuntime checkCRCs paletteBlock {
 	recompileAll = false
 	if checkCRCs { verifyCRCs this }
 	resumeCodeFileUpdates this
-	showDownloadProgress editor 3 1
+	setProperty api 'ide.downloadProgress' (array 3 1)
 
 	setCursor 'default'
 }
@@ -1865,7 +1742,7 @@ method verifyCRCs SmallRuntime {
 		if (and (notNil sourceItem) ((at crcDict chunkID) != (at crcForChunkID chunkID))) {
 			print 'CRC mismatch; resaving chunk:' chunkID
 			forceSaveChunk this sourceItem
-			showDownloadProgress editor 3 (processedCount / totalCount)
+			setProperty api 'ide.downloadProgress' (array 3 (processedCount / totalCount))
 		}
 		processedCount += 1
 	}
@@ -1876,11 +1753,11 @@ method verifyCRCs SmallRuntime {
 			print 'Resaving missing chunk:' chunkID
 			sourceItem = (at ideChunks chunkID)
 			forceSaveChunk this sourceItem
-			showDownloadProgress editor 3 (processedCount / totalCount)
+			setProperty api 'ide.downloadProgress' (array 3 (processedCount / totalCount))
 		}
 		processedCount += 1
 	}
-	showDownloadProgress editor 3 1
+	setProperty api 'ide.downloadProgress' (array 3 1)
 }
 
 method boardHasSameProject SmallRuntime {
@@ -2042,7 +1919,7 @@ method saveVariableNamesIfNeeded SmallRuntime {
 			return true
 		}
 		if ((i % progressInterval) == 0) {
-			showDownloadProgress editor 2 (i / varCount)
+			setProperty api 'ide.downloadProgress' (array 2 (i / varCount))
 		}
 	}
 	oldVarNames = (copy newVarNames)
@@ -2122,20 +1999,20 @@ method librariesChanged SmallRuntime {
 // Serial Delay
 
 method serialDelayMenu SmallRuntime {
-	menu = (menu (join 'Serial delay' (newline) '(smaller is faster, but may fail if computer cannot keep up)') (action 'setSerialDelay' this) true)
-	for i (range 1 5) { addItem menu i }
-	for i (range 6 20 2) { addItem menu i }
-	addLine menu
-	addItem menu 'reset to default (10)'
-	popUpAtHand menu (global 'page')
+	items = (list)
+	for i (range 1 5) { add items (array i (action 'setSerialDelay' this i)) }
+	for i (range 6 20 2) { add items (array i (action 'setSerialDelay' this i)) }
+	add items (array '-')
+	add items (array 'reset to default (10)' (action 'setDefaultSerialDelay' this))
+	menuFor api items
 }
 
 method setDefaultSerialDelay SmallRuntime {
-	setSerialDelay this 'reset to default (10)'
+	setSerialDelay this 'reset to default'
 }
 
 method setSerialDelay SmallRuntime newDelay {
-	if ('reset to default (10)' == newDelay) {
+	if ('reset to default' == newDelay) {
 		newDelay = 5
 	}
 	sendMsg this 'extendedMsg' 1 (list newDelay)
@@ -2367,7 +2244,7 @@ method ensurePortOpen SmallRuntime {
 			if (isNil port) { return }
 			// connected!
 			disconnected = false
-			if ('Browser' == (platform)) { waitMSecs 100 } // let browser callback complete
+			waitMSecs 100 // let browser callback complete
 		}
 	}
 }
@@ -2463,12 +2340,13 @@ method handleMessage SmallRuntime msg {
 		if (chunkID == 255) {
 			print (returnedValue this msg)
 		} (chunkID == 254) {
-			addLoggedData this (toString (returnedValue this msg))
+			notify api 'graph.data' (returnedValue this msg)
 		} else {
 			showResult this chunkID (returnedValue this msg) false true
 		}
 	} (op == (msgNameToID this 'varValueMsg')) {
-		varValueReceived (httpServer scripter) (byteAt msg 3) (returnedValue this msg)
+		nop // formerly used by the local IDE httpServer
+		// varValueReceived (httpServer scripter) (byteAt msg 3) (returnedValue this msg)
 	} (op == (msgNameToID this 'versionMsg')) {
 		versionReceived this (returnedValue this msg)
 	} (op == (msgNameToID this 'chunkCRCMsg')) {
@@ -2480,7 +2358,8 @@ method handleMessage SmallRuntime msg {
 	} (op == (msgNameToID this 'codeStoreFullMsg')) {
 		codeStoreFull = true
 	} (op == (msgNameToID this 'broadcastMsg')) {
-		broadcastReceived (httpServer scripter) (toString (copyFromTo msg 6))
+		nop // formerly used by the local IDE httpServer
+		// broadcastReceived (httpServer scripter) (toString (copyFromTo msg 6))
 	} (op == (msgNameToID this 'chunkCode16Msg')) {
 		receivedChunk this (byteAt msg 3) (byteAt msg 6) (toArray (copyFromTo msg 7))
 	} (op == (msgNameToID this 'codeStoreUsedMsg')) {
@@ -2492,7 +2371,7 @@ method handleMessage SmallRuntime msg {
 	} (op == (msgNameToID this 'fileChunk')) {
 		recordFileTransferMsg this (copyFromTo msg 6)
 	} (op == (msgNameToID this 'clearGraphMsg')) {
-		clearLoggedData this
+		notify api 'graph.clear'
 	} else {
 		print 'msg:' (toArray msg)
 	}
@@ -2548,11 +2427,10 @@ method boardHasFileSystem SmallRuntime {
 	if (and (isWebSerial this) (not (isOpenSerialPort 1))) { return false }
 	if (not (connectedToBoard this)) { return false }
 	if (isNil boardType) { getVersion this }
-	if (isNil boardType) { return false } // could not get version info
-	if (notNil (findSubstring 'Springbot' boardType)) { return true }
-	if (notNil (findSubstring 'ESP' boardType)) { return true }
-	if (notNil (findSubstring '2040' boardType)) { return true }
-	if (notNil (findSubstring '2350' boardType)) { return true }
+	if (and (notNil boardType) (notNil (findSubstring 'ESP' boardType))) { return true }
+	if (and (notNil boardType) (notNil (findSubstring '2040' boardType))) { return true }
+	if (and (notNil boardType) (notNil (findSubstring '2350' boardType))) { return true }
+	if (and (notNil boardType) (notNil (findSubstring 'Springbot' boardType))) { return true }
 	return (isOneOf boardType
 		'Citilab ED1' 'CoCube' 'M5Stack-Core' 'M5StickC+' 'M5StickC' 'M5Atom-Matrix'
 		'ESP32' 'ESP8266' 'RP2040' 'Pico W' 'Pico:ed' 'Wukong2040' 'TTGO RP2040'
@@ -2599,22 +2477,17 @@ method getFileFromBoard SmallRuntime {
 		inform 'No files on board.'
 		return
 	}
-	menu = (menu 'File to read from board:' this)
+	items = (list)
 	for fn fileNames {
-		addItem menu fn (action 'getAndSaveFile' this fn (at fileList fn))
+		add items (array fn (action 'getAndSaveFile' this fn (at fileList fn)))
 	}
-	popUpAtHand menu (global 'page')
+	menuFor api items
 }
 
 method getAndSaveFile SmallRuntime remoteFileName remoteFileSize {
 	data = (readFileFromBoard this remoteFileName remoteFileSize)
-	if ('Browser' == (platform)) {
-		if (confirm (global 'page') nil 'Save file?') {
-			browserWriteFile data remoteFileName 'fileFromBoard'
-		}
-	} else {
-		fName = (fileToWrite remoteFileName)
-		if ('' != fName) { writeFile fName data }
+	if (confirm (global 'page') nil 'Save file?') {
+		browserWriteFile data remoteFileName 'fileFromBoard'
 	}
 }
 
@@ -2657,12 +2530,8 @@ method readFileFromBoard SmallRuntime remoteFileName remoteFileSize {
 }
 
 method putFileOnBoard SmallRuntime {
-	if ('Browser' == (platform)) {
-		putNextDroppedFileOnBoard (findMicroBlocksEditor)
-		browserReadFile ''
-	} else {
-		pickFileToOpen (action 'writeFileToBoard' this)
-	}
+	putNextDroppedFileOnBoard (findMicroBlocksEditor)
+	browserReadFile ''
 }
 
 method writeFileToBoard SmallRuntime srcFileName fileData {
@@ -2702,7 +2571,10 @@ method snapshotCode SmallRuntime defaultFileName {
 // busy tells the MicroBlocksEditor to suspend board communciations during file transfers
 method busy SmallRuntime { return (notNil fileTransferProgress) }
 
-method fileTransferProgress SmallRuntime actionLabel { return (join '' fileTransferProgress '% ' (localized actionLabel)) }
+method fileTransferProgress SmallRuntime actionLabel {
+	notify (api (smallRuntime)) 'spinner.setPercent' fileTransferProgress
+	return (join '' fileTransferProgress '% ' (localized actionLabel))
+}
 
 method abortFileTransfer SmallRuntime {
 	if (not (fileTransferCompleted this)) { fileTransferProgress = nil }
@@ -3049,4 +2921,63 @@ method loggedData SmallRuntime howMany {
 		replaceArrayRange result (tailCount + 1) howMany loggedData 1
 	}
 	return result
+}
+
+// Install ESP firmware from URL
+
+method installESPFirmwareFromURL SmallRuntime {
+	defaultURL = ''
+	if ('Databot' == boardType) {
+		defaultURL = 'http://microblocks.fun/downloads/databot/databot2.0_V2.18.bin'
+		closeSerialPort 1
+	}
+	url = (trim (freshPrompt (global 'page') 'ESP32 firmware URL?' defaultURL))
+	if ('' == url) { return }
+	flashESPFirmwareFromURL this boardName url
+}
+
+method flashESPFirmwareFromURL SmallRuntime boardName url {
+	disconnected = true
+	port = nil
+	vmVersion = nil
+	boardType = nil
+	flasher = (newFlasher boardName portName false false)
+	installFromURL flasher url
+}
+
+method installESPFirmwareFromRepo SmallRuntime {
+	setCursor 'wait'
+	if (isPilot (findMicroBlocksEditor)) {
+		version = 'pilot'
+	} else {
+		version = (join 'v' ideVersion)
+	}
+	items = (list)
+	if (endsWith version '-pilot') {
+		version = (substring version 1 ((count version) - 6))
+	}
+	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
+	for line (lines html) {
+		if (beginsWith line '<a href="vm_') {
+			binIndex = (findSubstring '.bin' line)
+			if (binIndex > 0) { // it is an ESP firmware
+				boardName = (substring line 13 (binIndex - 1))
+				url = (join 'http://microblocks.fun/downloads/' version '/vm/vm_' boardName '.bin')
+				add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
+			}
+		}
+	}
+	setCursor 'normal'
+	menuFor api items
+}
+
+// Install ESP firmware from file
+
+method installESPFirmwareFromFile SmallRuntime fileName data {
+	disconnected = true
+	port = nil
+	vmVersion = nil
+	boardType = nil
+	flasher = (newFlasher fileName portName false false)
+	installFromData flasher fileName data
 }

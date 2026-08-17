@@ -18,65 +18,71 @@ method initialize MicroBlocksSpinner labelReporter doneReporter {
 	doneGetter = doneReporter
 
 	morph = (newMorph this)
-	setCostume morph (gray 0 80)
-	rotation = 0
+//	setCostume morph (gray 0 80)
+//	rotation = 0
+//
+//	scale = (global 'scale')
+//	label = (newText (localized (call labelGetter)) 'Arial' (24 * scale) (gray 255))
+//	addPart morph (morph label)
+//
+//	sublabel = (newText (localized '(press ESC to cancel)') 'Arial' (18 * scale) (gray 255))
+//	addPart morph (morph sublabel)
+//
+//	browserWarning = (newText (localized 'Do not switch browser tabs!') 'Arial' (18 * scale) (gray 255))
+//	addPart morph (morph browserWarning)
 
-	scale = (global 'scale')
-	label = (newText (localized (call labelGetter)) 'Arial' (24 * scale) (gray 255))
-	addPart morph (morph label)
+	//pageM = (morph (global 'page'))
+	//setExtent morph (width (bounds pageM)) (height (bounds pageM))
 
-	sublabel = (newText (localized '(press ESC to cancel)') 'Arial' (18 * scale) (gray 255))
-	addPart morph (morph sublabel)
-
-	browserWarning = (newText (localized 'Do not switch browser tabs!') 'Arial' (18 * scale) (gray 255))
-	if ('Browser' == (platform)) {
-		addPart morph (morph browserWarning)
-	}
-
-	pageM = (morph (global 'page'))
-	setExtent morph (width (bounds pageM)) (height (bounds pageM))
-
-	setFPS morph 4
+	setFPS morph 2
 	fixLayout this
+
+	dict = (dictionary)
+	atPut dict 'title' (call labelGetter)
+	atPut dict 'subtitle' 'Do not switch browser tabs!'
+	atPut dict 'note' '(press ESC to cancel)'
+	atPut dict 'percent' 0
+	notify (api (smallRuntime)) 'spinner.show' dict
+
 	return this
 }
 
 method fixLayout MicroBlocksSpinner {
-	pageM = (morph (global 'page'))
-	setExtent morph (width (bounds pageM)) (height (bounds pageM))
-	gotoCenterOf morph pageM
-	gotoCenterOf (morph label) pageM
-	gotoCenterOf (morph sublabel) pageM
-	moveBy (morph label) 0 105
-	moveBy (morph sublabel) 0 170
+	//pageM = (morph (global 'page'))
+	//setExtent morph (width (bounds pageM)) (height (bounds pageM))
+	//gotoCenterOf morph pageM
+	//gotoCenterOf (morph label) pageM
+	//gotoCenterOf (morph sublabel) pageM
+	//moveBy (morph label) 0 105
+	//moveBy (morph sublabel) 0 170
 
-	gotoCenterOf (morph browserWarning) pageM
-	moveBy (morph browserWarning) 0 235
+	//gotoCenterOf (morph browserWarning) pageM
+	//moveBy (morph browserWarning) 0 235
 }
 
 method drawOn MicroBlocksSpinner ctx {
-	r = (bounds morph)
-	fillRect ctx (costumeData morph) (left r) (top r) (width r) (height r) 1
-	pen = (pen (getShapeMaker ctx))
-	beginPath pen (hCenter r) (vCenter r)
-	setHeading pen rotation
-	repeat 2 {
-		forward pen 50
-		turn pen 180
-		forward pen 100
-		forward pen -50
-		turn pen 90
-	}
-	stroke pen (gray 230) 25
+//	r = (bounds morph)
+//	fillRect ctx (costumeData morph) (left r) (top r) (width r) (height r) 1
+//	pen = (pen (getShapeMaker ctx))
+//	beginPath pen (hCenter r) (vCenter r)
+//	setHeading pen rotation
+//	repeat 2 {
+//		forward pen 50
+//		turn pen 180
+//		forward pen 100
+//		forward pen -50
+//		turn pen 90
+//	}
+//	stroke pen (gray 230) 25
 }
 
 method spinnerChanged MicroBlocksSpinner {
 	// Must increase bounding rectangle by half the pen width due to rounded ends.
-
-	bnds = (bounds morph)
-	left = ((hCenter bnds) - 65)
-	top = ((vCenter bnds) - 65)
-	reportDamage (owner morph) (rect left top 130 130)
+//
+//	bnds = (bounds morph)
+//	left = ((hCenter bnds) - 65)
+//	top = ((vCenter bnds) - 65)
+//	reportDamage (owner morph) (rect left top 130 130)
 }
 
 method task MicroBlocksSpinner { return task }
@@ -85,6 +91,7 @@ method setTask MicroBlocksSpinner aTask { task = aTask }
 method setStopAction MicroBlocksSpinner anAction { stopAction = anAction }
 
 method destroy MicroBlocksSpinner {
+	notify (api (smallRuntime)) 'spinner.hide'
 	setCursor 'default'
 	if (notNil stopAction) {
 		call stopAction
@@ -98,13 +105,11 @@ method destroy MicroBlocksSpinner {
 method step MicroBlocksSpinner {
 	if (call doneGetter) {
 		setCursor 'default'
+		notify (api (smallRuntime)) 'spinner.hide'
 		destroy this
 		return
 	}
 
 	setCursor 'wait'
-	rotation = ((rotation + 30) % 360)
-	spinnerChanged this
-	setText label (localized (call labelGetter))
-	setXCenter (morph label) (hCenter (bounds morph))
+	notify (api (smallRuntime)) 'spinner.setTitle' (call labelGetter)
 }

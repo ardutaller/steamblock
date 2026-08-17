@@ -46,12 +46,41 @@ method lastItemIsLine Menu {
 	return (and (isClass lastItem 'Array') ((count lastItem) == 1) ((count (first lastItem)) == 2))
 }
 
+method isLine Menu item {
+	return (and (isClass item 'Array') ((count item) == 1) ((count (first item)) == 2))
+}
+
 method popUp Menu page x y noFocus {
 	if (or (isNil noFocus) (not (isClass noFocus 'Boolean'))) {noFocus = false}
 	if (isEmpty items) { return }
+	callbackReceiver = (creator this) // who created this menu?
+
+	// items look like:
+	// itemLabel itemAction itemHint itemThumb localizeFlag disabledFlag
+
 	buildMorph this page y
 	showMenu page this x y
 	if (not noFocus) {focus this}
+}
+
+method creator Menu {
+	// Find instance that triggered this menu so we can hijack its callback for
+	// the web UI
+	db = (new 'Debugger' (currentTask))
+	stack = (stack (currentTask))
+	frames = (frameList db)
+	currentFrame = (last frames)
+	args = (argsForCall db currentFrame)
+	while (== (first args) this) {
+		frames = (copyFromTo frames 1 (- (count frames) 1))
+		currentFrame = (last frames)
+		args = (argsForCall db currentFrame)
+	}
+	return (first args)
+}
+
+method items Menu {
+	return items
 }
 
 method popUpAtHand Menu page noFocus {
@@ -105,7 +134,6 @@ method buildMorph Menu page yPos {
 	// settings, to be refactored later to somewhere else
 	fontName = 'Arial'
 	fontSize = (scale * 16)
-	if ('Linux' == (platform)) { fontSize = (scale * 13) }
 	border = (scale * 1)
 	corner = (scale * 2)
 	itemPaddingV = (scale * 1)

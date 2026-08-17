@@ -20,7 +20,6 @@ method initialize SpeechBubble someData bubbleWidth dir isErrorFlag isTooltipFla
 	if isTooltip { scale = (global 'scale') }
 	font = 'Arial'
 	fontSize = (18 * scale)
-	if ('Linux' == (platform)) { fontSize = (13 * scale) }
 	maxLines = 30
 
 	setFont font fontSize
@@ -48,7 +47,6 @@ method fixLayout SpeechBubble {
 	scale = (blockScale)
 	if isTooltip { scale = (global 'scale') }
 	fontSize = (18 * scale)
-	if ('Linux' == (platform)) { fontSize = (13 * scale) }
 	hInset = (11 * scale)
 	vInset = (7 * scale)
 	tailH = (7 * scale) // height of bubble tail

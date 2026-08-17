@@ -177,18 +177,17 @@ method drawLabelCostumes Trigger label minWidth minHeight isActive onDark {
 
 	highlightCostume = (buttonBitmap label (array (microBlocksColor 'blueGray' 900) (transparent) (microBlocksColor 'yellow')) minWidth minHeight)
 	pressedCostume = (buttonBitmap label (array (microBlocksColor 'blueGray' 900) (transparent) (microBlocksColor 'yellow')) minWidth minHeight true)
-	normalCostume = (buttonBitmap label (array labelColor borderColor bgColor) minWidth minHeight true)
+	normalCostume = (buttonBitmap label (array labelColor borderColor bgColor) minWidth minHeight true nil nil nil nil onDark)
 	setCostume morph normalCostume
 }
 
-to buttonBitmap label color w h isInset corner border hasFrame flat {
+to buttonBitmap label color w h isInset corner border hasFrame flat onDark {
 	if (isNil flat) {flat = true}
 	if (isClass label 'String') {
 		scale = (global 'scale')
 		off = (max (scale / 2) 1)
 		fontName = 'Arial Bold'
 		fontSize = (14 * scale)
-		if ('Linux' == (platform)) { fontSize = (11 * scale) }
 		textColor = (gray 0)
 		if (color == (gray 0)) { textColor = (gray 255) }
 		if (isClass color 'Array') {
@@ -203,7 +202,7 @@ to buttonBitmap label color w h isInset corner border hasFrame flat {
 	} else {
 		lbm = nil
 	}
-	return (buttonImage lbm bgColor corner border isInset hasFrame w h flat borderColor)
+	return (buttonImage lbm bgColor corner border isInset hasFrame w h flat borderColor onDark)
 }
 
 to closeButtonImage labelBitmap w h {
@@ -215,7 +214,7 @@ to closeButtonImage labelBitmap w h {
 	return bm
 }
 
-to buttonImage labelBitmap color corner border isInset hasFrame width height flat borderColor {
+to buttonImage labelBitmap color corner border isInset hasFrame width height flat borderColor onDark {
 	// answer a new bitmap depicting a push button rendered
 	// with the specified box settings.
 	// the bitmap's width and height are determined by the - optional -
@@ -228,6 +227,7 @@ to buttonImage labelBitmap color corner border isInset hasFrame width height fla
 	if (isNil borderColor) {borderColor = (gray 0)}
 	if (isNil corner) {corner = (half (max width height))}
 	if (isNil border) {border = (max 1 (scale / 2))}
+	if onDark {backgroundColor = (* 2 border)}
 	if (isNil isInset) {isInset = false}
 	if (isNil hasFrame) {hasFrame = true}
 	if (isNil width) {width = (+ corner corner border border)}
@@ -239,20 +239,19 @@ to buttonImage labelBitmap color corner border isInset hasFrame width height fla
 	lblHeight = 0
 	if (isClass labelBitmap 'Bitmap') {lblHeight = (height labelBitmap)}
 
-	if flat {border = 0}
+	//if flat {border = 0}
 
 	w = (max (+ lblWidth corner corner (-5 * scale)) width)
 	h = (max (+ lblHeight border border) height)
 
 	bm = (newBitmap w h)
-	fillRoundedRect (newShapeMaker bm) (rect 0 0 w h) corner color 1 borderColor
+	fillRoundedRect (newShapeMaker bm) (rect 0 0 w h) corner color border borderColor
 
 	if (isClass labelBitmap 'Bitmap') {
 		off = 0
 		if isInset {off = (max (border / 2) 1)}
 		drawBitmap bm labelBitmap (((w - (width labelBitmap)) / 2) + off) (((h - (height labelBitmap)) / 2) + off)
 	}
-	if ('Browser' != (platform)) { unmultiplyAlpha bm }
 	return bm
 }
 

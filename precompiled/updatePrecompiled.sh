@@ -4,21 +4,21 @@
 
 # Check that npm and node installed
 if ! command -v node > /dev/null; then
-        echo "node is not installed."
-        echo "Please read DEVELOPMENT.md"
-        exit
+	echo "node is not installed."
+	echo "Please read DEVELOPMENT.md"
+	exit
 fi
 
 if ! command -v npm > /dev/null; then
-        echo "npm is not installed."
-        echo "Please read DEVELOPMENT.md"
-        exit
+	echo "npm is not installed."
+	echo "Please read DEVELOPMENT.md"
+	exit
 fi
 
 if ! command -v python > /dev/null; then
-        echo "python is not installed."
-        echo "Please read DEVELOPMENT.md"
-        exit
+	echo "python is not installed."
+	echo "Please read DEVELOPMENT.md"
+	exit
 fi
 
 rm -f *.hex *.bin *.uf2
@@ -57,6 +57,9 @@ pio run -e kids-bits
 cp .pio/build/kids-bits/firmware.bin precompiled/vm_kids_bits.bin
 pio run -e makerportV3
 python precompiled/uf2conv.py -c .pio/build/makerportV3/firmware.bin -o precompiled/vm_makerport.uf2
+
+pio run -e weact_h743vitx
+cp .pio/build/weact_h743vitx/firmware.bin precompiled/vm_weact_stm32.bin
 
 # Copy Linux VMs
 # cp linux+pi/vm_* precompiled/

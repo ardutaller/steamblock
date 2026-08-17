@@ -522,6 +522,8 @@ method addLibraryFromString MicroBlocksProject s libName fileName {
 			}
 			if (beginsWith fileName '//Libraries/') {
 				setPath lib (withoutExtension (substring fileName ((count '//Libraries/') + 1)))
+			} (beginsWith fileName 'Libraries/') {
+				setPath lib (withoutExtension (substring fileName ((count 'Libraries/') + 1)))
 			} (beginsWith fileName 'http://') {
 				setPath lib fileName
 			} (beginsWith fileName (join (gpFolder) '/Libraries')) {
@@ -807,11 +809,13 @@ method removeAllVariables MicroBlocksModule {
 method addVariable MicroBlocksModule newVar {
 	if (not (contains variableNames newVar)) {
 		variableNames = (copyWith variableNames newVar)
+		storeUndoState (scripter (smallRuntime))
 	}
 }
 
 method deleteVariable MicroBlocksModule varName {
 	variableNames = (copyWithout variableNames varName)
+	storeUndoState (scripter (smallRuntime))
 }
 
 // saving
@@ -1020,10 +1024,7 @@ method getNewerVersion MicroBlocksModule {
 
 	if (moduleName == 'main') { return nil }
 
-	embeddedFiles = (listEmbeddedFiles)
-	if ('Browser' == (platform)) {
-		embeddedFiles = (browserEmbeddedLibs this)
-	}
+	embeddedFiles = (browserEmbeddedLibs this)
 
 	// Find the embedded lib path
 	moduleFileName = (join moduleName '.ubl')

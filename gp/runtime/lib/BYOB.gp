@@ -172,7 +172,7 @@ method clicked BlockDefinition {
 
 method rightClicked BlockDefinition aHand {
 	if (isNil (ownerThatIsA morph 'Block')) {return false}
-	popUp (contextMenu this) (global 'page')
+	contextMenu this
 	return true
 }
 
@@ -192,22 +192,25 @@ method contextMenu BlockDefinition {
 		return (contextMenu selection true)
 	}
 
-	menu = (menu nil this)
-	addItem menu 'hide block definition' 'hideDefinition'
-	addLine menu
-	addItem menu 'copy to clipboard' (action 'copyToClipboard' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard'
-	addItem menu 'copy to clipboard as URL' (action 'copyToClipboardAsURL' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard as a URL'
-	addLine menu
-	addItem menu 'save picture of script' 'exportAsImage' 'save a picture of this block definition as a PNG file'
+	items = (list)
+	add items (array 'hide block definition' (action 'hideDefinition' this))
+	add items '-'
+	add items (array 'copy to clipboard' (action 'copyToClipboard' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard')
+	add items (array 'copy to clipboard as URL' (action 'copyToClipboardAsURL' (handler (ownerThatIsA morph 'Block'))) 'copy these blocks to the clipboard as a URL')
+	add items '-'
+	add items (array 'save picture of script' (action 'exportAsImage' this) 'save a picture of this block definition as a PNG file')
 	if (devMode) {
-		addLine menu
-		addItem menu 'show instructions' (action 'showInstructions' this)
-		addItem menu 'show compiled bytes' (action 'showCompiledBytes' this)
-		addItem menu 'show call tree' (action 'showCallTree' this)
+		add items '-'
+		add items (array 'show instructions' (action 'showInstructions' this))
+		add items (array 'show compiled bytes' (action 'showCompiledBytes' this))
+		add items (array 'show call tree' (action 'showCallTree' this))
+		add items '-'
+		add items (array 'add to library' (action 'addToLibraryMenu' this))
 	}
-	addLine menu
-	addItem menu 'delete block definition...' 'deleteBlockDefinition'
-	return menu
+	add items '-'
+	add items (array 'delete block definition...' (action 'deleteBlockDefinition' this))
+	menuFor (api (smallRuntime)) items
+	return nil
 }
 
 method exportAsImage BlockDefinition {
@@ -224,6 +227,56 @@ method showCompiledBytes BlockDefinition {
 
 method showCallTree BlockDefinition {
 	showCallTree (smallRuntime) (handler (owner (owner morph)))
+}
+
+method addToLibraryMenu BlockDefinition {
+	items = (list)
+	project = (project (findMicroBlocksEditor))
+	for lib (values (libraries project)) {
+		add items (array (moduleName lib) (action 'addToLibrary' this lib))
+	}
+	add items '-'
+	add items (array 'My Blocks' (action 'addToLibrary' this (main project)))
+	menuFor (api (smallRuntime)) items
+}
+
+method addToLibrary BlockDefinition library {
+	scripter = (scripter (findMicroBlocksEditor))
+	project = (project (findMicroBlocksEditor))
+	mainModule = (main project)
+	function = (functionNamed project op)
+	for lib (values (libraries (project scripter))) {
+		if (contains (functions lib) function) {
+			// Block already in a library, let's remove it from there first
+			removeFunction lib function
+			remove (blockList lib) (functionName function)
+			remove (blockSpecs lib) (blockSpecFor function)
+		}
+	}
+	if (not (contains (functions library) function)) {
+		globalsUsed = (globalVarsUsed function)
+		if (contains (functions mainModule) function) {
+			// Block is in My Blocks, let's remove it from there first
+			removeFunction mainModule function
+			remove (blockList mainModule) (functionName function)
+			remove (blockSpecs mainModule) (blockSpecFor function)
+			for var globalsUsed {
+				deleteVariable mainModule var
+			}
+		}
+		addFunction library function
+		add (blockList library) (functionName function)
+		add (blockSpecs library) (blockSpecFor function)
+		for var globalsUsed {
+			addVariable library var
+		}
+	}
+	languageChanged scripter
+	if (library == mainModule) {
+		selectCategory scripter 'cat;My Blocks'
+	} else {
+		selectLibrary scripter (moduleName library)
+	}
 }
 
 method gpContextMenu BlockDefinition {
@@ -529,10 +582,10 @@ method collapse BlockSectionDefinition {
 }
 
 method expansionMenu BlockSectionDefinition {
-	menu = (menu nil this)
-	addItem menu 'label' 'addLabel'
-	addItem menu 'input' 'addInput'
-	popUp menu (global 'page') (left (morph drawer)) (bottom (morph drawer))
+	items = (list)
+	add items (array 'label' (action 'addLabel' this))
+	add items (array 'input' (action 'addInput' this))
+	menuFor (api (smallRuntime)) items
 }
 
 // showing and hiding details
@@ -877,22 +930,16 @@ method element InputDeclaration typeStr blockColor {
 
 method typesMenu InputDeclaration {
 	// slot types: 'auto' 'num' 'str' 'bool' 'color' 'cmd' 'var' 'menu'
-	menu = (menu nil (action 'setType' this) true)
-	addItem menu (selectedString this 'auto') 'auto' 'string or number' (fullCostume (morph (element this 'auto')))
-	if (devMode) {
-		addItem menu (selectedString this 'num') 'num' 'number only' (fullCostume (morph (element this 'num')))
-		addItem menu (selectedString this 'str') 'str' 'string only' (fullCostume (morph (element this 'str')))
-		addLine menu
-	}
-	addItem menu (selectedString this 'bool') 'bool' 'boolean switch' (fullCostume (morph (element this 'bool')))
-	addItem menu (selectedString this 'color') 'color' 'color patch' (fullCostume (morph (element this 'color')))
-	popUp menu (global 'page') (left morph) (bottom morph)
-}
+	items = (list)
+	// 'label' 'callback' 'tip' 'image' 'class' 'isChecked'
+	add items (array 'auto' nil 'string or number' (fullCostume (morph (element this 'auto'))) '--input' ('auto' == typeString))
 
-method selectedString InputDeclaration slotType {
-	if (slotType == typeString) {
-		return '      ✔'
-	} else {
-		return ''
+	if (devMode) {
+		add items (array 'num' nil 'number only' (fullCostume (morph (element this 'num'))) '--input' ('num' == typeString))
+		add items (array 'str' nil 'string only' (fullCostume (morph (element this 'str'))) '--input' ('str' == typeString))
+		add items '-'
 	}
+	add items (array 'bool' nil 'boolean switch' (fullCostume (morph (element this 'bool'))) '--input' ('bool' == typeString))
+	add items (array 'color' nil 'color patch' (fullCostume (morph (element this 'color'))) '--input' ('color' == typeString))
+	menuFor (api (smallRuntime)) items (action 'setType' this) '--single-option'
 }

@@ -523,6 +523,54 @@ static OBJ primBrowserReadPrefs(int nargs, OBJ args[]) {
 	return result;
 }
 
+static OBJ primBrowserStoreIDEProperty(int nargs, OBJ args[]) {
+	// path has the form 'board.connected', while value is a JSON string
+	char *path = "";
+	if ((nargs > 0) && (IS_CLASS(args[0], StringClass))) path = obj2str(args[0]);
+	char *value = "";
+	if ((nargs > 1) && (IS_CLASS(args[1], StringClass))) value = obj2str(args[1]);
+	EM_ASM_({
+			let path = UTF8ToString($0);
+			let parts = path.split('.');
+			let obj = window['IDE'];
+			let value = JSON.parse(UTF8ToString($1));
+			let previous = null;
+			// make sure IDE object has that path set up
+			parts.forEach(
+				function (part) {
+					previous = obj;
+					if (!obj.hasOwnProperty(part)) {
+						obj[part] = {};
+					}
+					obj = obj[part];
+				}
+			);
+			// now set the value to the proper path
+			previous[parts.pop()] = value;
+			// dispatch a custom event so elements can listen to changes
+			IDE.fireEvent(path, value);
+	}, path, value);
+	return nilObj;
+}
+
+static OBJ primBrowserNotify(int nargs, OBJ args[]) {
+	char *event = "";
+	if ((nargs > 0) && (IS_CLASS(args[0], StringClass))) event = obj2str(args[0]);
+	char *value = "";
+	if ((nargs > 1) && (IS_CLASS(args[1], StringClass))) value = obj2str(args[1]);
+	EM_ASM_({
+			let event = UTF8ToString($0);
+			let value = UTF8ToString($1);
+			try {
+				value = JSON.parse(value);
+			} catch (e) {
+				console.log('event ', event, 'payload is not valid JSON:', value);
+			}
+			IDE.fireEvent(event, value);
+	}, event, value);
+	return nilObj;
+}
+
 // Boardie Support
 
 static OBJ primBrowserOpenBoardie(int nargs, OBJ args[]) {
@@ -736,7 +784,6 @@ static void setClipRect(OBJ clipRectObj) {
 
 static OBJ primOpenWindow(int nargs, OBJ args[]) {
 	// Note: We always use retina mode the browser.
-
 	int w = intOrFloatArg(0, 500, nargs, args);
 	int h = intOrFloatArg(1, 500, nargs, args);
 
@@ -744,12 +791,8 @@ static OBJ primOpenWindow(int nargs, OBJ args[]) {
 		var w = $0;
 		var h = $1;
 
-		// make background gray to make any gaps less noticable
-		document.body.style.backgroundColor = "rgb(200,200,200)";
-
 		var winCnv = document.getElementById('canvas');
 		if (winCnv) {
-			winCnv.style.setProperty('margin-top', -19 + 'px'); // avoid gray band in Chrome
 			winCnv.style.setProperty('width', w + 'px');
 			winCnv.style.setProperty('height', h + 'px');
 			winCnv.width = 2 * w;
@@ -1505,6 +1548,121 @@ OBJ primSetCursor(int nargs, OBJ args[]) {
 	return nilObj;
 }
 
+OBJ primLastAPIRequest(int nargs, OBJ args[]) {
+	// Get the index of the last queued call
+	int index = EM_ASM_INT({ return GP.callQueue.length - 1; }, NULL);
+	if (index < 0) { return nilObj; }
+	// Read and process call object properties:
+	// [ ID, endPoint, callback, paramsJSON ]
+
+	// read ID
+	OBJ id = int2obj(EM_ASM_INT({ return GP.callQueue[$0][0]; }, index));
+
+	// read endpoint string
+	int endPointLength = EM_ASM_INT({ return GP.callQueue[$0][1].length + 1; }, index);
+	OBJ endPoint = allocateString(endPointLength);
+	EM_ASM_(
+		{ stringToUTF8(GP.callQueue[$0][1], $1, $2); },
+		index,
+		&FIELD(endPoint, 0),
+		endPointLength
+	);
+
+	// read params JSON string
+	int paramsJsonLength = EM_ASM_INT({ return GP.callQueue[$0][3].length + 1; }, index);
+	OBJ paramsJson = allocateString(paramsJsonLength);
+	EM_ASM_(
+		{ stringToUTF8(GP.callQueue[$0][3], $1, $2); },
+		index,
+		&FIELD(paramsJson, 0),
+		paramsJsonLength
+	);
+
+	// populate a new GP call object
+	OBJ callObject = newObj(ArrayClass, 3, nilObj);
+	FIELD(callObject, 0) = id;
+	FIELD(callObject, 1) = endPoint;
+	FIELD(callObject, 2) = paramsJson;
+
+	return callObject;
+}
+
+OBJ primRespondAPIRequest(int nargs, OBJ args[]) {
+	// find the request in the call queue
+	int index = EM_ASM_INT({
+			for (var i = 0; i < GP.callQueue.length; i++) {
+				if (GP.callQueue[i][0] == $0) {
+					return i;
+				}
+			}
+			return -1;
+		},
+		obj2int(args[0])
+	);
+
+	if (index < 0) { return falseObj; }
+
+	EM_ASM_({
+		var params = JSON.parse(UTF8ToString($1));
+		GP.callQueue[$0][2](params); // callback function in GP callQueue
+		GP.callQueue.splice($0,1); // remove call from queue else it'll run again
+	}, index, obj2str(args[1]));
+
+	return falseObj;
+};
+
+OBJ primBrowserElectronOS(int nargs, OBJ args[]) {
+	return int2obj(EM_ASM_INT({
+		if (navigator.userAgent.includes('Electron')) {
+			if (navigator.userAgent.includes('Win')) { return 1; }
+			if (navigator.userAgent.includes('Mac')) { return 2; }
+			if (navigator.userAgent.includes('Linux')) { return 3; }
+		} else {
+			return 4;
+		}
+	}));
+};
+
+OBJ primBrowserNextCallId(int nargs, OBJ args[]) {
+	return int2obj(EM_ASM_INT({
+		GP.lastCallId = (GP.lastCallId + 1) % 100000;
+		return GP.lastCallId;
+	}));
+};
+
+OBJ primBrowserResponse(int nargs, OBJ args[]) {
+	int id = obj2int(args[0]);
+
+	int responseLength = EM_ASM_INT(
+		{
+			// byte count, not string length, in case string contains non-ASCII chars
+			return GP.apiResponses[$0] ? new Blob([GP.apiResponses[$0]]).size + 1 : 0;
+		},
+		id
+	);
+	if (responseLength == 0) { return nilObj; }
+
+	OBJ response = allocateString(responseLength);
+	EM_ASM_(
+		{
+			stringToUTF8(GP.apiResponses[$0], $1, $2);
+			delete(GP.apiResponses[$0]);
+		},
+		id,
+		&FIELD(response, 0),
+		responseLength
+	);
+
+	return response;
+};
+
+OBJ primBrowserDfuUpload(int nargs, OBJ args[]) {
+	if (nargs < 1) return notEnoughArgsFailure();
+	if (NOT_CLASS(args[0], StringClass)) return primFailed("Argument must be a string");
+	EM_ASM_({ DFUpload.flashBoard(UTF8ToString($0)); }, obj2str(args[0]));
+	return nilObj;
+};
+
 static PrimEntry browserPrimList[] = {
 	{"-----", NULL, "Browser Support"},
 	{"browserURL",						primBrowserURL,							"Return the full URL of the current browser page."},
@@ -1520,6 +1678,9 @@ static PrimEntry browserPrimList[] = {
 	{"browserGetDroppedText",	primBrowserGetDroppedText,	"Get last dropped or pasted text, or nil if there isn't any."},
 	{"browserGetMessage",			primBrowserGetMessage,			"Get the next message from the browser, or nil if there isn't any."},
 	{"browserPostMessage",		primBrowserPostMessage,			"Post a message to the browser using the 'postMessage' function."},
+	{"browserLastAPIRequest",		primLastAPIRequest,			""},
+	{"browserRespondAPIRequest",		primRespondAPIRequest,			""},
+	{"browserElectronOS",			primBrowserElectronOS,			""},
 	{"browserIsMobile",				primBrowserIsMobile,				"Return true if running in a mobile browser."},
 	{"browserHasLanguage",		primBrowserHasLanguage,			"Return true the given language code is in navigator.languages. Argument: language code string (e.g. 'en')."},
 	{"browserIsChromeOS",			primBrowserIsChromeOS,			"Return true if running as a Chromebook app."},
@@ -1527,12 +1688,17 @@ static PrimEntry browserPrimList[] = {
 	{"browserReadFile",				primBrowserReadFile,				"Select and read a file in the browser. Args: [extension]"},
 	{"browserWriteFile",			primBrowserWriteFile,				"Select and write a file the browser. Args: data [suggestedFileName, id]"},
 	{"browserLastSaveName",		primBrowserLastSaveName,		"Return the name of the most recent file save."},
+	{"browserDfuUpload",			primBrowserDfuUpload,				"Upload a binary firmware file to a DFU device"},
 	{"browserSetShadow",			primBrowserSetShadow,				"Set the Canvas shadow color, offset, and blur for following graphics operations. Args: color, offset, blur"},
 	{"browserClearShadow",		primBrowserClearShadow,			"Disable the Canvas shadow effect."},
 	{"browserReadPrefs",			primBrowserReadPrefs,				"Read user preferences from localStorage."},
 	{"browserWritePrefs",			primBrowserWritePrefs,			"Write user preferences to localStorage. Args: jsonString"},
 	{"browserOpenBoardie",		primBrowserOpenBoardie,			"Open boardie."},
 	{"browserCloseBoardie",		primBrowserCloseBoardie,		"Disconnect boardie."},
+	{"browserStoreIDEProperty",	primBrowserStoreIDEProperty,		"Store a property for the browser version to use. Args: GPobjectPropertyName, propertyValue"},
+	{"browserNotify",					primBrowserNotify,					"Trigger a custom event to the document. Args: eventName"},
+	{"browserResponse",				primBrowserResponse,				"Get the response from a browser action."},
+	{"browserNextCallId",			primBrowserNextCallId,			"Get the next API call identifier so it can be used to track a response from the browser to GP."},
 	{"boardiePutFile",				primBoardiePutFile,					"Store a file in boardie's file system."},
 	{"boardieGetFile",				primBoardieGetFile,					"Read a file from boardie's file system."},
 	{"boardieFileList",				primBoardieListFiles,				"Get a list of files in boardie's file system."},

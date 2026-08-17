@@ -16,7 +16,6 @@ method initialize ToolTip aString tipWidth {
 
 	font = 'Arial'
 	fontSize = (18 * scale)
-	if ('Linux' == (platform)) { fontSize = (13 * scale) }
 
 	setFont font fontSize
 	aString = (toString aString)
@@ -39,7 +38,6 @@ method layoutChanged ToolTip { fixLayout this }
 method fixLayout ToolTip {
 	scale = (global 'scale')
 	fontSize = (18 * scale)
-	if ('Linux' == (platform)) { fontSize = (13 * scale) }
 	hInset = (11 * scale)
 	vInset = (7 * scale)
 	setPosition (morph contents) ((left morph) + hInset) ((top morph) + vInset)

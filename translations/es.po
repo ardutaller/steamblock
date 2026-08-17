@@ -3534,8 +3534,8 @@ msgid "none"
 msgstr "ninguno"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "Más información en http://microblocks.fun"
+msgid "More info at %1"
+msgstr "Más información en %1"
 
 #. MicroBlocks IDE error message.
 msgid "No boards found; is your board plugged in?"

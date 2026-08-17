@@ -266,11 +266,15 @@ method queryNewItem MicroBlocksListItemViewer {
 }
 
 method queryRemoveItem MicroBlocksListItemViewer {
-	menu = (menu nil (action 'removeItem' this) true)
+	items = (list)
 	for lib contents {
-		addItem menu lib
+		if (beginsWith lib '_') {
+			add items (substring lib 2)
+		} else {
+			add items lib
+		}
 	}
-	popUpAtHand menu (global 'page')
+	menuFor (api (smallRuntime)) items (action 'removeItem' this)
 }
 
 method removeItem MicroBlocksListItemViewer itemName {
@@ -325,7 +329,6 @@ method buildListView MicroBlocksListItemViewer {
 	fontName = 'Arial'
 	labelFontName = 'Arial Bold'
 	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	removeAllParts morph
 	if (or (and (notNil label) (notEmpty contents)) editFlag) {
@@ -374,7 +377,6 @@ method initialize MicroBlocksLibraryItemMorph aName anItemViewer forEditing clic
 	morph = (newMorph this)
 	fontName = 'Arial'
 	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	itemName = aName
 	itemViewer = anItemViewer
@@ -407,7 +409,6 @@ method handLeave MicroBlocksLibraryItemMorph aHand {
 method setCostumeColor MicroBlocksLibraryItemMorph color {
 	fontName = 'Arial'
 	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	bm = (stringImage itemName fontName fontSize (gray 0) 'center' nil 0 0 5 3 color)
 	setCostume morph bm
@@ -437,12 +438,13 @@ method setCategory MicroBlocksLibraryCategoryPicker aCategory {
 
 method pickCategory MicroBlocksLibraryCategoryPicker {
 	scripter = (scripter (smallRuntime))
-	menu = (menu)
+	items = (list)
 	for cat (categories scripter) {
-		addItem menu (localized cat) (action 'setCategory' this cat) '' (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) cat))))
+		// 'label' 'callback' 'tip' 'image' 'class'
+		add items (array (localized cat) (action 'setCategory' this cat) nil (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) cat)))) '--category-color')
 	}
-	addItem menu (localized 'Generic') (action 'setCategory' this 'Library') '' (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) 'Library'))))
-	popUp menu (global 'page') (left morph) (bottom morph)
+	add items (array (localized 'Generic') (action 'setCategory' this 'Library') nil (fullCostume (morph (newBox nil (blockColorForCategory (authoringSpecs) 'Library')))) '--category-color')
+	menuFor (api (smallRuntime)) items
 }
 
 method clicked MicroBlocksLibraryCategoryPicker aCategory {
@@ -473,7 +475,6 @@ to newLibraryPropertiesFrame lib forEditing win {
 method initialize MicroBlocksLibraryPropertiesFrame lib forEditing win {
 	fontName = 'Arial'
 	fontSize = (16 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (12 * (global 'scale')) }
 
 	editFlag = (and (notNil forEditing) forEditing)
 	morph = (morph (newBox nil (transparent) 0))

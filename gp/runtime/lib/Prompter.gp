@@ -23,7 +23,6 @@ method initialize Prompter label default editRule anAction details {
 	minW = (titleBarWidth window)
 	fontName = 'Arial'
 	fontSize = (14 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (11 * (global 'scale')) }
 
 	if (notNil details) {
 			detailsText = (newText details fontName fontSize)
@@ -76,7 +75,6 @@ method initializeForConfirm Prompter label question yesLabel noLabel anAction {
 
 	lbl = (getField window 'label')
 	fontSize = (16 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (13 * (global 'scale')) }
 	textFrame = (newText (localized question) (fontName lbl) fontSize (gray 0) 'center')
 	addPart morph (morph textFrame)
 	createButtons this (localized yesLabel) (localized noLabel)
@@ -105,7 +103,6 @@ method initializeForInform Prompter label details okLabel {
 	lbl = (getField window 'label')
 	fontName = 'Arial Bold'
 	fontSize = (18 * (global 'scale'))
-	if ('Linux' == (platform)) { fontSize = (15 * (global 'scale')) }
 
 	if ((count (lines details)) == 1) { align = 'center' } else { align = 'left' }
 

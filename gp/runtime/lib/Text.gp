@@ -464,40 +464,41 @@ method handLeave Text aHand {
 // context menu
 
 method contextMenu Text {
-	menu = (menu nil this)
+	items = (list)
 	if (and (editRule == 'code') ((count (selected this)) > 0)) {
-		addItem menu 'do it...' 'doIt' 'execute the marked text as GP code'
-		addItem menu 'print it...' 'printIt' 'insert the result of executing the marked text as GP code'
-		// addItem menu 'inspect it...' 'inspectIt' 'open a window on the result of executing the marked text as GP code'
-		addItem menu 'explore it...' 'exploreIt' 'open an explorer on the result of executing the marked text as GP code'
-		addItem menu 'blockify it...' 'blockifyIt' 'create a graphical block representing the marked text as GP code'
-		addItem menu 'definitions...' 'browseImplementors' 'lookup the implementations of the selected expression'
-		addLine menu
+		add items (array 'do it...' (action 'doIt') 'execute the marked text as GP code')
+		add items (array 'print it...' (action 'printIt') 'insert the result of executing the marked text as GP code')
+		// addItem menu 'inspect it...' (action 'inspectIt') 'open a window on the result of executing the marked text as GP code'
+		add items (array 'explore it...' (action 'exploreIt') 'open an explorer on the result of executing the marked text as GP code')
+		add items (array 'blockify it...' (action 'blockifyIt') 'create a graphical block representing the marked text as GP code')
+		add items (array 'definitions...' (action 'browseImplementors') 'lookup the implementations of the selected expression')
+		add items '-'
 	}
 	edits = false
 	if ((selected this) != '') {
 		edits = true
-		addItem menu 'cut' (action 'copyToClipboard' caret true)
-		addItem menu 'copy' (action 'copyToClipboard' caret false)
+		add items (array 'cut' (action 'copyToClipboard' caret true))
+		add items (array 'copy' (action 'copyToClipboard' caret false))
 	}
 	txt = (readClipboard)
 	if (txt != '') {
 		edits = true
-		addItem menu 'paste' (action 'insertRight' caret txt)
+		add items (array 'paste' (action 'insertRight' caret txt))
 	}
-	if edits {addLine menu}
+	if edits {add items '-'}
 	if ((originalContents caret) != text) {
-		addItem menu 'accept' (action 'accept' caret)
-		addItem menu 'revert' (action 'cancel' caret)
+		add items (array 'accept' (action 'accept' caret))
+		add items (array 'revert' (action 'cancel' caret))
 	} else {
-		addItem menu 'stop editing' 'stopEditing'
+		add items (array 'stop editing' (action 'stopEditing' this))
 	}
-	addItem menu 'select all' 'selectAll'
+	add items (array 'select all' (action 'selectAll' this))
 	if (and (isClass (handler (owner morph)) 'InputSlot') (not (isMicroBlocks)))  {
-		addLine menu
+		add items '-'
 		addSlotSwitchItems (handler (owner morph)) menu
 	}
-	return menu
+	menuFor (api (smallRuntime)) items
+	return nil
 }
 
 // editing

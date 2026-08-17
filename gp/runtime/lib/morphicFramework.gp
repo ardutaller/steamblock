@@ -167,12 +167,7 @@ method draggedObjectChanged Hand {
 	if (isNil obj) { return }
 	removeAllParts morph
 	show (morph obj)
-	if ('Browser' == (platform)) {
-		addPart morph (morph (newCachedTexture obj))
-	} else {
-		addPart morph (shadow (morph obj) 50 (7 * (global 'scale')))
-		addPart morph (cachedCostumeFor this obj)
-	}
+	addPart morph (morph (newCachedTexture obj))
 	hide (morph obj)
 	addPart morph (morph obj)
 	changed morph
@@ -329,10 +324,7 @@ method handHasMoved Hand {
 method processEvent Hand evt {
 	type  = (at evt 'type')
 	if (type == 'mousewheel') {
-		// Windows and Linux only report +/- 1 for mousewheel events so scale them up
-		wheelScale = (60 * (global 'scale'))
-		if ('Browser' == (platform)) { wheelScale = (1 * (global 'scale')) }
-		if ('Mac' == (platform)) { wheelScale = (10 * (global 'scale')) }
+		wheelScale = (1 * (global 'scale'))
 		if (shiftKeyDown (keyboard page)) {
 			// allow shift+scrollwheel to scroll horizontally
 			processSwipe this (* wheelScale (at evt 'y') -1) 0
@@ -344,6 +336,7 @@ method processEvent Hand evt {
 	}
 	x = (at evt 'x')
 	y = (at evt 'y')
+
 	if (and (hasActiveMenu page) (isMobile)) {
 		y += (-12 * (global 'scale')) // offset vertically so menu item is not under finger
 	}
@@ -616,20 +609,12 @@ method processEvent Keyboard evt {
 	type = (at evt 'type')
 	key = (at evt 'keycode')
 	if (or (key == 91) (key == 93)) { key = nil } // numpad fix for keys 3 and 5
-	if (and ('textinput' == type) ('Browser' == (platform)) ('	' == (at evt 'text'))) {
+	if (and ('textinput' == type) ('	' == (at evt 'text'))) {
 		// skip textinput events for tab characters (sent by browsers but not SDL2)
 		return
 	}
 	if (and ('textinput' == type) (or (controlKeyDown this) (commandKeyDown this))) {
 		return // ignore textinput events with modifier keys
-	}
-	if (and ('Browser' != (platform)) (74 <= key) (key <= 78)) {
-		// Map SDL key codes to browser key codes
-		if (74 === key) { key = 36 // home
-		} (75 === key) { key = 33 // page up
-		} (77 === key) {  key = 35 // end
-		} (78 === key) { key = 34 // page down
-		}
 	}
 	updateModifiedKeys this (at evt 'modifierKeys')
 	if (and (1 <= key) (key <= 255)) {
@@ -680,9 +665,8 @@ method processEvent Keyboard evt {
 			if (isNil focus) {
 				pe = (findProjectEditor)
 				if (27 == key) { // escape key
-					if (notNil (flasher (smallRuntime))) {
-						confirmRemoveFlasher (smallRuntime)
-					} (not (decompilerDone (smallRuntime))) {
+					notify (api (smallRuntime)) 'ide.keyPressed' 'ESC'
+					if (not (decompilerDone (smallRuntime))) {
 						stopDecompilation (smallRuntime)
 					} (notNil (findMorph 'MicroBlocksFilePicker')) {
 						destroy (findMorph 'MicroBlocksFilePicker')
@@ -725,11 +709,16 @@ method processEvent Keyboard evt {
 					// cmd-S or ctrl-S - save file dialog
 					(saveProjectToFile pe)
 				}
-				if (and (122 == (at evt 'char'))
+				if (and (90 == key)
 					(or (controlKeyDown this) (commandKeyDown this))
+					(notNil pe)
 					(isNil (grabbedObject (hand (global 'page'))))) {
-						// cmd-Z or ctrl-Z - undo last drop
-						if (notNil pe) { undrop (scriptEditor (scripter pe)) }
+					// cmd-Z or ctrl-Z - undo last edit
+					if (shiftKeyDown this) {
+						redo (scripter pe)
+					} else {
+						undo (scripter pe)
+					}
 				}
 				if (and (32 == key) (or (controlKeyDown this) (commandKeyDown this))) {
 					// ctrl-space or cmd-space - search for blocks and variables
@@ -879,7 +868,7 @@ method open Page tryRetina title {
 	// Morphic Rework:
 	// The renderToBitmap flag makes SDL screen be a bitmap vs. a texture,
 	// allowing direct rendering (including vectors and text) to SDL's display.
-	renderToBitmap = (not ('Browser' == (platform)))
+	renderToBitmap = false
 
 	openWindow (width morph) (height morph) tryRetina title renderToBitmap
 	winSize = (windowSize)
@@ -965,20 +954,17 @@ method doOneCycle Page {
 	// sound output buffer, thus decreasing the latency for starting a sound.
 
 	t = (newTimer)
-	step soundMixer
+	// step soundMixer
 	gcIfNeeded
 	processEvents this
+	processLastCall (api (smallRuntime))
 	step hand
 	step morph
 	stepSchedules this
 	wakeUpDisplayTasks taskMaster
 	stepTasks taskMaster 75
 	if (or redrawAll (notEmpty damages)) { fixDamages this }
-
-	// sleep for any extra time, but always sleep a little to ensure that
-	// we get events (and to return control to the browser)
-	sleepTime = (max 1 (15 - (msecs t)))
-	waitMSecs sleepTime
+	waitMSecs 1 // return control to the browser until next animation frame
 }
 
 method updateDisplay Page {
@@ -1111,12 +1097,9 @@ to getNextEvent {
 
 to readClipboard {
 	// Return the contents of the clipboard.
-
-	if ('Browser' == (platform)) {
-		// On browsers, read the clipboard twice, with a short wait in between.
-		getClipboard
-		waitMSecs 1
-	}
+	// On browsers, read the clipboard twice, with a short wait in between.
+	getClipboard
+	waitMSecs 1
 	return (getClipboard)
 }
 
@@ -1321,8 +1304,7 @@ method clearActiveMenu Page { activeMenu = nil }
 
 method showHint Page aSpeechBubble isHint {
 	removeHint this
-	inset = 3
-	if ('Browser' == (platform)) { inset = 2 }
+	inset = 2
 	keepWithin (morph aSpeechBubble) (insetBy (bounds morph) (inset * (global 'scale')))
 	addPart this aSpeechBubble
 	step aSpeechBubble
@@ -1357,8 +1339,7 @@ method removeAllHints Page {
 
 method showTooltip Page aTooltip {
 	removeTooltip this
-	inset = 3
-	if ('Browser' == (platform)) { inset = 2 }
+	inset = 2
 	keepWithin (morph aTooltip) (insetBy (bounds morph) (inset * (global 'scale')))
 	addPart this aTooltip
 	activeTooltip = aTooltip
@@ -1388,60 +1369,98 @@ method freshPrompt Page question default editRule callback details {
 		return (prompt this question default editRule callback details)
 }
 
+//method prompt Page question default editRule callback details {
+//	// prompt can be used either as a reporter or as a command
+//	// if a callback is passed prompt is used as a command, when
+//	// the user accepts the prompter, the callback is called with
+//	// the user's answer
+//	// if no callback is given, this method eclipses the page's
+//	// main loop until the user terminates the prompter.
+//	// the reporter version is much nicer to user in scripts,
+//	// but it doesn't handle multiple prompters gracefully, unless
+//	// the user "backtracks" the prompters in the reverse order
+//	// of having opened them.
+//	// the callback version, otoh, handles any number and
+//	// sequence of prompters gracefully, but is more cumbersome
+//	// to use in scripts
+//	if (isNil editRule) { editRule = 'line' }
+//	p = (new 'Prompter')
+//	initialize p (localized question) (localized default) editRule callback details
+//	fixLayout p
+//	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
+//	addPart morph (morph p)
+//	edit (textBox p) hand
+//	selectAll (textBox p)
+//	if (isNil callback) {
+//		cancelTouchHold hand
+//		while (not (isDone p)) {doOneCycle this}
+//		destroy (morph p)
+//		return (answer p)
+//	}
+//}
+
 method prompt Page question default editRule callback details {
-	// prompt can be used either as a reporter or as a command
-	// if a callback is passed prompt is used as a command, when
-	// the user accepts the prompter, the callback is called with
-	// the user's answer
-	// if no callback is given, this method eclipses the page's
-	// main loop until the user terminates the prompter.
-	// the reporter version is much nicer to user in scripts,
-	// but it doesn't handle multiple prompters gracefully, unless
-	// the user "backtracks" the prompters in the reverse order
-	// of having opened them.
-	// the callback version, otoh, handles any number and
-	// sequence of prompters gracefully, but is more cumbersome
-	// to use in scripts
-	if (isNil editRule) { editRule = 'line' }
-	p = (new 'Prompter')
-	initialize p (localized question) (localized default) editRule callback details
-	fixLayout p
-	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
-	addPart morph (morph p)
-	edit (textBox p) hand
-	selectAll (textBox p)
-	if (isNil callback) {
-		focusOn hand nil
-		while (not (isDone p)) {doOneCycle this}
-		destroy (morph p)
-		return (answer p)
+	api = (api (smallRuntime))
+	id = (nextId api)
+
+	options = (dictionary)
+	atPut options 'title' question
+	atPut options 'text' details
+	atPut options 'id' id
+	atPut options 'default' default
+	atPut options 'editRule' editRule
+
+	notify api 'window.prompt' options
+	response = (browserResponse api id)
+	while (response == nil) {
+		response = (browserResponse api id)
+		doOneCycle this
 	}
+	if (notNil callback) {
+		call callback response
+	}
+
+	return response
 }
 
 method confirm Page title question yesLabel noLabel callback {
-	// see comment for ::prompt
-	p = (new 'Prompter')
-	initializeForConfirm p title question yesLabel noLabel callback
-	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
-	addPart morph (morph p)
-	if (isNil callback) {
-		focusOn hand nil
-		while (not (isDone p)) {doOneCycle this}
-		destroy (morph p)
-		return (answer p)
+	api = (api (smallRuntime))
+	id = (nextId api)
+
+	options = (dictionary)
+	atPut options 'title' title
+	atPut options 'text' question
+	atPut options 'id' id
+	atPut options 'yesLabel' yesLabel
+	atPut options 'noLabel' noLabel
+
+	notify api 'window.confirm' options
+	response = (browserResponse api id)
+	while (response == nil) {
+		response = (browserResponse api id)
+		doOneCycle this
 	}
+
+	return response
 }
 
 method inform Page details title yesLabel nonBlocking {
-	p = (new 'Prompter')
-	initializeForInform p title details yesLabel
-	setPosition (morph p) (half ((width morph) - (width (morph p)))) (40 * (global 'scale'))
-	addPart morph (morph p)
-	focusOn hand nil
-	if (nonBlocking == true) { return true }
-	while (not (isDone p)) {doOneCycle this}
-	destroy (morph p)
-	return (answer p)
+	api = (api (smallRuntime))
+	id = (nextId api)
+
+	options = (dictionary)
+	atPut options 'title' title
+	atPut options 'text' details
+	atPut options 'id' id
+
+	notify api 'window.inform' options
+	response = (browserResponse api id)
+	while (response == nil) {
+		response = (browserResponse api id)
+		doOneCycle this
+	}
+
+	return response
 }
 
 // events

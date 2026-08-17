@@ -1198,8 +1198,8 @@ msgid "New"
 msgstr "新規"
 
 #. About window info
-msgid "More info at http://microblocks.fun"
-msgstr "より多くの情報は http://microblocks.fun"
+msgid "More info at %1"
+msgstr "より多くの情報は %1"
 
 #. Settings menu option
 msgid "about..."
