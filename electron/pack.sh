@@ -59,7 +59,6 @@ rm -R microblocks-windows
 mv ../prepack/windows microblocks-windows
 rm -f microblocks-windows.zip
 zip -rq microblocks-windows.zip microblocks-windows
-echo "Creating Windows installer..."
 cd ../packagers/windows/
 ./build-installer.sh ../../out/microblocks-windows ../../out $version
 cd ../../out
