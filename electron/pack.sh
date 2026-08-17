@@ -10,17 +10,17 @@ if test -n "$version"; then
 	sed -i -E "s/(.*version.*)\".*\"/\1\"$version\"/" package.json
 fi
 
-if [[ -z "$system" || "$system" == 'linux' ]]; then
+if [[ "$system" == 'all' || "$system" == 'linux' ]]; then
 ./packagers/linux/prepack.sh $tag
 echo "Linux file tree built"
 fi
 
-if [[ -z "$system" || "$system" == 'macos' ]]; then
+if [[ "$system" == 'all' || "$system" == 'macos' ]]; then
 ./packagers/macos/prepack.sh $tag
 echo "MacOS file tree built"
 fi
 
-if [[ -z "$system" || "$system" == 'windows' ]]; then
+if [[ "$system" == 'all' || "$system" == 'windows' ]]; then
 ./packagers/windows/prepack.sh $tag
 echo "Windows file tree built"
 fi
