@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-17 04:19+0000\n"
+"PO-Revision-Date: 2026-08-17 07:23+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -4215,7 +4215,7 @@ msgstr "rechte"
 
 #. MQTT library block
 msgid "MQTT connected"
-msgstr "MQTT verbunden"
+msgstr "MQTT verbunden?"
 
 #. OLED Graphics library block
 msgid "set video _"
