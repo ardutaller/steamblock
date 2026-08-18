@@ -45,8 +45,6 @@ cp vm/build/STMicroelectronics.stm32.Nucleo_64/vm.ino.bin precompiled/vm_duelink
 
 pio run -e esp32
 cp .pio/build/esp32/firmware.bin precompiled/vm_esp32.bin
-pio run -e nodemcu
-cp .pio/build/nodemcu/firmware.bin precompiled/vm_nodemcu.bin
 pio run -e pico-w
 cp .pio/build/pico-w/firmware.uf2 precompiled/vm_pico_w.uf2
 pio run -e databot
