@@ -26,12 +26,17 @@ method initialize MicroBlocksFirmwareInstaller {
 		'RP2040 (Pico or Pico W)'
 		'MakerPort'
 		'-'
+		'Circuit Playground Express'
+		'Circuit Playground Bluefruit'
+		'-'
 		'WeAct STM32H743'
 		'DUELink'
 		'-'
-		'ESP32')
+		'ESP32'
+		'ESP8266')
 	espBoards = (array
 		'Citilab ED1' 'CoCube' 'Databot' 'Databot v3' 'ESP32' 'micro:STEAMakers'
+		'ESP8266'
 		'KidsBits' 'CodingBox' 'KidsIOT'
 		'Springbot' 'Springbot Green' 'Springbot Gold')
 	dfuBoards = (array
