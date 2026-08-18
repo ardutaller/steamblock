@@ -601,6 +601,11 @@ method checkLatestVersion MicroBlocksEditor {
 		return
 	}
 
+	isPilot = (or
+		(isPilot this)
+		(endsWith (ideVersionNumber (smallRuntime)) 'pilot')
+	)
+
 	currentVersion = (splitWith (ideVersionNumber (smallRuntime)) '.')
 
 	// sanity checks -- both versions should be lists/arrays of strings representing integers
@@ -647,7 +652,12 @@ method fetchLatestVersionNumber MicroBlocksEditor {
 		suffix = '?R='
 	}
 	url = (join '/downloads/latest/VERSION.txt' suffix (rand 100000 999999))
-	versionText = (basicHTTPGet 'microblocks.fun' url)
+	retries = 5
+	versionText = ''
+	while (and (retries > 0) (isEmpty versionText)) {
+		versionText = (basicHTTPGet 'microblocks.fun' url)
+		retries = (retries - 1)
+	}
 	if (isNil versionText) { return (array 0 0 0) }
 	return (splitWith (substring (first (lines versionText)) 1) '.')
 }
