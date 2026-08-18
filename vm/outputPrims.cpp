@@ -924,7 +924,7 @@ static void sendNeoPixelData(int val) { // micro:bit (v1 & v2)/Calliope
 			#else
 				// Note: Use NRF_P0->OUTSET/OUTCLR form to achieve better timing on nRF51
 				NRF_P0->OUTSET = neoPixelPinMask;
-				DELAY_CYCLES(8);
+				DELAY_CYCLES(7);
 				NRF_P0->OUTCLR = neoPixelPinMask;
 			#endif
 		} else { // zero bit; timing goal: high 300 nsecs, low 900 nsecs
@@ -933,12 +933,12 @@ static void sendNeoPixelData(int val) { // micro:bit (v1 & v2)/Calliope
 				*neoPixelPinSet = neoPixelPinMask;
 				DELAY_CYCLES(2);
 				*neoPixelPinClr = neoPixelPinMask;
-				DELAY_CYCLES(5);
+				DELAY_CYCLES(6);
 			#else
 				// Note: Use NRF_P0->OUTSET/OUTCLR form to achieve a short enough zero pulse on nRF51
 				NRF_P0->OUTSET = neoPixelPinMask;
 				NRF_P0->OUTCLR = neoPixelPinMask;
-				DELAY_CYCLES(6);
+				DELAY_CYCLES(1);
 			#endif
 		}
 	}
@@ -978,16 +978,16 @@ static void initNeoPixelPin(int pinNum) {
 static void sendNeoPixelData(int val) { // SAMD21 (48 MHz)
 	uint32 oldIRQ = saveIRQState();
 	for (uint32 mask = (1 << (neoPixelBits - 1)); mask > 0; mask >>= 1) {
-		if (val & mask) { // one bit; timing goal: high 900 nsecs, low 350 nsecs
+		if (val & mask) { // one bit; timing goal: high 850 nsecs, low 350 nsecs
 			*neoPixelPinSet = neoPixelPinMask;
-			DELAY_CYCLES(19);
+			DELAY_CYCLES(28);
 			*neoPixelPinClr = neoPixelPinMask;
-			DELAY_CYCLES(0);
-		} else { // zero bit; timing goal: high 350 nsecs, low 800 nsecs
+			DELAY_CYCLES(1);
+		} else { // zero bit; timing goal: high 300 nsecs, low 900 nsecs
 			*neoPixelPinSet = neoPixelPinMask;
-			DELAY_CYCLES(0);
+			DELAY_CYCLES(2);
 			*neoPixelPinClr = neoPixelPinMask;
-			DELAY_CYCLES(20);
+			DELAY_CYCLES(24);
 		}
 	}
 	restoreIRQState(oldIRQ);
