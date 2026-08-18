@@ -9,7 +9,7 @@
 #include <string.h>
 #include <assert.h> /* assert() */
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #include <emscripten/fetch.h>
 
@@ -69,7 +69,7 @@ static void cleanupRequestAtIndex(int index) {
 	requests[index].byteCount = 0;
 }
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 
 static void fetchDoneCallback(emscripten_fetch_t *fetch) {
 	FetchRequest *request = fetch->userData;

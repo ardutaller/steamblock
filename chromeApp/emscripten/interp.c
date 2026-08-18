@@ -109,7 +109,7 @@ void initGP() {
 #if defined(_WIN32)
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE) winInterruptHandler, TRUE);
 	timeBeginPeriod(1); // use finer-grained scheduler resolution
-#elif defined(EMSCRIPTEN)
+#elif defined(__EMSCRIPTEN__)
 	// do nothing; control-C interrupts are not supported
 	(void) interruptHandler; // reference to suppress compiler warning
 #else
@@ -952,7 +952,7 @@ OBJ run(OBJ startBlockOrTask) {
 			case NOOP:
 				break;
 			default:
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 				if (b->prim < (void*)STOP) result = ((PrimPtr)(b->prim))(nargs, args);
 #else
 				if (b->prim > (void*)NOOP) result = ((PrimPtr)(b->prim))(nargs, args);

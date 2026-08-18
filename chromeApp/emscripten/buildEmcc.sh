@@ -27,7 +27,7 @@ cp -r ../../img .
 
 emcc -std=gnu99 -Wall -O3 \
 -Wno-macro-redefined \
--D EMSCRIPTEN \
+-Wno-unused-but-set-global \
 -D NO_JPEG \
 -D NO_SDL \
 -D NO_SOCKETS \

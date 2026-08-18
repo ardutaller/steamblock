@@ -11,7 +11,7 @@
 
 // ***** Audio Output *****
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 
 #include <emscripten.h>
 
@@ -50,7 +50,7 @@ static void writeSamples(OBJ buffer) {
 	}, &FIELD(buffer, 0), objWords(buffer));
 }
 
-#else // end EMSCRIPTEN sound output
+#else // end __EMSCRIPTEN__ sound output
 
 #include "SDL.h"
 
@@ -465,7 +465,7 @@ OBJ primStopSpeech(int nargs, OBJ args[]) { return nilObj; }
 
 #define MAX_SAMPLE_COUNT 16384
 
-#if defined(EMSCRIPTEN)
+#if defined(__EMSCRIPTEN__)
 
 OBJ primStartAudioInput(int nargs, OBJ args[]) {
 	int inputSampleCount = intArg(0, 2048, nargs, args);

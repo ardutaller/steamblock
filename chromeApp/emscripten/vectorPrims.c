@@ -38,7 +38,7 @@ static int isRectangle(OBJ rect) {
 		(isInt(FIELD(rect, 3)) || IS_CLASS(FIELD(rect, 3), FloatClass));
 }
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	#include <emscripten.h>
 	#include <emscripten/html5.h>
 //	typedef void cairo_t;
@@ -485,7 +485,7 @@ static void interpretPath(OBJ path) {
 		if (strcmp("L", cmd) == 0) {
 			x = pathXOffset + evalFloat(FIELD(path, i++));
 			y = pathYOffset + evalFloat(FIELD(path, i++));
-			#ifdef EMSCRIPTEN
+			#ifdef __EMSCRIPTEN__
 				EM_ASM_({ GP.ctx.lineTo($0, $1) }, x, y);
 			#else
 				lineTo(x, y);
@@ -495,7 +495,7 @@ static void interpretPath(OBJ path) {
 			y = pathYOffset + evalFloat(FIELD(path, i++));
 			qx = pathXOffset + evalFloat(FIELD(path, i++));
 			qy = pathYOffset + evalFloat(FIELD(path, i++));
-			#ifdef EMSCRIPTEN
+			#ifdef __EMSCRIPTEN__
 				EM_ASM_({ GP.ctx.quadraticCurveTo($0, $1, $2, $3) }, qx, qy, x, y);
 			#elif defined(BLEND2D)
 				quadTo(qx, qy, x, y);
@@ -514,7 +514,7 @@ static void interpretPath(OBJ path) {
 			c1y = pathYOffset + evalFloat(FIELD(path, i++));
 			c2x = pathXOffset + evalFloat(FIELD(path, i++));
 			c2y = pathYOffset + evalFloat(FIELD(path, i++));
-			#ifdef EMSCRIPTEN
+			#ifdef __EMSCRIPTEN__
 				EM_ASM_({ GP.ctx.bezierCurveTo($0, $1, $2, $3, $4, $5) }, c1x, c1y, c2x, c2y, x, y);
 			#else
 				cubicTo(c1x, c1y, c2x, c2y, x, y);
@@ -524,13 +524,13 @@ static void interpretPath(OBJ path) {
 			y = pathYOffset + evalFloat(FIELD(path, i++));
 			firstX = x;
 			firstY = y;
-			#ifdef EMSCRIPTEN
+			#ifdef __EMSCRIPTEN__
 				EM_ASM_({ GP.ctx.moveTo($0, $1) }, x, y);
 			#else
 				moveTo(x, y);
 			#endif
 		} else if (strcmp("Z", cmd) == 0) {
-			#ifdef EMSCRIPTEN
+			#ifdef __EMSCRIPTEN__
 				EM_ASM({ GP.ctx.closePath() }, 0);
 			#else
 				closePath();
@@ -544,7 +544,7 @@ static void interpretPath(OBJ path) {
 	}
 	if ((fabs(lastX - firstX) < 0.0001) &&
 		(fabs(lastY - firstY) < 0.0001)) {
-			#ifdef EMSCRIPTEN
+			#ifdef __EMSCRIPTEN__
 				EM_ASM({ GP.ctx.closePath() }, 0);
 			#else
 				closePath();
