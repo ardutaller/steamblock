@@ -1,6 +1,6 @@
 module KidsIOT
 author 'Josep Ferràndiz'
-version 2 0 
+version 2 1 
 depends Tone '_Dual Motor (DRV8833)' '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' '_Real Time Clock' 
 choices kiot_rotarySensor 'kiot;rotation' 'kiot;button pressed?' 
 choices kiot_twoPins '1' '3' '4' '6' '7' '8' '9' 
@@ -11,7 +11,7 @@ choices kiot_motor '1' '3' '9'
 choices kiot_analogPins '3' '4' '6' '7' '8' 
 choices kiot_tempUnits '°C' '°F' 
 choices kiot_rotation 'kiot;clockwise' 'kiot;counter-clockwise' 'kiot;stop' 
-choices kiot_dual_motor A B both 'kiot;both, flipped'
+choices kiot_dual_motor A B both 'kiot;both, opposite'
 choices kiot_stop_motor A B both
 choices kiot_threePins '1' '9' 
 choices kiot_joystick X Y 'kiot;button pressed?' 
@@ -336,7 +336,7 @@ to kiot_set_dual_motor motor power oposite {
   if ('both' == motor) {
     drv8833_set_motor 'A' power
     drv8833_set_motor 'B' power
-  } ('kiot;both, flipped' == motor) {
+  } ('kiot;both, opposite' == motor) {
     drv8833_set_motor 'A' power
     drv8833_set_motor 'B' (-1 * power)
   } else {
