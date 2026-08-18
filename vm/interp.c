@@ -53,7 +53,7 @@ int failure() {
 	return errorCode != noError;
 }
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 	void taskSleep(int msecs) {
 		// Make the current task sleep for the given number of milliseconds to free up cycles.
 		taskSleepUSecs = msecs * 1000;
@@ -1344,7 +1344,7 @@ static void runTask(Task *task) {
 
 // Interpreter Entry Point
 
-#if !defined(EMSCRIPTEN)
+#if !defined(__EMSCRIPTEN__)
 
 #if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD) || \
 	defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
@@ -1447,11 +1447,11 @@ void vmLoop() {
 	}
 }
 
-#endif // not EMSCRIPTEN
+#endif // not __EMSCRIPTEN__
 
 // Boardie support
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 
 #include <emscripten.h>
 

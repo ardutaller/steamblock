@@ -30,7 +30,7 @@
 #include "interp.h"
 #include "persist.h"
 
-void delay(unsigned long); // Arduino delay function
+int delay(unsigned long); // Arduino delay function
 
 #if defined(ARDUINO_ARCH_ESP32)
 	// use Flash codestore on all ESP32 variants
@@ -1050,7 +1050,7 @@ static void compactRAM(int printStats) {
 }
 #endif
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 int *ramStart() { return start0; }
 int ramSize() { return 4 * (freeStart - start0); }
 #endif
