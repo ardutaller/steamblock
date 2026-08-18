@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-17 07:23+0000\n"
+"PO-Revision-Date: 2026-08-18 06:42+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2677,7 +2677,7 @@ msgstr "hochgeladen"
 
 #. Library folder
 msgid "LIBRARIES"
-msgstr "MODULE"
+msgstr "BIBLIOTHEKEN"
 
 #. Library folder
 msgid "folder;Kits and Boards"
