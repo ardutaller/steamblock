@@ -106,10 +106,8 @@ OBJ primDACWrite(int argCount, OBJ *args) {
 		count = EM_ASM_INT({
 			var count = 0;
 			var bufferSize = $1;
-			var buffer = new AudioBuffer({
-				length: bufferSize,
-				sampleRate: window.audioContext.sampleRate,
-			});
+			const sampleRate = window.audioContext.sampleRate;
+			var buffer = window.audioContext.createBuffer(1, bufferSize, sampleRate);
 			var data = buffer.getChannelData(0);
 			for (let i = 0; i < bufferSize; i++) {
 				data[i] = (HEAP8[$0+i] / 255) - 0.5;
@@ -119,10 +117,8 @@ OBJ primDACWrite(int argCount, OBJ *args) {
 				window.audioSource.stop();
 				window.audioSource.disconnect();
 			}
-			window.audioSource = new AudioBufferSourceNode(
-				window.audioContext,
-				{ buffer: buffer }
-			);
+			window.audioSource = window.audioContext.createBufferSource();
+			window.audioSource.buffer = buffer;
 			window.audioSource.connect(window.audioContext.destination);
 			window.audioSource.start();
 			return count;
