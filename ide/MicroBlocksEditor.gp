@@ -624,6 +624,7 @@ method checkLatestVersion MicroBlocksEditor {
 				latestPilotVersionNumber = (fetchLatestPilotVersionNumber this)
 				for n latestPilotVersionNumber { if (not (representsAnInteger n)) { return }} // sanity check
 			}
+			latestVersion = latestPilotVersionNumber
 			latest = (toInteger (at latestPilotVersionNumber i))
 		}
 		if (latest > current) {
