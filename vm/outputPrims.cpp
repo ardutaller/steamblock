@@ -1027,6 +1027,72 @@ static void IRAM_ATTR sendNeoPixelData(int val) { // ESP8266
 	interrupts();
 }
 
+#elif defined(ARDUINO_ARCH_ESP32_DISABLED)
+
+static void initNeoPixelPin(int pinNum) { // ESP32
+	if ((pinNum < 0) || (pinNum >= pinCount())) {
+		#if defined(M5Atom_Matrix) || defined(M5Atom_Lite)
+			pinNum = 27; // internal NeoPixel pin
+		#elif defined(ARDUINO_M5Stack_ATOMS3)
+			pinNum = 35;
+		#elif defined(ARDUINO_Mbits) || defined(STEAMaker) || defined(FOXBIT)
+			pinNum = 13; // internal NeoPixel pin
+		#elif defined(KIDS_BITS)
+			pinNum = 16; // internal NeoPixel pin on Coding Box 2.0
+		#elif defined(DATABOT)
+			pinNum = 2; // internal NeoPixel pin
+		#elif defined(DATABOT_V3)
+			primDigitalSet(46, true); // enable NEOPixels
+			pinNum = 13; // internal NeoPixel pin
+		#elif defined(SPRINGBOT)
+			pinNum = 39; // internal NeoPixel pin
+		#elif defined(ESP32_S3)
+			pinNum = 48; // ESP32-S3-DevKitC-1 internal NeoPixel pin
+		#elif defined(ESP32_C3)
+			pinNum = 8; // ESP32-C3-DevKitC-02 internal NeoPixel pin
+		#elif defined(NEOPIXEL_PIN_LED)
+			pinNum = NEOPIXEL_PIN_LED;
+		#else
+			pinNum = 0; // default to pin 0
+		#endif
+	}
+
+	if ((0 < pinNum) && (pinNum <= 31)) {
+		setPinMode(pinNum, OUTPUT);
+		neoPixelPinSet = &GPIO.out_w1ts;
+		neoPixelPinClr = &GPIO.out_w1tc;
+		neoPixelPinMask = 1 << pinNum;
+	} else if ((32 <= pinNum) && (pinNum <= 63)) {
+		setPinMode(pinNum, OUTPUT);
+		neoPixelPinSet = (uint32_t *) &GPIO.out1_w1ts;
+		neoPixelPinClr = (uint32_t *) &GPIO.out1_w1tc;
+		neoPixelPinMask = 1 << (pinNum - 32);
+	} else {
+		neoPixelPinMask = 0;
+	}
+}
+
+static void IRAM_ATTR sendNeoPixelData(int val) { // ESP32
+	if (!neoPixelPinMask) return;
+
+	uint32 oldIRQ;
+	asm volatile ("rsil %0, 15" : "=r" (oldIRQ));
+	for (uint32 mask = (1 << (neoPixelBits - 1)); mask > 0; mask >>= 1) {
+		if (val & mask) { // one bit; timing goal: high 800 nsecs, low 400 nsecs
+			*neoPixelPinSet = neoPixelPinMask;
+			DELAY_CYCLES(185);
+			*neoPixelPinClr = neoPixelPinMask;
+			DELAY_CYCLES(85);
+		} else { // zero bit; timing goal: high 300 nsecs, low 900 nsecs
+			*neoPixelPinSet = neoPixelPinMask;
+			DELAY_CYCLES(63);
+			*neoPixelPinClr = neoPixelPinMask;
+			DELAY_CYCLES(200);
+		}
+	}
+	asm volatile ("wsr %0, ps; rsync" :: "r" (oldIRQ));
+}
+
 #elif defined(ARDUINO_ARCH_ESP32)
 
 #include "driver/rmt.h"
