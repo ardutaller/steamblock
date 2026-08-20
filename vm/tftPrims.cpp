@@ -1699,6 +1699,12 @@ OBJ primInvertDisplay(int argCount, OBJ *args) {
 	return falseObj;
 }
 
+OBJ primRotateDisplay(int argCount, OBJ *args) {
+	if (!tft) return falseObj;
+	if (argCount < 1) return fail(notEnoughArguments);
+	tft->setRotation(obj2int(args[0]));
+}
+
 // 8 bit bitmap ops
 
 static OBJ primMergeBitmap(int argCount, OBJ *args) {
@@ -2218,6 +2224,7 @@ static PrimEntry entries[] = {
 	{"deferUpdates", primDeferUpdates},
 	{"resumeUpdates", primResumeUpdates},
 	{"invertDisplay", primInvertDisplay},
+	{"rotateDisplay", primRotateDisplay},
 
 	{"mergeBitmap", primMergeBitmap},
 	{"drawBuffer", primDrawBuffer},
