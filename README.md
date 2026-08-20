@@ -1,11 +1,5 @@
 # README #
 
-# The MicroBlocks repository has moved! #
-
-Its new home is [here](https://codeberg.org/MicroBlocks/smallvm).
-
-**This copy of the respository is not current and read-only.**
-
 ## MicroBlocks Website ##
 
 This repository contains the source code for MicroBlocks.
@@ -162,7 +156,7 @@ sometimes with a short time lag for testing.
 
 ## Contributing ##
 
-We welcome your feedback, comments, feature requests, 
+We welcome your feedback, comments, feature requests,
 [bug reports](https://bitbucket.org/john_maloney/smallvm/issues?status=new&status=open) on BitBucket and [translations](https://hosted.weblate.org/engage/microblocks/) on Weblate.
 
 Since MicroBlocks is still under active development by the core team, we are not currently
