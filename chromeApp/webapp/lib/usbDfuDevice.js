@@ -313,17 +313,10 @@ let usbDfuDevice = class {
 
 		// Catch errors
 		catch (error) {
-			IDE.spinner.hide();
-			FloatingWindow.inform(
-				'Could not find board',
-				'Please make sure your board is in DFU mode. ' +
-				'This is usually achieved by holding one of the user buttons down ' +
-				'while powering up the device.'
-			);
-
-// Return the error
-return Promise.reject(error);
-}
+			// Return the error
+			console.log(error);
+			return Promise.reject(error);
+		}
 }
 
 // Function which erases the device

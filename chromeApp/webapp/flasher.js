@@ -40,32 +40,41 @@ DFUpload.flashBoard = function (boardName) {
 
 	if (this.duelinkBoards.includes(boardName)) { boardName = 'DUELink'; }
 	let board = this.boards[boardName];
-	window.dfu = new usbDfuDevice();
+	window.dfu = window.dfu ?? new usbDfuDevice();
 
 	fetch(`precompiled/${board.vmFileName}`)
 		.then(res => res.arrayBuffer())
 		.then(buffer => {
 			if (buffer) {
-				dfu.disconnect()
-					.then(()=>IDE.spinner.show())
-					.then(()=>IDE.spinner.setTitle('Connecting...'))
-					.then(()=>dfu.connect(board.filter))
-					.then(()=>dfu.setFlashAndPageSizes(board.flashSize, board.pageSize))
-					.then(()=>dfu.clearStatus())
-					.then(()=>IDE.spinner.setTitle('Erasing...'))
-					.then(()=>dfu.erase())
-					.then(()=>dfu.sleep(5000))
-					.then(()=>IDE.spinner.setTitle('Flashing...'))
-					.then(()=>dfu.program(buffer))
-					.then(()=>dfu.sleep(250, 'Booting...'))
-					.then(()=>dfu.detach())
-					.then(()=>dfu.sleep(250, 'Disconnecting...'))
-					.then(()=>dfu.disconnect())
-					.then(()=>
-						FloatingWindow.inform(
-							'Firmware Installed',
-							'Please reset the board before trying to connect to it.'
-						));
+				FloatingWindow.inform(
+					'Install Firmware',
+					'Please make sure your board is in DFU mode. ' +
+					'This is usually achieved by holding one of the user buttons down ' +
+					'while powering up the device.',
+					() => {
+						dfu.disconnect()
+							.then(()=>IDE.spinner.show())
+							.then(()=>IDE.spinner.setTitle('Connecting...'))
+							.then(()=>dfu.connect(board.filter))
+							.then(()=>dfu.setFlashAndPageSizes(board.flashSize, board.pageSize))
+							.then(()=>dfu.clearStatus())
+							.then(()=>IDE.spinner.setTitle('Erasing...'))
+							.then(()=>dfu.erase())
+							.then(()=>dfu.sleep(5000))
+							.then(()=>IDE.spinner.setTitle('Flashing...'))
+							.then(()=>dfu.program(buffer))
+							.then(()=>dfu.sleep(250, 'Booting...'))
+							.then(()=>dfu.detach())
+							.then(()=>dfu.sleep(250, 'Disconnecting...'))
+							.then(()=>dfu.disconnect())
+							.then(()=>
+								FloatingWindow.inform(
+									'Firmware Installed',
+									'Please reset the board before trying to connect to it.'
+								)
+							);
+					}
+				);
 			}
 		});
 };

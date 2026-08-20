@@ -76,7 +76,7 @@ method openSerialPortInBrowser MicroBlocksFlasher {
 		setPort espTool 1
 		return true
 	}
-i	return false
+	return false
 }
 
 // Installing from data
