@@ -2,7 +2,7 @@
 
 # The MicroBlocks repository has moved! #
 
-New home is [here](https://codeberg.org/MicroBlocks/smallvm)
+Its new home is [here](https://codeberg.org/MicroBlocks/smallvm).
 
 **This copy of the respository is not current and read-only.**
 
