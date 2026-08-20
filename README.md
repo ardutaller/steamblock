@@ -1,5 +1,11 @@
 # README #
 
+# The MicroBlocks repository has moved! #
+
+New home is on [Codeberg](https://codeberg.org/MicroBlocks/smallvm)
+
+This copy of the respository is not current and read-only.
+
 ## MicroBlocks Website ##
 
 This repository contains the source code for MicroBlocks.
