@@ -15,7 +15,7 @@
 	},
 	"license": "MPL-2.0",
 	"dependencies": {
-		"@electron/asar": "^4.2.0"
+		"@electron/asar": "^4.3.0"
 	},
 	"devDependencies": {
 		"@electron/fuses": "^1.8.0",
