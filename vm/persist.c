@@ -30,7 +30,9 @@
 #include "interp.h"
 #include "persist.h"
 
-int delay(unsigned long); // Arduino delay function
+#if defined(BLE_IDE)
+	int delay(unsigned long); // Arduino delay function
+#endif
 
 #if defined(ARDUINO_ARCH_ESP32)
 	// use Flash codestore on all ESP32 variants
