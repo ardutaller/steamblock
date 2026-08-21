@@ -1,0 +1,51 @@
+module 'Telegram'
+author 'Luis Mateos'
+version 1 1
+description 'To send messages, you need to set up a bot by typing @BotFather into the Telegram search bar on any device and connecting to it. Make sure it is the official Telegram bot and not a fake.
+@BotFather will provide you with the Bot_Token.
+
+To find the Channel_ID for a channel or user, you can use a bot like @userinfobot or @myidbot.
+You can also find it via Telegram Web (it appears in the URL bar).
+
+--------------
+
+Para enviar mensajes es necesario dar de alta un Bot  escribiendo @Botfather en la barra de busqueda de Telegram en cualquier dispositivo y conectándose a él.
+Asegúrate de que es el Bot oficial de Telegram y no un fake.
+@BotFather te dará el Bot_Token.
+
+Para encontrar el Channel_ID del canal o usuario puedes usar un bot como @userinfobot o @myidbot. 
+Tambien puedes verlo a través de Telegram Web (aparece en la barra de Url)
+'
+
+  spec 'r' 'tgrm_send' 'send to Telegram, text _ #BR# channel ID _ bot token _ ' 'auto auto auto' 'MicroBlocks is amazing!' '' ''
+
+to 'tgrm_send' text id token {
+  local 'message' 0
+  local 'result' 0
+  local 'web' 0
+  local 'response' 0
+  if ((getIPAddress) == '0.0.0.0') {
+    return 'Not connected to the internet!'
+  }
+  web = ('[data:join]' ('[data:join]' 'api.telegram.org/bot' token '/sendMessage?chat_id=') id '&text=')
+  message = ('[data:toString]' text)
+  result = ''
+  for i (size message) {
+    if ((at i message) == ' ') {
+      result = ('[data:join]' result '%20')
+    } ((at i message) == ('[data:unicodeString]' 10)) {
+      result = ('[data:join]' result '%0D%0A')
+    } ((at i message) == '&') {
+      result = ('[data:join]' result '%26')
+    } else {
+      result = ('[data:join]' result (at i message))
+    }
+  }
+  response = ('https܃//' ('[data:join]' web result))
+  if (-1 != ('[data:find]' '"ok":true' response)) {
+    return 'Sent'
+  } else {
+    return ('[data:join]' 'Error: ' response)
+  }
+}
+

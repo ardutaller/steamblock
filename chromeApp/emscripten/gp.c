@@ -10,7 +10,7 @@
 #include "oop.h"
 #include "parse.h"
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	#include <emscripten.h>
 #elif defined(IOS)
 	#include "SDL.h"
@@ -99,7 +99,7 @@ static void readEvalLoop() {
 	}
 }
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 
 // ***** Browser Support *****
 
@@ -237,7 +237,7 @@ static void readLibraryFromFileSystem(gp_boolean runStartup) {
 	if (runStartup) parse_runFile("runtime/startup.gp");
 }
 
-#endif // EMSCRIPTEN
+#endif // __EMSCRIPTEN__
 
 // ***** Startup Function *****
 
@@ -281,7 +281,7 @@ static gp_boolean processCommandLine(int argc, char *argv[], char *prefix) {
 
 	if ((argc == 1) || interactiveFlag) {
 		// read library if no arguments or just "-"
-		#if !defined(EMSCRIPTEN)
+		#if !defined(__EMSCRIPTEN__)
 			gp_boolean hasEmbeddedLibrary = importLibrary();
 			if (!hasEmbeddedLibrary) readLibraryFromFileSystem(true);
 		#endif
@@ -308,7 +308,7 @@ static gp_boolean processCommandLine(int argc, char *argv[], char *prefix) {
 
 // ***** Memory Size *****
 
-#if defined(EMSCRIPTEN)
+#if defined(__EMSCRIPTEN__)
 	// iPad mini2 (1 GB memory) works with 80MB, not with 100MB
 	// Nexus7 and iPad Pro work with 200MB
 	// Decreased memory to 100MB for iOS 10 Safari and Chrome
@@ -330,7 +330,7 @@ int main(int argc, char *argv[]) {
 	initGP();
 	readingLibrary = true;
 
-#if defined(EMSCRIPTEN)
+#if defined(__EMSCRIPTEN__)
 	int isInBrowser = EM_ASM_INT({
 		if (ENVIRONMENT_IS_NODE) {
 			// when running in Node, mount the external file system as /external
@@ -369,7 +369,7 @@ int main(int argc, char *argv[]) {
 		sessionModule = currentModule = consoleModule = newModule("SessionModule");
 	}
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	if (isInBrowser) {
 		// create a task to run the startup function, if there is one
 		if (hasStartupFunction()) {
@@ -382,7 +382,7 @@ int main(int argc, char *argv[]) {
 		emscripten_set_main_loop(browserStep, 0, true); // callback, fps, loopFlag
 		return 0; // should not get here
 	}
-#endif // EMSCRIPTEN
+#endif // __EMSCRIPTEN__
 
 	if (hasStartupFunction()) {
 		parser p;

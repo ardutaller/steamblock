@@ -30,7 +30,7 @@ static int isRectangle(OBJ rect) {
 		(isInt(FIELD(rect, 3)) || IS_CLASS(FIELD(rect, 3), FloatClass));
 }
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	#include <emscripten.h>
 	#include <emscripten/html5.h>
 
@@ -190,7 +190,7 @@ double heading;
 // Path operations
 
 static void beginPath() {
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		EM_ASM({GP.ctx.beginPath()}, 0);
 	#elif defined(BLEND2D)
 		blPathClear(&blendPath);
@@ -200,7 +200,7 @@ static void beginPath() {
 }
 
 static void moveTo(double x, double y) {
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		EM_ASM_({GP.ctx.moveTo($0, $1)}, x, y);
 	#elif defined(BLEND2D)
 		blPathMoveTo(&blendPath, x, y);
@@ -210,7 +210,7 @@ static void moveTo(double x, double y) {
 }
 
 static void lineTo(double x, double y) {
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		EM_ASM_({GP.ctx.lineTo($0, $1)}, x, y);
 	#elif defined(BLEND2D)
 		blPathLineTo(&blendPath, x, y);
@@ -220,7 +220,7 @@ static void lineTo(double x, double y) {
 }
 
 static void curveTo(double lastX, double lastY, double x, double y, double cx, double cy) {
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		EM_ASM_({GP.ctx.quadraticCurveTo($0, $1, $2, $3)}, cx, cy, x, y);
 	#elif defined(BLEND2D)
 		blPathQuadTo(&blendPath, cx, cy, x, y);
@@ -235,7 +235,7 @@ static void curveTo(double lastX, double lastY, double x, double y, double cx, d
 }
 
 static void stroke(OBJ borderColor, double borderWidth) {
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		char colorString[100];
 		toColorString(borderColor, colorString, sizeof(colorString));
 		EM_ASM_({
@@ -267,7 +267,7 @@ static void stroke(OBJ borderColor, double borderWidth) {
 }
 
 static void fill(OBJ fillColor, int doneFlag) {
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		char colorString[100];
 		toColorString(fillColor, colorString, sizeof(colorString));
 		EM_ASM_({

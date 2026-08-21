@@ -12,7 +12,7 @@
 #include "interp.h"
 #include "dict.h"
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 	#include <SDL.h>
 	extern SDL_Surface *screenBitmap;
 #endif
@@ -708,7 +708,7 @@ static OBJ fontNames() {
 
 #endif // Windows
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 
 #include <emscripten.h>
 
@@ -913,7 +913,7 @@ static OBJ fontNames() {
 	return newArray(0);
 }
 
-#endif // EMSCRIPTEN
+#endif // __EMSCRIPTEN__
 
 // ***** Current Font *****
 
@@ -997,7 +997,7 @@ static OBJ primSetFont(int nargs, OBJ args[]) {
 	if (isBadUTF8(fontName)) return badUTF8String();
 	int fontSize = intOrFloatArg(1, 18, nargs, args);
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	// Enscripten doesn't do font caching
 	currentFont = openFont(fontName, fontSize);
 	return nilObj;

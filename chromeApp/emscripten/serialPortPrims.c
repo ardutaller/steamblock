@@ -253,7 +253,7 @@ static void setRTS(PortHandle port, int flag) {
 	}
 }
 
-#elif defined(EMSCRIPTEN)
+#elif defined(__EMSCRIPTEN__)
 
 #include <emscripten.h>
 
@@ -426,7 +426,7 @@ OBJ primIsOpenSerialPort(int nargs, OBJ args[]) {
 	if (!isInt(args[0])) return badPortIDFailure();
 	int portID = obj2int(args[0]);
 
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		int isOpen = EM_ASM_INT({
 			return GP_isOpenSerialPort();
 		});
@@ -455,7 +455,7 @@ OBJ primReadSerialPort(int nargs, OBJ args[]) {
 	int isBinary = (nargs > 1) && (args[1] == trueObj);
 
 	PortHandle h;
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		h = 1;
 	#else
 		h = getPortHandle(portID);
@@ -491,7 +491,7 @@ OBJ primWriteSerialPort(int nargs, OBJ args[]) {
 	int portID = obj2int(args[0]);
 
 	PortHandle h;
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		h = 1;
 	#else
 		h = getPortHandle(portID);
@@ -535,7 +535,7 @@ OBJ primSetSerialPortDTRandRTS(int nargs, OBJ args[]) {
 	if (nargs < 3) return notEnoughArgsFailure();
 	if (!isInt(args[0])) return badPortIDFailure();
 	PortHandle h = getPortHandle(obj2int(args[0]));
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		if (h != CLOSED) setDTRandRTS(h, (trueObj == args[1]), (trueObj == args[2]));
 	#else
 		if (h != CLOSED) {

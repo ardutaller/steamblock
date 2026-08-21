@@ -17,7 +17,7 @@
 	#include <Arduino.h>
 #endif
 
-#if defined(GNUBLOCKS) && !defined(EMSCRIPTEN)
+#if defined(GNUBLOCKS) && !defined(__EMSCRIPTEN__)
 #include "../linux+pi/linux.h"
 #endif
 
@@ -561,8 +561,8 @@ static int outBufEnd = 0;
 #define OUTBUF_BYTES() ((outBufEnd - outBufStart) & OUTBUF_MASK)
 
 static void sendData() {
-#ifdef EMSCRIPTEN
-	// xxx can this special case for EMSCRIPTEN be removed? try it and test w/ boardie.
+#ifdef __EMSCRIPTEN__
+	// xxx can this special case for Emscripten be removed? try it and test w/ boardie.
 	if (outBufStart > outBufEnd) {
 		if (sendBytes(outBuf, outBufStart, OUTBUF_SIZE)) {
 			outBufStart = 0;
@@ -1159,7 +1159,7 @@ static int receiveTimeout() {
 	return (usecs - lastRcvTime) > 20000;
 }
 
-#if !defined(GNUBLOCKS) || defined(EMSCRIPTEN)
+#if !defined(GNUBLOCKS) || defined(__EMSCRIPTEN__)
 
 int ideConnected() {
 	// Return true if the board is connected to the MicroBlocks IDE

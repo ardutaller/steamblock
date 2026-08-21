@@ -42,7 +42,7 @@ int *scanStart();
 void compactCodeStore(int *codeStoreUsed, int *codeStoreTotal);
 void outputRecordHeaders();
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 int *ramStart();
 int ramSize();
 #endif

@@ -24,7 +24,7 @@
 #include "oop.h"
 #include "parse.h"
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
 
@@ -1002,7 +1002,7 @@ OBJ primWriteFile(int nargs, OBJ args[]) {
 	int isBinary = IS_CLASS(data, BinaryDataClass);
 	int byteCount = isBinary ? objBytes(data) : stringBytes(data);
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	EM_ASM_({
 		var fileName = UTF8ToString($0);
 		fileName = fileName.slice(fileName.lastIndexOf('/') + 1);
@@ -1032,7 +1032,7 @@ OBJ primWriteFile(int nargs, OBJ args[]) {
 	int result = fwrite(&FIELD(data, 0), 1, byteCount, f);
 	if (result < byteCount) return primFailed("cannot write the file");
 	fclose(f);
-#endif // EMSCRIPTEN
+#endif // __EMSCRIPTEN__
 
 	return nilObj;
 }
@@ -1246,7 +1246,7 @@ OBJ primAbsolutePath(int nargs, OBJ args[]) {
 		if (ch == 0) break;
 	}
 	return newString(result);
-#elif defined(EMSCRIPTEN)
+#elif defined(__EMSCRIPTEN__)
 	return args[0]; // EMSCRIPTEN doesn't support realpath(); return the original path
 #elif defined(IOS)
 	return ios_absolutePath(obj2str(args[0]));
@@ -1283,7 +1283,7 @@ OBJ primUserHomePath(int nargs, OBJ args[]) {
 }
 
 OBJ primListEmbeddedFiles(int nargs, OBJ args[]) {
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		// Optional args: directoryToList, listDirsFlag
 		char *path = ((nargs > 0) && IS_CLASS(args[0], StringClass)) ? obj2str(args[0]) : "";
 		int dirsFlag = ((nargs > 1) && (trueObj == args[1]));
@@ -1303,7 +1303,7 @@ OBJ primReadEmbeddedFile(int nargs, OBJ args[]) {
 	if (NOT_CLASS(args[0], StringClass)) return firstArgMustBeString();
 	int isBinary = (nargs > 1) && (args[1] == trueObj);
 
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 		return primReadFile(nargs, args);
 	#endif
 
@@ -1442,7 +1442,7 @@ OBJ primSleep(int nargs, OBJ args[]) {
 	if (msecs <= 0) return nilObj;
 #ifdef _WIN32
 	_sleep(msecs); // from mingw; deprecated, but still works
-#elif defined(EMSCRIPTEN)
+#elif defined(__EMSCRIPTEN__)
 	usleep(msecs * 1000);
 #else
 	struct timespec sleepTime;
@@ -2760,7 +2760,7 @@ OBJ primCommandLine(int nargs, OBJ args[]) {
 OBJ primPlatform(int nargs, OBJ args[]) {
  #if defined(__ANDROID__)
 	return newString("Android");
- #elif defined(EMSCRIPTEN)
+ #elif defined(__EMSCRIPTEN__)
 	return newString("Browser");
  #elif defined(IOS)
 	return newString("iOS");
@@ -2806,7 +2806,7 @@ OBJ primExec(int nargs, OBJ args[]) {
 	argList[argCount] = NULL;
 	int pid = 0;
 
-#if defined(EMSCRIPTEN)
+#if defined(__EMSCRIPTEN__)
 	return nilObj;
 #elif defined(_WIN32)
 	pid = winEmptyProcSlot();
@@ -2830,7 +2830,7 @@ OBJ primExecStatus(int nargs, OBJ args[]) {
 	if (nargs < 1) return notEnoughArgsFailure();
 	if (!isInt(args[0])) return nilObj;
 
-#if defined(EMSCRIPTEN)
+#if defined(__EMSCRIPTEN__)
 	return nilObj;
 #elif defined(_WIN32)
 	int pid = obj2int(args[0]);
@@ -2856,7 +2856,7 @@ OBJ primOpenURL(int nargs, OBJ args[]) {
 	if (nargs < 1) return notEnoughArgsFailure();
 	if (!IS_CLASS(args[0], StringClass)) return primFailed("First argument must be a string");
 	char *url = obj2str(args[0]);
-	#if defined(EMSCRIPTEN)
+	#if defined(__EMSCRIPTEN__)
 		EM_ASM_({
 			var url = UTF8ToString($0);
 			var newTab = window.open(url, '_blank');
@@ -2979,7 +2979,7 @@ OBJ primObjData(int nargs, OBJ args[]) {
 
 // ***** Profiling *****
 
-#if !defined(_WIN32) && !defined(EMSCRIPTEN)
+#if !defined(_WIN32) && !defined(__EMSCRIPTEN__)
 
 #include <pthread.h>
 
@@ -3661,11 +3661,11 @@ void initPrimitiveTable() {
 	addPrimitiveSet(entries, count);
 #endif // NO_SERIAL_PORTS
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	PrimEntry* browserPrimitives(int *count);
 	entries = browserPrimitives(&count);
 	addPrimitiveSet(entries, count);
-#endif // EMSCRIPTEN
+#endif // __EMSCRIPTEN__
 
 #ifndef NO_HTTP
 	PrimEntry* httpPrimitives(int *count);

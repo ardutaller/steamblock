@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-08-16 19:25+0000\n"
+"PO-Revision-Date: 2026-08-18 21:09+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@moodleschule.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -2677,7 +2677,7 @@ msgstr "hochgeladen"
 
 #. Library folder
 msgid "LIBRARIES"
-msgstr "MODULE"
+msgstr "BIBLIOTHEKEN"
 
 #. Library folder
 msgid "folder;Kits and Boards"
@@ -4215,7 +4215,7 @@ msgstr "rechte"
 
 #. MQTT library block
 msgid "MQTT connected"
-msgstr "MQTT verbunden"
+msgstr "MQTT verbunden?"
 
 #. OLED Graphics library block
 msgid "set video _"
@@ -9112,3 +9112,21 @@ msgstr "ADC verbunden"
 #. CoCube Module library block
 msgid "ADC _ voltage (mV)"
 msgstr "ADC _ Spannung (mV)"
+
+#. HTTP Client library block
+msgid "fetch URL _"
+msgstr "rufe URL _ ab"
+
+#. Octostudio communication library label
+msgid "OctoStudio"
+msgstr "OctoStudio"
+
+#. Octostudio communication library block
+msgid "group _"
+msgstr "Gruppe _"
+
+#. KidsIOT library choice. Move both motors at the same rate, but opposite to
+#. each other. If value is 50, motor A will move at speed 50 and motor B will
+#. move at speed -50. Useful for robots with wheels set at opposite sides.
+msgid "kiot;both opposite"
+msgstr "beide, umgekehrt"

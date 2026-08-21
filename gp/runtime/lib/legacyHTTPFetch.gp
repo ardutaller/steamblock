@@ -77,7 +77,8 @@ to basicHTTPGetResponse host path port {
 
 to httpGetInBrowser url timeout {
 	if (isNil timeout) { timeout = 1000 }
-	if (and (beginsWith (browserURL) 'https:') (beginsWith url 'http:')) { // switch to 'https'
+	if (and (beginsWith url 'http:') (not (beginsWith (browserURL) 'http:'))) {
+		// switch to 'https' unless browser page is 'http' (unlikely)
 		url = (join 'https://' (substring url 8))
 	}
 	requestID = (startFetch url)

@@ -49,7 +49,7 @@ typedef void (*EntryFunction)(PrimEntry *entry);
 // are function pointers (i.e. we assume that there no function pointer
 // table will have more than 10,000 entries).
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 
 #define STOP			10201 // the GP integer 5100
 #define GETVAR			10203

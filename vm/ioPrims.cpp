@@ -3495,7 +3495,7 @@ static OBJ primSquareWave(int argCount, OBJ *args) {
 	}
 
 	extern "C" void deepSleep(int secs) {
-		uint64_t usecs = 1000000 * secs;
+		uint64_t usecs = 1000000 * (uint64_t) secs;
 		uint64_t maxSleep = ESP.deepSleepMax() - 10000;
 		if (usecs > maxSleep) usecs = maxSleep;
 		ESP.deepSleep(usecs);
