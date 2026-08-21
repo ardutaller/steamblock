@@ -49,35 +49,39 @@ most physical computing projects don't require them.
 
 ## How do I build the MicroBlocks firmware? ##
 
-First of all, you may not need to. The firmware for many boards can be installed
-using the "update firmware on board" menu command
+First of all, you may not need to. The firmware for certain boards commonly used
+in education can be installed using the "update firmware on board" menu command
 in the MicroBlocks interactive development environment (IDE).
 
-However, if you have one of the
-[community supported boards](https://bitbucket.org/john_maloney/smallvm/wiki/Devices),
+Second, pre-compiled firmware for many boards (about 50 as of this writing) can be downloaded from the "vm" folder for each release. You can open a list of those firmwares using the (advanced) gear menu command "open vm folder on microblocks.fun" in the IDE.
+
+However, if you have one of the other
+[community supported boards](https://wiki.microblocks.fun/en/boards/full_board_list),
 or if you just want to build the firmware yourself, read on.
 
 The MicroBlocks firmware, or **virtual machine**, is written in C and C++.
 It is built on the Arduino platform and uses additional Arduino libraries for
 features such as graphics and WiFi on boards that support those features.
 
-The source code repository is [here](https://bitbucket.org/john_maloney/smallvm/src/master/).
+The source code repository is [here](https://codeberg.org/MicroBlocks/smallvm).
 To get the source code, you can either clone it:
 
-    git clone https://john_maloney@bitbucket.org/john_maloney/smallvm.git
+    git clone https://codeberg.org/MicroBlocks/smallvm.git
 
 or download a snapshot of it by selecting "download repository" from the "..." menu to the right
 of the "Clone" button on the repository home page.
 
 ### Building with PlatformIO ###
 
-PlatformIO is the preferred build tool. PlatformIO is a cross platform build system
+PlatformIO is the preferred build tool. It is what we use to build the firmwares for every release.
+
+PlatformIO is a cross platform build system
 that is easy to install an use. Its only dependency is Python, which comes pre-installed
 on MacOS and Linux and is easy to install on Windows.
 You can get the PlatformIO command line interface (CLI) tools
 [here](https://platformio.org/install/cli).
 
-To compile the firmware for all platforms, just enter the "smallvm" folder and run:
+To compile the firmware for all platforms (this takes a long time!), enter the "smallvm" folder and run:
 
     pio run
 
@@ -92,12 +96,12 @@ Look at platformio.ini to see which boards are supported and what they are calle
 
 The MicroBlocks virtual machine can also be compiled and loaded onto a board using the
 Arduino IDE (version 1.8 or later) with the appropriate board package and libraries
-installed.
+installed. **We do not use the Arduino IDE regularly so this path is not well tested.**
 
 To build with the Arduino IDE, open the file *vm.ino*, select your board from the
 boards manager, then click the upload button.
 
-### Building for Raspberry Pi ###
+### Building a VM for Raspberry Pi ###
 
 To build the VM on the Raspberry Pi, run "./build" in the raspberryPi folder.
 The Raspberry Pi version of MicroBlocks can control the digital I/O
@@ -134,11 +138,13 @@ the pseudo terminal connection).
 
 ## MicroBlocks IDE ##
 
-The MicroBlocks IDE is written in [GP Blocks](https://gpblocks.org).
+The MicroBlocks IDE is partly written in [GP Blocks](https://gpblocks.org).
 You'll find source code for the IDE in the ide
 and the gp/runtime folders and build scripts in the the gp folder.
 
-## Status ##
+We are gradually migrating the IDE code from GP Blocks to Javascript.
+
+## Release Streams ##
 
 MicroBlocks is currently used by thousands of people, many of them complete beginners.
 
@@ -146,10 +152,10 @@ There are two release streams available on the download page.
 
 The **stable release** is updated only a few times a year.
 The stable release is meant for educators who require
-stability and consistency.
+stability and consistency. The stable release can be run in Chrome or Edge web browser using the Run button on the website or the URL [https://microblocks.fun/run/](https://microblocks.fun/run/).
 
 **Pilot releases** are updated frequently.
-Pilot release contain the latest features and improvements but may also introduce bugs or experimental features that are later removed or changed.
+Pilot release contain the latest features and improvements but may also introduce bugs or experimental features that are later removed or changed. The pilot release can be run in Chrome or Edge web browser using the **Run Pilot in browser** button on the website [Download page](https://microblocks.fun/download) or the URL [https://microblocks.fun/run-pilot/](https://microblocks.fun/run-pilot/).
 
 The **web application**, which runs in a Chrome or Edge web browser, tracks the pilot release,
 sometimes with a short time lag for testing.
@@ -157,7 +163,7 @@ sometimes with a short time lag for testing.
 ## Contributing ##
 
 We welcome your feedback, comments, feature requests,
-[bug reports](https://bitbucket.org/john_maloney/smallvm/issues?status=new&status=open) on BitBucket and [translations](https://hosted.weblate.org/engage/microblocks/) on Weblate.
+[bug reports](https://codeberg.org/MicroBlocks/smallvm) and [translations](https://hosted.weblate.org/engage/microblocks/) on Weblate.
 
 Since MicroBlocks is still under active development by the core team, we are not currently
 soliciting code contributions or pull requests. However, if you are creating tutorials or other materials for MicroBlocks, please let us know so we can link to your website.
