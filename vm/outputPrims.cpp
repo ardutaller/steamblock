@@ -1027,7 +1027,9 @@ static void IRAM_ATTR sendNeoPixelData(int val) { // ESP8266
 	interrupts();
 }
 
-#elif defined(ARDUINO_ARCH_ESP32_DISABLED)
+#elif defined(ARDUINO_ARCH_ESP32) && !defined(ESP32_C3)
+
+#define ESP32_NEOPIXELS 1
 
 static void initNeoPixelPin(int pinNum) { // ESP32
 	if ((pinNum < 0) || (pinNum >= pinCount())) {
@@ -1093,7 +1095,7 @@ static void IRAM_ATTR sendNeoPixelData(int val) { // ESP32
 	asm volatile ("wsr %0, ps; rsync" :: "r" (oldIRQ));
 }
 
-#elif defined(ARDUINO_ARCH_ESP32)
+#elif defined(ARDUINO_ARCH_ESP32_RMT) || defined(ESP32_C3)
 
 #include "driver/rmt.h"
 
@@ -1345,6 +1347,11 @@ OBJ primNeoPixelSend(int argCount, OBJ *args) {
 	OBJ arg = args[0];
 	if (IS_TYPE(arg, ListType)) {
 		int count = obj2int(FIELD(arg, 0));
+		#ifdef ESP32_NEOPIXELS
+			// Experimental!
+			// This could cause other interrupts to be missed.
+			noInterrupts();
+		#endif
 		for (int i = 0; i < count; i++) {
 			OBJ item = FIELD(arg, i + 1);
 			int rgb = evalInt(item);
@@ -1362,6 +1369,9 @@ OBJ primNeoPixelSend(int argCount, OBJ *args) {
 			}
 			sendNeoPixelData(val);
 		}
+		#ifdef ESP32_NEOPIXELS
+			interrupts();
+		#endif
 	} else {
 		int rgb = evalInt(arg);
 		int r = gamma((rgb >> 16) & 0xFF);
