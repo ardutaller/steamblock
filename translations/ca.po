@@ -3,9 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-08-18 02:45+0000\n"
-"Last-Translator: Josep Ferràndiz "
-"<josep.ferrandiz@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-08-18 21:09+0000\n"
+"Last-Translator: Bernat Romagosa <bernat@romagosa.work>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
 "Language: ca\n"
@@ -8988,3 +8987,9 @@ msgstr "OctoStudio"
 #. Octostudio communication library block
 msgid "group _"
 msgstr "grup _"
+
+#. KidsIOT library choice. Move both motors at the same rate, but opposite to
+#. each other. If value is 50, motor A will move at speed 50 and motor B will
+#. move at speed -50. Useful for robots with wheels set at opposite sides.
+msgid "kiot;both opposite"
+msgstr "ambdós, invertits"
