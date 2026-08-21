@@ -31,7 +31,6 @@ variables _webpnl_readouts _webpnl_sliders _webpnl_buttons _webpnl_title _webpnl
   spec 'r' '_webpnl escaped URL part' '_webpnl escaped URL part _' 'auto' ''
   spec 'r' '_webpnl style' '_webpnl style'
   spec ' ' '_webpnl websocket loop' '_webpnl websocket loop'
-  spec ' ' '_webpnl webserver loop' '_webpnl webserver loop'
 
 to '_webpnl escaped URL part' part {
   local 'escaped' ''
