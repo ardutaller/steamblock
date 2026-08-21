@@ -104,24 +104,36 @@ OBJ primDACWrite(int argCount, OBJ *args) {
 		if (startIndex < 0) startIndex = 0;
 		if (startIndex > bufSize) startIndex = bufSize;
 		count = EM_ASM_INT({
-			var count = 0;
 			var bufferSize = $1;
 			const sampleRate = window.audioContext.sampleRate;
 			var buffer = window.audioContext.createBuffer(1, bufferSize, sampleRate);
 			var data = buffer.getChannelData(0);
 			for (let i = 0; i < bufferSize; i++) {
-				data[i] = (HEAP8[$0+i] / 255) - 0.5;
-				count++;
+				data[i] = (HEAP8[$0+i] / 255) - 0.5; // scale byte to range -0.5 to 0.5
 			}
-			if (window.audioSource) {
-				window.audioSource.stop();
-				window.audioSource.disconnect();
+
+			// create variables to maintain buffer queue and next start time
+			if (window.audioBuffers == undefined) {
+				window.audioBuffers = [];
+				window.nextStartTime = window.audioContext.currentTime;
 			}
-			window.audioSource = window.audioContext.createBufferSource();
-			window.audioSource.buffer = buffer;
-			window.audioSource.connect(window.audioContext.destination);
-			window.audioSource.start();
-			return count;
+
+			const source = window.audioContext.createBufferSource();
+			source.buffer = buffer;
+			source.connect(window.audioContext.destination);
+			window.audioBuffers.push(source);
+
+			// remove the buffer from queue when it finishes playing
+			source.onended = () => {
+				window.audioBuffers = window.audioBuffers.filter(node => node !== source);
+			};
+
+			// schedule buffer to start playing at the next start time
+			const startTime = Math.max(window.nextStartTime, window.audioContext.currentTime);
+			source.start(startTime);
+			window.nextStartTime = startTime + buffer.duration;
+
+			return bufferSize;
 		}, (uint8 *) &FIELD(buf, 0), bufSize, startIndex);
 	}
 	return int2obj(count);
