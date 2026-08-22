@@ -192,7 +192,7 @@ method blockColorForCategory AuthoringSpecs cat {
 	} ('Input' == cat) { return (colorHex '9F42A5')
 	} ('Pins' == cat) { return (colorHex '548799')
 	} ('Comm' == cat) { return (colorHex '1E997A')
-	} ('Control' == cat) { return (colorHex 'D18C25')
+	} ('Control' == cat) { return (colorHex 'FF0000')
 	} ('Operators' == cat) { return (colorHex '479D1D')
 	} ('Variables' == cat) { return (colorHex 'D3732A')
 	} ('Data' == cat) { return (colorHex 'C44E6B')
