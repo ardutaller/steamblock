@@ -18,13 +18,14 @@
 .top-bar__credit {
 	position: absolute;
 	top: var(--space-48);
-	left: 0;
+	left: 4px;
 	width: 190px;
 	text-align: center;
 	font-size: 11px;
 	line-height: 14px;
 	color: var(--color-blue-grey-300);
-	pointer-events: none;
+	pointer-events: auto;
+	text-decoration: none;
 }
 
 .top-bar__credit strong {
