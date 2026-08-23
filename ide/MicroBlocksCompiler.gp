@@ -101,7 +101,7 @@ method microBlocksSpecs SmallCompiler {
 		(array 'h' 'whenStarted'		'when started')
 		(array 'h' 'whenButtonPressed'	'when button _ pressed' 'menu.buttonMenu' 'A')
 		(array ' ' 'forever'			'forever _' 'cmd')
-		(array ' ' 'repeat'				'repeat _ _' 'num cmd' 10)
+		(array ' ' 'repeat'				'#IMG#repeat-icon repeat _ _' 'num cmd' 10)
 		(array ' ' 'waitMillis'			'wait _ millisecs' 'num' 500)
 		'-'
 		(array ' ' 'if'					'if _ _ : else if _ _ : ...' 'bool cmd bool cmd')
