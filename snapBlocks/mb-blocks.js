@@ -803,18 +803,33 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 			part.fixLayout();
 		}
 	} else {
-		part = new BlockLabelMorph(
-			spec, // text
-			this.fontSize, // fontSize
-			this.labelFontStyle, // fontStyle
-			true, // bold
-			false, // italic
-			false, // isNumeric
-			ZERO, // shadowOffset
-			this.color.darker(this.labelContrast), // shadowColor
-			WHITE, // color
-			this.labelFontName // fontName
-		);
+		if (this.selector === 'repeat' && spec === 'repeat') {
+			part = new RepeatBlockLabelMorph(
+				spec, // text
+				this.fontSize, // fontSize
+				this.labelFontStyle, // fontStyle
+				true, // bold
+				false, // italic
+				false, // isNumeric
+				ZERO, // shadowOffset
+				this.color.darker(this.labelContrast), // shadowColor
+				WHITE, // color
+				this.labelFontName // fontName
+			);
+		} else {
+			part = new BlockLabelMorph(
+				spec, // text
+				this.fontSize, // fontSize
+				this.labelFontStyle, // fontStyle
+				true, // bold
+				false, // italic
+				false, // isNumeric
+				ZERO, // shadowOffset
+				this.color.darker(this.labelContrast), // shadowColor
+				WHITE, // color
+				this.labelFontName // fontName
+			);
+		}
 	}
 	return part;
 };
@@ -1229,6 +1244,70 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 	return (block && block.alpha > 0.5) ?
 		this.shadowColor
 		: CLEAR;
+};
+
+// RepeatBlockLabelMorph ////////////////////////////////////////////////
+// Test-only label used only by the 'repeat' block.
+RepeatBlockLabelMorph.prototype = new BlockLabelMorph();
+RepeatBlockLabelMorph.prototype.constructor = RepeatBlockLabelMorph;
+RepeatBlockLabelMorph.uber = BlockLabelMorph.prototype;
+
+function RepeatBlockLabelMorph(
+	text,
+	fontSize,
+	fontStyle,
+	bold,
+	italic,
+	isNumeric,
+	shadowOffset,
+	shadowColor,
+	color,
+	fontName
+) {
+	this.init(
+		text,
+		fontSize,
+		fontStyle,
+		bold,
+		italic,
+		isNumeric,
+		shadowOffset,
+		shadowColor,
+		color,
+		fontName
+	);
+	this.repeatIconWidth = Math.max(12, Math.round(this.fontSize * 1.35));
+}
+
+RepeatBlockLabelMorph.prototype.fixLayout = function () {
+	RepeatBlockLabelMorph.uber.fixLayout.call(this);
+	this.repeatTextWidth = this.width();
+	this.bounds.setWidth(this.repeatTextWidth + this.repeatIconWidth + 3);
+};
+
+RepeatBlockLabelMorph.prototype.render = function (ctx) {
+	var w = this.repeatIconWidth;
+	ctx.save();
+	ctx.translate(w + 3, 0);
+	RepeatBlockLabelMorph.uber.render.call(this, ctx);
+	ctx.restore();
+
+	var cx = Math.round(w / 2) + 1;
+	var cy = Math.round(this.height() / 2);
+	var r = Math.max(4, Math.round(w * 0.30));
+	ctx.save();
+	ctx.strokeStyle = this.getRenderColor().toString();
+	ctx.lineWidth = Math.max(1.5, this.scale);
+	ctx.lineCap = 'round';
+	ctx.beginPath();
+	ctx.arc(cx, cy, r, -Math.PI * 0.80, Math.PI * 0.70);
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.moveTo(cx + r * 0.55, cy - r * 0.75);
+	ctx.lineTo(cx + r * 1.05, cy - r * 0.70);
+	ctx.lineTo(cx + r * 0.75, cy - r * 0.25);
+	ctx.stroke();
+	ctx.restore();
 };
 
 // BlockMorph //////////////////////////////////////////////////////////
