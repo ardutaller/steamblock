@@ -1923,6 +1923,12 @@ method labelGroup Block index {
 		if ('_' == w) {
 			add group (inputSlot blockSpec slotIndex color (isPrototype this) argNames)
 			slotIndex += 1
+		} (beginsWith w '#IMG#') {
+			// Inline SVG image token. The image name is looked up in img/.
+			iconName = (substring w 6)
+			fg = (global 'blockTextColor')
+			if (isNil fg) { fg = (gray 255) }
+			add group (newSVGImage iconName fg nil (blockScale))
 		} else {
 			add group (labelText this w)
 		}
