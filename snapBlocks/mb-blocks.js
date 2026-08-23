@@ -1239,6 +1239,8 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 
 // RepeatBlockIconMorph /////////////////////////////////////////////////
 // Visual, non-input marker used by the 'repeat' block.
+// It is a real Morph child of the block, so the normal block layout
+// positions it exactly like any other label part.
 RepeatBlockIconMorph.prototype = new Morph();
 RepeatBlockIconMorph.prototype.constructor = RepeatBlockIconMorph;
 RepeatBlockIconMorph.uber = Morph.prototype;
@@ -1247,8 +1249,7 @@ function RepeatBlockIconMorph() {
 	this.init();
 	this.isVisible = true;
 	this.isBlockLabelBreak = false;
-	this.iconSize = 18;
-	this.setExtent(new Point(this.iconSize, this.iconSize));
+	this.setExtent(new Point(18, 18));
 }
 
 RepeatBlockIconMorph.prototype.fixLayout = function () {
@@ -1264,7 +1265,10 @@ RepeatBlockIconMorph.prototype.render = function (ctx) {
 		r = Math.max(4, Math.round(Math.min(w, h) * 0.32));
 
 	ctx.save();
-	ctx.strokeStyle = WHITE.toString();
+	// Match the block label colour.
+	var block = this.parentThatIsA(BlockMorph);
+	var iconColor = block ? block.color.darker(block.labelContrast) : WHITE;
+	ctx.strokeStyle = iconColor.toString();
 	ctx.lineWidth = Math.max(1.5, this.scale);
 	ctx.lineCap = 'round';
 	ctx.lineJoin = 'round';
