@@ -315,6 +315,9 @@ SyntaxElementMorph.prototype.labelParts = {
 	'%bool': {
 		type: 'boolean'
 	},
+	'%repeatIcon': {
+		type: 'repeatIcon'
+	},
 	'%color': {
 		type: 'color'
 	},
@@ -723,6 +726,9 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 			case 'boolean':
 				part = new BooleanSlotMorph();
 				break;
+			case 'repeatIcon':
+				part = new RepeatBlockIconMorph();
+				break;
 			case 'c':
 				part = new CSlotMorph();
 				break;
@@ -803,33 +809,18 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
 			part.fixLayout();
 		}
 	} else {
-		if (this.selector === 'repeat' && spec === 'repeat') {
-			part = new RepeatBlockLabelMorph(
-				spec, // text
-				this.fontSize, // fontSize
-				this.labelFontStyle, // fontStyle
-				true, // bold
-				false, // italic
-				false, // isNumeric
-				ZERO, // shadowOffset
-				this.color.darker(this.labelContrast), // shadowColor
-				WHITE, // color
-				this.labelFontName // fontName
-			);
-		} else {
-			part = new BlockLabelMorph(
-				spec, // text
-				this.fontSize, // fontSize
-				this.labelFontStyle, // fontStyle
-				true, // bold
-				false, // italic
-				false, // isNumeric
-				ZERO, // shadowOffset
-				this.color.darker(this.labelContrast), // shadowColor
-				WHITE, // color
-				this.labelFontName // fontName
-			);
-		}
+		part = new BlockLabelMorph(
+			spec, // text
+			this.fontSize, // fontSize
+			this.labelFontStyle, // fontStyle
+			true, // bold
+			false, // italic
+			false, // isNumeric
+			ZERO, // shadowOffset
+			this.color.darker(this.labelContrast), // shadowColor
+			WHITE, // color
+			this.labelFontName // fontName
+		);
 	}
 	return part;
 };
@@ -1246,66 +1237,44 @@ BlockLabelMorph.prototype.getShadowRenderColor = function () {
 		: CLEAR;
 };
 
-// RepeatBlockLabelMorph ////////////////////////////////////////////////
-// Test-only label used only by the 'repeat' block.
-RepeatBlockLabelMorph.prototype = new BlockLabelMorph();
-RepeatBlockLabelMorph.prototype.constructor = RepeatBlockLabelMorph;
-RepeatBlockLabelMorph.uber = BlockLabelMorph.prototype;
+// RepeatBlockIconMorph /////////////////////////////////////////////////
+// Visual, non-input marker used by the 'repeat' block.
+RepeatBlockIconMorph.prototype = new Morph();
+RepeatBlockIconMorph.prototype.constructor = RepeatBlockIconMorph;
+RepeatBlockIconMorph.uber = Morph.prototype;
 
-function RepeatBlockLabelMorph(
-	text,
-	fontSize,
-	fontStyle,
-	bold,
-	italic,
-	isNumeric,
-	shadowOffset,
-	shadowColor,
-	color,
-	fontName
-) {
-	this.init(
-		text,
-		fontSize,
-		fontStyle,
-		bold,
-		italic,
-		isNumeric,
-		shadowOffset,
-		shadowColor,
-		color,
-		fontName
-	);
-	this.repeatIconWidth = Math.max(12, Math.round(this.fontSize * 1.35));
+function RepeatBlockIconMorph() {
+	this.init();
+	this.isVisible = true;
+	this.isBlockLabelBreak = false;
+	this.iconSize = 18;
+	this.setExtent(new Point(this.iconSize, this.iconSize));
 }
 
-RepeatBlockLabelMorph.prototype.fixLayout = function () {
-	RepeatBlockLabelMorph.uber.fixLayout.call(this);
-	this.repeatTextWidth = this.width();
-	this.bounds.setWidth(this.repeatTextWidth + this.repeatIconWidth + 3);
+RepeatBlockIconMorph.prototype.fixLayout = function () {
+	var size = Math.max(14, Math.round(18 * this.scale));
+	this.setExtent(new Point(size, size));
 };
 
-RepeatBlockLabelMorph.prototype.render = function (ctx) {
-	var w = this.repeatIconWidth;
-	ctx.save();
-	ctx.translate(w + 3, 0);
-	RepeatBlockLabelMorph.uber.render.call(this, ctx);
-	ctx.restore();
+RepeatBlockIconMorph.prototype.render = function (ctx) {
+	var w = this.width(),
+		h = this.height(),
+		cx = Math.round(w / 2),
+		cy = Math.round(h / 2),
+		r = Math.max(4, Math.round(Math.min(w, h) * 0.32));
 
-	var cx = Math.round(w / 2) + 1;
-	var cy = Math.round(this.height() / 2);
-	var r = Math.max(4, Math.round(w * 0.30));
 	ctx.save();
-	ctx.strokeStyle = this.getRenderColor().toString();
+	ctx.strokeStyle = WHITE.toString();
 	ctx.lineWidth = Math.max(1.5, this.scale);
 	ctx.lineCap = 'round';
+	ctx.lineJoin = 'round';
 	ctx.beginPath();
-	ctx.arc(cx, cy, r, -Math.PI * 0.80, Math.PI * 0.70);
+	ctx.arc(cx, cy, r, -Math.PI * 0.82, Math.PI * 0.72);
 	ctx.stroke();
 	ctx.beginPath();
-	ctx.moveTo(cx + r * 0.55, cy - r * 0.75);
+	ctx.moveTo(cx + r * 0.55, cy - r * 0.78);
 	ctx.lineTo(cx + r * 1.05, cy - r * 0.70);
-	ctx.lineTo(cx + r * 0.75, cy - r * 0.25);
+	ctx.lineTo(cx + r * 0.76, cy - r * 0.24);
 	ctx.stroke();
 	ctx.restore();
 };
@@ -1566,7 +1535,7 @@ BlockMorph.prototype.setSpec = function (spec, definition) {
 	for (let word of this.parseSpec(spec)) {
  		if (':' == word) break; // stop at start of optional arguments
 
-		if (word[0] === '%') {
+		if (word[0] === '%' && word !== '%repeatIcon') {
 			inputIdx += 1;
 		}
 		part = this.labelPart(word);
