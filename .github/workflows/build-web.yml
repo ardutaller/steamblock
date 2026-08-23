@@ -1,0 +1,42 @@
+name: Build MicroBlocks Web
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+          actions-cache-folder: 'emsdk-cache'
+
+      - name: Comprobar Emscripten
+        run: emcc --version
+
+      - name: Compilar GP WebAssembly
+        run: ./build.sh --gp
+
+      - name: Comprobar archivos generados
+        run: |
+          ls -lh chromeApp/webapp/gp_wasm.js
+          ls -lh chromeApp/webapp/gp_wasm.wasm
+          ls -lh chromeApp/webapp/gp_wasm.data
+
+      - name: Guardar archivos compilados
+        uses: actions/upload-artifact@v4
+        with:
+          name: microblocks-web
+          path: |
+            chromeApp/webapp/gp_wasm.js
+            chromeApp/webapp/gp_wasm.wasm
+            chromeApp/webapp/gp_wasm.data
