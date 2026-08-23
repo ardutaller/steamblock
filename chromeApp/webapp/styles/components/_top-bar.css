@@ -7,6 +7,29 @@
 	height: var(--space-48);
 	display: flex;
 	align-items: stretch;
+	position: relative;
+}
+
+.top-bar__branding {
+	position: relative;
+	width: 190px;
+}
+
+.top-bar__credit {
+	position: absolute;
+	top: var(--space-48);
+	left: 0;
+	width: 190px;
+	text-align: center;
+	font-size: 11px;
+	line-height: 14px;
+	color: var(--color-blue-grey-300);
+	pointer-events: none;
+}
+
+.top-bar__credit strong {
+	color: var(--color-blue-grey-50);
+	font-weight: 600;
 }
 
 
