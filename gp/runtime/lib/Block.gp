@@ -1931,7 +1931,7 @@ method labelGroup Block index {
 			add group (newSVGImage iconName fg nil (blockScale))
 		} else {
 			if (and ('repeat' == w) ('repeat' == (blockOp blockSpec))) {
-				add group (labelText this '#SVG#repeat-icon')
+				add group (newSVGImage 'repeat-icon' fg nil (blockScale))
 			}
 			add group (labelText this w)
 		}
