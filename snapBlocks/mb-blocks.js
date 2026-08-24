@@ -1260,31 +1260,13 @@ RepeatBlockIconMorph.prototype.fixLayout = function () {
 };
 
 RepeatBlockIconMorph.prototype.render = function (ctx) {
-	var w = this.width(),
-		h = this.height();
-	ctx.save();
-	ctx.fillStyle = 'blue';
-	ctx.fillRect(1, 1, Math.max(1, w - 2), Math.max(1, h - 2));
-	ctx.restore();
-	return;
+\tvar w = this.width(),
+\t\th = this.height();
 
-	ctx.save();
-	// Match the block label colour.
-	var block = this.parentThatIsA(BlockMorph);
-	var iconColor = block ? block.color.darker(block.labelContrast) : WHITE;
-	ctx.strokeStyle = iconColor.toString();
-	ctx.lineWidth = Math.max(1.5, this.scale);
-	ctx.lineCap = 'round';
-	ctx.lineJoin = 'round';
-	ctx.beginPath();
-	ctx.arc(cx, cy, r, -Math.PI * 0.82, Math.PI * 0.72);
-	ctx.stroke();
-	ctx.beginPath();
-	ctx.moveTo(cx + r * 0.55, cy - r * 0.78);
-	ctx.lineTo(cx + r * 1.05, cy - r * 0.70);
-	ctx.lineTo(cx + r * 0.76, cy - r * 0.24);
-	ctx.stroke();
-	ctx.restore();
+\tctx.save();
+\tctx.fillStyle = 'red';
+\tctx.fillRect(0, 0, w, h);
+\tctx.restore();
 };
 
 // BlockMorph //////////////////////////////////////////////////////////
