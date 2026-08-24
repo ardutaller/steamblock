@@ -1923,16 +1923,13 @@ method labelGroup Block index {
 		if ('_' == w) {
 			add group (inputSlot blockSpec slotIndex color (isPrototype this) argNames)
 			slotIndex += 1
-		} (beginsWith w '#IMG#') {
+		} (or (beginsWith w '#IMG#') ('%repeatIcon' == w)) {
 			// Inline SVG image token. The image name is looked up in img/.
-			iconName = (substring w 6)
+			iconName = (if (beginsWith w '#IMG#') (substring w 6) 'repeat-icon')
 			fg = (global 'blockTextColor')
 			if (isNil fg) { fg = (gray 255) }
 			add group (newSVGImage iconName fg nil (blockScale))
 		} else {
-			if ('repeat' == w) {
-				add group (labelText this '#SVG#repeat-icon')
-			}
 			add group (labelText this w)
 		}
 	}
