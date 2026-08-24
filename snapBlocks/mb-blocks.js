@@ -1261,10 +1261,12 @@ RepeatBlockIconMorph.prototype.fixLayout = function () {
 
 RepeatBlockIconMorph.prototype.render = function (ctx) {
 	var w = this.width(),
-		h = this.height(),
-		cx = Math.round(w / 2),
-		cy = Math.round(h / 2),
-		r = Math.max(4, Math.round(Math.min(w, h) * 0.32));
+		h = this.height();
+	ctx.save();
+	ctx.fillStyle = 'blue';
+	ctx.fillRect(1, 1, Math.max(1, w - 2), Math.max(1, h - 2));
+	ctx.restore();
+	return;
 
 	ctx.save();
 	// Match the block label colour.
