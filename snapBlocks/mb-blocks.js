@@ -1253,7 +1253,9 @@ function RepeatBlockIconMorph() {
 }
 
 RepeatBlockIconMorph.prototype.fixLayout = function () {
-	var size = Math.max(14, Math.round(18 * this.scale));
+	var block = this.parentThatIsA ? this.parentThatIsA(BlockMorph) : null,
+		scale = block && block.scale ? block.scale : 1.5,
+		size = Math.max(14, Math.round(18 * scale));
 	this.setExtent(new Point(size, size));
 };
 
