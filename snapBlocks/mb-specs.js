@@ -257,7 +257,7 @@ MB_Specs.mbBlockSpecs = function () {
 		"cat;Control",
 			["h", "whenStarted", "when started"],
 			["h", "whenButtonPressed", "when button _ pressed", "menu.buttonMenu", "A"],
-			[" ", "forever", "#IMG#repeat-icon forever", "cmd"],
+			[" ", "forever", "forever _", "cmd"],
 			[" ", "repeat", "%repeatIcon repeat _ _", "num cmd", 10],
 			[" ", "waitMillis", "wait _ millisecs", "num", 500],
 		"-",
