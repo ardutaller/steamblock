@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SteamBlock · Prueba Google Drive</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f5f6f8;color:#263238;margin:0}
+main{max-width:760px;margin:40px auto;padding:28px;background:white;border-radius:16px;box-shadow:0 4px 20px #0001}
+h1{margin-top:0;color:#6b2a86}
+button{padding:11px 16px;margin:6px 4px 6px 0;border:0;border-radius:8px;cursor:pointer;font-weight:600}
+.primary{background:#6b2a86;color:white}
+.secondary{background:#e9e3ed;color:#4b205d}
+button:disabled{opacity:.45;cursor:not-allowed}
+#status{margin:20px 0;padding:14px;background:#f1f3f5;border-radius:8px;white-space:pre-wrap}
+ul{line-height:1.8}
+small{color:#607d8b}
+</style>
+</head>
+<body>
+<main>
+<h1>☁️ SteamBlock · Google Drive</h1>
+<p>Prueba técnica independiente. Esta página no modifica todavía el IDE de SteamBlock.</p>
+
+<button id="connect" class="primary" disabled>🔐 Conectar Google Drive</button>
+<button id="revoke" class="secondary" disabled>🚪 Revocar acceso</button>
+
+<hr>
+
+<button id="folder" disabled>📁 Crear/abrir carpeta SteamBlock</button>
+<button id="save" disabled>💾 Guardar archivo de prueba</button>
+<button id="list" disabled>📂 Ver archivos de prueba</button>
+
+<div id="status">Cargando Google Identity Services...</div>
+<ul id="files"></ul>
+
+<small>Permiso utilizado: drive.file</small>
+</main>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const CLIENT_ID = "214450544007-13qjvad0vi01n39k5q9vd1r9r7nacvt9.apps.googleusercontent.com";
+const SCOPE = "https://www.googleapis.com/auth/drive.file";
+const DRIVE = "https://www.googleapis.com/drive/v3";
+const UPLOAD = "https://www.googleapis.com/upload/drive/v3/files";
+
+let tokenClient = null;
+let accessToken = null;
+let folderId = null;
+
+const status = (text) => document.getElementById("status").textContent = text;
+const setEnabled = (on) => {
+  document.getElementById("folder").disabled = !on;
+  document.getElementById("save").disabled = !on;
+  document.getElementById("list").disabled = !on;
+  document.getElementById("revoke").disabled = !on;
+};
+
+function initGIS() {
+  if (!window.google || !google.accounts || !google.accounts.oauth2) {
+    setTimeout(initGIS, 200);
+    return;
+  }
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPE,
+    callback: async (response) => {
+      if (response.error) {
+        status("Error de autorización: " + response.error + "\n" + (response.error_description || ""));
+        return;
+      }
+      accessToken = response.access_token;
+      status("✅ Google Drive conectado.\nToken recibido correctamente.");
+      setEnabled(true);
+    },
+    error_callback: (error) => {
+      status("No se pudo abrir la ventana de autorización: " + JSON.stringify(error));
+    }
+  });
+  document.getElementById("connect").disabled = false;
+  status("Listo. Pulsa «Conectar Google Drive».");
+}
+
+async function driveFetch(url, options={}) {
+  options.headers = Object.assign({}, options.headers || {}, {
+    Authorization: "Bearer " + accessToken
+  });
+  const r = await fetch(url, options);
+  if (!r.ok) {
+    const text = await r.text();
+    throw new Error(r.status + " " + r.statusText + "\n" + text);
+  }
+  return r;
+}
+
+async function findFolder() {
+  const q = "name = 'SteamBlock' and mimeType = 'application/vnd.google-apps.folder' and trashed = false";
+  const r = await driveFetch(DRIVE + "/files?q=" + encodeURIComponent(q) + "&spaces=drive&fields=files(id,name)");
+  const data = await r.json();
+  return data.files && data.files.length ? data.files[0] : null;
+}
+
+async function createFolder() {
+  const r = await driveFetch(DRIVE + "/files", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      name:"SteamBlock",
+      mimeType:"application/vnd.google-apps.folder"
+    })
+  });
+  return r.json();
+}
+
+async function ensureFolder() {
+  const existing = await findFolder();
+  if (existing) return existing;
+  return await createFolder();
+}
+
+async function uploadText(name, text) {
+  const metadata = {
+    name:name,
+    parents:[folderId],
+    mimeType:"text/plain"
+  };
+  const boundary = "steamblock_boundary_" + Date.now();
+  const body =
+    "--" + boundary + "\r\n" +
+    "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+    JSON.stringify(metadata) + "\r\n" +
+    "--" + boundary + "\r\n" +
+    "Content-Type: text/plain\r\n\r\n" +
+    text + "\r\n" +
+    "--" + boundary + "--";
+  const r = await driveFetch(UPLOAD + "?uploadType=multipart&fields=id,name,parents", {
+    method:"POST",
+    headers:{"Content-Type":"multipart/related; boundary=" + boundary},
+    body:body
+  });
+  return r.json();
+}
+
+async function listFiles() {
+  const q = "'" + folderId + "' in parents and trashed = false";
+  const r = await driveFetch(DRIVE + "/files?q=" + encodeURIComponent(q) + "&orderBy=name&fields=files(id,name,mimeType,modifiedTime)");
+  return (await r.json()).files || [];
+}
+
+document.getElementById("connect").onclick = () => {
+  tokenClient.requestAccessToken();
+};
+
+document.getElementById("folder").onclick = async () => {
+  try {
+    const folder = await ensureFolder();
+    folderId = folder.id;
+    status("✅ Carpeta SteamBlock localizada/creada.\nID: " + folderId);
+  } catch(e) { status("❌ Error al crear/localizar carpeta:\n" + e.message); }
+};
+
+document.getElementById("save").onclick = async () => {
+  try {
+    if (!folderId) {
+      const folder = await ensureFolder();
+      folderId = folder.id;
+    }
+    const file = await uploadText("prueba-steamblock.txt",
+      "Prueba de Google Drive desde SteamBlock.\nFecha: " + new Date().toISOString());
+    status("✅ Archivo guardado en Google Drive:\n" + file.name + "\nID: " + file.id);
+  } catch(e) { status("❌ Error al guardar:\n" + e.message); }
+};
+
+document.getElementById("list").onclick = async () => {
+  try {
+    if (!folderId) {
+      const folder = await ensureFolder();
+      folderId = folder.id;
+    }
+    const files = await listFiles();
+    const ul = document.getElementById("files");
+    ul.innerHTML = "";
+    files.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f.name + " · " + f.mimeType;
+      ul.appendChild(li);
+    });
+    status("✅ Archivos encontrados: " + files.length);
+  } catch(e) { status("❌ Error al listar:\n" + e.message); }
+};
+
+document.getElementById("revoke").onclick = () => {
+  if (!accessToken) return;
+  google.accounts.oauth2.revoke(accessToken, () => {
+    accessToken = null;
+    folderId = null;
+    setEnabled(false);
+    status("Acceso revocado. Puedes volver a conectarlo cuando quieras.");
+  });
+};
+
+initGIS();
+</script>
+</body>
+</html>
