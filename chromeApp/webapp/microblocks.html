@@ -246,6 +246,7 @@
 			<h3>☁️ Prueba Google Drive</h3>
 			<button id="steamblock-drive-connect">🔐 Conectar Google Drive</button>
 			<button id="steamblock-drive-folder">📁 Crear / localizar carpeta SteamBlock</button>
+			<button id="steamblock-drive-save">💾 Crear archivo de prueba</button>
 			<button id="steamblock-drive-close">✕ Cerrar prueba</button>
 			<div id="steamblock-drive-status">Comprobando módulo Google Drive...</div>
 		</div>
@@ -255,6 +256,7 @@
 				const status = document.getElementById('steamblock-drive-status');
 				const connectButton = document.getElementById('steamblock-drive-connect');
 				const folderButton = document.getElementById('steamblock-drive-folder');
+				const saveButton = document.getElementById('steamblock-drive-save');
 				const closeButton = document.getElementById('steamblock-drive-close');
 
 				function checkModule() {
@@ -300,6 +302,44 @@
 							'✅ Carpeta SteamBlock localizada/creada.\nID: ' + folder.id;
 					} catch (error) {
 						status.textContent = '❌ Error:\n' + error.message;
+					}
+				});
+
+				saveButton.addEventListener('click', async function () {
+					if (!checkModule()) return;
+
+					if (!window.SteamBlockGoogleDrive.isConnected()) {
+						status.textContent = 'Primero conecta Google Drive.';
+						return;
+					}
+
+					try {
+						status.textContent = 'Creando archivo de prueba en Google Drive...';
+
+						const fileName =
+							'SteamBlock-prueba-' +
+							new Date().toISOString().slice(0, 10) +
+							'.txt';
+
+						const content =
+							'Prueba realizada correctamente desde SteamBlock.\n' +
+							'Fecha: ' + new Date().toLocaleString();
+
+						const file =
+							await window.SteamBlockGoogleDrive.saveFile(
+								fileName,
+								content,
+								'text/plain'
+							);
+
+						status.textContent =
+							'✅ Archivo creado correctamente.\n' +
+							'Nombre: ' + file.name + '\n' +
+							'ID: ' + file.id;
+					} catch (error) {
+						status.textContent =
+							'❌ Error al crear el archivo:\n' +
+							error.message;
 					}
 				});
 
