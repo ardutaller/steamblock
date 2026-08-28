@@ -246,6 +246,7 @@
 			<h3>☁️ Prueba Google Drive</h3>
 			<button id="steamblock-drive-connect">🔐 Conectar Google Drive</button>
 			<button id="steamblock-drive-folder">📁 Crear / localizar carpeta SteamBlock</button>
+			<button id="steamblock-drive-open">🌐 Abrir carpeta en Google Drive</button>
 			<button id="steamblock-drive-save">💾 Crear archivo de prueba</button>
 			<button id="steamblock-drive-close">✕ Cerrar prueba</button>
 			<div id="steamblock-drive-status">Comprobando módulo Google Drive...</div>
@@ -256,6 +257,7 @@
 				const status = document.getElementById('steamblock-drive-status');
 				const connectButton = document.getElementById('steamblock-drive-connect');
 				const folderButton = document.getElementById('steamblock-drive-folder');
+				const openButton = document.getElementById('steamblock-drive-open');
 				const saveButton = document.getElementById('steamblock-drive-save');
 				const closeButton = document.getElementById('steamblock-drive-close');
 
@@ -302,6 +304,35 @@
 							'✅ Carpeta SteamBlock localizada/creada.\nID: ' + folder.id;
 					} catch (error) {
 						status.textContent = '❌ Error:\n' + error.message;
+					}
+				});
+
+				openButton.addEventListener('click', async function () {
+					if (!checkModule()) return;
+
+					if (!window.SteamBlockGoogleDrive.isConnected()) {
+						status.textContent = 'Primero conecta Google Drive.';
+						return;
+					}
+
+					try {
+						status.textContent = 'Localizando carpeta SteamBlock...';
+
+						const folder =
+							await window.SteamBlockGoogleDrive.getFolder();
+
+						const url =
+							'https://drive.google.com/drive/folders/' +
+							encodeURIComponent(folder.id);
+
+						window.open(url, '_blank', 'noopener');
+
+						status.textContent =
+							'🌐 Abriendo la carpeta SteamBlock en Google Drive.';
+					} catch (error) {
+						status.textContent =
+							'❌ Error al abrir la carpeta:\n' +
+							error.message;
 					}
 				});
 
