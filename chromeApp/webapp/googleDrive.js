@@ -1,6 +1,6 @@
 /*
  * SteamBlock - Google Drive
- *
+ * Diseñado por ardutaller.es
  * Módulo de integración con Google Drive.
  * Este archivo no crea interfaz gráfica; expone una API para el IDE.
  */
@@ -257,6 +257,19 @@
         return await response.text();
     }
 
+    async function openFile(fileId, fileName) {
+        const content = await loadFile(fileId);
+
+        const name = fileName || "SteamBlock-project.ubp";
+
+        GP.droppedFiles.push({
+            name: toUTF8Array(name),
+            contents: new TextEncoder().encode(content).buffer
+        });
+
+        return true;
+    }
+
     window.SteamBlockGoogleDrive = {
         initialize,
         connect,
@@ -265,7 +278,8 @@
         getFolder: getSteamBlockFolder,
         listFiles,
         saveFile,
-        loadFile
+        loadFile,
+        openFile
     };
 
     initialize();
