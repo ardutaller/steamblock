@@ -199,8 +199,8 @@
 				right: 18px;
 				top: 70px;
 				z-index: 99999;
-				width: 380px;
-				max-width: calc(100vw - 28px);
+				width: 285px;
+				max-width: calc(100vw - 20px);
 				padding: 0;
 				background: #fff;
 				border: 2px solid #6b2a86;
@@ -210,6 +210,7 @@
 				color: #333;
 				overflow: hidden;
 				box-sizing: border-box;
+				max-height: calc(100vh - 90px);
 				transition: opacity .22s ease, transform .22s ease, width .22s ease;
 			}
 
@@ -269,12 +270,28 @@
 
 			.steamblock-drive-content {
 				display: block;
+				max-height: calc(100vh - 172px);
+				overflow-y: auto;
+				overflow-x: hidden;
+				padding-bottom: 4px;
+				-webkit-overflow-scrolling: touch;
+			}
+
+			.steamblock-drive-content::-webkit-scrollbar {
+				width: 8px;
+			}
+			.steamblock-drive-content::-webkit-scrollbar-thumb {
+				background: #cdbbd4;
+				border-radius: 8px;
+			}
+			.steamblock-drive-content::-webkit-scrollbar-track {
+				background: #f7f3f8;
 			}
 
 			/* Header */
 			.steamblock-drive-header {
 				display: grid;
-				grid-template-columns: 58px 1fr 38px;
+				grid-template-columns: 48px 1fr 34px;
 				align-items: center;
 				column-gap: 8px;
 				min-height: 82px;
@@ -285,8 +302,8 @@
 
 			.steamblock-drive-robot {
 				display: block;
-				width: 58px;
-				height: 68px;
+				width: 48px;
+				height: 58px;
 				object-fit: contain;
 				object-position: center bottom;
 				flex: 0 0 auto;
@@ -307,7 +324,7 @@
 			.steamblock-drive-title strong {
 				display: block;
 				color: #6b2a86;
-				font-size: 18px;
+				font-size: 16px;
 				line-height: 1.12;
 				letter-spacing: -.2px;
 			}
@@ -550,7 +567,7 @@
 			@media (max-width: 480px) {
 				#steamblock-drive-test {
 					right: 10px;
-					width: min(380px, calc(100vw - 20px));
+					width: min(285px, calc(100vw - 20px));
 				}
 				.steamblock-drive-header {
 					grid-template-columns: 50px 1fr 34px;
