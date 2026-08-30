@@ -376,8 +376,8 @@
 			.steamblock-drive-language-button {
 				flex: 1 1 0;
 				width: auto !important;
-				height: 34px !important;
-				min-height: 34px !important;
+				height: 24px !important;
+				min-height: 24px !important;
 				margin: 0 !important;
 				padding: 2px !important;
 				border: 1px solid #d8ccdD !important;
@@ -606,8 +606,8 @@
 					font-size: 16px;
 				}
 				.steamblock-drive-language-button {
-					height: 30px !important;
-					min-height: 30px !important;
+					height: 22px !important;
+					min-height: 22px !important;
 				}
 			}
 
@@ -1010,7 +1010,7 @@
 								'steamblock-drive-project-open';
 
 							openProjectButton.textContent =
-								(languageTexts[language] || languageTexts.es).open;
+								(languageTexts[currentLanguage] || languageTexts.es).open;
 
 							openProjectButton.addEventListener(
 								'click',
@@ -1316,6 +1316,8 @@
 				const languageButtons =
 					panel.querySelectorAll('.steamblock-drive-language-button');
 
+				let currentLanguage = 'es';
+
 				const languageTexts = {
 					es: {
 						connect: '🔐 Conectar Google Drive',
@@ -1363,6 +1365,7 @@
 
 				function applyLanguage(lang) {
 					const t = languageTexts[lang] || languageTexts.es;
+					currentLanguage = languageTexts[lang] ? lang : 'es';
 
 					languageButtons.forEach(function (button) {
 						button.classList.toggle('active', button.dataset.lang === lang);
@@ -1411,6 +1414,7 @@
 				} catch (e) {}
 
 				if (!languageTexts[savedLanguage]) savedLanguage = 'es';
+				currentLanguage = savedLanguage;
 				languageButtons.forEach(function (button) {
 						button.classList.toggle('active', button.dataset.lang === savedLanguage);
 					});
