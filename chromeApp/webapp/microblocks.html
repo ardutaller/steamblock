@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en-us">
+	<head>
+		<title>MicroBlocks</title>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+
+		<link rel="manifest" href="manifest.json">
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="apple-touch-icon" href="icons/Bunny512.png">
+
+		<meta name="theme-color" content="white"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-title" content="MicroBlocks">
+		<meta name="msapplication-TileImage" content="icons/Bunny192.png">
+		<meta name="msapplication-TileColor" content="#FFFFFF">
+
+		<!-- Styles -->
+		<link rel="stylesheet" href="styles/config/_config.css">
+		<link rel="stylesheet" href="styles/generic/minireset.css">
+		<link rel="stylesheet" href="styles/generic/_body.css">
+		<link rel="stylesheet" href="styles/generic/_button.css">
+		<link rel="stylesheet" href="styles/components/_app-preloader.css">
+		<link rel="stylesheet" href="styles/components/_buttons.css">
+		<link rel="stylesheet" href="styles/components/_categories-libraries.css">
+		<link rel="stylesheet" href="styles/components/_ide.css">
+		<link rel="stylesheet" href="styles/components/_menus.css">
+		<link rel="stylesheet" href="styles/components/_scripts-pane-controls.css">
+		<link rel="stylesheet" href="styles/components/_tips.css">
+		<link rel="stylesheet" href="styles/components/_top-bar.css">
+		<link rel="stylesheet" href="styles/components/_window.css">
+		<link rel="stylesheet" href="styles/components/_overlay.css">
+		<link rel="stylesheet" href="styles/components/_wysiwyg.css">
+		<link rel="stylesheet" href="styles/utilities/_drag.css">
+
+		<!-- Developer tools. Disable on live instances -->
+		<script type="text/javascript" src="devtools.js" defer></script>
+
+		<!-- Localization -->
+		<script type="text/javascript" src="gettext.js" defer></script>
+
+		<!-- Window Components -->
+		<script type="text/javascript" src="windows.js" defer></script>
+		<script type="text/javascript" src="graph.js" defer></script>
+
+		<!-- Firmware upload support -->
+		<script type="text/javascript" src="lib/usbDfuDevice.js" defer></script>
+		<script type="text/javascript" src="flasher.js" defer></script>
+
+	</head>
+
+	<body oncontextmenu="return false;">
+
+
+		<!-- Force HTTPS. Otherwise WebSerial can't be accessed. -->
+		<script>
+			if (location.protocol === 'http:') { location.protocol = 'https:'; }
+		</script>
+
+
+		<!-- FileUploader -->
+		<input type="file" id="FileUploader" multiple style="display:none">
+
+
+		<!-- Loader -->
+		<div class="app-preloader" data-ide="app-preloader">
+			<div class="app-preloader__contents">
+				<img class="app-preloader__logo" src="img/logo-preloader.svg" alt="MicroBlocks and Rosa logo">
+				<div class="app-preloader__spinner"></div>
+			</div>
+			<p class="app-preloader__text">Loading</p>
+		</div>
+
+
+		<!-- Emcripten -->
+		<div class="spinner" id="spinner"></div>
+		<div class="emscripten" id="status"></div>
+		<div class="emscripten">
+			<progress value="0" max="100" id="progress" hidden="1"></progress>
+		</div>
+
+
+		<!-- IDE -->
+		<div class="ide" data-ide="ide">
+
+		<nav class="top-bar" data-ide="top-bar">
+
+  <div class="top-bar__branding">
+
+    <a href="https://microblocks.fun/" target="_blank" class="top-bar__logo" aria-label="MicroBlocks website">
+        <img src="img/microblocks-ide-logo.svg" alt="">
+    </a>
+
+    <a href="https://www.ardutaller.es/" target="_blank" rel="noopener noreferrer" class="top-bar__credit">
+        Version adapted by:<br>
+        <strong>ardutaller.es</strong>
+    </a>
+
+</div>
+
+				<div class="top-bar__main-menu" data-ide="main-menu"></div>
+
+				<div class="top-bar__title" data-ide="title"></div>
+
+				<div class="top-bar__controls" data-ide="controls">
+					<div class="top-bar__controls-progress" data-ide="progress"></div>
+				</div>
+
+			</nav>
+
+			<div class="workspace" data-ide="workspace">
+
+				<div class="workspace__left" data-ide="workspace-left">
+					<div class="categories">
+						<div class="categories__list" data-ide="categories-list"></div>
+					</div>
+					<div class="libraries">
+						<h2 class="libraries__title"><l->LIBRARIES</l-></h2>
+						<nav class="libraries__add-button-wrapper">
+							<button class="button-rounded libraries__add-button" onclick="GP.apiCall('ide.showLibraryDialog');">
+								<l->Add Library</l->
+								<span class="libraries__add-button-icon">
+									<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8 4C8.27614 4 8.5 4.22386 8.5 4.5V7.5H11.5C11.7761 7.5 12 7.72386 12 8C12 8.27614 11.7761 8.5 11.5 8.5H8.5V11.5C8.5 11.7761 8.27614 12 8 12C7.72386 12 7.5 11.7761 7.5 11.5V8.5H4.5C4.22386 8.5 4 8.27614 4 8C4 7.72386 4.22386 7.5 4.5 7.5H7.5V4.5C7.5 4.22386 7.72386 4 8 4Z" fill="currentColor"/>
+									</svg>
+								</span>
+							</button>
+						</nav>
+						<div class="libraries__list" data-ide="libraries-list"></div>
+					</div>
+					<button class="workspace__collapse-left-btn" data-ide="collapse-left-btn" aria-label="Expand and collapse left bar">
+						<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M1 8C1 8.27614 1.22386 8.5 1.5 8.5H13.2929L10.1464 11.6464C9.95118 11.8417 9.95118 12.1583 10.1464 12.3536C10.3417 12.5488 10.6583 12.5488 10.8536 12.3536L14.8536 8.35355C15.0488 8.15829 15.0488 7.84171 14.8536 7.64645L10.8536 3.64645C10.6583 3.45118 10.3417 3.45118 10.1464 3.64645C9.95118 3.84171 9.95118 4.15829 10.1464 4.35355L13.2929 7.5H1.5C1.22386 7.5 1 7.72386 1 8Z" fill="currentColor"/>
+						</svg>
+					</button>
+				</div>
+
+				<div class="emscripten workspace__canvas-wrapper">
+					<canvas id="canvas" class="emscripten" width="100px" height="100px"></canvas>
+					<div class="scripts-pane-controls --can-drag-through" data-ide="scripts-pane-controls"></div>
+				</div>
+
+			</div>
+
+			<div class="bottom-bar" data-ide="bottom-bar">
+				<div class="tips" data-ide="tips-container"></div>
+			</div>
+
+			<div class="menu-container" data-ide="menu-container"></div>
+
+			<div class="overlay" data-ide="overlay">
+				<div class="overlay__contents">
+					<div class="overlay__spinner" data-ide="overlay-spinner"></div>
+					<h2 class="overlay__title" data-ide="overlay-title"></h2>
+					<h3 class="overlay__subtitle" data-ide="overlay-subtitle"></h3>
+					<span class="overlay__note" data-ide="overlay-note"></span>
+				</div>
+			</div>
+
+		</div>
+
+
+		<!-- Functional JS -->
+		<script type="text/javascript" src="emModule.js"></script>
+		<script type="text/javascript" src="gpSupport.js"></script>
+		<script type="text/javascript" src="FileSaver.js"></script>
+
+		<!-- Google Identity Services -->
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+		<!-- SteamBlock - Google Drive -->
+		<script type="text/javascript" src="googleDrive.js"></script>
+
+		<script type="text/javascript" src="gp_wasm.js"></script>
+
+
+		<!-- IDE -->
+		<script type="text/javascript" src="ide.js"></script>
+		<script type="text/javascript" src="menus.js"></script>
+		<script type="text/javascript" src="buttons.js"></script>
+		<script type="text/javascript" src="categories.js"></script>
+
+		<!-- GP Init -->
+		<script>
+			// emitted by GP (MicroBlocksEditor.gp → openMicroBlocksEditor)
+			document.addEventListener('ready', () => { IDE.init(); });
+		</script>
+
+
+		<!-- SteamBlock - Google Drive -->
+		<style>
+			#steamblock-drive-test {
+				position: fixed;
+				right: 16px;
+				top: 70px;
+				z-index: 99999;
+				width: 330px;
+				max-width: calc(100vw - 32px);
+				padding: 14px;
+				background: #fff;
+				border: 2px solid #6b2a86;
+				border-radius: 12px;
+				box-shadow: 0 4px 18px rgba(0,0,0,.22);
+				font-family: Arial, sans-serif;
+				color: #333;
+			}
+
+			#steamblock-drive-test h3 {
+				margin: 0 0 12px;
+				color: #6b2a86;
+				font-size: 17px;
+			}
+
+			#steamblock-drive-test button {
+				display: block;
+				width: 100%;
+				margin: 7px 0;
+				padding: 9px 10px;
+				border: 0;
+				border-radius: 7px;
+				cursor: pointer;
+				font-weight: 600;
+			}
+
+			#steamblock-drive-connect {
+				background: #6b2a86;
+				color: #fff;
+			}
+
+			#steamblock-drive-refresh,
+			#steamblock-drive-save,
+			#steamblock-drive-folder,
+			#steamblock-drive-close {
+				background: #eee6f1;
+				color: #4b205d;
+			}
+
+			#steamblock-drive-projects {
+				margin-top: 10px;
+				max-height: 240px;
+				overflow-y: auto;
+				border: 1px solid #ddd;
+				border-radius: 8px;
+				padding: 8px;
+				background: #fafafa;
+			}
+
+			.steamblock-drive-project {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				padding: 8px;
+				margin-bottom: 6px;
+				background: #fff;
+				border: 1px solid #ddd;
+				border-radius: 6px;
+			}
+
+			.steamblock-drive-project:last-child {
+				margin-bottom: 0;
+			}
+
+			.steamblock-drive-project-name {
+				flex: 1;
+				min-width: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.steamblock-drive-project-open {
+				width: auto !important;
+				margin: 0 !important;
+				padding: 6px 10px !important;
+				white-space: nowrap;
+			}
+
+			#steamblock-drive-status {
+				margin-top: 10px;
+				padding: 9px;
+				background: #f4f5f6;
+				border-radius: 7px;
+				font-size: 13px;
+				line-height: 1.35;
+				white-space: pre-wrap;
+			}
+		</style>
+
+		<div id="steamblock-drive-test">
+			<h3>☁️ SteamBlock Google Drive</h3>
+
+			<button id="steamblock-drive-connect">
+				🔐 Conectar Google Drive
+			</button>
+
+			<div id="steamblock-drive-projects">
+				<div style="color:#666;">
+					Conecta Google Drive para ver tus proyectos.
+				</div>
+			</div>
+
+			<button id="steamblock-drive-refresh">
+				🔄 Actualizar proyectos
+			</button>
+
+			<button id="steamblock-drive-folder">
+				🌐 Abrir carpeta en Google Drive
+			</button>
+
+			<button id="steamblock-drive-save">
+				💾 Guardar
+			</button>
+
+			<button id="steamblock-drive-save-as">
+				📝 Guardar como…
+			</button>
+
+			<button id="steamblock-drive-close">
+				✕ Cerrar
+			</button>
+
+			<div id="steamblock-drive-status">
+				Comprobando módulo Google Drive...
+			</div>
+		</div>
+
+		<script>
+			(function () {
+
+				const status =
+					document.getElementById('steamblock-drive-status');
+
+				const connectButton =
+					document.getElementById('steamblock-drive-connect');
+
+				const refreshButton =
+					document.getElementById('steamblock-drive-refresh');
+
+				const folderButton =
+					document.getElementById('steamblock-drive-folder');
+
+				const saveButton =
+					document.getElementById('steamblock-drive-save');
+
+				const saveAsButton =
+					document.getElementById('steamblock-drive-save-as');
+
+				const closeButton =
+					document.getElementById('steamblock-drive-close');
+
+				const projectsContainer =
+					document.getElementById('steamblock-drive-projects');
+
+
+				function checkModule() {
+
+					if (
+						window.SteamBlockGoogleDrive &&
+						typeof window.SteamBlockGoogleDrive.connect === 'function' &&
+						typeof window.SteamBlockGoogleDrive.listFiles === 'function' &&
+						typeof window.SteamBlockGoogleDrive.openFile === 'function' &&
+						typeof window.SteamBlockGoogleDrive.updateFile === 'function' &&
+						typeof GP_writeFile === 'function'
+					) {
+						status.textContent =
+							'✅ Módulo Google Drive cargado.';
+						return true;
+					}
+
+					status.textContent =
+						'⚠️ El módulo Google Drive todavía no está disponible.';
+					return false;
+				}
+
+
+				let currentDriveFile = null;
+				let lastProjectFileName = 'Untitled.ubp';
+				let pendingProjectSave = null;
+
+				if (!window.__steamBlockDriveOriginalGPWriteFile) {
+					window.__steamBlockDriveOriginalGPWriteFile = GP_writeFile;
+				}
+
+				GP_writeFile = async function (data, fName, id) {
+					if (id === 'project' && pendingProjectSave) {
+						const request = pendingProjectSave;
+						pendingProjectSave = null;
+
+						try {
+							let targetName = request.fileName || fName || 'Untitled.ubp';
+							targetName = targetName.split('/').pop();
+							if (!targetName.toLowerCase().endsWith('.ubp')) {
+								targetName += '.ubp';
+							}
+
+							let result;
+
+							if (request.mode === 'save' && currentDriveFile) {
+								result = await window.SteamBlockGoogleDrive.updateFile(
+									currentDriveFile.id,
+									data,
+									'application/octet-stream'
+								);
+							} else {
+								const files = await window.SteamBlockGoogleDrive.listFiles();
+								const existing = files.find(function (file) {
+									return file.name &&
+										file.name.toLowerCase() === targetName.toLowerCase();
+								});
+
+								if (existing) {
+									if (!window.confirm(
+										'Ya existe un proyecto llamado "' + targetName + '".\n\n¿Quieres sobrescribirlo?'
+									)) {
+										request.resolve(false);
+										return;
+									}
+
+									result = await window.SteamBlockGoogleDrive.updateFile(
+										existing.id,
+										data,
+										'application/octet-stream'
+									);
+								} else {
+									result = await window.SteamBlockGoogleDrive.saveFile(
+										targetName,
+										data,
+										'application/octet-stream'
+									);
+								}
+							}
+
+							currentDriveFile = {
+								id: result.id,
+								name: result.name || targetName
+							};
+							lastProjectFileName = currentDriveFile.name;
+							request.resolve(currentDriveFile);
+
+						} catch (error) {
+							request.reject(error);
+						}
+
+						return;
+					}
+
+					return window.__steamBlockDriveOriginalGPWriteFile(data, fName, id);
+				};
+
+				function requestProjectSave(mode, fileName) {
+					return new Promise(function (resolve, reject) {
+						if (pendingProjectSave) {
+							reject(new Error('Ya hay un guardado en curso.'));
+							return;
+						}
+
+						pendingProjectSave = {
+							mode: mode,
+							fileName: fileName,
+							resolve: resolve,
+							reject: reject
+						};
+
+						try {
+							GP.apiCall('project.save');
+						} catch (error) {
+							pendingProjectSave = null;
+							reject(error);
+						}
+					});
+				}
+
+				async function loadProjects() {
+
+					if (!checkModule()) return;
+
+					if (!window.SteamBlockGoogleDrive.isConnected()) {
+						status.textContent =
+							'Primero conecta Google Drive.';
+						return;
+					}
+
+					try {
+
+						status.textContent =
+							'📂 Buscando proyectos en SteamBlock...';
+
+						projectsContainer.innerHTML =
+							'<div style="color:#666;">Buscando proyectos...</div>';
+
+						const files =
+							await window.SteamBlockGoogleDrive.listFiles();
+
+						const projects =
+							files.filter(function (file) {
+								return file.name &&
+									file.name.toLowerCase().endsWith('.ubp');
+							});
+
+						projectsContainer.innerHTML = '';
+
+						if (projects.length === 0) {
+
+							projectsContainer.innerHTML =
+								'<div style="color:#666;">' +
+								'No hay proyectos .ubp en Google Drive.' +
+								'</div>';
+
+							status.textContent =
+								'📂 No se encontraron proyectos.';
+							return;
+						}
+
+
+						projects.forEach(function (file) {
+
+							const row =
+								document.createElement('div');
+
+							row.className =
+								'steamblock-drive-project';
+
+
+							const name =
+								document.createElement('div');
+
+							name.className =
+								'steamblock-drive-project-name';
+
+							name.textContent =
+								'📄 ' + file.name;
+
+
+							const openButton =
+								document.createElement('button');
+
+							openButton.className =
+								'steamblock-drive-project-open';
+
+							openButton.textContent =
+								'▶ Abrir';
+
+
+							openButton.addEventListener(
+								'click',
+								async function () {
+
+									try {
+
+										status.textContent =
+											'📥 Descargando "' +
+											file.name +
+											'"...';
+
+										await window.SteamBlockGoogleDrive.openFile(
+											file.id,
+											file.name
+										);
+
+										currentDriveFile = {
+											id: file.id,
+											name: file.name
+										};
+										lastProjectFileName = file.name;
+
+										status.textContent =
+											'✅ Proyecto enviado a SteamBlock.\n' +
+											'Confirma la apertura si aparece el aviso.';
+
+									} catch (error) {
+
+										status.textContent =
+											'❌ Error al abrir el proyecto.\n' +
+											error.message;
+									}
+								}
+							);
+
+
+							row.appendChild(name);
+							row.appendChild(openButton);
+
+							projectsContainer.appendChild(row);
+						});
+
+
+						status.textContent =
+							'✅ ' +
+							projects.length +
+							' proyecto(s) encontrado(s).';
+
+					} catch (error) {
+
+						status.textContent =
+							'❌ Error al cargar los proyectos.\n' +
+							error.message;
+
+						projectsContainer.innerHTML =
+							'<div style="color:#c00;">' +
+							'No se pudieron cargar los proyectos.' +
+							'</div>';
+					}
+				}
+
+
+				connectButton.addEventListener(
+					'click',
+					function () {
+
+						if (!checkModule()) return;
+
+						window.steamBlockGoogleDriveCallback =
+							function (type, data) {
+
+								if (type === 'connected') {
+
+									status.textContent =
+										'✅ Google Drive conectado correctamente.';
+
+									loadProjects();
+
+								} else if (type === 'error') {
+
+									status.textContent =
+										'❌ Error de autorización.\n' +
+										(data ? JSON.stringify(data) : '');
+
+								} else if (type === 'disconnected') {
+
+									status.textContent =
+										'Google Drive desconectado.';
+								}
+							};
+
+						status.textContent =
+							'🔐 Abriendo autorización de Google...';
+
+						window.SteamBlockGoogleDrive.connect();
+					}
+				);
+
+
+				refreshButton.addEventListener(
+					'click',
+					function () {
+						loadProjects();
+					}
+				);
+
+
+				folderButton.addEventListener(
+					'click',
+					async function () {
+
+						if (!checkModule()) return;
+
+						if (!window.SteamBlockGoogleDrive.isConnected()) {
+							status.textContent =
+								'Primero conecta Google Drive.';
+							return;
+						}
+
+						try {
+
+							const folder =
+								await window.SteamBlockGoogleDrive.getFolder();
+
+							const url =
+								'https://drive.google.com/drive/folders/' +
+								encodeURIComponent(folder.id);
+
+							window.open(url, '_blank', 'noopener');
+
+							status.textContent =
+								'🌐 Abriendo la carpeta SteamBlock en Google Drive.';
+
+						} catch (error) {
+
+							status.textContent =
+								'❌ Error al abrir la carpeta.\n' +
+								error.message;
+						}
+					}
+				);
+
+
+				saveButton.addEventListener(
+					'click',
+					async function () {
+						if (!checkModule()) return;
+						if (!window.SteamBlockGoogleDrive.isConnected()) {
+							status.textContent = 'Primero conecta Google Drive.';
+							return;
+						}
+
+						try {
+							status.textContent = '💾 Guardando proyecto en Google Drive...';
+							const result = await requestProjectSave('save', null);
+
+							if (result === false) {
+								status.textContent = 'Guardado cancelado.';
+								return;
+							}
+
+							status.textContent =
+								'✅ Proyecto guardado como "' + result.name + '".';
+							await loadProjects();
+
+						} catch (error) {
+							status.textContent =
+								'❌ Error al guardar el proyecto.\n' + error.message;
+						}
+					}
+				);
+
+
+				saveAsButton.addEventListener(
+					'click',
+					async function () {
+						if (!checkModule()) return;
+						if (!window.SteamBlockGoogleDrive.isConnected()) {
+							status.textContent = 'Primero conecta Google Drive.';
+							return;
+						}
+
+						let suggestedName = lastProjectFileName || 'Untitled.ubp';
+						if (suggestedName.toLowerCase().endsWith('.ubp')) {
+							suggestedName = suggestedName.slice(0, -4);
+						}
+
+						const name = window.prompt(
+							'Nombre del proyecto:',
+							suggestedName
+						);
+
+						if (name === null) {
+							status.textContent = 'Guardar como cancelado.';
+							return;
+						}
+
+						const cleanName = name.trim();
+						if (!cleanName) {
+							status.textContent =
+								'❌ Debes indicar un nombre para el proyecto.';
+							return;
+						}
+
+						try {
+							status.textContent =
+								'💾 Guardando como "' + cleanName + '"...';
+
+							const result = await requestProjectSave(
+								'saveAs',
+								cleanName
+							);
+
+							if (result === false) {
+								status.textContent = 'Guardado cancelado.';
+								return;
+							}
+
+							status.textContent =
+								'✅ Proyecto guardado como "' + result.name + '".';
+							await loadProjects();
+
+						} catch (error) {
+							status.textContent =
+								'❌ Error al guardar como.\n' + error.message;
+						}
+					}
+				);
+
+				closeButton.addEventListener(
+					'click',
+					function () {
+
+						const panel =
+							document.getElementById(
+								'steamblock-drive-test'
+							);
+
+						if (panel) panel.remove();
+					}
+				);
+
+
+				checkModule();
+				setTimeout(checkModule, 500);
+				setTimeout(checkModule, 1500);
+
+			})();
+		</script>
+
+	</body>
+</html>
