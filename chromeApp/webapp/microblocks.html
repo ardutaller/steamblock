@@ -191,14 +191,15 @@
 		</script>
 
 
-		<!-- SteamBlock - Google Drive TEST -->
+		<!-- SteamBlock - Google Drive -->
 		<style>
 			#steamblock-drive-test {
 				position: fixed;
 				right: 16px;
 				top: 70px;
 				z-index: 99999;
-				width: 280px;
+				width: 330px;
+				max-width: calc(100vw - 32px);
 				padding: 14px;
 				background: #fff;
 				border: 2px solid #6b2a86;
@@ -207,11 +208,13 @@
 				font-family: Arial, sans-serif;
 				color: #333;
 			}
+
 			#steamblock-drive-test h3 {
-				margin: 0 0 10px;
+				margin: 0 0 12px;
 				color: #6b2a86;
-				font-size: 16px;
+				font-size: 17px;
 			}
+
 			#steamblock-drive-test button {
 				display: block;
 				width: 100%;
@@ -222,15 +225,60 @@
 				cursor: pointer;
 				font-weight: 600;
 			}
+
 			#steamblock-drive-connect {
 				background: #6b2a86;
 				color: #fff;
 			}
+
+			#steamblock-drive-refresh,
+			#steamblock-drive-save,
 			#steamblock-drive-folder,
 			#steamblock-drive-close {
 				background: #eee6f1;
 				color: #4b205d;
 			}
+
+			#steamblock-drive-projects {
+				margin-top: 10px;
+				max-height: 240px;
+				overflow-y: auto;
+				border: 1px solid #ddd;
+				border-radius: 8px;
+				padding: 8px;
+				background: #fafafa;
+			}
+
+			.steamblock-drive-project {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				padding: 8px;
+				margin-bottom: 6px;
+				background: #fff;
+				border: 1px solid #ddd;
+				border-radius: 6px;
+			}
+
+			.steamblock-drive-project:last-child {
+				margin-bottom: 0;
+			}
+
+			.steamblock-drive-project-name {
+				flex: 1;
+				min-width: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.steamblock-drive-project-open {
+				width: auto !important;
+				margin: 0 !important;
+				padding: 6px 10px !important;
+				white-space: nowrap;
+			}
+
 			#steamblock-drive-status {
 				margin-top: 10px;
 				padding: 9px;
@@ -243,144 +291,322 @@
 		</style>
 
 		<div id="steamblock-drive-test">
-			<h3>☁️ Prueba Google Drive</h3>
-			<button id="steamblock-drive-connect">🔐 Conectar Google Drive</button>
-			<button id="steamblock-drive-folder">📁 Crear / localizar carpeta SteamBlock</button>
-			<button id="steamblock-drive-open">🌐 Abrir carpeta en Google Drive</button>
-			<button id="steamblock-drive-save">💾 Crear archivo de prueba</button>
-			<button id="steamblock-drive-close">✕ Cerrar prueba</button>
-			<div id="steamblock-drive-status">Comprobando módulo Google Drive...</div>
+			<h3>☁️ SteamBlock Google Drive</h3>
+
+			<button id="steamblock-drive-connect">
+				🔐 Conectar Google Drive
+			</button>
+
+			<div id="steamblock-drive-projects">
+				<div style="color:#666;">
+					Conecta Google Drive para ver tus proyectos.
+				</div>
+			</div>
+
+			<button id="steamblock-drive-refresh">
+				🔄 Actualizar proyectos
+			</button>
+
+			<button id="steamblock-drive-folder">
+				🌐 Abrir carpeta en Google Drive
+			</button>
+
+			<button id="steamblock-drive-save">
+				💾 Guardar proyecto actual
+			</button>
+
+			<button id="steamblock-drive-close">
+				✕ Cerrar
+			</button>
+
+			<div id="steamblock-drive-status">
+				Comprobando módulo Google Drive...
+			</div>
 		</div>
 
 		<script>
 			(function () {
-				const status = document.getElementById('steamblock-drive-status');
-				const connectButton = document.getElementById('steamblock-drive-connect');
-				const folderButton = document.getElementById('steamblock-drive-folder');
-				const openButton = document.getElementById('steamblock-drive-open');
-				const saveButton = document.getElementById('steamblock-drive-save');
-				const closeButton = document.getElementById('steamblock-drive-close');
+
+				const status =
+					document.getElementById('steamblock-drive-status');
+
+				const connectButton =
+					document.getElementById('steamblock-drive-connect');
+
+				const refreshButton =
+					document.getElementById('steamblock-drive-refresh');
+
+				const folderButton =
+					document.getElementById('steamblock-drive-folder');
+
+				const saveButton =
+					document.getElementById('steamblock-drive-save');
+
+				const closeButton =
+					document.getElementById('steamblock-drive-close');
+
+				const projectsContainer =
+					document.getElementById('steamblock-drive-projects');
+
 
 				function checkModule() {
-					if (window.SteamBlockGoogleDrive &&
-						typeof window.SteamBlockGoogleDrive.connect === 'function') {
-						status.textContent = '✅ Módulo Google Drive cargado.\nListo para conectar.';
+
+					if (
+						window.SteamBlockGoogleDrive &&
+						typeof window.SteamBlockGoogleDrive.connect === 'function' &&
+						typeof window.SteamBlockGoogleDrive.listFiles === 'function' &&
+						typeof window.SteamBlockGoogleDrive.openFile === 'function'
+					) {
+						status.textContent =
+							'✅ Módulo Google Drive cargado.';
 						return true;
 					}
-					status.textContent = '⚠️ El módulo Google Drive todavía no está disponible.';
+
+					status.textContent =
+						'⚠️ El módulo Google Drive todavía no está disponible.';
 					return false;
 				}
 
-				connectButton.addEventListener('click', function () {
+
+				async function loadProjects() {
+
 					if (!checkModule()) return;
 
-					window.steamBlockGoogleDriveCallback = function (type, data) {
-						if (type === 'connected') {
-							status.textContent = '✅ Google Drive conectado correctamente.';
-						} else if (type === 'error') {
-							status.textContent = '❌ Error de autorización.\n' +
-								(data ? JSON.stringify(data) : '');
-						} else if (type === 'disconnected') {
-							status.textContent = 'Google Drive desconectado.';
+					if (!window.SteamBlockGoogleDrive.isConnected()) {
+						status.textContent =
+							'Primero conecta Google Drive.';
+						return;
+					}
+
+					try {
+
+						status.textContent =
+							'📂 Buscando proyectos en SteamBlock...';
+
+						projectsContainer.innerHTML =
+							'<div style="color:#666;">Buscando proyectos...</div>';
+
+						const files =
+							await window.SteamBlockGoogleDrive.listFiles();
+
+						const projects =
+							files.filter(function (file) {
+								return file.name &&
+									file.name.toLowerCase().endsWith('.ubp');
+							});
+
+						projectsContainer.innerHTML = '';
+
+						if (projects.length === 0) {
+
+							projectsContainer.innerHTML =
+								'<div style="color:#666;">' +
+								'No hay proyectos .ubp en Google Drive.' +
+								'</div>';
+
+							status.textContent =
+								'📂 No se encontraron proyectos.';
+							return;
 						}
-					};
 
-					status.textContent = 'Abriendo autorización de Google...';
-					window.SteamBlockGoogleDrive.connect();
-				});
 
-				folderButton.addEventListener('click', async function () {
-					if (!checkModule()) return;
+						projects.forEach(function (file) {
 
-					if (!window.SteamBlockGoogleDrive.isConnected()) {
-						status.textContent = 'Primero conecta Google Drive.';
-						return;
-					}
+							const row =
+								document.createElement('div');
 
-					try {
-						status.textContent = 'Buscando/creando carpeta SteamBlock...';
-						const folder = await window.SteamBlockGoogleDrive.getFolder();
-						status.textContent =
-							'✅ Carpeta SteamBlock localizada/creada.\nID: ' + folder.id;
-					} catch (error) {
-						status.textContent = '❌ Error:\n' + error.message;
-					}
-				});
+							row.className =
+								'steamblock-drive-project';
 
-				openButton.addEventListener('click', async function () {
-					if (!checkModule()) return;
 
-					if (!window.SteamBlockGoogleDrive.isConnected()) {
-						status.textContent = 'Primero conecta Google Drive.';
-						return;
-					}
+							const name =
+								document.createElement('div');
 
-					try {
-						status.textContent = 'Localizando carpeta SteamBlock...';
+							name.className =
+								'steamblock-drive-project-name';
 
-						const folder =
-							await window.SteamBlockGoogleDrive.getFolder();
+							name.textContent =
+								'📄 ' + file.name;
 
-						const url =
-							'https://drive.google.com/drive/folders/' +
-							encodeURIComponent(folder.id);
 
-						window.open(url, '_blank', 'noopener');
+							const openButton =
+								document.createElement('button');
 
-						status.textContent =
-							'🌐 Abriendo la carpeta SteamBlock en Google Drive.';
-					} catch (error) {
-						status.textContent =
-							'❌ Error al abrir la carpeta:\n' +
-							error.message;
-					}
-				});
+							openButton.className =
+								'steamblock-drive-project-open';
 
-				saveButton.addEventListener('click', async function () {
-					if (!checkModule()) return;
+							openButton.textContent =
+								'▶ Abrir';
 
-					if (!window.SteamBlockGoogleDrive.isConnected()) {
-						status.textContent = 'Primero conecta Google Drive.';
-						return;
-					}
 
-					try {
-						status.textContent = 'Creando archivo de prueba en Google Drive...';
+							openButton.addEventListener(
+								'click',
+								async function () {
 
-						const fileName =
-							'SteamBlock-prueba-' +
-							new Date().toISOString().slice(0, 10) +
-							'.txt';
+									try {
 
-						const content =
-							'Prueba realizada correctamente desde SteamBlock.\n' +
-							'Fecha: ' + new Date().toLocaleString();
+										status.textContent =
+											'📥 Descargando "' +
+											file.name +
+											'"...';
 
-						const file =
-							await window.SteamBlockGoogleDrive.saveFile(
-								fileName,
-								content,
-								'text/plain'
+										await window.SteamBlockGoogleDrive.openFile(
+											file.id,
+											file.name
+										);
+
+										status.textContent =
+											'✅ Proyecto enviado a SteamBlock.\n' +
+											'Confirma la apertura si aparece el aviso.';
+
+									} catch (error) {
+
+										status.textContent =
+											'❌ Error al abrir el proyecto.\n' +
+											error.message;
+									}
+								}
 							);
 
-						status.textContent =
-							'✅ Archivo creado correctamente.\n' +
-							'Nombre: ' + file.name + '\n' +
-							'ID: ' + file.id;
-					} catch (error) {
-						status.textContent =
-							'❌ Error al crear el archivo:\n' +
-							error.message;
-					}
-				});
 
-				closeButton.addEventListener('click', function () {
-					document.getElementById('steamblock-drive-test').remove();
-				});
+							row.appendChild(name);
+							row.appendChild(openButton);
+
+							projectsContainer.appendChild(row);
+						});
+
+
+						status.textContent =
+							'✅ ' +
+							projects.length +
+							' proyecto(s) encontrado(s).';
+
+					} catch (error) {
+
+						status.textContent =
+							'❌ Error al cargar los proyectos.\n' +
+							error.message;
+
+						projectsContainer.innerHTML =
+							'<div style="color:#c00;">' +
+							'No se pudieron cargar los proyectos.' +
+							'</div>';
+					}
+				}
+
+
+				connectButton.addEventListener(
+					'click',
+					function () {
+
+						if (!checkModule()) return;
+
+						window.steamBlockGoogleDriveCallback =
+							function (type, data) {
+
+								if (type === 'connected') {
+
+									status.textContent =
+										'✅ Google Drive conectado correctamente.';
+
+									loadProjects();
+
+								} else if (type === 'error') {
+
+									status.textContent =
+										'❌ Error de autorización.\n' +
+										(data ? JSON.stringify(data) : '');
+
+								} else if (type === 'disconnected') {
+
+									status.textContent =
+										'Google Drive desconectado.';
+								}
+							};
+
+						status.textContent =
+							'🔐 Abriendo autorización de Google...';
+
+						window.SteamBlockGoogleDrive.connect();
+					}
+				);
+
+
+				refreshButton.addEventListener(
+					'click',
+					function () {
+						loadProjects();
+					}
+				);
+
+
+				folderButton.addEventListener(
+					'click',
+					async function () {
+
+						if (!checkModule()) return;
+
+						if (!window.SteamBlockGoogleDrive.isConnected()) {
+							status.textContent =
+								'Primero conecta Google Drive.';
+							return;
+						}
+
+						try {
+
+							const folder =
+								await window.SteamBlockGoogleDrive.getFolder();
+
+							const url =
+								'https://drive.google.com/drive/folders/' +
+								encodeURIComponent(folder.id);
+
+							window.open(url, '_blank', 'noopener');
+
+							status.textContent =
+								'🌐 Abriendo la carpeta SteamBlock en Google Drive.';
+
+						} catch (error) {
+
+							status.textContent =
+								'❌ Error al abrir la carpeta.\n' +
+								error.message;
+						}
+					}
+				);
+
+
+				saveButton.addEventListener(
+					'click',
+					function () {
+
+						if (!checkModule()) return;
+
+						status.textContent =
+							'💾 Guardado de proyectos: lo incorporaremos ' +
+							'en el siguiente paso.';
+					}
+				);
+
+
+				closeButton.addEventListener(
+					'click',
+					function () {
+
+						const panel =
+							document.getElementById(
+								'steamblock-drive-test'
+							);
+
+						if (panel) panel.remove();
+					}
+				);
+
 
 				checkModule();
 				setTimeout(checkModule, 500);
 				setTimeout(checkModule, 1500);
+
 			})();
 		</script>
 
