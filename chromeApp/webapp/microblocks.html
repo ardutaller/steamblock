@@ -199,7 +199,7 @@
 				right: 18px;
 				top: 70px;
 				z-index: 99999;
-				width: 285px;
+				width: 315px;
 				max-width: calc(100vw - 20px);
 				padding: 0;
 				background: #fff;
@@ -291,19 +291,19 @@
 			/* Header */
 			.steamblock-drive-header {
 				display: grid;
-				grid-template-columns: 48px 1fr 34px;
+				grid-template-columns: 58px 1fr 38px;
 				align-items: center;
 				column-gap: 8px;
-				min-height: 82px;
-				padding: 8px 10px;
+				min-height: 112px;
+				padding: 9px 10px;
 				background: linear-gradient(135deg, #fbf8fc 0%, #fff 72%);
 				border-bottom: 1px solid #eadff0;
 			}
 
 			.steamblock-drive-robot {
 				display: block;
-				width: 48px;
-				height: 58px;
+				width: 58px;
+				height: 70px;
 				object-fit: contain;
 				object-position: center bottom;
 				flex: 0 0 auto;
@@ -359,30 +359,56 @@
 				flex: 0 0 auto;
 			}
 
-			/* Language selector */
+			/* Language selector: three compact clickable flags inside the header */
 			.steamblock-drive-language {
-				margin: 8px 10px 6px;
+				margin: 5px 0 0;
+				display: block;
+				width: 100%;
+			}
+
+			.steamblock-drive-language-buttons {
 				display: flex;
-				align-items: center;
-				gap: 8px;
-				font-size: 13px;
-				font-weight: 600;
-				color: #4b205d;
+				align-items: stretch;
+				width: 100%;
+				gap: 4px;
 			}
-			.steamblock-drive-language-label {
-				white-space: nowrap;
+
+			.steamblock-drive-language-button {
+				flex: 1 1 0;
+				width: auto !important;
+				height: 34px !important;
+				min-height: 34px !important;
+				margin: 0 !important;
+				padding: 2px !important;
+				border: 1px solid #d8ccdD !important;
+				border-radius: 5px !important;
+				background: #fff !important;
+				box-shadow: none !important;
+				display: flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				cursor: pointer;
+				overflow: hidden;
 			}
-			#steamblock-drive-language-select {
-				flex: 1;
-				min-width: 0;
-				height: 34px;
-				padding: 4px 8px;
-				border: 2px solid #4b205d;
-				border-radius: 8px;
-				background: #fff;
-				color: #333;
-				font-weight: 600;
-				font-size: 13px;
+
+			.steamblock-drive-language-button:hover {
+				transform: none !important;
+				box-shadow: 0 2px 5px rgba(65, 35, 78, .12) !important;
+			}
+
+			.steamblock-drive-language-button.active {
+				border: 2px solid #6b2a86 !important;
+				padding: 1px !important;
+				box-shadow: none !important;
+			}
+
+			.steamblock-drive-language-button img {
+				display: block;
+				width: 100%;
+				height: 100%;
+				object-fit: fill;
+				min-height: 100%;
+				border-radius: 3px;
 			}
 
 			/* Common buttons */
@@ -567,7 +593,7 @@
 			@media (max-width: 480px) {
 				#steamblock-drive-test {
 					right: 10px;
-					width: min(285px, calc(100vw - 20px));
+					width: min(315px, calc(100vw - 20px));
 				}
 				.steamblock-drive-header {
 					grid-template-columns: 50px 1fr 34px;
@@ -579,6 +605,10 @@
 				}
 				.steamblock-drive-title strong {
 					font-size: 16px;
+				}
+				.steamblock-drive-language-button {
+					height: 30px !important;
+					min-height: 30px !important;
 				}
 			}
 
@@ -616,6 +646,19 @@
 							</svg>
 						</div>
 						<span class="steamblock-drive-subtitle">Gestor de proyectos</span>
+						<div class="steamblock-drive-language" aria-label="Seleccionar idioma">
+					<div class="steamblock-drive-language-buttons">
+						<button type="button" class="steamblock-drive-language-button active" data-lang="es" aria-label="Español" title="Español">
+							<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAXCAYAAACFxybfAAABv0lEQVR4nO2WsW4UMRCGv8luQIIkUCFSpIKUUNBRICGegZI6Ba8QRaKngYr3SEtFRUvoQwVCSCDdJXdw6xl7KHa92dxBdkOQ0twvjcartWY+jz2W5et44lyyVi4bAJYQJ1pCZC0hspYQWWXfhNs31k59p7n/qcfCeHJxCAB2dwHwlJCUIEbcIkRDzCjMWFHFzfCOn+zvDwo/DALHP3+BGGsA1da3FhTXgIeAqyJbWwtV+3eICC5eD4j8HCV+jZz1W4HiquGuuIfGmnFSECUdDYPoPZgpk2BMpkZ8BbwsmX5/wqwKHYCOEXB0GMEQCBoId6X48Az7ZsjzPVYP71D9kMUqtCBGGrgfgyDcDXejvL/N8XaCF3sU9x5Q+hXcqyZxdQoC1/8HkRLtKt8ffuT6o8DsacW7g7fMNqadCpx4qKHNhkH0Hsy0CsWOkT4pD/UNrspaCDwOr3FVUtMNdYcE3BQsIncjfgCMLwDhXr/6IiBqsLlZt6ZFMAVVRBXMIHuzto2JkdSJkyUiC7kkvzHnJ2dt3FxfuAWh/6bMujY6PrMKIkL5t+RZR02Qs+YJUDR2Xrn7n7ejD+y8SeY1vyW/ATVUbPWknOOPAAAAAElFTkSuQmCC" alt="Español">
+						</button>
+						<button type="button" class="steamblock-drive-language-button" data-lang="en" aria-label="English" title="English">
+							<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAXCAYAAACFxybfAAAD10lEQVR4nMWVXUxcRRTHf3PvhaTLh7Kwa2OlDaa7thpItEETRUqwQvxIjA/FGGi0FEv6ZF9MJNH4QWO0TapRY1OjxJemGDGGmDbtA6g0DZKYSmu1ZUNtUyNIZZfvXfbeOzM+AAuFvRAb0PNyb2bOnPPL/5wzIwZGJzSzpnXql+XWbsWEEJ5r1uJEi5OuBDG3ny7JSlBzZ625Hy+QJRAeUEv8loFaCCCEuFkJrTXKdXDiU0jH9kx4yyYEZkYmGb4sDCsjBWNprVMQ0rGR8UkC+fn4fD4sy1pVBtd1icfjDEejmL5szIxMYFE53EScYEEBOTk5q5p8zizLIjc3FyEEN6KxlBpGSgmtkY6Nz+dbE4CF5vP5UuXWWs/2hFIpENM01xzCNE3QGqXUbGPO0qzWffBv7KYR1Vqj+R8g0KDnIFheiY8+/Y5wWQlnuiIMDQNIpJK8WlfMxXc+RktJ8esvs/9wD9oxmIpPUxhaR2XvSa4+XcOB+ofTQ2gNYoESSnlD+G/Lprq/k6rGnVz5Y4runweRWhAq8hO+PwvsJLrIzxMPFuK4krL78intOgptB/nwxCXPuEppDAOMGRWWv547+xN0rN+BON7K5ms97HpmM4ODyZlL8fwVuNCPEHA9qmnM6KfkTCvilWa++LqP997+0TPujADMj+hKjfnn4AhvDJdwXd6NbH6Tpn33zmwkJiCRAODQ1SNkVZXR92w9lU+2cvHyONPJ5AoQGtE/MKSVUmilIDFJOBxe4hz5PUaoyJ/+OaipgWQS2tvTJIFzl2+wbWtwacxIBNZlIwwDa/6AxuvJ+eXAB4QfyILz/eA4YNvzX6XQySRuRQXatlGOg7JtkBJrywZO/zTJtmtnPZUQLBzRZSCKX9uP9lKivByVdMjo6QY0IFBKMddrO/qGPaLOl8MgPgHxCUhMejrvfessh1t6qW08za+/jUIsit3w4kygqQQ6VXfNwGOVdH12irs2tvB8w7c8VN7sGZfEJMQnMILBIMFgkEAg4Ok7Pe1yR34mx45Ws6ntfcY+b2FPXiMAKplE2zPvwCMVxyno6KRU/EXv412UlG4C5XrGDQQCBINBrIGRcZSUKKXI9HCu2xWi9qktTL/bxIXte2j7fgB/tkRrEFs3IJSD1prCe/zUvdBG/UuPUlVfy76GnQztfs4TYnBkHMMwsO7My0VKiZSSWCyW3vnvKJ9U7eWb0HbOHfsBx03gSsnumhAnu0fRrkv1pWG+bO8AJfnqRBcFG/NoOnSQSNMRoDZt3PW352CaJmJsbEwvhEg3omthkUgEv9+PaZoY/0nGFewfYwMohArQBh0AAAAASUVORK5CYII=" alt="English">
+						</button>
+						<button type="button" class="steamblock-drive-language-button" data-lang="ca" aria-label="Català" title="Català">
+							<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAXCAYAAACFxybfAAAB8klEQVR4nO2WTYsTQRCGn8nkwxB3syFkcRfEW26KB/EkeNujJw/+BRHxn4iIf0a8eNCD3vyAhRxEEVTEZDWaSKa6ujzMTDJDks0EIeSwBU111aH6rbffLjo4/vjZvCqqSs0c3W6XTViv12MSlAnDkPJhaxdNQAwGg40ASO2gtUsYhpQ2euoS2woQ5S8nQ6aa2PDhX0+GZ5rI2VaAKKQJfXM9F5sZ3vs5r6qYWc6rKodHnxbWXUsT3nvc5RtpBKYYCuYwUwzBTAjMAUJoaSzIiw9LGUg1UV7BFACDh9/Yv9TPUKOYCrjYm0uWCCYR5iJMBOoNwlcj6J1evxCI5oMOoyuTfNIUM5myEK8IM8En+4Aaw+cV9lbUL6SJn4++0z53cS4fuGjGgItiFlI2RKAxQd6O4NbiumtpYud+G7q/5/IGmM+zYD6K916g5Pj1ssLBkubW0sTw8Q9a1f25fMn9TZjIMJCJgx2h+W4Mt0+vXwhE416LyVXN5VIdxPfvMvs49uYo4eg/qy5lYgqiiCb+PBnQqXdmAKbdJp0nr2GadwJesfOO4P0Y7iyuu5Ym6nebjK81Mww4zCqYVWcvwwuGw5skL0fxOPpPa1xY0txamvDe418f56ZgOiGzPp2eaWxmRcoXA9G+uWLa/Ked/Se26j/xD3XG7invW/beAAAAAElFTkSuQmCC" alt="Català">
+						</button>
+					</div>
+				</div>
 					</div>
 					<div class="steamblock-drive-header-buttons">
 						<button
@@ -625,15 +668,6 @@
 							aria-label="Minimizar panel"
 						>−</button>
 					</div>
-				</div>
-
-				<div class="steamblock-drive-language">
-					<span class="steamblock-drive-language-label">🌐 Idioma</span>
-					<select id="steamblock-drive-language-select" aria-label="Idioma">
-						<option value="es">🇪🇸 Español</option>
-						<option value="en">🇬🇧 English</option>
-						<option value="ca">🏴 Català</option>
-					</select>
 				</div>
 
 				<button id="steamblock-drive-connect">
@@ -977,7 +1011,7 @@
 								'steamblock-drive-project-open';
 
 							openProjectButton.textContent =
-								(languageTexts[languageSelect.value] || languageTexts.es).open;
+								(languageTexts[language] || languageTexts.es).open;
 
 							openProjectButton.addEventListener(
 								'click',
@@ -1280,8 +1314,8 @@
 
 
 
-				const languageSelect =
-					document.getElementById('steamblock-drive-language-select');
+				const languageButtons =
+					panel.querySelectorAll('.steamblock-drive-language-button');
 
 				const languageTexts = {
 					es: {
@@ -1331,6 +1365,10 @@
 				function applyLanguage(lang) {
 					const t = languageTexts[lang] || languageTexts.es;
 
+					languageButtons.forEach(function (button) {
+						button.classList.toggle('active', button.dataset.lang === lang);
+					});
+
 					connectButton.textContent = t.connect;
 					refreshButton.textContent = t.refresh;
 					folderButton.textContent = t.folder;
@@ -1340,8 +1378,6 @@
 					const note = panel.querySelector('.steamblock-drive-note');
 					if (note) note.innerHTML = t.note;
 
-					const label = panel.querySelector('.steamblock-drive-language-label');
-					if (label) label.textContent = t.language;
 
 					const subtitle = panel.querySelector('.steamblock-drive-subtitle');
 					if (subtitle) subtitle.textContent = t.subtitle;
@@ -1376,11 +1412,15 @@
 				} catch (e) {}
 
 				if (!languageTexts[savedLanguage]) savedLanguage = 'es';
-				languageSelect.value = savedLanguage;
+				languageButtons.forEach(function (button) {
+						button.classList.toggle('active', button.dataset.lang === savedLanguage);
+					});
 				applyLanguage(savedLanguage);
 
-				languageSelect.addEventListener('change', function () {
-					applyLanguage(this.value);
+				languageButtons.forEach(function (button) {
+					button.addEventListener('click', function () {
+						applyLanguage(this.dataset.lang);
+					});
 				});
 
 				checkModule();
