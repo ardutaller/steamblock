@@ -403,6 +403,50 @@
     }
 
 
+
+
+    /* Actualizar un archivo existente en Google Drive */
+    async function updateFile(fileId, content, mimeType) {
+
+        const boundary =
+            "steamblock_update_boundary_" + Date.now();
+
+        const body =
+            "--" + boundary + "\r\n" +
+            "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+            JSON.stringify({mimeType: mimeType || "application/octet-stream"}) +
+            "\r\n--" + boundary + "\r\n" +
+            "Content-Type: " + (mimeType || "application/octet-stream") +
+            "\r\n\r\n" + content +
+            "\r\n--" + boundary + "--";
+
+        const response = await driveFetch(
+            UPLOAD_API + "/" + encodeURIComponent(fileId) +
+            "?uploadType=multipart&fields=id,name,parents,modifiedTime",
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "multipart/related; boundary=" + boundary
+                },
+                body: body
+            }
+        );
+
+        return await response.json();
+    }
+
+    /* Abrir un proyecto .ubp descargándolo y entregándolo a MicroBlocks */
+    async function openFile(fileId, fileName) {
+        const content = await loadFile(fileId);
+
+        if (typeof GP_writeFile === "function") {
+            await GP_writeFile(content, fileName || "Untitled.ubp", "project");
+        }
+
+        return content;
+    }
+
+
     /*
      * Exponer la API de SteamBlock
      */
@@ -426,7 +470,13 @@
             saveFile,
 
         loadFile:
-            loadFile
+            loadFile,
+
+        updateFile:
+            updateFile,
+
+        openFile:
+            openFile
     };
 
 
