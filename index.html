@@ -366,11 +366,8 @@
       window.setTimeout(function () {
         banner.classList.add("hide");
 
-        // Persistent flag: prevents losing the signal if the iframe
-        // is still initializing when the banner finishes.
-        window.__steamBlockBannerFinished = true;
-
-        // Wait until the banner has completely disappeared.
+        // Wait until the banner has completely disappeared before
+        // revealing the already-initialized Google Drive panel.
         window.setTimeout(function () {
           const frame = document.getElementById("steamblock-frame");
           if (frame && frame.contentWindow) {
