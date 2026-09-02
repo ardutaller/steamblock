@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SteamBlock.es by ardutaller.es</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #05070a;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #steamblock-app {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    #steamblock-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    #steamblock-welcome {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      align-items: flex-start;
+      padding-top: 8vh;
+      background: rgba(2, 5, 8, .42);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .4s ease, visibility .4s ease;
+    }
+
+    #steamblock-welcome.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .welcome-panel {
+      position: relative;
+      width: min(820px, 88vw);
+      min-height: 430px;
+      max-height: 78vh;
+      overflow: hidden;
+      border: 2px solid #168cff;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 84% 42%, rgba(243,154,23,.14), transparent 28%),
+        linear-gradient(120deg, #090d12 0%, #101923 58%, #1a120a 100%);
+      box-shadow: 0 0 28px rgba(22,140,255,.16);
+      color: #f4f6f8;
+      animation: panelIn .4s ease-out both;
+    }
+
+    .welcome-content {
+      width: 58%;
+      padding: 28px 20px 60px 30px;
+      position: relative;
+      z-index: 2;
+      animation: contentIn .4s ease-out .04s both;
+    }
+
+    .welcome-title {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: 1;
+      letter-spacing: -1.5px;
+      font-weight: 800;
+    }
+
+    .steam { color: #f39a17; }
+    .block { color: #168cff; }
+
+    .welcome-line {
+      height: 2px;
+      width: 90%;
+      margin: 14px 0 18px;
+      background: linear-gradient(90deg, #168cff, transparent);
+    }
+
+    .welcome-intro {
+      font-size: clamp(14px, 1.25vw, 18px);
+      line-height: 1.28;
+      margin-bottom: 8px;
+    }
+
+    .microblocks {
+      color: #168cff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .ardutaller {
+      color: #f39a17;
+      font-weight: 700;
+    }
+
+    .welcome-item {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      padding: 9px 0;
+      border-top: 1px solid rgba(22,140,255,.25);
+      font-size: clamp(12px, 1vw, 14px);
+      line-height: 1.28;
+    }
+
+    .welcome-icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid #168cff;
+      color: #168cff;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .welcome-item a {
+      color: #54adff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .welcome-item a:hover { text-decoration: underline; }
+
+    .license {
+      color: #79d64b;
+      font-weight: 800;
+    }
+
+    .robot-area {
+      position: absolute;
+      right: 1%;
+      bottom: 2%;
+      width: 46%;
+      height: 91%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .robot-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 15px rgba(0,0,0,.42));
+      animation: robotIn .5s ease-out .08s both;
+    }
+
+    .social {
+      position: absolute;
+      left: 30px;
+      bottom: 17px;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #d4d9df;
+      font-size: 12px;
+    }
+
+    .social-label {
+      margin-right: 3px;
+      font-weight: 700;
+    }
+
+    .social a {
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(22,140,255,.65);
+      border-radius: 50%;
+      color: #fff;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 800;
+      transition: transform .15s ease, border-color .15s ease;
+    }
+
+    .social a:hover {
+      transform: translateY(-2px);
+      border-color: #f39a17;
+    }
+
+    .welcome-note {
+      position: absolute;
+      right: 20px;
+      bottom: 17px;
+      z-index: 4;
+      color: #aeb6c0;
+      font-size: 10px;
+      font-style: italic;
+    }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(8px) scale(.99); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes contentIn {
+      from { opacity: 0; transform: translateX(-7px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes robotIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #steamblock-welcome, .welcome-panel, .welcome-content, .robot-image {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .welcome-panel {
+        width: 94vw;
+        min-height: 540px;
+      }
+
+      .welcome-content {
+        width: 100%;
+        padding: 28px 22px 78px;
+      }
+
+      .robot-area {
+        width: 62%;
+        right: -13%;
+        height: 58%;
+        opacity: .18;
+      }
+
+      .social {
+        left: 22px;
+        bottom: 19px;
+      }
+
+      .welcome-note {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main id="steamblock-app">
+
+    <iframe
+      id="steamblock-frame"
+      src="chromeApp/webapp/microblocks.html"
+      title="SteamBlock">
+    </iframe>
+
+    <section id="steamblock-welcome" aria-label="Información de SteamBlock">
+      <div class="welcome-panel">
+
+        <div class="welcome-content">
+          <h1 class="welcome-title">
+            <span class="steam">STEAM</span><span class="block">BLOCK</span>
+          </h1>
+
+          <div class="welcome-line"></div>
+
+          <div class="welcome-intro">
+            Basado en
+            <a class="microblocks" href="https://microblocks.fun/"
+               target="_blank" rel="noopener noreferrer">MicroBlocks</a>
+            y adaptado por
+            <span class="ardutaller">Ardutaller.es</span>
+            para uso educativo.
+          </div>
+
+          <div class="welcome-item">
+            <div class="welcome-icon">↗</div>
+            <div>
+              <strong>Versión oficial de MicroBlocks</strong><br>
+              <a href="https://microblocks.fun/" target="_blank"
+                 rel="noopener noreferrer">microblocks.fun</a>
+            </div>
+          </div>
+
+          <div class="welcome-item">
+            <div class="welcome-icon">&lt;/&gt;</div>
+            <div>
+              <strong>Basado en código disponible en Codeberg Repository</strong><br>
+              <a href="https://codeberg.org/MicroBlocks/smallvm"
+                 target="_blank" rel="noopener noreferrer">
+                Codeberg · MicroBlocks / smallvm
+              </a>
+            </div>
+          </div>
+
+          <div class="welcome-item">
+            <div class="welcome-icon">⚖</div>
+            <div>
+              Distribuido respetando la licencia
+              <span class="license">AGPL-3.0</span>,
+              bajo la que se publica MicroBlocks.
+            </div>
+          </div>
+        </div>
+
+        <div class="robot-area">
+          <img class="robot-image"
+               src="steamblock-robot-pulsar.png"
+               alt="Robot de Ardutaller.es">
+        </div>
+
+        <div class="social" aria-label="Redes sociales de Ardutaller">
+          <span class="social-label">@ardutaller</span>
+          <a href="https://www.ardutaller.com.es/" target="_blank" rel="noopener noreferrer" aria-label="X">X</a>
+          <a href="https://www.ardutaller.com.es/" target="_blank" rel="noopener noreferrer" aria-label="Twitch">Tw</a>
+          <a href="https://www.ardutaller.com.es/" target="_blank" rel="noopener noreferrer" aria-label="YouTube">▶</a>
+          <a href="https://www.ardutaller.com.es/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Ig</a>
+          <a href="https://www.ardutaller.com.es/" target="_blank" rel="noopener noreferrer" aria-label="TikTok">Tk</a>
+          <a href="https://www.ardutaller.com.es/" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">B</a>
+          <a href="https://www.ardutaller.com.es/" target="_blank" rel="noopener noreferrer" aria-label="Google">G</a>
+        </div>
+
+        <div class="welcome-note">
+          Este aviso desaparecerá automáticamente en 5 segundos.
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const banner = document.getElementById("steamblock-welcome");
+      window.setTimeout(function () {
+        banner.classList.add("hide");
+      }, 5000);
+    })();
+  </script>
+</body>
+</html>
