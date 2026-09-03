@@ -335,7 +335,7 @@
 
         <div class="robot-area">
           <img class="robot-image"
-               src="robot-ardutaller-banner.png"
+               src="steamblock-robot-pulsar.png"
                alt="Robot de Ardutaller.es">
         </div>
 
@@ -365,21 +365,15 @@
       const banner = document.getElementById("steamblock-welcome");
       window.setTimeout(function () {
         banner.classList.add("hide");
+        // Diagnostic B: leave the wrapper and open MicroBlocks directly.
+        window.setTimeout(function () {
+          window.location.href = "chromeApp/webapp/microblocks.html";
+        }, 450);
 
         // Persistent flag: prevents losing the signal if the iframe
         // is still initializing when the banner finishes.
         window.__steamBlockBannerFinished = true;
 
-        // Wait until the banner has completely disappeared.
-        window.setTimeout(function () {
-          const frame = document.getElementById("steamblock-frame");
-          if (frame && frame.contentWindow) {
-            frame.contentWindow.postMessage(
-              "steamblock-banner-finished",
-              window.location.origin
-            );
-          }
-        }, 450);
       }, 5000);
     })();
   </script>
