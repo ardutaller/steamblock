@@ -277,14 +277,7 @@
 
 <body>
   <main id="steamblock-app">
-
-    <iframe
-      id="steamblock-frame"
-      src="chromeApp/webapp/microblocks.html"
-      title="SteamBlock">
-    </iframe>
-
-    <section id="steamblock-welcome" aria-label="Información de SteamBlock">
+<section id="steamblock-welcome" aria-label="Información de SteamBlock">
       <div class="welcome-panel">
 
         <div class="welcome-content">
@@ -365,14 +358,10 @@
       const banner = document.getElementById("steamblock-welcome");
       window.setTimeout(function () {
         banner.classList.add("hide");
-        // Diagnostic B: leave the wrapper and open MicroBlocks directly.
+        // Abrir MicroBlocks directamente, sin iframe.
         window.setTimeout(function () {
           window.location.href = "chromeApp/webapp/microblocks.html";
         }, 450);
-
-        // Persistent flag: prevents losing the signal if the iframe
-        // is still initializing when the banner finishes.
-        window.__steamBlockBannerFinished = true;
 
       }, 5000);
     })();
