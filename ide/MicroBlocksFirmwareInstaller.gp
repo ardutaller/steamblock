@@ -237,32 +237,27 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 }
 
 method installESPFirmwareFromRepo MicroBlocksFirmwareInstaller {
+	// Use the current firmware channel directly. The directory listing on
+	// microblocks.fun does not allow browser CORS requests from SteamBlock,
+	// so build the firmware URLs locally instead of fetching the directory.
 	if (isPilot (findMicroBlocksEditor)) {
 		version = 'pilot'
 	} else {
-		ideVersion = (ideVersion (smallRuntime))
-		version = (join 'v' ideVersion)
-	}
-	if (endsWith version '-pilot') {
-		version = (substring version 1 ((count version) - 6))
+		version = 'latest'
 	}
 
-	// get list firmware files
-	setCursor 'wait'
-	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
-	setCursor 'normal'
-
-	items = (list)
-	for line (lines html) {
-		if (beginsWith line '<a href="vm_') {
-			binIndex = (findSubstring '.bin' line)
-			if (binIndex > 0) { // it is an ESP firmware
-				boardName = (substring line 13 (binIndex - 1))
-				url = (join 'http://microblocks.fun/downloads/' version '/vm/vm_' boardName '.bin')
-				add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
-			}
-		}
-	}
+	// Current ESP firmware images published by MicroBlocks.
+	// Keep the board name used by the flasher equal to the VM filename suffix.
+	items = (list
+		(array 'citilab-ed1' (action 'flashESPFirmwareFromURL' this 'citilab-ed1' (join 'https://microblocks.fun/downloads/' version '/vm/vm_citilab-ed1.bin')))
+		(array 'cocube' (action 'flashESPFirmwareFromURL' this 'cocube' (join 'https://microblocks.fun/downloads/' version '/vm/vm_cocube.bin')))
+		(array 'databot' (action 'flashESPFirmwareFromURL' this 'databot' (join 'https://microblocks.fun/downloads/' version '/vm/vm_databot.bin')))
+		(array 'databot_v3' (action 'flashESPFirmwareFromURL' this 'databot_v3' (join 'https://microblocks.fun/downloads/' version '/vm/vm_databot_v3.bin')))
+		(array 'esp32' (action 'flashESPFirmwareFromURL' this 'esp32' (join 'https://microblocks.fun/downloads/' version '/vm/vm_esp32.bin')))
+		(array 'kids_bits' (action 'flashESPFirmwareFromURL' this 'kids_bits' (join 'https://microblocks.fun/downloads/' version '/vm/vm_kids_bits.bin')))
+		(array 'micro_steamakers' (action 'flashESPFirmwareFromURL' this 'micro_steamakers' (join 'https://microblocks.fun/downloads/' version '/vm/vm_micro_steamakers.bin')))
+		(array 'springbot' (action 'flashESPFirmwareFromURL' this 'springbot' (join 'https://microblocks.fun/downloads/' version '/vm/vm_springbot.bin')))
+	)
 	menuFor (api (smallRuntime)) items
 }
 
