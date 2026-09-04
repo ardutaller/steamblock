@@ -123678,26 +123678,30 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 }
 
 method installESPFirmwareFromRepo MicroBlocksFirmwareInstaller {
+	// Use the current firmware channel directly. Do not fetch the directory listing,
+	// because browsers block that request with CORS from SteamBlock.
 	if (isPilot (findMicroBlocksEditor)) {
 		version = 'pilot'
 	} else {
 		version = 'latest'
 	}
-	firmwareFiles = (array
-		'vm_citilab-ed1.bin' 'vm_cocube.bin' 'vm_databot.bin' 'vm_databot_v3.bin'
-		'vm_esp32.bin' 'vm_micro_steamakers.bin' 'vm_kids_bits.bin' 'vm_kids_bits.bin'
-		'vm_kids_bits.bin' 'vm_springbot.bin' 'vm_springbot.bin' 'vm_springbot.bin')
+
+	tool = (newESPTool)
+	boards = (array
+		'ESP8266' 'ESP32' 'Citilab ED1' 'CoCube' 'Databot' 'Databot v3'
+		'micro:STEAMakers' 'Foxbit' 'Springbot' 'Mbits' 'M5Stack-Core' 'M5Atom-Matrix')
 	items = (list)
-	for i (count espBoards) {
-		boardName = (at espBoards i)
-		fileName = (at firmwareFiles i)
-		url = (join 'https://microblocks.fun/downloads/' version '/vm/' fileName)
-		add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
+	for boardName boards {
+		vmName = (vmNameForBoard tool boardName)
+		if (notNil vmName) {
+			url = (join 'https://microblocks.fun/downloads/' version '/vm/' vmName)
+			add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
+		}
 	}
 	menuFor (api (smallRuntime)) items
 }
-
-                                                                                                                                                                           method flashESPFirmwareFromURL MicroBlocksFirmwareInstaller boardName url {
+                                                                                            
+method flashESPFirmwareFromURL MicroBlocksFirmwareInstaller boardName url {
 	portName = (getField (smallRuntime) 'portName')
 	closePort this // close serial port to avoid interaction with install process
 	flasher = (newFlasher boardName portName false false)
