@@ -123522,11 +123522,7 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	} (and
 		(contains espBoards boardType)
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
-			if eraseFlashFlag {
-				flashVM this boardType eraseFlashFlag
-			} else {
-				flashVMFromURL this boardType
-			}
+			flashVM this boardType eraseFlashFlag
 	} else {
 		presentBoardTypeMenu this eraseFlashFlag
 	}
@@ -123657,25 +123653,12 @@ method flashVM MicroBlocksFirmwareInstaller boardName eraseFlashFlag {
 	portName = 'webserial'
 	closePort this // close serial port to avoid interaction with install process
 	flasher = (newFlasher boardName portName eraseFlashFlag false)
-	installBuiltinFirmware flasher boardName
-}
-
-
-method flashVMFromURL MicroBlocksFirmwareInstaller boardName {
-	version = 'latest'
-	if (isPilot (findMicroBlocksEditor)) {
-		version = 'pilot'
+	if eraseFlashFlag {
+		installBuiltinFirmware flasher boardName
+	} else {
+		installFromURL flasher (join 'https://microblocks.fun/downloads/latest/vm/' (vmNameForBoard (newESPTool) boardName))
 	}
-	tool = (newESPTool)
-	vmName = (vmNameForBoard tool boardName)
-	if (isNil vmName) {
-		print 'Unknown ESP board:' boardName
-		return
-	}
-	url = (join 'https://microblocks.fun/downloads/' version '/vm/' vmName)
-	flashESPFirmwareFromURL this boardName url
 }
-
 
 // Install ESP firmware from file
 
