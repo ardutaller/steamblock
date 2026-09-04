@@ -123522,7 +123522,11 @@ method installVM MicroBlocksFirmwareInstaller eraseFlashFlag {
 	} (and
 		(contains espBoards boardType)
 		(confirm (global 'page') nil (join (localized 'Use board type ') boardType '?'))) {
-			flashVM this boardType eraseFlashFlag
+			if eraseFlashFlag {
+				flashVM this boardType eraseFlashFlag
+			} else {
+				flashVMFromURL this boardType
+			}
 	} else {
 		presentBoardTypeMenu this eraseFlashFlag
 	}
@@ -123656,6 +123660,23 @@ method flashVM MicroBlocksFirmwareInstaller boardName eraseFlashFlag {
 	installBuiltinFirmware flasher boardName
 }
 
+
+method flashVMFromURL MicroBlocksFirmwareInstaller boardName {
+	version = 'latest'
+	if (isPilot (findMicroBlocksEditor)) {
+		version = 'pilot'
+	}
+	tool = (newESPTool)
+	vmName = (vmNameForBoard tool boardName)
+	if (isNil vmName) {
+		print 'Unknown ESP board:' boardName
+		return
+	}
+	url = (join 'https://microblocks.fun/downloads/' version '/vm/' vmName)
+	flashESPFirmwareFromURL this boardName url
+}
+
+
 // Install ESP firmware from file
 
 method installESPFirmwareFromFile MicroBlocksFirmwareInstaller fileName data {
@@ -123678,29 +123699,35 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 }
 
 method installESPFirmwareFromRepo MicroBlocksFirmwareInstaller {
-	// Use the current firmware channel directly. Do not fetch the directory listing,
-	// because browsers block that request with CORS from SteamBlock.
 	if (isPilot (findMicroBlocksEditor)) {
 		version = 'pilot'
 	} else {
-		version = 'latest'
+		ideVersion = (ideVersion (smallRuntime))
+		version = (join 'v' ideVersion)
+	}
+	if (endsWith version '-pilot') {
+		version = (substring version 1 ((count version) - 6))
 	}
 
-	tool = (newESPTool)
-	boards = (array
-		'ESP8266' 'ESP32' 'Citilab ED1' 'CoCube' 'Databot' 'Databot v3'
-		'micro:STEAMakers' 'Foxbit' 'Springbot' 'Mbits' 'M5Stack-Core' 'M5Atom-Matrix')
+	// get list firmware files
+	setCursor 'wait'
+	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
+	setCursor 'normal'
+
 	items = (list)
-	for boardName boards {
-		vmName = (vmNameForBoard tool boardName)
-		if (notNil vmName) {
-			url = (join 'https://microblocks.fun/downloads/' version '/vm/' vmName)
-			add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
+	for line (lines html) {
+		if (beginsWith line '<a href="vm_') {
+			binIndex = (findSubstring '.bin' line)
+			if (binIndex > 0) { // it is an ESP firmware
+				boardName = (substring line 13 (binIndex - 1))
+				url = (join 'http://microblocks.fun/downloads/' version '/vm/vm_' boardName '.bin')
+				add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
+			}
 		}
 	}
 	menuFor (api (smallRuntime)) items
 }
-                                                                                            
+
 method flashESPFirmwareFromURL MicroBlocksFirmwareInstaller boardName url {
 	portName = (getField (smallRuntime) 'portName')
 	closePort this // close serial port to avoid interaction with install process
