@@ -211,7 +211,7 @@ method reconnectMessage MicroBlocksFirmwareInstaller {
 method flashVM MicroBlocksFirmwareInstaller boardName eraseFlashFlag {
 	portName = 'webserial'
 	closePort this // close serial port to avoid interaction with install process
-	flasher = (newFlasher boardName portName eraseFlashFlag true)
+	flasher = (newFlasher boardName portName eraseFlashFlag false)
 	installBuiltinFirmware flasher boardName
 }
 
@@ -237,32 +237,36 @@ method installESPFirmwareFromURL MicroBlocksFirmwareInstaller {
 }
 
 method installESPFirmwareFromRepo MicroBlocksFirmwareInstaller {
+	// Use the current firmware channel directly. The directory listing on
+	// microblocks.fun does not allow browser CORS requests from SteamBlock,
+	// so build the firmware URLs locally instead of fetching the directory.
 	if (isPilot (findMicroBlocksEditor)) {
 		version = 'pilot'
 	} else {
-		ideVersion = (ideVersion (smallRuntime))
-		version = (join 'v' ideVersion)
+		version = 'latest'
 	}
-	if (endsWith version '-pilot') {
-		version = (substring version 1 ((count version) - 6))
-	}
-
-	// get list firmware files
-	setCursor 'wait'
-	html = (basicHTTPGet 'microblocks.fun' (join '/downloads/' version '/vm/'))
-	setCursor 'normal'
 
 	items = (list)
-	for line (lines html) {
-		if (beginsWith line '<a href="vm_') {
-			binIndex = (findSubstring '.bin' line)
-			if (binIndex > 0) { // it is an ESP firmware
-				boardName = (substring line 13 (binIndex - 1))
-				url = (join 'http://microblocks.fun/downloads/' version '/vm/vm_' boardName '.bin')
-				add items (array boardName (action 'flashESPFirmwareFromURL' this boardName url))
-			}
-		}
-	}
+	add items (array 'ESP8266' (action 'flashESPFirmwareFromURL' this 'ESP8266' (join 'https://microblocks.fun/downloads/' version '/vm/vm_nodemcu.bin')))
+	add items (array 'D1-Mini' (action 'flashESPFirmwareFromURL' this 'D1-Mini' (join 'https://microblocks.fun/downloads/' version '/vm/vm_nodemcu.bin')))
+	add items (array 'ESP32' (action 'flashESPFirmwareFromURL' this 'ESP32' (join 'https://microblocks.fun/downloads/' version '/vm/vm_esp32.bin')))
+	add items (array 'Citilab ED1' (action 'flashESPFirmwareFromURL' this 'Citilab ED1' (join 'https://microblocks.fun/downloads/' version '/vm/vm_citilab-ed1.bin')))
+	add items (array 'micro:STEAMakers' (action 'flashESPFirmwareFromURL' this 'micro:STEAMakers' (join 'https://microblocks.fun/downloads/' version '/vm/vm_micro_steamakers.bin')))
+	add items (array 'KidsBits' (action 'flashESPFirmwareFromURL' this 'KidsBits' (join 'https://microblocks.fun/downloads/' version '/vm/vm_kids_bits.bin')))
+	add items (array 'KidsIOT' (action 'flashESPFirmwareFromURL' this 'KidsIOT' (join 'https://microblocks.fun/downloads/' version '/vm/vm_kids_bits.bin')))
+	add items (array 'CodingBox' (action 'flashESPFirmwareFromURL' this 'CodingBox' (join 'https://microblocks.fun/downloads/' version '/vm/vm_kids_bits.bin')))
+	add items (array 'Foxbit' (action 'flashESPFirmwareFromURL' this 'Foxbit' (join 'https://microblocks.fun/downloads/' version '/vm/vm_foxbit.bin')))
+	add items (array 'CoCube' (action 'flashESPFirmwareFromURL' this 'CoCube' (join 'https://microblocks.fun/downloads/' version '/vm/vm_cocube.bin')))
+	add items (array 'M5Stack-Core' (action 'flashESPFirmwareFromURL' this 'M5Stack-Core' (join 'https://microblocks.fun/downloads/' version '/vm/vm_m5stack.bin')))
+	add items (array 'M5StickC' (action 'flashESPFirmwareFromURL' this 'M5StickC' (join 'https://microblocks.fun/downloads/' version '/vm/vm_m5stick.bin')))
+	add items (array 'M5StickC+' (action 'flashESPFirmwareFromURL' this 'M5StickC+' (join 'https://microblocks.fun/downloads/' version '/vm/vm_m5stick+.bin')))
+	add items (array 'M5Atom-Matrix' (action 'flashESPFirmwareFromURL' this 'M5Atom-Matrix' (join 'https://microblocks.fun/downloads/' version '/vm/vm_m5atom.bin')))
+	add items (array 'Databot' (action 'flashESPFirmwareFromURL' this 'Databot' (join 'https://microblocks.fun/downloads/' version '/vm/vm_databot.bin')))
+	add items (array 'Databot v3' (action 'flashESPFirmwareFromURL' this 'Databot v3' (join 'https://microblocks.fun/downloads/' version '/vm/vm_databot_v3.bin')))
+	add items (array 'Springbot' (action 'flashESPFirmwareFromURL' this 'Springbot' (join 'https://microblocks.fun/downloads/' version '/vm/vm_springbot.bin')))
+	add items (array 'Springbot Green' (action 'flashESPFirmwareFromURL' this 'Springbot Green' (join 'https://microblocks.fun/downloads/' version '/vm/vm_springbot.bin')))
+	add items (array 'Springbot Gold' (action 'flashESPFirmwareFromURL' this 'Springbot Gold' (join 'https://microblocks.fun/downloads/' version '/vm/vm_springbot.bin')))
+	add items (array 'Mbits' (action 'flashESPFirmwareFromURL' this 'Mbits' (join 'https://microblocks.fun/downloads/' version '/vm/vm_mbits.bin')))
 	menuFor (api (smallRuntime)) items
 }
 
