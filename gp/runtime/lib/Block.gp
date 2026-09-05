@@ -1925,7 +1925,11 @@ method labelGroup Block index {
 			slotIndex += 1
 		} (or (beginsWith w '#IMG#') ('%repeatIcon' == w)) {
 			// Inline SVG image token. The image name is looked up in img/.
-			iconName = (if (beginsWith w '#IMG#') (substring w 6) 'repeat-icon')
+			if (beginsWith w '#IMG#') {
+				iconName = (substring w 6)
+			} else {
+				iconName = 'repeat-icon'
+			}
 			fg = (global 'blockTextColor')
 			if (isNil fg) { fg = (gray 255) }
 			add group (newSVGImage iconName fg nil (blockScale))
