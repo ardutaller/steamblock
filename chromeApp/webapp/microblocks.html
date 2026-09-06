@@ -489,6 +489,19 @@
   white-space:nowrap;
   font-size:12px;
 }
+#steamblock-public-projects .spp-open {
+  flex:0 0 auto;
+  border:1px solid #d7c5df;
+  border-radius:8px;
+  background:#efe4f3;
+  color:#55216d;
+  font-size:11px;
+  font-weight:700;
+  padding:6px 9px;
+  cursor:pointer;
+}
+#steamblock-public-projects .spp-open:hover { background:#e5d5eb; }
+#steamblock-public-projects .spp-open:disabled { opacity:.65; cursor:wait; }
 #steamblock-public-projects .spp-empty {
   padding:12px 8px;
   color:#777;
@@ -2503,9 +2516,56 @@
         projects.forEach(file => {
           const row = document.createElement('div');
           row.className = 'spp-project';
-          row.innerHTML = '<span class="spp-project-name" title="' +
-            file.name.replace(/"/g, '&quot;') + '">📄 ' +
-            file.name.replace(/[&<>]/g, '') + '</span>';
+          const name = document.createElement('span');
+          name.className = 'spp-project-name';
+          name.title = file.name;
+          name.textContent = '📄 ' + file.name;
+
+          const openButton = document.createElement('button');
+          openButton.type = 'button';
+          openButton.className = 'spp-open';
+          openButton.textContent = '▶ Abrir';
+          openButton.title = 'Abrir proyecto en SteamBlock';
+
+          openButton.addEventListener('click', async function (event) {
+            event.stopPropagation();
+            openButton.disabled = true;
+            const originalText = openButton.textContent;
+            openButton.textContent = '⏳';
+            setStatus('📥 Descargando \"' + file.name + '\"...');
+
+            try {
+              const url = 'https://www.googleapis.com/drive/v3/files/' +
+                encodeURIComponent(file.id) +
+                '?alt=media&key=' + encodeURIComponent(API_KEY);
+
+              const response = await fetch(url);
+              if (!response.ok) {
+                const detail = await response.text();
+                throw new Error('Google Drive API ' + response.status +
+                  (detail ? ': ' + detail : ''));
+              }
+
+              const content = await response.text();
+
+              // Reutilizamos el mismo mecanismo que usa el módulo privado.
+              GP.droppedFiles.push({
+                name: toUTF8Array(file.name),
+                contents: new TextEncoder().encode(content).buffer
+              });
+
+              setStatus('✅ Proyecto enviado a SteamBlock.');
+            } catch (e) {
+              console.error('[SteamBlock Public Projects] Error al abrir', e);
+              setStatus('❌ No se pudo abrir el proyecto. ' + e.message);
+            } finally {
+              openButton.disabled = false;
+              openButton.textContent = originalText;
+            }
+          });
+
+          row.appendChild(name);
+          row.appendChild(openButton);
           list.appendChild(row);
         });
       }
