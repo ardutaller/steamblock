@@ -1518,28 +1518,28 @@
   if (!panel) return;
 
   const header = panel.querySelector('.steamblock-drive-header');
+  const mini = panel.querySelector('.steamblock-drive-mini');
   if (!header) return;
 
-  // Only the header is used as the drag handle.
-  header.addEventListener('pointerdown', function (e) {
+  function startDrag(handle, e, expandOnClick) {
     if (e.button !== 0) return;
-
-    // Keep buttons, inputs, links, selects, etc. fully interactive.
-    if (e.target.closest('button, input, textarea, select, a, label, .steamblock-drive-mini')) return;
+    if (e.target.closest('button, input, textarea, select, a, label')) return;
 
     const rect = panel.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
-
-    panel.setPointerCapture(e.pointerId);
-    panel.dataset.dragging = 'true';
+    const startX = e.clientX;
+    const startY = e.clientY;
+    let moved = false;
 
     function move(ev) {
-      if (panel.dataset.dragging !== 'true') return;
+      if (Math.abs(ev.clientX - startX) > 3 || Math.abs(ev.clientY - startY) > 3) {
+        moved = true;
+      }
+      if (!moved) return;
 
       const maxX = Math.max(0, window.innerWidth - panel.offsetWidth);
       const maxY = Math.max(0, window.innerHeight - panel.offsetHeight);
-
       const x = Math.min(maxX, Math.max(0, ev.clientX - offsetX));
       const y = Math.min(maxY, Math.max(0, ev.clientY - offsetY));
 
@@ -1548,17 +1548,30 @@
       panel.style.right = 'auto';
     }
 
-    function stop() {
-      panel.dataset.dragging = 'false';
+    function stop(ev) {
       panel.removeEventListener('pointermove', move);
       panel.removeEventListener('pointerup', stop);
       panel.removeEventListener('pointercancel', stop);
+      if (expandOnClick && !moved && typeof window.steamblockDriveExpandPanel === 'function') {
+        window.steamblockDriveExpandPanel();
+      }
     }
 
     panel.addEventListener('pointermove', move);
     panel.addEventListener('pointerup', stop);
     panel.addEventListener('pointercancel', stop);
+    handle.setPointerCapture(e.pointerId);
+  }
+
+  header.addEventListener('pointerdown', function (e) {
+    startDrag(header, e, false);
   });
+
+  if (mini) {
+    mini.addEventListener('pointerdown', function (e) {
+      startDrag(mini, e, true);
+    });
+  }
 })();
 </script>
 
