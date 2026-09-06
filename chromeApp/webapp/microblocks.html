@@ -51,12 +51,11 @@
 		<script type="text/javascript" src="lib/usbDfuDevice.js" defer></script>
 		<script type="text/javascript" src="flasher.js" defer></script>
 
-	
 <style id="steamblock-tools-style">
 #steamblock-tools {
   position: fixed;
-  left: 18px;
-  top: 120px;
+  right: 351px;
+  top: 180px;
   z-index: 99998;
   width: 285px;
   background: #ffffff;
@@ -65,14 +64,19 @@
   box-shadow: 0 4px 14px rgba(0,0,0,.25);
   font-family: sans-serif;
   color: #222;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 #steamblock-tools .tools-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   cursor: move;
   padding: 9px 12px;
   font-weight: bold;
   user-select: none;
   background: #eeeeee;
-  border-radius: 8px;
 }
 #steamblock-tools .tools-body {
   padding: 12px;
@@ -84,71 +88,27 @@
   border-radius: 8px;
 }
 #steamblock-tools .tools-minimize {
-  float: right;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 18px;
+  line-height: 28px;
+  text-align: center;
 }
-</style>
-
-
-<style id="steamblock-tools-style">
-#steamblock-tools {
-  position: fixed;
-  left: 18px;
-  top: 120px;
-  z-index: 99998;
-  width: 285px;
-  background: #ffffff;
-  border: 1px solid #888;
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0,0,0,.25);
-  font-family: sans-serif;
-  color: #222;
-}
-#steamblock-tools .tools-header {
-  cursor: move;
-  padding: 9px 12px;
-  font-weight: bold;
-  user-select: none;
-  background: #eeeeee;
-  border-radius: 8px;
-}
-#steamblock-tools .tools-body {
-  padding: 12px;
-}
-#steamblock-tools.minimized .tools-body {
-  display: none;
-}
-#steamblock-tools .tools-minimize {
-  float: right;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 16px;
+#steamblock-tools .tools-minimize:hover {
+  background: rgba(0,0,0,.08);
+  border-radius: 50%;
 }
 </style>
 
 </head>
 
 	<body oncontextmenu="return false;">
-
-
-<div id="steamblock-tools">
-  <div class="tools-header">
-    🛠️ SteamBlock Tools
-    <button class="tools-minimize" title="Minimizar">−</button>
-  </div>
-  <div class="tools-body">
-    <div><strong>IDE:</strong> pendiente de lectura</div>
-    <div><strong>VM:</strong> pendiente de lectura</div>
-    <div><strong>Placa:</strong> pendiente de lectura</div>
-  </div>
-</div>
-
 
 
 		<!-- Force HTTPS. Otherwise WebSerial can't be accessed. -->
@@ -810,6 +770,19 @@
 					</a>
 				</div>
 
+			</div>
+		</div>
+
+		<!-- SteamBlock Tools -->
+		<div id="steamblock-tools">
+			<div class="tools-header">
+				<span>🛠️ SteamBlock Tools</span>
+				<button type="button" class="tools-minimize" title="Minimizar" aria-label="Minimizar">−</button>
+			</div>
+			<div class="tools-body">
+				<div><strong>IDE:</strong> pendiente de lectura</div>
+				<div><strong>VM:</strong> pendiente de lectura</div>
+				<div><strong>Placa:</strong> pendiente de lectura</div>
 			</div>
 		</div>
 
@@ -1544,12 +1517,15 @@
   const panel = document.getElementById('steamblock-drive-test');
   if (!panel) return;
 
-  // Use the panel's upper area as the drag handle.
-  panel.addEventListener('pointerdown', function (e) {
+  const header = panel.querySelector('.steamblock-drive-header');
+  if (!header) return;
+
+  // Only the header is used as the drag handle.
+  header.addEventListener('pointerdown', function (e) {
     if (e.button !== 0) return;
 
     // Keep buttons, inputs, links, selects, etc. fully interactive.
-    if (e.target.closest('button, input, textarea, select, a, label')) return;
+    if (e.target.closest('button, input, textarea, select, a, label, .steamblock-drive-mini')) return;
 
     const rect = panel.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
@@ -1586,7 +1562,6 @@
 })();
 </script>
 
-
 <script id="steamblock-tools-script">
 (function () {
   const panel = document.getElementById('steamblock-tools');
@@ -1594,20 +1569,41 @@
 
   const header = panel.querySelector('.tools-header');
   const minimizeButton = panel.querySelector('.tools-minimize');
+  if (!header || !minimizeButton) return;
+
+  let autoMinimizeTimer = null;
+  let dragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  function scheduleMinimize() {
+    clearTimeout(autoMinimizeTimer);
+    if (panel.classList.contains('minimized')) return;
+    autoMinimizeTimer = window.setTimeout(minimize, 10000);
+  }
 
   function minimize() {
+    clearTimeout(autoMinimizeTimer);
     panel.classList.add('minimized');
     minimizeButton.textContent = '+';
     minimizeButton.title = 'Restaurar';
+    minimizeButton.setAttribute('aria-label', 'Restaurar');
   }
 
   function restore() {
     panel.classList.remove('minimized');
     minimizeButton.textContent = '−';
     minimizeButton.title = 'Minimizar';
+    minimizeButton.setAttribute('aria-label', 'Minimizar');
+    scheduleMinimize();
   }
 
+  minimizeButton.addEventListener('pointerdown', function (e) {
+    e.stopPropagation();
+  });
+
   minimizeButton.addEventListener('click', function (e) {
+    e.preventDefault();
     e.stopPropagation();
     if (panel.classList.contains('minimized')) {
       restore();
@@ -1616,18 +1612,15 @@
     }
   });
 
-  let dragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
-
   header.addEventListener('pointerdown', function (e) {
-    if (e.button !== 0 || e.target === minimizeButton) return;
+    if (e.button !== 0) return;
+    if (e.target.closest('.tools-minimize')) return;
 
     const rect = panel.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
     dragging = true;
-    panel.setPointerCapture(e.pointerId);
+    header.setPointerCapture(e.pointerId);
   });
 
   header.addEventListener('pointermove', function (e) {
@@ -1635,77 +1628,6 @@
 
     const maxX = Math.max(0, window.innerWidth - panel.offsetWidth);
     const maxY = Math.max(0, window.innerHeight - panel.offsetHeight);
-
-    const x = Math.min(maxX, Math.max(0, e.clientX - offsetX));
-    const y = Math.min(maxY, Math.max(0, e.clientY - offsetY));
-
-    panel.style.left = x + 'px';
-    panel.style.top = y + 'px';
-  });
-
-  function stopDragging(e) {
-    dragging = false;
-    try { panel.releasePointerCapture(e.pointerId); } catch (_) {}
-  }
-
-  header.addEventListener('pointerup', stopDragging);
-  header.addEventListener('pointercancel', stopDragging);
-
-  // Minimize automatically after 10 seconds.
-  window.setTimeout(minimize, 10000);
-})();
-</script>
-
-
-<script id="steamblock-tools-script">
-(function () {
-  const panel = document.getElementById('steamblock-tools');
-  if (!panel) return;
-
-  const header = panel.querySelector('.tools-header');
-  const minimizeButton = panel.querySelector('.tools-minimize');
-
-  function minimize() {
-    panel.classList.add('minimized');
-    minimizeButton.textContent = '+';
-    minimizeButton.title = 'Restaurar';
-  }
-
-  function restore() {
-    panel.classList.remove('minimized');
-    minimizeButton.textContent = '−';
-    minimizeButton.title = 'Minimizar';
-  }
-
-  minimizeButton.addEventListener('click', function (e) {
-    e.stopPropagation();
-    if (panel.classList.contains('minimized')) {
-      restore();
-    } else {
-      minimize();
-    }
-  });
-
-  let dragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  header.addEventListener('pointerdown', function (e) {
-    if (e.button !== 0 || e.target === minimizeButton) return;
-
-    const rect = panel.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-    dragging = true;
-    panel.setPointerCapture(e.pointerId);
-  });
-
-  header.addEventListener('pointermove', function (e) {
-    if (!dragging) return;
-
-    const maxX = Math.max(0, window.innerWidth - panel.offsetWidth);
-    const maxY = Math.max(0, window.innerHeight - panel.offsetHeight);
-
     const x = Math.min(maxX, Math.max(0, e.clientX - offsetX));
     const y = Math.min(maxY, Math.max(0, e.clientY - offsetY));
 
@@ -1715,14 +1637,15 @@
   });
 
   function stopDragging(e) {
+    if (!dragging) return;
     dragging = false;
-    try { panel.releasePointerCapture(e.pointerId); } catch (_) {}
+    try { header.releasePointerCapture(e.pointerId); } catch (_) {}
   }
 
   header.addEventListener('pointerup', stopDragging);
   header.addEventListener('pointercancel', stopDragging);
 
-  window.setTimeout(minimize, 10000);
+  scheduleMinimize();
 })();
 </script>
 
