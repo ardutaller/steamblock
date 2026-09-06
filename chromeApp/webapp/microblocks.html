@@ -200,6 +200,33 @@
   white-space: nowrap;
 }
 
+#steamblock-tools .tools-actions {
+  margin: 0 8px 7px;
+}
+#steamblock-tools .tools-action {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #e3dbe6;
+  border-radius: 9px;
+  background: #fff;
+  color: #6b2a86;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+#steamblock-tools .tools-action:hover {
+  background: #f4edf6;
+}
+#steamblock-tools .tools-action-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
 #steamblock-tools .tools-credit {
   margin: 0 8px 8px;
   padding-top: 6px;
@@ -236,6 +263,7 @@
 
 #steamblock-tools.minimized .tools-header,
 #steamblock-tools.minimized .tools-main,
+#steamblock-tools.minimized .tools-actions,
 #steamblock-tools.minimized .tools-credit {
   display: none;
 }
@@ -980,6 +1008,13 @@
 						</div>
 					</div>
 				</div>
+			</div>
+
+			<div class="tools-actions">
+				<a class="tools-action" href="https://ardutaller.github.io/esp_backup/" target="_blank" rel="noopener noreferrer">
+					<span class="tools-action-icon">💾</span>
+					<span>BackUp-ESP32</span>
+				</a>
 			</div>
 
 			<div class="tools-credit">
@@ -1900,14 +1935,19 @@
     if (e.button !== 0) return;
     if (e.target.closest('button, input, textarea, select, a, label') && !expandOnClick) return;
 
+    e.preventDefault();
+
     const rect = panel.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
     const startX = e.clientX;
     const startY = e.clientY;
+    const pointerId = e.pointerId;
     let moved = false;
 
     function move(ev) {
+      if (ev.pointerId !== pointerId) return;
+
       if (Math.abs(ev.clientX - startX) > 3 || Math.abs(ev.clientY - startY) > 3) {
         moved = true;
       }
@@ -1924,18 +1964,22 @@
     }
 
     function stop(ev) {
-      panel.removeEventListener('pointermove', move);
-      panel.removeEventListener('pointerup', stop);
-      panel.removeEventListener('pointercancel', stop);
+      if (ev.pointerId !== pointerId) return;
+
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', stop);
+      window.removeEventListener('pointercancel', stop);
+
       if (expandOnClick && !moved) {
         restore();
       }
     }
 
-    panel.addEventListener('pointermove', move);
-    panel.addEventListener('pointerup', stop);
-    panel.addEventListener('pointercancel', stop);
-    handle.setPointerCapture(e.pointerId);
+    // Listen on window, not on the panel. This makes the minimized robot
+    // independently draggable even when the pointer leaves its 82px circle.
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop);
+    window.addEventListener('pointercancel', stop);
   }
 
   header.style.touchAction = 'none';
