@@ -780,9 +780,9 @@
 				<button type="button" class="tools-minimize" title="Minimizar" aria-label="Minimizar">−</button>
 			</div>
 			<div class="tools-body">
-				<div><strong>IDE:</strong> pendiente de lectura</div>
-				<div><strong>VM:</strong> pendiente de lectura</div>
-				<div><strong>Placa:</strong> pendiente de lectura</div>
+				<div><strong>IDE:</strong> <span id="steamblock-tools-ide-version">pendiente de lectura</span></div>
+				<div><strong>VM:</strong> <span id="steamblock-tools-vm-version">pendiente de lectura</span></div>
+				<div><strong>Placa:</strong> <span id="steamblock-tools-board-type">pendiente de lectura</span></div>
 			</div>
 		</div>
 
@@ -1589,6 +1589,50 @@
   let offsetX = 0;
   let offsetY = 0;
 
+  const ideVersionElement =
+    document.getElementById('steamblock-tools-ide-version');
+  const vmVersionElement =
+    document.getElementById('steamblock-tools-vm-version');
+  const boardTypeElement =
+    document.getElementById('steamblock-tools-board-type');
+
+  function updateVersionInfo() {
+    // IDE: use the existing MicroBlocks API endpoint.
+    if (typeof GP !== 'undefined' &&
+        typeof GP.apiCall === 'function' &&
+        ideVersionElement &&
+        ideVersionElement.dataset.loaded !== 'true') {
+      try {
+        GP.apiCall('ide.version', [], function (ideVersion) {
+          if (ideVersion != null && ideVersion !== '') {
+            ideVersionElement.textContent = 'v' + ideVersion;
+            ideVersionElement.dataset.loaded = 'true';
+          }
+        });
+      } catch (_) {}
+    }
+
+    // VM and board: both are already kept in the live MB_connection object
+    // after the board answers the normal getVersionMsg message.
+    if (typeof MB_connection !== 'undefined') {
+      if (vmVersionElement) {
+        if (MB_connection.vmVersion != null) {
+          vmVersionElement.textContent = 'v' + MB_connection.vmVersion;
+        } else {
+          vmVersionElement.textContent = 'no conectada';
+        }
+      }
+
+      if (boardTypeElement) {
+        if (MB_connection.boardType) {
+          boardTypeElement.textContent = MB_connection.boardType;
+        } else {
+          boardTypeElement.textContent = 'no conectada';
+        }
+      }
+    }
+  }
+
   function scheduleMinimize() {
     clearTimeout(autoMinimizeTimer);
     if (panel.classList.contains('minimized')) return;
@@ -1657,6 +1701,9 @@
 
   header.addEventListener('pointerup', stopDragging);
   header.addEventListener('pointercancel', stopDragging);
+
+  updateVersionInfo();
+  window.setInterval(updateVersionInfo, 1000);
 
   scheduleMinimize();
 })();
