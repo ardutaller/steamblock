@@ -1589,46 +1589,46 @@
   let offsetX = 0;
   let offsetY = 0;
 
-  const ideVersionElement =
-    document.getElementById('steamblock-tools-ide-version');
-  const vmVersionElement =
-    document.getElementById('steamblock-tools-vm-version');
-  const boardTypeElement =
-    document.getElementById('steamblock-tools-board-type');
+  const ideVersionElement = document.getElementById('steamblock-tools-ide-version');
+  const vmVersionElement = document.getElementById('steamblock-tools-vm-version');
+  const boardTypeElement = document.getElementById('steamblock-tools-board-type');
 
   function updateVersionInfo() {
-    // IDE: use the existing MicroBlocks API endpoint.
-    if (typeof GP !== 'undefined' &&
-        typeof GP.apiCall === 'function' &&
-        ideVersionElement &&
-        ideVersionElement.dataset.loaded !== 'true') {
+    // IDE: existing API endpoint.
+    if (typeof GP !== 'undefined' && typeof GP.apiCall === 'function' && ideVersionElement) {
       try {
         GP.apiCall('ide.version', [], function (ideVersion) {
           if (ideVersion != null && ideVersion !== '') {
             ideVersionElement.textContent = 'v' + ideVersion;
-            ideVersionElement.dataset.loaded = 'true';
           }
         });
       } catch (_) {}
     }
 
-    // VM and board: both are already kept in the live MB_connection object
-    // after the board answers the normal getVersionMsg message.
-    if (typeof MB_connection !== 'undefined') {
-      if (vmVersionElement) {
-        if (MB_connection.vmVersion != null) {
-          vmVersionElement.textContent = 'v' + MB_connection.vmVersion;
-        } else {
-          vmVersionElement.textContent = 'no conectada';
-        }
-      }
+    // VM: existing API endpoint. This is reliable in the current SteamBlock build.
+    if (typeof GP !== 'undefined' && typeof GP.apiCall === 'function' && vmVersionElement) {
+      try {
+        GP.apiCall('board.vmVersion', [], function (vmVersion) {
+          if (vmVersion != null && vmVersion !== '' && Number(vmVersion) > 0) {
+            vmVersionElement.textContent = 'v' + vmVersion;
+          } else {
+            vmVersionElement.textContent = 'pendiente de lectura';
+          }
+        });
+      } catch (_) {}
+    }
 
-      if (boardTypeElement) {
-        if (MB_connection.boardType) {
-          boardTypeElement.textContent = MB_connection.boardType;
+    // Board: the current browser IDE already exposes the live board type
+    // through IDE.board.type. No new API endpoint or firmware change is needed.
+    if (boardTypeElement) {
+      try {
+        if (typeof IDE !== 'undefined' && IDE.board && IDE.board.connected && IDE.board.type) {
+          boardTypeElement.textContent = IDE.board.type;
         } else {
-          boardTypeElement.textContent = 'no conectada';
+          boardTypeElement.textContent = 'pendiente de lectura';
         }
+      } catch (_) {
+        boardTypeElement.textContent = 'pendiente de lectura';
       }
     }
   }
@@ -1655,24 +1655,16 @@
     scheduleMinimize();
   }
 
-  minimizeButton.addEventListener('pointerdown', function (e) {
-    e.stopPropagation();
-  });
-
+  minimizeButton.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
   minimizeButton.addEventListener('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    if (panel.classList.contains('minimized')) {
-      restore();
-    } else {
-      minimize();
-    }
+    if (panel.classList.contains('minimized')) restore(); else minimize();
   });
 
   header.addEventListener('pointerdown', function (e) {
     if (e.button !== 0) return;
     if (e.target.closest('.tools-minimize')) return;
-
     const rect = panel.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
@@ -1682,12 +1674,10 @@
 
   header.addEventListener('pointermove', function (e) {
     if (!dragging) return;
-
     const maxX = Math.max(0, window.innerWidth - panel.offsetWidth);
     const maxY = Math.max(0, window.innerHeight - panel.offsetHeight);
     const x = Math.min(maxX, Math.max(0, e.clientX - offsetX));
     const y = Math.min(maxY, Math.max(0, e.clientY - offsetY));
-
     panel.style.left = x + 'px';
     panel.style.top = y + 'px';
     panel.style.right = 'auto';
@@ -1704,7 +1694,6 @@
 
   updateVersionInfo();
   window.setInterval(updateVersionInfo, 1000);
-
   scheduleMinimize();
 })();
 </script>
