@@ -370,6 +370,168 @@
 }
 </style>
 
+<style id="steamblock-public-projects-style">
+/* SteamBlock Public Projects v1 — independent floating module */
+#steamblock-public-projects {
+  position: fixed;
+  left: 18px;
+  top: 180px;
+  z-index: 99997;
+  width: 320px;
+  max-width: calc(100vw - 24px);
+  background: #fff;
+  border: 2px solid #6b2a86;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(47,26,58,.22);
+  font-family: Arial, sans-serif;
+  color: #333;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+#steamblock-public-projects * { box-sizing: border-box; }
+#steamblock-public-projects .spp-header {
+  display:grid;
+  grid-template-columns: 1fr 32px;
+  align-items:center;
+  gap:6px;
+  min-height:46px;
+  padding:6px 8px 6px 11px;
+  background:linear-gradient(135deg,#fbf8fc 0%,#fff 72%);
+  border-bottom:1px solid #eadff0;
+  cursor:move;
+  user-select:none;
+  touch-action:none;
+}
+#steamblock-public-projects .spp-title {
+  color:#4b205d;
+  font-size:15px;
+  font-weight:700;
+}
+#steamblock-public-projects .spp-min {
+  width:26px!important;
+  height:26px;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#eee6f1!important;
+  color:#4b205d!important;
+  font-size:16px!important;
+  line-height:1!important;
+  cursor:pointer;
+}
+#steamblock-public-projects .spp-body {
+  padding:10px;
+}
+#steamblock-public-projects .spp-label {
+  display:block;
+  margin-bottom:4px;
+  color:#666;
+  font-size:11px;
+  font-weight:700;
+}
+#steamblock-public-projects .spp-select {
+  width:100%;
+  height:32px;
+  padding:4px 7px;
+  border:1px solid #d8cddd;
+  border-radius:7px;
+  background:#fff;
+  color:#333;
+  font-size:12px;
+}
+#steamblock-public-projects .spp-status {
+  margin-top:8px;
+  padding:8px 9px;
+  border-radius:8px;
+  background:#f6f2f8;
+  color:#666;
+  font-size:11px;
+  line-height:1.35;
+  white-space:pre-wrap;
+}
+#steamblock-public-projects .spp-projects {
+  margin-top:9px;
+  height:210px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:6px;
+  border:1px solid #e3dbe6;
+  border-radius:9px;
+  background:#fbfafc;
+  -webkit-overflow-scrolling:touch;
+}
+#steamblock-public-projects .spp-projects::-webkit-scrollbar { width:8px; }
+#steamblock-public-projects .spp-projects::-webkit-scrollbar-thumb {
+  background:#cdbbd4;
+  border-radius:8px;
+}
+#steamblock-public-projects .spp-projects::-webkit-scrollbar-track {
+  background:#f7f3f8;
+}
+#steamblock-public-projects .spp-project {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:38px;
+  padding:6px 7px;
+  margin-bottom:5px;
+  background:#fff;
+  border:1px solid #e5e0e7;
+  border-radius:7px;
+}
+#steamblock-public-projects .spp-project:last-child { margin-bottom:0; }
+#steamblock-public-projects .spp-project-name {
+  flex:1;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:12px;
+}
+#steamblock-public-projects .spp-empty {
+  padding:12px 8px;
+  color:#777;
+  font-size:11px;
+  text-align:center;
+}
+#steamblock-public-projects .spp-footer {
+  margin-top:8px;
+  padding-top:7px;
+  border-top:1px solid #eadff0;
+  color:#888;
+  font-size:9.5px;
+  text-align:center;
+}
+#steamblock-public-projects .spp-footer strong { color:#6b2a86; }
+#steamblock-public-projects.spp-minimized {
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  left:auto;
+  top:auto;
+  overflow:hidden;
+  cursor:pointer;
+}
+#steamblock-public-projects.spp-minimized .spp-header,
+#steamblock-public-projects.spp-minimized .spp-body { display:none; }
+#steamblock-public-projects .spp-mini {
+  display:none;
+  width:100%;
+  height:100%;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  color:#6b2a86;
+  font-size:29px;
+  cursor:pointer;
+}
+#steamblock-public-projects.spp-minimized .spp-mini { display:flex; }
+@media (max-width:480px) {
+  #steamblock-public-projects { width:min(320px,calc(100vw - 20px)); left:10px; }
+}
+</style>
+
 </head>
 
 	<body oncontextmenu="return false;">
@@ -2230,6 +2392,184 @@
   updateVersionInfo();
   window.setInterval(updateVersionInfo, 1000);
   scheduleMinimize();
+})();
+</script>
+
+
+<!-- SteamBlock Public Projects v1 -->
+<div id="steamblock-public-projects" aria-label="SteamBlock Proyectos Públicos">
+  <div class="spp-header">
+    <div class="spp-title">🌐 Proyectos públicos</div>
+    <button class="spp-min" type="button" title="Minimizar panel" aria-label="Minimizar panel">−</button>
+  </div>
+  <div class="spp-body">
+    <label class="spp-label" for="steamblock-public-projects-board">Placa</label>
+    <select id="steamblock-public-projects-board" class="spp-select">
+      <option value="">Selecciona una placa</option>
+    </select>
+    <div id="steamblock-public-projects-status" class="spp-status">Preparado para consultar la carpeta pública.</div>
+    <div id="steamblock-public-projects-list" class="spp-projects">
+      <div class="spp-empty">Selecciona una placa para ver sus proyectos.</div>
+    </div>
+    <div class="spp-footer">Módulo diseñado por <strong>ardutaller.es</strong></div>
+  </div>
+  <button class="spp-mini" type="button" title="Mostrar Proyectos públicos" aria-label="Mostrar Proyectos públicos">🌐</button>
+</div>
+
+<script src="steamblock-public-projects-config.js"></script>
+<script id="steamblock-public-projects-script">
+(function () {
+  'use strict';
+  const panel = document.getElementById('steamblock-public-projects');
+  if (!panel) return;
+
+  const boardSelect = document.getElementById('steamblock-public-projects-board');
+  const status = document.getElementById('steamblock-public-projects-status');
+  const list = document.getElementById('steamblock-public-projects-list');
+  const header = panel.querySelector('.spp-header');
+  const minButton = panel.querySelector('.spp-min');
+  const miniButton = panel.querySelector('.spp-mini');
+  const CONFIG = window.STEAMBLOCK_PUBLIC_PROJECTS_CONFIG || {};
+  const ROOT_ID = CONFIG.rootFolderId || '';
+  const API_KEY = CONFIG.apiKey || '';
+  const folders = new Map();
+
+  function setStatus(text) { status.textContent = text; }
+  function renderEmpty(text) {
+    list.innerHTML = '<div class="spp-empty">' + text.replace(/[&<>"]/g, '') + '</div>';
+  }
+
+  async function driveList(q, fields) {
+    const params = new URLSearchParams({
+      q, key: API_KEY, pageSize: '100',
+      fields: fields || 'files(id,name,mimeType)'
+    });
+    const r = await fetch('https://www.googleapis.com/drive/v3/files?' + params);
+    if (!r.ok) throw new Error('Google Drive API ' + r.status);
+    return r.json();
+  }
+
+  async function loadBoards() {
+    if (!ROOT_ID) throw new Error('Falta rootFolderId.');
+    if (!API_KEY || API_KEY === 'PEGA_AQUI_TU_API_KEY')
+      throw new Error('Falta la API Key en steamblock-public-projects-config.js');
+
+    setStatus('📂 Buscando carpetas de placas...');
+    const data = await driveList(
+      "'" + ROOT_ID + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
+    );
+
+    boardSelect.innerHTML = '<option value="">Selecciona una placa</option>';
+    folders.clear();
+
+    (data.files || []).sort((a,b) => a.name.localeCompare(b.name, 'es')).forEach(folder => {
+      folders.set(folder.name, folder.id);
+      const option = document.createElement('option');
+      option.value = folder.name;
+      option.textContent = folder.name;
+      boardSelect.appendChild(option);
+    });
+
+    setStatus(data.files && data.files.length
+      ? '✅ ' + data.files.length + ' carpeta(s) de placa encontrada(s).'
+      : '⚠️ No se encontraron carpetas de placas.');
+  }
+
+  async function loadProjects(boardName) {
+    if (!boardName) {
+      setStatus('Selecciona una placa para ver sus proyectos.');
+      renderEmpty('Selecciona una placa para ver sus proyectos.');
+      return;
+    }
+
+    const folderId = folders.get(boardName);
+    if (!folderId) return;
+
+    renderEmpty('📂 Cargando proyectos...');
+    try {
+      const data = await driveList(
+        "'" + folderId + "' in parents and trashed = false",
+        'files(id,name,mimeType,size,modifiedTime)'
+      );
+
+      const projects = (data.files || [])
+        .filter(f => f.name && f.name.toLowerCase().endsWith('.ubp'))
+        .sort((a,b) => a.name.localeCompare(b.name, 'es'));
+
+      list.innerHTML = '';
+      if (!projects.length) {
+        renderEmpty('No hay proyectos .ubp en esta placa.');
+      } else {
+        projects.forEach(file => {
+          const row = document.createElement('div');
+          row.className = 'spp-project';
+          row.innerHTML = '<span class="spp-project-name" title="' +
+            file.name.replace(/"/g, '&quot;') + '">📄 ' +
+            file.name.replace(/[&<>]/g, '') + '</span>';
+          list.appendChild(row);
+        });
+      }
+      setStatus('✅ ' + projects.length + ' proyecto(s) encontrado(s) en ' + boardName + '.');
+    } catch (e) {
+      console.error('[SteamBlock Public Projects]', e);
+      renderEmpty('No se pudieron cargar los proyectos.');
+      setStatus('❌ ' + e.message);
+    }
+  }
+
+  minButton.addEventListener('click', e => {
+    e.stopPropagation();
+    panel.classList.add('spp-minimized');
+  });
+  miniButton.addEventListener('click', e => {
+    e.stopPropagation();
+    panel.classList.remove('spp-minimized');
+  });
+  boardSelect.addEventListener('change', () => loadProjects(boardSelect.value));
+
+  // Drag independently from the other floating modules.
+  let dragging = false, moved = false, pointerId = null;
+  let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
+
+  header.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || e.target.closest('button')) return;
+    const r = panel.getBoundingClientRect();
+    offsetX = e.clientX - r.left; offsetY = e.clientY - r.top;
+    startX = e.clientX; startY = e.clientY;
+    pointerId = e.pointerId; moved = false; dragging = true;
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop);
+    window.addEventListener('pointercancel', stop);
+    e.preventDefault();
+  });
+
+  function move(e) {
+    if (!dragging || e.pointerId !== pointerId) return;
+    if (Math.abs(e.clientX-startX)>3 || Math.abs(e.clientY-startY)>3) moved = true;
+    if (!moved) return;
+    const maxX = Math.max(8, innerWidth-panel.offsetWidth-8);
+    const maxY = Math.max(8, innerHeight-panel.offsetHeight-8);
+    panel.style.left = Math.min(maxX, Math.max(8, e.clientX-offsetX)) + 'px';
+    panel.style.top = Math.min(maxY, Math.max(8, e.clientY-offsetY)) + 'px';
+    panel.style.right = 'auto';
+  }
+
+  function stop(e) {
+    if (e.pointerId !== pointerId) return;
+    dragging = false;
+    window.removeEventListener('pointermove', move);
+    window.removeEventListener('pointerup', stop);
+    window.removeEventListener('pointercancel', stop);
+  }
+
+  if (!API_KEY || API_KEY === 'PEGA_AQUI_TU_API_KEY') {
+    setStatus('⚠️ Introduce tu API Key en steamblock-public-projects-config.js');
+  } else {
+    loadBoards().catch(e => {
+      console.error('[SteamBlock Public Projects]', e);
+      setStatus('❌ ' + e.message);
+    });
+  }
 })();
 </script>
 
