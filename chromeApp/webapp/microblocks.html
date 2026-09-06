@@ -227,6 +227,74 @@
   line-height: 1;
 }
 
+
+#steamblock-tools .tools-firmware {
+  margin: 8px 8px 7px;
+  padding: 8px;
+  border: 1px solid #e3dbe6;
+  border-radius: 10px;
+  background: #faf7fb;
+}
+#steamblock-tools .tools-firmware-title {
+  margin-bottom: 7px;
+  color: #6b2a86;
+  font-size: 12px;
+  font-weight: 700;
+}
+#steamblock-tools .tools-field {
+  display: block;
+  margin-bottom: 6px;
+}
+#steamblock-tools .tools-field span {
+  display: block;
+  margin-bottom: 3px;
+  color: #666;
+  font-size: 10px;
+  font-weight: 600;
+}
+#steamblock-tools .tools-field select {
+  width: 100%;
+  height: 25px;
+  padding: 2px 5px;
+  border: 1px solid #d8cddd;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  font-size: 11px;
+}
+#steamblock-tools .tools-fw-url {
+  overflow: hidden;
+  margin: 5px 0 6px;
+  padding: 4px 5px;
+  border-radius: 5px;
+  background: #fff;
+  color: #777;
+  font-family: monospace;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#steamblock-tools .tools-fw-load {
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: #6b2a86;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+#steamblock-tools .tools-fw-load:hover {
+  background: #57206e;
+}
+#steamblock-tools .tools-fw-status {
+  margin-top: 5px;
+  color: #777;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
 #steamblock-tools .tools-credit {
   margin: 0 8px 8px;
   padding-top: 6px;
@@ -264,6 +332,7 @@
 #steamblock-tools.minimized .tools-header,
 #steamblock-tools.minimized .tools-main,
 #steamblock-tools.minimized .tools-actions,
+#steamblock-tools.minimized .tools-firmware,
 #steamblock-tools.minimized .tools-credit {
   display: none;
 }
@@ -1016,6 +1085,78 @@
 					<span>BackUp-ESP32</span>
 				</a>
 			</div>
+
+
+        <div class="tools-firmware">
+          <div class="tools-firmware-title">🔄 Actualizar firmware</div>
+
+          <label class="tools-field">
+            <span>Versión</span>
+            <select id="steamblock-tools-fw-version">
+            <option value="latest">latest</option>
+            <option value="v2.0.126">v2.0.126</option>
+            <option value="v2.0.120">v2.0.120</option>
+            <option value="v2.0.119">v2.0.119</option>
+            <option value="v2.0.118">v2.0.118</option>
+            <option value="v2.0.88">v2.0.88</option>
+            <option value="v2.0.86">v2.0.86</option>
+            <option value="v2.0.85">v2.0.85</option>
+            <option value="v2.0.84">v2.0.84</option>
+            <option value="v2.0.64">v2.0.64</option>
+            <option value="v2.0.60">v2.0.60</option>
+            <option value="v2.0.39">v2.0.39</option>
+            <option value="v2.0.37">v2.0.37</option>
+            <option value="v2.0.35">v2.0.35</option>
+            <option value="v2.0.34">v2.0.34</option>
+            <option value="v1.2.100">v1.2.100</option>
+            <option value="v1.2.92">v1.2.92</option>
+            <option value="v1.2.46">v1.2.46</option>
+            <option value="v1.2.24">v1.2.24</option>
+            <option value="v1.2.5">v1.2.5</option>
+            <option value="v1.1.89">v1.1.89</option>
+            <option value="v1.1.61">v1.1.61</option>
+            <option value="v1.1.41">v1.1.41</option>
+            <option value="v1.1.16">v1.1.16</option>
+            <option value="v1.0">v1.0</option>
+            </select>
+          </label>
+
+          <label class="tools-field">
+            <span>Placa</span>
+            <select id="steamblock-tools-fw-board">
+            <option value="cocube">CoCube</option>
+            <option value="citilab-ed1">Citilab ED1</option>
+            <option value="databot">Databot</option>
+            <option value="databot_v3">Databot v3</option>
+            <option value="esp32">ESP32</option>
+            <option value="micro_steamakers">micro:STEAMakers</option>
+            <option value="kids_bits">KidsBits</option>
+            <option value="foxbit">Foxbit</option>
+            <option value="mbits">Mbits</option>
+            <option value="m5stack">M5Stack</option>
+            <option value="m5atom">M5Atom</option>
+            <option value="m5atom_lite">M5Atom Lite</option>
+            <option value="m5atom_s3_lite">M5Atom S3 Lite</option>
+            <option value="m5atom_s3_tft">M5Atom S3 TFT</option>
+            <option value="m5core2_1.0">M5Core2 1.0</option>
+            <option value="m5stick_plus">M5Stick Plus</option>
+            <option value="nodemcu">NodeMCU / D1 Mini</option>
+            <option value="springbot">Springbot</option>
+            <option value="xiao_esp32_c3">XIAO ESP32-C3</option>
+            <option value="xiao_esp32_s3">XIAO ESP32-S3</option>
+            </select>
+          </label>
+
+          <div id="steamblock-tools-fw-url" class="tools-fw-url">---</div>
+
+          <button type="button" id="steamblock-tools-fw-load" class="tools-fw-load">
+            Copiar URL
+          </button>
+
+          <div id="steamblock-tools-fw-status" class="tools-fw-status">
+            Selecciona versión y placa
+          </div>
+        </div>
 
 			<div class="tools-credit">
 				Módulo diseñado por
@@ -2015,6 +2156,76 @@
     panel.style.top = y + 'px';
     panel.style.right = 'auto';
   });
+
+
+  // Firmware selector prototype.
+  // The official MicroBlocks server exposes directory listings, but its
+  // directory pages do not currently permit browser CORS requests from
+  // SteamBlock. Therefore this v9 uses the current official directory
+  // snapshot for the UI while preparing the exact URL dynamically.
+  const fwVersion = document.getElementById('steamblock-tools-fw-version');
+  const fwBoard = document.getElementById('steamblock-tools-fw-board');
+  const fwUrl = document.getElementById('steamblock-tools-fw-url');
+  const fwLoad = document.getElementById('steamblock-tools-fw-load');
+  const fwStatus = document.getElementById('steamblock-tools-fw-status');
+
+  function selectedFirmwareURL() {
+    if (!fwVersion || !fwBoard) return '';
+    return 'https://microblocks.fun/downloads/' +
+      fwVersion.value + '/vm/vm_' + fwBoard.value + '.bin';
+  }
+
+  function refreshFirmwareURL() {
+    const url = selectedFirmwareURL();
+    if (fwUrl) fwUrl.textContent = url || '---';
+    if (fwStatus) fwStatus.textContent =
+      url ? 'Firmware seleccionado' : 'Selecciona versión y placa';
+  }
+
+  if (fwVersion && fwBoard) {
+    fwVersion.addEventListener('change', refreshFirmwareURL);
+    fwBoard.addEventListener('change', refreshFirmwareURL);
+    refreshFirmwareURL();
+  }
+
+  if (fwLoad) {
+    fwLoad.addEventListener('click', async function () {
+      const url = selectedFirmwareURL();
+      if (!url) return;
+
+      try {
+        await navigator.clipboard.writeText(url);
+        if (fwStatus) {
+          fwStatus.textContent = '✓ URL copiada al portapapeles';
+          fwStatus.title = url;
+        }
+      } catch (_) {
+        // Fallback for browsers where Clipboard API is unavailable.
+        const helper = document.createElement('textarea');
+        helper.value = url;
+        helper.style.position = 'fixed';
+        helper.style.opacity = '0';
+        document.body.appendChild(helper);
+        helper.focus();
+        helper.select();
+
+        try {
+          document.execCommand('copy');
+          if (fwStatus) {
+            fwStatus.textContent = '✓ URL copiada al portapapeles';
+            fwStatus.title = url;
+          }
+        } catch (_) {
+          if (fwStatus) {
+            fwStatus.textContent = 'No se pudo copiar automáticamente';
+            fwStatus.title = url;
+          }
+        }
+
+        document.body.removeChild(helper);
+      }
+    });
+  }
 
   updateVersionInfo();
   window.setInterval(updateVersionInfo, 1000);
