@@ -93,9 +93,62 @@
 }
 </style>
 
+
+<style id="steamblock-tools-style">
+#steamblock-tools {
+  position: fixed;
+  left: 18px;
+  top: 120px;
+  z-index: 99998;
+  width: 285px;
+  background: #ffffff;
+  border: 1px solid #888;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+  font-family: sans-serif;
+  color: #222;
+}
+#steamblock-tools .tools-header {
+  cursor: move;
+  padding: 9px 12px;
+  font-weight: bold;
+  user-select: none;
+  background: #eeeeee;
+  border-radius: 8px;
+}
+#steamblock-tools .tools-body {
+  padding: 12px;
+}
+#steamblock-tools.minimized .tools-body {
+  display: none;
+}
+#steamblock-tools .tools-minimize {
+  float: right;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 16px;
+}
+</style>
+
 </head>
 
 	<body oncontextmenu="return false;">
+
+
+<div id="steamblock-tools">
+  <div class="tools-header">
+    🛠️ SteamBlock Tools
+    <button class="tools-minimize" title="Minimizar">−</button>
+  </div>
+  <div class="tools-body">
+    <div><strong>IDE:</strong> pendiente de lectura</div>
+    <div><strong>VM:</strong> pendiente de lectura</div>
+    <div><strong>Placa:</strong> pendiente de lectura</div>
+  </div>
+</div>
+
 
 
 		<!-- Force HTTPS. Otherwise WebSerial can't be accessed. -->
@@ -1599,6 +1652,76 @@
   header.addEventListener('pointercancel', stopDragging);
 
   // Minimize automatically after 10 seconds.
+  window.setTimeout(minimize, 10000);
+})();
+</script>
+
+
+<script id="steamblock-tools-script">
+(function () {
+  const panel = document.getElementById('steamblock-tools');
+  if (!panel) return;
+
+  const header = panel.querySelector('.tools-header');
+  const minimizeButton = panel.querySelector('.tools-minimize');
+
+  function minimize() {
+    panel.classList.add('minimized');
+    minimizeButton.textContent = '+';
+    minimizeButton.title = 'Restaurar';
+  }
+
+  function restore() {
+    panel.classList.remove('minimized');
+    minimizeButton.textContent = '−';
+    minimizeButton.title = 'Minimizar';
+  }
+
+  minimizeButton.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (panel.classList.contains('minimized')) {
+      restore();
+    } else {
+      minimize();
+    }
+  });
+
+  let dragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  header.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || e.target === minimizeButton) return;
+
+    const rect = panel.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    dragging = true;
+    panel.setPointerCapture(e.pointerId);
+  });
+
+  header.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+
+    const maxX = Math.max(0, window.innerWidth - panel.offsetWidth);
+    const maxY = Math.max(0, window.innerHeight - panel.offsetHeight);
+
+    const x = Math.min(maxX, Math.max(0, e.clientX - offsetX));
+    const y = Math.min(maxY, Math.max(0, e.clientY - offsetY));
+
+    panel.style.left = x + 'px';
+    panel.style.top = y + 'px';
+    panel.style.right = 'auto';
+  });
+
+  function stopDragging(e) {
+    dragging = false;
+    try { panel.releasePointerCapture(e.pointerId); } catch (_) {}
+  }
+
+  header.addEventListener('pointerup', stopDragging);
+  header.addEventListener('pointercancel', stopDragging);
+
   window.setTimeout(minimize, 10000);
 })();
 </script>
