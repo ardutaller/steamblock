@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
 	<head>
-		<title>MicroBlocks</title>
+		<title> SteamBlock is based on MicroBlocks by @ardutaller ardutaller.es</title>
 		<meta charset="utf-8">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -1443,5 +1443,53 @@
 			})();
 		</script>
 
-	</body>
+	
+<script>
+(function () {
+  const panel = document.getElementById('steamblock-drive-test');
+  if (!panel) return;
+
+  // Use the panel's upper area as the drag handle.
+  panel.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0) return;
+
+    // Keep buttons, inputs, links, selects, etc. fully interactive.
+    if (e.target.closest('button, input, textarea, select, a, label')) return;
+
+    const rect = panel.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+
+    panel.setPointerCapture(e.pointerId);
+    panel.dataset.dragging = 'true';
+
+    function move(ev) {
+      if (panel.dataset.dragging !== 'true') return;
+
+      const maxX = Math.max(0, window.innerWidth - panel.offsetWidth);
+      const maxY = Math.max(0, window.innerHeight - panel.offsetHeight);
+
+      const x = Math.min(maxX, Math.max(0, ev.clientX - offsetX));
+      const y = Math.min(maxY, Math.max(0, ev.clientY - offsetY));
+
+      panel.style.left = x + 'px';
+      panel.style.top = y + 'px';
+      panel.style.right = 'auto';
+    }
+
+    function stop() {
+      panel.dataset.dragging = 'false';
+      panel.removeEventListener('pointermove', move);
+      panel.removeEventListener('pointerup', stop);
+      panel.removeEventListener('pointercancel', stop);
+    }
+
+    panel.addEventListener('pointermove', move);
+    panel.addEventListener('pointerup', stop);
+    panel.addEventListener('pointercancel', stop);
+  });
+})();
+</script>
+
+</body>
 </html>
