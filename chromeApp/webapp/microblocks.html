@@ -765,6 +765,64 @@
 }
 </style>
 
+
+<style id="steamblock-menu-robot-contained">
+/* Menú minimizado: botón y robot completamente dentro del contenedor. */
+#steamblock-module-menu:not(.smm-open) {
+  width: 140px !important;
+  height: 78px !important;
+  padding: 6px 8px !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+#steamblock-module-menu:not(.smm-open) .smm-toggle {
+  width: 124px !important;
+  height: 66px !important;
+  flex: 0 0 66px !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 4px !important;
+  overflow: hidden !important;
+}
+#steamblock-module-menu:not(.smm-open) .smm-toggle-circle {
+  width: 58px !important;
+  height: 58px !important;
+  flex: 0 0 58px !important;
+}
+#steamblock-module-menu:not(.smm-open) .smm-toggle-robot {
+  width: 56px !important;
+  height: 66px !important;
+  flex: 0 0 56px !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+}
+/* En escritorio queda pegado al borde derecho, pero sin que el robot sobresalga. */
+#steamblock-module-menu:not(.smm-open) { right: 10px !important; }
+@media (max-width:480px) {
+  #steamblock-module-menu:not(.smm-open) {
+    width: 132px !important;
+    height: 72px !important;
+    padding: 5px 6px !important;
+  }
+  #steamblock-module-menu:not(.smm-open) .smm-toggle {
+    width: 120px !important;
+    height: 62px !important;
+    flex-basis: 62px !important;
+  }
+  #steamblock-module-menu:not(.smm-open) .smm-toggle-circle {
+    width: 54px !important;
+    height: 54px !important;
+    flex-basis: 54px !important;
+  }
+  #steamblock-module-menu:not(.smm-open) .smm-toggle-robot {
+    width: 52px !important;
+    height: 62px !important;
+    flex-basis: 52px !important;
+  }
+}
+</style>
+
 </head>
 
 	<body oncontextmenu="return false;">
@@ -1540,7 +1598,7 @@
 				const miniButton =
 					panel.querySelector('.steamblock-drive-mini');
 
-				const AUTO_MINIMIZE_MS = 30000;
+				const AUTO_MINIMIZE_MS = 20000;
 				let minimizeTimer = null;
 				let currentDriveFile = null;
 				let lastProjectFileName = 'Untitled.ubp';
@@ -1564,6 +1622,7 @@
 
 					minimizeTimer = setTimeout(function () {
 						panel.classList.add('steamblock-drive-collapsed');
+						panel.style.display = 'none';
 					}, AUTO_MINIMIZE_MS);
 				}
 
@@ -2399,7 +2458,7 @@
   function scheduleMinimize() {
     clearTimeout(autoMinimizeTimer);
     if (panel.classList.contains('minimized')) return;
-    autoMinimizeTimer = window.setTimeout(minimize, 30000);
+    autoMinimizeTimer = window.setTimeout(minimize, 20000);
   }
 
   function minimize() {
@@ -2822,7 +2881,7 @@
     if (panel.classList.contains('spp-minimized')) return;
     autoMinimizeTimer = window.setTimeout(() => {
       panel.classList.add('spp-minimized');
-    }, 30000);
+    }, 20000);
   }
 
   function positionBelowTools() {
@@ -2996,7 +3055,7 @@
     public:document.getElementById('steamblock-public-projects')
   };
   const timers={};
-  const OPEN_MS=120000;
+  const OPEN_MS=20000;
 
   // Use the same visual miniatures that were previously shown when each
   // floating module was minimized. The launcher therefore keeps the exact
@@ -3088,24 +3147,30 @@
     clearTimeout(timers[key]);
     timers[key]=setTimeout(()=>hide(key),OPEN_MS);
   }
+  function updateMenuToggle(){
+    const circle=toggle.querySelector('.smm-toggle-circle');
+    const isOpen=menu.classList.contains('smm-open');
+    if(circle) circle.textContent=isOpen?'×':'☰';
+    toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de módulos' : 'Abrir menú de módulos');
+  }
   toggle.addEventListener('click',()=>{
     menu.classList.toggle('smm-open');
-    toggle.textContent=menu.classList.contains('smm-open')?'×':'☰';
+    updateMenuToggle();
   });
   items.forEach(item=>item.addEventListener('click',()=>{
     if(item.dataset.module==='language') return;
     show(item.dataset.module);
     menu.classList.remove('smm-open');
-    toggle.textContent='☰';
+    updateMenuToggle();
   }));
   // Close the launcher if clicking elsewhere.
   document.addEventListener('pointerdown',e=>{
     if(!menu.contains(e.target)){
       menu.classList.remove('smm-open');
-      toggle.textContent='☰';
+      updateMenuToggle();
     }
   },true);
-  // Any interaction with an open module resets its 30-second inactivity timer.
+  // Any interaction with an open module resets its 20-second inactivity timer.
   Object.keys(panels).forEach(key=>{
     const p=panels[key]; if(!p)return;
     ['pointerdown','pointermove','keydown','click'].forEach(ev=>p.addEventListener(ev,()=>resetTimerForPanel(key),true));
@@ -3114,10 +3179,10 @@
   Object.keys(panels).forEach(key=>{ if(panels[key]) panels[key].style.display='none'; });
   // Start with the module menu open. It automatically closes after 2 minutes.
   menu.classList.add('smm-open');
-  toggle.textContent='×';
+  updateMenuToggle();
   window.setTimeout(function () {
     menu.classList.remove('smm-open');
-    toggle.textContent='☰';
+    updateMenuToggle();
   }, 120000);
 })();
 </script>
