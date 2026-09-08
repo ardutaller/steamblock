@@ -274,6 +274,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+#steamblock-tools .tools-fw-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 #steamblock-tools .tools-fw-load {
   width: 100%;
   padding: 6px 8px;
@@ -285,27 +290,6 @@
   font-weight: 700;
   cursor: pointer;
 }
-#steamblock-tools .tools-fw-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-top: 6px;
-}
-#steamblock-tools .tools-fw-install {
-  width: 100%;
-  padding: 6px 8px;
-  border: 0;
-  border-radius: 7px;
-  background: #4b2a86;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-}
-#steamblock-tools .tools-fw-install:hover {
-  background: #351d62;
-}
-
 #steamblock-tools .tools-fw-load:hover {
   background: #57206e;
 }
@@ -1555,14 +1539,14 @@
 
           <div id="steamblock-tools-fw-url" class="tools-fw-url">---</div>
 
-          <div class="tools-fw-buttons">
-            <button type="button" id="steamblock-tools-fw-load" class="tools-fw-load">
-              <span data-sb-i18n="copyUrl">Copiar URL</span>
-            </button>
-            <button type="button" id="steamblock-tools-fw-install" class="tools-fw-install">
-              <span data-sb-i18n="loadFirmware">⚡ Cargar firmware</span>
-            </button>
-          </div>
+          <div class="tools-fw-actions">
+      <button type="button" id="steamblock-tools-fw-copy" class="tools-fw-load">
+      <span data-sb-i18n="copyUrl">Copiar URL</span>
+    </button>
+      <button type="button" id="steamblock-tools-fw-load" class="tools-fw-load">
+            <span data-sb-i18n="loadFirmware">⚡ Cargar firmware</span>
+          </button>
+    </div>
 
           <div id="steamblock-tools-fw-status" class="tools-fw-status">
             Selecciona versión y placa
@@ -2612,9 +2596,9 @@
 
   // Global language support shared by SteamBlock modules.
   const toolTexts = {
-    es: { toolsTitle:'SteamBlock Tools', ide:'IDE', vm:'VM', board:'Placa', version:'Versión', backup:'BackUp-ESP32', updateFirmware:'Actualizar firmware', copyUrl:'Copiar URL', loadFirmware:'⚡ Cargar firmware', firmwarePreparing:'Preparado para cargar el firmware seleccionado.', selected:'Firmware seleccionado', select:'Selecciona versión y placa', copied:'✓ URL copiada al portapapeles', copyError:'No se pudo copiar automáticamente', designedBy:'Módulo diseñado por', minimize:'Minimizar', restore:'Restaurar' },
-    en: { toolsTitle:'SteamBlock Tools', ide:'IDE', vm:'VM', board:'Board', version:'Version', backup:'BackUp-ESP32', updateFirmware:'Update firmware', copyUrl:'Copy URL', loadFirmware:'⚡ Load firmware', firmwarePreparing:'Ready to load the selected firmware.', selected:'Firmware selected', select:'Select version and board', copied:'✓ URL copied to clipboard', copyError:'Could not copy automatically', designedBy:'Module designed by', minimize:'Minimize', restore:'Restore' },
-    ca: { toolsTitle:'SteamBlock Tools', ide:'IDE', vm:'VM', board:'Placa', version:'Versió', backup:'BackUp-ESP32', updateFirmware:'Actualitzar firmware', copyUrl:'Copiar URL', loadFirmware:'⚡ Cargar firmware', firmwarePreparing:'Preparado para cargar el firmware seleccionado.', selected:'Firmware seleccionat', select:'Selecciona versió i placa', copied:'✓ URL copiada al porta-retalls', copyError:'No s’ha pogut copiar automàticament', designedBy:'Mòdul dissenyat per', minimize:'Minimitzar', restore:'Restaurar' }
+    es: { toolsTitle:'SteamBlock Tools', ide:'IDE', vm:'VM', board:'Placa', version:'Versión', backup:'BackUp-ESP32', updateFirmware:'Actualizar firmware', copyUrl:'Copiar URL', loadFirmware:'⚡ Cargar firmware', selected:'Firmware seleccionado', select:'Selecciona versión y placa', copied:'✓ URL copiada al portapapeles', copyError:'No se pudo copiar automáticamente', designedBy:'Módulo diseñado por', minimize:'Minimizar', restore:'Restaurar' },
+    en: { toolsTitle:'SteamBlock Tools', ide:'IDE', vm:'VM', board:'Board', version:'Version', backup:'BackUp-ESP32', updateFirmware:'Update firmware', copyUrl:'Copy URL', loadFirmware:'⚡ Load firmware', selected:'Firmware selected', select:'Select version and board', copied:'✓ URL copied to clipboard', copyError:'Could not copy automatically', designedBy:'Module designed by', minimize:'Minimize', restore:'Restore' },
+    ca: { toolsTitle:'SteamBlock Tools', ide:'IDE', vm:'VM', board:'Placa', version:'Versió', backup:'BackUp-ESP32', updateFirmware:'Actualitzar firmware', copyUrl:'Copiar URL', loadFirmware:'⚡ Carregar firmware', selected:'Firmware seleccionat', select:'Selecciona versió i placa', copied:'✓ URL copiada al porta-retalls', copyError:'No s’ha pogut copiar automàticament', designedBy:'Mòdul dissenyat per', minimize:'Minimitzar', restore:'Restaurar' }
   };
   function applyToolsLanguage(lang) {
     const t = toolTexts[lang] || toolTexts.es;
@@ -2636,8 +2620,7 @@
   const fwVersion = document.getElementById('steamblock-tools-fw-version');
   const fwBoard = document.getElementById('steamblock-tools-fw-board');
   const fwUrl = document.getElementById('steamblock-tools-fw-url');
-  const fwLoad = document.getElementById('steamblock-tools-fw-load');
-  const fwInstall = document.getElementById('steamblock-tools-fw-install');
+  const fwLoad = document.getElementById('steamblock-tools-fw-copy');
   const fwStatus = document.getElementById('steamblock-tools-fw-status');
 
   applyToolsLanguage((function(){ try{return localStorage.getItem('steamblock-language')||'es';}catch(e){return 'es';} })());
@@ -2647,6 +2630,66 @@
     return 'https://microblocks.fun/downloads/' +
       fwVersion.value + '/vm/vm_' + fwBoard.value + '.bin';
   }
+
+  const steamblockFwLoad = document.getElementById('steamblock-tools-fw-load');
+  if (steamblockFwLoad) {
+    steamblockFwLoad.addEventListener('click', function () {
+      const url = selectedFirmwareURL();
+      const status = document.getElementById('steamblock-tools-fw-status');
+      const urlBox = document.getElementById('steamblock-tools-fw-url');
+
+      if (!url) {
+        if (status) status.textContent = 'Selecciona versión y placa';
+        return;
+      }
+
+      if (urlBox) urlBox.textContent = url;
+
+      // Board names used by the GP flasher are not always identical to
+      // the compact values used by the selector.
+      const boardNames = {
+        'cocube':'CoCube',
+        'citilab-ed1':'Citilab ED1',
+        'databot':'Databot',
+        'databot_v3':'Databot v3',
+        'esp32':'ESP32',
+        'micro_steamakers':'micro:STEAMakers',
+        'kids_bits':'KidsBits',
+        'foxbit':'Foxbit',
+        'mbits':'Mbits',
+        'm5stack':'M5Stack-Core',
+        'm5atom':'M5Atom-Matrix',
+        'm5atom_lite':'M5Atom-Lite',
+        'm5atom_s3_lite':'M5AtomS3-Lite',
+        'm5atom_s3_tft':'M5AtomS3-TFT',
+        'm5core2_1.0':'M5Core2',
+        'm5stick_plus':'M5StickC+',
+        'nodemcu':'D1-Mini',
+        'springbot':'Springbot',
+        'xiao_esp32_c3':'XIAO-ESP32-C3',
+        'xiao_esp32_s3':'XIAO-ESP32-S3'
+      };
+
+      const boardName = boardNames[fwBoard.value] || fwBoard.value;
+
+      if (typeof GP === 'undefined' || typeof GP.apiCall !== 'function') {
+        if (status) status.textContent = 'El instalador de firmware no está disponible.';
+        return;
+      }
+
+      if (status) status.textContent = 'Iniciando carga del firmware…';
+
+      try {
+        GP.apiCall('board.installVMfromURL', [url, boardName], function () {
+          if (status) status.textContent = 'Carga de firmware iniciada.';
+        });
+      } catch (error) {
+        console.error('[SteamBlock Tools] Error al iniciar firmware:', error);
+        if (status) status.textContent = 'No se pudo iniciar la carga del firmware.';
+      }
+    });
+  }
+
 
   function refreshFirmwareURL() {
     const url = selectedFirmwareURL();
@@ -2662,23 +2705,7 @@
   }
 
   if (fwLoad) {
-    if (fwInstall) {
-    fwInstall.addEventListener('click', function () {
-      const url = fwUrl && fwUrl.textContent.trim();
-      if (!url || url === '---') {
-        fwStatus.textContent = 'Selecciona versión y placa';
-        return;
-      }
-      fwStatus.textContent = (typeof window.steamblockLanguage === 'string' && window.steamblockLanguage === 'en' ? 'Ready to load the selected firmware.' : typeof window.steamblockLanguage === 'string' && window.steamblockLanguage === 'ca' ? 'Preparat per carregar el firmware seleccionat.' : 'Preparado para cargar el firmware seleccionado.');
-      // Hook reservado para conectar con el flasher nativo de SteamBlock.
-      // En esta primera fase NO se inicia el flasheo automáticamente.
-      if (typeof window.SteamBlockFirmwareLoader === 'function') {
-        window.SteamBlockFirmwareLoader(url);
-      }
-    });
-  }
-
-  fwLoad.addEventListener('click', async function () {
+    fwLoad.addEventListener('click', async function () {
       const url = selectedFirmwareURL();
       if (!url) return;
 
